@@ -9,8 +9,8 @@ const httpLink = createHttpLink({
 });
 
 const httpLink2 = createUploadLink({
-    uri,
-  });
+  uri,
+});
 
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem('token');

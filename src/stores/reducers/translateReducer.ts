@@ -1,15 +1,15 @@
-import { TRANSLATE } from './types/translateTypes';
+import { getCurrentLanguage } from '../../helpers/Utils';
+import { CHANGE_LOCALE } from './types/translateTypes';
 
-const INITIAL_STATE = { language: 'en' as any };
+const INIT_STATE = {
+  locale: getCurrentLanguage(),
+};
 
-export default (state = INITIAL_STATE, action: any) => {
+export default (state = INIT_STATE, action: any) => {
   switch (action.type) {
-    case TRANSLATE:
-      return {
-        ...state,
-        language: action.payload,
-      };
+    case CHANGE_LOCALE:
+      return { ...state, locale: action.payload };
     default:
-      return state;
+      return { ...state };
   }
 };

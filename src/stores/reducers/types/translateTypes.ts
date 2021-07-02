@@ -1,1 +1,1 @@
-export const TRANSLATE = 'TRANSLATE';
+export const CHANGE_LOCALE = 'CHANGE_LOCALE';

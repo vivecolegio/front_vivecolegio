@@ -2,26 +2,26 @@ import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
-// import Spinner from './components/common/General/Spinner';
-// import { GlobalStyles } from './components/styled/GlobalStyles';
-// import enMessages from './lang/locales/en_US';
-// import esMessages from './lang/locales/es_ES';
 import App from './routes/App';
+
 import configureStore from './stores/configureStore';
+
+// const App = React.lazy(()=> {return import(/* webpackChunkName: "App" */ './routes/App')})
 
 const { store, persistor } = configureStore();
 
-// loadMessages(enMessages, 'en');
-// loadMessages(esMessages, 'es');
+const Main = () => {
+  return (
+    <Provider store={store}>
+      <PersistGate persistor={persistor}>
+        <Suspense fallback={<div className="loading"/>}>
+          <App />
+        </Suspense>
+      </PersistGate>
+    </Provider>
+  );
+};
 
-ReactDOM.render(
-  <Provider store={store}>
-    <PersistGate persistor={persistor}>
-      {/* <Suspense fallback={<Spinner />}> */}
-        {/* <GlobalStyles /> */}
-        <App />
-       {/* </Suspense> */}
-     </PersistGate>
-   </Provider>,
-  document.getElementById('app'),
-);
+ReactDOM.render(<Main/>, document.getElementById('app'));
+
+// reportWebVitals();

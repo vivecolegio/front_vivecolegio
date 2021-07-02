@@ -3,16 +3,21 @@ import { useClearCache } from 'react-clear-cache';
 import { IntlProvider } from 'react-intl';
 import { connect } from 'react-redux';
 import { HashRouter, Route, Switch } from 'react-router-dom';
-import Home from '../components/app/Home';
-import SignIn from '../components/app/Login/SignIn';
-import SignUp from '../components/app/Login/SignUp';
+import Login from '../components/app/Login/Login';
+import RoleList from '../components/app/Role/RoleList';
+import ColorSwitcher from '../components/common/ColorSwitcher';
 import Layout from '../components/common/layout/Layout';
-
-
+import { NotificationContainer } from '../components/common/Notifications';
+import Home from '../components/Home';
+import { isMultiColorActive } from '../constants/defaultValues';
+import AppLocale from '../lang';
 
 const App = (props: any) => {
+  const { locale } = props.translateReducer;
 
-    const [permissions, setPermissions] = useState(false);
+  const currentAppLocale = AppLocale[locale];
+
+  const [permissions, setPermissions] = useState(false);
 
   const { isLatestVersion, emptyCacheStorage, latestVersion } = useClearCache();
 
@@ -26,38 +31,55 @@ const App = (props: any) => {
       emptyCacheStorage();
     }
     const token = localStorage.getItem('token');
-    if (props?.loginReducer?.user?.username?.length > 1 && token != null) {
+    if (props?.loginReducer?.userId?.length > 0 && token != null) {
       setPermissions(true);
-      const dateExp = props?.loginReducer?.payload?.exp;
-      const date1 = new Date(dateExp * 1000);
-      const date = new Date();
-      let diff = (date1.getTime() - date.getTime()) / 1000;
-      diff /= 60;
-      if (diff < 0) {
-        handleLogout();
-      }
+      // const dateExp = props?.loginReducer?.payload?.exp;
+      // const date1 = new Date(dateExp * 1000);
+      // const date = new Date();
+      // let diff = (date1.getTime() - date.getTime()) / 1000;
+      // diff /= 60;
+      // if (diff < 0) {
+      //   handleLogout();
+      // }
     } else {
       setPermissions(false);
     }
   }, [emptyCacheStorage, isLatestVersion, props.loginReducer]);
 
-    return (
-        <IntlProvider locale={props.translateReducer?.language} >
-            <HashRouter>
-                <Layout permissions={permissions}>
-                {latestVersion}
-                <Suspense fallback={<></>} >
-                    <Switch>
-                        <Route exact path="/" component={SignIn} />
-                        <Route exact path="/signin" component={SignIn} />
-                        <Route exact path="/signup" component={SignUp} />
-                        <Route exact path="/home" component={permissions ? Home: SignIn} />
-                    </Switch>
-                </Suspense>
-                </Layout>
-            </HashRouter>
-        </IntlProvider>
-    );
+  return (
+    <div className="h-100">
+      <IntlProvider locale={currentAppLocale.locale} messages={currentAppLocale.messages}>
+        <>
+          <NotificationContainer />
+          {isMultiColorActive && <ColorSwitcher />}
+          {latestVersion}
+          <Suspense fallback={<div className="loading" />} />
+          <HashRouter>
+            <Layout permissions={permissions}>
+              <Switch>
+                <Route exact path="/" component={Login} />
+                <Route exact path="/login" component={Login} />
+                <Route exact path="/home" component={permissions ? Home : Login} />
+                {permissions ? (
+                  <>
+                    <Route exact path="/roles" component={permissions ? RoleList : Login} />
+                  </>
+                ) : (
+                  <></>
+                )}
+              </Switch>
+            </Layout>
+          </HashRouter>
+        </>
+      </IntlProvider>
+    </div>
+  );
 };
 
-export default App;
+const mapDispatchToProps = {};
+
+const mapStateToProps = ({ loginReducer, translateReducer }: any) => {
+  return { loginReducer, translateReducer };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

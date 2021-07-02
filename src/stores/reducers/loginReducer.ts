@@ -1,20 +1,26 @@
-import { LOGOUT, SIGNIN } from './types/loginTypes';
+import { LOGOUT, LOGIN } from './types/loginTypes';
 
 const INITIAL_STATE = {
-  user: { username: '' },
+  userId: '',
+  role: {},
+  name: '',
 };
 
 export default (state = INITIAL_STATE, action: any) => {
   switch (action.type) {
-    case SIGNIN:
+    case LOGIN:
       return {
         ...state,
-        user: action.payload.user,
+        userId: action.payload.userId,
+        role: action.payload.role,
+        name: action.payload.name,
       };
     case LOGOUT:
       return {
         ...state,
-        user: {},
+        userId: '',
+        role: {},
+        name: '',
       };
     default:
       return state;

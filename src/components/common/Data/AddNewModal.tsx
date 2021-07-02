@@ -1,0 +1,50 @@
+import React from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import IntlMessages from '../../../helpers/IntlMessages';
+
+const AddNewModal = ({ modalOpen, toggleModal, children, onSubmit }: any) => {
+  const methods = useForm();
+
+  const { handleSubmit } = methods;
+
+  const {
+    register,
+    formState: { errors },
+    getValues,
+    trigger,
+  } = useForm();
+
+  return (
+    <FormProvider {...methods}>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Modal
+          isOpen={modalOpen}
+          toggle={toggleModal}
+          wrapClassName="modal-right"
+          backdrop="static"
+        >
+          <ModalHeader toggle={toggleModal}>
+            <IntlMessages id="pages.add-new-modal-title" />
+          </ModalHeader>
+          <ModalBody>{children}</ModalBody>
+          <ModalFooter>
+            <Button color="secondary" outline onClick={toggleModal}>
+              <IntlMessages id="pages.cancel" />
+            </Button>
+            <Button
+              color="primary"
+              onClick={() => {
+                onSubmit(methods.getValues());
+              }}
+            >
+              <IntlMessages id="pages.submit" />
+            </Button>
+          </ModalFooter>
+        </Modal>
+      </form>
+    </FormProvider>
+  );
+};
+
+export default AddNewModal;

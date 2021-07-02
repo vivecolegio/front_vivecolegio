@@ -1,0 +1,14 @@
+{
+    "[javascript]": {
+      "editor.codeActionsOnSave": {
+      }
+    },
+    "[typescript]": {
+      "editor.codeActionsOnSave": {
+      }
+    },
+    "[typescriptreact]": {
+      "editor.codeActionsOnSave": {
+      }
+    }
+  }

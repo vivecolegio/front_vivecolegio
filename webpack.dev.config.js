@@ -8,7 +8,7 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'js/[name].js',
+    filename: 'js/[id].js',
     publicPath: 'http://localhost/',
     chunkFilename: 'js/[id].[chunkhash].js',
   },
@@ -18,7 +18,7 @@ module.exports = {
     open: true,
     port: 80,
     hot: true,
-    hotOnly: true,
+    // hotOnly: true,
   },
   optimization: {
     concatenateModules: false,
