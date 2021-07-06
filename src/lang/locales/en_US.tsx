@@ -48,6 +48,8 @@ const enMessages = {
   'pages.error-title': 'Ooops... looks like an error occurred!',
   'pages.error-code': 'Error code',
   'pages.go-back-home': 'GO BACK HOME',
+  'layouts.signout': 'Sign Out',
+  'layouts.profile': 'Profile',
 
   /* 05.Pages */
   'pages.add-new': 'ADD NEW',
@@ -67,6 +69,7 @@ const enMessages = {
   'pages.header': 'Header',
   'pages.details': 'DETAILS',
   'pages.orders': 'ORDERS',
+  'pages.of': 'of',
 
   /* New Options  */
   'menu.new': 'New',
@@ -76,6 +79,23 @@ const enMessages = {
   'menu.roles': 'Roles',
   'menu.menus': 'Menus',
   'menu.modules': 'Modules',
+  'menu.admin': 'Administrator',
+  'menu.academic': 'Academic',
+  'menu.area': 'Area',
+  'menu.areas': 'Areas',
+  'menu.asignature': 'Asignature',
+  'menu.asignatures': 'Asignatures',
+  'menu.cycles': 'Cycle',
+  'menu.standardAcademic': 'Standard Academic',
+  'menu.cycleAcademic': 'Cycle Academic',
+  'menu.students': 'Students',
+  'menu.administrators': 'Administrative',
+  'menu.institutions': 'Institutions',
+  'menu.school': 'School',
+  'menu.schools': 'Schools',
+  'menu.campus': 'Campus',
+  'menu.performanceLevel': 'Performance Level',  
+  'menu.staff': 'Staff',
   'list.activate': 'Active',
   'list.inactivate': 'Inactive',
   'forms.inputRequired': 'Field Required',
@@ -86,6 +106,22 @@ const enMessages = {
   'forms.updatedAt': 'Updated At',
   'forms.updatedBy': 'Updated By',
   'forms.version': 'Version',
+  'forms.id': 'Id',
+  'forms.name': 'Name',
+  'forms.lastname': 'Last Name',
+  'forms.phone': 'Phone',
+  'forms.email': 'Email',
+  'forms.role': 'Role',
+  'forms.birthdate':'Birthdate',
+  'forms.gender':'Gender',
+  'forms.documentNumber':'Document number',
+  'forms.documentType':'Document type',
+  'forms.url':'Url',
+  'forms.standard':'Standard',
+  'forms.type':'Type',
+  'forms.subtype':'Subtype',
+  'forms.daneCode':'DANE Code',
+
 };
 
 export default enMessages;

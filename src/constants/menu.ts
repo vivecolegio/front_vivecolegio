@@ -3,44 +3,131 @@ import { adminRoot } from './defaultValues';
 
 const data = [
   {
-    id: 'gogo',
-    icon: 'iconsminds-air-balloon-1',
-    label: 'menu.gogo',
-    to: `${adminRoot}/gogo`,
-    // roles: [UserRole.Admin, UserRole.Editor],
+    id: 'admin',
+    icon: 'iconsminds-optimization',
+    label: 'menu.admin',
+    to: `${adminRoot}/admin`,
+    newWindow: false,
     subs: [
       {
-        icon: 'simple-icon-paper-plane',
-        label: 'menu.start',
-        to: `${adminRoot}/gogo/start`,
+        icon: 'iconsminds-male-2',
+        label: 'menu.users',
+        to: `/users`,
+      },
+      {
+        icon: 'iconsminds-network',
+        label: 'menu.roles',
+        to: `/roles`,
+      },
+      {
+        icon: 'iconsminds-check',
+        label: 'menu.menus',
+        to: `/menus`,
+      },
+      {
+        icon: 'iconsminds-cursor-click-2',
+        label: 'menu.modules',
+        to: `/modules`,
       },
     ],
   },
   {
-    id: 'secondmenu',
-    icon: 'iconsminds-three-arrow-fork',
-    label: 'menu.second-menu',
-    to: `${adminRoot}/second-menu`,
+    id: 'academic',
+    icon: 'iconsminds-notepad',
+    label: 'menu.academic',
+    to: `${adminRoot}/academic`,
+    newWindow: false,
     subs: [
       {
-        icon: 'simple-icon-paper-plane',
-        label: 'menu.second',
-        to: `${adminRoot}/second-menu/second`,
+        icon: 'iconsminds-books',
+        label: 'menu.area',
+        to: `/areas`,
       },
+      {
+        icon: 'iconsminds-book',
+        label: 'menu.asignature',
+        to: `/asignatures`,
+      },
+      {
+        icon: 'iconsminds-bookmark',
+        label: 'menu.cycles',
+        to: `/cycles`,
+      },
+      {
+        icon: 'iconsminds-idea-2',
+        label: 'menu.standardAcademic',
+        to: `/standardAcademic`,
+      },
+      {
+        icon: 'iconsminds-diploma-2',
+        label: 'menu.performanceLevel',
+        to: `/performanceLevel`,
+      },     
     ],
   },
   {
-    id: 'blankpage',
-    icon: 'iconsminds-bucket',
-    label: 'menu.blank-page',
-    to: `${adminRoot}/blank-page`,
+    id: 'person',
+    icon: 'iconsminds-student-hat',
+    label: 'menu.staff',
+    to: `${adminRoot}/person`,
+    newWindow: false,
+    subs: [
+      {
+        icon: 'iconsminds-student-male-female',
+        label: 'menu.students',
+        to: `/students`,
+      },
+      {
+        icon: 'iconsminds-business-man-woman',
+        label: 'menu.administrators',
+        to: `/administrators`,
+      },     
+    ],
   },
   {
-    id: 'docs',
-    icon: 'iconsminds-library',
-    label: 'menu.docs',
-    to: 'https://gogo-react-docs.coloredstrategies.com/',
-    newWindow: true,
+    id: 'school',
+    icon: 'iconsminds-the-white-house',
+    label: 'menu.institutions',
+    to: `${adminRoot}/school`,
+    newWindow: false,
+    subs: [
+      {
+        icon: 'iconsminds-post-office',
+        label: 'menu.school',
+        to: `/schools`,
+      },
+      {
+        icon: 'iconsminds-edit-map',
+        label: 'menu.campus',
+        to: `/campus`,
+      },     
+    ],
   },
+  // {
+  //   id: 'secondmenu',
+  //   icon: 'iconsminds-three-arrow-fork',
+  //   label: 'menu.second-menu',
+  //   to: `${adminRoot}/second-menu`,
+  //   subs: [
+  //     {
+  //       icon: 'simple-icon-paper-plane',
+  //       label: 'menu.second',
+  //       to: `${adminRoot}/second-menu/second`,
+  //     },
+  //   ],
+  // },
+  // {
+  //   id: 'blankpage',
+  //   icon: 'iconsminds-bucket',
+  //   label: 'menu.blank-page',
+  //   to: `${adminRoot}/blank-page`,
+  // },
+  // {
+  //   id: 'docs',
+  //   icon: 'iconsminds-library',
+  //   label: 'menu.docs',
+  //   to: 'https://gogo-react-docs.coloredstrategies.com/',
+  //   newWindow: true,
+  // },
 ];
 export default data;

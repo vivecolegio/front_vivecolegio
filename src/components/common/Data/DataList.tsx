@@ -15,7 +15,7 @@ const getIndex = (value: any, arr: any, prop: any) => {
   return -1;
 };
 
-const pageSizes = [4, 8, 12, 20];
+const pageSizes = [5, 10, 15, 20];
 
 const DataList = (props: any) => {
   const [isLoaded, setIsLoaded] = useState(false);

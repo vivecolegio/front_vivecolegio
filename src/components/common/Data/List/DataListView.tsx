@@ -35,13 +35,13 @@ const DataListView = ({
               })}
               <p className="mb-0 text-muted text-small w-10 w-sm-100">
                 <Button
-                  color="primary"
+                  color="info"
                   size="xs"
                   onClick={() => {
                     return viewEditData(item.id);
                   }}
                 >
-                  <i className="simple-icon-eye" />
+                  <i className="simple-icon-eye" />            
                 </Button>{' '}
                 <Button
                   color={item.active ? 'danger' : 'success'}

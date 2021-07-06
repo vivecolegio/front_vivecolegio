@@ -14,3 +14,8 @@ html {
 #app {
   height: 100%;
 }
+
+
+input.form-control[readonly] {
+  background-color: white!important;
+}

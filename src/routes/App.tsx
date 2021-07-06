@@ -3,8 +3,17 @@ import { useClearCache } from 'react-clear-cache';
 import { IntlProvider } from 'react-intl';
 import { connect } from 'react-redux';
 import { HashRouter, Route, Switch } from 'react-router-dom';
+import AreaList from '../components/app/Area/AreaList';
+import AsignatureList from '../components/app/Asignature/AsignatureList';
+import CampusList from '../components/app/Campus/CampusList';
+import CycleList from '../components/app/Cycle/CycleList';
 import Login from '../components/app/Login/Login';
+import ModuleList from '../components/app/Module/ModuleList';
+import PerformanceLevelList from '../components/app/PerformanceLevel/PerformanceLevelList';
 import RoleList from '../components/app/Role/RoleList';
+import SchoolList from '../components/app/School/SchoolList';
+import StandardList from '../components/app/Standard/StandardList';
+import UserList from '../components/app/User/UserList';
 import ColorSwitcher from '../components/common/ColorSwitcher';
 import Layout from '../components/common/layout/Layout';
 import { NotificationContainer } from '../components/common/Notifications';
@@ -63,6 +72,15 @@ const App = (props: any) => {
                 {permissions ? (
                   <>
                     <Route exact path="/roles" component={permissions ? RoleList : Login} />
+                    <Route exact path="/users" component={permissions ? UserList : Login} />
+                    <Route exact path="/modules" component={permissions ? ModuleList : Login} />
+                    <Route exact path="/areas" component={permissions ? AreaList : Login} />
+                    <Route exact path="/asignatures" component={permissions ? AsignatureList : Login} />
+                    <Route exact path="/cycles" component={permissions ? CycleList : Login} />
+                    <Route exact path="/performanceLevel" component={permissions ? PerformanceLevelList : Login} />
+                    <Route exact path="/standardAcademic" component={permissions ? StandardList : Login} />
+                    <Route exact path="/schools" component={permissions ? SchoolList : Login} />
+                    <Route exact path="/campus" component={permissions ? CampusList : Login} />
                   </>
                 ) : (
                   <></>

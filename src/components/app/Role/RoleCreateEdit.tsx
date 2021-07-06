@@ -46,7 +46,7 @@ const RoleCreateEdit = (props: any) => {
       ) : (
         <>
           <Label>
-            <IntlMessages id="roles.name" />
+            <IntlMessages id="forms.name" />
           </Label>
           <Input
             {...methods.register('name', { required: true })}

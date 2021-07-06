@@ -201,7 +201,7 @@ const TopNav = (props: any) => {
           >
             <MobileMenuIcon />
           </NavLink>
-          <div className="search">
+          {/* <div className="search">
             <Input
               name="searchKeyword"
               id="searchKeyword"
@@ -216,7 +216,7 @@ const TopNav = (props: any) => {
             >
               <i className="simple-icon-magnifier" />
             </span>
-          </div>
+          </div> */}
           <div className="d-inline-block">
             <UncontrolledDropdown className="ml-2">
               <DropdownToggle
@@ -243,11 +243,11 @@ const TopNav = (props: any) => {
               </DropdownMenu>
             </UncontrolledDropdown>
           </div>
-          <div className="position-relative d-none d-none d-lg-inline-block">
+          {/* <div className="position-relative d-none d-none d-lg-inline-block">
             <a className="btn btn-outline-primary btn-sm ml-2">
               <IntlMessages id="user.buy" />
             </a>
-          </div>
+          </div> */}
           <a className="navbar-logo" href="/">
             <span className="logo d-none d-sm-block" />
             <span className="logo-mobile d-block d-sm-none" />
@@ -256,8 +256,8 @@ const TopNav = (props: any) => {
         <div className="navbar-right">
           {isDarkSwitchActive && <TopnavDarkSwitch />}
           <div className="header-icons d-inline-block align-middle">
-            <TopnavEasyAccess />
-            <TopnavNotifications />
+            {/* <TopnavEasyAccess />
+            <TopnavNotifications /> */}
             <button
               className="header-icon btn btn-empty d-none d-sm-inline-block"
               type="button"
@@ -274,19 +274,19 @@ const TopNav = (props: any) => {
           <div className="user d-inline-block">
             <UncontrolledDropdown className="dropdown-menu-right">
               <DropdownToggle className="p-0" color="empty">
-                <span className="name mr-1">Sarah Kortney</span>
+                <span className="name mr-1">{props?.loginReducer?.name}</span>               
                 <span>
                   <img alt="Profile" src={ProfileImg} />
                 </span>
               </DropdownToggle>
               <DropdownMenu className="mt-3" right>
-                <DropdownItem>Account</DropdownItem>
-                <DropdownItem>Features</DropdownItem>
+                <DropdownItem><IntlMessages id="layouts.profile" /></DropdownItem>
+                {/* <DropdownItem>Features</DropdownItem>
                 <DropdownItem>History</DropdownItem>
-                <DropdownItem>Support</DropdownItem>
+                <DropdownItem>Support</DropdownItem> */}
                 <DropdownItem divider />
                 <DropdownItem onClick={() => {return handleLogout()}}>
-                  Sign out
+                    <IntlMessages id="layouts.signout" />
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
@@ -303,8 +303,8 @@ const mapDispatchToProps = {
   ...MenuActions,
 };
 
-const mapStateToProps = ({ translateReducer, LoginReducer, MenuReducer }: any) => {
-  return { LoginReducer, translateReducer, MenuReducer };
+const mapStateToProps = ({ translateReducer, loginReducer, MenuReducer }: any) => {
+  return { loginReducer, translateReducer, MenuReducer };
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(TopNav));
