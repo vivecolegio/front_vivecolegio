@@ -1,3 +1,4 @@
+import { createNotification } from '../../helpers/Notification';
 import { client } from '../graphql';
 import { MUTATION_LOGIN } from '../graphql/Login/LoginMutations';
 import { LOGIN, RESET_APP } from '../reducers/types/loginTypes';
@@ -27,7 +28,8 @@ export const login = (user: any) => {
           });
         });
       return data != null;
-    } catch (error) {
+    } catch (error) {  
+      createNotification('Error', 'Error al inciar sesión, por favor intente de nuevo', '');
       return error;
     }
   };

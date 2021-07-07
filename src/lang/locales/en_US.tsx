@@ -90,6 +90,7 @@ const enMessages = {
   'menu.cycleAcademic': 'Cycle Academic',
   'menu.students': 'Students',
   'menu.administrators': 'Administrative',
+  'menu.administratorsSchool': 'Administrator School',
   'menu.institutions': 'Institutions',
   'menu.school': 'School',
   'menu.schools': 'Schools',
@@ -121,6 +122,7 @@ const enMessages = {
   'forms.type':'Type',
   'forms.subtype':'Subtype',
   'forms.daneCode':'DANE Code',
+  'forms.user':'User',
 
 };
 

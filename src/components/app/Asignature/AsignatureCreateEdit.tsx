@@ -87,7 +87,7 @@ const AsignatureCreateEdit = (props: any) => {
               classNamePrefix="react-select"   
               options={areasList}
               name="generalAcademicAreaId"
-              value={data.generalAcademicAreaId}
+              selected={data.generalAcademicAreaId}
               // {...methods.register("generalAcademicAreaId")}   
               // value={areasList.find(c => {return c.value === value})}
               // onChange={val => {return onchange(val.value)}}

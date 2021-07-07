@@ -87,7 +87,7 @@ const CampusCreateEdit = (props: any) => {
               classNamePrefix="react-select"   
               options={schoolList}
               name="schoolId"
-              value={data.schoolId}
+              selected={data.schoolId}
               // {...methods.register("schoolId")}   
               // value={schoolList.find(c => {return c.value === value})}
               // onChange={val => {return onchange(val.value)}}

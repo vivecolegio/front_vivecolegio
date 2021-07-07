@@ -50,7 +50,7 @@ const data = [
       },
       {
         icon: 'iconsminds-bookmark',
-        label: 'menu.cycles',
+        label: 'menu.cycleAcademic',
         to: `/cycles`,
       },
       {
@@ -80,7 +80,7 @@ const data = [
       {
         icon: 'iconsminds-business-man-woman',
         label: 'menu.administrators',
-        to: `/administrators`,
+        to: `/administratorsSchool`,
       },     
     ],
   },

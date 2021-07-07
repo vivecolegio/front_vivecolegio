@@ -87,6 +87,7 @@ const esMessages = {
   'menu.cycleAcademic': 'Ciclo Académico',
   'menu.students': 'Estudiantes',
   'menu.administrators': 'Administrativos',
+  'menu.administratorsSchool': 'Escuela Administradora',
   'menu.institutions': 'Instituciones',
   'menu.school': 'Escuela',
   'menu.schools': 'Escuelas',
@@ -118,6 +119,7 @@ const esMessages = {
   'forms.type':'Tipo',
   'forms.subtype':'Subtipo',
   'forms.daneCode':'Código DANE',
+  'forms.user':'Usuario',
 };
 
 export default esMessages;

@@ -1,26 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
-import { COLUMN_LIST } from '../../../constants/User/userConstants';
-import * as roleActions from '../../../stores/actions/UserActions';
+import { COLUMN_LIST } from '../../../constants/Student/studentConstants';
+import * as roleActions from '../../../stores/actions/StudentActions';
 import AddNewModal from '../../common/Data/AddNewModal';
 import DataList from '../../common/Data/DataList';
-import UserCreateEdit from './UserCreateEdit';
+import StudentCreateEdit from './StudentsCreateEdit';
 
-const UserList = (props: any) => {
+const StudentList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
   const [columns, setColumns] = useState(COLUMN_LIST);
   const [modalOpen, setModalOpen] = useState(false);
 
   const [data, setData] = useState(null);
   useEffect(() => {
-    props.getListAllUser().then((listData: any) => {
-      setDataTable(listData);
+    props.getListAllStudent().then((listData: any) => {
+      setDataTable(listData.map((c:any)=>{c.school_format = 'hola';return c}));
     });
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllUser().then((listData: any) => {     
+    props.getListAllStudent().then((listData: any) => {     
       setDataTable(listData);
     });    
   };
@@ -30,19 +30,17 @@ const UserList = (props: any) => {
     await getDataTable();
   };
 
-  const onSubmit = async (dataForm: any, formState:any) => {
-    console.log(dataForm, 'FORM')
-    console.log(formState, 'STATE')
-    // console.log(formState.target.isValid, 'STATE')
+  const onSubmit = async (dataForm: any) => {
+    console.log(dataForm)
     if (data === null) {
-      await props.saveNewUser(dataForm).then((id: any) => {
+      await props.saveNewStudent(dataForm).then((id: any) => {
         if (id !== undefined) {
           setModalOpen(false);
           refreshDataTable();
         }
       });
     } else {
-      await props.updateUser(dataForm, data.id).then((id: any) => {
+      await props.updateStudent(dataForm, data.id).then((id: any) => {
         if (id !== undefined) {
           setModalOpen(false);
           setData(null);
@@ -53,14 +51,14 @@ const UserList = (props: any) => {
   };
 
   const viewEditData = async (id: any) => {
-    await props.dataUser(id).then((formData: any) => {
+    await props.dataStudent(id).then((formData: any) => {
       setData(formData.data);
       setModalOpen(true);
     });
   };
 
   const changeActiveData = async (active: any, id: any) => {
-    await props.changeActiveUser(active, id).then((formData: any) => {
+    await props.changeActiveStudent(active, id).then((formData: any) => {
       refreshDataTable();
     });
   };
@@ -86,7 +84,7 @@ const UserList = (props: any) => {
             }}
             onSubmit={onSubmit}
           >
-            <UserCreateEdit data={data} />
+            <StudentCreateEdit data={data} />
           </AddNewModal>
         </>
       ) : (
@@ -101,4 +99,4 @@ const mapStateToProps = () => {
   return {};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserList);
+export default connect(mapStateToProps, mapDispatchToProps)(StudentList);

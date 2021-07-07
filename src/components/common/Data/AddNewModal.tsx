@@ -10,7 +10,7 @@ const AddNewModal = ({ modalOpen, toggleModal, children, onSubmit }: any) => {
 
   const {
     register,
-    formState: { errors },
+    formState: { errors, isValid },
     getValues,
     trigger,
   } = useForm();
@@ -35,7 +35,7 @@ const AddNewModal = ({ modalOpen, toggleModal, children, onSubmit }: any) => {
             <Button
               color="primary"
               onClick={() => {
-                onSubmit(methods.getValues());
+                onSubmit(methods.getValues(), methods.formState);
               }}
             >
               <IntlMessages id="pages.submit" />

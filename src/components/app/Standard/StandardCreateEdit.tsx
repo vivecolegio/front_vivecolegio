@@ -119,7 +119,7 @@ const StandardCreateEdit = (props: any) => {
               classNamePrefix="react-select"   
               options={asignaturesList}
               name="generalAcademicAsignatureId"
-              value={data.generalAcademicAsignatureId}
+              selected={data.generalAcademicAsignatureId}
               // {...methods.register("generalAcademicAreaId")}   
               // value={areasList.find(c => {return c.value === value})}
               // onChange={val => {return onchange(val.value)}}              
@@ -135,7 +135,7 @@ const StandardCreateEdit = (props: any) => {
               classNamePrefix="react-select"   
               options={cyclesList}
               name="generalAcademicCycleId"
-              value={data.generalAcademicCycleId}
+              selected={data.generalAcademicCycleId}
               // {...methods.register("generalAcademicAreaId")}   
               // value={areasList.find(c => {return c.value === value})}
               // onChange={val => {return onchange(val.value)}}              

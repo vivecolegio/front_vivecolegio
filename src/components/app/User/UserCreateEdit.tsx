@@ -4,6 +4,7 @@ import Loader from 'react-loader-spinner';
 import { connect } from 'react-redux';
 import { Input, Label } from 'reactstrap';
 import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import Select from 'react-select';
 // import CustomSelectInput from 'components/common/CustomSelectInput';
 import { loaderColor, loaderIcon } from '../../../constants/defaultValues';
@@ -15,6 +16,7 @@ import * as DocumentTypeActions from '../../../stores/actions/DocumentTypeAction
 import { Colxx } from '../../common/CustomBootstrap';
 import CreateEditAuditInformation from '../../common/Data/CreateEditAuditInformation';
 
+
 const UserCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
   const [rolesList, setRolesList] = useState(null);
@@ -22,12 +24,6 @@ const UserCreateEdit = (props: any) => {
   const [gendersList, setGendersList] = useState(null);
 
   const methods = useFormContext();
-
-  // const selectData = [
-  //   { label: 'Cake', value: 'cake', key: 0 },
-  //   { label: 'Cupcake', value: 'cupcake', key: 1 },
-  //   { label: 'Dessert', value: 'dessert', key: 2 },
-  // ]
 
   useEffect(() => {
     getRolesList();
@@ -103,11 +99,6 @@ const UserCreateEdit = (props: any) => {
     version: props?.data?.id ? props?.data?.version : null,
   };
 
-  const handelChangeSelect = async () =>{
-    methods.register('genderId', { required: true })
-    console.log(props)
-  }
-
   return (
     <>
       {loading ? (
@@ -165,7 +156,7 @@ const UserCreateEdit = (props: any) => {
             </Label>            
             <DatePicker
                 selected={data.birthdate}
-                {...methods.register('birthdate', { required: true })}    
+                {...methods.register('birthdate')}    
               />
           </div>
           <div className="form-group">
@@ -178,8 +169,8 @@ const UserCreateEdit = (props: any) => {
               classNamePrefix="react-select"   
               options={rolesList}
               name="roleId"
-              value={data.roleId}
-              {...methods.register('roleId', { required: true })}    
+              selected={data.roleId}
+              {...methods.register('roleId')}    
             />
           </div>
           <div className="form-group">
@@ -198,9 +189,9 @@ const UserCreateEdit = (props: any) => {
               classNamePrefix="react-select"   
               options={gendersList}
               name="genderId"
-              value={data.genderId}
-              onChange={handelChangeSelect}    
-              {...methods.register('genderId', { required: true })}    
+              selected={data.genderId}
+              {...methods.register('genderId')}                
+              // {...methods.register('genderId', { required: true })}
             />
           </div>
           <div className="form-group">
@@ -213,8 +204,8 @@ const UserCreateEdit = (props: any) => {
               classNamePrefix="react-select"   
               options={gendersList}
               name="documentTypeId"
-              value={data.documentTypeId}
-              {...methods.register('documentTypeId', { required: true })}    
+              selected={data.documentTypeId}
+              {...methods.register('documentTypeId')}    
             />
           </div>
           <div className="form-group">
@@ -222,7 +213,7 @@ const UserCreateEdit = (props: any) => {
               <IntlMessages id="forms.documentNumber" />
             </Label>
             <Input
-              {...methods.register('documentNumber', { required: true })}
+              {...methods.register('documentNumber')}
               name="documentNumber"
               defaultValue={data.documentNumber}
             />

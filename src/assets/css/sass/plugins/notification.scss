@@ -74,18 +74,18 @@
 }
 
 .notification-info {
-  color: $info-color;
-  background-color: $foreground-color;
+  color: white;
+  background-color: $info-color;
   border: 1px solid $info-color;
   opacity: 1;
 
   .notification-message {
     .title {
-      color: $info-color;
+      color: white;
     }
 
     .message {
-      color: $secondary-color;
+      color: white;
     }
   }
 
@@ -106,18 +106,18 @@
 }
 
 .notification-success {
-  color: $success-color;
-  background-color: $foreground-color;
+  color: white;
+  background-color: $success-color;
   border: 1px solid $success-color;
   opacity: 1;
 
   .notification-message {
     .title {
-      color: $success-color;
+      color: white;
     }
 
     .message {
-      color: $secondary-color;
+      color: white;
     }
   }
 
@@ -138,18 +138,18 @@
 }
 
 .notification-warning {
-  color: $warning-color;
-  background-color: $foreground-color;
+  color: white;
+  background-color: $warning-color;
   border: 1px solid $warning-color;
   opacity: 1;
 
   .notification-message {
     .title {
-      color: $warning-color;
+      color: white;
     }
 
     .message {
-      color: $secondary-color;
+      color: white;
     }
   }
 
@@ -170,18 +170,18 @@
 }
 
 .notification-error {
-  color: $error-color;
-  background-color: $foreground-color;
+  color: white;
+  background-color: $error-color;
   border: 1px solid $error-color;
   opacity: 1;
 
   .notification-message {
     .title {
-      color: $error-color;
+      color: white;
     }
 
     .message {
-      color: $secondary-color;
+      color: white;
     }
   }
 
