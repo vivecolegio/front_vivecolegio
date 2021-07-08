@@ -6,33 +6,29 @@ import Select from 'react-select';
 import { Input, Label } from 'reactstrap';
 import { loaderColor, loaderIcon } from '../../../constants/defaultValues';
 import IntlMessages from '../../../helpers/IntlMessages';
-import * as areaActions from '../../../stores/actions/AreaActions';
-import * as asignatureActions from '../../../stores/actions/AsignatureActions';
+import * as menuActions from '../../../stores/actions/MenuModelActions';
+import * as moduleActions from '../../../stores/actions/ModuleActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import CreateEditAuditInformation from '../../common/Data/CreateEditAuditInformation';
 
-const AsignatureCreateEdit = (props: any) => {
+const MenuCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
-  const [areasList, setAreasList] = useState(null);
+  const [modulesList, setModulesList] = useState(null);
 
   const methods = useFormContext();
 
   useEffect(() => {
-    getAreas();
+    getModuleList();
     if (props?.data?.id) {
       console.log(props?.data);
     }
     setLoading(false);
   }, [props?.data]);
 
-  const getAreas = async () => {
-    props.getListAllArea().then((listData: any) => {
-      setAreasList(
-        listData.map((c: any) => {
-          return { label: c.node.name, value: c.node.id, key: c.node.id };
-        }),
-      );
-    });
+  const getModuleList = async () => {
+    props.getListAllModule().then((listData: any) => {     
+      setModulesList(listData.map((c:any)=>{return{ label:c.node.name, value:c.node.id, key: c.node.id }}));
+    });    
   };
 
   const data = {
@@ -40,14 +36,18 @@ const AsignatureCreateEdit = (props: any) => {
       props?.data?.id || props?.data?.name === methods.getValues('name')
         ? props?.data?.name
         : methods.getValues('name'),
-    generalAcademicArea:
-      props?.data?.id ||
-      props?.data?.generalAcademicArea === methods.getValues('generalAcademicArea')
-        ? {
-            value: props?.data?.generalAcademicArea?.id,
-            label: props?.data?.generalAcademicArea?.name,
-          }
-        : methods.getValues('generalAcademicArea'),
+    icon:
+      props?.data?.id || props?.data?.icon === methods.getValues('icon')
+        ? props?.data?.icon
+        : methods.getValues('icon'),
+    sorting:
+      props?.data?.id || props?.data?.sorting === methods.getValues('sorting')
+        ? props?.data?.sorting
+        : methods.getValues('sorting'),
+    module:
+        props?.data?.id || props?.data?.module === methods.getValues('module')
+          ? { value: props?.data?.module?.id, label: props?.data?.module?.name }
+          : methods.getValues('module'),
   };
 
   const auditInfo = {
@@ -58,9 +58,10 @@ const AsignatureCreateEdit = (props: any) => {
     version: props?.data?.id ? props?.data?.version : null,
   };
 
-  const handleChange = (selected: any, name: any) => {
+  const handleChange = (selected: any, name: any) => {       
     methods.setValue(name, selected.value);
   };
+
 
   return (
     <>
@@ -84,20 +85,39 @@ const AsignatureCreateEdit = (props: any) => {
           </div>
           <div className="form-group">
             <Label>
-              <IntlMessages id="menu.asignature" />
+              <IntlMessages id="forms.icon" />
             </Label>
-            <Select
-              className="react-select"
-              classNamePrefix="react-select"
-              options={areasList}
-              name="generalAcademicAreaId"
-              value={data.generalAcademicArea}
-              onChange={(e) => {
-                return handleChange(e, 'generalAcademicAreaId');
-              }}
+            <Input
+              {...methods.register('icon', { required: true })}
+              name="icon"
+              defaultValue={data.icon}
             />
           </div>
-
+          <div className="form-group">
+            <Label>
+              <IntlMessages id="forms.sorting" />
+            </Label>
+            <Input
+              {...methods.register('sorting', { required: true })}
+              name="sorting"         
+              defaultValue={data.sorting}
+            />
+          </div>        
+          <div className="form-group">
+            <Label>
+              <IntlMessages id="forms.module" />
+            </Label>
+            <Select           
+              className="react-select"
+              classNamePrefix="react-select"   
+              options={modulesList}
+              name="moduleId"
+              value={data.module}
+              onChange={(e) => {
+                return handleChange(e, 'moduleId');
+              }}   
+            />
+          </div>        
           {props?.data?.id ? (
             <CreateEditAuditInformation loading={loading} auditInfo={auditInfo} />
           ) : (
@@ -109,10 +129,10 @@ const AsignatureCreateEdit = (props: any) => {
   );
 };
 
-const mapDispatchToProps = { ...asignatureActions, ...areaActions };
+const mapDispatchToProps = { ...menuActions, ...moduleActions };
 
 const mapStateToProps = () => {
   return {};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AsignatureCreateEdit);
+export default connect(mapStateToProps, mapDispatchToProps)(MenuCreateEdit);

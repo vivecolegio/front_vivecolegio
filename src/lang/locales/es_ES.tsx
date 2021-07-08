@@ -77,7 +77,7 @@ const esMessages = {
   'menu.users': 'Usuarios',
   'menu.roles': 'Roles',
   'menu.menus': 'Menús',
-  'menu.modules': 'Modules',
+  'menu.modules': 'Modulos',
   'menu.admin': 'Administrador',
   'menu.academic': 'Académico',
   'menu.area': 'Area',
@@ -120,6 +120,9 @@ const esMessages = {
   'forms.subtype':'Subtipo',
   'forms.daneCode':'Código DANE',
   'forms.user':'Usuario',
+  'forms.icon':'Icono',
+  'forms.sorting':'Orden',
+  'forms.module': 'Módulo',
 };
 
 export default esMessages;

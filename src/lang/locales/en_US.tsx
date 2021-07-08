@@ -123,7 +123,10 @@ const enMessages = {
   'forms.subtype':'Subtype',
   'forms.daneCode':'DANE Code',
   'forms.user':'User',
-
+  'forms.icon':'Icon',
+  'forms.sorting':'Sorting',
+  'forms.module': 'Module',
+  
 };
 
 export default enMessages;

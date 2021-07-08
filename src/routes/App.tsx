@@ -9,6 +9,7 @@ import AsignatureList from '../components/app/Asignature/AsignatureList';
 import CampusList from '../components/app/Campus/CampusList';
 import CycleList from '../components/app/Cycle/CycleList';
 import Login from '../components/app/Login/Login';
+import MenuList from '../components/app/Menu/MenuList';
 import ModuleList from '../components/app/Module/ModuleList';
 import PerformanceLevelList from '../components/app/PerformanceLevel/PerformanceLevelList';
 import RoleList from '../components/app/Role/RoleList';
@@ -85,6 +86,7 @@ const App = (props: any) => {
                     <Route exact path="/campus" component={permissions ? CampusList : Login} />
                     <Route exact path="/students" component={permissions ? StudentsList : Login} />
                     <Route exact path="/administratorsSchool" component={permissions ? AdministratorSchoolList : Login} />
+                    <Route exact path="/menus" component={permissions ? MenuList : Login} />
                   </>
                 ) : (
                   <></>

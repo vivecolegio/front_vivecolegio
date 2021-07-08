@@ -43,14 +43,14 @@ const AdministratorCreateEdit = (props: any) => {
   };
 
   const data = {
-    userId:
-      props?.data?.id || props?.data?.userId === methods.getValues('userId')
-        ? props?.data?.userId
-        : methods.getValues('userId'),
-    schoolId:
-      props?.data?.id || props?.data?.schoolId === methods.getValues('schoolId')
-        ? props?.data?.schoolId
-        : methods.getValues('schoolId'),    
+    user:
+      props?.data?.id || props?.data?.user === methods.getValues('user')
+        ? { value: props?.data?.user?.id, label: props?.data?.user?.name }
+        : methods.getValues('user'),
+    school:
+        props?.data?.id || props?.data?.school === methods.getValues('school')
+          ? { value: props?.data?.school?.id, label: props?.data?.school?.name }
+          : methods.getValues('school'),
   };
 
   const auditInfo = {
@@ -61,10 +61,9 @@ const AdministratorCreateEdit = (props: any) => {
     version: props?.data?.id ? props?.data?.version : null,
   };
 
-  const handelChangeSelect = async () =>{
-    methods.register('genderId', { required: true })
-    console.log(props)
-  }
+  const handleChange = (selected: any, name: any) => {       
+    methods.setValue(name, selected.value);
+  };
 
   return (
     <>
@@ -81,28 +80,30 @@ const AdministratorCreateEdit = (props: any) => {
             <Label>
               <IntlMessages id="forms.user" />
             </Label>            
-            <Select
-              // components={{ Input: CustomSelectInput }}
+            <Select             
               className="react-select"
               classNamePrefix="react-select"   
               options={usersList}
               name="userId"
-              selected={data.userId}
-              {...methods.register('userId', { required: true })}    
+              value={data.user}
+                onChange={(e) => {
+                  return handleChange(e, 'userId');
+                }}   
             />
           </div>         
           <div className="form-group">
             <Label>
               <IntlMessages id="menu.school" />
             </Label>            
-            <Select
-              // components={{ Input: CustomSelectInput }}
+            <Select             
               className="react-select"
               classNamePrefix="react-select"   
               options={schoolsList}
               name="schoolId"
-              selected={data.schoolId}
-              {...methods.register('schoolId', { required: true })}    
+              value={data.school}
+                onChange={(e) => {
+                  return handleChange(e, 'schoolId');
+                }}   
             />
           </div>                        
           </div>

@@ -36,10 +36,10 @@ const CampusCreateEdit = (props: any) => {
       props?.data?.id || props?.data?.name === methods.getValues('name')
         ? props?.data?.name
         : methods.getValues('name'),
-    schoolId:
-      props?.data?.id || props?.data?.schoolId === methods.getValues('schoolId')
-        ? props?.data?.schoolId
-        : methods.getValues('schoolId'),
+     school:
+        props?.data?.id || props?.data?.school === methods.getValues('school')
+          ? { value: props?.data?.school?.id, label: props?.data?.school?.name }
+          : methods.getValues('school'),
   };
 
   const auditInfo = {
@@ -49,6 +49,12 @@ const CampusCreateEdit = (props: any) => {
     updatedByUser: props?.data?.id ? props?.data?.updatedByUser : null,
     version: props?.data?.id ? props?.data?.version : null,
   };
+
+  const handleChange = (selected: any, name: any) => {       
+    methods.setValue(name, selected.value);
+  };
+
+
   return (
     <>
       {loading ? (
@@ -71,27 +77,17 @@ const CampusCreateEdit = (props: any) => {
           </div>
           <div className="form-group">
           <Label>
-            <IntlMessages id="forms.name" />
-          </Label>
-          {/* <select {...methods.register("schoolId")}>
-           {schoolList.map((c:any)=>{
-             return (<>
-              <option value={c.id}>{c.label}</option>
-             </>)
-           })}
-           
-          </select> */}
-          <Select
-              // components={{ Input: CustomSelectInput }}
+            <IntlMessages id="menu.campus" />
+          </Label>         
+          <Select             
               className="react-select"
               classNamePrefix="react-select"   
               options={schoolList}
               name="schoolId"
-              selected={data.schoolId}
-              // {...methods.register("schoolId")}   
-              // value={schoolList.find(c => {return c.value === value})}
-              // onChange={val => {return onchange(val.value)}}
-              
+              value={data.school}
+                onChange={(e) => {
+                  return handleChange(e, 'schoolId');
+                }}           
             />
           </div>
 

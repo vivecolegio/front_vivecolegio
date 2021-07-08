@@ -3,5 +3,5 @@ export const COLUMN_LIST = [
   { column: 'lastName', label: 'forms.lastname' },
   { column: 'phone', label: 'forms.phone' },
   { column: 'email', label: 'forms.email' },
-  // { column: 'role', label: 'forms.role' },
+  { column: 'role_format', label: 'forms.role' },
 ];

@@ -1,34 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { COLUMN_LIST } from '../../../constants/User/userConstants';
-import * as roleActions from '../../../stores/actions/UserActions';
+
+import { COLUMN_LIST } from '../../../constants/Menu/menuConstants';
+import * as menuActions from '../../../stores/actions/MenuModelActions';
 import AddNewModal from '../../common/Data/AddNewModal';
 import DataList from '../../common/Data/DataList';
-import UserCreateEdit from './UserCreateEdit';
+import MenuCreateEdit from './MenuCreateEdit';
 
-const UserList = (props: any) => {
+const MenuList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
   const [columns, setColumns] = useState(COLUMN_LIST);
   const [modalOpen, setModalOpen] = useState(false);
 
   const [data, setData] = useState(null);
   useEffect(() => {
-    props.getListAllUser().then((listData: any) => {
-      setDataTable(
-        listData.map((c: any) => {
-          c.node.role_format = c.node.role ? c.node.role.name : '';
-          return c;
-        }),
-      );
+    props.getListAllMenu().then((listData: any) => {
+      setDataTable(listData);
     });
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllUser().then((listData: any) => {
-      setDataTable(listData.map((c: any) => {
-        c.node.role_format = c.node.role ? c.node.role.name : '';
-        return c;
-      }));
+    props.getListAllMenu().then((listData: any) => {
+      setDataTable(listData);
     });
   };
 
@@ -37,19 +30,16 @@ const UserList = (props: any) => {
     await getDataTable();
   };
 
-  const onSubmit = async (dataForm: any, formState: any) => {
-    console.log(dataForm, 'FORM');
-    console.log(formState, 'STATE');
-    // console.log(formState.target.isValid, 'STATE')
+  const onSubmit = async (dataForm: any) => {
     if (data === null) {
-      await props.saveNewUser(dataForm).then((id: any) => {
+      await props.saveNewMenu(dataForm).then((id: any) => {
         if (id !== undefined) {
           setModalOpen(false);
           refreshDataTable();
         }
       });
     } else {
-      await props.updateUser(dataForm, data.id).then((id: any) => {
+      await props.updateMenu(dataForm, data.id).then((id: any) => {
         if (id !== undefined) {
           setModalOpen(false);
           setData(null);
@@ -60,14 +50,14 @@ const UserList = (props: any) => {
   };
 
   const viewEditData = async (id: any) => {
-    await props.dataUser(id).then((formData: any) => {
+    await props.dataMenu(id).then((formData: any) => {
       setData(formData.data);
       setModalOpen(true);
     });
   };
 
   const changeActiveData = async (active: any, id: any) => {
-    await props.changeActiveUser(active, id).then((formData: any) => {
+    await props.changeActiveMenu(active, id).then((formData: any) => {
       refreshDataTable();
     });
   };
@@ -93,7 +83,7 @@ const UserList = (props: any) => {
             }}
             onSubmit={onSubmit}
           >
-            <UserCreateEdit data={data} />
+            <MenuCreateEdit data={data} />
           </AddNewModal>
         </>
       ) : (
@@ -102,10 +92,10 @@ const UserList = (props: any) => {
     </>
   );
 };
-const mapDispatchToProps = { ...roleActions };
+const mapDispatchToProps = { ...menuActions };
 
 const mapStateToProps = () => {
   return {};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserList);
+export default connect(mapStateToProps, mapDispatchToProps)(MenuList);
