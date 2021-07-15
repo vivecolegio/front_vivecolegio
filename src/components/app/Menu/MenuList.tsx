@@ -78,7 +78,7 @@ const MenuList = (props: any) => {
           />
           <AddNewModal
             modalOpen={modalOpen}
-            toggleModal={() => {
+            toggleModal={() => {       
               return setModalOpen(!modalOpen);
             }}
             onSubmit={onSubmit}

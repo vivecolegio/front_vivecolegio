@@ -2,33 +2,28 @@ import React, { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import Loader from 'react-loader-spinner';
 import { connect } from 'react-redux';
-import {
-  Button,
-  Input,
-  InputGroup,
-  InputGroupAddon,
-  Label,
-  ModalBody,
-  ModalFooter,
-  Table,
-} from 'reactstrap';
+import Select from 'react-select';
+import { Button, Input, InputGroup, InputGroupAddon, Label, ModalBody, ModalFooter } from 'reactstrap';
 import { loaderColor, loaderIcon } from '../../../constants/defaultValues';
 import IntlMessages from '../../../helpers/IntlMessages';
+import * as menuItemActions from '../../../stores/actions/MenuItemActions';
 import * as menuActions from '../../../stores/actions/MenuModelActions';
 import * as moduleActions from '../../../stores/actions/ModuleActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import CreateEditAuditInformation from '../../common/Data/CreateEditAuditInformation';
 import Icons from '../../common/Data/Icon/Icons';
 
-const MenuCreateEdit = (props: any) => {
+const MenuItemCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
   const [modulesList, setModulesList] = useState(null);
+  const [menuList, setMenuList] = useState(null);
   const [modalOpen, setModalIcon] = useState(false);
 
   const methods = useFormContext();
 
   useEffect(() => {
     getModuleList();
+    getMenuList();
     if (props?.data?.id) {
       console.log(props?.data);
     }
@@ -38,6 +33,16 @@ const MenuCreateEdit = (props: any) => {
   const getModuleList = async () => {
     props.getListAllModule().then((listData: any) => {
       setModulesList(
+        listData.map((c: any) => {
+          return { label: c.node.name, value: c.node.id, key: c.node.id };
+        }),
+      );
+    });
+  };
+
+  const getMenuList = async () => {
+    props.getListAllMenu().then((listData: any) => {
+      setMenuList(
         listData.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };
         }),
@@ -62,6 +67,10 @@ const MenuCreateEdit = (props: any) => {
       props?.data?.id || props?.data?.module === methods.getValues('module')
         ? { value: props?.data?.module?.id, label: props?.data?.module?.name }
         : methods.getValues('module'),
+    menu:
+      props?.data?.id || props?.data?.menu === methods.getValues('menu')
+        ? { value: props?.data?.menu?.id, label: props?.data?.menu?.name }
+        : methods.getValues('menu'),
   };
 
   const auditInfo = {
@@ -75,7 +84,6 @@ const MenuCreateEdit = (props: any) => {
   const handleChange = (selected: any, name: any) => {
     methods.setValue(name, selected.value);
   };
-
   const handleChangeNumber = (event: any, name: any) => {
     methods.setValue(name, parseFloat(event.target.value));
   };
@@ -135,6 +143,7 @@ const MenuCreateEdit = (props: any) => {
                 <IntlMessages id="forms.sorting" />
               </Label>
               <Input
+                type="number"
                 onChange={(e) => {
                   return handleChangeNumber(e, 'sorting');
                 }}
@@ -143,34 +152,34 @@ const MenuCreateEdit = (props: any) => {
               />
             </div>
             <div className="form-group">
-              <Table borderless>
-                <thead>
-                  <tr>                   
-                    <th scope="col">
-                      <IntlMessages id="forms.submenus" />
-                      <hr className="m-0"/>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {modulesList ? (
-                    modulesList.map((c: any) => {
-                      return (
-                        <>
-                          <tr>                                                    
-                            <th key={c.name}>
-                            <i className="font-20 text-info iconsminds-network mr-2" />  
-                              {c.label}
-                              </th>
-                          </tr>
-                        </>
-                      );
-                    })
-                  ) : (
-                    <tr />
-                  )}
-                </tbody>
-              </Table>
+              <Label>
+                <IntlMessages id="forms.module" />
+              </Label>
+              <Select
+                className="react-select"
+                classNamePrefix="react-select"
+                options={modulesList}
+                name="moduleId"
+                value={data.module}
+                onChange={(e) => {
+                  return handleChange(e, 'moduleId');
+                }}
+              />
+            </div>
+            <div className="form-group">
+              <Label>
+                <IntlMessages id="forms.menuParent" />
+              </Label>
+              <Select
+                className="react-select"
+                classNamePrefix="react-select"
+                options={menuList}
+                name="menuId"
+                value={data.menu}
+                onChange={(e) => {
+                  return handleChange(e, 'menuId');
+                }}
+              />
             </div>
           </ModalBody>
           {props?.data?.id ? (
@@ -186,10 +195,10 @@ const MenuCreateEdit = (props: any) => {
   );
 };
 
-const mapDispatchToProps = { ...menuActions, ...moduleActions };
+const mapDispatchToProps = { ...menuItemActions, ...moduleActions, ...menuActions };
 
 const mapStateToProps = () => {
   return {};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(MenuCreateEdit);
+export default connect(mapStateToProps, mapDispatchToProps)(MenuItemCreateEdit);

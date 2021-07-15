@@ -11,9 +11,7 @@ const CreateEditAuditInformation = (props: any) => {
 
   return (
     <>
-      <div className="position-absolute" style={{ bottom: 0, left: 0, right: 0 }}>
-        <Separator className="pt-2 mb-3" />
-        <div style={{ paddingRight: '1rem', paddingLeft: '1rem' }}>
+      <div >            
           <div>
             <IntlMessages id="forms.auditInformation" />
             <div className="float-right row mr-0">
@@ -66,8 +64,7 @@ const CreateEditAuditInformation = (props: any) => {
                 </div>
               </>
             )}
-          </div>
-        </div>
+          </div>     
       </div>
     </>
   );

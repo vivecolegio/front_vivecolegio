@@ -5,7 +5,7 @@ import { useFormContext } from 'react-hook-form';
 import Loader from 'react-loader-spinner';
 import { connect } from 'react-redux';
 import Select from 'react-select';
-import { Input, Label } from 'reactstrap';
+import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
 // import CustomSelectInput from 'components/common/CustomSelectInput';
 import { loaderColor, loaderIcon } from '../../../constants/defaultValues';
 import IntlMessages from '../../../helpers/IntlMessages';
@@ -109,8 +109,8 @@ const UserCreateEdit = (props: any) => {
     version: props?.data?.id ? props?.data?.version : null,
   };
 
-  const handleChange = (selected: any, name: any) => {       
-    methods.setValue(name, selected.value);
+  const handleChange = (selected: any, name: any) => {
+    methods.setValue(name, selected.value ? selected.value : selected);
   };
 
   return (
@@ -123,7 +123,7 @@ const UserCreateEdit = (props: any) => {
         </>
       ) : (
         <>
-          <div>
+          <ModalBody>
             <div className="form-group">
               <Label>
                 <IntlMessages id="forms.name" />
@@ -168,7 +168,12 @@ const UserCreateEdit = (props: any) => {
               <Label>
                 <IntlMessages id="forms.birthdate" />
               </Label>
-              <DatePicker selected={data.birthdate} {...methods.register('birthdate')} />
+              <DatePicker
+                selected={new Date(data.birthdate)}
+                onChange={(e) => {
+                  return handleChange(e, 'birthdate');
+                }}
+              />
             </div>
             <div className="form-group">
               <Label>
@@ -188,8 +193,8 @@ const UserCreateEdit = (props: any) => {
             <div className="form-group">
               <Label>
                 <IntlMessages id="forms.gender" />
-              </Label>            
-              <Select                
+              </Label>
+              <Select
                 className="react-select"
                 classNamePrefix="react-select"
                 options={gendersList}
@@ -204,7 +209,7 @@ const UserCreateEdit = (props: any) => {
               <Label>
                 <IntlMessages id="forms.documentType" />
               </Label>
-              <Select                
+              <Select
                 className="react-select"
                 classNamePrefix="react-select"
                 options={documentTypesList}
@@ -225,9 +230,11 @@ const UserCreateEdit = (props: any) => {
                 defaultValue={data.documentNumber}
               />
             </div>
-          </div>
+          </ModalBody>
           {props?.data?.id ? (
-            <CreateEditAuditInformation loading={loading} auditInfo={auditInfo} />
+            <ModalFooter className="p-3">
+              <CreateEditAuditInformation loading={loading} auditInfo={auditInfo} />
+            </ModalFooter>
           ) : (
             <></>
           )}

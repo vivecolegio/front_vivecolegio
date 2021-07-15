@@ -8,14 +8,19 @@ import AreaList from '../components/app/Area/AreaList';
 import AsignatureList from '../components/app/Asignature/AsignatureList';
 import CampusList from '../components/app/Campus/CampusList';
 import CycleList from '../components/app/Cycle/CycleList';
+import DocumentTypeList from '../components/app/DocumentType/DocumentTypeList';
+import GenderList from '../components/app/Gender/GenderList';
+import GradeList from '../components/app/Grade/GradeList';
 import Login from '../components/app/Login/Login';
 import MenuList from '../components/app/Menu/MenuList';
 import ModuleList from '../components/app/Module/ModuleList';
+import MunicipalityList from '../components/app/Municipality/MunicipalityList';
 import PerformanceLevelList from '../components/app/PerformanceLevel/PerformanceLevelList';
 import RoleList from '../components/app/Role/RoleList';
 import SchoolList from '../components/app/School/SchoolList';
 import StandardList from '../components/app/Standard/StandardList';
 import StudentsList from '../components/app/Students/StudentsList';
+import SubmenuList from '../components/app/Submenu/SubmenuList';
 import UserList from '../components/app/User/UserList';
 import ColorSwitcher from '../components/common/ColorSwitcher';
 import Layout from '../components/common/layout/Layout';
@@ -77,6 +82,8 @@ const App = (props: any) => {
                     <Route exact path="/roles" component={permissions ? RoleList : Login} />
                     <Route exact path="/users" component={permissions ? UserList : Login} />
                     <Route exact path="/modules" component={permissions ? ModuleList : Login} />
+                    <Route exact path="/menus" component={permissions ? MenuList : Login} />
+                    <Route exact path="/submenus" component={permissions ? SubmenuList: Login} />
                     <Route exact path="/areas" component={permissions ? AreaList : Login} />
                     <Route exact path="/asignatures" component={permissions ? AsignatureList : Login} />
                     <Route exact path="/cycles" component={permissions ? CycleList : Login} />
@@ -86,7 +93,10 @@ const App = (props: any) => {
                     <Route exact path="/campus" component={permissions ? CampusList : Login} />
                     <Route exact path="/students" component={permissions ? StudentsList : Login} />
                     <Route exact path="/administratorsSchool" component={permissions ? AdministratorSchoolList : Login} />
-                    <Route exact path="/menus" component={permissions ? MenuList : Login} />
+                    <Route exact path="/grades" component={permissions ? GradeList : Login} />
+                    <Route exact path="/genders" component={permissions ? GenderList : Login} />
+                    <Route exact path="/documentTypes" component={permissions ? DocumentTypeList : Login} />
+                    <Route exact path="/municipality" component={permissions ? MunicipalityList : Login} />
                   </>
                 ) : (
                   <></>

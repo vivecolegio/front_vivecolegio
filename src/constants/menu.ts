@@ -25,10 +25,31 @@ const data = [
         to: `/menus`,
       },
       {
+        icon: 'iconsminds-check',
+        label: 'menu.submenus',
+        to: `/submenus`,
+      },
+      {
         icon: 'iconsminds-cursor-click-2',
         label: 'menu.modules',
         to: `/modules`,
       },
+      {
+        icon: 'iconsminds-business-man-woman',
+        label: 'menu.genders',
+        to: `/genders`,
+      },
+      {
+        icon: 'iconsminds-id-card',
+        label: 'menu.documentTypes',
+        to: `/documentTypes`,
+      },
+      {
+        icon: 'iconsminds-location-2',
+        label: 'menu.municipality',
+        to: `/municipality`,
+      },
+     
     ],
   },
   {
@@ -62,6 +83,11 @@ const data = [
         icon: 'iconsminds-diploma-2',
         label: 'menu.performanceLevel',
         to: `/performanceLevel`,
+      },     
+      {
+        icon: 'iconsminds-medal',
+        label: 'menu.grade',
+        to: `/grades`,
       },     
     ],
   },

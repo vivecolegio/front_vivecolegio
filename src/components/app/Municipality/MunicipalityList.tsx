@@ -1,26 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
-import { COLUMN_LIST } from '../../../constants/Role/roleConstants';
-import * as roleActions from '../../../stores/actions/RoleActions';
+import { COLUMN_LIST } from '../../../constants/Municipality/municipalityConstants';
+import * as municipalityActions from '../../../stores/actions/MunicipalityActions';
 import AddNewModal from '../../common/Data/AddNewModal';
 import DataList from '../../common/Data/DataList';
-import RoleCreateEdit from './RoleCreateEdit';
+import MunicipalityCreateEdit from './MunicipalityCreateEdit';
 
-const RoleList = (props: any) => {
+const MunicipalityList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
   const [columns, setColumns] = useState(COLUMN_LIST);
   const [modalOpen, setModalOpen] = useState(false);
 
   const [data, setData] = useState(null);
   useEffect(() => {
-    props.getListAllRole().then((listData: any) => {
+    props.getListAllMunicipality().then((listData: any) => {
       setDataTable(listData);
     });
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllRole().then((listData: any) => {
+    props.getListAllMunicipality().then((listData: any) => {
       setDataTable(listData);
     });
   };
@@ -32,14 +32,14 @@ const RoleList = (props: any) => {
 
   const onSubmit = async (dataForm: any) => {
     if (data === null) {
-      await props.saveNewRole(dataForm).then((id: any) => {
+      await props.saveNewMunicipality(dataForm).then((id: any) => {
         if (id !== undefined) {
           setModalOpen(false);
           refreshDataTable();
         }
       });
     } else {
-      await props.updateRole(dataForm, data.id).then((id: any) => {
+      await props.updateMunicipality(dataForm, data.id).then((id: any) => {
         if (id !== undefined) {
           setModalOpen(false);
           setData(null);
@@ -50,14 +50,14 @@ const RoleList = (props: any) => {
   };
 
   const viewEditData = async (id: any) => {
-    await props.dataRole(id).then((formData: any) => {
+    await props.dataMunicipality(id).then((formData: any) => {
       setData(formData.data);
       setModalOpen(true);
     });
   };
 
   const changeActiveData = async (active: any, id: any) => {
-    await props.changeActiveRole(active, id).then((formData: any) => {
+    await props.changeActiveMunicipality(active, id).then((formData: any) => {
       refreshDataTable();
     });
   };
@@ -77,14 +77,13 @@ const RoleList = (props: any) => {
             changeActiveData={changeActiveData}
           />
           <AddNewModal
-           isLg={true}
             modalOpen={modalOpen}
             toggleModal={() => {
               return setModalOpen(!modalOpen);
             }}
             onSubmit={onSubmit}
           >
-            <RoleCreateEdit data={data} />
+            <MunicipalityCreateEdit data={data} />
           </AddNewModal>
         </>
       ) : (
@@ -93,10 +92,10 @@ const RoleList = (props: any) => {
     </>
   );
 };
-const mapDispatchToProps = { ...roleActions };
+const mapDispatchToProps = { ...municipalityActions };
 
 const mapStateToProps = () => {
   return {};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(RoleList);
+export default connect(mapStateToProps, mapDispatchToProps)(MunicipalityList);

@@ -2,48 +2,38 @@ import React, { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import Loader from 'react-loader-spinner';
 import { connect } from 'react-redux';
-import Select from 'react-select';
 import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
 import { loaderColor, loaderIcon } from '../../../constants/defaultValues';
 import IntlMessages from '../../../helpers/IntlMessages';
-import * as campusActions from '../../../stores/actions/CampusActions';
-import * as schoolActions from '../../../stores/actions/SchoolActions';
+import * as genderActions from '../../../stores/actions/GenderActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import CreateEditAuditInformation from '../../common/Data/CreateEditAuditInformation';
 
-const CampusCreateEdit = (props: any) => {
+const GenderCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
-  const [schoolList, setSchoolList] = useState(null);
 
   const methods = useFormContext();
 
   useEffect(() => {
-    getAreas();
     if (props?.data?.id) {
       console.log(props?.data);
     }
     setLoading(false);
   }, [props?.data]);
 
-  const getAreas = async () => {
-    props.getListAllSchool().then((listData: any) => {
-      setSchoolList(
-        listData.map((c: any) => {
-          return { label: c.node.name, value: c.node.id, key: c.node.id };
-        }),
-      );
-    });
-  };
-
   const data = {
     name:
       props?.data?.id || props?.data?.name === methods.getValues('name')
         ? props?.data?.name
         : methods.getValues('name'),
-    school:
-      props?.data?.id || props?.data?.school === methods.getValues('school')
-        ? { value: props?.data?.school?.id, label: props?.data?.school?.name }
-        : methods.getValues('school'),
+    code:
+      props?.data?.id || props?.data?.code === methods.getValues('code')
+        ? props?.data?.code
+        : methods.getValues('code'),
+    description:
+      props?.data?.id || props?.data?.description === methods.getValues('description')
+        ? props?.data?.description
+        : methods.getValues('description'),
   };
 
   const auditInfo = {
@@ -53,11 +43,6 @@ const CampusCreateEdit = (props: any) => {
     updatedByUser: props?.data?.id ? props?.data?.updatedByUser : null,
     version: props?.data?.id ? props?.data?.version : null,
   };
-
-  const handleChange = (selected: any, name: any) => {
-    methods.setValue(name, selected.value);
-  };
-
   return (
     <>
       {loading ? (
@@ -81,17 +66,22 @@ const CampusCreateEdit = (props: any) => {
             </div>
             <div className="form-group">
               <Label>
-                <IntlMessages id="menu.school" />
+                <IntlMessages id="forms.code" />
               </Label>
-              <Select
-                className="react-select"
-                classNamePrefix="react-select"
-                options={schoolList}
-                name="schoolId"
-                value={data.school}
-                onChange={(e) => {
-                  return handleChange(e, 'schoolId');
-                }}
+              <Input
+                {...methods.register('code', { required: true })}
+                name="code"
+                defaultValue={data.code}
+              />
+            </div>
+            <div className="form-group">
+              <Label>
+                <IntlMessages id="forms.description" />
+              </Label>
+              <Input
+                {...methods.register('description', { required: true })}
+                name="description"
+                defaultValue={data.description}
               />
             </div>
           </ModalBody>
@@ -108,10 +98,10 @@ const CampusCreateEdit = (props: any) => {
   );
 };
 
-const mapDispatchToProps = { ...campusActions, ...schoolActions };
+const mapDispatchToProps = { ...genderActions };
 
 const mapStateToProps = () => {
   return {};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CampusCreateEdit);
+export default connect(mapStateToProps, mapDispatchToProps)(GenderCreateEdit);

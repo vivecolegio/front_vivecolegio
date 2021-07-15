@@ -3,7 +3,7 @@ import { useFormContext } from 'react-hook-form';
 import Loader from 'react-loader-spinner';
 import { connect } from 'react-redux';
 import Select from 'react-select';
-import { Input, Label } from 'reactstrap';
+import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
 import { loaderColor, loaderIcon } from '../../../constants/defaultValues';
 import IntlMessages from '../../../helpers/IntlMessages';
 import * as areaActions from '../../../stores/actions/AreaActions';
@@ -72,34 +72,37 @@ const AsignatureCreateEdit = (props: any) => {
         </>
       ) : (
         <>
-          <div className="form-group">
-            <Label>
-              <IntlMessages id="forms.name" />
-            </Label>
-            <Input
-              {...methods.register('name', { required: true })}
-              name="name"
-              defaultValue={data.name}
-            />
-          </div>
-          <div className="form-group">
-            <Label>
-              <IntlMessages id="menu.asignature" />
-            </Label>
-            <Select
-              className="react-select"
-              classNamePrefix="react-select"
-              options={areasList}
-              name="generalAcademicAreaId"
-              value={data.generalAcademicArea}
-              onChange={(e) => {
-                return handleChange(e, 'generalAcademicAreaId');
-              }}
-            />
-          </div>
-
+          <ModalBody>
+            <div className="form-group">
+              <Label>
+                <IntlMessages id="forms.name" />
+              </Label>
+              <Input
+                {...methods.register('name', { required: true })}
+                name="name"
+                defaultValue={data.name}
+              />
+            </div>
+            <div className="form-group">
+              <Label>
+                <IntlMessages id="menu.area" />
+              </Label>
+              <Select
+                className="react-select"
+                classNamePrefix="react-select"
+                options={areasList}
+                name="generalAcademicAreaId"
+                value={data.generalAcademicArea}
+                onChange={(e) => {
+                  return handleChange(e, 'generalAcademicAreaId');
+                }}
+              />
+            </div>
+          </ModalBody>
           {props?.data?.id ? (
-            <CreateEditAuditInformation loading={loading} auditInfo={auditInfo} />
+            <ModalFooter className="p-3">
+              <CreateEditAuditInformation loading={loading} auditInfo={auditInfo} />
+            </ModalFooter>
           ) : (
             <></>
           )}

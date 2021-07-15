@@ -1,27 +1,37 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
-import { COLUMN_LIST } from '../../../constants/Role/roleConstants';
-import * as roleActions from '../../../stores/actions/RoleActions';
+import { COLUMN_LIST } from '../../../constants/Grade/gradeConstants';
+import * as gradeActions from '../../../stores/actions/GradeActions';
 import AddNewModal from '../../common/Data/AddNewModal';
 import DataList from '../../common/Data/DataList';
-import RoleCreateEdit from './RoleCreateEdit';
+import GradeCreateEdit from './GradeCreateEdit';
 
-const RoleList = (props: any) => {
+const GradeList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
   const [columns, setColumns] = useState(COLUMN_LIST);
   const [modalOpen, setModalOpen] = useState(false);
 
   const [data, setData] = useState(null);
   useEffect(() => {
-    props.getListAllRole().then((listData: any) => {
-      setDataTable(listData);
+    props.getListAllGrade().then((listData: any) => {
+      setDataTable(
+        listData.map((c: any) => {
+          c.node.cycle_format = c.node.generalAcademicCycle ? c.node.generalAcademicCycle.name : '';
+          return c;
+        }),
+      );
     });
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllRole().then((listData: any) => {
-      setDataTable(listData);
+    props.getListAllGrade().then((listData: any) => {
+      setDataTable(
+        listData.map((c: any) => {
+          c.node.cycle_format = c.node.generalAcademicCycle ? c.node.generalAcademicCycle.name : '';
+          return c;
+        }),
+      );
     });
   };
 
@@ -31,15 +41,16 @@ const RoleList = (props: any) => {
   };
 
   const onSubmit = async (dataForm: any) => {
+    console.log(dataForm)
     if (data === null) {
-      await props.saveNewRole(dataForm).then((id: any) => {
+      await props.saveNewGrade(dataForm).then((id: any) => {
         if (id !== undefined) {
           setModalOpen(false);
           refreshDataTable();
         }
       });
     } else {
-      await props.updateRole(dataForm, data.id).then((id: any) => {
+      await props.updateGrade(dataForm, data.id).then((id: any) => {
         if (id !== undefined) {
           setModalOpen(false);
           setData(null);
@@ -50,14 +61,14 @@ const RoleList = (props: any) => {
   };
 
   const viewEditData = async (id: any) => {
-    await props.dataRole(id).then((formData: any) => {
+    await props.dataGrade(id).then((formData: any) => {
       setData(formData.data);
       setModalOpen(true);
     });
   };
 
   const changeActiveData = async (active: any, id: any) => {
-    await props.changeActiveRole(active, id).then((formData: any) => {
+    await props.changeActiveGrade(active, id).then((formData: any) => {
       refreshDataTable();
     });
   };
@@ -77,14 +88,13 @@ const RoleList = (props: any) => {
             changeActiveData={changeActiveData}
           />
           <AddNewModal
-           isLg={true}
             modalOpen={modalOpen}
             toggleModal={() => {
               return setModalOpen(!modalOpen);
             }}
             onSubmit={onSubmit}
           >
-            <RoleCreateEdit data={data} />
+            <GradeCreateEdit data={data} />
           </AddNewModal>
         </>
       ) : (
@@ -93,10 +103,10 @@ const RoleList = (props: any) => {
     </>
   );
 };
-const mapDispatchToProps = { ...roleActions };
+const mapDispatchToProps = { ...gradeActions };
 
 const mapStateToProps = () => {
   return {};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(RoleList);
+export default connect(mapStateToProps, mapDispatchToProps)(GradeList);

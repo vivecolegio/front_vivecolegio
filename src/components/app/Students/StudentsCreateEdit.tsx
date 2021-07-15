@@ -3,7 +3,7 @@ import { useFormContext } from 'react-hook-form';
 import Loader from 'react-loader-spinner';
 import { connect } from 'react-redux';
 import Select from 'react-select';
-import { Label } from 'reactstrap';
+import { Label, ModalBody, ModalFooter } from 'reactstrap';
 // import CustomSelectInput from 'components/common/CustomSelectInput';
 import { loaderColor, loaderIcon } from '../../../constants/defaultValues';
 import IntlMessages from '../../../helpers/IntlMessages';
@@ -98,7 +98,7 @@ const StudentCreateEdit = (props: any) => {
         </>
       ) : (
         <>
-          <div>
+          <ModalBody>
             <div className="form-group">
               <Label>
                 <IntlMessages id="forms.user" />
@@ -147,9 +147,11 @@ const StudentCreateEdit = (props: any) => {
                 }}
               />
             </div>
-          </div>
+          </ModalBody>
           {props?.data?.id ? (
-            <CreateEditAuditInformation loading={loading} auditInfo={auditInfo} />
+            <ModalFooter className="p-3">
+              <CreateEditAuditInformation loading={loading} auditInfo={auditInfo} />
+            </ModalFooter>
           ) : (
             <></>
           )}

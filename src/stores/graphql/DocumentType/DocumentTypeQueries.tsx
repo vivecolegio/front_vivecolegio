@@ -8,7 +8,9 @@ export const QUERY_GET_ALL_DOCUMENT_TYPE = gql`
         node {
           id
           name
-          active                 
+          code
+          description
+          active
         }
       }
       totalCount
@@ -20,7 +22,18 @@ export const QUERY_GET_DOCUMENT_TYPE = gql`
   query getDocumentType($id: String!) {
     data: getDocumentType(id: $id) {
       id
-      name     
+      name
+      code
+      description
+      version      
+      createdAt
+      updatedAt
+      createdByUser {
+        name
+      }
+      updatedByUser {
+        name
+      }    
     }
   }
 `;

@@ -3,7 +3,7 @@ import { useFormContext } from 'react-hook-form';
 import Loader from 'react-loader-spinner';
 import { connect } from 'react-redux';
 import Select from 'react-select';
-import { Input, Label } from 'reactstrap';
+import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
 import { loaderColor, loaderIcon } from '../../../constants/defaultValues';
 import IntlMessages from '../../../helpers/IntlMessages';
 import * as asignatureActions from '../../../stores/actions/AsignatureActions';
@@ -100,69 +100,72 @@ const StandardCreateEdit = (props: any) => {
         </>
       ) : (
         <>
-          <div className="form-group">
-            <Label>
-              <IntlMessages id="forms.standard" />
-            </Label>
-            <Input
-              {...methods.register('standard', { required: true })}
-              name="standard"
-              defaultValue={data.standard}
-            />
-          </div>
-          <div className="form-group">
-            <Label>
-              <IntlMessages id="forms.type" />
-            </Label>
-            <Input
-              {...methods.register('type', { required: true })}
-              name="type"
-              defaultValue={data.type}
-            />
-          </div>
-          <div className="form-group">
-            <Label>
-              <IntlMessages id="forms.subtype" />
-            </Label>
-            <Input
-              {...methods.register('subtype', { required: true })}
-              name="subtype"
-              defaultValue={data.subtype}
-            />
-          </div>
-          <div className="form-group">
-            <Label>
-              <IntlMessages id="menu.asignature" />
-            </Label>
-            <Select
-              className="react-select"
-              classNamePrefix="react-select"
-              options={asignaturesList}
-              name="generalAcademicAsignatureId"
-              value={data.generalAcademicAsignature}
-              onChange={(e) => {
-                return handleChange(e, 'generalAcademicAsignatureId');
-              }}
-            />
-          </div>
-          <div className="form-group">
-            <Label>
-              <IntlMessages id="menu.cycleAcademic" />
-            </Label>
-            <Select
-              className="react-select"
-              classNamePrefix="react-select"
-              options={cyclesList}
-              name="generalAcademicCycleId"
-              value={data.generalAcademicCycle}
-              onChange={(e) => {
-                return handleChange(e, 'generalAcademicCycleId');
-              }}
-            />
-          </div>
-
+          <ModalBody>
+            <div className="form-group">
+              <Label>
+                <IntlMessages id="forms.standard" />
+              </Label>
+              <Input
+                {...methods.register('standard', { required: true })}
+                name="standard"
+                defaultValue={data.standard}
+              />
+            </div>
+            <div className="form-group">
+              <Label>
+                <IntlMessages id="forms.type" />
+              </Label>
+              <Input
+                {...methods.register('type', { required: true })}
+                name="type"
+                defaultValue={data.type}
+              />
+            </div>
+            <div className="form-group">
+              <Label>
+                <IntlMessages id="forms.subtype" />
+              </Label>
+              <Input
+                {...methods.register('subtype', { required: true })}
+                name="subtype"
+                defaultValue={data.subtype}
+              />
+            </div>
+            <div className="form-group">
+              <Label>
+                <IntlMessages id="menu.asignature" />
+              </Label>
+              <Select
+                className="react-select"
+                classNamePrefix="react-select"
+                options={asignaturesList}
+                name="generalAcademicAsignatureId"
+                value={data.generalAcademicAsignature}
+                onChange={(e) => {
+                  return handleChange(e, 'generalAcademicAsignatureId');
+                }}
+              />
+            </div>
+            <div className="form-group">
+              <Label>
+                <IntlMessages id="menu.cycleAcademic" />
+              </Label>
+              <Select
+                className="react-select"
+                classNamePrefix="react-select"
+                options={cyclesList}
+                name="generalAcademicCycleId"
+                value={data.generalAcademicCycle}
+                onChange={(e) => {
+                  return handleChange(e, 'generalAcademicCycleId');
+                }}
+              />
+            </div>
+          </ModalBody>
           {props?.data?.id ? (
-            <CreateEditAuditInformation loading={loading} auditInfo={auditInfo} />
+            <ModalFooter className="p-3">
+              <CreateEditAuditInformation loading={loading} auditInfo={auditInfo} />
+            </ModalFooter>
           ) : (
             <></>
           )}
