@@ -21,7 +21,13 @@ const StudentList = (props: any) => {
 
   const getDataTable = async () => {
     props.getListAllStudent().then((listData: any) => {     
-      setDataTable(listData);
+      setDataTable(listData.map((c:any)=>{
+        c.node.name = c.node.name ? c.node.user.name : ''; 
+        c.node.lastName = c.node.lastName ? c.node.user.lastName : ''; 
+        c.node.phone = c.node.phone ? c.node.user.phone : ''; 
+        c.node.email = c.node.email ? c.node.user.email : '';       
+        return c;
+      }));
     });    
   };
 

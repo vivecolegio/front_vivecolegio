@@ -15,7 +15,14 @@ html {
   height: 100%;
 }
 
-
 input.form-control[readonly] {
-  background-color: white!important;
+  background-color: white !important;
+}
+
+.font-20 {
+  font-size: 20px;
+}
+
+.max-w-50 {
+  max-width: 50%!important;
 }

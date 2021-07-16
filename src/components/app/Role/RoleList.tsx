@@ -77,6 +77,7 @@ const RoleList = (props: any) => {
             changeActiveData={changeActiveData}
           />
           <AddNewModal
+           isLg={true}
             modalOpen={modalOpen}
             toggleModal={() => {
               return setModalOpen(!modalOpen);

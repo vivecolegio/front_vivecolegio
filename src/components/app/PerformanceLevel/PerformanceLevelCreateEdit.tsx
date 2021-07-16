@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import Loader from 'react-loader-spinner';
 import { connect } from 'react-redux';
-import { Input, Label } from 'reactstrap';
+import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
 import { loaderColor, loaderIcon } from '../../../constants/defaultValues';
 import IntlMessages from '../../../helpers/IntlMessages';
 import * as areaActions from '../../../stores/actions/AreaActions';
@@ -45,16 +45,20 @@ const AreaCreateEdit = (props: any) => {
         </>
       ) : (
         <>
-          <Label>
-            <IntlMessages id="forms.name" />
-          </Label>
-          <Input
-            {...methods.register('name', { required: true })}
-            name="name"
-            defaultValue={data.name}
-          />
+          <ModalBody>
+            <Label>
+              <IntlMessages id="forms.name" />
+            </Label>
+            <Input
+              {...methods.register('name', { required: true })}
+              name="name"
+              defaultValue={data.name}
+            />
+          </ModalBody>
           {props?.data?.id ? (
-            <CreateEditAuditInformation loading={loading} auditInfo={auditInfo} />
+            <ModalFooter className="p-3">
+              <CreateEditAuditInformation loading={loading} auditInfo={auditInfo} />
+            </ModalFooter>
           ) : (
             <></>
           )}

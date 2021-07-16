@@ -1,0 +1,1 @@
+(self.webpackChunkvivecolegio=self.webpackChunkvivecolegio||[]).push([[530],{46530:function(e,c,i){"use strict";i.r(c)}}]);

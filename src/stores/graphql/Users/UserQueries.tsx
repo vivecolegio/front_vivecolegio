@@ -35,6 +35,18 @@ export const QUERY_GET_USER = gql`
       roleId
       documentTypeId
       documentNumber
+      role {
+        id
+        name
+      }
+      gender {
+        id
+        name
+      }
+      documentType {
+        id
+        name
+      }
       version
       createdAt
       updatedAt

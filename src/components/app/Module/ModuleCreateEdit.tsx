@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import Loader from 'react-loader-spinner';
 import { connect } from 'react-redux';
-import { Input, Label } from 'reactstrap';
+import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
 import { loaderColor, loaderIcon } from '../../../constants/defaultValues';
 import IntlMessages from '../../../helpers/IntlMessages';
 import * as moduleActions from '../../../stores/actions/ModuleActions';
@@ -49,28 +49,32 @@ const ModuleCreateEdit = (props: any) => {
         </>
       ) : (
         <>
-          <div className="form-group">
-            <Label>
-              <IntlMessages id="forms.name" />
-            </Label>
-            <Input
-              {...methods.register('name', { required: true })}
-              name="name"
-              defaultValue={data.name}
-            />
-          </div>
-          <div className="form-group">
-            <Label>
-              <IntlMessages id="forms.url" />
-            </Label>
-            <Input
-              {...methods.register('url', { required: true })}
-              name="url"
-              defaultValue={data.url}
-            />
-          </div>
+          <ModalBody>
+            <div className="form-group">
+              <Label>
+                <IntlMessages id="forms.name" />
+              </Label>
+              <Input
+                {...methods.register('name', { required: true })}
+                name="name"
+                defaultValue={data.name}
+              />
+            </div>
+            <div className="form-group">
+              <Label>
+                <IntlMessages id="forms.url" />
+              </Label>
+              <Input
+                {...methods.register('url', { required: true })}
+                name="url"
+                defaultValue={data.url}
+              />
+            </div>
+          </ModalBody>
           {props?.data?.id ? (
-            <CreateEditAuditInformation loading={loading} auditInfo={auditInfo} />
+            <ModalFooter className="p-3">
+              <CreateEditAuditInformation loading={loading} auditInfo={auditInfo} />
+            </ModalFooter>
           ) : (
             <></>
           )}

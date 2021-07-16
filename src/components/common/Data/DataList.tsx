@@ -166,7 +166,7 @@ const DataList = (props: any) => {
           }}
           orderOptions={orderOptions}
           pageSizes={pageSizes}
-          toggleModal={() => {
+          toggleModal={() => {          
             return props?.setModalOpen(!props?.modalOpen);
           }}
           columns={columns}

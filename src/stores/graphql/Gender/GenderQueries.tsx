@@ -7,7 +7,9 @@ export const QUERY_GET_ALL_GENDER = gql`
         cursor
         node {
           id
-          name
+          name   
+          code
+          description  
           active               
         }
       }
@@ -20,7 +22,18 @@ export const QUERY_GET_GENDER = gql`
   query getGender($id: String!) {
     data: getGender(id: $id) {
       id
-      name     
+      name
+      code
+      description
+      version      
+      createdAt
+      updatedAt
+      createdByUser {
+        name
+      }
+      updatedByUser {
+        name
+      }   
     }
   }
 `;

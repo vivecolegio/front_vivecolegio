@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-
 import { COLUMN_LIST } from '../../../constants/User/userConstants';
 import * as roleActions from '../../../stores/actions/UserActions';
 import AddNewModal from '../../common/Data/AddNewModal';
@@ -15,14 +14,22 @@ const UserList = (props: any) => {
   const [data, setData] = useState(null);
   useEffect(() => {
     props.getListAllUser().then((listData: any) => {
-      setDataTable(listData);
+      setDataTable(
+        listData.map((c: any) => {
+          c.node.role_format = c.node.role ? c.node.role.name : '';
+          return c;
+        }),
+      );
     });
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllUser().then((listData: any) => {     
-      setDataTable(listData);
-    });    
+    props.getListAllUser().then((listData: any) => {
+      setDataTable(listData.map((c: any) => {
+        c.node.role_format = c.node.role ? c.node.role.name : '';
+        return c;
+      }));
+    });
   };
 
   const refreshDataTable = async () => {
@@ -30,9 +37,9 @@ const UserList = (props: any) => {
     await getDataTable();
   };
 
-  const onSubmit = async (dataForm: any, formState:any) => {
-    console.log(dataForm, 'FORM')
-    console.log(formState, 'STATE')
+  const onSubmit = async (dataForm: any, formState: any) => {
+    console.log(dataForm, 'FORM');
+    console.log(formState, 'STATE');
     // console.log(formState.target.isValid, 'STATE')
     if (data === null) {
       await props.saveNewUser(dataForm).then((id: any) => {

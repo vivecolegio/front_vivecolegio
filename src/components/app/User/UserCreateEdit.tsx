@@ -1,21 +1,20 @@
 import React, { useEffect, useState } from 'react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import { useFormContext } from 'react-hook-form';
 import Loader from 'react-loader-spinner';
 import { connect } from 'react-redux';
-import { Input, Label } from 'reactstrap';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
 import Select from 'react-select';
+import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
 // import CustomSelectInput from 'components/common/CustomSelectInput';
 import { loaderColor, loaderIcon } from '../../../constants/defaultValues';
 import IntlMessages from '../../../helpers/IntlMessages';
-import * as UserActions from '../../../stores/actions/UserActions';
-import * as RoleActions from '../../../stores/actions/RoleActions';
-import * as GenderActions from '../../../stores/actions/GenderActions';
 import * as DocumentTypeActions from '../../../stores/actions/DocumentTypeActions';
+import * as GenderActions from '../../../stores/actions/GenderActions';
+import * as RoleActions from '../../../stores/actions/RoleActions';
+import * as UserActions from '../../../stores/actions/UserActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import CreateEditAuditInformation from '../../common/Data/CreateEditAuditInformation';
-
 
 const UserCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
@@ -32,24 +31,35 @@ const UserCreateEdit = (props: any) => {
     if (props?.data?.id) {
       console.log(props?.data);
     }
-    console.log(rolesList, 'ROLES')
     setLoading(false);
   }, [props?.data]);
-  
+
   const getRolesList = async () => {
-    props.getListAllRole().then((listData: any) => {     
-      setRolesList(listData.map((c:any)=>{return{ label:c.node.name, value:c.node.id, key: c.node.id }}));
-    });    
+    props.getListAllRole().then((listData: any) => {
+      setRolesList(
+        listData.map((c: any) => {
+          return { label: c.node.name, value: c.node.id, key: c.node.id };
+        }),
+      );
+    });
   };
   const getDocumentTypesList = async () => {
-    props.getListAllDocumentType().then((listData: any) => {     
-      setDocumentTypesList(listData.map((c:any)=>{return{ label:c.node.name, value:c.node.id, key: c.node.id }}));
-    });    
+    props.getListAllDocumentType().then((listData: any) => {
+      setDocumentTypesList(
+        listData.map((c: any) => {
+          return { label: c.node.name, value: c.node.id, key: c.node.id };
+        }),
+      );
+    });
   };
   const getGendersList = async () => {
-    props.getListAllGender().then((listData: any) => {     
-      setGendersList(listData.map((c:any)=>{return{ label:c.node.name, value:c.node.id, key: c.node.id }}));
-    });    
+    props.getListAllGender().then((listData: any) => {
+      setGendersList(
+        listData.map((c: any) => {
+          return { label: c.node.name, value: c.node.id, key: c.node.id };
+        }),
+      );
+    });
   };
 
   const data = {
@@ -73,18 +83,18 @@ const UserCreateEdit = (props: any) => {
       props?.data?.id || props?.data?.birthdate === methods.getValues('birthdate')
         ? props?.data?.birthdate
         : methods.getValues('birthdate'),
-    roleId:
-      props?.data?.id || props?.data?.roleId === methods.getValues('roleId')
-        ? props?.data?.roleId
-        : methods.getValues('roleId'),
-    genderId:
-      props?.data?.id || props?.data?.genderId === methods.getValues('genderId')
-        ? props?.data?.genderId
-        : methods.getValues('genderId'),
-    documentTypeId:
-      props?.data?.id || props?.data?.documentTypeId === methods.getValues('documentTypeId')
-        ? props?.data?.documentTypeId
-        : methods.getValues('documentTypeId'),
+    role:
+      props?.data?.id || props?.data?.role === methods.getValues('role')
+        ? { value: props?.data?.role?.id, label: props?.data?.role?.name }
+        : methods.getValues('role'),
+    gender:
+      props?.data?.id || props?.data?.gender === methods.getValues('gender')
+        ? { value: props?.data?.gender?.id, label: props?.data?.gender?.name }
+        : methods.getValues('gender'),
+    documentType:
+      props?.data?.id || props?.data?.documentType === methods.getValues('documentType')
+        ? { value: props?.data?.documentType?.id, label: props?.data?.documentType?.name }
+        : methods.getValues('documentType'),
     documentNumber:
       props?.data?.id || props?.data?.documentNumber === methods.getValues('documentNumber')
         ? props?.data?.documentNumber
@@ -99,6 +109,10 @@ const UserCreateEdit = (props: any) => {
     version: props?.data?.id ? props?.data?.version : null,
   };
 
+  const handleChange = (selected: any, name: any) => {
+    methods.setValue(name, selected.value ? selected.value : selected);
+  };
+
   return (
     <>
       {loading ? (
@@ -109,118 +123,118 @@ const UserCreateEdit = (props: any) => {
         </>
       ) : (
         <>
-        <div>
-          <div className="form-group">
-            <Label>
-              <IntlMessages id="forms.name" />
-            </Label>
-            <Input
-              {...methods.register('name', { required: true })}
-              name="name"
-              defaultValue={data.name}
-            />
-          </div>
-          <div className="form-group">
-            <Label>
-              <IntlMessages id="forms.lastname" />
-            </Label>
-            <Input
-              {...methods.register('lastName', { required: true })}
-              name="lastName"
-              defaultValue={data.lastName}
-            />
-          </div>
-          <div className="form-group">
-            <Label>
-              <IntlMessages id="forms.phone" />
-            </Label>
-            <Input
-              {...methods.register('phone', { required: true })}
-              name="phone"
-              defaultValue={data.phone}
-            />
-          </div>
-          <div className="form-group">
-            <Label>
-              <IntlMessages id="forms.email" />
-            </Label>
-            <Input
-              {...methods.register('email', { required: true })}
-              name="email"
-              defaultValue={data.email}
-            />
-          </div>
-          <div className="form-group">
-            <Label>
-              <IntlMessages id="forms.birthdate" />
-            </Label>            
-            <DatePicker
-                selected={data.birthdate}
-                {...methods.register('birthdate')}    
+          <ModalBody>
+            <div className="form-group">
+              <Label>
+                <IntlMessages id="forms.name" />
+              </Label>
+              <Input
+                {...methods.register('name', { required: true })}
+                name="name"
+                defaultValue={data.name}
               />
-          </div>
-          <div className="form-group">
-            <Label>
-              <IntlMessages id="forms.role" />
-            </Label>            
-            <Select
-              // components={{ Input: CustomSelectInput }}
-              className="react-select"
-              classNamePrefix="react-select"   
-              options={rolesList}
-              name="roleId"
-              selected={data.roleId}
-              {...methods.register('roleId')}    
-            />
-          </div>
-          <div className="form-group">
-            <Label>
-              <IntlMessages id="forms.gender" />
-            </Label>  
-            {/* <select {...methods.register('genderId', { required: true })}>              
-            {gendersList.map((val:any) => {return (
-              <option value={val.value} key={val.value}>{val.label}</option>
-            )})}
-
-            </select>           */}
-            <Select
-              // components={{ Input: CustomSelectInput }}
-              className="react-select"
-              classNamePrefix="react-select"   
-              options={gendersList}
-              name="genderId"
-              selected={data.genderId}
-              {...methods.register('genderId')}                
-              // {...methods.register('genderId', { required: true })}
-            />
-          </div>
-          <div className="form-group">
-            <Label>
-              <IntlMessages id="forms.documentType" />
-            </Label>            
-            <Select
-              // components={{ Input: CustomSelectInput }}
-              className="react-select"
-              classNamePrefix="react-select"   
-              options={gendersList}
-              name="documentTypeId"
-              selected={data.documentTypeId}
-              {...methods.register('documentTypeId')}    
-            />
-          </div>
-          <div className="form-group">
-            <Label>
-              <IntlMessages id="forms.documentNumber" />
-            </Label>
-            <Input
-              {...methods.register('documentNumber')}
-              name="documentNumber"
-              defaultValue={data.documentNumber}
-            />
-          </div>
-          </div>
+            </div>
+            <div className="form-group">
+              <Label>
+                <IntlMessages id="forms.lastname" />
+              </Label>
+              <Input
+                {...methods.register('lastName', { required: true })}
+                name="lastName"
+                defaultValue={data.lastName}
+              />
+            </div>
+            <div className="form-group">
+              <Label>
+                <IntlMessages id="forms.phone" />
+              </Label>
+              <Input
+                {...methods.register('phone', { required: true })}
+                name="phone"
+                defaultValue={data.phone}
+              />
+            </div>
+            <div className="form-group">
+              <Label>
+                <IntlMessages id="forms.email" />
+              </Label>
+              <Input
+                {...methods.register('email', { required: true })}
+                name="email"
+                defaultValue={data.email}
+              />
+            </div>
+            <div className="form-group">
+              <Label>
+                <IntlMessages id="forms.birthdate" />
+              </Label>
+              <DatePicker
+                selected={new Date(data.birthdate)}
+                onChange={(e) => {
+                  return handleChange(e, 'birthdate');
+                }}
+              />
+            </div>
+            <div className="form-group">
+              <Label>
+                <IntlMessages id="forms.role" />
+              </Label>
+              <Select
+                className="react-select"
+                classNamePrefix="react-select"
+                options={rolesList}
+                name="roleId"
+                value={data.role}
+                onChange={(e) => {
+                  return handleChange(e, 'roleId');
+                }}
+              />
+            </div>
+            <div className="form-group">
+              <Label>
+                <IntlMessages id="forms.gender" />
+              </Label>
+              <Select
+                className="react-select"
+                classNamePrefix="react-select"
+                options={gendersList}
+                name="genderId"
+                value={data.gender}
+                onChange={(e) => {
+                  return handleChange(e, 'genderId');
+                }}
+              />
+            </div>
+            <div className="form-group">
+              <Label>
+                <IntlMessages id="forms.documentType" />
+              </Label>
+              <Select
+                className="react-select"
+                classNamePrefix="react-select"
+                options={documentTypesList}
+                name="documentTypeId"
+                value={data.documentType}
+                onChange={(e) => {
+                  return handleChange(e, 'documentTypeId');
+                }}
+              />
+            </div>
+            <div className="form-group">
+              <Label>
+                <IntlMessages id="forms.documentNumber" />
+              </Label>
+              <Input
+                {...methods.register('documentNumber')}
+                name="documentNumber"
+                defaultValue={data.documentNumber}
+              />
+            </div>
+          </ModalBody>
           {props?.data?.id ? (
-            <CreateEditAuditInformation loading={loading} auditInfo={auditInfo} />
+            <ModalFooter className="p-3">
+              <CreateEditAuditInformation loading={loading} auditInfo={auditInfo} />
+            </ModalFooter>
           ) : (
             <></>
           )}
@@ -230,7 +244,12 @@ const UserCreateEdit = (props: any) => {
   );
 };
 
-const mapDispatchToProps = { ...UserActions, ...RoleActions, ...GenderActions, ...DocumentTypeActions };
+const mapDispatchToProps = {
+  ...UserActions,
+  ...RoleActions,
+  ...GenderActions,
+  ...DocumentTypeActions,
+};
 
 const mapStateToProps = () => {
   return {};
