@@ -1,11 +1,12 @@
+import { DevTool } from '@hookform/devtools';
 import React, { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
 import { useFormContext } from 'react-hook-form';
 import Loader from 'react-loader-spinner';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
+
 // import CustomSelectInput from 'components/common/CustomSelectInput';
 import { loaderColor, loaderIcon } from '../../../constants/defaultValues';
 import IntlMessages from '../../../helpers/IntlMessages';
@@ -15,6 +16,8 @@ import * as RoleActions from '../../../stores/actions/RoleActions';
 import * as UserActions from '../../../stores/actions/UserActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import CreateEditAuditInformation from '../../common/Data/CreateEditAuditInformation';
+
+import 'react-datepicker/dist/react-datepicker.css';
 
 const UserCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
@@ -29,7 +32,32 @@ const UserCreateEdit = (props: any) => {
     getDocumentTypesList();
     getGendersList();
     if (props?.data?.id) {
-      console.log(props?.data);
+      if (props?.data?.birthdate !== undefined && props?.data?.birthdate != null) {
+        setBirtdate(new Date(props?.data?.birthdate));
+      }
+      if (props?.data?.role !== undefined && props?.data?.role != null) {
+        setRole({
+          key: props?.data?.role?.id,
+          label: props?.data?.role?.name,
+          value: props?.data?.role?.id,
+        });
+      }
+      if (props?.data?.gender !== undefined && props?.data?.gender != null) {
+        setGender({
+          key: props?.data?.gender?.id,
+          label: props?.data?.gender?.name,
+          value: props?.data?.gender?.id,
+        });
+      }
+      if (props?.data?.documentType !== undefined && props?.data?.documentType != null) {
+        setDocumentType({
+          key: props?.data?.documentType?.id,
+          label: props?.data?.documentType?.name,
+          value: props?.data?.documentType?.id,
+        });
+      }
+    } else{
+      methods.reset();
     }
     setLoading(false);
   }, [props?.data]);
@@ -79,14 +107,6 @@ const UserCreateEdit = (props: any) => {
       props?.data?.id || props?.data?.email === methods.getValues('email')
         ? props?.data?.email
         : methods.getValues('email'),
-    birthdate:
-      props?.data?.id || props?.data?.birthdate === methods.getValues('birthdate')
-        ? props?.data?.birthdate
-        : methods.getValues('birthdate'),
-    role:
-      props?.data?.id || props?.data?.role === methods.getValues('role')
-        ? { value: props?.data?.role?.id, label: props?.data?.role?.name }
-        : methods.getValues('role'),
     gender:
       props?.data?.id || props?.data?.gender === methods.getValues('gender')
         ? { value: props?.data?.gender?.id, label: props?.data?.gender?.name }
@@ -111,10 +131,20 @@ const UserCreateEdit = (props: any) => {
 
   const handleChange = (selected: any, name: any) => {
     methods.setValue(name, selected.value ? selected.value : selected);
+    console.log(methods.getValues());
   };
+
+  const [birtdate, setBirtdate] = useState(null);
+
+  const [role, setRole] = useState(null);
+
+  const [gender, setGender] = useState(null);
+
+  const [documentType, setDocumentType] = useState(null);
 
   return (
     <>
+      <DevTool control={methods.control} placement="top-left"/>
       {loading ? (
         <>
           <Colxx sm={12} className="d-flex justify-content-center">
@@ -169,9 +199,11 @@ const UserCreateEdit = (props: any) => {
                 <IntlMessages id="forms.birthdate" />
               </Label>
               <DatePicker
-                selected={new Date(data.birthdate)}
-                onChange={(e) => {
-                  return handleChange(e, 'birthdate');
+                {...methods.register('birthdate', { required: true })}
+                selected={birtdate}
+                onChange={(date) => {
+                  methods.setValue('birthdate', date as Date);
+                  setBirtdate(date as Date);
                 }}
               />
             </div>
@@ -180,13 +212,14 @@ const UserCreateEdit = (props: any) => {
                 <IntlMessages id="forms.role" />
               </Label>
               <Select
+                {...methods.register('roleId', { required: true })}
                 className="react-select"
                 classNamePrefix="react-select"
                 options={rolesList}
-                name="roleId"
-                value={data.role}
-                onChange={(e) => {
-                  return handleChange(e, 'roleId');
+                value={role}
+                onChange={(selectedOption) => {
+                  methods.setValue('roleId', selectedOption?.key);
+                  setRole(selectedOption);
                 }}
               />
             </div>
@@ -195,13 +228,14 @@ const UserCreateEdit = (props: any) => {
                 <IntlMessages id="forms.gender" />
               </Label>
               <Select
+                {...methods.register('genderId', { required: true })}
                 className="react-select"
                 classNamePrefix="react-select"
                 options={gendersList}
-                name="genderId"
-                value={data.gender}
-                onChange={(e) => {
-                  return handleChange(e, 'genderId');
+                value={gender}
+                onChange={(selectedOption) => {
+                  methods.setValue('genderId', selectedOption?.key);
+                  setGender(selectedOption);
                 }}
               />
             </div>
@@ -210,13 +244,14 @@ const UserCreateEdit = (props: any) => {
                 <IntlMessages id="forms.documentType" />
               </Label>
               <Select
+                {...methods.register('documentTypeId', { required: true })}
                 className="react-select"
                 classNamePrefix="react-select"
                 options={documentTypesList}
-                name="documentTypeId"
-                value={data.documentType}
-                onChange={(e) => {
-                  return handleChange(e, 'documentTypeId');
+                value={documentType}
+                onChange={(selectedOption) => {
+                  methods.setValue('documentTypeId', selectedOption?.key);
+                  setDocumentType(selectedOption);
                 }}
               />
             </div>

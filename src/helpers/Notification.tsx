@@ -1,6 +1,6 @@
 import { NotificationManager } from '../components/common/Notifications';
 
-export const createNotification = (type: any, className: any, message: any) => {
+export const createNotification = (type: any, message: any, className: any) => {
   const cName = className || '';
   switch (type) {
     case 'info':

@@ -37,7 +37,7 @@ const DataList = (props: any) => {
   }, [selectedPageSize, selectedOrderOption]);
 
   useEffect(() => {
-    if (props?.data != null) { 
+    if (props?.data != null) {
       setTotalPage(Math.ceil(props?.data?.length/selectedPageSize));
       // setItems(
       //   props?.data?.map((x: any) => {
@@ -166,7 +166,7 @@ const DataList = (props: any) => {
           }}
           orderOptions={orderOptions}
           pageSizes={pageSizes}
-          toggleModal={() => {          
+          toggleModal={() => {
             return props?.setModalOpen(!props?.modalOpen);
           }}
           columns={columns}

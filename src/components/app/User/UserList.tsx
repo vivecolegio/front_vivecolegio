@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+
 import { COLUMN_LIST } from '../../../constants/User/userConstants';
 import * as roleActions from '../../../stores/actions/UserActions';
 import AddNewModal from '../../common/Data/AddNewModal';
@@ -89,6 +90,7 @@ const UserList = (props: any) => {
           <AddNewModal
             modalOpen={modalOpen}
             toggleModal={() => {
+              setData(null);
               return setModalOpen(!modalOpen);
             }}
             onSubmit={onSubmit}

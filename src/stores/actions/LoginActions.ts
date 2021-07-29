@@ -17,19 +17,23 @@ export const login = (user: any) => {
         })
         .then((result: any) => {
           data = result.data;
-          localStorage.setItem('token', data.data.jwt);
-          dispatch({
-            type: LOGIN,
-            payload: {
-              userId: data.data.userId,
-              role: data.data.role,
-              name: data.data.name,
-            },
-          });
+          if(data !=null){
+            localStorage.setItem('token', data.data.jwt);
+            dispatch({
+              type: LOGIN,
+              payload: {
+                userId: data.data.userId,
+                role: data.data.role,
+                name: data.data.name,
+              },
+            });
+          }else{
+            createNotification('error', 'Error al inciar sesión, por favor intente de nuevo', '');
+          }
         });
       return data != null;
-    } catch (error) {  
-      createNotification('Error', 'Error al inciar sesión, por favor intente de nuevo', '');
+    } catch (error) {
+      createNotification('error', 'Error al inciar sesión, por favor intente de nuevo', '');
       return error;
     }
   };

@@ -3,7 +3,6 @@ import { client } from '../graphql';
 import { MUTATION_CHANGE_ACTIVE_USER, MUTATION_CREATE_USER, MUTATION_UPDATE_USER } from '../graphql/Users/UserMutations';
 import { QUERY_GET_ALL_USER, QUERY_GET_USER } from '../graphql/Users/UserQueries';
 
-
 export const getListAllUser = () => {
   return async (dispatch: any) => {
     try {
@@ -46,6 +45,7 @@ export const dataUser = (id: any) => {
 };
 
 export const saveNewUser = (data: any) => {
+  debugger;
   return async (dispatch: any) => {
     try {
       let model: {};

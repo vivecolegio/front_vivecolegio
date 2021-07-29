@@ -5,6 +5,7 @@ import { NavLink } from 'react-router-dom';
 import { Alert, Button, CardTitle, Form, FormGroup, Input, Label } from 'reactstrap';
 
 import IntlMessages from '../../../helpers/IntlMessages';
+import { createNotification } from '../../../helpers/Notification';
 import * as loginActions from '../../../stores/actions/LoginActions';
 
 const Login = (props: any) => {
@@ -26,7 +27,7 @@ const Login = (props: any) => {
           .login({
             username: getValues('username'),
             password: getValues('password'),
-          })
+          });
       }
     });
   };
