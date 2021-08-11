@@ -18,14 +18,30 @@ const MenuItemCreateEdit = (props: any) => {
   const [modulesList, setModulesList] = useState(null);
   const [menuList, setMenuList] = useState(null);
   const [modalOpen, setModalIcon] = useState(false);
+  const [icon, setIcon] = useState();
 
   const methods = useFormContext();
 
   useEffect(() => {
     getModuleList();
     getMenuList();
-    if (props?.data?.id) {
-      console.log(props?.data);
+    if (props?.data?.id) {     
+      if (props?.data?.module !== undefined && props?.data?.module != null) {
+        setModule({
+          key: props?.data?.module?.id,
+          label: props?.data?.module?.name,
+          value: props?.data?.module?.id,
+        });
+      }
+      if (props?.data?.menu !== undefined && props?.data?.menu != null) {
+        setMenu({
+          key: props?.data?.menu?.id,
+          label: props?.data?.menu?.name,
+          value: props?.data?.menu?.id,
+        });
+      }
+    } else {
+      methods.reset();
     }
     setLoading(false);
   }, [props?.data]);
@@ -81,9 +97,10 @@ const MenuItemCreateEdit = (props: any) => {
     version: props?.data?.id ? props?.data?.version : null,
   };
 
-  const handleChange = (selected: any, name: any) => {
-    methods.setValue(name, selected.value);
-  };
+  const [module, setModule] = useState(null);
+
+  const [menu, setMenu] = useState(null);
+
   const handleChangeNumber = (event: any, name: any) => {
     methods.setValue(name, parseFloat(event.target.value));
   };
@@ -115,9 +132,10 @@ const MenuItemCreateEdit = (props: any) => {
               </Label>
               <InputGroup>
                 <Input
-                  {...methods.register('icon', { required: true })}
+                  {...methods.register('icon', { required: true })}                  
                   name="icon"
                   defaultValue={data.icon}
+                  value={icon}
                 />
                 <InputGroupAddon addonType="prepend">
                   <Button
@@ -131,10 +149,16 @@ const MenuItemCreateEdit = (props: any) => {
                   </Button>
                 </InputGroupAddon>
               </InputGroup>
-              <Icons
+              <Icons                            
                 modalOpen={modalOpen}
+                icon={icon}                
                 toggleModal={() => {
                   return setModalIcon(!modalOpen);
+                }}
+                setIcon={(i: any) => {                
+                    methods.setValue('icon', i);
+                    setIcon(i); 
+                    setModalIcon(!modalOpen);                              
                 }}
               />
             </div>
@@ -156,13 +180,15 @@ const MenuItemCreateEdit = (props: any) => {
                 <IntlMessages id="forms.module" />
               </Label>
               <Select
+                placeholder={<IntlMessages id="forms.select" />}    
+                {...methods.register('moduleId', { required: true })}
                 className="react-select"
                 classNamePrefix="react-select"
                 options={modulesList}
-                name="moduleId"
-                value={data.module}
-                onChange={(e) => {
-                  return handleChange(e, 'moduleId');
+                value={module}
+                onChange={(selectedOption) => {
+                  methods.setValue('moduleId', selectedOption?.key);
+                  setModule(selectedOption);
                 }}
               />
             </div>
@@ -171,13 +197,15 @@ const MenuItemCreateEdit = (props: any) => {
                 <IntlMessages id="forms.menuParent" />
               </Label>
               <Select
+                 placeholder={<IntlMessages id="forms.select" />}    
+                {...methods.register('menuId', { required: true })}
                 className="react-select"
                 classNamePrefix="react-select"
                 options={menuList}
-                name="menuId"
-                value={data.menu}
-                onChange={(e) => {
-                  return handleChange(e, 'menuId');
+                value={menu}
+                onChange={(selectedOption) => {
+                  methods.setValue('menuId', selectedOption?.key);
+                  setMenu(selectedOption);
                 }}
               />
             </div>

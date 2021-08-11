@@ -21,8 +21,16 @@ const GradeCreateEdit = (props: any) => {
   useEffect(() => {
     getAsignatures();
     getCycles();
-    if (props?.data?.id) {
-      console.log(props?.data);
+    if (props?.data?.id) {    
+      if (props?.data?.generalAcademicCycle !== undefined && props?.data?.generalAcademicCycle != null) {
+        setCycle({
+          key: props?.data?.generalAcademicCycle?.id,
+          label: props?.data?.generalAcademicCycle?.name,
+          value: props?.data?.generalAcademicCycle?.id,
+        });
+      }
+    } else {
+      methods.reset();
     }
     setLoading(false);
   }, [props?.data]);
@@ -69,11 +77,7 @@ const GradeCreateEdit = (props: any) => {
     version: props?.data?.id ? props?.data?.version : null,
   };
 
-  const handleChange = (selected: any, name: any) => {
-    console.log(selected);
-    data.generalAcademicCycle = selected.value;
-    methods.setValue(name, selected.value);
-  };
+  const [cycle, setCycle] = useState(null);
 
   return (
     <>
@@ -101,13 +105,15 @@ const GradeCreateEdit = (props: any) => {
                 <IntlMessages id="menu.cycleAcademic" />
               </Label>
               <Select
+                 placeholder={<IntlMessages id="forms.select" />}    
+                {...methods.register('generalAcademicCycleId', { required: true })}
                 className="react-select"
                 classNamePrefix="react-select"
                 options={cyclesList}
-                name="generalAcademicCycleId"
-                value={data.generalAcademicCycle}
-                onChange={(e) => {
-                  return handleChange(e, 'generalAcademicCycleId');
+                value={cycle}
+                onChange={(selectedOption) => {
+                  methods.setValue('generalAcademicCycleId', selectedOption?.key);
+                  setCycle(selectedOption);
                 }}
               />
             </div>

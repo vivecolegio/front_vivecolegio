@@ -20,6 +20,8 @@ export const QUERY_GET_ALL_STUDENT = gql`
             id
             name
             lastName
+            phone
+            email
           }
         }
       }
@@ -46,7 +48,7 @@ export const QUERY_GET_STUDENT = gql`
       user {
         id
         name
-        lastName
+        lastName    
       } 
       version
       createdAt

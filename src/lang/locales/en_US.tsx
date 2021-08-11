@@ -160,6 +160,7 @@ const enMessages = {
   'forms.description': 'Description',
   'forms.menu': 'Menu',
   'forms.add': 'Add',
+  'forms.select': 'Select',
   
 };
 

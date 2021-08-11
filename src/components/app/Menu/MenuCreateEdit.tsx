@@ -24,13 +24,16 @@ const MenuCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
   const [modulesList, setModulesList] = useState(null);
   const [modalOpen, setModalIcon] = useState(false);
+  const [icon, setIcon] = useState();
 
   const methods = useFormContext();
 
   useEffect(() => {
     getModuleList();
     if (props?.data?.id) {
-      console.log(props?.data);
+      if (props?.data?.icon !== undefined && props?.data?.icon != null) {
+        setIcon(props?.data?.icon);
+      } 
     }
     setLoading(false);
   }, [props?.data]);
@@ -70,11 +73,7 @@ const MenuCreateEdit = (props: any) => {
     createdByUser: props?.data?.id ? props?.data?.createdByUser : null,
     updatedByUser: props?.data?.id ? props?.data?.updatedByUser : null,
     version: props?.data?.id ? props?.data?.version : null,
-  };
-
-  const handleChange = (selected: any, name: any) => {
-    methods.setValue(name, selected.value);
-  };
+  };;
 
   const handleChangeNumber = (event: any, name: any) => {
     methods.setValue(name, parseFloat(event.target.value));
@@ -103,13 +102,14 @@ const MenuCreateEdit = (props: any) => {
             </div>
             <div className="form-group">
               <Label>
-                <IntlMessages id="forms.icon" />
+                <IntlMessages id="forms.icon" />              
               </Label>
               <InputGroup>
                 <Input
-                  {...methods.register('icon', { required: true })}
+                  {...methods.register('icon', { required: true })}                  
                   name="icon"
                   defaultValue={data.icon}
+                  value={icon}
                 />
                 <InputGroupAddon addonType="prepend">
                   <Button
@@ -123,10 +123,16 @@ const MenuCreateEdit = (props: any) => {
                   </Button>
                 </InputGroupAddon>
               </InputGroup>
-              <Icons
+              <Icons                            
                 modalOpen={modalOpen}
+                icon={icon}                
                 toggleModal={() => {
                   return setModalIcon(!modalOpen);
+                }}
+                setIcon={(i: any) => {                
+                    methods.setValue('icon', i);
+                    setIcon(i); 
+                    setModalIcon(!modalOpen);                              
                 }}
               />
             </div>

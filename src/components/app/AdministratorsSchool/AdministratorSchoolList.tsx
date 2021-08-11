@@ -16,10 +16,10 @@ const AdministratorList = (props: any) => {
   useEffect(() => {
     props.getListAllAdministrator().then((listData: any) => {
       setDataTable(listData.map((c:any)=>{
-        c.node.name = c.node.name ? c.node.user.name : ''; 
-        c.node.lastName = c.node.lastName ? c.node.user.lastName : ''; 
-        c.node.phone = c.node.phone ? c.node.user.phone : ''; 
-        c.node.email = c.node.email ? c.node.user.email : '';       
+        c.node.name = c.node.user ? c.node.user.name : ''; 
+        c.node.lastName = c.node.user ? c.node.user.lastName : ''; 
+        c.node.phone = c.node.user ? c.node.user.phone : ''; 
+        c.node.email = c.node.user ? c.node.user.email : '';               
         return c;
       }));
     });
@@ -27,7 +27,13 @@ const AdministratorList = (props: any) => {
 
   const getDataTable = async () => {
     props.getListAllAdministrator().then((listData: any) => {     
-      setDataTable(listData);
+      setDataTable(listData.map((c:any)=>{
+        c.node.name = c.node.user ? c.node.user.name : ''; 
+        c.node.lastName = c.node.user ? c.node.user.lastName : ''; 
+        c.node.phone = c.node.user ? c.node.user.phone : ''; 
+        c.node.email = c.node.user ? c.node.user.email : '';               
+        return c;
+      }));
     });    
   };
 
@@ -37,7 +43,6 @@ const AdministratorList = (props: any) => {
   };
 
   const onSubmit = async (dataForm: any) => {
-    console.log(dataForm, 'FORM TO SEND')
     if (data === null) {
       await props.saveNewAdministrator(dataForm).then((id: any) => {
         if (id !== undefined) {
@@ -86,6 +91,7 @@ const AdministratorList = (props: any) => {
           <AddNewModal
             modalOpen={modalOpen}
             toggleModal={() => {
+              setData(null);
               return setModalOpen(!modalOpen);
             }}
             onSubmit={onSubmit}

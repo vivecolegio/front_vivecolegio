@@ -23,10 +23,24 @@ const AdministratorCreateEdit = (props: any) => {
   useEffect(() => {
     getUsersList();
     getSchoolsList();
-    if (props?.data?.id) {
-      console.log(props?.data);
+    if (props?.data?.id) {     
+      if (props?.data?.user !== undefined && props?.data?.user != null) {
+        setUser({
+          key: props?.data?.user?.id,
+          label: props?.data?.user?.name,
+          value: props?.data?.user?.id,
+        });
+      }
+      if (props?.data?.school !== undefined && props?.data?.school != null) {
+        setSchool({
+          key: props?.data?.school?.id,
+          label: props?.data?.school?.name,
+          value: props?.data?.school?.id,
+        });
+      }   
+    } else {
+      methods.reset();
     }
-    console.log(usersList, 'users');
     setLoading(false);
   }, [props?.data]);
 
@@ -49,17 +63,6 @@ const AdministratorCreateEdit = (props: any) => {
     });
   };
 
-  const data = {
-    user:
-      props?.data?.id || props?.data?.user === methods.getValues('user')
-        ? { value: props?.data?.user?.id, label: props?.data?.user?.name }
-        : methods.getValues('user'),
-    school:
-      props?.data?.id || props?.data?.school === methods.getValues('school')
-        ? { value: props?.data?.school?.id, label: props?.data?.school?.name }
-        : methods.getValues('school'),
-  };
-
   const auditInfo = {
     createdAt: props?.data?.id ? props?.data?.createdAt : null,
     updatedAt: props?.data?.id ? props?.data?.createdAt : null,
@@ -68,9 +71,8 @@ const AdministratorCreateEdit = (props: any) => {
     version: props?.data?.id ? props?.data?.version : null,
   };
 
-  const handleChange = (selected: any, name: any) => {
-    methods.setValue(name, selected.value);
-  };
+  const [school, setSchool] = useState(null);
+  const [user, setUser] = useState(null);
 
   return (
     <>
@@ -88,13 +90,15 @@ const AdministratorCreateEdit = (props: any) => {
                 <IntlMessages id="forms.user" />
               </Label>
               <Select
+                placeholder={<IntlMessages id="forms.select" />}    
+                {...methods.register('userId', { required: true })}
                 className="react-select"
-                classNamePrefix="react-select"
+                classNamePrefix="react-select"              
                 options={usersList}
-                name="userId"
-                value={data.user}
-                onChange={(e) => {
-                  return handleChange(e, 'userId');
+                value={user}
+                onChange={(selectedOption) => {
+                  methods.setValue('userId', selectedOption?.key);
+                  setUser(selectedOption);
                 }}
               />
             </div>
@@ -103,15 +107,17 @@ const AdministratorCreateEdit = (props: any) => {
                 <IntlMessages id="menu.school" />
               </Label>
               <Select
+                placeholder={<IntlMessages id="forms.select" />}    
+                {...methods.register('schoolId', { required: true })}
                 className="react-select"
                 classNamePrefix="react-select"
                 options={schoolsList}
-                name="schoolId"
-                value={data.school}
-                onChange={(e) => {
-                  return handleChange(e, 'schoolId');
+                value={school}
+                onChange={(selectedOption) => {
+                  methods.setValue('schoolId', selectedOption?.key);
+                  setSchool(selectedOption);
                 }}
-              />
+              />            
             </div>
           </ModalBody>
           {props?.data?.id ? (

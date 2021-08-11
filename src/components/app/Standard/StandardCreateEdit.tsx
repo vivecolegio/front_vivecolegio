@@ -22,8 +22,23 @@ const StandardCreateEdit = (props: any) => {
   useEffect(() => {
     getAsignatures();
     getCycles();
-    if (props?.data?.id) {
-      console.log(props?.data);
+    if (props?.data?.id) {    
+      if (props?.data?.generalAcademicAsignature !== undefined && props?.data?.generalAcademicAsignature != null) {
+        setAsignature({
+          key: props?.data?.generalAcademicAsignature?.id,
+          label: props?.data?.generalAcademicAsignature?.name,
+          value: props?.data?.generalAcademicAsignature?.id,
+        });
+      }
+      if (props?.data?.generalAcademicCycle !== undefined && props?.data?.generalAcademicCycle != null) {
+        setCycle({
+          key: props?.data?.generalAcademicCycle?.id,
+          label: props?.data?.generalAcademicCycle?.name,
+          value: props?.data?.generalAcademicCycle?.id,
+        });
+      }
+    } else {
+      methods.reset();
     }
     setLoading(false);
   }, [props?.data]);
@@ -86,9 +101,9 @@ const StandardCreateEdit = (props: any) => {
     version: props?.data?.id ? props?.data?.version : null,
   };
 
-  const handleChange = (selected: any, name: any) => {
-    methods.setValue(name, selected.value);
-  };
+  const [cycle, setCycle] = useState(null);
+
+  const [asignature, setAsignature] = useState(null);
 
   return (
     <>
@@ -136,30 +151,34 @@ const StandardCreateEdit = (props: any) => {
                 <IntlMessages id="menu.asignature" />
               </Label>
               <Select
+                placeholder={<IntlMessages id="forms.select" />}    
+                {...methods.register('generalAcademicAsignatureId', { required: true })}
                 className="react-select"
                 classNamePrefix="react-select"
                 options={asignaturesList}
-                name="generalAcademicAsignatureId"
-                value={data.generalAcademicAsignature}
-                onChange={(e) => {
-                  return handleChange(e, 'generalAcademicAsignatureId');
+                value={asignature}
+                onChange={(selectedOption) => {
+                  methods.setValue('generalAcademicAsignatureId', selectedOption?.key);
+                  setAsignature(selectedOption);
                 }}
-              />
+              />             
             </div>
             <div className="form-group">
               <Label>
                 <IntlMessages id="menu.cycleAcademic" />
               </Label>
               <Select
+                placeholder={<IntlMessages id="forms.select" />}    
+                {...methods.register('generalAcademicCycleId', { required: true })}
                 className="react-select"
                 classNamePrefix="react-select"
                 options={cyclesList}
-                name="generalAcademicCycleId"
-                value={data.generalAcademicCycle}
-                onChange={(e) => {
-                  return handleChange(e, 'generalAcademicCycleId');
+                value={cycle}
+                onChange={(selectedOption) => {
+                  methods.setValue('generalAcademicCycleId', selectedOption?.key);
+                  setCycle(selectedOption);
                 }}
-              />
+              /> 
             </div>
           </ModalBody>
           {props?.data?.id ? (

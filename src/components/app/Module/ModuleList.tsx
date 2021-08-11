@@ -79,6 +79,7 @@ const ModuleList = (props: any) => {
           <AddNewModal
             modalOpen={modalOpen}
             toggleModal={() => {
+              setData(null);
               return setModalOpen(!modalOpen);
             }}
             onSubmit={onSubmit}

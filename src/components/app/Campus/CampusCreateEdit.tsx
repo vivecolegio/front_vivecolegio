@@ -19,8 +19,16 @@ const CampusCreateEdit = (props: any) => {
 
   useEffect(() => {
     getAreas();
-    if (props?.data?.id) {
-      console.log(props?.data);
+    if (props?.data?.id) {    
+      if (props?.data?.school !== undefined && props?.data?.school != null) {
+        setSchool({
+          key: props?.data?.school?.id,
+          label: props?.data?.school?.name,
+          value: props?.data?.school?.id,
+        });
+      }
+    } else {
+      methods.reset();
     }
     setLoading(false);
   }, [props?.data]);
@@ -54,9 +62,7 @@ const CampusCreateEdit = (props: any) => {
     version: props?.data?.id ? props?.data?.version : null,
   };
 
-  const handleChange = (selected: any, name: any) => {
-    methods.setValue(name, selected.value);
-  };
+  const [school, setSchool] = useState(null);
 
   return (
     <>
@@ -84,13 +90,15 @@ const CampusCreateEdit = (props: any) => {
                 <IntlMessages id="menu.school" />
               </Label>
               <Select
+                placeholder={<IntlMessages id="forms.select" />}    
+                {...methods.register('schoolId', { required: true })}
                 className="react-select"
                 classNamePrefix="react-select"
                 options={schoolList}
-                name="schoolId"
-                value={data.school}
-                onChange={(e) => {
-                  return handleChange(e, 'schoolId');
+                value={school}
+                onChange={(selectedOption) => {
+                  methods.setValue('schoolId', selectedOption?.key);
+                  setSchool(selectedOption);
                 }}
               />
             </div>

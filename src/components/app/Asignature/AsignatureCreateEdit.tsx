@@ -19,8 +19,16 @@ const AsignatureCreateEdit = (props: any) => {
 
   useEffect(() => {
     getAreas();
-    if (props?.data?.id) {
-      console.log(props?.data);
+    if (props?.data?.id) {    
+      if (props?.data?.generalAcademicArea !== undefined && props?.data?.generalAcademicArea != null) {
+        setArea({
+          key: props?.data?.generalAcademicArea?.id,
+          label: props?.data?.generalAcademicArea?.name,
+          value: props?.data?.generalAcademicArea?.id,
+        });
+      }     
+    } else {
+      methods.reset();
     }
     setLoading(false);
   }, [props?.data]);
@@ -58,9 +66,7 @@ const AsignatureCreateEdit = (props: any) => {
     version: props?.data?.id ? props?.data?.version : null,
   };
 
-  const handleChange = (selected: any, name: any) => {
-    methods.setValue(name, selected.value);
-  };
+  const [area, setArea] = useState(null);
 
   return (
     <>
@@ -88,13 +94,15 @@ const AsignatureCreateEdit = (props: any) => {
                 <IntlMessages id="menu.area" />
               </Label>
               <Select
+                placeholder={<IntlMessages id="forms.select" />}    
+                {...methods.register('generalAcademicAreaId', { required: true })}
                 className="react-select"
                 classNamePrefix="react-select"
                 options={areasList}
-                name="generalAcademicAreaId"
-                value={data.generalAcademicArea}
-                onChange={(e) => {
-                  return handleChange(e, 'generalAcademicAreaId');
+                value={area}
+                onChange={(selectedOption) => {
+                  methods.setValue('generalAcademicAreaId', selectedOption?.key);
+                  setArea(selectedOption);
                 }}
               />
             </div>

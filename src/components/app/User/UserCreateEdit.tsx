@@ -1,12 +1,12 @@
 import { DevTool } from '@hookform/devtools';
 import React, { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import { useFormContext } from 'react-hook-form';
 import Loader from 'react-loader-spinner';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
-
 // import CustomSelectInput from 'components/common/CustomSelectInput';
 import { loaderColor, loaderIcon } from '../../../constants/defaultValues';
 import IntlMessages from '../../../helpers/IntlMessages';
@@ -16,8 +16,6 @@ import * as RoleActions from '../../../stores/actions/RoleActions';
 import * as UserActions from '../../../stores/actions/UserActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import CreateEditAuditInformation from '../../common/Data/CreateEditAuditInformation';
-
-import 'react-datepicker/dist/react-datepicker.css';
 
 const UserCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
@@ -56,7 +54,7 @@ const UserCreateEdit = (props: any) => {
           value: props?.data?.documentType?.id,
         });
       }
-    } else{
+    } else {
       methods.reset();
     }
     setLoading(false);
@@ -129,11 +127,6 @@ const UserCreateEdit = (props: any) => {
     version: props?.data?.id ? props?.data?.version : null,
   };
 
-  const handleChange = (selected: any, name: any) => {
-    methods.setValue(name, selected.value ? selected.value : selected);
-    console.log(methods.getValues());
-  };
-
   const [birtdate, setBirtdate] = useState(null);
 
   const [role, setRole] = useState(null);
@@ -144,7 +137,7 @@ const UserCreateEdit = (props: any) => {
 
   return (
     <>
-      <DevTool control={methods.control} placement="top-left"/>
+      <DevTool control={methods.control} placement="top-left" />
       {loading ? (
         <>
           <Colxx sm={12} className="d-flex justify-content-center">
@@ -212,6 +205,7 @@ const UserCreateEdit = (props: any) => {
                 <IntlMessages id="forms.role" />
               </Label>
               <Select
+                placeholder={<IntlMessages id="forms.select" />}    
                 {...methods.register('roleId', { required: true })}
                 className="react-select"
                 classNamePrefix="react-select"
@@ -228,6 +222,7 @@ const UserCreateEdit = (props: any) => {
                 <IntlMessages id="forms.gender" />
               </Label>
               <Select
+                placeholder={<IntlMessages id="forms.select" />}    
                 {...methods.register('genderId', { required: true })}
                 className="react-select"
                 classNamePrefix="react-select"
@@ -244,6 +239,7 @@ const UserCreateEdit = (props: any) => {
                 <IntlMessages id="forms.documentType" />
               </Label>
               <Select
+                placeholder={<IntlMessages id="forms.select" />}    
                 {...methods.register('documentTypeId', { required: true })}
                 className="react-select"
                 classNamePrefix="react-select"
@@ -260,7 +256,7 @@ const UserCreateEdit = (props: any) => {
                 <IntlMessages id="forms.documentNumber" />
               </Label>
               <Input
-                {...methods.register('documentNumber')}
+                {...methods.register('documentNumber', { required: true })}
                 name="documentNumber"
                 defaultValue={data.documentNumber}
               />

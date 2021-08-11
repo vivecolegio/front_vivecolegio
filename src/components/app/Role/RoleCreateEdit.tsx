@@ -88,17 +88,19 @@ const RoleCreateEdit = (props: any) => {
                 <IntlMessages id="forms.menu" />
               </Label>
               <InputGroup>
-                <Select
+              <div style={{ width: '85%' }}>
+                <Select         
+                  placeholder={<IntlMessages id="forms.select" />}                                     
                   className="react-select"
                   classNamePrefix="react-select"
                   options={menuList}
                   name="menuId"
-                  onChange={(e) => {
-                    console.log(menuSelected);
+                  onChange={(e) => {               
                     return setMenuSelected(e);
                   }}
                 />
-                <InputGroupAddon addonType="prepend">
+                </div>
+                <InputGroupAddon addonType="prepend" >
                   <Button
                     onClick={() => {
                       return setRolesMenus(

@@ -157,6 +157,7 @@ const esMessages = {
   'forms.description': 'Descripción',
   'forms.menu': 'Menú',
   'forms.add': 'Añadir',
+  'forms.select': 'Seleccionar',
 };
 
 export default esMessages;

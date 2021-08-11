@@ -16,6 +16,8 @@ export const QUERY_GET_ALL_ADMINISTRATOR = gql`
             id
             name
             lastName
+            email
+            phone
           }
         }
       }
@@ -38,6 +40,8 @@ export const QUERY_GET_ADMINISTRATOR = gql`
         id
         name
         lastName
+        email
+        phone
       } 
       version
       createdAt

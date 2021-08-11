@@ -26,10 +26,31 @@ const StudentCreateEdit = (props: any) => {
     getUsersList();
     getSchoolsList();
     getCampusList();
-    if (props?.data?.id) {
-      console.log(props?.data);
+    if (props?.data?.id) {    
+      if (props?.data?.user !== undefined && props?.data?.user != null) {
+        setUser({
+          key: props?.data?.user?.id,
+          label: props?.data?.user?.name,
+          value: props?.data?.user?.id,
+        });
+      }
+      if (props?.data?.school !== undefined && props?.data?.school != null) {
+        setSchool({
+          key: props?.data?.school?.id,
+          label: props?.data?.school?.name,
+          value: props?.data?.school?.id,
+        });
+      }
+      if (props?.data?.campus !== undefined && props?.data?.campus != null) {
+        setCampus({
+          key: props?.data?.campus.id,
+          label: props?.data?.campus.name,
+          value: props?.data?.campus.id,
+        });
+      }
+    } else {
+      methods.reset();
     }
-    console.log(usersList, 'users');
     setLoading(false);
   }, [props?.data]);
 
@@ -84,9 +105,11 @@ const StudentCreateEdit = (props: any) => {
     version: props?.data?.id ? props?.data?.version : null,
   };
 
-  const handleChange = (selected: any, name: any) => {
-    methods.setValue(name, selected.value);
-  };
+  const [user, setUser] = useState(null);
+
+  const [school, setSchool] = useState(null);
+
+  const [campus, setCampus] = useState(null);
 
   return (
     <>
@@ -104,14 +127,15 @@ const StudentCreateEdit = (props: any) => {
                 <IntlMessages id="forms.user" />
               </Label>
               <Select
-                // components={{ Input: CustomSelectInput }}
+                placeholder={<IntlMessages id="forms.select" />}    
+                {...methods.register('userId', { required: true })}
                 className="react-select"
                 classNamePrefix="react-select"
                 options={usersList}
-                name="userId"
-                value={data.user}
-                onChange={(e) => {
-                  return handleChange(e, 'userId');
+                value={user}
+                onChange={(selectedOption) => {
+                  methods.setValue('userId', selectedOption?.key);
+                  setUser(selectedOption);
                 }}
               />
             </div>
@@ -120,14 +144,15 @@ const StudentCreateEdit = (props: any) => {
                 <IntlMessages id="menu.school" />
               </Label>
               <Select
-                // components={{ Input: CustomSelectInput }}
+               placeholder={<IntlMessages id="forms.select" />}    
+                {...methods.register('schoolId', { required: true })}
                 className="react-select"
                 classNamePrefix="react-select"
                 options={schoolsList}
-                name="schoolId"
-                value={data.school}
-                onChange={(e) => {
-                  return handleChange(e, 'schoolId');
+                value={school}
+                onChange={(selectedOption) => {
+                  methods.setValue('schoolId', selectedOption?.key);
+                  setSchool(selectedOption);
                 }}
               />
             </div>
@@ -136,14 +161,15 @@ const StudentCreateEdit = (props: any) => {
                 <IntlMessages id="menu.campus" />
               </Label>
               <Select
-                // components={{ Input: CustomSelectInput }}
+                placeholder={<IntlMessages id="forms.select" />}    
+                {...methods.register('campusId', { required: true })}
                 className="react-select"
                 classNamePrefix="react-select"
                 options={campusList}
-                name="campusId"
-                value={data.campus}
-                onChange={(e) => {
-                  return handleChange(e, 'campusId');
+                value={campus}
+                onChange={(selectedOption) => {
+                  methods.setValue('campusId', selectedOption?.key);
+                  setCampus(selectedOption);
                 }}
               />
             </div>
