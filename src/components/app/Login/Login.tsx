@@ -35,15 +35,11 @@ const Login = (props: any) => {
   return (
     <>
       <div className="position-relative image-side ">
-        <p className="text-white h2">MAGIC IS IN THE DETAILS</p>
+        <p className="text-white h2">VIVE COLEGIO 2.0</p>
         <p className="white mb-0">
-          Please use your credentials to login.
+          Una plataforma orientada a promover
           <br />
-          If you are not a member, please{' '}
-          <NavLink to="/register" className="white">
-            register
-          </NavLink>
-          .
+          el uso de la tecnología en el ámbito académico.        
         </p>
       </div>
       <div className="form-side">

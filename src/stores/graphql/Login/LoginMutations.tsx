@@ -10,6 +10,19 @@ export const MUTATION_LOGIN = gql`
         id
         name
       }
+      roleMenus {
+        id
+        menu {
+          id
+          name
+          icon
+          menuItems {
+            id
+            name
+            icon
+          }
+        }
+      }
     }
   }
 `;

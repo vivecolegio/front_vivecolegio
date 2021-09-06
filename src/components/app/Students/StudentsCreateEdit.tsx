@@ -82,21 +82,6 @@ const StudentCreateEdit = (props: any) => {
     });
   };
 
-  const data = {
-    user:
-      props?.data?.id || props?.data?.user === methods.getValues('user')
-        ? { value: props?.data?.user?.id, label: props?.data?.user?.name }
-        : methods.getValues('user'),
-    school:
-      props?.data?.id || props?.data?.school === methods.getValues('school')
-        ? { value: props?.data?.school?.id, label: props?.data?.school?.name }
-        : methods.getValues('school'),
-    campus:
-      props?.data?.id || props?.data?.campus === methods.getValues('campus')
-        ? { value: props?.data?.campus?.id, label: props?.data?.campus?.name }
-        : methods.getValues('campus'),
-  };
-
   const auditInfo = {
     createdAt: props?.data?.id ? props?.data?.createdAt : null,
     updatedAt: props?.data?.id ? props?.data?.createdAt : null,

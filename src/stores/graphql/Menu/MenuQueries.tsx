@@ -33,6 +33,7 @@ export const QUERY_GET_MENU = gql`
       menuItems {
         id
         name
+        icon
       }
       createdAt
       updatedAt

@@ -53,6 +53,45 @@ const data = [
     ],
   },
   {
+    id: 'general',
+    icon: 'iconsminds-notepad',
+    label: 'menu.general',
+    to: `${adminRoot}/general`,
+    newWindow: false,
+    subs: [
+      {
+        icon: 'iconsminds-books',
+        label: 'menu.area',
+        to: `/general/areas`,
+      },
+      {
+        icon: 'iconsminds-book',
+        label: 'menu.asignature',
+        to: `/general/asignatures`,
+      },
+      {
+        icon: 'iconsminds-bookmark',
+        label: 'menu.cycleAcademic',
+        to: `/general/cycles`,
+      },
+      {
+        icon: 'iconsminds-idea-2',
+        label: 'menu.standardAcademic',
+        to: `/general/standardAcademic`,
+      },
+      {
+        icon: 'iconsminds-diploma-2',
+        label: 'menu.performanceLevel',
+        to: `/general/performanceLevel`,
+      },     
+      {
+        icon: 'iconsminds-medal',
+        label: 'menu.grade',
+        to: `/general/grades`,
+      },     
+    ],
+  },
+  {
     id: 'academic',
     icon: 'iconsminds-notepad',
     label: 'menu.academic',
@@ -68,12 +107,7 @@ const data = [
         icon: 'iconsminds-book',
         label: 'menu.asignature',
         to: `/asignatures`,
-      },
-      {
-        icon: 'iconsminds-bookmark',
-        label: 'menu.cycleAcademic',
-        to: `/cycles`,
-      },
+      },      
       {
         icon: 'iconsminds-idea-2',
         label: 'menu.standardAcademic',
@@ -88,6 +122,46 @@ const data = [
         icon: 'iconsminds-medal',
         label: 'menu.grade',
         to: `/grades`,
+      },     
+      {
+        icon: 'iconsminds-dashboard',
+        label: 'menu.educationLevel',
+        to: `/educationLevel`,
+      },     
+      {
+        icon: 'iconsminds-brain',
+        label: 'menu.evaluativeComponent',
+        to: `/evaluativeComponent`,
+      },     
+      {
+        icon: 'iconsminds-cloud-sun',
+        label: 'menu.modality',
+        to: `/modality`,
+      },     
+      {
+        icon: 'iconsminds-letter-close',
+        label: 'menu.speciality',
+        to: `/speciality`,
+      },     
+      {
+        icon: 'iconsminds-calendar-4',
+        label: 'menu.schoolYear',
+        to: `/schoolYear`,
+      },     
+      {
+        icon: 'iconsminds-calendar-1',
+        label: 'menu.periodAcademic',
+        to: `/periodAcademic`,
+      },     
+      {
+        icon: 'iconsminds-line-chart-1',
+        label: 'menu.indicatorAcademic',
+        to: `/indicatorAcademic`,
+      },     
+      {
+        icon: 'iconsminds-line-chart-1',
+        label: 'forms.gradeAssignment',
+        to: `/gradeAssignment`,
       },     
     ],
   },
@@ -105,8 +179,18 @@ const data = [
       },
       {
         icon: 'iconsminds-business-man-woman',
-        label: 'menu.administrators',
+        label: 'menu.administratorsSchool',
         to: `/administratorsSchool`,
+      },     
+      {
+        icon: 'iconsminds-network',
+        label: 'menu.administratorsCampus',
+        to: `/administratorsCampus`,
+      },     
+      {
+        icon: 'iconsminds-network',
+        label: 'menu.coordinatorsCampus',
+        to: `/coordinatorsCampus`,
       },     
     ],
   },

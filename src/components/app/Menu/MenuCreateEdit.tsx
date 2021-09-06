@@ -22,31 +22,34 @@ import Icons from '../../common/Data/Icon/Icons';
 
 const MenuCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
-  const [modulesList, setModulesList] = useState(null);
+  const [menuItems, setMenuItems] = useState(null);
   const [modalOpen, setModalIcon] = useState(false);
   const [icon, setIcon] = useState();
 
   const methods = useFormContext();
 
   useEffect(() => {
-    getModuleList();
+    // getModuleList();
     if (props?.data?.id) {
       if (props?.data?.icon !== undefined && props?.data?.icon != null) {
         setIcon(props?.data?.icon);
+      } 
+      if (props?.data?.menuItems !== undefined && props?.data?.menuItems != null) {
+        setMenuItems(props?.data?.menuItems)
       } 
     }
     setLoading(false);
   }, [props?.data]);
 
-  const getModuleList = async () => {
-    props.getListAllModule().then((listData: any) => {
-      setModulesList(
-        listData.map((c: any) => {
-          return { label: c.node.name, value: c.node.id, key: c.node.id };
-        }),
-      );
-    });
-  };
+  // const getModuleList = async () => {
+  //   props.getListAllModule().then((listData: any) => {
+  //     setModulesList(
+  //       listData.map((c: any) => {
+  //         return { label: c.node.name, value: c.node.id, key: c.node.id };
+  //       }),
+  //     );
+  //   });
+  // };
 
   const data = {
     name:
@@ -159,14 +162,14 @@ const MenuCreateEdit = (props: any) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {modulesList ? (
-                    modulesList.map((c: any) => {
+                  {menuItems ? (
+                    menuItems.map((c: any) => {
                       return (
                         <>
                           <tr>                                                    
                             <th key={c.name}>
-                            <i className="font-20 text-info iconsminds-network mr-2" />  
-                              {c.label}
+                            <i className={ `font-20 text-info mr-2 ${c.icon}` } />  
+                              {c.name}
                               </th>
                           </tr>
                         </>

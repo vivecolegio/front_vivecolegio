@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
 import { COLUMN_LIST } from '../../../constants/Student/studentConstants';
-import * as roleActions from '../../../stores/actions/StudentActions';
+import * as studentActions from '../../../stores/actions/StudentActions';
 import AddNewModal from '../../common/Data/AddNewModal';
 import DataList from '../../common/Data/DataList';
 import StudentCreateEdit from './StudentsCreateEdit';
@@ -106,7 +106,7 @@ const StudentList = (props: any) => {
     </>
   );
 };
-const mapDispatchToProps = { ...roleActions };
+const mapDispatchToProps = { ...studentActions };
 
 const mapStateToProps = () => {
   return {};

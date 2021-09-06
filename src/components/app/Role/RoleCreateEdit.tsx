@@ -31,8 +31,12 @@ const RoleCreateEdit = (props: any) => {
 
   useEffect(() => {
     getMenuList();
-    if (props?.data?.id) {
-      console.log(props?.data);
+    if (props?.data?.id) {  
+      if (props?.data?.roleMenus !== undefined && props?.data?.roleMenus != null) {
+        setRolesMenus(props?.data?.roleMenus);
+      }
+    } else {
+      methods.reset();
     }
     setLoading(false);
   }, [props?.data]);
@@ -62,6 +66,15 @@ const RoleCreateEdit = (props: any) => {
     updatedByUser: props?.data?.id ? props?.data?.updatedByUser : null,
     version: props?.data?.id ? props?.data?.version : null,
   };
+
+
+  const handleCheckChange = (event: any, item: any, field: string) => {
+    console.log(event.target.value)
+    console.log(item)
+    item[field] = event.target.value;
+    
+  }
+
   return (
     <>
       {loading ? (
@@ -153,15 +166,15 @@ const RoleCreateEdit = (props: any) => {
                           <tr>
                             <th key={c?.menu?.key}>                           
                               <i className={` font-20 text-info mr-2 ${c?.menu?.icon}`} />
-                              {c?.menu?.label}
+                              {c?.menu?.name}
                             </th>
                             <th className="text-center" key={c?.menu?.key}>
                               <CustomInput
                                 className="itemCheck mb-0"
                                 type="checkbox"
                                 id={`check_read${c?.menu?.key}`}
-                                // checked={isSelected}
-                                // onChange={(event) => handleCheckChange(event, item.id)}
+                                defaultChecked={c.readAction}
+                                onChange={(event) => {return handleCheckChange(event, c, 'readAction')}}
                                 label=""
                               />
                             </th>
@@ -170,7 +183,7 @@ const RoleCreateEdit = (props: any) => {
                                 className="itemCheck mb-0"
                                 type="checkbox"
                                 id={`check_create${c?.menu?.key}`}
-                                // checked={isSelected}
+                                checked={c.createAction}
                                 // onChange={(event) => handleCheckChange(event, item.id)}
                                 label=""
                               />
@@ -180,7 +193,7 @@ const RoleCreateEdit = (props: any) => {
                                 className="itemCheck mb-0"
                                 type="checkbox"
                                 id={`check_edit${c?.menu?.key}`}
-                                // checked={isSelected}
+                                checked={c.updateAction}
                                 // onChange={(event) => handleCheckChange(event, item.id)}
                                 label=""
                               />
@@ -190,7 +203,7 @@ const RoleCreateEdit = (props: any) => {
                                 className="itemCheck mb-0"
                                 type="checkbox"
                                 id={`check_delete${c?.menu?.key}`}
-                                // checked={isSelected}
+                                checked={c.deleteAction}
                                 // onChange={(event) => handleCheckChange(event, item.id)}
                                 label=""
                               />
@@ -200,7 +213,7 @@ const RoleCreateEdit = (props: any) => {
                                 className="itemCheck mb-0"
                                 type="checkbox"
                                 id={`check_activate${c?.menu?.key}`}
-                                // checked={isSelected}
+                                checked={c.activateAction}
                                 // onChange={(event) => handleCheckChange(event, item.id)}
                                 label=""
                               />
@@ -210,7 +223,7 @@ const RoleCreateEdit = (props: any) => {
                                 className="itemCheck mb-0"
                                 type="checkbox"
                                 id={`check_inactive${c?.menu?.key}`}
-                                // checked={isSelected}
+                                checked={c.inactiveAction}
                                 // onChange={(event) => handleCheckChange(event, item.id)}
                                 label=""
                               />
@@ -220,7 +233,7 @@ const RoleCreateEdit = (props: any) => {
                                 className="itemCheck mb-0"
                                 type="checkbox"
                                 id={`check_full${c?.menu?.key}`}
-                                // checked={isSelected}
+                                checked={c.fullAction}
                                 // onChange={(event) => handleCheckChange(event, item.id)}
                                 label=""
                               />

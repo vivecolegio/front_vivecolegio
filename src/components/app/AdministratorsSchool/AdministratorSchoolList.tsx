@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
 import { COLUMN_LIST } from '../../../constants/AdministratorSchool/administratorSchoolConstants';
-import * as roleActions from '../../../stores/actions/AdministratorSchoolActions';
+import * as administratorSchoolActions from '../../../stores/actions/AdministratorSchoolActions';
 import AddNewModal from '../../common/Data/AddNewModal';
 import DataList from '../../common/Data/DataList';
 import AdministratorCreateEdit from './AdministratorSchoolCreateEdit';
 
-const AdministratorList = (props: any) => {
+const AdministratorSchoolList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
   const [columns, setColumns] = useState(COLUMN_LIST);
   const [modalOpen, setModalOpen] = useState(false);
@@ -105,10 +105,10 @@ const AdministratorList = (props: any) => {
     </>
   );
 };
-const mapDispatchToProps = { ...roleActions };
+const mapDispatchToProps = { ...administratorSchoolActions };
 
 const mapStateToProps = () => {
   return {};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AdministratorList);
+export default connect(mapStateToProps, mapDispatchToProps)(AdministratorSchoolList);

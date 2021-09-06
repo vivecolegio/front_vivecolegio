@@ -1,0 +1,47 @@
+import { gql } from '@apollo/client';
+
+export const QUERY_GET_ALL_SPECIALITY = gql`
+  query getAllSpecialty {
+    data: getAllSpecialty(orderCreated: true, allData: true) {
+      edges {
+        cursor
+        node {
+          id
+          name  
+          code       
+          active          
+        }
+      }
+      totalCount
+    }
+  }
+`;
+
+export const QUERY_GET_SPECIALITY = gql`
+  query getSpecialty($id: String!) {
+    data: getSpecialty(id: $id) {
+      id
+      name     
+      code    
+      version
+      modalityId
+      modality {
+        id
+        name
+      }
+      schoolId
+      school {
+        id
+        name
+      }
+      createdAt
+      updatedAt
+      createdByUser {
+        name
+      }
+      updatedByUser {
+        name
+      }
+    }
+  }
+`;

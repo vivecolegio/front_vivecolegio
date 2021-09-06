@@ -21,6 +21,26 @@ export const QUERY_GET_ROLE = gql`
     data: getRole(id: $id) {
       id
       name
+      roleMenus {
+        id
+        createAction         
+        deleteAction         
+        updateAction         
+        readAction         
+        fullAccess         
+        activateAction         
+        inactiveAction
+        menu {
+          id
+          name
+          icon
+          menuItems {
+            id
+            name
+            icon
+          }
+        }
+      }
       version
       createdAt
       updatedAt

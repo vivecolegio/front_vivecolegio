@@ -13,7 +13,7 @@ import * as UserActions from '../../../stores/actions/UserActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import CreateEditAuditInformation from '../../common/Data/CreateEditAuditInformation';
 
-const AdministratorCreateEdit = (props: any) => {
+const AdministratorSchoolCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
   const [usersList, setUsersList] = useState(null);
   const [schoolsList, setSchoolsList] = useState(null);
@@ -139,4 +139,4 @@ const mapStateToProps = () => {
   return {};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AdministratorCreateEdit);
+export default connect(mapStateToProps, mapDispatchToProps)(AdministratorSchoolCreateEdit);
