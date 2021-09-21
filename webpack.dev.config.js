@@ -17,7 +17,7 @@ module.exports = {
     // contentBase: path.resolve(__dirname, 'dist'),
     open: true,
     port: 80,
-    hotOnly: true,
+    // hotOnly: true,
   },
   optimization: {
     concatenateModules: false,
