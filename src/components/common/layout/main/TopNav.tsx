@@ -166,7 +166,7 @@ const TopNav = (props: any) => {
     props.setContainerClassnames(
       ++menuClickCount,
       containerClassnames,
-      props.MenuReducer.selectedMenuHasSubItems,
+      props.menuReducer.selectedMenuHasSubItems,
     );
   };
 
@@ -185,8 +185,8 @@ const TopNav = (props: any) => {
             onClick={(e) =>
               {return menuButtonClick(
                 e,
-                props.MenuReducer.menuClickCount,
-                props.MenuReducer.containerClassnames,
+                props.menuReducer.menuClickCount,
+                props.menuReducer.containerClassnames,
               )}
             }
           >
@@ -196,7 +196,7 @@ const TopNav = (props: any) => {
             to="#"
             className="menu-button-mobile d-xs-block d-sm-block d-md-none"
             onClick={(e) =>
-              {return mobileMenuButtonClick(e, props.MenuReducer.containerClassnames)}
+              {return mobileMenuButtonClick(e, props.menuReducer.containerClassnames)}
             }
           >
             <MobileMenuIcon />
@@ -303,8 +303,8 @@ const mapDispatchToProps = {
   ...MenuActions,
 };
 
-const mapStateToProps = ({ translateReducer, loginReducer, MenuReducer }: any) => {
-  return { loginReducer, translateReducer, MenuReducer };
+const mapStateToProps = ({ translateReducer, loginReducer, menuReducer }: any) => {
+  return { loginReducer, translateReducer, menuReducer };
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(TopNav));

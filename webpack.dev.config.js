@@ -13,12 +13,11 @@ module.exports = {
     chunkFilename: 'js/[id].[chunkhash].js',
   },
   devServer: {
-    publicPath: '/',
-    contentBase: path.resolve(__dirname, 'dist'),
+    // publicPath: '/',
+    // contentBase: path.resolve(__dirname, 'dist'),
     open: true,
     port: 80,
-    hot: true,
-    // hotOnly: true,
+    hotOnly: true,
   },
   optimization: {
     concatenateModules: false,
@@ -52,6 +51,7 @@ module.exports = {
         use: ['style-loader', 'css-loader'],
       },
       {
+        dependency: { not: ['url'] },
         test: /\.jpg|png|gif|woff|eot|ttf|svg|mp4|webm$/,
         use: {
           loader: 'file-loader',
