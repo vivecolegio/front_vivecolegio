@@ -31,7 +31,7 @@ const RoleCreateEdit = (props: any) => {
 
   useEffect(() => {
     getMenuList();
-    if (props?.data?.id) {  
+    if (props?.data?.id) {
       if (props?.data?.roleMenus !== undefined && props?.data?.roleMenus != null) {
         setRolesMenus(props?.data?.roleMenus);
       }
@@ -67,13 +67,41 @@ const RoleCreateEdit = (props: any) => {
     version: props?.data?.id ? props?.data?.version : null,
   };
 
+  const handleCheckChange = (item: any, field: string) => {
+    const newItem: any = {};
+    newItem[field] = !item[field];
+    updateRoleMenuRow(newItem, item.id);
+  };
 
-  const handleCheckChange = (event: any, item: any, field: string) => {
-    console.log(event.target.value)
-    console.log(item)
-    item[field] = event.target.value;
-    
-  }
+  const handleAddRoleMenu = (item: any) => {
+    const dataNewRoleMenu = {
+      menuId: item.key,
+      roleId: props?.data?.id,
+    };
+    saveRoleMenuRow(dataNewRoleMenu);
+  };
+
+  const updateRoleMenuRow = async (dataRoleMenu: any, idRolMenu: any) => {
+    await props.updateRoleMenu(dataRoleMenu, idRolMenu).then((id: any) => {
+      if (id !== undefined) {
+        getMenuList();
+      }
+    });
+  };
+
+  const saveRoleMenuRow = async (dataRoleMenu: any) => {
+    await props.saveNewRoleMenu(dataRoleMenu).then((id: any) => {
+      if (id !== undefined) {
+        viewEditData(props?.data?.id);
+      }
+    });
+  };
+
+  const viewEditData = async (id: any) => {
+    await props.dataRole(id).then((formData: any) => {
+      setRolesMenus(formData?.data?.roleMenus);
+    });
+  };
 
   return (
     <>
@@ -101,28 +129,25 @@ const RoleCreateEdit = (props: any) => {
                 <IntlMessages id="forms.menu" />
               </Label>
               <InputGroup>
-              <div style={{ width: '85%' }}>
-                <Select         
-                  placeholder={<IntlMessages id="forms.select" />}                                     
-                  className="react-select"
-                  classNamePrefix="react-select"
-                  options={menuList}
-                  name="menuId"
-                  onChange={(e) => {               
-                    return setMenuSelected(e);
-                  }}
-                />
+                <div style={{ width: '85%' }}>
+                  <Select
+                    placeholder={<IntlMessages id="forms.select" />}
+                    className="react-select"
+                    classNamePrefix="react-select"
+                    options={menuList}
+                    name="menuId"
+                    onChange={(e) => {
+                      return setMenuSelected(e);
+                    }}
+                  />
                 </div>
-                <InputGroupAddon addonType="prepend" >
+                <InputGroupAddon addonType="prepend">
                   <Button
                     onClick={() => {
-                      return setRolesMenus(
-                        { ...rolesMenus, ...{ menu:menuSelected } },
-                    );
+                      return handleAddRoleMenu(menuSelected);
                     }}
                     color="primary"
-                    size="xs"
-                  >
+                    size="xs">
                     <IntlMessages id="forms.add" />
                   </Button>
                 </InputGroupAddon>
@@ -164,77 +189,91 @@ const RoleCreateEdit = (props: any) => {
                       return (
                         <>
                           <tr>
-                            <th key={c?.menu?.key}>                           
+                            <th key={c?.menu?.id}>
                               <i className={` font-20 text-info mr-2 ${c?.menu?.icon}`} />
                               {c?.menu?.name}
                             </th>
-                            <th className="text-center" key={c?.menu?.key}>
+                            <th className="text-center" key={`check_read${c?.menu?.id}`}>
                               <CustomInput
                                 className="itemCheck mb-0"
                                 type="checkbox"
-                                id={`check_read${c?.menu?.key}`}
+                                id={`check_read${c?.menu?.id}`}
                                 defaultChecked={c.readAction}
-                                onChange={(event) => {return handleCheckChange(event, c, 'readAction')}}
+                                onChange={() => {
+                                  return handleCheckChange(c, 'readAction');
+                                }}
                                 label=""
-                              />
+                              />                              
                             </th>
-                            <th className="text-center" key={c?.menu?.key}>
+                            <th className="text-center" key={`check_create${c?.menu?.id}`}>
                               <CustomInput
                                 className="itemCheck mb-0"
                                 type="checkbox"
-                                id={`check_create${c?.menu?.key}`}
-                                checked={c.createAction}
-                                // onChange={(event) => handleCheckChange(event, item.id)}
+                                id={`check_create${c?.menu?.id}`}
+                                defaultChecked={c.createAction}
+                                onChange={() => {
+                                  return handleCheckChange(c, 'createAction');
+                                }}
                                 label=""
                               />
                             </th>
-                            <th className="text-center" key={c?.menu?.key}>
+                            <th className="text-center" key={`check_update${c?.menu?.id}`}>
                               <CustomInput
                                 className="itemCheck mb-0"
                                 type="checkbox"
-                                id={`check_edit${c?.menu?.key}`}
-                                checked={c.updateAction}
-                                // onChange={(event) => handleCheckChange(event, item.id)}
+                                id={`check_update${c?.menu?.id}`}
+                                defaultChecked={c.updateAction}
+                                onChange={() => {
+                                  return handleCheckChange(c, 'updateAction');
+                                }}
                                 label=""
                               />
                             </th>
-                            <th className="text-center" key={c?.menu?.key}>
+                            <th className="text-center" key={`check_delete${c?.menu?.id}`}>
                               <CustomInput
                                 className="itemCheck mb-0"
                                 type="checkbox"
-                                id={`check_delete${c?.menu?.key}`}
-                                checked={c.deleteAction}
-                                // onChange={(event) => handleCheckChange(event, item.id)}
+                                id={`check_delete${c?.menu?.id}`}
+                                defaultChecked={c.deleteAction}
+                                onChange={() => {
+                                  return handleCheckChange(c, 'deleteAction');
+                                }}
                                 label=""
                               />
                             </th>
-                            <th className="text-center" key={c?.menu?.key}>
+                            <th className="text-center" key={`check_activate${c?.menu?.id}`}>
                               <CustomInput
                                 className="itemCheck mb-0"
                                 type="checkbox"
-                                id={`check_activate${c?.menu?.key}`}
-                                checked={c.activateAction}
-                                // onChange={(event) => handleCheckChange(event, item.id)}
+                                id={`check_activate${c?.menu?.id}`}
+                                defaultChecked={c.activateAction}
+                                onChange={() => {
+                                  return handleCheckChange(c, 'activateAction');
+                                }}
                                 label=""
                               />
                             </th>
-                            <th className="text-center" key={c?.menu?.key}>
+                            <th className="text-center" key={`check_inactive${c?.menu?.id}`}>
                               <CustomInput
                                 className="itemCheck mb-0"
                                 type="checkbox"
-                                id={`check_inactive${c?.menu?.key}`}
-                                checked={c.inactiveAction}
-                                // onChange={(event) => handleCheckChange(event, item.id)}
+                                id={`check_inactive${c?.menu?.id}`}
+                                defaultChecked={c.inactiveAction}
+                                onChange={() => {
+                                  return handleCheckChange(c, 'inactiveAction');
+                                }}
                                 label=""
                               />
                             </th>
-                            <th className="text-center" key={c?.menu?.key}>
+                            <th className="text-center" key={`check_fullAccess${c?.menu?.id}`}>
                               <CustomInput
                                 className="itemCheck mb-0"
                                 type="checkbox"
-                                id={`check_full${c?.menu?.key}`}
-                                checked={c.fullAction}
-                                // onChange={(event) => handleCheckChange(event, item.id)}
+                                id={`check_fullAccess${c?.menu?.id}`}
+                                defaultChecked={c.fullAccess}
+                                onChange={() => {
+                                  return handleCheckChange(c, 'fullAccess');
+                                }}
                                 label=""
                               />
                             </th>

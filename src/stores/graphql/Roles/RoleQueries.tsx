@@ -38,6 +38,9 @@ export const QUERY_GET_ROLE = gql`
             id
             name
             icon
+            module {
+              url
+            }
           }
         }
       }

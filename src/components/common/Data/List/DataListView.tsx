@@ -39,8 +39,7 @@ const DataListView = ({
                   size="xs"
                   onClick={() => {
                     return viewEditData(item.id);
-                  }}
-                >
+                  }}>
                   <i className="simple-icon-eye" />            
                 </Button>{' '}
                 <Button

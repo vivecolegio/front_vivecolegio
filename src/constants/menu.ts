@@ -213,31 +213,6 @@ const data = [
       },     
     ],
   },
-  // {
-  //   id: 'secondmenu',
-  //   icon: 'iconsminds-three-arrow-fork',
-  //   label: 'menu.second-menu',
-  //   to: `${adminRoot}/second-menu`,
-  //   subs: [
-  //     {
-  //       icon: 'simple-icon-paper-plane',
-  //       label: 'menu.second',
-  //       to: `${adminRoot}/second-menu/second`,
-  //     },
-  //   ],
-  // },
-  // {
-  //   id: 'blankpage',
-  //   icon: 'iconsminds-bucket',
-  //   label: 'menu.blank-page',
-  //   to: `${adminRoot}/blank-page`,
-  // },
-  // {
-  //   id: 'docs',
-  //   icon: 'iconsminds-library',
-  //   label: 'menu.docs',
-  //   to: 'https://gogo-react-docs.coloredstrategies.com/',
-  //   newWindow: true,
-  // },
+
 ];
 export default data;

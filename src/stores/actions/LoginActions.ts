@@ -19,11 +19,13 @@ export const login = (user: any) => {
           data = result.data;
           if(data !=null){
             localStorage.setItem('token', data.data.jwt);
+            console.log(data.data.roleMenus, 'RTA MENUS')
             dispatch({
               type: LOGIN,
               payload: {
                 userId: data.data.userId,
                 role: data.data.role,
+                roleMenus: data.data.roleMenus,
                 name: data.data.name,
               },
             });

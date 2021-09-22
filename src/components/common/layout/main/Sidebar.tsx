@@ -5,9 +5,10 @@ import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { Collapse, Nav, NavItem } from 'reactstrap';
 
-import menuItems from '../../../../constants/menu';
+// import menuItems from '../../../../constants/menu';
 import IntlMessages from '../../../../helpers/IntlMessages';
 import * as MenuActions from '../../../../stores/actions/MenuActions';
+import { adminRoot } from '../../../../constants/defaultValues';
 
 const Sidebar = (props: any) => {
   const [sidebarState, setSidebarState] = useState({
@@ -17,6 +18,7 @@ const Sidebar = (props: any) => {
   });
 
   const [onClickMenu, setOnclickMenu] = useState(false);
+  const [menuItems, setMenuItems] = useState([]);
   const wrapperRef = createRef();
 
   useEffect(() => {
@@ -24,6 +26,28 @@ const Sidebar = (props: any) => {
     handleWindowResize(event);
     setSelectedLiActive(setHasSubItemStatus);
     handleProps();
+    let { roleMenus } = props.loginReducer
+    roleMenus = roleMenus.map((c:any)=>{
+        return {
+          id: c.menu.name,
+          icon: c.menu.icon,
+          label: c.menu.name,
+          to: `${adminRoot}/${c.menu.name}`,
+          newWindow: false,
+          subs: c.menu.menuItems.map((x:any)=>{
+            return {
+              icon: x.icon,
+              label: x.name,
+              to: x.module ? x.module.url : null,              
+            }
+          }),
+        }
+      });
+    setMenuItems(roleMenus);
+    setSidebarState({
+      ...sidebarState,
+      selectedParentMenu: roleMenus[0] ? roleMenus[0].id : null,
+    });
   }, []);
 
   useEffect(() => {
@@ -205,7 +229,7 @@ const Sidebar = (props: any) => {
       } else if (sidebarState.selectedParentMenu === '') {
         setSidebarState({
           ...sidebarState,
-          selectedParentMenu: menuItems[0].id,
+          selectedParentMenu: menuItems[0] ? menuItems[0].id : null,
         });
         callback;
       }
@@ -469,8 +493,8 @@ const mapDispatchToProps = {
   ...MenuActions,
 };
 
-const mapStateToProps = ({ menuReducer }: any) => {
-  return { menuReducer };
+const mapStateToProps = ({ menuReducer, loginReducer }: any) => {
+  return { menuReducer, loginReducer };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);

@@ -3,7 +3,7 @@ import { useIntl } from 'react-intl';
 import { NotificationManager } from '../../components/common/Notifications';
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
-import { MUTATION_CHANGE_ACTIVE_ROLE, MUTATION_CREATE_ROLE, MUTATION_UPDATE_ROLE } from '../graphql/Roles/RoleMutations';
+import { MUTATION_CHANGE_ACTIVE_ROLE, MUTATION_CREATE_ROLE, MUTATION_CREATE_ROLE_MENU, MUTATION_UPDATE_ROLE, MUTATION_UPDATE_ROLE_MENU } from '../graphql/Roles/RoleMutations';
 import { QUERY_GET_ALL_ROLE, QUERY_GET_ROLE } from '../graphql/Roles/RoleQueries';
 
 export const getListAllRole = () => {
@@ -137,6 +137,80 @@ export const changeActiveRole = (active: any, id: any) => {
           }
         });
       return dataChangeActive as any;
+    } catch (error) {
+      createNotification('error', 'error', '');
+      return error;
+    }
+  };
+};
+
+// FOR ROLES MENUS
+
+export const updateRoleMenu = (data: any, id: any) => {
+  return async (dispatch: any) => {
+    try {
+      let model: any = {};
+      model = {
+        ...model,
+      };
+      model = {
+        ...model,
+        ...data,
+      };
+      let dataUpdate = null;     
+      await client
+        .mutate({
+          mutation: MUTATION_UPDATE_ROLE_MENU,
+          variables: { id, input: model },
+        })
+        .then((dataReponse: any) => {
+          if (dataReponse.errors?.length > 0) {
+            dataReponse.errors.forEach((error: any) => {
+              createNotification('error', 'error', '');
+            });
+          } else {
+            dataUpdate = dataReponse.data.update.id;
+            createNotification('success', 'success', '');
+          }
+        });
+      return dataUpdate as any;
+    } catch (error) {
+      createNotification('error', 'error', '');
+      return error;
+    }
+  };
+};
+
+
+
+export const saveNewRoleMenu = (data: any) => {
+  return async (dispatch: any) => {
+    try {
+      let model: {};
+      model = {
+        ...model,
+      };
+      model = {
+        ...model,
+        ...data,
+      };
+      let dataCreate = null;
+      await client
+        .mutate({
+          mutation: MUTATION_CREATE_ROLE_MENU,
+          variables: { input: model },
+        })
+        .then((dataResponse: any) => {
+          if (dataResponse.errors?.length > 0) {
+            dataResponse.errors.forEach((error: any) => {
+              createNotification('error', 'error', '');
+            });
+          } else {
+            dataCreate = dataResponse.data.create.id;
+            createNotification('success', 'success', '');
+          }
+        });
+      return dataCreate as any;
     } catch (error) {
       createNotification('error', 'error', '');
       return error;
