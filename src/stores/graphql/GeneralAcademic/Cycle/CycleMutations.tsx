@@ -21,3 +21,9 @@ export const MUTATION_CHANGE_ACTIVE_CYCLE = gql`
     changeActive: changeActiveGeneralAcademicCycle(id: $id, active: $active)
   }
 `;
+
+export const MUTATION_DELETE_CYCLE = gql`
+  mutation deleteGeneralAcademicCycle($id: String!) {
+    delete: deleteGeneralAcademicCycle(id: $id)
+  }
+`;

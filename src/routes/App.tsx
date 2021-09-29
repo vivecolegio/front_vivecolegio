@@ -100,6 +100,7 @@ const App = (props: any) => {
                     <Route exact path="/modules" component={permissions ? ModuleList : Login} />
                     <Route exact path="/menus" component={permissions ? MenuList : Login} />
                     <Route exact path="/submenus" component={permissions ? SubmenuList: Login} /> 
+                    <Route exact path="/submenus/:idMenu" component={permissions ? SubmenuList: Login} /> 
                     <Route exact path="/genders" component={permissions ? GenderList : Login} />
                     <Route exact path="/documentTypes" component={permissions ? DocumentTypeList : Login} />
                     <Route exact path="/municipality" component={permissions ? MunicipalityList : Login} />

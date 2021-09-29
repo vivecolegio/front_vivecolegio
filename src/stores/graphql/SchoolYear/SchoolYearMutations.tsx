@@ -21,3 +21,9 @@ export const MUTATION_CHANGE_ACTIVE_SCHOOL_YEAR = gql`
     changeActive: changeActiveSchoolYear(id: $id, active: $active)
   }
 `;
+
+export const MUTATION_DELETE_SCHOOL_YEAR = gql`
+  mutation deleteSchoolYear($id: String!) {
+    delete: deleteSchoolYear(id: $id)
+  }
+`;

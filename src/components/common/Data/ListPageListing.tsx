@@ -22,7 +22,10 @@ const ListPageListing = ({
   onChangePage,
   columns,
   viewEditData,
-  changeActiveData
+  changeActiveData,
+  deleteData,
+  withChildren,
+  goToChildren,
 }: any) => {
   return (
     <Row>
@@ -59,6 +62,9 @@ const ListPageListing = ({
             columns={columns}
             viewEditData={viewEditData}
             changeActiveData={changeActiveData}
+            deleteData={deleteData}
+            withChildren={withChildren}
+            goToChildren={goToChildren}
           />
         );
       })}

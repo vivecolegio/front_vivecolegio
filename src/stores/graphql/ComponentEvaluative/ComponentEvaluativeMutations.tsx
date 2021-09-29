@@ -21,3 +21,9 @@ export const MUTATION_CHANGE_ACTIVE_COMPONENT_EVALUATIVE = gql`
     changeActive: changeActiveEvaluativeComponent(id: $id, active: $active)
   }
 `;
+
+export const MUTATION_DELETE_COMPONENT_EVALUATIVE = gql`
+  mutation deleteEvaluativeComponent($id: String!) {
+    delete: deleteEvaluativeComponent(id: $id)
+  }
+`;

@@ -62,6 +62,12 @@ const GeneralPerformanceLevelList = (props: any) => {
     });
   };
 
+  const deleteData = async (id: any) => {
+    await props.deletePerformanceLevel(id).then((formData: any) => {
+      refreshDataTable();
+    });
+  };
+
   return (
     <>
       {' '}
@@ -74,6 +80,7 @@ const GeneralPerformanceLevelList = (props: any) => {
             modalOpen={modalOpen}
             setModalOpen={setModalOpen}
             viewEditData={viewEditData}
+            deleteData={deleteData}
             changeActiveData={changeActiveData}
           />
           <AddNewModal

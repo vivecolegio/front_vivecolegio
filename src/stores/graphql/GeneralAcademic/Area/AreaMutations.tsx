@@ -21,3 +21,9 @@ export const MUTATION_CHANGE_ACTIVE_AREA = gql`
     changeActive: changeActiveGeneralAcademicArea(id: $id, active: $active)
   }
 `;
+
+export const MUTATION_DELETE_AREA = gql`
+  mutation deleteGeneralAcademicArea($id: String!) {
+    delete: deleteGeneralAcademicArea(id: $id)
+  }
+`;

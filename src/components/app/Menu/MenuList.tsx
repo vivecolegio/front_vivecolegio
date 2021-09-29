@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-
 import { COLUMN_LIST } from '../../../constants/Menu/menuConstants';
+import * as loginActions from '../../../stores/actions/LoginActions';
 import * as menuActions from '../../../stores/actions/MenuModelActions';
 import AddNewModal from '../../common/Data/AddNewModal';
 import DataList from '../../common/Data/DataList';
 import MenuCreateEdit from './MenuCreateEdit';
+
+
 
 const MenuList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
@@ -36,6 +38,7 @@ const MenuList = (props: any) => {
         if (id !== undefined) {
           setModalOpen(false);
           refreshDataTable();
+          me();
         }
       });
     } else {
@@ -44,6 +47,7 @@ const MenuList = (props: any) => {
           setModalOpen(false);
           setData(null);
           refreshDataTable();
+          me();
         }
       });
     }
@@ -62,6 +66,16 @@ const MenuList = (props: any) => {
     });
   };
 
+  const goToChildren = async (id: any) => {
+    props.history.push(`/submenus/${id}`)
+  };
+
+  const me = async () => {
+    await props.me().then((dataResp: any) => {
+      window.location.reload();
+    });
+  };
+
   return (
     <>
       {' '}
@@ -75,6 +89,8 @@ const MenuList = (props: any) => {
             setModalOpen={setModalOpen}
             viewEditData={viewEditData}
             changeActiveData={changeActiveData}
+            goToChildren={goToChildren}
+            withChildren={true}
           />
           <AddNewModal
             modalOpen={modalOpen}
@@ -93,7 +109,7 @@ const MenuList = (props: any) => {
     </>
   );
 };
-const mapDispatchToProps = { ...menuActions };
+const mapDispatchToProps = { ...menuActions, ...loginActions };
 
 const mapStateToProps = () => {
   return {};

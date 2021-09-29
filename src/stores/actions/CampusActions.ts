@@ -1,6 +1,6 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
-import { MUTATION_CHANGE_ACTIVE_CAMPUS, MUTATION_CREATE_CAMPUS, MUTATION_UPDATE_CAMPUS } from '../graphql/Campus/CampusMutations';
+import { MUTATION_CHANGE_ACTIVE_CAMPUS, MUTATION_CREATE_CAMPUS, MUTATION_DELETE_CAMPUS, MUTATION_UPDATE_CAMPUS } from '../graphql/Campus/CampusMutations';
 import { QUERY_GET_ALL_CAMPUS, QUERY_GET_CAMPUS } from '../graphql/Campus/CampusQueries';
 
 
@@ -135,6 +135,33 @@ export const changeActiveCampus = (active: any, id: any) => {
           }
         });
       return dataChangeActive as any;
+    } catch (error) {
+      createNotification('error', 'error', '');
+      return error;
+    }
+  };
+};
+
+export const deleteCampus = (id: any) => {
+  return async (dispatch: any) => {
+    try {
+      let dataDelete = null;
+      await client
+        .mutate({
+          mutation: MUTATION_DELETE_CAMPUS,
+          variables: { id },
+        })
+        .then((dataReponse: any) => {
+          if (dataReponse.errors?.length > 0) {
+            dataReponse.errors.forEach((error: any) => {
+              createNotification('error', 'error', '');
+            });
+          } else {
+            dataDelete = dataReponse.data;
+            createNotification('success', 'success', '');
+          }
+        });
+      return dataDelete as any;
     } catch (error) {
       createNotification('error', 'error', '');
       return error;

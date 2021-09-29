@@ -1,6 +1,6 @@
 import { createNotification } from "../../../helpers/Notification";
 import { client } from '../../graphql';
-import { MUTATION_CHANGE_ACTIVE_CYCLE, MUTATION_CREATE_CYCLE, MUTATION_UPDATE_CYCLE } from '../../graphql/GeneralAcademic/Cycle/CycleMutations';
+import { MUTATION_CHANGE_ACTIVE_CYCLE, MUTATION_CREATE_CYCLE, MUTATION_UPDATE_CYCLE, MUTATION_DELETE_CYCLE } from '../../graphql/GeneralAcademic/Cycle/CycleMutations';
 import { QUERY_GET_ALL_CYCLE, QUERY_GET_CYCLE } from '../../graphql/GeneralAcademic/Cycle/CycleQueries';
 
 
@@ -135,6 +135,33 @@ export const changeActiveCycle = (active: any, id: any) => {
           }
         });
       return dataChangeActive as any;
+    } catch (error) {
+      createNotification('error', 'error', '');
+      return error;
+    }
+  };
+};
+
+export const deleteCycle = (id: any) => {
+  return async (dispatch: any) => {
+    try {
+      let dataDelete = null;
+      await client
+        .mutate({
+          mutation: MUTATION_DELETE_CYCLE,
+          variables: { id },
+        })
+        .then((dataReponse: any) => {
+          if (dataReponse.errors?.length > 0) {
+            dataReponse.errors.forEach((error: any) => {
+              createNotification('error', 'error', '');
+            });
+          } else {
+            dataDelete = dataReponse.data;
+            createNotification('success', 'success', '');
+          }
+        });
+      return dataDelete as any;
     } catch (error) {
       createNotification('error', 'error', '');
       return error;

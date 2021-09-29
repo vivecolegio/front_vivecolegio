@@ -21,3 +21,9 @@ export const MUTATION_CHANGE_ACTIVE_ACADEMIC_PERIOD = gql`
     changeActive: changeActiveAcademicPeriod(id: $id, active: $active)
   }
 `;
+
+export const MUTATION_DELETE_ACADEMIC_PERIOD = gql`
+  mutation deleteAcademicPeriod($id: String!) {
+    delete: deleteAcademicPeriod(id: $id)
+  }
+`;

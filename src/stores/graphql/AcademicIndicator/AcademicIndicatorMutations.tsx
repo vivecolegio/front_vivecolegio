@@ -21,3 +21,10 @@ export const MUTATION_CHANGE_ACTIVE_ACADEMIC_INDICATOR = gql`
     changeActive: changeActiveAcademicIndicator(id: $id, active: $active)
   }
 `;
+
+
+export const MUTATION_DELETE_ACADEMIC_INDICATOR = gql`
+  mutation deleteAcademicIndicator($id: String!) {
+    delete: deleteAcademicIndicator(id: $id)
+  }
+`;

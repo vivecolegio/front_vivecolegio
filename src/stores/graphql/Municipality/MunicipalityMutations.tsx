@@ -21,3 +21,9 @@ export const MUTATION_CHANGE_ACTIVE_MUNICIPALITY = gql`
     changeActive: changeActiveMunicipality(id: $id, active: $active)
   }
 `;
+
+export const MUTATION_DELETE_MUNICIPALITY = gql`
+  mutation deleteMunicipality($id: String!) {
+    delete: deleteMunicipality(id: $id)
+  }
+`;

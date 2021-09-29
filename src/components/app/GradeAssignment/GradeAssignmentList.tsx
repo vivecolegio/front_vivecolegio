@@ -71,6 +71,12 @@ const GradeAssignmentList = (props: any) => {
     });
   };
 
+  const deleteData = async (id: any) => {
+    await props.deleteGradeAssignment(id).then((formData: any) => {
+      refreshDataTable();
+    });
+  };
+
   return (
     <>
       {' '}
@@ -83,6 +89,7 @@ const GradeAssignmentList = (props: any) => {
             modalOpen={modalOpen}
             setModalOpen={setModalOpen}
             viewEditData={viewEditData}
+            deleteData={deleteData}
             changeActiveData={changeActiveData}
           />
           <AddNewModal

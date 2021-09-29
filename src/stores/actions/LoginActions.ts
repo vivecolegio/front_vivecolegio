@@ -1,7 +1,7 @@
 import { createNotification } from '../../helpers/Notification';
 import { client } from '../graphql';
-import { MUTATION_LOGIN } from '../graphql/Login/LoginMutations';
-import { LOGIN, RESET_APP } from '../reducers/types/loginTypes';
+import { MUTATION_LOGIN, QUERY_ME } from '../graphql/Login/LoginMutations';
+import { LOGIN, ME, RESET_APP } from '../reducers/types/loginTypes';
 
 export const login = (user: any) => {
   return async (dispatch: any) => {
@@ -19,7 +19,6 @@ export const login = (user: any) => {
           data = result.data;
           if(data !=null){
             localStorage.setItem('token', data.data.jwt);
-            console.log(data.data.roleMenus, 'RTA MENUS')
             dispatch({
               type: LOGIN,
               payload: {
@@ -64,6 +63,35 @@ export const resetApp = () => {
         type: RESET_APP,
       });
     } catch (error) {
+      return error;
+    }
+  };
+};
+
+export const me = (id: any) => {
+  return async (dispatch: any) => {
+    try {
+      let data: any = {};
+      await client
+        .query({
+          query: QUERY_ME,         
+        })
+        .then((result: any) => {
+          data = result.data;
+          console.log(data.me.roleMenus)
+          if(data !=null){
+            dispatch({
+              type: ME,
+              payload: {               
+                roleMenus: data.me.roleMenus,
+              },
+            });  
+            // window.location.reload();
+          }      
+        });
+      return data;
+    } catch (error) {
+      createNotification('error', 'error', '');
       return error;
     }
   };

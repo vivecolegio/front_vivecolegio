@@ -1,6 +1,6 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
-import { MUTATION_CHANGE_ACTIVE_COORDINATOR_CAMPUS, MUTATION_CREATE_COORDINATOR_CAMPUS, MUTATION_UPDATE_COORDINATOR_CAMPUS } from '../graphql/CoordinatorCampus/CoordinatorCampusMutations';
+import { MUTATION_CHANGE_ACTIVE_COORDINATOR_CAMPUS, MUTATION_CREATE_COORDINATOR_CAMPUS, MUTATION_DELETE_COORDINATOR_CAMPUS, MUTATION_UPDATE_COORDINATOR_CAMPUS } from '../graphql/CoordinatorCampus/CoordinatorCampusMutations';
 import { QUERY_GET_ALL_COORDINATOR_CAMPUS, QUERY_GET_COORDINATOR_CAMPUS } from '../graphql/CoordinatorCampus/CoordinatorCampusQueries';
 
 
@@ -141,3 +141,31 @@ export const changeActiveCoordinator = (active: any, id: any) => {
     }
   };
 };
+
+export const deleteCoordinator = (id: any) => {
+  return async (dispatch: any) => {
+    try {
+      let dataDelete = null;
+      await client
+        .mutate({
+          mutation: MUTATION_DELETE_COORDINATOR_CAMPUS,
+          variables: { id },
+        })
+        .then((dataReponse: any) => {
+          if (dataReponse.errors?.length > 0) {
+            dataReponse.errors.forEach((error: any) => {
+              createNotification('error', 'error', '');
+            });
+          } else {
+            dataDelete = dataReponse.data;
+            createNotification('success', 'success', '');
+          }
+        });
+      return dataDelete as any;
+    } catch (error) {
+      createNotification('error', 'error', '');
+      return error;
+    }
+  };
+};
+

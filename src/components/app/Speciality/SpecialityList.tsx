@@ -62,6 +62,12 @@ const SpecialityList = (props: any) => {
     });
   };
 
+  const deleteData = async (id: any) => {
+    await props.deleteSpeciality(id).then((formData: any) => {
+      refreshDataTable();
+    });
+  };
+
   return (
     <>
       {' '}
@@ -74,6 +80,7 @@ const SpecialityList = (props: any) => {
             modalOpen={modalOpen}
             setModalOpen={setModalOpen}
             viewEditData={viewEditData}
+            deleteData={deleteData}
             changeActiveData={changeActiveData}
           />
           <AddNewModal

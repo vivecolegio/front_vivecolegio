@@ -63,6 +63,12 @@ const AcademicIndicatorList = (props: any) => {
     });
   };
 
+  const deleteData = async (id: any) => {
+    await props.deleteAcademicIndicator(id).then((formData: any) => {
+      refreshDataTable();
+    });
+  };
+
   return (
     <>
       {' '}
@@ -75,6 +81,7 @@ const AcademicIndicatorList = (props: any) => {
             modalOpen={modalOpen}
             setModalOpen={setModalOpen}
             viewEditData={viewEditData}
+            deleteData={deleteData}
             changeActiveData={changeActiveData}
           />
           <AddNewModal

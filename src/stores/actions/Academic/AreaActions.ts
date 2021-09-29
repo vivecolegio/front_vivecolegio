@@ -1,6 +1,6 @@
 import { createNotification } from "../../../helpers/Notification";
 import { client } from '../../graphql';
-import { MUTATION_CHANGE_ACTIVE_AREA, MUTATION_CREATE_AREA, MUTATION_UPDATE_AREA } from '../../graphql/Academic/Area/AreaMutations';
+import { MUTATION_CHANGE_ACTIVE_AREA, MUTATION_CREATE_AREA, MUTATION_DELETE_AREA, MUTATION_UPDATE_AREA } from '../../graphql/Academic/Area/AreaMutations';
 import { QUERY_GET_ALL_AREA, QUERY_GET_AREA } from '../../graphql/Academic/Area/AreaQueries';
 
 
@@ -141,3 +141,32 @@ export const changeActiveArea = (active: any, id: any) => {
     }
   };
 };
+
+
+export const deleteArea = (id: any) => {
+  return async (dispatch: any) => {
+    try {
+      let dataDelete = null;
+      await client
+        .mutate({
+          mutation: MUTATION_DELETE_AREA,
+          variables: { id },
+        })
+        .then((dataReponse: any) => {
+          if (dataReponse.errors?.length > 0) {
+            dataReponse.errors.forEach((error: any) => {
+              createNotification('error', 'error', '');
+            });
+          } else {
+            dataDelete = dataReponse.data;
+            createNotification('success', 'success', '');
+          }
+        });
+      return dataDelete as any;
+    } catch (error) {
+      createNotification('error', 'error', '');
+      return error;
+    }
+  };
+};
+

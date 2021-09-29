@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import { COLUMN_LIST } from '../../../constants/Menu/menuConstants';
 import * as menuItemActions from '../../../stores/actions/MenuItemActions';
+import * as loginActions from '../../../stores/actions/LoginActions';
 import AddNewModal from '../../common/Data/AddNewModal';
 import DataList from '../../common/Data/DataList';
 import MenuItemCreateEdit from './SubmenuCreateEdit';
@@ -14,9 +15,14 @@ const MenuItemList = (props: any) => {
 
   const [data, setData] = useState(null);
   useEffect(() => {
-    props.getListAllMenuItem().then((listData: any) => {
-      setDataTable(listData);
-    });
+    const { idMenu } = props.match.params;
+    if(idMenu) {
+      console.log('servicio de consulta submenus por id');
+    } else {
+      props.getListAllMenuItem().then((listData: any) => {
+        setDataTable(listData);
+      });
+    }  
   }, []);
 
   const getDataTable = async () => {
@@ -36,6 +42,7 @@ const MenuItemList = (props: any) => {
         if (id !== undefined) {
           setModalOpen(false);
           refreshDataTable();
+          me();
         }
       });
     } else {
@@ -44,6 +51,7 @@ const MenuItemList = (props: any) => {
           setModalOpen(false);
           setData(null);
           refreshDataTable();
+          me();
         }
       });
     }
@@ -59,6 +67,12 @@ const MenuItemList = (props: any) => {
   const changeActiveData = async (active: any, id: any) => {
     await props.changeActiveMenuItem(active, id).then((formData: any) => {
       refreshDataTable();
+    });
+  };
+
+  const me = async () => {
+    await props.me().then((dataResp: any) => {
+      window.location.reload();
     });
   };
 
@@ -93,7 +107,7 @@ const MenuItemList = (props: any) => {
     </>
   );
 };
-const mapDispatchToProps = { ...menuItemActions };
+const mapDispatchToProps = { ...menuItemActions, ...loginActions };
 
 const mapStateToProps = () => {
   return {};

@@ -12,6 +12,9 @@ const DataListView = ({
   columns,
   viewEditData,
   changeActiveData,
+  withChildren,
+  goToChildren,
+  deleteData,
 }: any) => {
   return (
     <Colxx xxs="12" className="mb-3">
@@ -33,14 +36,24 @@ const DataListView = ({
                   </p>
                 );
               })}
-              <p className="mb-0 text-muted text-small w-10 w-sm-100">
+              <p className={withChildren === true ? "w-15 mb-0 text-muted text-small w-sm-100" : "w-10 mb-0 text-muted text-small w-sm-100"}>
                 <Button
                   color="info"
                   size="xs"
                   onClick={() => {
                     return viewEditData(item.id);
-                  }}>
-                  <i className="simple-icon-eye" />            
+                  }}
+                >
+                  <i className="simple-icon-eye" />
+                </Button>{' '}
+                <Button
+                  color="secondary"
+                  size="xs"
+                  onClick={() => {
+                    return deleteData(item.id);
+                  }}
+                >
+                  <i className="simple-icon-trash" />
                 </Button>{' '}
                 <Button
                   color={item.active ? 'danger' : 'success'}
@@ -50,7 +63,20 @@ const DataListView = ({
                   }}
                 >
                   <i className={item.active ? 'simple-icon-close' : 'simple-icon-check'} />
-                </Button>
+                </Button>{' '}                
+                {withChildren === true ? (
+                  <Button
+                    color="primary"
+                    size="xs"
+                    onClick={() => {
+                      return goToChildren(item.id);
+                    }}
+                  >
+                    <i className="simple-icon-link" />
+                  </Button>
+                ) : (
+                  ''
+                )}
               </p>
             </div>
             <div className="custom-control custom-checkbox pl-1 align-self-center pr-4">

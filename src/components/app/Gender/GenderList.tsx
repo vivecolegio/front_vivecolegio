@@ -62,6 +62,12 @@ const GenderList = (props: any) => {
     });
   };
 
+  const deleteData = async (id: any) => {
+    await props.deleteGender(id).then((formData: any) => {
+      refreshDataTable();
+    });
+  };
+
   return (
     <>
       {' '}
@@ -74,6 +80,7 @@ const GenderList = (props: any) => {
             modalOpen={modalOpen}
             setModalOpen={setModalOpen}
             viewEditData={viewEditData}
+            deleteData={deleteData}
             changeActiveData={changeActiveData}
           />
           <AddNewModal

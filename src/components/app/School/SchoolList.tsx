@@ -62,6 +62,13 @@ const SchoolList = (props: any) => {
     });
   };
 
+  const deleteData = async (id: any) => {
+    await props.deleteSchool(id).then((formData: any) => {
+      refreshDataTable();
+    });
+  };
+
+
   return (
     <>
       {' '}
@@ -74,6 +81,7 @@ const SchoolList = (props: any) => {
             modalOpen={modalOpen}
             setModalOpen={setModalOpen}
             viewEditData={viewEditData}
+            deleteData={deleteData}
             changeActiveData={changeActiveData}
           />
           <AddNewModal

@@ -1,6 +1,6 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
-import { MUTATION_CHANGE_ACTIVE_SCHOOL_YEAR, MUTATION_CREATE_SCHOOL_YEAR, MUTATION_UPDATE_SCHOOL_YEAR } from '../graphql/SchoolYear/SchoolYearMutations';
+import { MUTATION_CHANGE_ACTIVE_SCHOOL_YEAR, MUTATION_CREATE_SCHOOL_YEAR, MUTATION_DELETE_SCHOOL_YEAR, MUTATION_UPDATE_SCHOOL_YEAR } from '../graphql/SchoolYear/SchoolYearMutations';
 import { QUERY_GET_ALL_SCHOOL_YEAR, QUERY_GET_SCHOOL_YEAR } from '../graphql/SchoolYear/SchoolYearQueries';
 
 
@@ -135,6 +135,33 @@ export const changeActiveSchoolYear = (active: any, id: any) => {
           }
         });
       return dataChangeActive as any;
+    } catch (error) {
+      createNotification('error', 'error', '');
+      return error;
+    }
+  };
+};
+
+export const deleteSchoolYear = (id: any) => {
+  return async (dispatch: any) => {
+    try {
+      let dataDelete = null;
+      await client
+        .mutate({
+          mutation: MUTATION_DELETE_SCHOOL_YEAR,
+          variables: { id },
+        })
+        .then((dataReponse: any) => {
+          if (dataReponse.errors?.length > 0) {
+            dataReponse.errors.forEach((error: any) => {
+              createNotification('error', 'error', '');
+            });
+          } else {
+            dataDelete = dataReponse.data;
+            createNotification('success', 'success', '');
+          }
+        });
+      return dataDelete as any;
     } catch (error) {
       createNotification('error', 'error', '');
       return error;

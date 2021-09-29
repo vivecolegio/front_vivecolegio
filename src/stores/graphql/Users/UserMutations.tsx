@@ -21,3 +21,9 @@ export const MUTATION_CHANGE_ACTIVE_USER = gql`
     changeActive: changeActiveUser(id: $id, active: $active)
   }
 `;
+
+export const MUTATION_DELETE_USER = gql`
+  mutation deleteUser($id: String!) {
+    delete: deleteUser(id: $id)
+  }
+`;

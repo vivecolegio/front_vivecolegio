@@ -21,3 +21,9 @@ export const MUTATION_CHANGE_ACTIVE_GRADE = gql`
     changeActive: changeActiveGeneralAcademicGrade(id: $id, active: $active)
   }
 `;
+
+export const MUTATION_DELETE_GRADE = gql`
+  mutation deleteGeneralAcademicGrade($id: String!) {
+    delete: deleteGeneralAcademicGrade(id: $id)
+  }
+`;

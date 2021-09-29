@@ -39,9 +39,6 @@ const UserList = (props: any) => {
   };
 
   const onSubmit = async (dataForm: any, formState: any) => {
-    console.log(dataForm, 'FORM');
-    console.log(formState, 'STATE');
-    // console.log(formState.target.isValid, 'STATE')
     if (data === null) {
       await props.saveNewUser(dataForm).then((id: any) => {
         if (id !== undefined) {
@@ -73,6 +70,12 @@ const UserList = (props: any) => {
     });
   };
 
+  const deleteData = async (id: any) => {
+    await props.deleteUser(id).then((formData: any) => {
+      refreshDataTable();
+    });
+  };
+
   return (
     <>
       {' '}
@@ -85,6 +88,7 @@ const UserList = (props: any) => {
             modalOpen={modalOpen}
             setModalOpen={setModalOpen}
             viewEditData={viewEditData}
+            deleteData={deleteData}
             changeActiveData={changeActiveData}
           />
           <AddNewModal

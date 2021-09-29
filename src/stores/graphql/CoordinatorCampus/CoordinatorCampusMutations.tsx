@@ -21,3 +21,9 @@ export const MUTATION_CHANGE_ACTIVE_COORDINATOR_CAMPUS = gql`
     changeActive: changeActiveCampusCoordinator(id: $id, active: $active)
   }
 `;
+
+export const MUTATION_DELETE_COORDINATOR_CAMPUS = gql`
+  mutation deleteCampusCoordinator($id: String!) {
+    delete: deleteCampusCoordinator(id: $id)
+  }
+`;

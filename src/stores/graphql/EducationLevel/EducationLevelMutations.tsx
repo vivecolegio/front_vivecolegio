@@ -21,3 +21,9 @@ export const MUTATION_CHANGE_ACTIVE_EDUCATION_LEVEL = gql`
     changeActive: changeActiveEducationLevel(id: $id, active: $active)
   }
 `;
+
+export const MUTATION_DELETE_EDUCATION_LEVEL = gql`
+  mutation deleteEducationLevel($id: String!) {
+    delete: deleteEducationLevel(id: $id)
+  }
+`;

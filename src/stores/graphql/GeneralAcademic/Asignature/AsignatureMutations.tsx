@@ -21,3 +21,9 @@ export const MUTATION_CHANGE_ACTIVE_ASIGNATURE = gql`
     changeActive: changeActiveGeneralAcademicAsignature(id: $id, active: $active)
   }
 `;
+
+export const MUTATION_DELETE_ASIGNATURE = gql`
+  mutation deleteGeneralAcademicAsignature($id: String!) {
+    delete: deleteGeneralAcademicAsignature(id: $id)
+  }
+`;

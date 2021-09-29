@@ -1,6 +1,6 @@
 import { createNotification } from "../../../helpers/Notification";
 import { client } from '../../graphql';
-import { MUTATION_CHANGE_ACTIVE_PERFORMANCE_LEVEL, MUTATION_CREATE_PERFORMANCE_LEVEL, MUTATION_UPDATE_PERFORMANCE_LEVEL } from '../../graphql/GeneralAcademic/PerformanceLevel/PerformanceLevelMutations';
+import { MUTATION_CHANGE_ACTIVE_PERFORMANCE_LEVEL, MUTATION_CREATE_PERFORMANCE_LEVEL, MUTATION_DELETE_PERFORMANCE_LEVEL, MUTATION_UPDATE_PERFORMANCE_LEVEL } from '../../graphql/GeneralAcademic/PerformanceLevel/PerformanceLevelMutations';
 import { QUERY_GET_ALL_PERFORMANCE_LEVEL, QUERY_GET_PERFORMANCE_LEVEL } from '../../graphql/GeneralAcademic/PerformanceLevel/PerformanceLevelQueries';
 
 
@@ -135,6 +135,33 @@ export const changeActivePerformanceLevel = (active: any, id: any) => {
           }
         });
       return dataChangeActive as any;
+    } catch (error) {
+      createNotification('error', 'error', '');
+      return error;
+    }
+  };
+};
+
+export const deletePerformanceLevel = (id: any) => {
+  return async (dispatch: any) => {
+    try {
+      let dataDelete = null;
+      await client
+        .mutate({
+          mutation: MUTATION_DELETE_PERFORMANCE_LEVEL,
+          variables: { id },
+        })
+        .then((dataReponse: any) => {
+          if (dataReponse.errors?.length > 0) {
+            dataReponse.errors.forEach((error: any) => {
+              createNotification('error', 'error', '');
+            });
+          } else {
+            dataDelete = dataReponse.data;
+            createNotification('success', 'success', '');
+          }
+        });
+      return dataDelete as any;
     } catch (error) {
       createNotification('error', 'error', '');
       return error;

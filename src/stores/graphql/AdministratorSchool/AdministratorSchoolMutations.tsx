@@ -21,3 +21,9 @@ export const MUTATION_CHANGE_ACTIVE_ADMINISTRATOR = gql`
     changeActive: changeActiveSchoolAdministrator(id: $id, active: $active)
   }
 `;
+
+export const MUTATION_DELETE_ADMINISTRATOR = gql`
+  mutation deleteSchoolAdministrator($id: String!) {
+    delete: deleteSchoolAdministrator(id: $id)
+  }
+`;

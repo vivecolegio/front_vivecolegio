@@ -21,3 +21,9 @@ export const MUTATION_CHANGE_ACTIVE_STANDARD = gql`
     changeActive: changeActiveGeneralAcademicStandard(id: $id, active: $active)
   }
 `;
+
+export const MUTATION_DELETE_STANDARD = gql`
+  mutation deleteGeneralAcademicStandard($id: String!) {
+    delete: deleteGeneralAcademicStandard(id: $id)
+  }
+`;

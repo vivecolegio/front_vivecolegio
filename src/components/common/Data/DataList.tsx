@@ -184,6 +184,9 @@ const DataList = (props: any) => {
           columns={columns}
           viewEditData={props?.viewEditData}
           changeActiveData={props?.changeActiveData}
+          deleteData={props?.deleteData}
+          withChildren={props?.withChildren}
+          goToChildren={props?.goToChildren}
         />
       </div>
     </>

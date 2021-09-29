@@ -21,3 +21,9 @@ export const MUTATION_CHANGE_ACTIVE_GENDER = gql`
     changeActive: changeActiveGender(id: $id, active: $active)
   }
 `;
+
+export const MUTATION_DELETE_GENDER = gql`
+  mutation deleteGender($id: String!) {
+    delete: deleteGender(id: $id)
+  }
+`;

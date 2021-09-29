@@ -1,6 +1,6 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
-import { MUTATION_CHANGE_ACTIVE_SCHOOL, MUTATION_CREATE_SCHOOL, MUTATION_UPDATE_SCHOOL } from '../graphql/School/SchoolMutations';
+import { MUTATION_CHANGE_ACTIVE_SCHOOL, MUTATION_CREATE_SCHOOL, MUTATION_DELETE_SCHOOL, MUTATION_UPDATE_SCHOOL } from '../graphql/School/SchoolMutations';
 import { QUERY_GET_ALL_SCHOOL, QUERY_GET_SCHOOL } from '../graphql/School/SchoolQueries';
 
 
@@ -135,6 +135,33 @@ export const changeActiveSchool = (active: any, id: any) => {
           }
         });
       return dataChangeActive as any;
+    } catch (error) {
+      createNotification('error', 'error', '');
+      return error;
+    }
+  };
+};
+
+export const deleteSchool = (id: any) => {
+  return async (dispatch: any) => {
+    try {
+      let dataDelete = null;
+      await client
+        .mutate({
+          mutation: MUTATION_DELETE_SCHOOL,
+          variables: { id },
+        })
+        .then((dataReponse: any) => {
+          if (dataReponse.errors?.length > 0) {
+            dataReponse.errors.forEach((error: any) => {
+              createNotification('error', 'error', '');
+            });
+          } else {
+            dataDelete = dataReponse.data;
+            createNotification('success', 'success', '');
+          }
+        });
+      return dataDelete as any;
     } catch (error) {
       createNotification('error', 'error', '');
       return error;

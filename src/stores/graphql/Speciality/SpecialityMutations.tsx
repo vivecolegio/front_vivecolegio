@@ -21,3 +21,9 @@ export const MUTATION_CHANGE_ACTIVE_SPECIALITY = gql`
     changeActive: changeActiveSpecialty(id: $id, active: $active)
   }
 `;
+
+export const MUTATION_DELETE_SPECIALITY = gql`
+  mutation deleteSpecialty($id: String!) {
+    delete: deleteSpecialty(id: $id)
+  }
+`;

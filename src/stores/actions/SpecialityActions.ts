@@ -1,6 +1,6 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
-import { MUTATION_CHANGE_ACTIVE_SPECIALITY, MUTATION_CREATE_SPECIALITY, MUTATION_UPDATE_SPECIALITY } from '../graphql/Speciality/SpecialityMutations';
+import { MUTATION_CHANGE_ACTIVE_SPECIALITY, MUTATION_CREATE_SPECIALITY, MUTATION_DELETE_SPECIALITY, MUTATION_UPDATE_SPECIALITY } from '../graphql/Speciality/SpecialityMutations';
 import { QUERY_GET_ALL_SPECIALITY, QUERY_GET_SPECIALITY } from '../graphql/Speciality/SpecialityQueries';
 
 
@@ -135,6 +135,33 @@ export const changeActiveSpeciality = (active: any, id: any) => {
           }
         });
       return dataChangeActive as any;
+    } catch (error) {
+      createNotification('error', 'error', '');
+      return error;
+    }
+  };
+};
+
+export const deleteSpeciality = (id: any) => {
+  return async (dispatch: any) => {
+    try {
+      let dataDelete = null;
+      await client
+        .mutate({
+          mutation: MUTATION_DELETE_SPECIALITY,
+          variables: { id },
+        })
+        .then((dataReponse: any) => {
+          if (dataReponse.errors?.length > 0) {
+            dataReponse.errors.forEach((error: any) => {
+              createNotification('error', 'error', '');
+            });
+          } else {
+            dataDelete = dataReponse.data;
+            createNotification('success', 'success', '');
+          }
+        });
+      return dataDelete as any;
     } catch (error) {
       createNotification('error', 'error', '');
       return error;

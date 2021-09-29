@@ -37,3 +37,10 @@ export const MUTATION_CREATE_ROLE_MENU = gql`
     }
   }
 `;
+
+
+export const MUTATION_DELETE_ROLE = gql`
+  mutation deleteRole($id: String!) {
+    delete: deleteRole(id: $id)
+  }
+`;

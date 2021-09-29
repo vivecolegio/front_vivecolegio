@@ -1,6 +1,6 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
-import { MUTATION_CHANGE_ACTIVE_STUDENT, MUTATION_CREATE_STUDENT, MUTATION_UPDATE_STUDENT } from '../graphql/Student/StudentMutations';
+import { MUTATION_CHANGE_ACTIVE_STUDENT, MUTATION_CREATE_STUDENT, MUTATION_DELETE_STUDENT, MUTATION_UPDATE_STUDENT } from '../graphql/Student/StudentMutations';
 import { QUERY_GET_ALL_STUDENT, QUERY_GET_STUDENT } from '../graphql/Student/StudentQueries';
 
 
@@ -135,6 +135,33 @@ export const changeActiveStudent = (active: any, id: any) => {
           }
         });
       return dataChangeActive as any;
+    } catch (error) {
+      createNotification('error', 'error', '');
+      return error;
+    }
+  };
+};
+
+export const deleteStudent = (id: any) => {
+  return async (dispatch: any) => {
+    try {
+      let dataDelete = null;
+      await client
+        .mutate({
+          mutation: MUTATION_DELETE_STUDENT,
+          variables: { id },
+        })
+        .then((dataReponse: any) => {
+          if (dataReponse.errors?.length > 0) {
+            dataReponse.errors.forEach((error: any) => {
+              createNotification('error', 'error', '');
+            });
+          } else {
+            dataDelete = dataReponse.data;
+            createNotification('success', 'success', '');
+          }
+        });
+      return dataDelete as any;
     } catch (error) {
       createNotification('error', 'error', '');
       return error;

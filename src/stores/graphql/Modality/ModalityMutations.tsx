@@ -21,3 +21,9 @@ export const MUTATION_CHANGE_ACTIVE_MODALITY = gql`
     changeActive: changeActiveModality(id: $id, active: $active)
   }
 `;
+
+export const MUTATION_DELETE_MODALITY = gql`
+  mutation deleteModality($id: String!) {
+    delete: deleteModality(id: $id)
+  }
+`;

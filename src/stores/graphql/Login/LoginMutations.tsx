@@ -29,3 +29,26 @@ export const MUTATION_LOGIN = gql`
     }
   }
 `;
+
+export const QUERY_ME = gql`
+query{
+  me{
+     roleMenus {
+        id
+        menu {
+          id
+          name
+          icon
+          menuItems {
+            id
+            name
+            icon
+            module {
+              url
+            }
+          }
+        }
+      }
+  }
+}
+`;

@@ -74,6 +74,12 @@ const AdministratorList = (props: any) => {
     });
   };
 
+  const deleteData = async (id: any) => {
+    await props.deleteAdministrator(id).then((formData: any) => {
+      refreshDataTable();
+    });
+  };
+
   return (
     <>
       {' '}
@@ -86,6 +92,7 @@ const AdministratorList = (props: any) => {
             modalOpen={modalOpen}
             setModalOpen={setModalOpen}
             viewEditData={viewEditData}
+            deleteData={deleteData}
             changeActiveData={changeActiveData}
           />
           <AddNewModal

@@ -21,3 +21,9 @@ export const MUTATION_CHANGE_ACTIVE_DOCUMENT_TYPE = gql`
     changeActive: changeActiveDocumentType(id: $id, active: $active)
   }
 `;
+
+export const MUTATION_DELETE_DOCUMENT_TYPE = gql`
+  mutation deleteDocumentType($id: String!) {
+    delete: deleteDocumentType(id: $id)
+  }
+`;

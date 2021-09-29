@@ -21,3 +21,9 @@ export const MUTATION_CHANGE_ACTIVE_PERFORMANCE_LEVEL = gql`
     changeActive: changeActivePerformanceLevel(id: $id, active: $active)
   }
 `;
+
+export const MUTATION_DELETE_PERFORMANCE_LEVEL = gql`
+  mutation deletePerformanceLevel($id: String!) {
+    delete: deletePerformanceLevel(id: $id)
+  }
+`;

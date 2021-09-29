@@ -1,6 +1,6 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
-import { MUTATION_CHANGE_ACTIVE_ADMINISTRATOR_CAMPUS, MUTATION_CREATE_ADMINISTRATOR_CAMPUS, MUTATION_UPDATE_ADMINISTRATOR_CAMPUS } from '../graphql/AdministratorCampus/AdministratorCampusMutations';
+import { MUTATION_CHANGE_ACTIVE_ADMINISTRATOR_CAMPUS, MUTATION_CREATE_ADMINISTRATOR_CAMPUS, MUTATION_DELETE_ADMINISTRATOR_CAMPUS, MUTATION_UPDATE_ADMINISTRATOR_CAMPUS } from '../graphql/AdministratorCampus/AdministratorCampusMutations';
 import { QUERY_GET_ALL_ADMINISTRATOR_CAMPUS, QUERY_GET_ADMINISTRATOR_CAMPUS } from '../graphql/AdministratorCampus/AdministratorCampusQueries';
 
 
@@ -135,6 +135,33 @@ export const changeActiveAdministrator = (active: any, id: any) => {
           }
         });
       return dataChangeActive as any;
+    } catch (error) {
+      createNotification('error', 'error', '');
+      return error;
+    }
+  };
+};
+
+export const deleteAdministrator = (id: any) => {
+  return async (dispatch: any) => {
+    try {
+      let dataDelete = null;
+      await client
+        .mutate({
+          mutation: MUTATION_DELETE_ADMINISTRATOR_CAMPUS,
+          variables: { id },
+        })
+        .then((dataReponse: any) => {
+          if (dataReponse.errors?.length > 0) {
+            dataReponse.errors.forEach((error: any) => {
+              createNotification('error', 'error', '');
+            });
+          } else {
+            dataDelete = dataReponse.data;
+            createNotification('success', 'success', '');
+          }
+        });
+      return dataDelete as any;
     } catch (error) {
       createNotification('error', 'error', '');
       return error;
