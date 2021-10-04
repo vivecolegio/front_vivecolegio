@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { NavLink, withRouter } from 'react-router-dom';
-import { DropdownItem, DropdownMenu, DropdownToggle, Input, UncontrolledDropdown } from 'reactstrap';
-
+import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
 import ProfileImg from '../../../../assets/img/profiles/1.jpg';
-import { isDarkSwitchActive, localeOptions, menuHiddenBreakpoint } from '../../../../constants/defaultValues';
+import {
+  isDarkSwitchActive,
+  localeOptions,
+  menuHiddenBreakpoint,
+} from '../../../../constants/defaultValues';
 import IntlMessages from '../../../../helpers/IntlMessages';
 import { getDirection, setDirection } from '../../../../helpers/Utils';
 import * as LoginActions from '../../../../stores/actions/LoginActions';
@@ -13,8 +16,6 @@ import * as LocaleActions from '../../../../stores/actions/TranslateActions';
 import MenuIcon from './topNav/MenuIcon';
 import MobileMenuIcon from './topNav/MobileMenuIcon';
 import TopnavDarkSwitch from './topNav/TopnavDarkSwitch';
-import TopnavEasyAccess from './topNav/TopnavEasyAccess';
-import TopnavNotifications from './topNav/TopnavNotifications';
 
 const TopNav = (props: any) => {
   const [topNavState, setTopNavState] = useState({
@@ -53,9 +54,7 @@ const TopNav = (props: any) => {
       if (!e.target.classList.contains('search')) {
         if (e.target.parentElement.classList.contains('search')) {
           elem = e.target.parentElement;
-        } else if (
-          e.target.parentElement.parentElement.classList.contains('search')
-        ) {
+        } else if (e.target.parentElement.parentElement.classList.contains('search')) {
           elem = e.target.parentElement.parentElement;
         }
       }
@@ -140,8 +139,8 @@ const TopNav = (props: any) => {
         docElm.requestFullscreen();
       }
     } else if (document.exitFullscreen) {
-        document.exitFullscreen();
-      }
+      document.exitFullscreen();
+    }
     setTopNavState({
       ...topNavState,
       isInFullScreen: !isFullScreen,
@@ -152,11 +151,7 @@ const TopNav = (props: any) => {
     props.logout({}).then(props.history.push('/login'));
   };
 
-  const menuButtonClick = (
-    e: any,
-    menuClickCount: any,
-    containerClassnames: any,
-  ) => {
+  const menuButtonClick = (e: any, menuClickCount: any, containerClassnames: any) => {
     e.preventDefault();
     setTimeout(() => {
       const event = document.createEvent('HTMLEvents');
@@ -182,22 +177,22 @@ const TopNav = (props: any) => {
           <NavLink
             to="#"
             className="menu-button d-none d-md-block"
-            onClick={(e) =>
-              {return menuButtonClick(
+            onClick={(e) => {
+              return menuButtonClick(
                 e,
                 props.menuReducer.menuClickCount,
                 props.menuReducer.containerClassnames,
-              )}
-            }
+              );
+            }}
           >
             <MenuIcon />
           </NavLink>
           <NavLink
             to="#"
             className="menu-button-mobile d-xs-block d-sm-block d-md-none"
-            onClick={(e) =>
-              {return mobileMenuButtonClick(e, props.menuReducer.containerClassnames)}
-            }
+            onClick={(e) => {
+              return mobileMenuButtonClick(e, props.menuReducer.containerClassnames);
+            }}
           >
             <MobileMenuIcon />
           </NavLink>
@@ -219,21 +214,16 @@ const TopNav = (props: any) => {
           </div> */}
           <div className="d-inline-block">
             <UncontrolledDropdown className="ml-2">
-              <DropdownToggle
-                caret
-                color="light"
-                size="sm"
-                className="language-button"
-              >
-                <span className="name">
-                  {props.translateReducer.locale.toUpperCase()}
-                </span>
+              <DropdownToggle caret color="light" size="sm" className="language-button">
+                <span className="name">{props.translateReducer.locale.toUpperCase()}</span>
               </DropdownToggle>
               <DropdownMenu className="mt-3" right>
                 {localeOptions.map((l) => {
                   return (
                     <DropdownItem
-                      onClick={() => {return handleChangeLocale(l.id, l.direction)}}
+                      onClick={() => {
+                        return handleChangeLocale(l.id, l.direction);
+                      }}
                       key={l.id}
                     >
                       {l.name}
@@ -274,19 +264,27 @@ const TopNav = (props: any) => {
           <div className="user d-inline-block">
             <UncontrolledDropdown className="dropdown-menu-right">
               <DropdownToggle className="p-0" color="empty">
-                <span className="name mr-1">{props?.loginReducer?.name}</span>               
+                <span className="name mr-1">{props?.loginReducer?.name}</span>
                 <span>
                   <img alt="Profile" src={ProfileImg} />
                 </span>
               </DropdownToggle>
               <DropdownMenu className="mt-3" right>
-                <DropdownItem><IntlMessages id="layouts.profile" /></DropdownItem>
+                <DropdownItem>
+                  <NavLink to="/profile">
+                    <IntlMessages id="layouts.profile" />
+                  </NavLink>
+                </DropdownItem>
                 {/* <DropdownItem>Features</DropdownItem>
                 <DropdownItem>History</DropdownItem>
                 <DropdownItem>Support</DropdownItem> */}
                 <DropdownItem divider />
-                <DropdownItem onClick={() => {return handleLogout()}}>
-                    <IntlMessages id="layouts.signout" />
+                <DropdownItem
+                  onClick={() => {
+                    return handleLogout();
+                  }}
+                >
+                  <IntlMessages id="layouts.signout" />
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>

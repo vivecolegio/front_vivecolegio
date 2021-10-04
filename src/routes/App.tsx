@@ -30,6 +30,7 @@ import MenuList from '../components/app/Menu/MenuList';
 import ModalityList from '../components/app/Modality/ModalityList';
 import ModuleList from '../components/app/Module/ModuleList';
 import MunicipalityList from '../components/app/Municipality/MunicipalityList';
+import Profile from '../components/app/Profile/Profile';
 import RoleList from '../components/app/Role/RoleList';
 import SchoolList from '../components/app/School/SchoolList';
 import SchoolYearList from '../components/app/SchoolYear/SchoolYearList';
@@ -94,6 +95,7 @@ const App = (props: any) => {
                 <Route exact path="/home" component={permissions ? Home : Login} />
                 {permissions ? (
                   <>                  
+                    <Route exact path="/profile" component={permissions ? Profile : Login} />
                     {/* ADMIN */}
                     <Route exact path="/roles" component={permissions ? RoleList : Login} />
                     <Route exact path="/users" component={permissions ? UserList : Login} />
