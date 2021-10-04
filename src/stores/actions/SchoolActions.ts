@@ -115,7 +115,7 @@ export const updateSchool = (data: any, id: any) => {
   };
 };
 
-export const changeActiveSchool = (active: any, id: any) => {
+export const changeActiveSchool = (active: any, id: any, showToast: boolean) => {
   return async (dispatch: any) => {
     try {
       let dataChangeActive = null;
@@ -127,22 +127,28 @@ export const changeActiveSchool = (active: any, id: any) => {
         .then((dataReponse: any) => {
           if (dataReponse.errors?.length > 0) {
             dataReponse.errors.forEach((error: any) => {
+              if(showToast){
               createNotification('error', 'error', '');
+              }
             });
           } else {
             dataChangeActive = dataReponse.data.changeActive;
+            if(showToast){
             createNotification('success', 'success', '');
+            }
           }
         });
       return dataChangeActive as any;
     } catch (error) {
+      if(showToast){
       createNotification('error', 'error', '');
+      }
       return error;
     }
   };
 };
 
-export const deleteSchool = (id: any) => {
+export const deleteSchool = (id: any, showToast: boolean) => {
   return async (dispatch: any) => {
     try {
       let dataDelete = null;
@@ -154,16 +160,22 @@ export const deleteSchool = (id: any) => {
         .then((dataReponse: any) => {
           if (dataReponse.errors?.length > 0) {
             dataReponse.errors.forEach((error: any) => {
+              if(showToast){
               createNotification('error', 'error', '');
+              }
             });
           } else {
             dataDelete = dataReponse.data;
+            if(showToast){
             createNotification('success', 'success', '');
+            }
           }
         });
       return dataDelete as any;
     } catch (error) {
+      if(showToast){
       createNotification('error', 'error', '');
+      }
       return error;
     }
   };

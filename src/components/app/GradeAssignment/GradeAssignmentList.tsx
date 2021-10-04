@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-
 import { COLUMN_LIST } from '../../../constants/GradeAssignment/GradeAssignmentConstants';
+import { createNotification } from '../../../helpers/Notification';
 import * as academicIndicatorActions from '../../../stores/actions/GradeAssignmentActions';
 import AddNewModal from '../../common/Data/AddNewModal';
 import DataList from '../../common/Data/DataList';
@@ -15,21 +15,29 @@ const GradeAssignmentList = (props: any) => {
   const [data, setData] = useState(null);
   useEffect(() => {
     props.getListAllGradeAssignment().then((listData: any) => {
-      setDataTable(listData.map((c:any)=>{
-        c.node.grade_format = c.node.academicGrade ? c.node.academicGrade.name : '';
-        c.node.asignature_format = c.node.academicAsignature ? c.node.academicAsignature.name : '';     
-        return c;
-      }));
+      setDataTable(
+        listData.map((c: any) => {
+          c.node.grade_format = c.node.academicGrade ? c.node.academicGrade.name : '';
+          c.node.asignature_format = c.node.academicAsignature
+            ? c.node.academicAsignature.name
+            : '';
+          return c;
+        }),
+      );
     });
   }, []);
 
   const getDataTable = async () => {
     props.getListAllGradeAssignment().then((listData: any) => {
-      setDataTable(listData.map((c:any)=>{
-        c.node.grade_format = c.node.academicGrade ? c.node.academicGrade.name : '';
-        c.node.asignature_format = c.node.academicAsignature ? c.node.academicAsignature.name : '';     
-        return c;
-      }));
+      setDataTable(
+        listData.map((c: any) => {
+          c.node.grade_format = c.node.academicGrade ? c.node.academicGrade.name : '';
+          c.node.asignature_format = c.node.academicAsignature
+            ? c.node.academicAsignature.name
+            : '';
+          return c;
+        }),
+      );
     });
   };
 
@@ -39,7 +47,7 @@ const GradeAssignmentList = (props: any) => {
   };
 
   const onSubmit = async (dataForm: any) => {
-    console.log(dataForm)
+    console.log(dataForm);
     if (data === null) {
       await props.saveNewGradeAssignment(dataForm).then((id: any) => {
         if (id !== undefined) {
@@ -77,6 +85,32 @@ const GradeAssignmentList = (props: any) => {
     });
   };
 
+  const deleteAll = async (items: any) => {
+    items.map(async (item: any) => {
+      await props.deleteUser(item.id, false).then(
+        () => {},
+        () => {
+          createNotification('error', 'error', '');
+        },
+      );
+    });
+    refreshDataTable();
+    createNotification('success', 'success', '');
+  };
+
+  const changeActiveDataAll = async (items: any) => {
+    items.map(async (item: any) => {
+      await props.changeActiveUser(!item.active, item.id, false).then(
+        () => {},
+        () => {
+          createNotification('error', 'error', '');
+        },
+      );
+    });
+    refreshDataTable();
+    createNotification('success', 'success', '');
+  };
+
   return (
     <>
       {' '}
@@ -91,6 +125,8 @@ const GradeAssignmentList = (props: any) => {
             viewEditData={viewEditData}
             deleteData={deleteData}
             changeActiveData={changeActiveData}
+            deleteAll={deleteAll}
+            changeActiveDataAll={changeActiveDataAll}
           />
           <AddNewModal
             modalOpen={modalOpen}

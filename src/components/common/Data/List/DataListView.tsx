@@ -21,7 +21,7 @@ const DataListView = ({
       <ContextMenuTrigger id="context_menu" collect={collect}>
         <Card
           onClick={(event) => {
-            return onCheckItem(event, item.id);
+            return onCheckItem(event, item);
           }}
           className={classnames('d-flex flex-row', {
             active: isSelect,

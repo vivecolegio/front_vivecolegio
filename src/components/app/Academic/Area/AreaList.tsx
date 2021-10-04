@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-
 import { COLUMN_LIST } from '../../../../constants/Area/areaConstants';
+import { createNotification } from '../../../../helpers/Notification';
 import * as areaActions from '../../../../stores/actions/Academic/AreaActions';
 import AddNewModal from '../../../common/Data/AddNewModal';
 import DataList from '../../../common/Data/DataList';
@@ -68,6 +68,31 @@ const AreaList = (props: any) => {
     });
   };
 
+  const deleteAll = async (items: any) => {
+    items.map(async (item: any) => {
+      await props.deleteArea(item.id, false).then(
+        () => {},
+        () => {
+          createNotification('error', 'error', '');
+        },
+      );
+    });
+    refreshDataTable();
+    createNotification('success', 'success', '');
+  };
+
+  const changeActiveDataAll = async (items: any) => {
+    items.map(async (item: any) => {
+      await props.changeActiveArea(!item.active, item.id, false).then(
+        () => {},
+        () => {
+          createNotification('error', 'error', '');
+        },
+      );
+    });
+    refreshDataTable();
+    createNotification('success', 'success', '');
+  };
 
   return (
     <>
@@ -83,6 +108,8 @@ const AreaList = (props: any) => {
             viewEditData={viewEditData}
             deleteData={deleteData}
             changeActiveData={changeActiveData}
+            deleteAll={deleteAll}
+            changeActiveDataAll={changeActiveDataAll}
           />
           <AddNewModal
             modalOpen={modalOpen}

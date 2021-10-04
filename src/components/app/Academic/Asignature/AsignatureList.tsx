@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-
 import { COLUMN_LIST } from '../../../../constants/Asignature/asignatureConstants';
+import { createNotification } from '../../../../helpers/Notification';
 import * as asignatureActions from '../../../../stores/actions/Academic/AsignatureActions';
 import AddNewModal from '../../../common/Data/AddNewModal';
 import DataList from '../../../common/Data/DataList';
@@ -31,7 +31,7 @@ const AsignatureList = (props: any) => {
   };
 
   const onSubmit = async (dataForm: any) => {
-    console.log(dataForm)
+    console.log(dataForm);
     if (data === null) {
       await props.saveNewAsignature(dataForm).then((id: any) => {
         if (id !== undefined) {
@@ -69,6 +69,32 @@ const AsignatureList = (props: any) => {
     });
   };
 
+  const deleteAll = async (items: any) => {
+    items.map(async (item: any) => {
+      await props.deleteAsignature(item.id, false).then(
+        () => {},
+        () => {
+          createNotification('error', 'error', '');
+        },
+      );
+    });
+    refreshDataTable();
+    createNotification('success', 'success', '');
+  };
+
+  const changeActiveDataAll = async (items: any) => {
+    items.map(async (item: any) => {
+      await props.changeActiveAsignature(!item.active, item.id, false).then(
+        () => {},
+        () => {
+          createNotification('error', 'error', '');
+        },
+      );
+    });
+    refreshDataTable();
+    createNotification('success', 'success', '');
+  };
+
   return (
     <>
       {' '}
@@ -83,6 +109,8 @@ const AsignatureList = (props: any) => {
             viewEditData={viewEditData}
             deleteData={deleteData}
             changeActiveData={changeActiveData}
+            deleteAll={deleteAll}
+            changeActiveDataAll={changeActiveDataAll}
           />
           <AddNewModal
             modalOpen={modalOpen}

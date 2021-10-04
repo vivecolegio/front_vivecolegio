@@ -30,6 +30,8 @@ const ListPageHeading = ({
   toggleModal,
   heading,
   columns,
+  deleteAll,
+  changeActiveDataAll,
 }: any) => {
   const [dropdownSplitOpen, setDropdownSplitOpen] = useState(false);
   const [displayOptionsIsOpen, setDisplayOptionsIsOpen] = useState(false);
@@ -83,11 +85,15 @@ const ListPageHeading = ({
               </div>
               <DropdownToggle caret color="primary" className="dropdown-toggle-split btn-lg" />
               <DropdownMenu right>
-                <DropdownItem>
+                <DropdownItem onClick={() => {
+                    return deleteAll();
+                  }}>
                   <IntlMessages id="pages.delete" />
-                </DropdownItem>
-                <DropdownItem>
-                  <IntlMessages id="pages.another-action" />
+                </DropdownItem>               
+                <DropdownItem onClick={() => {
+                    return changeActiveDataAll();
+                  }}>
+                  <IntlMessages id="pages.activateInactivate" />
                 </DropdownItem>
               </DropdownMenu>
             </ButtonDropdown>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { COLUMN_LIST } from '../../../constants/Asignature/asignatureConstants';
+import { createNotification } from '../../../helpers/Notification';
 import * as componentEvaluativeActions from '../../../stores/actions/ComponentEvaluativeActions';
 import AddNewModal from '../../common/Data/AddNewModal';
 import DataList from '../../common/Data/DataList';
@@ -68,6 +69,32 @@ const ComponentEvaluativeList = (props: any) => {
     });
   };
 
+  const deleteAll = async (items: any) => {
+    items.map(async (item: any) => {
+      await props.deleteComponentEvaluative(item.id, false).then(
+        () => {},
+        () => {
+          createNotification('error', 'error', '');
+        },
+      );
+    });
+    refreshDataTable();
+    createNotification('success', 'success', '');
+  };
+
+  const changeActiveDataAll = async (items: any) => {
+    items.map(async (item: any) => {
+      await props.changeActiveComponentEvaluative(!item.active, item.id, false).then(
+        () => {},
+        () => {
+          createNotification('error', 'error', '');
+        },
+      );
+    });
+    refreshDataTable();
+    createNotification('success', 'success', '');
+  };
+
   return (
     <>
       {' '}
@@ -82,6 +109,8 @@ const ComponentEvaluativeList = (props: any) => {
             viewEditData={viewEditData}
             deleteData={deleteData}
             changeActiveData={changeActiveData}
+            deleteAll={deleteAll}
+            changeActiveDataAll={changeActiveDataAll}
           />
           <AddNewModal
             modalOpen={modalOpen}

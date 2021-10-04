@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-
 import { COLUMN_LIST } from '../../../constants/User/userConstants';
 import * as roleActions from '../../../stores/actions/UserActions';
 import AddNewModal from '../../common/Data/AddNewModal';
 import DataList from '../../common/Data/DataList';
 import UserCreateEdit from './UserCreateEdit';
+import { createNotification } from "../../../helpers/Notification";
 
 const UserList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
@@ -65,16 +65,33 @@ const UserList = (props: any) => {
   };
 
   const changeActiveData = async (active: any, id: any) => {
-    await props.changeActiveUser(active, id).then((formData: any) => {
+    await props.changeActiveUser(active, id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
 
   const deleteData = async (id: any) => {
-    await props.deleteUser(id).then((formData: any) => {
+    await props.deleteUser(id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
+
+  const deleteAll = async (items: any) => {
+    items.map(async (item:any)=>{
+      await props.deleteUser(item.id, false).then(() => {},() =>{ createNotification('error', 'error', '');});
+    });
+    refreshDataTable(); 
+    createNotification('success', 'success', '');
+  };
+
+  const changeActiveDataAll = async (items: any) => {
+    items.map(async (item:any)=>{
+      await props.changeActiveUser(!item.active, item.id, false).then(() => {},() =>{ createNotification('error', 'error', '');});
+    });
+    refreshDataTable(); 
+    createNotification('success', 'success', '');
+  };
+
 
   return (
     <>
@@ -90,6 +107,8 @@ const UserList = (props: any) => {
             viewEditData={viewEditData}
             deleteData={deleteData}
             changeActiveData={changeActiveData}
+            deleteAll={deleteAll}
+            changeActiveDataAll={changeActiveDataAll}         
           />
           <AddNewModal
             modalOpen={modalOpen}

@@ -115,7 +115,7 @@ export const updateGradeAssignment = (data: any, id: any) => {
   };
 };
 
-export const changeActiveGradeAssignment = (active: any, id: any) => {
+export const changeActiveGradeAssignment = (active: any, id: any, showToast: boolean) => {
   return async (dispatch: any) => {
     try {
       let dataChangeActive = null;
@@ -127,22 +127,28 @@ export const changeActiveGradeAssignment = (active: any, id: any) => {
         .then((dataReponse: any) => {
           if (dataReponse.errors?.length > 0) {
             dataReponse.errors.forEach((error: any) => {
-              createNotification('error', 'error', '');
+              if (showToast) {
+                createNotification('error', 'error', '');
+              }
             });
           } else {
             dataChangeActive = dataReponse.data.changeActive;
-            createNotification('success', 'success', '');
+            if (showToast) {
+              createNotification('success', 'success', '');
+            }
           }
         });
       return dataChangeActive as any;
     } catch (error) {
-      createNotification('error', 'error', '');
+      if (showToast) {
+        createNotification('error', 'error', '');
+      }
       return error;
     }
   };
 };
 
-export const deleteGradeAssignment = (id: any) => {
+export const deleteGradeAssignment = (id: any, showToast: boolean) => {
   return async (dispatch: any) => {
     try {
       let dataDelete = null;
@@ -154,16 +160,22 @@ export const deleteGradeAssignment = (id: any) => {
         .then((dataReponse: any) => {
           if (dataReponse.errors?.length > 0) {
             dataReponse.errors.forEach((error: any) => {
-              createNotification('error', 'error', '');
+              if (showToast) {
+                createNotification('error', 'error', '');
+              }
             });
           } else {
             dataDelete = dataReponse.data;
-            createNotification('success', 'success', '');
+            if (showToast) {
+              createNotification('success', 'success', '');
+            }
           }
         });
       return dataDelete as any;
     } catch (error) {
-      createNotification('error', 'error', '');
+      if (showToast) {
+        createNotification('error', 'error', '');
+      }
       return error;
     }
   };

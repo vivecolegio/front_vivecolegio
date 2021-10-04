@@ -2,6 +2,7 @@ import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { COLUMN_LIST } from '../../../constants/SchoolYear/schoolYearConstants';
+import { createNotification } from '../../../helpers/Notification';
 import * as schoolYearActions from '../../../stores/actions/SchoolYearActions';
 import AddNewModal from '../../common/Data/AddNewModal';
 import DataList from '../../common/Data/DataList';
@@ -15,21 +16,25 @@ const SchoolYearList = (props: any) => {
   const [data, setData] = useState(null);
   useEffect(() => {
     props.getListAllSchoolYear().then((listData: any) => {
-      setDataTable(listData.map((c:any)=>{
-        c.node.startDate = c.node.startDate ? moment(c.node.startDate).format('YYYY-MM-DD') : ''; 
-        c.node.endDate = c.node.endDate ? moment(c.node.endDate).format('YYYY-MM-DD') : '';            
-        return c;
-      }));
+      setDataTable(
+        listData.map((c: any) => {
+          c.node.startDate = c.node.startDate ? moment(c.node.startDate).format('YYYY-MM-DD') : '';
+          c.node.endDate = c.node.endDate ? moment(c.node.endDate).format('YYYY-MM-DD') : '';
+          return c;
+        }),
+      );
     });
   }, []);
 
   const getDataTable = async () => {
     props.getListAllSchoolYear().then((listData: any) => {
-      setDataTable(listData.map((c:any)=>{
-        c.node.startDate = c.node.startDate ? moment(c.node.startDate).format('YYYY-MM-DD') : ''; 
-        c.node.endDate = c.node.endDate ? moment(c.node.endDate).format('YYYY-MM-DD') : '';            
-        return c;
-      }));
+      setDataTable(
+        listData.map((c: any) => {
+          c.node.startDate = c.node.startDate ? moment(c.node.startDate).format('YYYY-MM-DD') : '';
+          c.node.endDate = c.node.endDate ? moment(c.node.endDate).format('YYYY-MM-DD') : '';
+          return c;
+        }),
+      );
     });
   };
 
@@ -77,6 +82,32 @@ const SchoolYearList = (props: any) => {
     });
   };
 
+  const deleteAll = async (items: any) => {
+    items.map(async (item: any) => {
+      await props.deleteSchoolYear(item.id, false).then(
+        () => {},
+        () => {
+          createNotification('error', 'error', '');
+        },
+      );
+    });
+    refreshDataTable();
+    createNotification('success', 'success', '');
+  };
+
+  const changeActiveDataAll = async (items: any) => {
+    items.map(async (item: any) => {
+      await props.changeActiveSchoolYear(!item.active, item.id, false).then(
+        () => {},
+        () => {
+          createNotification('error', 'error', '');
+        },
+      );
+    });
+    refreshDataTable();
+    createNotification('success', 'success', '');
+  };
+
   return (
     <>
       {' '}
@@ -91,6 +122,8 @@ const SchoolYearList = (props: any) => {
             viewEditData={viewEditData}
             deleteData={deleteData}
             changeActiveData={changeActiveData}
+            deleteAll={deleteAll}
+            changeActiveDataAll={changeActiveDataAll}
           />
           <AddNewModal
             modalOpen={modalOpen}

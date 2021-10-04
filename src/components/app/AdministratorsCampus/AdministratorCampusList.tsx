@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-
 import { COLUMN_LIST } from '../../../constants/AdministratorSchool/administratorSchoolConstants';
+import { createNotification } from '../../../helpers/Notification';
 import * as administratorCampusActions from '../../../stores/actions/AdministratorCampusActions';
 import AddNewModal from '../../common/Data/AddNewModal';
 import DataList from '../../common/Data/DataList';
@@ -15,26 +15,30 @@ const AdministratorList = (props: any) => {
   const [data, setData] = useState(null);
   useEffect(() => {
     props.getListAllAdministratorCampus().then((listData: any) => {
-      setDataTable(listData.map((c:any)=>{
-        c.node.name = c.node.user ? c.node.user.name : ''; 
-        c.node.lastName = c.node.user ? c.node.user.lastName : ''; 
-        c.node.phone = c.node.user ? c.node.user.phone : ''; 
-        c.node.email = c.node.user ? c.node.user.email : '';               
-        return c;
-      }));
+      setDataTable(
+        listData.map((c: any) => {
+          c.node.name = c.node.user ? c.node.user.name : '';
+          c.node.lastName = c.node.user ? c.node.user.lastName : '';
+          c.node.phone = c.node.user ? c.node.user.phone : '';
+          c.node.email = c.node.user ? c.node.user.email : '';
+          return c;
+        }),
+      );
     });
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllAdministratorCampus().then((listData: any) => {     
-      setDataTable(listData.map((c:any)=>{
-        c.node.name = c.node.user ? c.node.user.name : ''; 
-        c.node.lastName = c.node.user ? c.node.user.lastName : ''; 
-        c.node.phone = c.node.user ? c.node.user.phone : ''; 
-        c.node.email = c.node.user ? c.node.user.email : '';               
-        return c;
-      }));
-    });    
+    props.getListAllAdministratorCampus().then((listData: any) => {
+      setDataTable(
+        listData.map((c: any) => {
+          c.node.name = c.node.user ? c.node.user.name : '';
+          c.node.lastName = c.node.user ? c.node.user.lastName : '';
+          c.node.phone = c.node.user ? c.node.user.phone : '';
+          c.node.email = c.node.user ? c.node.user.email : '';
+          return c;
+        }),
+      );
+    });
   };
 
   const refreshDataTable = async () => {
@@ -80,6 +84,32 @@ const AdministratorList = (props: any) => {
     });
   };
 
+  const deleteAll = async (items: any) => {
+    items.map(async (item: any) => {
+      await props.deleteAdministrator(item.id, false).then(
+        () => {},
+        () => {
+          createNotification('error', 'error', '');
+        },
+      );
+    });
+    refreshDataTable();
+    createNotification('success', 'success', '');
+  };
+
+  const changeActiveDataAll = async (items: any) => {
+    items.map(async (item: any) => {
+      await props.changeActiveAdministrator(!item.active, item.id, false).then(
+        () => {},
+        () => {
+          createNotification('error', 'error', '');
+        },
+      );
+    });
+    refreshDataTable();
+    createNotification('success', 'success', '');
+  };
+
   return (
     <>
       {' '}
@@ -94,6 +124,8 @@ const AdministratorList = (props: any) => {
             viewEditData={viewEditData}
             deleteData={deleteData}
             changeActiveData={changeActiveData}
+            deleteAll={deleteAll}
+            changeActiveDataAll={changeActiveDataAll}
           />
           <AddNewModal
             modalOpen={modalOpen}

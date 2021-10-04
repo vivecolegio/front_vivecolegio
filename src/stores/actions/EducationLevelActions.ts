@@ -1,6 +1,6 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
-import { MUTATION_CHANGE_ACTIVE_EDUCATION_LEVEL, MUTATION_CREATE_EDUCATION_LEVEL, MUTATION_DELETE_EDUCATION_LEVEL, MUTATION_UPDATE_EDUCATION_LEVEL} from '../graphql/EducationLevel/EducationLevelMutations';
+import { MUTATION_CHANGE_ACTIVE_EDUCATION_LEVEL, MUTATION_CREATE_EDUCATION_LEVEL, MUTATION_DELETE_EDUCATION_LEVEL, MUTATION_UPDATE_EDUCATION_LEVEL } from '../graphql/EducationLevel/EducationLevelMutations';
 import { QUERY_GET_ALL_EDUCATION_LEVEL, QUERY_GET_EDUCATION_LEVEL } from '../graphql/EducationLevel/EducationLevelQueries';
 
 
@@ -80,7 +80,7 @@ export const saveNewEducationLevel = (data: any) => {
   };
 };
 
-export const updateEducationLevel = (data: any, id: any) => {
+export const updateEducationLevel = (data: any, id: any, showToast: boolean) => {
   return async (dispatch: any) => {
     try {
       let model: {};
@@ -100,22 +100,28 @@ export const updateEducationLevel = (data: any, id: any) => {
         .then((dataReponse: any) => {
           if (dataReponse.errors?.length > 0) {
             dataReponse.errors.forEach((error: any) => {
-              createNotification('error', 'error', '');
+              if (showToast) {
+                createNotification('error', 'error', '');
+              }
             });
           } else {
             dataUpdate = dataReponse.data.update.id;
-            createNotification('success', 'success', '');
+            if (showToast) {
+              createNotification('success', 'success', '');
+            }
           }
         });
       return dataUpdate as any;
     } catch (error) {
-      createNotification('error', 'error', '');
+      if (showToast) {
+        createNotification('error', 'error', '');
+      }
       return error;
     }
   };
 };
 
-export const changeActiveEducationLevel = (active: any, id: any) => {
+export const changeActiveEducationLevel = (active: any, id: any, showToast: boolean) => {
   return async (dispatch: any) => {
     try {
       let dataChangeActive = null;
@@ -127,22 +133,28 @@ export const changeActiveEducationLevel = (active: any, id: any) => {
         .then((dataReponse: any) => {
           if (dataReponse.errors?.length > 0) {
             dataReponse.errors.forEach((error: any) => {
-              createNotification('error', 'error', '');
+              if (showToast) {
+                createNotification('error', 'error', '');
+              }
             });
           } else {
             dataChangeActive = dataReponse.data.changeActive;
-            createNotification('success', 'success', '');
+            if (showToast) {
+              createNotification('success', 'success', '');
+            }
           }
         });
       return dataChangeActive as any;
     } catch (error) {
-      createNotification('error', 'error', '');
+      if (showToast) {
+        createNotification('error', 'error', '');
+      }
       return error;
     }
   };
 };
 
-export const deleteEducationLevel = (id: any) => {
+export const deleteEducationLevel = (id: any, showToast: boolean) => {
   return async (dispatch: any) => {
     try {
       let dataDelete = null;

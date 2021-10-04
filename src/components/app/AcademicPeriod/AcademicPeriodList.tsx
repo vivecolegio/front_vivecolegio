@@ -2,6 +2,7 @@ import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { COLUMN_LIST } from '../../../constants/AcademicPeriod/AcademicPeriodConstants';
+import { createNotification } from '../../../helpers/Notification';
 import * as academicIndicatorActions from '../../../stores/actions/AcademicPeriodActions';
 import AddNewModal from '../../common/Data/AddNewModal';
 import DataList from '../../common/Data/DataList';
@@ -15,23 +16,27 @@ const AcademicPeriodList = (props: any) => {
   const [data, setData] = useState(null);
   useEffect(() => {
     props.getListAllAcademicPeriod().then((listData: any) => {
-      setDataTable(listData.map((c:any)=>{
-        c.node.startDate = c.node.startDate ? moment(c.node.startDate).format('YYYY-MM-DD') : ''; 
-        c.node.endDate = c.node.endDate ? moment(c.node.endDate).format('YYYY-MM-DD') : '';   
-        c.node.school_year_format = c.node.schoolYear ? c.node.schoolYear.schoolYear : '';             
-        return c;
-      }));
+      setDataTable(
+        listData.map((c: any) => {
+          c.node.startDate = c.node.startDate ? moment(c.node.startDate).format('YYYY-MM-DD') : '';
+          c.node.endDate = c.node.endDate ? moment(c.node.endDate).format('YYYY-MM-DD') : '';
+          c.node.school_year_format = c.node.schoolYear ? c.node.schoolYear.schoolYear : '';
+          return c;
+        }),
+      );
     });
   }, []);
 
   const getDataTable = async () => {
     props.getListAllAcademicPeriod().then((listData: any) => {
-      setDataTable(listData.map((c:any)=>{
-        c.node.startDate = c.node.startDate ? moment(c.node.startDate).format('YYYY-MM-DD') : ''; 
-        c.node.endDate = c.node.endDate ? moment(c.node.endDate).format('YYYY-MM-DD') : '';   
-        c.node.school_year_format = c.node.schoolYear ? c.node.schoolYear.schoolYear : '';           
-        return c;
-      }));
+      setDataTable(
+        listData.map((c: any) => {
+          c.node.startDate = c.node.startDate ? moment(c.node.startDate).format('YYYY-MM-DD') : '';
+          c.node.endDate = c.node.endDate ? moment(c.node.endDate).format('YYYY-MM-DD') : '';
+          c.node.school_year_format = c.node.schoolYear ? c.node.schoolYear.schoolYear : '';
+          return c;
+        }),
+      );
     });
   };
 
@@ -79,6 +84,32 @@ const AcademicPeriodList = (props: any) => {
     });
   };
 
+  const deleteAll = async (items: any) => {
+    items.map(async (item: any) => {
+      await props.deleteUser(item.id, false).then(
+        () => {},
+        () => {
+          createNotification('error', 'error', '');
+        },
+      );
+    });
+    refreshDataTable();
+    createNotification('success', 'success', '');
+  };
+
+  const changeActiveDataAll = async (items: any) => {
+    items.map(async (item: any) => {
+      await props.changeActiveUser(!item.active, item.id, false).then(
+        () => {},
+        () => {
+          createNotification('error', 'error', '');
+        },
+      );
+    });
+    refreshDataTable();
+    createNotification('success', 'success', '');
+  };
+
   return (
     <>
       {' '}
@@ -93,6 +124,8 @@ const AcademicPeriodList = (props: any) => {
             viewEditData={viewEditData}
             deleteData={deleteData}
             changeActiveData={changeActiveData}
+            deleteAll={deleteAll}
+            changeActiveDataAll={changeActiveDataAll}
           />
           <AddNewModal
             modalOpen={modalOpen}

@@ -1,7 +1,9 @@
+/* eslint-disable no-await-in-loop */
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
 import { COLUMN_LIST } from '../../../constants/Role/roleConstants';
+import { createNotification } from '../../../helpers/Notification';
 import * as roleActions from '../../../stores/actions/RoleActions';
 import AddNewModal from '../../common/Data/AddNewModal';
 import DataList from '../../common/Data/DataList';
@@ -63,10 +65,27 @@ const RoleList = (props: any) => {
   };
 
   const deleteData = async (id: any) => {
-    await props.deleteRole(id).then((formData: any) => {
+    await props.deleteRole(id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
+
+  const deleteAll = async (items: any) => {
+    items.map(async (item:any)=>{
+      await props.deleteRole(item.id, false).then(() => {},() =>{ createNotification('error', 'error', '');});
+    });
+    refreshDataTable(); 
+    createNotification('success', 'success', '');
+  };
+
+  const changeActiveDataAll = async (items: any) => {
+    items.map(async (item:any)=>{
+      await props.changeActiveRole(!item.active, item.id, false).then(() => {},() =>{ createNotification('error', 'error', '');});
+    });
+    refreshDataTable(); 
+    createNotification('success', 'success', '');
+  };
+
 
   return (
     <>
@@ -80,8 +99,10 @@ const RoleList = (props: any) => {
             modalOpen={modalOpen}
             setModalOpen={setModalOpen}
             viewEditData={viewEditData}
-            deleteData={deleteData}
+            deleteData={deleteData}           
             changeActiveData={changeActiveData}
+            deleteAll={deleteAll}
+            changeActiveDataAll={changeActiveDataAll} 
           />
           <AddNewModal
            isLg={true}

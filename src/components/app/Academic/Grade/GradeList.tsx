@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-
 import { COLUMN_LIST } from '../../../../constants/AcademicGrade/AcademicGradeConstants';
+import { createNotification } from '../../../../helpers/Notification';
 import * as gradeActions from '../../../../stores/actions/Academic/GradeActions';
 import AddNewModal from '../../../common/Data/AddNewModal';
 import DataList from '../../../common/Data/DataList';
@@ -47,7 +47,7 @@ const GradeList = (props: any) => {
   };
 
   const onSubmit = async (dataForm: any) => {
-    console.log(dataForm)
+    console.log(dataForm);
     if (data === null) {
       await props.saveNewGrade(dataForm).then((id: any) => {
         if (id !== undefined) {
@@ -85,6 +85,32 @@ const GradeList = (props: any) => {
     });
   };
 
+  const deleteAll = async (items: any) => {
+    items.map(async (item: any) => {
+      await props.deleteGrade(item.id, false).then(
+        () => {},
+        () => {
+          createNotification('error', 'error', '');
+        },
+      );
+    });
+    refreshDataTable();
+    createNotification('success', 'success', '');
+  };
+
+  const changeActiveDataAll = async (items: any) => {
+    items.map(async (item: any) => {
+      await props.changeActiveGrade(!item.active, item.id, false).then(
+        () => {},
+        () => {
+          createNotification('error', 'error', '');
+        },
+      );
+    });
+    refreshDataTable();
+    createNotification('success', 'success', '');
+  };
+
   return (
     <>
       {' '}
@@ -99,6 +125,8 @@ const GradeList = (props: any) => {
             viewEditData={viewEditData}
             deleteData={deleteData}
             changeActiveData={changeActiveData}
+            deleteAll={deleteAll}
+            changeActiveDataAll={changeActiveDataAll}
           />
           <AddNewModal
             modalOpen={modalOpen}

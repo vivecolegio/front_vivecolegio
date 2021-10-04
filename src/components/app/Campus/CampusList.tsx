@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-
 import { COLUMN_LIST } from '../../../constants/Campus/campusConstants';
+import { createNotification } from '../../../helpers/Notification';
 import * as campusActions from '../../../stores/actions/CampusActions';
 import AddNewModal from '../../common/Data/AddNewModal';
 import DataList from '../../common/Data/DataList';
@@ -31,7 +31,7 @@ const CampusList = (props: any) => {
   };
 
   const onSubmit = async (dataForm: any) => {
-    console.log(dataForm)
+    console.log(dataForm);
     if (data === null) {
       await props.saveNewCampus(dataForm).then((id: any) => {
         if (id !== undefined) {
@@ -69,6 +69,31 @@ const CampusList = (props: any) => {
     });
   };
 
+  const deleteAll = async (items: any) => {
+    items.map(async (item: any) => {
+      await props.deleteCampus(item.id, false).then(
+        () => {},
+        () => {
+          createNotification('error', 'error', '');
+        },
+      );
+    });
+    refreshDataTable();
+    createNotification('success', 'success', '');
+  };
+
+  const changeActiveDataAll = async (items: any) => {
+    items.map(async (item: any) => {
+      await props.changeActiveCampus(!item.active, item.id, false).then(
+        () => {},
+        () => {
+          createNotification('error', 'error', '');
+        },
+      );
+    });
+    refreshDataTable();
+    createNotification('success', 'success', '');
+  };
 
   return (
     <>
@@ -84,6 +109,8 @@ const CampusList = (props: any) => {
             viewEditData={viewEditData}
             deleteData={deleteData}
             changeActiveData={changeActiveData}
+            deleteAll={deleteAll}
+            changeActiveDataAll={changeActiveDataAll}
           />
           <AddNewModal
             modalOpen={modalOpen}

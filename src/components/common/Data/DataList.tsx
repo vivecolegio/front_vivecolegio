@@ -52,7 +52,7 @@ const DataList = (props: any) => {
     }
   }, [selectedPageSize, currentPage, selectedOrderOption, search]);
 
-  const onCheckItem = (event: any, id: any) => {
+  const onCheckItem = (event: any, item: any) => {
     if (
       event.target.tagName === 'A' ||
       (event.target.parentElement && event.target.parentElement.tagName === 'A')
@@ -60,27 +60,27 @@ const DataList = (props: any) => {
       return true;
     }
     if (lastChecked === null) {
-      setLastChecked(id);
+      setLastChecked(item.id);
     }
 
     let selectedList = [...selectedItems];
-    if (selectedList.includes(id)) {
+    if (selectedItems.find((c:any)=>{return (c.id === item.id)})) {
       selectedList = selectedList.filter((x) => {
-        return x !== id;
+        return x.id !== item.id;
       });
     } else {
-      selectedList.push(id);
+      selectedList.push(item);
     }
     setSelectedItems(selectedList);
 
     if (event.shiftKey) {
       let newItems = [...items];
-      const start = getIndex(id, newItems, 'id');
+      const start = getIndex(item.id, newItems, 'id');
       const end = getIndex(lastChecked, newItems, 'id');
       newItems = newItems.slice(Math.min(start, end), Math.max(start, end) + 1);
       selectedItems.push(
-        ...newItems.map((item) => {
-          return item.id;
+        ...newItems.map((data) => {
+          return data.id;
         }),
       );
       selectedList = Array.from(new Set(selectedItems));
@@ -98,7 +98,7 @@ const DataList = (props: any) => {
     } else {
       setSelectedItems(
         items.map((x) => {
-          return x.id;
+          return x.node;
         }),
       );
     }
@@ -170,6 +170,12 @@ const DataList = (props: any) => {
             return props?.setModalOpen(!props?.modalOpen);
           }}
           columns={columns}
+          deleteAll={() => {
+            return props?.deleteAll(selectedItems);
+          }}       
+          changeActiveDataAll={() => {
+            return props?.changeActiveDataAll(selectedItems);
+          }}
         />
         <ListPageListing
           items={items}
@@ -186,7 +192,7 @@ const DataList = (props: any) => {
           changeActiveData={props?.changeActiveData}
           deleteData={props?.deleteData}
           withChildren={props?.withChildren}
-          goToChildren={props?.goToChildren}
+          goToChildren={props?.goToChildren}     
         />
       </div>
     </>

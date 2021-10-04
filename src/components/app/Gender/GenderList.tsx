@@ -1,7 +1,9 @@
+/* eslint-disable no-await-in-loop */
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
 import { COLUMN_LIST } from '../../../constants/Gender/genderConstants';
+import { createNotification } from '../../../helpers/Notification';
 import * as genderActions from '../../../stores/actions/GenderActions';
 import AddNewModal from '../../common/Data/AddNewModal';
 import DataList from '../../common/Data/DataList';
@@ -68,6 +70,22 @@ const GenderList = (props: any) => {
     });
   };
 
+  const deleteAll = async (items: any) => {
+    for(const item of items){
+       await props.deleteGender(item.id, false).then(() => {},() =>{ createNotification('error', 'error', '');});
+    };   
+    refreshDataTable(); 
+    createNotification('success', 'success', '');
+  };
+
+  const changeActiveDataAll = async (items: any) => {
+    for(const item of items){
+      await props.changeActiveGender(!item.active, item.id, false).then(() => {},() =>{ createNotification('error', 'error', '');});
+    };   
+    refreshDataTable(); 
+    createNotification('success', 'success', '');
+  };
+
   return (
     <>
       {' '}
@@ -81,6 +99,8 @@ const GenderList = (props: any) => {
             setModalOpen={setModalOpen}
             viewEditData={viewEditData}
             deleteData={deleteData}
+            deleteAll={deleteAll}
+            changeActiveDataAll={changeActiveDataAll} 
             changeActiveData={changeActiveData}
           />
           <AddNewModal
