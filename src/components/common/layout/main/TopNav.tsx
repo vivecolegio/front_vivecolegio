@@ -270,11 +270,11 @@ const TopNav = (props: any) => {
                 </span>
               </DropdownToggle>
               <DropdownMenu className="mt-3" right>
-                <DropdownItem>
-                  <NavLink to="/profile">
+                <NavLink to="/profile">
+                  <DropdownItem>
                     <IntlMessages id="layouts.profile" />
-                  </NavLink>
-                </DropdownItem>
+                  </DropdownItem>
+                </NavLink>
                 {/* <DropdownItem>Features</DropdownItem>
                 <DropdownItem>History</DropdownItem>
                 <DropdownItem>Support</DropdownItem> */}

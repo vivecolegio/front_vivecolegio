@@ -41,7 +41,7 @@ const Profile = (props: any) => {
         </>
       ) : (
         <>
-          <Colxx xxs="12" lg="5" xl="4" className="col-left mt-20 m-auto">
+          <Colxx xxs="12" lg="6" xl="5" className="col-left mt-20 m-auto">
             <SingleLightbox
               thumb="https://png.pngtree.com/png-vector/20190710/ourlarge/pngtree-user-vector-avatar-png-image_1541962.jpg"
               large="../../../assets/img/profiles/1.jpg"

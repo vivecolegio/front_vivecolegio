@@ -38,3 +38,7 @@ input.form-control[readonly] {
 .m-auto{
   margin: auto;
 }
+
+.dropdown-item.active, .dropdown-item:active{
+  color: #fff!important;
+}
