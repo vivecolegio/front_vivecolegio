@@ -42,3 +42,35 @@ input.form-control[readonly] {
 .dropdown-item.active, .dropdown-item:active{
   color: #fff!important;
 }
+
+.react-time-picker.react-time-picker--closed.react-time-picker--enabled {
+  background-color: white !important;
+  border: #d7d7d7 !important;
+  font-size: 0.8rem !important;
+  border: 1px solid #d7d7d7 !important;
+  border-radius: 0.1rem !important;
+  width: 100% !important;
+  outline: initial !important;
+  padding: 0.5rem 0.75rem !important;
+  line-height: 1;
+}
+
+.react-time-picker.react-time-picker--open.react-time-picker--enabled {
+  background-color: white !important;
+  border: #d7d7d7 !important;
+  font-size: 0.8rem !important;
+  border: 1px solid #d7d7d7 !important;
+  border-radius: 0.1rem !important;
+  width: 100% !important;
+  outline: initial !important;
+  padding: 0.5rem 0.75rem !important;
+  line-height: 1;
+}
+
+.react-time-picker__wrapper{
+  border: none!important;
+}
+
+.border-separator-right{
+  border-right: 3px #922c88 solid;
+}

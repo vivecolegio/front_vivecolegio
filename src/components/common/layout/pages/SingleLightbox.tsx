@@ -7,7 +7,7 @@ const SingleLightbox = ({ thumb, className, large }: any) => {
 
   return (
     <>
-      <NavLink to="#" location={{}} onClick={() => {return setIsOpen(true)}}>
+      <NavLink to="#" onClick={() => {return setIsOpen(true)}}>
         <img src={thumb} alt="thumbnail" className={className} />
       </NavLink>
 

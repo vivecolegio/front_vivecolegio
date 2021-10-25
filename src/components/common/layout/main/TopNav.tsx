@@ -261,10 +261,14 @@ const TopNav = (props: any) => {
               )}
             </button>
           </div>
+          <div className="mr-2 border-separator-right align-middle pr-2 d-inline-block">
+          <p className="text-muted text-small mb-1">Colegio Santos Apóstoles</p>
+                <p className="text-muted text-small mb-0">Sede Principal</p>
+            </div>
           <div className="user d-inline-block">
             <UncontrolledDropdown className="dropdown-menu-right">
               <DropdownToggle className="p-0" color="empty">
-                <span className="name mr-1">{props?.loginReducer?.name}</span>
+                <span className="name mr-1">{props?.loginReducer?.name}</span>                
                 <span>
                   <img alt="Profile" src={ProfileImg} />
                 </span>
@@ -274,10 +278,7 @@ const TopNav = (props: any) => {
                   <DropdownItem>
                     <IntlMessages id="layouts.profile" />
                   </DropdownItem>
-                </NavLink>
-                {/* <DropdownItem>Features</DropdownItem>
-                <DropdownItem>History</DropdownItem>
-                <DropdownItem>Support</DropdownItem> */}
+                </NavLink>              
                 <DropdownItem divider />
                 <DropdownItem
                   onClick={() => {

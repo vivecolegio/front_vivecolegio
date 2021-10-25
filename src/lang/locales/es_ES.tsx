@@ -115,6 +115,8 @@ const esMessages = {
   'menu.administratorsSchool': 'Administrator Escolar',
   'menu.administratorsCampus': 'Administrator Sede',
   'menu.coordinatorsCampus': 'Coordinador Sede',
+  'menu.teachers': 'Docentes',
+  'menu.guardians': 'Acudientes',
   'menu.institutions': 'Instituciones',
   'menu.school': 'Colegio',
   'menu.schools': 'Colegios',
@@ -137,6 +139,8 @@ const esMessages = {
   'menu.schoolYear': 'Año Escolar',
   'menu.speciality': 'Especialidad',
   'menu.gradeAssignment': 'Asignación de grado',
+  'menu.academicDay': 'Día académico',
+  'menu.academicHour': 'Hora académica',
   'forms.inputRequired': 'Campo Requerido',
   'forms.cancel': 'Cancelar',
   'forms.auditInformation': 'Información Auditoria',
@@ -179,11 +183,14 @@ const esMessages = {
   'forms.minimumScore': 'Puntaje Mínimo',
   'forms.topScore': 'Puntaje Máximo',
   'forms.endDate': 'Fecha fin',
+  'forms.endTime': 'Hora fin',
   'forms.startDate': 'Fecha Inicio',  
+  'forms.startTime': 'Hora Inicio',  
   'forms.folioNumber': 'Número de folio',
   'forms.indicator': 'Indicador',
   'forms.hourlyIntensity': 'Intensidad Horaria',
   'forms.gradeAssignment': 'Asignación de grado',
+  'forms.workingDay': 'Día de trabajo',
 };
 
 export default esMessages;

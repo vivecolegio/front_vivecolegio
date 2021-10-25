@@ -1,0 +1,137 @@
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import { COLUMN_LIST } from '../../../constants/AcademicDay/academicDayConstants';
+import { createNotification } from '../../../helpers/Notification';
+import * as academicDayActions from '../../../stores/actions/AcademicDayActions';
+import AddNewModal from '../../common/Data/AddNewModal';
+import DataList from '../../common/Data/DataList';
+import AcademicDayCreateEdit from './AcademicDayCreateEdit';
+
+const AcademicDayList = (props: any) => {
+  const [dataTable, setDataTable] = useState(null);
+  const [columns, setColumns] = useState(COLUMN_LIST);
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const [data, setData] = useState(null);
+  useEffect(() => {
+    props.getListAllAcademicDay().then((listData: any) => {
+      
+    });
+  }, []);
+
+  const getDataTable = async () => {
+    props.getListAllAcademicDay().then((listData: any) => {
+      setDataTable(listData);
+    });
+  };
+
+  const refreshDataTable = async () => {
+    setDataTable(null);
+    await getDataTable();
+  };
+
+  const onSubmit = async (dataForm: any) => {
+    if (data === null) {
+      await props.saveNewAcademicDay(dataForm).then((id: any) => {
+        if (id !== undefined) {
+          setModalOpen(false);
+          refreshDataTable();
+        }
+      });
+    } else {
+      await props.updateAcademicDay(dataForm, data.id).then((id: any) => {
+        if (id !== undefined) {
+          setModalOpen(false);
+          setData(null);
+          refreshDataTable();
+        }
+      });
+    }
+  };
+
+  const viewEditData = async (id: any) => {
+    await props.dataAcademicDay(id).then((formData: any) => {
+      setData(formData.data);
+      setModalOpen(true);
+    });
+  };
+
+  const changeActiveData = async (active: any, id: any) => {
+    await props.changeActiveAcademicDay(active, id).then((formData: any) => {
+      refreshDataTable();
+    });
+  };
+
+  const deleteData = async (id: any) => {
+    await props.deleteAcademicDay(id).then((formData: any) => {
+      refreshDataTable();
+    });
+  };
+
+  const deleteAll = async (items: any) => {
+    items.map(async (item: any) => {
+      await props.deleteAcademicDay(item.id, false).then(
+        () => {},
+        () => {
+          createNotification('error', 'error', '');
+        },
+      );
+    });
+    refreshDataTable();
+    createNotification('success', 'success', '');
+  };
+
+  const changeActiveDataAll = async (items: any) => {
+    items.map(async (item: any) => {
+      await props.changeActiveAcademicDay(!item.active, item.id, false).then(
+        () => {},
+        () => {
+          createNotification('error', 'error', '');
+        },
+      );
+    });
+    refreshDataTable();
+    createNotification('success', 'success', '');
+  };
+
+  return (
+    <>
+      {' '}
+      {dataTable !== null ? (
+        <>
+          <DataList
+            data={dataTable}
+            columns={columns}
+            match={props?.match}
+            modalOpen={modalOpen}
+            setModalOpen={setModalOpen}
+            viewEditData={viewEditData}
+            deleteData={deleteData}
+            changeActiveData={changeActiveData}
+            deleteAll={deleteAll}
+            changeActiveDataAll={changeActiveDataAll}
+          />
+          <AddNewModal
+            modalOpen={modalOpen}
+            toggleModal={() => {
+              setData(null);
+              return setModalOpen(!modalOpen);
+            }}
+            onSubmit={onSubmit}
+          >
+            <AcademicDayCreateEdit data={data} />
+          </AddNewModal>
+        </>
+      ) : (
+        <></>
+      )}
+    </>
+  );
+};
+const mapDispatchToProps = { ...academicDayActions };
+
+const mapStateToProps = () => {
+  return {};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AcademicDayList);

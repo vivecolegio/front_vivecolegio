@@ -120,6 +120,8 @@ const enMessages = {
   'menu.administratorsSchool': 'School Administrator',
   'menu.administratorsCampus': 'Campus Administrator',
   'menu.coordinatorsCampus': 'Campus Coordinator',
+  'menu.teachers': 'Teachers',
+  'menu.guardian': 'Guardians',
   'menu.institutions': 'Institutions',
   'menu.school': 'School',
   'menu.schools': 'Schools',
@@ -138,6 +140,8 @@ const enMessages = {
   'menu.schoolYear': 'School Year',
   'menu.speciality': 'Speciality',
   'menu.gradeAssignment': 'Grade Assignment',
+  'menu.academicDay': 'Academic Day',
+  'menu.academicHour': 'Academic Hour',
   'list.activate': 'Active',
   'list.inactivate': 'Inactive',
   'forms.inputRequired': 'Field Required',
@@ -182,11 +186,14 @@ const enMessages = {
   'forms.minimumScore': 'Minimum Score',
   'forms.topScore': 'Top Score',
   'forms.endDate': 'End Date',
+  'forms.endTime': 'End Time',
   'forms.startDate': 'Start Date',
+  'forms.startTime': 'Start Time',
   'forms.folioNumber': 'Folio Number',
   'forms.indicator': 'Indicator',
   'forms.hourlyIntensity': 'Hourly Intensity',
   'forms.gradeAssignment': 'Grade Assignment',
+  'forms.workingDay': 'Working Day',  
 };
 
 export default enMessages;

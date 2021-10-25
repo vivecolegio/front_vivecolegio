@@ -1,0 +1,62 @@
+import { gql } from '@apollo/client';
+
+export const QUERY_GET_ALL_TEACHER = gql`
+  query getAllTeacher {
+    data: getAllTeacher(orderCreated: true, allData: true) {
+      edges {
+        cursor
+        node {
+          id
+          active         
+          school  {
+            id
+            name
+          }                       
+          user {
+            id
+            name
+            lastName
+            email
+            phone
+          }
+        }
+      }
+      totalCount
+    }
+  }
+`;
+
+export const QUERY_GET_TEACHER = gql`
+  query getTeacher($id: String!) {
+    data: getTeacher(id: $id) {
+      id
+      schoolId     
+      school  {
+        id
+        name
+      }                  
+      campusId     
+      campus  {
+        id
+        name
+      }                  
+      userId
+      user {
+        id
+        name
+        lastName
+        email
+        phone
+      } 
+      version
+      createdAt
+      updatedAt
+      createdByUser {
+        name
+      }
+      updatedByUser {
+        name
+      }
+    }
+  }
+`;

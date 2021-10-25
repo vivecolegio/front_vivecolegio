@@ -8,6 +8,8 @@ import AsignatureList from '../components/app/Academic/Asignature/AsignatureList
 import GradeList from '../components/app/Academic/Grade/GradeList';
 import PerformanceLevelList from '../components/app/Academic/PerformanceLevel/PerformanceLevelList';
 import StandardList from '../components/app/Academic/Standard/StandardList';
+import AcademicDayList from '../components/app/AcademicDay/AcademicDayList';
+import AcademicHourList from '../components/app/AcademicHour/AcademicHourList';
 import AcademicIndicatorList from '../components/app/AcademicIndicator/AcademicIndicatorList';
 import AcademicPeriodList from '../components/app/AcademicPeriod/AcademicPeriodList';
 import AdministratorCampusList from '../components/app/AdministratorsCampus/AdministratorCampusList';
@@ -25,6 +27,7 @@ import GeneralGradeList from '../components/app/GeneralAcademic/Grade/GradeList'
 import GeneralPerformanceLevelList from '../components/app/GeneralAcademic/PerformanceLevel/PerformanceLevelList';
 import GeneralStandardList from '../components/app/GeneralAcademic/Standard/StandardList';
 import GradeAssignmentList from '../components/app/GradeAssignment/GradeAssignmentList';
+import GuardianList from '../components/app/Guardian/GuardianList';
 import Login from '../components/app/Login/Login';
 import MenuList from '../components/app/Menu/MenuList';
 import ModalityList from '../components/app/Modality/ModalityList';
@@ -37,6 +40,7 @@ import SchoolYearList from '../components/app/SchoolYear/SchoolYearList';
 import SpecialityList from '../components/app/Speciality/SpecialityList';
 import StudentsList from '../components/app/Students/StudentsList';
 import SubmenuList from '../components/app/Submenu/SubmenuList';
+import TeacherList from '../components/app/Teacher/TeacherList';
 import UserList from '../components/app/User/UserList';
 import ColorSwitcher from '../components/common/ColorSwitcher';
 import Layout from '../components/common/layout/Layout';
@@ -111,6 +115,8 @@ const App = (props: any) => {
                     <Route exact path="/schools" component={permissions ? SchoolList : Login} />
                     <Route exact path="/campus" component={permissions ? CampusList : Login} />
                     <Route exact path="/students" component={permissions ? StudentsList : Login} />
+                    <Route exact path="/teachers" component={permissions ? TeacherList : Login} />
+                    <Route exact path="/guardians" component={permissions ? GuardianList : Login} />
                     <Route exact path="/administratorsSchool" component={permissions ? AdministratorSchoolList : Login} />
                     <Route exact path="/administratorsCampus" component={permissions ? AdministratorCampusList : Login} />
                     <Route exact path="/coordinatorsCampus" component={permissions ? CoordinatorCampusList : Login} />
@@ -137,6 +143,8 @@ const App = (props: any) => {
                     <Route exact path="/periodAcademic" component={permissions ? AcademicPeriodList : Login} />
                     <Route exact path="/indicatorAcademic" component={permissions ? AcademicIndicatorList : Login} />
                     <Route exact path="/gradeAssignment" component={permissions ? GradeAssignmentList : Login} />
+                    <Route exact path="/academicDay" component={permissions ? AcademicDayList : Login} />
+                    <Route exact path="/academicHour" component={permissions ? AcademicHourList : Login} />
                     {/* ACADEMIC */} 
                   </>
                 ) : (

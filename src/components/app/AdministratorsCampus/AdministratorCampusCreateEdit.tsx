@@ -85,8 +85,8 @@ const AdministratorCreateEdit = (props: any) => {
   const auditInfo = {
     createdAt: props?.data?.id ? props?.data?.createdAt : null,
     updatedAt: props?.data?.id ? props?.data?.createdAt : null,
-    createdByAdministrator: props?.data?.id ? props?.data?.createdByAdministrator : null,
-    updatedByAdministrator: props?.data?.id ? props?.data?.updatedByAdministrator : null,
+    createdByUser: props?.data?.id ? props?.data?.createdByUser : null,
+    updatedByUser: props?.data?.id ? props?.data?.updatedByUser : null,
     version: props?.data?.id ? props?.data?.version : null,
   };
 

@@ -3,44 +3,24 @@ import { useFormContext } from 'react-hook-form';
 import Loader from 'react-loader-spinner';
 import { connect } from 'react-redux';
 import Select from 'react-select';
-import { Label, ModalBody, ModalFooter } from 'reactstrap';
+import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
 // import CustomSelectInput from 'components/common/CustomSelectInput';
 import { loaderColor, loaderIcon } from '../../../constants/defaultValues';
 import IntlMessages from '../../../helpers/IntlMessages';
-import * as CoordinatorCampusActions from '../../../stores/actions/CoordinatorCampusActions';
-import * as SchoolActions from '../../../stores/actions/SchoolActions';
-import * as UserActions from '../../../stores/actions/UserActions';
+import * as AcademicDayActions from '../../../stores/actions/AcademicDayActions';
 import * as CampusActions from '../../../stores/actions/CampusActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import CreateEditAuditInformation from '../../common/Data/CreateEditAuditInformation';
 
-const CoordinatorCampusCreateEdit = (props: any) => {
+const AcademicDayCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
-  const [usersList, setUsersList] = useState(null);
-  const [schoolsList, setSchoolsList] = useState(null);
   const [campusList, setCampusList] = useState(null);
 
   const methods = useFormContext();
 
-  useEffect(() => {
-    getUsersList();
-    getSchoolsList();
+  useEffect(() => {  
     getCampusList();
-    if (props?.data?.id) {     
-      if (props?.data?.user !== undefined && props?.data?.user != null) {
-        setUser({
-          key: props?.data?.user?.id,
-          label: props?.data?.user?.name,
-          value: props?.data?.user?.id,
-        });
-      }
-      if (props?.data?.school !== undefined && props?.data?.school != null) {
-        setSchool({
-          key: props?.data?.school?.id,
-          label: props?.data?.school?.name,
-          value: props?.data?.school?.id,
-        });
-      }   
+    if (props?.data?.id) {      
       if (props?.data?.campus !== undefined && props?.data?.campus != null) {
         setCampus({
           key: props?.data?.campus?.id,
@@ -54,24 +34,6 @@ const CoordinatorCampusCreateEdit = (props: any) => {
     setLoading(false);
   }, [props?.data]);
 
-  const getUsersList = async () => {
-    props.getListAllUser().then((listData: any) => {
-      setUsersList(
-        listData.map((c: any) => {
-          return { label: c.node.name, value: c.node.id, key: c.node.id };
-        }),
-      );
-    });
-  };
-  const getSchoolsList = async () => {
-    props.getListAllSchool().then((listData: any) => {
-      setSchoolsList(
-        listData.map((c: any) => {
-          return { label: c.node.name, value: c.node.id, key: c.node.id };
-        }),
-      );
-    });
-  };
   const getCampusList = async () => {
     props.getListAllCampus().then((listData: any) => {
       setCampusList(
@@ -82,6 +44,17 @@ const CoordinatorCampusCreateEdit = (props: any) => {
     });
   };
 
+  const data = {
+    typeDay:
+      props?.data?.id || props?.data?.typeDay === methods.getValues('typeDay')
+        ? props?.data?.typeDay
+        : methods.getValues('typeDay'),
+    workingDay:
+      props?.data?.id || props?.data?.workingDay === methods.getValues('workingDay')
+        ? props?.data?.workingDay
+        : methods.getValues('workingDay'),
+  };
+
   const auditInfo = {
     createdAt: props?.data?.id ? props?.data?.createdAt : null,
     updatedAt: props?.data?.id ? props?.data?.createdAt : null,
@@ -90,8 +63,6 @@ const CoordinatorCampusCreateEdit = (props: any) => {
     version: props?.data?.id ? props?.data?.version : null,
   };
 
-  const [school, setSchool] = useState(null);
-  const [user, setUser] = useState(null);
   const [campus, setCampus] = useState(null);
 
   return (
@@ -105,40 +76,26 @@ const CoordinatorCampusCreateEdit = (props: any) => {
       ) : (
         <>
           <ModalBody>
-            <div className="form-group">
+          <div className="form-group">
               <Label>
-                <IntlMessages id="forms.user" />
+                <IntlMessages id="forms.workingDay" />
               </Label>
-              <Select
-                placeholder={<IntlMessages id="forms.select" />}    
-                {...methods.register('userId', { required: true })}
-                className="react-select"
-                classNamePrefix="react-select"              
-                options={usersList}
-                value={user}
-                onChange={(selectedOption) => {
-                  methods.setValue('userId', selectedOption?.key);
-                  setUser(selectedOption);
-                }}
+              <Input
+                {...methods.register('workingDay', { required: true })}
+                name="workingDay"
+                defaultValue={data.workingDay}
               />
             </div>
             <div className="form-group">
               <Label>
-                <IntlMessages id="menu.school" />
+                <IntlMessages id="forms.type" />
               </Label>
-              <Select
-                placeholder={<IntlMessages id="forms.select" />}    
-                {...methods.register('schoolId', { required: true })}
-                className="react-select"
-                classNamePrefix="react-select"
-                options={schoolsList}
-                value={school}
-                onChange={(selectedOption) => {
-                  methods.setValue('schoolId', selectedOption?.key);
-                  setSchool(selectedOption);
-                }}
-              />            
-            </div>
+              <Input
+                {...methods.register('typeDay', { required: true })}
+                name="typeDay"
+                defaultValue={data.typeDay}
+              />
+            </div>             
             <div className="form-group">
               <Label>
                 <IntlMessages id="menu.campus" />
@@ -170,10 +127,10 @@ const CoordinatorCampusCreateEdit = (props: any) => {
   );
 };
 
-const mapDispatchToProps = { ...CoordinatorCampusActions, ...UserActions, ...SchoolActions, ...CampusActions };
+const mapDispatchToProps = { ...AcademicDayActions, ...CampusActions };
 
 const mapStateToProps = () => {
   return {};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CoordinatorCampusCreateEdit);
+export default connect(mapStateToProps, mapDispatchToProps)(AcademicDayCreateEdit);

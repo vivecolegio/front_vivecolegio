@@ -6,6 +6,14 @@ export const MUTATION_LOGIN = gql`
       jwt
       name
       userId
+      schools {
+        id
+        name
+      }
+      campus {
+        id
+        name
+      }
       role {
         id
         name

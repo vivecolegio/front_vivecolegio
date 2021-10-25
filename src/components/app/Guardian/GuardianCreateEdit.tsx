@@ -7,22 +7,25 @@ import { Label, ModalBody, ModalFooter } from 'reactstrap';
 // import CustomSelectInput from 'components/common/CustomSelectInput';
 import { loaderColor, loaderIcon } from '../../../constants/defaultValues';
 import IntlMessages from '../../../helpers/IntlMessages';
-import * as AdministratorActions from '../../../stores/actions/AdministratorSchoolActions';
+import * as GuardianActions from '../../../stores/actions/GuardianActions';
 import * as SchoolActions from '../../../stores/actions/SchoolActions';
 import * as UserActions from '../../../stores/actions/UserActions';
+import * as CampusActions from '../../../stores/actions/CampusActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import CreateEditAuditInformation from '../../common/Data/CreateEditAuditInformation';
 
-const AdministratorSchoolCreateEdit = (props: any) => {
+const GuardianCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
   const [usersList, setUsersList] = useState(null);
   const [schoolsList, setSchoolsList] = useState(null);
+  const [campusList, setCampusList] = useState(null);
 
   const methods = useFormContext();
 
   useEffect(() => {
     getUsersList();
     getSchoolsList();
+    getCampusList();
     if (props?.data?.id) {     
       if (props?.data?.user !== undefined && props?.data?.user != null) {
         setUser({
@@ -36,6 +39,13 @@ const AdministratorSchoolCreateEdit = (props: any) => {
           key: props?.data?.school?.id,
           label: props?.data?.school?.name,
           value: props?.data?.school?.id,
+        });
+      }   
+      if (props?.data?.campus !== undefined && props?.data?.campus != null) {
+        setCampus({
+          key: props?.data?.campus?.id,
+          label: props?.data?.campus?.name,
+          value: props?.data?.campus?.id,
         });
       }   
     } else {
@@ -62,6 +72,15 @@ const AdministratorSchoolCreateEdit = (props: any) => {
       );
     });
   };
+  const getCampusList = async () => {
+    props.getListAllCampus().then((listData: any) => {
+      setCampusList(
+        listData.map((c: any) => {
+          return { label: c.node.name, value: c.node.id, key: c.node.id };
+        }),
+      );
+    });
+  };
 
   const auditInfo = {
     createdAt: props?.data?.id ? props?.data?.createdAt : null,
@@ -73,6 +92,7 @@ const AdministratorSchoolCreateEdit = (props: any) => {
 
   const [school, setSchool] = useState(null);
   const [user, setUser] = useState(null);
+  const [campus, setCampus] = useState(null);
 
   return (
     <>
@@ -119,6 +139,23 @@ const AdministratorSchoolCreateEdit = (props: any) => {
                 }}
               />            
             </div>
+            <div className="form-group">
+              <Label>
+                <IntlMessages id="menu.campus" />
+              </Label>
+              <Select
+                placeholder={<IntlMessages id="forms.select" />}    
+                {...methods.register('campusId', { required: true })}
+                className="react-select"
+                classNamePrefix="react-select"
+                options={campusList}
+                value={campus}
+                onChange={(selectedOption) => {
+                  methods.setValue('campusId', selectedOption?.key);
+                  setCampus(selectedOption);
+                }}
+              />
+            </div>
           </ModalBody>
           {props?.data?.id ? (
             <ModalFooter className="p-3">
@@ -133,10 +170,10 @@ const AdministratorSchoolCreateEdit = (props: any) => {
   );
 };
 
-const mapDispatchToProps = { ...AdministratorActions, ...UserActions, ...SchoolActions };
+const mapDispatchToProps = { ...GuardianActions, ...UserActions, ...SchoolActions, ...CampusActions };
 
 const mapStateToProps = () => {
   return {};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AdministratorSchoolCreateEdit);
+export default connect(mapStateToProps, mapDispatchToProps)(GuardianCreateEdit);
