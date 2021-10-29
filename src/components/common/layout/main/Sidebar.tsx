@@ -29,12 +29,12 @@ const Sidebar = (props: any) => {
     let { roleMenus } = props.loginReducer
     roleMenus = roleMenus.map((c:any)=>{
         return {
-          id: c.menu.name,
-          icon: c.menu.icon,
-          label: c.menu.name,
-          to: `${adminRoot}/${c.menu.name}`,
+          id: c.name,
+          icon: c.icon,
+          label: c.name,
+          to: `${adminRoot}/${c.name}`,
           newWindow: false,
-          subs: c.menu.menuItems.map((x:any)=>{
+          subs: c.menuItems.map((x:any)=>{
             return {
               icon: x.icon,
               label: x.name,

@@ -26,6 +26,7 @@ const ListPageListing = ({
   deleteData,
   withChildren,
   goToChildren,
+  currentMenu,
 }: any) => {
   return (
     <Row>
@@ -65,6 +66,7 @@ const ListPageListing = ({
             deleteData={deleteData}
             withChildren={withChildren}
             goToChildren={goToChildren}
+            currentMenu={currentMenu}
           />
         );
       })}
@@ -81,3 +83,4 @@ const ListPageListing = ({
 };
 
 export default React.memo(ListPageListing);
+

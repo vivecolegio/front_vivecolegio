@@ -104,8 +104,7 @@ const RoleList = (props: any) => {
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll} 
           />
-          <AddNewModal
-           isLg={true}
+          <AddNewModal      
             modalOpen={modalOpen}
             toggleModal={() => {
               setData(null);

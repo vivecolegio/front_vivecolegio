@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-
+import { connect } from 'react-redux';
+import { useHistory, useLocation } from 'react-router';
+import { createNotification } from '../../../helpers/Notification';
 import useMousetrap from '../../../hooks/use-mousetrap';
 import ListPageHeading from './ListPageHeading';
 import ListPageListing from './ListPageListing';
 
-// import AddNewModal from './AddNewModal';
 
 const getIndex = (value: any, arr: any, prop: any) => {
   for (let i = 0; i < arr.length; i += 1) {
@@ -31,9 +32,34 @@ const DataList = (props: any) => {
   const [selectedItems, setSelectedItems] = useState([]);
   const [items, setItems] = useState([]);
   const [lastChecked, setLastChecked] = useState(null);
+  const [currentMenu, setCurrentMenu] = useState({
+    createAction : false,
+    deleteAction : false,
+    updateAction : false,
+    readAction : false,
+    fullAccess : false,
+    activateAction : false,
+    inactiveAction : false,
+  });
 
+  const location = useLocation();
+  const history = useHistory();
+  const currentUrl = location.pathname;
+  
   useEffect(() => {
     setCurrentPage(1);
+    let { roleMenus } = props.loginReducer;
+    let submenus: any = [];
+    roleMenus.map((c:any) => {   
+      return submenus = submenus.concat(c.menuItems);      
+    });
+    let cm = submenus.find((c:any)=>{return (c.module.url === currentUrl)});
+    if(cm && cm.readAction){
+      setCurrentMenu(cm);
+    } else {
+      history.push(`/home`);
+      createNotification('warning', 'notPermissions', '');
+    } 
   }, [selectedPageSize, selectedOrderOption]);
 
   useEffect(() => {
@@ -159,6 +185,7 @@ const DataList = (props: any) => {
           endIndex={endIndex}
           selectedItemsLength={selectedItems ? selectedItems.length : 0}
           itemsLength={items ? items.length : 0}
+          currentMenu={currentMenu}
           onSearchKey={(e:any) => {
             if (e.key === 'Enter') {
               setSearch(e.target.value.toLowerCase());
@@ -193,10 +220,17 @@ const DataList = (props: any) => {
           deleteData={props?.deleteData}
           withChildren={props?.withChildren}
           goToChildren={props?.goToChildren}     
+          currentMenu={currentMenu}
         />
       </div>
     </>
   );
 };
 
-export default DataList;
+const mapStateToProps = ({ loginReducer }: any) => {
+  return { loginReducer };
+};
+
+export default connect(mapStateToProps)(DataList);
+
+// export default DataList;

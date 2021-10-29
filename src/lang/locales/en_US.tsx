@@ -50,6 +50,14 @@ const enMessages = {
   'pages.go-back-home': 'GO BACK HOME',
   'layouts.signout': 'Sign Out',
   'layouts.profile': 'Profile',
+  'info.warning':'Warning',
+  'info.error':'Error',
+  'info.success':'Success',
+  'info.info':'Information',
+  'message.success':'Process successful!',
+  'message.error':'An error has occurred in the process.',
+  'message.notPermissions':"You don't have permissions to access the module, please contact the administrator.",
+
 
   /* 05.Pages */
   'pages.add-new': 'ADD NEW',
@@ -121,7 +129,7 @@ const enMessages = {
   'menu.administratorsCampus': 'Campus Administrator',
   'menu.coordinatorsCampus': 'Campus Coordinator',
   'menu.teachers': 'Teachers',
-  'menu.guardian': 'Guardians',
+  'menu.guardians': 'Guardians',
   'menu.institutions': 'Institutions',
   'menu.school': 'School',
   'menu.schools': 'Schools',
@@ -193,7 +201,8 @@ const enMessages = {
   'forms.indicator': 'Indicator',
   'forms.hourlyIntensity': 'Hourly Intensity',
   'forms.gradeAssignment': 'Grade Assignment',
-  'forms.workingDay': 'Working Day',  
+  'forms.workingDay': 'Working Day', 
+  'forms.permissions': 'Permissions',   
 };
 
 export default enMessages;

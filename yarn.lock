@@ -2739,6 +2739,14 @@
     "@types/history" "*"
     "@types/react" "*"
 
+"@types/react-router@^5.1.17":
+  version "5.1.17"
+  resolved "https://registry.yarnpkg.com/@types/react-router/-/react-router-5.1.17.tgz#087091006213b11042f39570e5cd414863693968"
+  integrity sha512-RNSXOyb3VyRs/EOGmjBhhGKTbnN6fHWvy5FNLzWfOWOGjgVUKqJZXfpKzLmgoU8h6Hj8mpALj/mbXQASOb92wQ==
+  dependencies:
+    "@types/history" "*"
+    "@types/react" "*"
+
 "@types/react-select@4.0.17":
   version "4.0.17"
   resolved "https://registry.yarnpkg.com/@types/react-select/-/react-select-4.0.17.tgz#2e5ab4042c09c988bfc2711550329b0c3c9f8513"

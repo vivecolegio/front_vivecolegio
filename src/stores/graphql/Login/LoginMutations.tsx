@@ -20,17 +20,21 @@ export const MUTATION_LOGIN = gql`
       }
       roleMenus {
         id
-        menu {
+        name
+        icon
+        menuItems {
           id
           name
           icon
-          menuItems {
-            id
-            name
-            icon
-            module {
-              url
-            }
+          createAction
+          deleteAction
+          updateAction
+          readAction
+          fullAccess
+          activateAction
+          inactiveAction
+          module {
+            url
           }
         }
       }
@@ -39,24 +43,28 @@ export const MUTATION_LOGIN = gql`
 `;
 
 export const QUERY_ME = gql`
-query{
-  me{
-     roleMenus {
+  query {
+    me {
+      roleMenus {
         id
-        menu {
+        name
+        icon
+        menuItems {
           id
           name
           icon
-          menuItems {
-            id
-            name
-            icon
-            module {
-              url
-            }
+          createAction
+          deleteAction
+          updateAction
+          readAction
+          fullAccess
+          activateAction
+          inactiveAction
+          module {
+            url
           }
         }
       }
+    }
   }
-}
 `;

@@ -15,6 +15,7 @@ const DataListView = ({
   withChildren,
   goToChildren,
   deleteData,
+  currentMenu,
 }: any) => {
   return (
     <Colxx xxs="12" className="mb-3">
@@ -39,6 +40,7 @@ const DataListView = ({
               <p className={withChildren === true ? "w-15 mb-0 text-muted text-small w-sm-100" : "w-10 mb-0 text-muted text-small w-sm-100"}>
                 <Button
                   color="info"
+                  disabled={!currentMenu.updateAction}
                   size="xs"
                   onClick={() => {
                     return viewEditData(item.id);
@@ -48,6 +50,7 @@ const DataListView = ({
                 </Button>{' '}
                 <Button
                   color="secondary"
+                  disabled={!currentMenu.deleteAction}
                   size="xs"
                   onClick={() => {
                     return deleteData(item.id);
@@ -57,6 +60,7 @@ const DataListView = ({
                 </Button>{' '}
                 <Button
                   color={item.active ? 'danger' : 'success'}
+                  disabled={item.active ? !currentMenu.inactiveAction : !currentMenu.activateAction}
                   size="xs"
                   onClick={(event) => {
                     return changeActiveData(!item.active, item.id);
@@ -67,6 +71,7 @@ const DataListView = ({
                 {withChildren === true ? (
                   <Button
                     color="primary"
+                    disabled={!currentMenu.readAction}
                     size="xs"
                     onClick={() => {
                       return goToChildren(item.id);
@@ -96,4 +101,6 @@ const DataListView = ({
   );
 };
 
-export default React.memo(DataListView);
+export default React.memo(DataListView); 
+
+

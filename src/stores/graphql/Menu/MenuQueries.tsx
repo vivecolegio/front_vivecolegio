@@ -7,10 +7,9 @@ export const QUERY_GET_ALL_MENU = gql`
         cursor
         node {
           id
-          active         
+          active
           name
           icon
-          sorting          
         }
       }
       totalCount
@@ -25,11 +24,21 @@ export const QUERY_GET_MENU = gql`
       name
       version
       icon
-      sorting
+      createAction
+      deleteAction
+      updateAction
+      readAction
+      fullAccess
+      activateAction
+      inactiveAction
+      roles {
+        id
+        name
+      }
       module {
         id
         name
-      }     
+      }
       menuItems {
         id
         name

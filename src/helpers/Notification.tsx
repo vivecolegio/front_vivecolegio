@@ -1,21 +1,23 @@
+import React from 'react';
 import { NotificationManager } from '../components/common/Notifications';
+import IntlMessages from './IntlMessages';
 
 export const createNotification = (type: any, message: any, className: any) => {
   const cName = className || '';
   switch (type) {
     case 'info':
-      NotificationManager.info('Info message', message, 3000, null, null, cName);
+      NotificationManager.info(<IntlMessages id={`message.${message}`} />, <IntlMessages id="info.info" />, 3000, null, null, cName);
       break;
     case 'success':
-      NotificationManager.success('Success message', message, 3000, null, null, cName);
+      NotificationManager.success(<IntlMessages id={`message.${message}`} />, <IntlMessages id="info.success" />, 3000, null, null, cName);
       break;
     case 'warning':
-      NotificationManager.warning('Warning message', message, 3000, null, null, cName);
+      NotificationManager.warning(<IntlMessages id={`message.${message}`} />, <IntlMessages id="info.warning" />, 3000, null, null, cName);
       break;
     case 'error':
-      NotificationManager.error(
-        'Error message',
-        message,
+      NotificationManager.error(        
+        <IntlMessages id={`message.${message}`} />,
+        <IntlMessages id="info.error" />,
         5000,
         null,
         null,

@@ -50,6 +50,13 @@ const esMessages = {
   'layouts.go-back-home': 'REGRESAR A INICIO',
   'layouts.signout': 'Cerrar sesión',
   'layouts.profile': 'Perfil',
+  'info.warning':'Alerta',
+  'info.error':'Error',
+  'info.success':'Exito',
+  'info.info':'Información',
+  'message.success':'¡Proceso exitoso!',  
+  'message.error':'Ha ocurrido un error en el proceso.',
+  'message.notPermissions':'No cuentas con permisos para acceder al módulo, por favor contacte al administrador.',
 
   /* 05.Esquemas */
   'pages.add-new': 'AGREGAR NUEVO',
@@ -191,6 +198,7 @@ const esMessages = {
   'forms.hourlyIntensity': 'Intensidad Horaria',
   'forms.gradeAssignment': 'Asignación de grado',
   'forms.workingDay': 'Día de trabajo',
+  'forms.permissions': 'Permisos',
 };
 
 export default esMessages;

@@ -93,6 +93,7 @@ const MenuList = (props: any) => {
             withChildren={true}
           />
           <AddNewModal
+            isLg={true}
             modalOpen={modalOpen}
             toggleModal={() => {   
               setData(null);    
