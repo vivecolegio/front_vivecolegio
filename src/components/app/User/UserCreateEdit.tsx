@@ -22,7 +22,10 @@ const UserCreateEdit = (props: any) => {
   const [rolesList, setRolesList] = useState(null);
   const [documentTypesList, setDocumentTypesList] = useState(null);
   const [gendersList, setGendersList] = useState(null);
-
+  const [birtdate, setBirtdate] = useState(null);
+  const [role, setRole] = useState(null);
+  const [gender, setGender] = useState(null);
+  const [documentType, setDocumentType] = useState(null);
   const methods = useFormContext();
 
   useEffect(() => {
@@ -117,6 +120,10 @@ const UserCreateEdit = (props: any) => {
       props?.data?.id || props?.data?.documentNumber === methods.getValues('documentNumber')
         ? props?.data?.documentNumber
         : methods.getValues('documentNumber'),
+    username:
+      props?.data?.id || props?.data?.username === methods.getValues('username')
+        ? props?.data?.username
+        : methods.getValues('username'),
   };
 
   const auditInfo = {
@@ -127,13 +134,6 @@ const UserCreateEdit = (props: any) => {
     version: props?.data?.id ? props?.data?.version : null,
   };
 
-  const [birtdate, setBirtdate] = useState(null);
-
-  const [role, setRole] = useState(null);
-
-  const [gender, setGender] = useState(null);
-
-  const [documentType, setDocumentType] = useState(null);
 
   return (
     <>
@@ -198,6 +198,26 @@ const UserCreateEdit = (props: any) => {
                   methods.setValue('birthdate', date as Date);
                   setBirtdate(date as Date);
                 }}
+              />
+            </div>
+            <div className="form-group">
+              <Label>
+                <IntlMessages id="forms.user" />
+              </Label>
+              <Input
+                {...methods.register('username', { required: true })}
+                name="username"
+                defaultValue={data.username}
+              />
+            </div>
+            <div className="form-group">
+              <Label>
+                <IntlMessages id="user.password" />
+              </Label>
+              <Input
+                {...methods.register('password', { required: true })}
+                name="password"
+                // defaultValue={data.password}
               />
             </div>
             <div className="form-group">
