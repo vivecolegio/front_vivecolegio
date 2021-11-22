@@ -4,7 +4,7 @@ import { NotificationManager } from '../../components/common/Notifications';
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
 import { MUTATION_CHANGE_ACTIVE_ROLE, MUTATION_CREATE_ROLE, MUTATION_CREATE_ROLE_MENU, MUTATION_DELETE_ROLE, MUTATION_UPDATE_ROLE, MUTATION_UPDATE_ROLE_MENU } from '../graphql/Roles/RoleMutations';
-import { QUERY_GET_ALL_ROLE, QUERY_GET_ROLE } from '../graphql/Roles/RoleQueries';
+import { QUERY_GET_ALL_ROLE, QUERY_GET_ALL_ROLE_ASSIGNABLE, QUERY_GET_ROLE } from '../graphql/Roles/RoleQueries';
 
 export const getListAllRole = () => {
   return async (dispatch: any) => {
@@ -13,6 +13,28 @@ export const getListAllRole = () => {
       await client
         .query({
           query: QUERY_GET_ALL_ROLE,
+        })
+        .then((result: any) => {
+          listData = result.data.data.edges;
+        });
+      return listData;
+    } catch (error) {
+      createNotification('error', 'error', '');
+      return error;
+    }
+  };
+};
+
+export const getListAllRoleAssignable = (type: string) => {
+  return async (dispatch: any) => {
+    try {
+      let listData = {};
+      await client
+        .query({
+          query: QUERY_GET_ALL_ROLE_ASSIGNABLE,
+          variables: {
+            type,
+          },
         })
         .then((result: any) => {
           listData = result.data.data.edges;
@@ -129,21 +151,21 @@ export const changeActiveRole = (active: any, id: any, showToast: boolean) => {
         .then((dataReponse: any) => {
           if (dataReponse.errors?.length > 0) {
             dataReponse.errors.forEach((error: any) => {
-              if(showToast){
+              if (showToast) {
                 createNotification('error', 'error', '');
               }
             });
           } else {
             dataChangeActive = dataReponse.data.changeActive;
-            if(showToast){
-            createNotification('success', 'success', '');
+            if (showToast) {
+              createNotification('success', 'success', '');
             }
           }
         });
       return dataChangeActive as any;
     } catch (error) {
-      if(showToast){
-      createNotification('error', 'error', '');
+      if (showToast) {
+        createNotification('error', 'error', '');
       }
       return error;
     }
@@ -163,7 +185,7 @@ export const updateRoleMenu = (data: any, id: any) => {
         ...model,
         ...data,
       };
-      let dataUpdate = null;     
+      let dataUpdate = null;
       await client
         .mutate({
           mutation: MUTATION_UPDATE_ROLE_MENU,
@@ -236,21 +258,21 @@ export const deleteRole = (id: any, showToast: boolean) => {
         .then((dataReponse: any) => {
           if (dataReponse.errors?.length > 0) {
             dataReponse.errors.forEach((error: any) => {
-              if(showToast){
+              if (showToast) {
                 createNotification('error', 'error', '');
               }
             });
           } else {
             dataDelete = dataReponse.data;
-            if(showToast){
-            createNotification('success', 'success', '');
+            if (showToast) {
+              createNotification('success', 'success', '');
             }
           }
         });
       return dataDelete as any;
     } catch (error) {
-      if(showToast){
-      createNotification('error', 'error', '');
+      if (showToast) {
+        createNotification('error', 'error', '');
       }
       return error;
     }

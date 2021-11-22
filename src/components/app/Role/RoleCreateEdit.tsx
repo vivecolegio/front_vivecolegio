@@ -2,11 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import Loader from 'react-loader-spinner';
 import { connect } from 'react-redux';
-import {
-  Input, Label,
-  ModalBody,
-  ModalFooter,
-} from 'reactstrap';
+import { CustomInput, Input, Label, ModalBody, ModalFooter } from 'reactstrap';
 import { loaderColor, loaderIcon } from '../../../constants/defaultValues';
 import IntlMessages from '../../../helpers/IntlMessages';
 import * as menuActions from '../../../stores/actions/MenuModelActions';
@@ -16,14 +12,11 @@ import CreateEditAuditInformation from '../../common/Data/CreateEditAuditInforma
 
 const RoleCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
-  const [menuList, setMenuList] = useState(null);
-  const [menuSelected, setMenuSelected] = useState(null);
-  const [rolesMenus, setRolesMenus] = useState([]);
 
   const methods = useFormContext();
 
-  useEffect(() => {    
-    if (props?.data?.id) {      
+  useEffect(() => {
+    if (props?.data?.id) {
     } else {
       methods.reset();
     }
@@ -35,6 +28,33 @@ const RoleCreateEdit = (props: any) => {
       props?.data?.id || props?.data?.name === methods.getValues('name')
         ? props?.data?.name
         : methods.getValues('name'),
+    isSchoolAdministrator:
+      props?.data?.id ||
+      props?.data?.isSchoolAdministrator === methods.getValues('isSchoolAdministrator')
+        ? props?.data?.isSchoolAdministrator
+        : methods.getValues('isSchoolAdministrator'),
+    isCampusAdministrator:
+      props?.data?.id ||
+      props?.data?.isCampusAdministrator === methods.getValues('isCampusAdministrator')
+        ? props?.data?.isCampusAdministrator
+        : methods.getValues('isCampusAdministrator'),
+    isCampusCoordinator:
+      props?.data?.id ||
+      props?.data?.isCampusCoordinator === methods.getValues('isCampusCoordinator')
+        ? props?.data?.isCampusCoordinator
+        : methods.getValues('isCampusCoordinator'),
+    isStudent:
+      props?.data?.id || props?.data?.isStudent === methods.getValues('isStudent')
+        ? props?.data?.isStudent
+        : methods.getValues('isStudent'),
+    isTeacher:
+      props?.data?.id || props?.data?.isTeacher === methods.getValues('isTeacher')
+        ? props?.data?.isTeacher
+        : methods.getValues('isTeacher'),
+    isGuardian:
+      props?.data?.id || props?.data?.isGuardian === methods.getValues('isGuardian')
+        ? props?.data?.isGuardian
+        : methods.getValues('isGuardian'),
   };
 
   const auditInfo = {
@@ -65,7 +85,84 @@ const RoleCreateEdit = (props: any) => {
                 name="name"
                 defaultValue={data.name}
               />
-            </div>           
+            </div>
+            <div className="form-group mt-5">              
+             <h6>
+                <IntlMessages id="forms.assignableRoles" />
+              </h6>
+            </div>
+            <div className="form-group">              
+              <CustomInput
+                className="itemCheck mb-0"
+                type="checkbox"
+                id={`check_isSchoolAdministrator`}
+                defaultChecked={data.isSchoolAdministrator}
+                onChange={() => {
+                  methods.setValue('isSchoolAdministrator', !data.isSchoolAdministrator);
+                }}
+                label={<IntlMessages id="menu.administratorsSchool" />}
+              />
+            </div>
+            <div className="form-group">              
+              <CustomInput
+                className="itemCheck mb-0"
+                type="checkbox"
+                id={`check_isCampusAdministrator`}
+                defaultChecked={data.isCampusAdministrator}
+                onChange={() => {
+                  methods.setValue('isCampusAdministrator', !data.isCampusAdministrator);
+                }}
+                label={<IntlMessages id="menu.administratorsCampus" />}
+              />
+            </div>
+            <div className="form-group">              
+              <CustomInput
+                className="itemCheck mb-0"
+                type="checkbox"
+                id={`check_isCampusCoordinator`}
+                defaultChecked={data.isCampusCoordinator}
+                onChange={() => {
+                  methods.setValue('isCampusCoordinator', !data.isCampusCoordinator);
+                }}
+                label={<IntlMessages id="menu.coordinatorsCampus" />}
+              />
+            </div>
+            <div className="form-group">              
+              <CustomInput
+                className="itemCheck mb-0"
+                type="checkbox"
+                id={`check_isStudent`}
+                defaultChecked={data.isStudent}
+                onChange={() => {
+                  methods.setValue('isStudent', !data.isStudent);
+                }}
+                label={<IntlMessages id="menu.students" />}
+              />
+            </div>
+            <div className="form-group">              
+              <CustomInput
+                className="itemCheck mb-0"
+                type="checkbox"
+                id={`check_isTeacher`}
+                defaultChecked={data.isTeacher}
+                onChange={() => {
+                  methods.setValue('isTeacher', !data.isTeacher);
+                }}
+                label={<IntlMessages id="menu.teachers" />}
+              />
+            </div>
+            <div className="form-group">              
+              <CustomInput
+                className="itemCheck mb-0"
+                type="checkbox"
+                id={`check_isGuardian`}
+                defaultChecked={data.isGuardian}
+                onChange={() => {
+                  methods.setValue('isGuardian', !data.isGuardian);
+                }}
+                label={<IntlMessages id="menu.guardians" />}
+              />
+            </div>
           </ModalBody>
           {props?.data?.id ? (
             <ModalFooter className="p-3">

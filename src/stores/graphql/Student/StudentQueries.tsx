@@ -48,7 +48,28 @@ export const QUERY_GET_STUDENT = gql`
       user {
         id
         name
-        lastName    
+        lastName                  
+        phone
+        email
+        birthdate
+        username
+        password
+        genderId
+        roleId
+        documentTypeId
+        documentNumber
+        role {
+          id
+          name
+        }
+        gender {
+          id
+          name
+        }
+        documentType {
+          id
+          name
+        }  
       } 
       version
       createdAt

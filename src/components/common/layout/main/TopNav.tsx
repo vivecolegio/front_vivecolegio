@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { NavLink, withRouter } from 'react-router-dom';
 import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
-import ProfileImg from '../../../../assets/img/profiles/1.jpg';
+import ProfileImg from '../../../../assets/img/profiles/l-1.jpg';
 import {
   isDarkSwitchActive,
   localeOptions,
@@ -233,11 +233,10 @@ const TopNav = (props: any) => {
               </DropdownMenu>
             </UncontrolledDropdown>
           </div>
-          {/* <div className="position-relative d-none d-none d-lg-inline-block">
-            <a className="btn btn-outline-primary btn-sm ml-2">
-              <IntlMessages id="user.buy" />
-            </a>
-          </div> */}
+          <div className="navbar-logo m-0 ml-4 position-relative d-none d-none d-lg-inline-block">
+            <span className="logo d-none d-sm-block" />
+            <span className="logo-mobile d-block d-sm-none" />
+          </div>
           <a className="navbar-logo" href="/">
             <span className="logo d-none d-sm-block" />
             <span className="logo-mobile d-block d-sm-none" />
@@ -262,15 +261,19 @@ const TopNav = (props: any) => {
             </button>
           </div>
           <div className="mr-2 border-separator-right align-middle pr-2 d-inline-block">
-          <p className="text-muted text-small mb-1">Colegio Santos Apóstoles</p>
-                <p className="text-muted text-small mb-0">Sede Principal</p>
-            </div>
+            <p className="text-muted text-small mb-1">{props?.loginReducer?.school}</p>
+            {props?.loginReducer?.campus ? (
+              <p className="text-muted text-small mb-0">{props?.loginReducer?.campus}</p>
+            ) : (
+              null
+            )}
+          </div>
           <div className="user d-inline-block">
             <UncontrolledDropdown className="dropdown-menu-right">
               <DropdownToggle className="p-0" color="empty">
-                <span className="name mr-1">{props?.loginReducer?.name}</span>                
+                <span className="name mr-1 text-primary">{props?.loginReducer?.name}</span>
                 <span>
-                  <img alt="Profile" src={ProfileImg} />
+                  <img className="border-yellow" alt="Profile" src={ProfileImg} />
                 </span>
               </DropdownToggle>
               <DropdownMenu className="mt-3" right>
@@ -278,7 +281,7 @@ const TopNav = (props: any) => {
                   <DropdownItem>
                     <IntlMessages id="layouts.profile" />
                   </DropdownItem>
-                </NavLink>              
+                </NavLink>
                 <DropdownItem divider />
                 <DropdownItem
                   onClick={() => {

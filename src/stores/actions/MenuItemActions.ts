@@ -1,6 +1,6 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
-import { MUTATION_CHANGE_ACTIVE_MENU_ITEM, MUTATION_CREATE_MENU_ITEM, MUTATION_UPDATE_MENU_ITEM } from '../graphql/MenuItem/MenuItemMutations';
+import { MUTATION_CHANGE_ACTIVE_MENU_ITEM, MUTATION_CREATE_MENU_ITEM, MUTATION_DELETE_MENU_ITEM, MUTATION_UPDATE_MENU_ITEM } from '../graphql/MenuItem/MenuItemMutations';
 import { QUERY_GET_ALL_MENU_ITEM, QUERY_GET_MENU_ITEM } from '../graphql/MenuItem/MenuItemQueries';
 
 
@@ -116,7 +116,7 @@ export const updateMenuItem = (data: any, id: any) => {
   };
 };
 
-export const changeActiveMenuItem = (active: any, id: any) => {
+export const changeActiveMenuItem = (active: any, id: any, showToast: boolean) => {
   return async (dispatch: any) => {
     try {
       let dataChangeActive = null;
@@ -128,16 +128,55 @@ export const changeActiveMenuItem = (active: any, id: any) => {
         .then((dataReponse: any) => {
           if (dataReponse.errors?.length > 0) {
             dataReponse.errors.forEach((error: any) => {
-              createNotification('error', 'error', '');
+              if (showToast) {
+                createNotification('error', 'error', '');
+              }
             });
           } else {
             dataChangeActive = dataReponse.data.changeActive;
-            createNotification('success', 'success', '');
+            if (showToast) {
+              createNotification('success', 'success', '');
+            }
           }
         });
       return dataChangeActive as any;
     } catch (error) {
-      createNotification('error', 'error', '');
+      if (showToast) {
+        createNotification('error', 'error', '');
+      }
+      return error;
+    }
+  };
+};
+
+export const deleteMenuItem = (id: any, showToast: boolean) => {
+  return async (dispatch: any) => {
+    try {
+      let dataDelete = null;
+      await client
+        .mutate({
+          mutation: MUTATION_DELETE_MENU_ITEM,
+          variables: { id },
+        })
+        .then((dataReponse: any) => {
+          if (dataReponse.errors?.length > 0) {
+            dataReponse.errors.forEach((error: any) => {
+              if (showToast) {
+                createNotification('error', 'error', '');
+              }
+            });
+          } else {
+            dataDelete = dataReponse.data;
+            if (showToast) {
+              createNotification('success', 'success', '');
+            }
+          }
+        });
+      return dataDelete as any;
+    } catch (error) {
+      if (showToast) {
+        createNotification('error', 'error', '');
+      }
       return error;
     }
   };

@@ -119,7 +119,7 @@ const esMessages = {
   'menu.cycleAcademic': 'Ciclo Académico',
   'menu.students': 'Estudiantes',
   'menu.administrators': 'Administrativos',
-  'menu.administratorsSchool': 'Administrator Escolar',
+  'menu.administratorsSchool': 'Administrator Colegio',
   'menu.administratorsCampus': 'Administrator Sede',
   'menu.coordinatorsCampus': 'Coordinador Sede',
   'menu.teachers': 'Docentes',
@@ -199,6 +199,7 @@ const esMessages = {
   'forms.gradeAssignment': 'Asignación de grado',
   'forms.workingDay': 'Día de trabajo',
   'forms.permissions': 'Permisos',
+  'forms.assignableRoles': 'Perfiles asignables al rol:',
 };
 
 export default esMessages;

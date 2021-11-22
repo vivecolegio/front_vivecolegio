@@ -39,9 +39,28 @@ export const QUERY_GET_ADMINISTRATOR = gql`
       user {
         id
         name
-        lastName
-        email
+        lastName                  
         phone
+        email
+        birthdate
+        username
+        password
+        genderId
+        roleId
+        documentTypeId
+        documentNumber
+        role {
+          id
+          name
+        }
+        gender {
+          id
+          name
+        }
+        documentType {
+          id
+          name
+        }
       } 
       version
       createdAt

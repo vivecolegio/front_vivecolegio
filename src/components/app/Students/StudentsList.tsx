@@ -54,6 +54,10 @@ const StudentList = (props: any) => {
         }
       });
     } else {
+      delete dataForm.newUser.id;
+      delete dataForm.newUser.role;
+      delete dataForm.newUser.gender;
+      delete dataForm.newUser.documentType;
       await props.updateStudent(dataForm, data.id).then((id: any) => {
         if (id !== undefined) {
           setModalOpen(false);

@@ -34,7 +34,7 @@ const Sidebar = (props: any) => {
           label: c.name,
           to: `${adminRoot}/${c.name}`,
           newWindow: false,
-          subs: c.menuItems.map((x:any)=>{
+          subs: c.menuItemsLogin.map((x:any)=>{
             return {
               icon: x.icon,
               label: x.name,

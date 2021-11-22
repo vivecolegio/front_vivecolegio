@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+import { Button } from 'reactstrap';
 import { COLUMN_LIST } from '../../../constants/Menu/menuConstants';
+import { createNotification } from '../../../helpers/Notification';
 import * as loginActions from '../../../stores/actions/LoginActions';
 import * as menuActions from '../../../stores/actions/MenuModelActions';
 import AddNewModal from '../../common/Data/AddNewModal';
@@ -66,6 +68,23 @@ const MenuList = (props: any) => {
     });
   };
 
+  const deleteData = async (id: any) => {
+    await props.deleteMenu(id).then((formData: any) => {
+      refreshDataTable();
+    });
+  };
+
+  const additionalFunction = async (id: any, type: string) => {
+    console.log(type)
+     switch (type) {
+       case 'goToChildren':
+         goToChildren(id);
+         break;     
+       default:
+         break;
+     }
+  };
+
   const goToChildren = async (id: any) => {
     props.history.push(`/submenus/${id}`)
   };
@@ -74,6 +93,32 @@ const MenuList = (props: any) => {
     await props.me().then((dataResp: any) => {
       window.location.reload();
     });
+  };
+
+  const deleteAll = async (items: any) => {
+    items.map(async (item: any) => {
+      await props.deleteMenu(item.id, false).then(
+        () => {},
+        () => {
+          createNotification('error', 'error', '');
+        },
+      );
+    });
+    refreshDataTable();
+    createNotification('success', 'success', '');
+  };
+
+  const changeActiveDataAll = async (items: any) => {
+    items.map(async (item: any) => {
+      await props.changeActiveMenu(!item.active, item.id, false).then(
+        () => {},
+        () => {
+          createNotification('error', 'error', '');
+        },
+      );
+    });
+    refreshDataTable();
+    createNotification('success', 'success', '');
   };
 
   return (
@@ -87,9 +132,18 @@ const MenuList = (props: any) => {
             match={props?.match}
             modalOpen={modalOpen}
             setModalOpen={setModalOpen}
-            viewEditData={viewEditData}
+            viewEditData={viewEditData}            
+            deleteData={deleteData}
             changeActiveData={changeActiveData}
-            goToChildren={goToChildren}
+            deleteAll={deleteAll}
+            additionalFunction={additionalFunction}
+            changeActiveDataAll={changeActiveDataAll}
+            childrenButtons={
+              [
+              { id: 0, label:"Submenus", color:"secondary", icon:"simple-icon-link", action: "goToChildren" },
+              { id: 0, label:"otro", color:"primary", icon:"simple-icon-link", action: "delete" },
+             ]
+            }
             withChildren={true}
           />
           <AddNewModal

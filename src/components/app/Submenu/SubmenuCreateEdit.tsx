@@ -108,10 +108,10 @@ const MenuItemCreateEdit = (props: any) => {
       props?.data?.id || props?.data?.icon === methods.getValues('icon')
         ? props?.data?.icon
         : methods.getValues('icon'),
-    sorting:
-      props?.data?.id || props?.data?.sorting === methods.getValues('sorting')
-        ? props?.data?.sorting
-        : methods.getValues('sorting'),
+    order:
+        props?.data?.id || props?.data?.order === methods.getValues('order')
+          ? props?.data?.order
+          : methods.getValues('order'),
     module:
       props?.data?.id || props?.data?.module === methods.getValues('module')
         ? { value: props?.data?.module?.id, label: props?.data?.module?.name }
@@ -181,6 +181,18 @@ const MenuItemCreateEdit = (props: any) => {
                 {...methods.register('name', { required: true })}
                 name="name"
                 defaultValue={data.name}
+              />
+            </div>
+            <div className="form-group">
+              <Label>
+                <IntlMessages id="forms.sorting" />
+              </Label>
+              <Input
+                onChange={(e) => {
+                  return handleChangeNumber(e, 'order');
+                }}
+                name="order"
+                defaultValue={data.order}
               />
             </div>
             <div className="form-group">

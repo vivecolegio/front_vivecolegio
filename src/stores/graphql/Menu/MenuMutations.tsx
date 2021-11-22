@@ -21,3 +21,10 @@ export const MUTATION_CHANGE_ACTIVE_MENU = gql`
     changeActive: changeActiveMenu(id: $id, active: $active)
   }
 `;
+
+
+export const MUTATION_DELETE_MENU = gql`
+  mutation deleteMenu($id: String!) {
+    delete: deleteMenu(id: $id)
+  }
+`;

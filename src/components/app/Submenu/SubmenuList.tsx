@@ -7,6 +7,7 @@ import * as loginActions from '../../../stores/actions/LoginActions';
 import AddNewModal from '../../common/Data/AddNewModal';
 import DataList from '../../common/Data/DataList';
 import MenuItemCreateEdit from './SubmenuCreateEdit';
+import { createNotification } from '../../../helpers/Notification';
 
 const MenuItemList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
@@ -70,10 +71,42 @@ const MenuItemList = (props: any) => {
     });
   };
 
+  const deleteData = async (id: any) => {
+    await props.deleteMenuItem(id).then((formData: any) => {
+      refreshDataTable();
+    });
+  };
+
   const me = async () => {
     await props.me().then((dataResp: any) => {
       window.location.reload();
     });
+  };
+
+  const deleteAll = async (items: any) => {
+    items.map(async (item: any) => {
+      await props.deleteMenuItem(item.id, false).then(
+        () => {},
+        () => {
+          createNotification('error', 'error', '');
+        },
+      );
+    });
+    refreshDataTable();
+    createNotification('success', 'success', '');
+  };
+
+  const changeActiveDataAll = async (items: any) => {
+    items.map(async (item: any) => {
+      await props.changeActiveMenuItem(!item.active, item.id, false).then(
+        () => {},
+        () => {
+          createNotification('error', 'error', '');
+        },
+      );
+    });
+    refreshDataTable();
+    createNotification('success', 'success', '');
   };
 
   return (
@@ -88,7 +121,10 @@ const MenuItemList = (props: any) => {
             modalOpen={modalOpen}
             setModalOpen={setModalOpen}
             viewEditData={viewEditData}
+            deleteData={deleteData}
             changeActiveData={changeActiveData}
+            deleteAll={deleteAll}
+            changeActiveDataAll={changeActiveDataAll}
           />
           <AddNewModal
             isLg={true}

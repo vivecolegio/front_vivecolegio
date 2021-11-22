@@ -203,6 +203,7 @@ const enMessages = {
   'forms.gradeAssignment': 'Grade Assignment',
   'forms.workingDay': 'Working Day', 
   'forms.permissions': 'Permissions',   
+  'forms.assignableRoles': 'Profiles assignable to the role:',   
 };
 
 export default enMessages;

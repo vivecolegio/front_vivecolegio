@@ -25,7 +25,8 @@ const ListPageListing = ({
   changeActiveData,
   deleteData,
   withChildren,
-  goToChildren,
+  childrenButtons,
+  additionalFunction,
   currentMenu,
 }: any) => {
   return (
@@ -36,7 +37,7 @@ const ListPageListing = ({
             <ImageListView
               key={item.node.id}
               item={item.node}
-              isSelect={selectedItems.find((c:any)=>{return (c.id === item.node.id)})}
+              isSelect={selectedItems.find((c:any)=>{return (c && c.id === item.node.id)})}
               collect={collect}
               onCheckItem={onCheckItem}
             />
@@ -47,7 +48,7 @@ const ListPageListing = ({
             <ThumbListView
               key={item.node.id}
               item={item.node}
-              isSelect={selectedItems.find((c:any)=>{return (c.id === item.node.id)})}
+              isSelect={selectedItems.find((c:any)=>{return (c && c.id === item.node.id)})}
               collect={collect}
               onCheckItem={onCheckItem}
             />
@@ -57,7 +58,7 @@ const ListPageListing = ({
           <DataListView
             key={item.node.id}
             item={item.node}
-            isSelect={selectedItems.find((c:any)=>{return (c.id === item.node.id)})}
+            isSelect={selectedItems.find((c:any)=>{return (c && c.id === item.node.id)})}
             onCheckItem={onCheckItem}
             collect={collect}
             columns={columns}
@@ -65,8 +66,9 @@ const ListPageListing = ({
             changeActiveData={changeActiveData}
             deleteData={deleteData}
             withChildren={withChildren}
-            goToChildren={goToChildren}
+            childrenButtons={childrenButtons}
             currentMenu={currentMenu}
+            additionalFunction={additionalFunction}
           />
         );
       })}

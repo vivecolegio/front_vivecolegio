@@ -13,8 +13,9 @@ const DataListView = ({
   viewEditData,
   changeActiveData,
   withChildren,
-  goToChildren,
+  childrenButtons,
   deleteData,
+  additionalFunction,
   currentMenu,
 }: any) => {
   return (
@@ -37,48 +38,53 @@ const DataListView = ({
                   </p>
                 );
               })}
-              <p className={withChildren === true ? "w-15 mb-0 text-muted text-small w-sm-100" : "w-10 mb-0 text-muted text-small w-sm-100"}>
+              <p className={withChildren === true ? "w-35 mb-0 text-center text-muted text-small w-sm-100" : "w-25 mb-0 text-center text-muted text-small w-sm-100"}>
                 <Button
-                  color="info"
-                  disabled={!currentMenu.updateAction}
+                  color="blue"
+                  // disabled={!currentMenu.updateAction}
                   size="xs"
                   onClick={() => {
                     return viewEditData(item.id);
                   }}
                 >
-                  <i className="simple-icon-eye" />
+                  <i className="simple-icon-eye font-1rem mr-2" />
+                  Detalle
                 </Button>{' '}
                 <Button
-                  color="secondary"
+                  color="orange"
                   disabled={!currentMenu.deleteAction}
                   size="xs"
                   onClick={() => {
                     return deleteData(item.id);
                   }}
                 >
-                  <i className="simple-icon-trash" />
+                  <i className="simple-icon-trash font-1rem mr-2" />
+                  Eliminar
                 </Button>{' '}
                 <Button
-                  color={item.active ? 'danger' : 'success'}
+                  color={item.active ? 'danger' : 'green'}
                   disabled={item.active ? !currentMenu.inactiveAction : !currentMenu.activateAction}
                   size="xs"
-                  onClick={(event) => {
+                  onClick={() => {
                     return changeActiveData(!item.active, item.id);
                   }}
                 >
-                  <i className={item.active ? 'simple-icon-close' : 'simple-icon-check'} />
+                  <i className={item.active ? 'simple-icon-close font-1rem mr-2' : 'simple-icon-check font-1rem mr-2'} />
+                  {item.active ? 'Inactivar' : 'Activar'}
                 </Button>{' '}                
                 {withChildren === true ? (
-                  <Button
-                    color="primary"
-                    disabled={!currentMenu.readAction}
-                    size="xs"
-                    onClick={() => {
-                      return goToChildren(item.id);
-                    }}
-                  >
-                    <i className="simple-icon-link" />
-                  </Button>
+                  childrenButtons.map((button:any) => {
+                    return <Button
+                      key={button.id}
+                      color={button.color}
+                      size="xs"
+                      onClick={() => {
+                         return additionalFunction(item.id, button.action);
+                      }}>
+                      <i className={button.icon + ' font-1rem mr-2'} />
+                      {button.label}
+                    </Button>
+                  })
                 ) : (
                   ''
                 )}

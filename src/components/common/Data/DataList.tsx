@@ -51,14 +51,14 @@ const DataList = (props: any) => {
     let { roleMenus } = props.loginReducer;
     let submenus: any = [];
     roleMenus.map((c:any) => {   
-      return submenus = submenus.concat(c.menuItems);      
+      return submenus = submenus.concat(c.menuItemsLogin);      
     });
     let cm = submenus.find((c:any)=>{return (c.module.url === currentUrl)});
     if(cm && cm.readAction){
       setCurrentMenu(cm);
     } else {
-      history.push(`/home`);
-      createNotification('warning', 'notPermissions', '');
+      // history.push(`/home`);
+      // createNotification('warning', 'notPermissions', '');
     } 
   }, [selectedPageSize, selectedOrderOption]);
 
@@ -219,8 +219,9 @@ const DataList = (props: any) => {
           changeActiveData={props?.changeActiveData}
           deleteData={props?.deleteData}
           withChildren={props?.withChildren}
-          goToChildren={props?.goToChildren}     
+          childrenButtons={props?.childrenButtons}    
           currentMenu={currentMenu}
+          additionalFunction={props?.additionalFunction}
         />
       </div>
     </>

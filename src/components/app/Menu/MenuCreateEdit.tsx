@@ -74,6 +74,10 @@ const MenuCreateEdit = (props: any) => {
       props?.data?.id || props?.data?.module === methods.getValues('module')
         ? { value: props?.data?.module?.id, label: props?.data?.module?.name }
         : methods.getValues('module'),
+    order:
+        props?.data?.id || props?.data?.order === methods.getValues('order')
+          ? props?.data?.order
+          : methods.getValues('order'),
     readAction:
       props?.data?.id || props?.data?.readAction === methods.getValues('readAction')
         ? props?.data?.readAction
@@ -112,6 +116,9 @@ const MenuCreateEdit = (props: any) => {
     version: props?.data?.id ? props?.data?.version : null,
   };
 
+  const handleChangeNumber = (event: any, name: any) => {
+    methods.setValue(name, parseFloat(event.target.value));
+  };
 
   return (
     <>
@@ -132,6 +139,18 @@ const MenuCreateEdit = (props: any) => {
                 {...methods.register('name', { required: true })}
                 name="name"
                 defaultValue={data.name}
+              />
+            </div>
+            <div className="form-group">
+              <Label>
+                <IntlMessages id="forms.sorting" />
+              </Label>
+              <Input
+                onChange={(e) => {
+                  return handleChangeNumber(e, 'order');
+                }}
+                name="order"
+                defaultValue={data.order}
               />
             </div>
             <div className="form-group">

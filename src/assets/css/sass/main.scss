@@ -74,3 +74,52 @@ input.form-control[readonly] {
 .border-separator-right{
   border-right: 3px #922c88 solid;
 }
+
+.btn-blue {
+ border-color: #48A9F8!important;
+ background-color: #48A9F8!important;
+ color: white;
+}
+
+.btn-green {
+ border-color: #8BC740!important;
+ background-color: #8BC740!important;
+ color: white;
+}
+
+.btn-orange {
+ border-color: #FF6746!important;
+ background-color: #FF6746!important;
+ color: white;
+}
+
+.btn-blue:hover {
+ border-color: #4194d8!important;
+ background-color: #4194d8!important;
+ color: white;
+}
+
+.btn-green:hover {
+ border-color: #77ac38!important;
+ background-color: #77ac38!important;
+ color: white;
+}
+
+.btn-orange:hover {
+ border-color: #da5c40!important;
+ background-color: #da5c40!important;
+ color: white;
+}
+
+.border-yellow {
+  border: 1px solid #fdbc18;
+}
+
+// .navbar .navbar-logo {  
+//   position: initial;
+//   margin-left: 1rem;
+// }
+
+.font-1rem {
+  font-size: 1rem!important;
+}

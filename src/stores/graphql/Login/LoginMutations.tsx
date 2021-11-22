@@ -22,7 +22,7 @@ export const MUTATION_LOGIN = gql`
         id
         name
         icon
-        menuItems {
+        menuItemsLogin {
           id
           name
           icon
@@ -49,7 +49,7 @@ export const QUERY_ME = gql`
         id
         name
         icon
-        menuItems {
+        menuItemsLogin {
           id
           name
           icon
