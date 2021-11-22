@@ -140,8 +140,7 @@ const MenuList = (props: any) => {
             changeActiveDataAll={changeActiveDataAll}
             childrenButtons={
               [
-              { id: 0, label:"Submenus", color:"secondary", icon:"simple-icon-link", action: "goToChildren" },
-              { id: 0, label:"otro", color:"primary", icon:"simple-icon-link", action: "delete" },
+              { id: 0, label:"Submenus", color:"secondary", icon:"simple-icon-link", action: "goToChildren" },              
              ]
             }
             withChildren={true}
