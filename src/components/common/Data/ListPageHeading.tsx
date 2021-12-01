@@ -10,6 +10,7 @@ import ImageListIcon from './Icon/ImageListIcon';
 import ThumbListIcon from './Icon/ThumbListIcon';
 
 const ListPageHeading = ({
+  items,
   intl,
   displayMode,
   changeDisplayMode,
@@ -33,6 +34,7 @@ const ListPageHeading = ({
   deleteAll,
   changeActiveDataAll,
   currentMenu,
+  withChildren,
 }: any) => {
   const [dropdownSplitOpen, setDropdownSplitOpen] = useState(false);
   const [displayOptionsIsOpen, setDisplayOptionsIsOpen] = useState(false);
@@ -121,7 +123,6 @@ const ListPageHeading = ({
           <Collapse isOpen={displayOptionsIsOpen} className="d-md-block" id="displayOptions">
             <span className="mr-3 d-inline-block float-md-left">
               <a
-                href="#/"
                 className={`mr-2 view-icon ${displayMode === 'list' ? 'active' : ''}`}
                 onClick={() => {
                   return changeDisplayMode('list');
@@ -130,7 +131,6 @@ const ListPageHeading = ({
                 <DataListIcon />
               </a>
               <a
-                href="#/"
                 className={`mr-2 view-icon ${displayMode === 'thumblist' ? 'active' : ''}`}
                 onClick={() => {
                   return changeDisplayMode('thumblist');
@@ -138,8 +138,7 @@ const ListPageHeading = ({
               >
                 <ThumbListIcon />
               </a>
-              <a
-                href="#/"
+              <a                              
                 className={`mr-2 view-icon ${displayMode === 'imagelist' ? 'active' : ''}`}
                 onClick={() => {
                   return changeDisplayMode('imagelist');
@@ -149,27 +148,7 @@ const ListPageHeading = ({
               </a>
             </span>
 
-            <div className="d-block d-md-inline-block pt-1">
-              <UncontrolledDropdown className="mr-1 float-md-left btn-group mb-1">
-                <DropdownToggle caret color="outline-dark" size="xs">
-                  <IntlMessages id="pages.orderby" />
-                  {selectedOrderOption.label}
-                </DropdownToggle>
-                <DropdownMenu>
-                  {orderOptions.map((order: any, index: any) => {
-                    return (
-                      <DropdownItem
-                        key={index}
-                        onClick={() => {
-                          return changeOrderBy(order.column);
-                        }}
-                      >
-                        {order.label}
-                      </DropdownItem>
-                    );
-                  })}
-                </DropdownMenu>
-              </UncontrolledDropdown>
+            <div className="d-block d-md-inline-block pt-1">             
               <div className="search-sm d-inline-block float-md-left mr-1 mb-1 align-top">
                 <input
                   type="text"
@@ -206,22 +185,28 @@ const ListPageHeading = ({
             </div>
           </Collapse>
         </div>
+        {displayMode === 'list' ?
+        <>
         <Separator className="pt-2 mb-2" />
         <Card>
           <div className="pl-2 d-flex flex-grow-1 min-width-zero">
             <div className="p-3 card-body align-self-center d-flex flex-colum flex-lg-row justify-content-between min-width-zero align-items-lg-center">
               {columns?.map((item: any) => {
                 return (
-                  <p key={item.label} className="mb-1 text-muted text-small w-10 w-sm-100">
+                  <p key={item.label} 
+                  className="w-10 mb-1 text-muted text-small w-sm-100"
+                  >
                     <IntlMessages id={item.label}/>
                   </p>
                 );
               })}
-              <p className="mb-1 text-muted text-small w-10 w-sm-100"><IntlMessages id="pages.actions"/></p>
+              <p className={withChildren === true ? "w-35 mb-1 text-muted text-small w-sm-100 text-center" : "w-25 mb-1 text-muted text-small w-sm-100 text-center"}><IntlMessages id="pages.actions"/></p>
             </div>
           </div>
         </Card>
         <Separator className="pt-2 mb-3" />
+        </>
+        : ''}
       </Colxx>
     </Row>
   );

@@ -3,6 +3,7 @@ import React from 'react';
 import TopNav from './TopNav';
 import Sidebar from './Sidebar';
 import { injectIntl } from 'react-intl';
+import Footer from './Footer';
 
 const Main = (props: any) => {
   const intlProps = {
@@ -19,6 +20,7 @@ const Main = (props: any) => {
         <main>
           <div className="container-fluid">{props.children}</div>
         </main>
+        <Footer />
       </div>
     </>
   );

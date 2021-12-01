@@ -8,6 +8,8 @@ import IntlMessages from '../../../helpers/IntlMessages';
 import * as userActions from '../../../stores/actions/UserActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import SingleLightbox from '../../common/layout/pages/SingleLightbox';
+import BannerImg from '../../../assets/img/social/header.jpg';
+import ProfileImg from '../../../assets/img/profiles/l-1.jpg';
 
 const Profile = (props: any) => {
   const [loading, setLoading] = useState(true);
@@ -37,51 +39,60 @@ const Profile = (props: any) => {
         </>
       ) : (
         <>
-          <Colxx xxs="12" lg="6" xl="8" className="col-left mt-20 m-auto">
+        <Colxx xxs="12" className="mb-5">
+                  <Card>
+                    <SingleLightbox
+                      thumb={BannerImg}
+                      large={BannerImg}
+                      className="social-header h-270 card-img"
+                    />
+                  </Card>
+                </Colxx>
+          <Colxx xxs="12" lg="5" xl="4" className="col-left m-auto">
             <SingleLightbox
-              thumb="https://png.pngtree.com/png-vector/20190710/ourlarge/pngtree-user-vector-avatar-png-image_1541962.jpg"
-              large="../../../assets/img/profiles/1.jpg"
+              thumb={ProfileImg}
+              large={ProfileImg}
               className="img-thumbnail card-img social-profile-img"
-            />
-
-            <Card className="mb-4">
+            />            
+            <Card>
               <CardBody>
-                <div className="text-center pt-4 mb-4">
-                  <p className="list-item-heading pt-2 mb-1">
-                    {user ? user.name : ''} {user ? user.lastName : ''}
+                <div className="text-center pt-4 mb-4 mt-4">
+                  <p className="pt-2 mb-1 font-1-5rem">
+                    <strong>{user ? user.name : ''} {user ? user.lastName : ''}</strong>
                   </p>
-                  <p className="text-muted mb-1">{user ? user.email : ''}</p>
-                  <Badge color="outline-secondary" pill>
+                  <p className="text-muted mb-2 font-1rem">{user ? user.email : ''}</p>
+                  <Badge color="outline-info font-0-8rem" pill>
                     {user ? user.role.name : ''}
                   </Badge>
                 </div>
-                <div className="row">
+                <hr/>
+                <div className="row mt-4">
                   <div className="col-md-6 text-right">
-                    <p className="text-muted text-small mb-2">
-                      <i className="iconsminds-id-card mr-2" /> {user ? user.documentType.name : ''}
+                    <p className="text-muted text-small mb-2 d-flex align-items-center justify-content-end">
+                      <i className="iconsminds-id-card mr-2 font-1rem text-info" /> {user ? user.documentType.name : ''}
                     </p>
-                    <p className="mb-3">{user ? user.documentNumber : ''}</p>
+                    <p className="mb-3 font-1rem">{user ? user.documentNumber : ''}</p>
                   </div>
                   <div className="col-md-6 text-left">
-                    <p className="text-muted text-small mb-2">
-                      <i className="iconsminds-male-female mr-2" />
+                    <p className="text-muted text-small mb-2 d-flex align-items-center">
+                      <i className="iconsminds-male-female mr-2 font-1rem text-info" />
                       <IntlMessages id="forms.gender" />
                     </p>
-                    <p className="mb-3">{user ? user.gender.name : ''}</p>
+                    <p className="mb-3 font-1rem">{user ? user.gender.name : ''}</p>
                   </div>
                   <div className="col-md-6 text-right">
-                    <p className="text-muted text-small mb-2">
-                      <i className="iconsminds-smartphone-3 mr-2" />
+                    <p className="text-muted text-small mb-2 d-flex align-items-center justify-content-end">
+                      <i className="iconsminds-smartphone-3 mr-2 font-1rem text-info" />
                       <IntlMessages id="forms.phone" />
                     </p>
-                    <p className="mb-3">{user ? user.phone : ''}</p>
+                    <p className="mb-3 font-1rem">{user ? user.phone : ''}</p>
                   </div>
                   <div className="col-md-6 text-left">
-                    <p className="text-muted text-small mb-2">
-                      <i className="iconsminds-cake mr-2" />
+                    <p className="text-muted text-small mb-2 d-flex align-items-center">
+                      <i className="iconsminds-cake mr-2 font-1rem text-info" />
                       <IntlMessages id="forms.birthdate" />
                     </p>
-                    <p className="mb-3">
+                    <p className="mb-3 font-1rem">
                       {user ? moment(user.birthdate).format('YYYY-MM-DD') : ''}
                     </p>
                   </div>

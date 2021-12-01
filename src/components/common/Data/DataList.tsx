@@ -156,6 +156,12 @@ const DataList = (props: any) => {
     return false;
   });
 
+  const matches = (dato: any, term: any) => {
+    let array = Object.entries(dato.node);
+    console.log(array.find(c=>{return (c.toString().toLocaleLowerCase().includes(term))}));
+    return array.find(c=>{return (c.toString().toLocaleLowerCase().includes(term))});
+  };
+
   const startIndex = (currentPage - 1) * selectedPageSize;
   const endIndex = currentPage * selectedPageSize;
 
@@ -165,6 +171,7 @@ const DataList = (props: any) => {
     <>
       <div className="disable-text-selection">
         <ListPageHeading
+          items={items}
           heading="menu.data-list"
           displayMode={displayMode}
           changeDisplayMode={setDisplayMode}
@@ -186,10 +193,11 @@ const DataList = (props: any) => {
           selectedItemsLength={selectedItems ? selectedItems.length : 0}
           itemsLength={items ? items.length : 0}
           currentMenu={currentMenu}
-          onSearchKey={(e:any) => {
+          onSearchKey={(e:any) => {  
             if (e.key === 'Enter') {
-              setSearch(e.target.value.toLowerCase());
-            }
+              setSearch(e.target.value.toLowerCase());     
+              setItems(items.filter(dato => {return matches(dato, search)})); 
+            }                                                            
           }}
           orderOptions={orderOptions}
           pageSizes={pageSizes}
@@ -203,6 +211,7 @@ const DataList = (props: any) => {
           changeActiveDataAll={() => {
             return props?.changeActiveDataAll(selectedItems);
           }}
+          withChildren={props?.withChildren}
         />
         <ListPageListing
           items={items}

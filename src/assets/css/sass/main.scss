@@ -123,3 +123,20 @@ input.form-control[readonly] {
 .font-1rem {
   font-size: 1rem!important;
 }
+
+.font-1-5rem {
+  font-size: 1.5rem!important;
+}
+
+.font-0-8rem {
+  font-size: 0.8rem!important;
+}
+
+.h-270 {
+  height: 270px!important;
+}
+
+// remove item separator "|" in footer breadcrumb
+footer.page-footer .breadcrumb-item + .breadcrumb-item::before {
+  color: transparent!important;
+}

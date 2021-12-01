@@ -41,7 +41,7 @@ const DataListView = ({
               <p className={withChildren === true ? "w-35 mb-0 text-center text-muted text-small w-sm-100" : "w-25 mb-0 text-center text-muted text-small w-sm-100"}>
                 <Button
                   color="blue"
-                  // disabled={!currentMenu.updateAction}
+                  disabled={!currentMenu.updateAction}
                   size="xs"
                   onClick={() => {
                     return viewEditData(item.id);

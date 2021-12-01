@@ -37,9 +37,19 @@ const ListPageListing = ({
             <ImageListView
               key={item.node.id}
               item={item.node}
-              isSelect={selectedItems.find((c:any)=>{return (c && c.id === item.node.id)})}
+              isSelect={selectedItems.find((c: any) => {
+                return c && c.id === item.node.id;
+              })}
               collect={collect}
               onCheckItem={onCheckItem}
+              columns={columns}
+              viewEditData={viewEditData}
+              changeActiveData={changeActiveData}
+              deleteData={deleteData}
+              withChildren={withChildren}
+              childrenButtons={childrenButtons}
+              currentMenu={currentMenu}
+              additionalFunction={additionalFunction}
             />
           );
         }
@@ -48,9 +58,19 @@ const ListPageListing = ({
             <ThumbListView
               key={item.node.id}
               item={item.node}
-              isSelect={selectedItems.find((c:any)=>{return (c && c.id === item.node.id)})}
+              isSelect={selectedItems.find((c: any) => {
+                return c && c.id === item.node.id;
+              })}
               collect={collect}
               onCheckItem={onCheckItem}
+              columns={columns}
+              viewEditData={viewEditData}
+              changeActiveData={changeActiveData}
+              deleteData={deleteData}
+              withChildren={withChildren}
+              childrenButtons={childrenButtons}
+              currentMenu={currentMenu}
+              additionalFunction={additionalFunction}
             />
           );
         }
@@ -58,7 +78,9 @@ const ListPageListing = ({
           <DataListView
             key={item.node.id}
             item={item.node}
-            isSelect={selectedItems.find((c:any)=>{return (c && c.id === item.node.id)})}
+            isSelect={selectedItems.find((c: any) => {
+              return c && c.id === item.node.id;
+            })}
             onCheckItem={onCheckItem}
             collect={collect}
             columns={columns}
@@ -85,4 +107,3 @@ const ListPageListing = ({
 };
 
 export default React.memo(ListPageListing);
-
