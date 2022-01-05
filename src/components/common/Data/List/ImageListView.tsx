@@ -9,8 +9,8 @@ import {
   CardImg,
   CardSubtitle,
   CardText,
-  CustomInput,
   Row,
+  Input
 } from 'reactstrap';
 import ProfileImg from '../../../../assets/img/profiles/l-1.jpg';
 import { Colxx } from '../../CustomBootstrap';
@@ -60,17 +60,17 @@ const ImageListView = ({
                   label=""
                 />
               </Colxx> */}
-              <Colxx xxs="10" className="mb-3">
+              <Colxx xxs="12" className="mb-3">
                 <CardSubtitle className="d-flex mb-2 align-items-center">
-                  <CustomInput
-                    className="item-check mb-0"
+                  <strong className="col-11 p-0">{item[`${columns[0].column}`]}</strong>
+                  <Input
+                    className="item-check mb-0 col-1"
                     type="checkbox"
                     id={`check_${item.id}`}
                     checked={isSelect}
                     onChange={() => {}}
                     label=""
                   />
-                  <span><strong>{item[`${columns[0].column}`]}</strong></span>
                 </CardSubtitle>
                 {columns.map((column: any) => {
                   return columns[0] !== column ? (

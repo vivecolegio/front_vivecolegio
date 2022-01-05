@@ -79,3 +79,50 @@ export const QUERY_GET_COORDINATOR_CAMPUS = gql`
     }
   }
 `;
+
+export const QUERY_GET_DROPDOWNS_COORDINATOR = gql`
+  query getDropdownsCoordinator ($type : String!) {
+    dataSchools: getAllSchool(allData: false, orderCreated: false) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+    dataCampus: getAllCampus(allData: false, orderCreated: false) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+    dataRoles: getAllRoleType(type: $type) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+    dataGenders: getAllGender(allData: false, orderCreated: false) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+    dataDocumentTypes: getAllDocumentType(allData: false, orderCreated: false) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+  }
+`;
+
+

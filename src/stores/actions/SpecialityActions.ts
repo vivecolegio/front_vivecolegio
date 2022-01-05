@@ -1,7 +1,7 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
 import { MUTATION_CHANGE_ACTIVE_SPECIALITY, MUTATION_CREATE_SPECIALITY, MUTATION_DELETE_SPECIALITY, MUTATION_UPDATE_SPECIALITY } from '../graphql/Speciality/SpecialityMutations';
-import { QUERY_GET_ALL_SPECIALITY, QUERY_GET_SPECIALITY } from '../graphql/Speciality/SpecialityQueries';
+import { QUERY_GET_ALL_SPECIALITY, QUERY_GET_DROPDOWNS_SPECIALITY, QUERY_GET_SPECIALITY } from '../graphql/Speciality/SpecialityQueries';
 
 
 export const getListAllSpeciality = () => {
@@ -180,3 +180,23 @@ export const deleteSpeciality = (id: any, showToast: boolean) => {
     }
   };
 };
+
+export const getDropdownsSpeciality = () => {
+  return async (dispatch: any) => {
+    try {
+      let listData = {};
+      await client
+        .query({
+          query: QUERY_GET_DROPDOWNS_SPECIALITY,
+        })
+        .then((result: any) => {
+          listData = result.data;
+        });
+      return listData;
+    } catch (error) {
+      createNotification('error', 'error', '');
+      return error;
+    }
+  };
+};
+

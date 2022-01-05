@@ -1,7 +1,7 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
 import { MUTATION_CHANGE_ACTIVE_MENU_ITEM, MUTATION_CREATE_MENU_ITEM, MUTATION_DELETE_MENU_ITEM, MUTATION_UPDATE_MENU_ITEM } from '../graphql/MenuItem/MenuItemMutations';
-import { QUERY_GET_ALL_MENU_ITEM, QUERY_GET_MENU_ITEM } from '../graphql/MenuItem/MenuItemQueries';
+import { QUERY_GET_ALL_MENU_ITEM, QUERY_GET_DROPDOWNS_SUBMENUS, QUERY_GET_MENU_ITEM } from '../graphql/MenuItem/MenuItemQueries';
 
 
 export const getListAllMenuItem = () => {
@@ -48,7 +48,7 @@ export const dataMenuItem = (id: any) => {
 export const saveNewMenuItem = (data: any) => {
   return async (dispatch: any) => {
     try {
-      let model: {};
+      let model: any = {};
       model = {
         ...model,
       };
@@ -57,7 +57,7 @@ export const saveNewMenuItem = (data: any) => {
         ...data,
       };
       let dataCreate = null;
-      console.log(model)
+      model.order = model.order && !isNaN(model.order) ? parseFloat(model.order) : 0;
       await client
         .mutate({
           mutation: MUTATION_CREATE_MENU_ITEM,
@@ -84,7 +84,7 @@ export const saveNewMenuItem = (data: any) => {
 export const updateMenuItem = (data: any, id: any) => {
   return async (dispatch: any) => {
     try {
-      let model: {};
+      let model: any = {};
       model = {
         ...model,
       };
@@ -92,6 +92,7 @@ export const updateMenuItem = (data: any, id: any) => {
         ...model,
         ...data,
       };
+      model.order = model.order && !isNaN(model.order) ? parseFloat(model.order) : 0;
       let dataUpdate = null;
       await client
         .mutate({
@@ -181,3 +182,23 @@ export const deleteMenuItem = (id: any, showToast: boolean) => {
     }
   };
 };
+
+export const getDropdownsSubmenus = () => {
+  return async (dispatch: any) => {
+    try {
+      let listData = {};
+      await client
+        .query({
+          query: QUERY_GET_DROPDOWNS_SUBMENUS,
+        })
+        .then((result: any) => {
+          listData = result.data;
+        });
+      return listData;
+    } catch (error) {
+      createNotification('error', 'error', '');
+      return error;
+    }
+  };
+};
+

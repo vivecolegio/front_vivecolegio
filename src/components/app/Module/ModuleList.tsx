@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { COLUMN_LIST } from '../../../constants/Module/moduleConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as moduleActions from '../../../stores/actions/ModuleActions';
-import AddNewModal from '../../common/Data/AddNewModal';
 import DataList from '../../common/Data/DataList';
 import ModuleCreateEdit from './ModuleCreateEdit';
 
@@ -58,13 +57,13 @@ const ModuleList = (props: any) => {
   };
 
   const changeActiveData = async (active: any, id: any) => {
-    await props.changeActiveModule(active, id).then((formData: any) => {
+    await props.changeActiveModule(active, id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
 
   const deleteData = async (id: any) => {
-    await props.deleteModule(id).then((formData: any) => {
+    await props.deleteModule(id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
@@ -112,16 +111,15 @@ const ModuleList = (props: any) => {
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
           />
-          <AddNewModal
+          <ModuleCreateEdit
+            data={data}
             modalOpen={modalOpen}
             toggleModal={() => {
               setData(null);
               return setModalOpen(!modalOpen);
             }}
             onSubmit={onSubmit}
-          >
-            <ModuleCreateEdit data={data} />
-          </AddNewModal>
+          />
         </>
       ) : (
         <></>

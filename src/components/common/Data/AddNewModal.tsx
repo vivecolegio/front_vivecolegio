@@ -1,33 +1,42 @@
 import React from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, useFormState } from 'react-hook-form';
 import { Button, Modal, ModalFooter, ModalHeader } from 'reactstrap';
 import IntlMessages from '../../../helpers/IntlMessages';
 
-
-const AddNewModal = ({ modalOpen, toggleModal, children, onSubmit, isLg }: any) => {
-  const methods = useForm();
-
-  const { handleSubmit } = methods;
-
-  const {
-    register,
-    formState: { errors, isValid },
-    getValues,
-    trigger,
-  } = useForm();
+const AddNewModal = ({
+  modalOpen,
+  toggleModal,
+  children,
+  onSubmit,
+  isLg,
+  data,
+  methods,
+  control,
+  handleSubmit,
+}: any) => {
+  const { isValid, errors } = useFormState({ control });
 
   return (
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Modal                
+        <Modal
           isOpen={modalOpen}
           toggle={toggleModal}
           className={isLg ? 'max-w-50' : ''}
           wrapClassName="modal-right"
           backdrop="static"
         >
-          <ModalHeader toggle={toggleModal}>
-            <IntlMessages id="pages.add-new-modal-title" />
+          <ModalHeader
+            toggle={toggleModal}
+            close={
+              <button type="button" className="close" onClick={toggleModal} aria-label="Close">
+                <span aria-hidden="true">×</span>
+              </button>
+            }
+          >
+            <IntlMessages
+              id={data?.id ? 'pages.add-edit-modal-title' : 'pages.add-new-modal-title'}
+            />
           </ModalHeader>
           {children}
           <ModalFooter>
@@ -37,8 +46,9 @@ const AddNewModal = ({ modalOpen, toggleModal, children, onSubmit, isLg }: any) 
             <Button
               color="primary"
               onClick={() => {
-                onSubmit(methods.getValues(), methods.formState);
+                onSubmit(methods.getValues());
               }}
+              disabled={!isValid}
             >
               <IntlMessages id="pages.submit" />
             </Button>

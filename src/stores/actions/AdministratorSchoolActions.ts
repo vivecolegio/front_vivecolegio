@@ -1,7 +1,7 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
 import { MUTATION_CHANGE_ACTIVE_ADMINISTRATOR, MUTATION_CREATE_ADMINISTRATOR, MUTATION_DELETE_ADMINISTRATOR, MUTATION_UPDATE_ADMINISTRATOR } from '../graphql/AdministratorSchool/AdministratorSchoolMutations';
-import { QUERY_GET_ALL_ADMINISTRATOR, QUERY_GET_ADMINISTRATOR } from '../graphql/AdministratorSchool/AdministratorSchoolQueries';
+import { QUERY_GET_ALL_ADMINISTRATOR, QUERY_GET_ADMINISTRATOR, QUERY_GET_DROPDOWNS_ADMINISTRATOR } from '../graphql/AdministratorSchool/AdministratorSchoolQueries';
 
 
 export const getListAllAdministrator = () => {
@@ -176,6 +176,28 @@ export const deleteAdministrator = (id: any, showToast: boolean) => {
       if (showToast) {
         createNotification('error', 'error', '');
       }
+      return error;
+    }
+  };
+};
+
+export const getDropdownsAdministratorSchool = (type: string) => {
+  return async (dispatch: any) => {
+    try {
+      let listData = {};
+      await client
+        .query({
+          query: QUERY_GET_DROPDOWNS_ADMINISTRATOR,
+          variables:{
+            type
+          }
+        })
+        .then((result: any) => {
+          listData = result.data;
+        });
+      return listData;
+    } catch (error) {
+      createNotification('error', 'error', '');
       return error;
     }
   };

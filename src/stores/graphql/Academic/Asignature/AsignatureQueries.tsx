@@ -46,3 +46,24 @@ export const QUERY_GET_ASIGNATURE = gql`
     }
   }
 `;
+
+export const QUERY_GET_DROPDOWNS_ASIGNATURE = gql`
+  query getDropdownsAcademicAsignature {
+    dataSchools: getAllSchool(allData: false, orderCreated: false) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+    dataAreas: getAllAcademicArea(allData: false, orderCreated: false) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+  }
+`;

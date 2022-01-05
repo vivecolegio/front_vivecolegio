@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { FormGroup, Label, CustomInput } from 'reactstrap';
+import { FormGroup, Label, Input } from 'reactstrap';
 import {
   getCurrentColor,
   setCurrentColor,
@@ -123,7 +123,7 @@ const ColorSwitcher = () => {
         <FormGroup>
           <Label for="radiusRadio">Border Radius </Label>
           <div>
-            <CustomInput
+            <Input
               type="radio"
               name="radiusRadio"
               id="rounded"
@@ -132,7 +132,7 @@ const ColorSwitcher = () => {
               defaultChecked={radius === 'rounded'}
               onChange={() => {return setRadius('rounded')}}
             />
-            <CustomInput
+            <Input
               type="radio"
               name="radiusRadio"
               id="flat"

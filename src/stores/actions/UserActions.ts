@@ -1,7 +1,7 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
 import { MUTATION_CHANGE_ACTIVE_USER, MUTATION_CREATE_USER, MUTATION_DELETE_USER, MUTATION_UPDATE_USER } from '../graphql/Users/UserMutations';
-import { QUERY_GET_ALL_USER, QUERY_GET_USER } from '../graphql/Users/UserQueries';
+import { QUERY_GET_ALL_USER, QUERY_GET_DROPDOWNS_USER, QUERY_GET_USER } from '../graphql/Users/UserQueries';
 
 export const getListAllUser = () => {
   return async (dispatch: any) => {
@@ -176,6 +176,25 @@ export const deleteUser = (id: any, showToast: boolean) => {
       if(showToast){
       createNotification('error', 'error', '');
       }
+      return error;
+    }
+  };
+};
+
+export const getDropdownsUser = () => {
+  return async (dispatch: any) => {
+    try {
+      let listData = {};
+      await client
+        .query({
+          query: QUERY_GET_DROPDOWNS_USER
+        })
+        .then((result: any) => {
+          listData = result.data;
+        });
+      return listData;
+    } catch (error) {
+      createNotification('error', 'error', '');
       return error;
     }
   };

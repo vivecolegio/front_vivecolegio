@@ -1,7 +1,7 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
 import { MUTATION_CHANGE_ACTIVE_ACADEMIC_INDICATOR, MUTATION_CREATE_ACADEMIC_INDICATOR, MUTATION_DELETE_ACADEMIC_INDICATOR, MUTATION_UPDATE_ACADEMIC_INDICATOR } from '../graphql/AcademicIndicator/AcademicIndicatorMutations';
-import { QUERY_GET_ALL_ACADEMIC_INDICATOR, QUERY_GET_ACADEMIC_INDICATOR } from '../graphql/AcademicIndicator/AcademicIndicatorQueries';
+import { QUERY_GET_ALL_ACADEMIC_INDICATOR, QUERY_GET_ACADEMIC_INDICATOR, QUERY_GET_DROPDOWNS_ACADEMIC_INDICATOR } from '../graphql/AcademicIndicator/AcademicIndicatorQueries';
 
 
 export const getListAllAcademicIndicator = () => {
@@ -176,6 +176,25 @@ export const deleteAcademicIndicator = (id: any, showToast: boolean) => {
       if (showToast) {
         createNotification('error', 'error', '');
       }
+      return error;
+    }
+  };
+};
+
+export const getDropdownsAcademicIndicator = () => {
+  return async (dispatch: any) => {
+    try {
+      let listData = {};
+      await client
+        .query({
+          query: QUERY_GET_DROPDOWNS_ACADEMIC_INDICATOR,
+        })
+        .then((result: any) => {
+          listData = result.data;
+        });
+      return listData;
+    } catch (error) {
+      createNotification('error', 'error', '');
       return error;
     }
   };

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { injectIntl } from 'react-intl';
-import { Button, ButtonDropdown, Card, Collapse, CustomInput, DropdownItem, DropdownMenu, DropdownToggle, Row, UncontrolledDropdown } from 'reactstrap';
+import { Button, ButtonDropdown, Card, Collapse, Input, DropdownItem, DropdownMenu, DropdownToggle, Row, UncontrolledDropdown } from 'reactstrap';
 
 import IntlMessages from '../../../helpers/IntlMessages';
 import { Colxx, Separator } from '../CustomBootstrap';
@@ -68,8 +68,8 @@ const ListPageHeading = ({
               }}
             >
               <div className="btn btn-primary btn-lg pl-4 pr-0 check-button check-all">
-                <CustomInput
-                  className="custom-checkbox mb-0 d-inline-block"
+                <Input
+                  className="custom-checkbox custom-control checkAll mb-0 mr-2 d-inline-block"
                   type="checkbox"
                   id="checkAll"
                   checked={selectedItemsLength >= itemsLength}
@@ -200,7 +200,7 @@ const ListPageHeading = ({
                   </p>
                 );
               })}
-              <p className={withChildren === true ? "w-35 mb-1 text-muted text-small w-sm-100 text-center" : "w-25 mb-1 text-muted text-small w-sm-100 text-center"}><IntlMessages id="pages.actions"/></p>
+              <p className={withChildren === true ? "w-45 mb-1 text-muted text-small w-sm-100 text-center" : "w-35 mb-1 text-muted text-small w-sm-100 text-center"}><IntlMessages id="pages.actions"/></p>
             </div>
           </div>
         </Card>

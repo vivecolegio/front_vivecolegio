@@ -1,7 +1,7 @@
 import { createNotification } from "../../../helpers/Notification";
 import { client } from '../../graphql';
 import { MUTATION_CHANGE_ACTIVE_GRADE, MUTATION_CREATE_GRADE, MUTATION_DELETE_GRADE, MUTATION_UPDATE_GRADE } from '../../graphql/Academic/Grade/GradeMutations';
-import { QUERY_GET_ALL_GRADE, QUERY_GET_GRADE } from '../../graphql/Academic/Grade/GradeQueries';
+import { QUERY_GET_ALL_GRADE, QUERY_GET_DROPDOWNS_GRADE, QUERY_GET_GRADE } from '../../graphql/Academic/Grade/GradeQueries';
 
 
 export const getListAllGrade = () => {
@@ -176,6 +176,25 @@ export const deleteGrade = (id: any, showToast: boolean) => {
       if (showToast) {
         createNotification('error', 'error', '');
       }
+      return error;
+    }
+  };
+};
+
+export const getDropdownsAcademicGrade = () => {
+  return async (dispatch: any) => {
+    try {
+      let listData = {};
+      await client
+        .query({
+          query: QUERY_GET_DROPDOWNS_GRADE,
+        })
+        .then((result: any) => {
+          listData = result.data;
+        });
+      return listData;
+    } catch (error) {
+      createNotification('error', 'error', '');
       return error;
     }
   };

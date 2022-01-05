@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { COLUMN_LIST } from '../../../constants/AdministratorSchool/administratorSchoolConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as administratorCampusActions from '../../../stores/actions/AdministratorCampusActions';
-import AddNewModal from '../../common/Data/AddNewModal';
 import DataList from '../../common/Data/DataList';
 import AdministratorCreateEdit from './AdministratorCampusCreateEdit';
 
@@ -77,13 +76,13 @@ const AdministratorList = (props: any) => {
   };
 
   const changeActiveData = async (active: any, id: any) => {
-    await props.changeActiveAdministrator(active, id).then((formData: any) => {
+    await props.changeActiveAdministrator(active, id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
 
   const deleteData = async (id: any) => {
-    await props.deleteAdministrator(id).then((formData: any) => {
+    await props.deleteAdministrator(id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
@@ -131,16 +130,15 @@ const AdministratorList = (props: any) => {
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
           />
-          <AddNewModal
+          <AdministratorCreateEdit
+            data={data}
             modalOpen={modalOpen}
             toggleModal={() => {
               setData(null);
               return setModalOpen(!modalOpen);
             }}
             onSubmit={onSubmit}
-          >
-            <AdministratorCreateEdit data={data} />
-          </AddNewModal>
+          />
         </>
       ) : (
         <></>

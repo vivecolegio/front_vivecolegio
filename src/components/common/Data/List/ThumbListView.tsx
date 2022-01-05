@@ -2,7 +2,7 @@ import classnames from 'classnames';
 import React from 'react';
 import { ContextMenuTrigger } from 'react-contextmenu';
 import { NavLink } from 'react-router-dom';
-import { Badge, Button, Card, CustomInput } from 'reactstrap';
+import { Badge, Button, Card, Input } from 'reactstrap';
 import { Colxx } from '../../CustomBootstrap';
 import ProfileImg from '../../../../assets/img/profiles/l-1.jpg';
 
@@ -43,7 +43,6 @@ const ThumbListView = ({
           <div className="pl-2 d-flex flex-grow-1 min-width-zero">
             <div className="card-body align-self-center d-flex flex-column flex-lg-row justify-content-around min-width-zero align-items-lg-center">
             {columns.map((column: any) => {
-              console.log(column)
                   return (
                     <p
                       key={column.column}
@@ -55,7 +54,7 @@ const ThumbListView = ({
                 })}
             </div>
             <div className="custom-control custom-checkbox pl-1 align-self-center pr-4">
-            <p className={withChildren === true ? "w-35 mb-0 text-center text-muted text-small w-sm-100 d-flex align-items-center" : "w-25 mb-0 text-center text-muted text-small w-sm-100 d-flex align-items-center"}>
+            <p className={withChildren === true ? "mb-0 text-center text-muted text-small w-sm-100 d-flex align-items-center" : "mb-0 text-center text-muted text-small w-sm-100 d-flex align-items-center"}>
                 <Button
                   color="blue"
                   disabled={!currentMenu.updateAction}
@@ -106,7 +105,7 @@ const ThumbListView = ({
                 : (
                   ''
                 )}
-                 <CustomInput
+                 <Input
                     className="item-check mb-0 ml-3"
                     type="checkbox"
                     id={`check_${item.id}`}

@@ -74,13 +74,13 @@ const GradeAssignmentList = (props: any) => {
   };
 
   const changeActiveData = async (active: any, id: any) => {
-    await props.changeActiveGradeAssignment(active, id).then((formData: any) => {
+    await props.changeActiveGradeAssignment(active, id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
 
   const deleteData = async (id: any) => {
-    await props.deleteGradeAssignment(id).then((formData: any) => {
+    await props.deleteGradeAssignment(id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
@@ -128,16 +128,15 @@ const GradeAssignmentList = (props: any) => {
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
           />
-          <AddNewModal
+          <GradeAssignmentCreateEdit
+            data={data}
             modalOpen={modalOpen}
             toggleModal={() => {
               setData(null);
               return setModalOpen(!modalOpen);
             }}
             onSubmit={onSubmit}
-          >
-            <GradeAssignmentCreateEdit data={data} />
-          </AddNewModal>
+          />
         </>
       ) : (
         <></>

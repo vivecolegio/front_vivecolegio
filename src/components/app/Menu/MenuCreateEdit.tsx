@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useForm, useFormContext } from 'react-hook-form';
 import Loader from 'react-loader-spinner';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import {
   Button,
-  CustomInput,
   Input,
   InputGroup,
-  InputGroupAddon,
   Label,
   ModalBody,
   ModalFooter,
@@ -20,6 +18,7 @@ import * as menuActions from '../../../stores/actions/MenuModelActions';
 import * as moduleActions from '../../../stores/actions/ModuleActions';
 import * as roleActions from '../../../stores/actions/RoleActions';
 import { Colxx } from '../../common/CustomBootstrap';
+import AddNewModal from '../../common/Data/AddNewModal';
 import CreateEditAuditInformation from '../../common/Data/CreateEditAuditInformation';
 import Icons from '../../common/Data/Icon/Icons';
 
@@ -31,10 +30,16 @@ const MenuCreateEdit = (props: any) => {
   const [rolesList, setRolesList] = useState([]);
   const [role, setRole] = useState([]);
 
-  const methods = useFormContext();
+  const methods = useForm({
+    mode: 'onChange',
+    reValidateMode: 'onChange',
+  });
+
+  const { handleSubmit, control, register, reset, setValue, getValues } = methods;
 
   useEffect(() => {
-    getRolesList();
+    cleanForm();
+    getDropdowns();
     if (props?.data?.id) {
       if (props?.data?.icon !== undefined && props?.data?.icon != null) {
         setIcon(props?.data?.icon);
@@ -51,33 +56,40 @@ const MenuCreateEdit = (props: any) => {
     setLoading(false);
   }, [props?.data]);
 
-  const getRolesList = async () => {
-    props.getListAllRole().then((listData: any) => {
+  const cleanForm = async () => {
+    reset();
+    setRole(null);
+    setMenuItems(null);
+  };
+
+  const getDropdowns = async () => {
+    props.getDropdownsMenu().then((data: any) => {
       setRolesList(
-        listData.map((c: any) => {
+        data.dataRoles.edges.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };
         }),
       );
     });
   };
 
+  const { ref: nameRef, ...nameRest } = register('name', {
+    required: true,
+    value: props?.data?.id ? props?.data?.name : '',
+  });
+  const { ref: iconRef, ...iconRest } = register('icon', {
+    required: true,
+    value: props?.data?.id ? props?.data?.icon : '',
+  });
+  const { ref: orderRef, ...orderRest } = register('order', {
+    required: true,
+    value: props?.data?.id ? props?.data?.order : '',
+  });
+  register('rolesId', {
+    required: true,
+    value: props?.data?.id ? props?.data?.rolesId : '',
+  });
+
   const data: any = {
-    name:
-      props?.data?.id || props?.data?.name === methods.getValues('name')
-        ? props?.data?.name
-        : methods.getValues('name'),
-    icon:
-      props?.data?.id || props?.data?.icon === methods.getValues('icon')
-        ? props?.data?.icon
-        : methods.getValues('icon'),
-    module:
-      props?.data?.id || props?.data?.module === methods.getValues('module')
-        ? { value: props?.data?.module?.id, label: props?.data?.module?.name }
-        : methods.getValues('module'),
-    order:
-        props?.data?.id || props?.data?.order === methods.getValues('order')
-          ? props?.data?.order
-          : methods.getValues('order'),
     readAction:
       props?.data?.id || props?.data?.readAction === methods.getValues('readAction')
         ? props?.data?.readAction
@@ -116,10 +128,6 @@ const MenuCreateEdit = (props: any) => {
     version: props?.data?.id ? props?.data?.version : null,
   };
 
-  const handleChangeNumber = (event: any, name: any) => {
-    methods.setValue(name, parseFloat(event.target.value));
-  };
-
   return (
     <>
       {loading ? (
@@ -130,41 +138,38 @@ const MenuCreateEdit = (props: any) => {
         </>
       ) : (
         <>
+           <AddNewModal
+            isLg={true}
+            modalOpen={props.modalOpen}
+            toggleModal={() => {
+              cleanForm();
+              props.toggleModal();
+            }}
+            onSubmit={props.onSubmit}
+            data={props.data}
+            methods={methods}
+            control={control}
+            handleSubmit={handleSubmit}
+          >
           <ModalBody>
             <div className="form-group">
               <Label>
                 <IntlMessages id="forms.name" />
               </Label>
-              <Input
-                {...methods.register('name', { required: true })}
-                name="name"
-                defaultValue={data.name}
-              />
+              <Input {...nameRest} innerRef={nameRef} className="form-control" />
             </div>
             <div className="form-group">
               <Label>
                 <IntlMessages id="forms.sorting" />
               </Label>
-              <Input
-                onChange={(e) => {
-                  return handleChangeNumber(e, 'order');
-                }}
-                name="order"
-                defaultValue={data.order}
-              />
+              <Input {...orderRest} innerRef={orderRef} className="form-control" />
             </div>
             <div className="form-group">
               <Label>
                 <IntlMessages id="forms.icon" />
               </Label>
-              <InputGroup>
-                <Input
-                  {...methods.register('icon', { required: true })}
-                  name="icon"
-                  defaultValue={data.icon}
-                  value={icon}
-                />
-                <InputGroupAddon addonType="prepend">
+              <InputGroup className="input-group-prepend">
+              <Input {...iconRest} innerRef={iconRef} className="form-control" />            
                   <Button
                     onClick={() => {
                       return setModalIcon(true);
@@ -173,8 +178,7 @@ const MenuCreateEdit = (props: any) => {
                     size="xs"
                   >
                     <IntlMessages id="forms.seeIcons" />
-                  </Button>
-                </InputGroupAddon>
+                  </Button>              
               </InputGroup>
               <Icons
                 modalOpen={modalOpen}
@@ -196,13 +200,13 @@ const MenuCreateEdit = (props: any) => {
               <Select
                 placeholder={<IntlMessages id="forms.select" />} 
                 isMulti   
-                {...methods.register('rolesId', { required: true })}
+                {...register('rolesId', { required: true })}
                 className="react-select"
                 classNamePrefix="react-select"              
                 options={rolesList}
                 value={role}
                 onChange={(selectedOption: any) => {
-                  methods.setValue('rolesId', selectedOption.map((c:any)=>{return c.key}));
+                  setValue('rolesId', selectedOption.map((c:any)=>{return c.key}));
                   setRole(selectedOption);
                 }}
               />
@@ -259,85 +263,85 @@ const MenuCreateEdit = (props: any) => {
                   <>
                     <tr>
                       <th className="text-center" key={`check_read`}>
-                        <CustomInput
+                        <Input
                           className="itemCheck mb-0"
                           type="checkbox"
                           id={`check_read`}
                           defaultChecked={data.readAction}
                           onChange={() => {
-                            methods.setValue('readAction', !data.readAction);
+                            setValue('readAction', !data.readAction);
                           }}
                           label=""
                         />
                       </th>
                       <th className="text-center" key={`check_create`}>
-                        <CustomInput
+                        <Input
                           className="itemCheck mb-0"
                           type="checkbox"
                           id={`check_create`}
                           defaultChecked={data.createAction}
                           onChange={() => {
-                            methods.setValue('createAction', !data.createAction);
+                            setValue('createAction', !data.createAction);
                           }}
                           label=""
                         />
                       </th>
                       <th className="text-center" key={`check_update`}>
-                        <CustomInput
+                        <Input
                           className="itemCheck mb-0"
                           type="checkbox"
                           id={`check_update`}
                           defaultChecked={data.updateAction}
                           onChange={() => {
-                            methods.setValue('updateAction', !data.updateAction);
+                            setValue('updateAction', !data.updateAction);
                           }}
                           label=""
                         />
                       </th>
                       <th className="text-center" key={`check_delete`}>
-                        <CustomInput
+                        <Input
                           className="itemCheck mb-0"
                           type="checkbox"
                           id={`check_delete`}
                           defaultChecked={data.deleteAction}
                           onChange={() => {
-                            methods.setValue('deleteAction', !data.deleteAction);
+                            setValue('deleteAction', !data.deleteAction);
                           }}
                           label=""
                         />
                       </th>
                       <th className="text-center" key={`check_activate`}>
-                        <CustomInput
+                        <Input
                           className="itemCheck mb-0"
                           type="checkbox"
                           id={`check_activate`}
                           defaultChecked={data.activateAction}
                           onChange={() => {
-                            methods.setValue('activateAction', !data.activateAction);
+                            setValue('activateAction', !data.activateAction);
                           }}
                           label=""
                         />
                       </th>
                       <th className="text-center" key={`check_inactive`}>
-                        <CustomInput
+                        <Input
                           className="itemCheck mb-0"
                           type="checkbox"
                           id={`check_inactive`}
                           defaultChecked={data.inactiveAction}
                           onChange={() => {
-                            methods.setValue('inactiveAction', !data.inactiveAction);
+                            setValue('inactiveAction', !data.inactiveAction);
                           }}
                           label=""
                         />
                       </th>
                       <th className="text-center" key={`check_fullAccess}`}>
-                        <CustomInput
+                        <Input
                           className="itemCheck mb-0"
                           type="checkbox"
                           id={`check_fullAccess`}
                           defaultChecked={data.fullAccess}
                           onChange={() => {
-                            methods.setValue('fullAccess', !data.fullAccess);
+                            setValue('fullAccess', !data.fullAccess);
                           }}
                           label=""
                         />
@@ -385,6 +389,7 @@ const MenuCreateEdit = (props: any) => {
           ) : (
             <></>
           )}
+          </AddNewModal>
         </>
       )}
     </>

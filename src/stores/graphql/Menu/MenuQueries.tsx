@@ -55,3 +55,16 @@ export const QUERY_GET_MENU = gql`
     }
   }
 `;
+
+export const QUERY_GET_DROPDOWNS_MENUS = gql`
+  query getDropdownsSubmenus {
+    dataRoles: getAllRole(allData: false, orderCreated: false) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+  }
+`;

@@ -73,13 +73,13 @@ const AcademicPeriodList = (props: any) => {
   };
 
   const changeActiveData = async (active: any, id: any) => {
-    await props.changeActiveAcademicPeriod(active, id).then((formData: any) => {
+    await props.changeActiveAcademicPeriod(active, id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
 
   const deleteData = async (id: any) => {
-    await props.deleteAcademicPeriod(id).then((formData: any) => {
+    await props.deleteAcademicPeriod(id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
@@ -127,16 +127,15 @@ const AcademicPeriodList = (props: any) => {
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
           />
-          <AddNewModal
+          <AcademicPeriodCreateEdit
+            data={data}
             modalOpen={modalOpen}
             toggleModal={() => {
               setData(null);
               return setModalOpen(!modalOpen);
             }}
             onSubmit={onSubmit}
-          >
-            <AcademicPeriodCreateEdit data={data} />
-          </AddNewModal>
+          />
         </>
       ) : (
         <></>

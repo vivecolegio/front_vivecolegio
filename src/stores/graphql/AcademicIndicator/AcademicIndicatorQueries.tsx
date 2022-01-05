@@ -53,3 +53,40 @@ export const QUERY_GET_ACADEMIC_INDICATOR = gql`
     }
   }
 `;
+
+export const QUERY_GET_DROPDOWNS_ACADEMIC_INDICATOR = gql`
+  query getDropdownsAcademicIndicator {
+    dataSchools: getAllSchool(allData: false, orderCreated: false) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+    dataStandards: getAllAcademicStandard(allData: false, orderCreated: false) {
+      edges {
+        node {
+          id
+          standard
+        }
+      }
+    }
+    dataAsignatures: getAllAcademicAsignature(allData: false, orderCreated: false) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+    dataGrades: getAllAcademicGrade(allData: false, orderCreated: false) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+  }
+`;

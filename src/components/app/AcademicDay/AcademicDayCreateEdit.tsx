@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useForm, useFormContext } from 'react-hook-form';
 import Loader from 'react-loader-spinner';
 import { connect } from 'react-redux';
 import Select from 'react-select';
@@ -10,16 +10,24 @@ import IntlMessages from '../../../helpers/IntlMessages';
 import * as AcademicDayActions from '../../../stores/actions/AcademicDayActions';
 import * as CampusActions from '../../../stores/actions/CampusActions';
 import { Colxx } from '../../common/CustomBootstrap';
+import AddNewModal from '../../common/Data/AddNewModal';
 import CreateEditAuditInformation from '../../common/Data/CreateEditAuditInformation';
 
 const AcademicDayCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
   const [campusList, setCampusList] = useState(null);
+  const [campus, setCampus] = useState(null);
 
-  const methods = useFormContext();
+  const methods = useForm({
+    mode: 'onChange',
+    reValidateMode: 'onChange',
+  });
+
+  const { handleSubmit, control, register, reset, setValue, getValues } = methods;
 
   useEffect(() => {  
-    getCampusList();
+    cleanForm();
+    getDropdowns();
     if (props?.data?.id) {      
       if (props?.data?.campus !== undefined && props?.data?.campus != null) {
         setCampus({
@@ -28,32 +36,37 @@ const AcademicDayCreateEdit = (props: any) => {
           value: props?.data?.campus?.id,
         });
       }   
-    } else {
-      methods.reset();
-    }
+    } 
     setLoading(false);
   }, [props?.data]);
 
-  const getCampusList = async () => {
-    props.getListAllCampus().then((listData: any) => {
+  const cleanForm = async () => {
+    reset();
+    setCampus(null);
+  };
+
+  const getDropdowns = async () => {
+    props.getDropdownsAcademicDay().then((data: any) => {
       setCampusList(
-        listData.map((c: any) => {
+        data.dataCampus.edges.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };
         }),
       );
     });
   };
 
-  const data = {
-    typeDay:
-      props?.data?.id || props?.data?.typeDay === methods.getValues('typeDay')
-        ? props?.data?.typeDay
-        : methods.getValues('typeDay'),
-    workingDay:
-      props?.data?.id || props?.data?.workingDay === methods.getValues('workingDay')
-        ? props?.data?.workingDay
-        : methods.getValues('workingDay'),
-  };
+  const { ref: typeDayRef, ...typeDayRest } = register('typeDay', {
+    required: true,
+    value: props?.data?.id ? props?.data?.typeDay : '',
+  });
+  const { ref: workingDayRef, ...workingDayRest } = register('workingDay', {
+    required: true,
+    value: props?.data?.id ? props?.data?.workingDay : '',
+  });
+  register('campusId', {
+    required: true,
+    value: props?.data?.id ? props?.data?.campusId : '',
+  });
 
   const auditInfo = {
     createdAt: props?.data?.id ? props?.data?.createdAt : null,
@@ -62,8 +75,6 @@ const AcademicDayCreateEdit = (props: any) => {
     updatedByUser: props?.data?.id ? props?.data?.updatedByUser : null,
     version: props?.data?.id ? props?.data?.version : null,
   };
-
-  const [campus, setCampus] = useState(null);
 
   return (
     <>
@@ -75,26 +86,30 @@ const AcademicDayCreateEdit = (props: any) => {
         </>
       ) : (
         <>
+        <AddNewModal
+            modalOpen={props.modalOpen}
+            toggleModal={() => {
+              cleanForm();
+              props.toggleModal();
+            }}
+            onSubmit={props.onSubmit}
+            data={props.data}
+            methods={methods}
+            control={control}
+            handleSubmit={handleSubmit}
+          >
           <ModalBody>
           <div className="form-group">
               <Label>
                 <IntlMessages id="forms.workingDay" />
               </Label>
-              <Input
-                {...methods.register('workingDay', { required: true })}
-                name="workingDay"
-                defaultValue={data.workingDay}
-              />
+              <Input {...workingDayRest} innerRef={workingDayRef} className="form-control" />
             </div>
             <div className="form-group">
               <Label>
                 <IntlMessages id="forms.type" />
               </Label>
-              <Input
-                {...methods.register('typeDay', { required: true })}
-                name="typeDay"
-                defaultValue={data.typeDay}
-              />
+              <Input {...typeDayRest} innerRef={typeDayRef} className="form-control" />
             </div>             
             <div className="form-group">
               <Label>
@@ -102,13 +117,13 @@ const AcademicDayCreateEdit = (props: any) => {
               </Label>
               <Select
                 placeholder={<IntlMessages id="forms.select" />}    
-                {...methods.register('campusId', { required: true })}
+                {...register('campusId', { required: true })}
                 className="react-select"
                 classNamePrefix="react-select"
                 options={campusList}
                 value={campus}
                 onChange={(selectedOption) => {
-                  methods.setValue('campusId', selectedOption?.key);
+                  setValue('campusId', selectedOption?.key);
                   setCampus(selectedOption);
                 }}
               />
@@ -121,13 +136,14 @@ const AcademicDayCreateEdit = (props: any) => {
           ) : (
             <></>
           )}
+          </AddNewModal>
         </>
       )}
     </>
   );
 };
 
-const mapDispatchToProps = { ...AcademicDayActions, ...CampusActions };
+const mapDispatchToProps = { ...AcademicDayActions };
 
 const mapStateToProps = () => {
   return {};

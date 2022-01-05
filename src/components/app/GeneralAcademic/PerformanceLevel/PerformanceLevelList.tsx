@@ -57,13 +57,13 @@ const GeneralPerformanceLevelList = (props: any) => {
   };
 
   const changeActiveData = async (active: any, id: any) => {
-    await props.changeActivePerformanceLevel(active, id).then((formData: any) => {
+    await props.changeActivePerformanceLevel(active, id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
 
   const deleteData = async (id: any) => {
-    await props.deletePerformanceLevel(id).then((formData: any) => {
+    await props.deletePerformanceLevel(id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
@@ -111,16 +111,15 @@ const GeneralPerformanceLevelList = (props: any) => {
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
           />
-          <AddNewModal
+          <PerformanceLevelCreateEdit
+            data={data}
             modalOpen={modalOpen}
             toggleModal={() => {
               setData(null);
               return setModalOpen(!modalOpen);
             }}
             onSubmit={onSubmit}
-          >
-            <PerformanceLevelCreateEdit data={data} />
-          </AddNewModal>
+          />
         </>
       ) : (
         <></>

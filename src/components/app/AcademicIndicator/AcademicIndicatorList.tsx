@@ -58,13 +58,13 @@ const AcademicIndicatorList = (props: any) => {
   };
 
   const changeActiveData = async (active: any, id: any) => {
-    await props.changeActiveAcademicIndicator(active, id).then((formData: any) => {
+    await props.changeActiveAcademicIndicator(active, id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
 
   const deleteData = async (id: any) => {
-    await props.deleteAcademicIndicator(id).then((formData: any) => {
+    await props.deleteAcademicIndicator(id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
@@ -112,16 +112,15 @@ const AcademicIndicatorList = (props: any) => {
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
           />
-          <AddNewModal
+          <AcademicIndicatorCreateEdit
+            data={data}
             modalOpen={modalOpen}
             toggleModal={() => {
               setData(null);
               return setModalOpen(!modalOpen);
             }}
             onSubmit={onSubmit}
-          >
-            <AcademicIndicatorCreateEdit data={data} />
-          </AddNewModal>
+          />
         </>
       ) : (
         <></>

@@ -49,3 +49,24 @@ export const QUERY_GET_ACADEMIC_PERIOD = gql`
     }
   }
 `;
+
+export const QUERY_GET_DROPDOWNS_ACADEMIC_PERIOD = gql`
+  query getDropdownsAcademicArea {
+    dataSchools: getAllSchool(allData: false, orderCreated: false) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+    dataSchoolYears: getAllSchoolYear(allData: false, orderCreated: false) {
+      edges {
+        node {
+          id
+          schoolYear
+        }
+      }
+    }
+  }
+`;

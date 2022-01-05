@@ -1,14 +1,13 @@
+import { DevTool } from '@hookform/devtools';
 import React, { useEffect, useState } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useForm, useFormContext } from 'react-hook-form';
 import Loader from 'react-loader-spinner';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import {
   Button,
-  CustomInput,
   Input,
   InputGroup,
-  InputGroupAddon,
   Label,
   ModalBody,
   ModalFooter,
@@ -17,10 +16,8 @@ import {
 import { loaderColor, loaderIcon } from '../../../constants/defaultValues';
 import IntlMessages from '../../../helpers/IntlMessages';
 import * as menuItemActions from '../../../stores/actions/MenuItemActions';
-import * as menuActions from '../../../stores/actions/MenuModelActions';
-import * as moduleActions from '../../../stores/actions/ModuleActions';
-import * as roleActions from '../../../stores/actions/RoleActions';
 import { Colxx } from '../../common/CustomBootstrap';
+import AddNewModal from '../../common/Data/AddNewModal';
 import CreateEditAuditInformation from '../../common/Data/CreateEditAuditInformation';
 import Icons from '../../common/Data/Icon/Icons';
 
@@ -35,12 +32,16 @@ const MenuItemCreateEdit = (props: any) => {
   const [module, setModule] = useState(null);
   const [menu, setMenu] = useState(null);
 
-  const methods = useFormContext();
+  const methods = useForm({
+    mode: 'onChange',
+    reValidateMode: 'onChange',
+  });
+
+  const { handleSubmit, control, register, reset, setValue, getValues } = methods;
 
   useEffect(() => {
-    getModuleList();
-    getMenuList();
-    getRolesList();
+    cleanForm();
+    getDropdowns();
     if (props?.data?.id) {
       if (props?.data?.module !== undefined && props?.data?.module != null) {
         setModule({
@@ -63,36 +64,31 @@ const MenuItemCreateEdit = (props: any) => {
           }),
         );
       }
-    } else {
-      methods.reset();
-    }
+    } 
     setLoading(false);
   }, [props?.data]);
 
-  const getRolesList = async () => {
-    props.getListAllRole().then((listData: any) => {
+  const cleanForm = async () => {
+    reset();
+    setMenu(null);
+    setModule(null);
+    setRole(null);
+  };
+
+  const getDropdowns = async () => {
+    props.getDropdownsSubmenus().then((data: any) => {
       setRolesList(
-        listData.map((c: any) => {
+        data.dataRoles.edges.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };
         }),
       );
-    });
-  };
-
-  const getModuleList = async () => {
-    props.getListAllModule().then((listData: any) => {
-      setModulesList(
-        listData.map((c: any) => {
-          return { label: c.node.name, value: c.node.id, key: c.node.id };
-        }),
-      );
-    });
-  };
-
-  const getMenuList = async () => {
-    props.getListAllMenu().then((listData: any) => {
       setMenuList(
-        listData.map((c: any) => {
+        data.dataMenus.edges.map((c: any) => {
+          return { label: c.node.name, value: c.node.id, key: c.node.id };
+        }),
+      );
+      setModulesList(
+        data.dataModules.edges.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };
         }),
       );
@@ -100,55 +96,60 @@ const MenuItemCreateEdit = (props: any) => {
   };
 
   const data = {
-    name:
-      props?.data?.id || props?.data?.name === methods.getValues('name')
-        ? props?.data?.name
-        : methods.getValues('name'),
-    icon:
-      props?.data?.id || props?.data?.icon === methods.getValues('icon')
-        ? props?.data?.icon
-        : methods.getValues('icon'),
-    order:
-        props?.data?.id || props?.data?.order === methods.getValues('order')
-          ? props?.data?.order
-          : methods.getValues('order'),
-    module:
-      props?.data?.id || props?.data?.module === methods.getValues('module')
-        ? { value: props?.data?.module?.id, label: props?.data?.module?.name }
-        : methods.getValues('module'),
-    menu:
-      props?.data?.id || props?.data?.menu === methods.getValues('menu')
-        ? { value: props?.data?.menu?.id, label: props?.data?.menu?.name }
-        : methods.getValues('menu'),
     readAction:
-      props?.data?.id || props?.data?.readAction === methods.getValues('readAction')
+      props?.data?.id || props?.data?.readAction === getValues('readAction')
         ? props?.data?.readAction
-        : methods.getValues('readAction'),
+        : getValues('readAction'),
     createAction:
-      props?.data?.id || props?.data?.createAction === methods.getValues('createAction')
+      props?.data?.id || props?.data?.createAction === getValues('createAction')
         ? props?.data?.createAction
-        : methods.getValues('createAction'),
+        : getValues('createAction'),
     deleteAction:
-      props?.data?.id || props?.data?.deleteAction === methods.getValues('deleteAction')
+      props?.data?.id || props?.data?.deleteAction === getValues('deleteAction')
         ? props?.data?.deleteAction
-        : methods.getValues('deleteAction'),
+        : getValues('deleteAction'),
     updateAction:
-      props?.data?.id || props?.data?.updateAction === methods.getValues('updateAction')
+      props?.data?.id || props?.data?.updateAction === getValues('updateAction')
         ? props?.data?.updateAction
-        : methods.getValues('updateAction'),
+        : getValues('updateAction'),
     fullAccess:
-      props?.data?.id || props?.data?.fullAccess === methods.getValues('fullAccess')
+      props?.data?.id || props?.data?.fullAccess === getValues('fullAccess')
         ? props?.data?.fullAccess
-        : methods.getValues('fullAccess'),
+        : getValues('fullAccess'),
     activateAction:
-      props?.data?.id || props?.data?.activateAction === methods.getValues('activateAction')
+      props?.data?.id || props?.data?.activateAction === getValues('activateAction')
         ? props?.data?.activateAction
-        : methods.getValues('activateAction'),
+        : getValues('activateAction'),
     inactiveAction:
-      props?.data?.id || props?.data?.inactiveAction === methods.getValues('inactiveAction')
+      props?.data?.id || props?.data?.inactiveAction === getValues('inactiveAction')
         ? props?.data?.inactiveAction
-        : methods.getValues('inactiveAction'),
+        : getValues('inactiveAction'),
   };
+
+  const { ref: nameRef, ...nameRest } = register('name', {
+    required: true,
+    value: props?.data?.id ? props?.data?.name : '',
+  });
+  const { ref: iconRef, ...iconRest } = register('icon', {
+    required: true,
+    value: props?.data?.id ? props?.data?.icon : '',
+  });
+  const { ref: orderRef, ...orderRest } = register('order', {
+    required: true,
+    value: props?.data?.id ? props?.data?.order : '',
+  });
+  register('moduleId', {
+    required: true,
+    value: props?.data?.id ? props?.data?.moduleId : '',
+  });
+  register('menuId', {
+    required: true,
+    value: props?.data?.id ? props?.data?.menuId : '',
+  });
+  register('rolesId', {
+    required: true,
+    value: props?.data?.id ? props?.data?.rolesId : '',
+  });
 
   const auditInfo = {
     createdAt: props?.data?.id ? props?.data?.createdAt : null,
@@ -158,12 +159,9 @@ const MenuItemCreateEdit = (props: any) => {
     version: props?.data?.id ? props?.data?.version : null,
   };
 
-  const handleChangeNumber = (event: any, name: any) => {
-    methods.setValue(name, parseFloat(event.target.value));
-  };
-
   return (
     <>
+      <DevTool control={methods.control} placement="top-left" />
       {loading ? (
         <>
           <Colxx sm={12} className="d-flex justify-content-center">
@@ -172,41 +170,38 @@ const MenuItemCreateEdit = (props: any) => {
         </>
       ) : (
         <>
+         <AddNewModal
+            isLg={true}
+            modalOpen={props.modalOpen}
+            toggleModal={() => {
+              cleanForm();
+              props.toggleModal();
+            }}
+            onSubmit={props.onSubmit}
+            data={props.data}
+            methods={methods}
+            control={control}
+            handleSubmit={handleSubmit}
+          >
           <ModalBody>
             <div className="form-group">
               <Label>
                 <IntlMessages id="forms.name" />
               </Label>
-              <Input
-                {...methods.register('name', { required: true })}
-                name="name"
-                defaultValue={data.name}
-              />
+              <Input {...nameRest} innerRef={nameRef} className="form-control" />
             </div>
             <div className="form-group">
               <Label>
                 <IntlMessages id="forms.sorting" />
               </Label>
-              <Input
-                onChange={(e) => {
-                  return handleChangeNumber(e, 'order');
-                }}
-                name="order"
-                defaultValue={data.order}
-              />
+              <Input {...orderRest} innerRef={orderRef} className="form-control" />
             </div>
             <div className="form-group">
               <Label>
                 <IntlMessages id="forms.icon" />
               </Label>
-              <InputGroup>
-                <Input
-                  {...methods.register('icon', { required: true })}
-                  name="icon"
-                  defaultValue={data.icon}
-                  value={icon}
-                />
-                <InputGroupAddon addonType="prepend">
+              <InputGroup className="input-group-prepend">
+              <Input {...iconRest} innerRef={iconRef} className="form-control" />
                   <Button
                     onClick={() => {
                       return setModalIcon(true);
@@ -216,8 +211,7 @@ const MenuItemCreateEdit = (props: any) => {
                   >
                     <IntlMessages id="forms.seeIcons" />
                   </Button>
-                </InputGroupAddon>
-              </InputGroup>
+                </InputGroup>              
               <Icons
                 modalOpen={modalOpen}
                 icon={icon}
@@ -237,13 +231,13 @@ const MenuItemCreateEdit = (props: any) => {
               </Label>
               <Select
                 placeholder={<IntlMessages id="forms.select" />}
-                {...methods.register('moduleId', { required: true })}
+                {...register('moduleId', { required: true })}
                 className="react-select"
                 classNamePrefix="react-select"
                 options={modulesList}
                 value={module}
                 onChange={(selectedOption) => {
-                  methods.setValue('moduleId', selectedOption?.key);
+                  setValue('moduleId', selectedOption?.key);
                   setModule(selectedOption);
                 }}
               />
@@ -254,13 +248,13 @@ const MenuItemCreateEdit = (props: any) => {
               </Label>
               <Select
                 placeholder={<IntlMessages id="forms.select" />}
-                {...methods.register('menuId', { required: true })}
+                {...register('menuId', { required: true })}
                 className="react-select"
                 classNamePrefix="react-select"
                 options={menuList}
                 value={menu}
                 onChange={(selectedOption) => {
-                  methods.setValue('menuId', selectedOption?.key);
+                  setValue('menuId', selectedOption?.key);
                   setMenu(selectedOption);
                 }}
               />
@@ -272,13 +266,13 @@ const MenuItemCreateEdit = (props: any) => {
               <Select
                 placeholder={<IntlMessages id="forms.select" />}
                 isMulti
-                {...methods.register('rolesId', { required: true })}
+                {...register('rolesId', { required: true })}
                 className="react-select"
                 classNamePrefix="react-select"
                 options={rolesList}
                 value={role}
                 onChange={(selectedOption: any) => {
-                  methods.setValue(
+                  setValue(
                     'rolesId',
                     selectedOption.map((c: any) => {
                       return c.key;
@@ -340,85 +334,85 @@ const MenuItemCreateEdit = (props: any) => {
                   <>
                     <tr>
                       <th className="text-center" key={`check_read`}>
-                        <CustomInput
+                        <Input
                           className="itemCheck mb-0"
                           type="checkbox"
                           id={`check_read`}
                           defaultChecked={data.readAction}
                           onChange={() => {
-                            methods.setValue('readAction', !data.readAction);
+                            setValue('readAction', !data.readAction);
                           }}
                           label=""
                         />
                       </th>
                       <th className="text-center" key={`check_create`}>
-                        <CustomInput
+                        <Input
                           className="itemCheck mb-0"
                           type="checkbox"
                           id={`check_create`}
                           defaultChecked={data.createAction}
                           onChange={() => {
-                            methods.setValue('createAction', !data.createAction);
+                            setValue('createAction', !data.createAction);
                           }}
                           label=""
                         />
                       </th>
                       <th className="text-center" key={`check_update`}>
-                        <CustomInput
+                        <Input
                           className="itemCheck mb-0"
                           type="checkbox"
                           id={`check_update`}
                           defaultChecked={data.updateAction}
                           onChange={() => {
-                            methods.setValue('updateAction', !data.updateAction);
+                            setValue('updateAction', !data.updateAction);
                           }}
                           label=""
                         />
                       </th>
                       <th className="text-center" key={`check_delete`}>
-                        <CustomInput
+                        <Input
                           className="itemCheck mb-0"
                           type="checkbox"
                           id={`check_delete`}
                           defaultChecked={data.deleteAction}
                           onChange={() => {
-                            methods.setValue('deleteAction', !data.deleteAction);
+                            setValue('deleteAction', !data.deleteAction);
                           }}
                           label=""
                         />
                       </th>
                       <th className="text-center" key={`check_activate`}>
-                        <CustomInput
+                        <Input
                           className="itemCheck mb-0"
                           type="checkbox"
                           id={`check_activate`}
                           defaultChecked={data.activateAction}
                           onChange={() => {
-                            methods.setValue('activateAction', !data.activateAction);
+                            setValue('activateAction', !data.activateAction);
                           }}
                           label=""
                         />
                       </th>
                       <th className="text-center" key={`check_inactive`}>
-                        <CustomInput
+                        <Input
                           className="itemCheck mb-0"
                           type="checkbox"
                           id={`check_inactive`}
                           defaultChecked={data.inactiveAction}
                           onChange={() => {
-                            methods.setValue('inactiveAction', !data.inactiveAction);
+                            setValue('inactiveAction', !data.inactiveAction);
                           }}
                           label=""
                         />
                       </th>
                       <th className="text-center" key={`check_fullAccess}`}>
-                        <CustomInput
+                        <Input
                           className="itemCheck mb-0"
                           type="checkbox"
                           id={`check_fullAccess`}
                           defaultChecked={data.fullAccess}
                           onChange={() => {
-                            methods.setValue('fullAccess', !data.fullAccess);
+                            setValue('fullAccess', !data.fullAccess);
                           }}
                           label=""
                         />
@@ -436,13 +430,14 @@ const MenuItemCreateEdit = (props: any) => {
           ) : (
             <></>
           )}
+          </AddNewModal>
         </>
       )}
     </>
   );
 };
 
-const mapDispatchToProps = { ...menuItemActions, ...moduleActions, ...menuActions, ...roleActions };
+const mapDispatchToProps = { ...menuItemActions };
 
 const mapStateToProps = () => {
   return {};

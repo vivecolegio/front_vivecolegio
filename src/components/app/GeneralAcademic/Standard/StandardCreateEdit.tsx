@@ -1,81 +1,99 @@
 import React, { useEffect, useState } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import Loader from 'react-loader-spinner';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
 import { loaderColor, loaderIcon } from '../../../../constants/defaultValues';
 import IntlMessages from '../../../../helpers/IntlMessages';
-import * as asignatureActions from '../../../../stores/actions/GeneralAcademic/AsignatureActions';
-import * as cycleActions from '../../../../stores/actions/GeneralAcademic/CycleActions';
 import * as standardActions from '../../../../stores/actions/GeneralAcademic/StandardActions';
 import { Colxx } from '../../../common/CustomBootstrap';
+import AddNewModal from '../../../common/Data/AddNewModal';
 import CreateEditAuditInformation from '../../../common/Data/CreateEditAuditInformation';
 
 const StandardCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
   const [asignaturesList, setAsignaturesList] = useState(null);
   const [cyclesList, setCyclesList] = useState(null);
+  const [cycle, setCycle] = useState(null);
+  const [asignature, setAsignature] = useState(null);
 
-  const methods = useFormContext();
+  const methods = useForm({
+    mode: 'onChange',
+    reValidateMode: 'onChange',
+  });
+
+  const { handleSubmit, control, register, reset, setValue, getValues } = methods;
 
   useEffect(() => {
-    getAsignatures();
-    getCycles();
-    if (props?.data?.id) {    
-      if (props?.data?.generalAcademicAsignature !== undefined && props?.data?.generalAcademicAsignature != null) {
+    cleanForm();
+    getDropdowns();
+    if (props?.data?.id) {
+      if (
+        props?.data?.generalAcademicAsignature !== undefined &&
+        props?.data?.generalAcademicAsignature != null
+      ) {
         setAsignature({
           key: props?.data?.generalAcademicAsignature?.id,
           label: props?.data?.generalAcademicAsignature?.name,
           value: props?.data?.generalAcademicAsignature?.id,
         });
       }
-      if (props?.data?.generalAcademicCycle !== undefined && props?.data?.generalAcademicCycle != null) {
+      if (
+        props?.data?.generalAcademicCycle !== undefined &&
+        props?.data?.generalAcademicCycle != null
+      ) {
         setCycle({
           key: props?.data?.generalAcademicCycle?.id,
           label: props?.data?.generalAcademicCycle?.name,
           value: props?.data?.generalAcademicCycle?.id,
         });
       }
-    } else {
-      methods.reset();
     }
     setLoading(false);
   }, [props?.data]);
 
-  const getAsignatures = async () => {
-    props.getListAllGeneralAsignature().then((listData: any) => {
+  const cleanForm = async () => {
+    reset();
+    setCycle(null);
+    setAsignature(null);
+  };
+
+  const getDropdowns = async () => {
+    props.getDropdownsGeneralAcademicStandard().then((data: any) => {
       setAsignaturesList(
-        listData.map((c: any) => {
+        data.dataAsignatures.edges.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };
         }),
       );
-    });
-  };
-  const getCycles = async () => {
-    props.getListAllCycle().then((listData: any) => {
       setCyclesList(
-        listData.map((c: any) => {
+        data.dataCycles.edges.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };
         }),
       );
     });
   };
 
-  const data = {
-    standard:
-      props?.data?.id || props?.data?.standard === methods.getValues('standard')
-        ? props?.data?.standard
-        : methods.getValues('standard'),
-    type:
-      props?.data?.id || props?.data?.type === methods.getValues('type')
-        ? props?.data?.type
-        : methods.getValues('type'),
-    subtype:
-      props?.data?.id || props?.data?.subtype === methods.getValues('subtype')
-        ? props?.data?.subtype
-        : methods.getValues('subtype'),   
-  };
+  const { ref: standardRef, ...standardRest } = register('standard', {
+    required: true,
+    value: props?.data?.id ? props?.data?.standard : '',
+  });
+  const { ref: typeRef, ...typeRest } = register('type', {
+    required: true,
+    value: props?.data?.id ? props?.data?.type : '',
+  });
+  const { ref: subtypeRef, ...subtypeRest } = register('subtype', {
+    required: true,
+    value: props?.data?.id ? props?.data?.subtype : '',
+  });
+  register('generalAcademicAsignatureId', {
+    required: true,
+    value: props?.data?.id ? props?.data?.generalAcademicAsignatureId : '',
+  });
+  register('generalAcademicCycleId', {
+    required: true,
+    value: props?.data?.id ? props?.data?.generalAcademicCycleId : '',
+  });
 
   const auditInfo = {
     createdAt: props?.data?.id ? props?.data?.createdAt : null,
@@ -84,10 +102,6 @@ const StandardCreateEdit = (props: any) => {
     updatedByUser: props?.data?.id ? props?.data?.updatedByUser : null,
     version: props?.data?.id ? props?.data?.version : null,
   };
-
-  const [cycle, setCycle] = useState(null);
-
-  const [asignature, setAsignature] = useState(null);
 
   return (
     <>
@@ -99,86 +113,87 @@ const StandardCreateEdit = (props: any) => {
         </>
       ) : (
         <>
-          <ModalBody>
-            <div className="form-group">
-              <Label>
-                <IntlMessages id="forms.standard" />
-              </Label>
-              <Input
-                {...methods.register('standard', { required: true })}
-                name="standard"
-                defaultValue={data.standard}
-              />
-            </div>
-            <div className="form-group">
-              <Label>
-                <IntlMessages id="forms.type" />
-              </Label>
-              <Input
-                {...methods.register('type', { required: true })}
-                name="type"
-                defaultValue={data.type}
-              />
-            </div>
-            <div className="form-group">
-              <Label>
-                <IntlMessages id="forms.subtype" />
-              </Label>
-              <Input
-                {...methods.register('subtype', { required: true })}
-                name="subtype"
-                defaultValue={data.subtype}
-              />
-            </div>
-            <div className="form-group">
-              <Label>
-                <IntlMessages id="menu.asignature" />
-              </Label>
-              <Select
-                placeholder={<IntlMessages id="forms.select" />}    
-                {...methods.register('generalAcademicAsignatureId', { required: true })}
-                className="react-select"
-                classNamePrefix="react-select"
-                options={asignaturesList}
-                value={asignature}
-                onChange={(selectedOption) => {
-                  methods.setValue('generalAcademicAsignatureId', selectedOption?.key);
-                  setAsignature(selectedOption);
-                }}
-              />             
-            </div>
-            <div className="form-group">
-              <Label>
-                <IntlMessages id="menu.cycleAcademic" />
-              </Label>
-              <Select
-                placeholder={<IntlMessages id="forms.select" />}    
-                {...methods.register('generalAcademicCycleId', { required: true })}
-                className="react-select"
-                classNamePrefix="react-select"
-                options={cyclesList}
-                value={cycle}
-                onChange={(selectedOption) => {
-                  methods.setValue('generalAcademicCycleId', selectedOption?.key);
-                  setCycle(selectedOption);
-                }}
-              /> 
-            </div>
-          </ModalBody>
-          {props?.data?.id ? (
-            <ModalFooter className="p-3">
-              <CreateEditAuditInformation loading={loading} auditInfo={auditInfo} />
-            </ModalFooter>
-          ) : (
-            <></>
-          )}
+          <AddNewModal
+            modalOpen={props.modalOpen}
+            toggleModal={() => {
+              cleanForm();
+              props.toggleModal();
+            }}
+            onSubmit={props.onSubmit}
+            data={props.data}
+            methods={methods}
+            control={control}
+            handleSubmit={handleSubmit}
+          >
+            <ModalBody>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="forms.standard" />
+                </Label>
+                <Input {...standardRest} innerRef={standardRef} className="form-control" />
+              </div>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="forms.type" />
+                </Label>
+                <Input {...typeRest} innerRef={typeRef} className="form-control" />
+              </div>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="forms.subtype" />
+                </Label>
+                <Input {...subtypeRest} innerRef={subtypeRef} className="form-control" />
+              </div>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="menu.asignature" />
+                </Label>
+                <Select
+                  placeholder={<IntlMessages id="forms.select" />}
+                  {...register('generalAcademicAsignatureId', { required: true })}
+                  className="react-select"
+                  classNamePrefix="react-select"
+                  options={asignaturesList}
+                  value={asignature}
+                  onChange={(selectedOption) => {
+                    setValue('generalAcademicAsignatureId', selectedOption?.key);
+                    setAsignature(selectedOption);
+                  }}
+                />
+              </div>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="menu.cycleAcademic" />
+                </Label>
+                <Select
+                  placeholder={<IntlMessages id="forms.select" />}
+                  {...register('generalAcademicCycleId', { required: true })}
+                  className="react-select"
+                  classNamePrefix="react-select"
+                  options={cyclesList}
+                  value={cycle}
+                  onChange={(selectedOption) => {
+                    setValue('generalAcademicCycleId', selectedOption?.key);
+                    setCycle(selectedOption);
+                  }}
+                />
+              </div>
+            </ModalBody>
+            {props?.data?.id ? (
+              <ModalFooter className="p-3">
+                <CreateEditAuditInformation loading={loading} auditInfo={auditInfo} />
+              </ModalFooter>
+            ) : (
+              <></>
+            )}
+          </AddNewModal>
         </>
       )}
     </>
   );
 };
 
-const mapDispatchToProps = { ...standardActions, ...asignatureActions, ...cycleActions };
+const mapDispatchToProps = { ...standardActions };
 
 const mapStateToProps = () => {
   return {};

@@ -58,13 +58,13 @@ const CampusList = (props: any) => {
   };
 
   const changeActiveData = async (active: any, id: any) => {
-    await props.changeActiveCampus(active, id).then((formData: any) => {
+    await props.changeActiveCampus(active, id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
 
   const deleteData = async (id: any) => {
-    await props.deleteCampus(id).then((formData: any) => {
+    await props.deleteCampus(id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
@@ -112,16 +112,15 @@ const CampusList = (props: any) => {
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
           />
-          <AddNewModal
+          <CampusCreateEdit
+            data={data}
             modalOpen={modalOpen}
             toggleModal={() => {
               setData(null);
               return setModalOpen(!modalOpen);
             }}
             onSubmit={onSubmit}
-          >
-            <CampusCreateEdit data={data} />
-          </AddNewModal>
+          />
         </>
       ) : (
         <></>

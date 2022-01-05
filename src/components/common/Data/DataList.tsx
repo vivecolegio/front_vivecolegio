@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { useHistory, useLocation } from 'react-router';
+import { useNavigate, useLocation } from 'react-router';
 import { createNotification } from '../../../helpers/Notification';
 import useMousetrap from '../../../hooks/use-mousetrap';
 import ListPageHeading from './ListPageHeading';
@@ -43,7 +43,8 @@ const DataList = (props: any) => {
   });
 
   const location = useLocation();
-  const history = useHistory();
+  const { pathname } = useLocation();
+  const history = useNavigate();
   const currentUrl = location.pathname;
   
   useEffect(() => {
@@ -57,8 +58,8 @@ const DataList = (props: any) => {
     if(cm && cm.readAction){
       setCurrentMenu(cm);
     } else {
-      // history.push(`/home`);
-      // createNotification('warning', 'notPermissions', '');
+      history(`/home`);
+      createNotification('warning', 'notPermissions', '');
     } 
   }, [selectedPageSize, selectedOrderOption]);
 
@@ -187,7 +188,7 @@ const DataList = (props: any) => {
           selectedPageSize={selectedPageSize}
           totalItemCount={totalItemCount}
           selectedOrderOption={selectedOrderOption}
-          match={props?.match}
+          match={pathname}
           startIndex={startIndex}
           endIndex={endIndex}
           selectedItemsLength={selectedItems ? selectedItems.length : 0}

@@ -57,13 +57,13 @@ const EducationLevelList = (props: any) => {
   };
 
   const changeActiveData = async (active: any, id: any) => {
-    await props.changeActiveEducationLevel(active, id).then((formData: any) => {
+    await props.changeActiveEducationLevel(active, id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
 
   const deleteData = async (id: any) => {
-    await props.deleteEducationLevel(id).then((formData: any) => {
+    await props.deleteEducationLevel(id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
@@ -111,16 +111,15 @@ const EducationLevelList = (props: any) => {
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
           />
-          <AddNewModal
+          <EdicationLevelCreateEdit
+            data={data}
             modalOpen={modalOpen}
             toggleModal={() => {
               setData(null);
               return setModalOpen(!modalOpen);
             }}
             onSubmit={onSubmit}
-          >
-            <EdicationLevelCreateEdit data={data} />
-          </AddNewModal>
+          />
         </>
       ) : (
         <></>

@@ -57,13 +57,13 @@ const DocumentTypeList = (props: any) => {
   };
 
   const changeActiveData = async (active: any, id: any) => {
-    await props.changeActiveDocumentType(active, id).then((formData: any) => {
+    await props.changeActiveDocumentType(active, id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
 
   const deleteData = async (id: any) => {
-    await props.deleteDocumentType(id).then((formData: any) => {
+    await props.deleteDocumentType(id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
@@ -111,16 +111,15 @@ const DocumentTypeList = (props: any) => {
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
           />
-          <AddNewModal
+          <DocumentTypeCreateEdit
+            data={data}
             modalOpen={modalOpen}
             toggleModal={() => {
               setData(null);
               return setModalOpen(!modalOpen);
             }}
             onSubmit={onSubmit}
-          >
-            <DocumentTypeCreateEdit data={data} />
-          </AddNewModal>
+          />
         </>
       ) : (
         <></>

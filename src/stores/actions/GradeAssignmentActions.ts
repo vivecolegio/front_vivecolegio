@@ -1,7 +1,7 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
 import { MUTATION_CHANGE_ACTIVE_GRADE_ASSIGNMENT, MUTATION_CREATE_GRADE_ASSIGNMENT, MUTATION_DELETE_GRADE_ASSIGNMENT, MUTATION_UPDATE_GRADE_ASSIGNMENT } from '../graphql/GradeAssignment/GradeAssignmentMutations';
-import { QUERY_GET_ALL_GRADE_ASSIGNMENT, QUERY_GET_GRADE_ASSIGNMENT } from '../graphql/GradeAssignment/GradeAssignmentQueries';
+import { QUERY_GET_ALL_GRADE_ASSIGNMENT, QUERY_GET_DROPDOWNS_GRADE_ASSIGNMENT, QUERY_GET_GRADE_ASSIGNMENT } from '../graphql/GradeAssignment/GradeAssignmentQueries';
 
 
 export const getListAllGradeAssignment = () => {
@@ -48,7 +48,7 @@ export const dataGradeAssignment = (id: any) => {
 export const saveNewGradeAssignment = (data: any) => {
   return async (dispatch: any) => {
     try {
-      let model: {};
+      let model: any = {};
       model = {
         ...model,
       };
@@ -57,6 +57,7 @@ export const saveNewGradeAssignment = (data: any) => {
         ...data,
       };
       let dataCreate = null;
+      model.hourlyintensity = model.hourlyintensity && !isNaN(model.hourlyintensity) ? parseFloat(model.hourlyintensity) : 0;
       await client
         .mutate({
           mutation: MUTATION_CREATE_GRADE_ASSIGNMENT,
@@ -83,7 +84,7 @@ export const saveNewGradeAssignment = (data: any) => {
 export const updateGradeAssignment = (data: any, id: any) => {
   return async (dispatch: any) => {
     try {
-      let model: {};
+      let model: any = {};
       model = {
         ...model,
       };
@@ -92,6 +93,7 @@ export const updateGradeAssignment = (data: any, id: any) => {
         ...data,
       };
       let dataUpdate = null;
+      model.hourlyintensity = model.hourlyintensity && !isNaN(model.hourlyintensity) ? parseFloat(model.hourlyintensity) : 0;
       await client
         .mutate({
           mutation: MUTATION_UPDATE_GRADE_ASSIGNMENT,
@@ -176,6 +178,25 @@ export const deleteGradeAssignment = (id: any, showToast: boolean) => {
       if (showToast) {
         createNotification('error', 'error', '');
       }
+      return error;
+    }
+  };
+};
+
+export const getDropdownsGradeAssignment = () => {
+  return async (dispatch: any) => {
+    try {
+      let listData = {};
+      await client
+        .query({
+          query: QUERY_GET_DROPDOWNS_GRADE_ASSIGNMENT,
+        })
+        .then((result: any) => {
+          listData = result.data;
+        });
+      return listData;
+    } catch (error) {
+      createNotification('error', 'error', '');
       return error;
     }
   };

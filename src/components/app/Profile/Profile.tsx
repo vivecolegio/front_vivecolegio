@@ -48,7 +48,7 @@ const Profile = (props: any) => {
                     />
                   </Card>
                 </Colxx>
-          <Colxx xxs="12" lg="5" xl="4" className="col-left m-auto">
+          <Colxx xxs="12" lg="5" xl="5" className="col-left m-auto">
             <SingleLightbox
               thumb={ProfileImg}
               large={ProfileImg}

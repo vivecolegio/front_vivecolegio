@@ -40,3 +40,16 @@ export const QUERY_GET_EDUCATION_LEVEL = gql`
     }
   }
 `;
+
+export const QUERY_GET_DROPDOWNS_EDUCATION_LEVEL = gql`
+  query getDropdownsEducationLevel {
+    dataSchools: getAllSchool(allData: false, orderCreated: false) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+  }
+`;

@@ -1,20 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { Button } from 'reactstrap';
+import { useNavigate } from 'react-router';
 import { COLUMN_LIST } from '../../../constants/Menu/menuConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as loginActions from '../../../stores/actions/LoginActions';
 import * as menuActions from '../../../stores/actions/MenuModelActions';
-import AddNewModal from '../../common/Data/AddNewModal';
 import DataList from '../../common/Data/DataList';
 import MenuCreateEdit from './MenuCreateEdit';
-
-
 
 const MenuList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
   const [columns, setColumns] = useState(COLUMN_LIST);
   const [modalOpen, setModalOpen] = useState(false);
+
+  let navigate = useNavigate();
 
   const [data, setData] = useState(null);
   useEffect(() => {
@@ -63,13 +62,13 @@ const MenuList = (props: any) => {
   };
 
   const changeActiveData = async (active: any, id: any) => {
-    await props.changeActiveMenu(active, id).then((formData: any) => {
+    await props.changeActiveMenu(active, id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
 
   const deleteData = async (id: any) => {
-    await props.deleteMenu(id).then((formData: any) => {
+    await props.deleteMenu(id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
@@ -86,7 +85,7 @@ const MenuList = (props: any) => {
   };
 
   const goToChildren = async (id: any) => {
-    props.history.push(`/submenus/${id}`)
+    navigate(`/submenus/${id}`)
   };
 
   const me = async () => {
@@ -145,8 +144,9 @@ const MenuList = (props: any) => {
             }
             withChildren={true}
           />
-          <AddNewModal
+          <MenuCreateEdit
             isLg={true}
+            data={data}
             modalOpen={modalOpen}
             toggleModal={() => {   
               setData(null);    
@@ -154,8 +154,7 @@ const MenuList = (props: any) => {
             }}
             onSubmit={onSubmit}
           >
-            <MenuCreateEdit data={data} />
-          </AddNewModal>
+          </MenuCreateEdit>
         </>
       ) : (
         <></>

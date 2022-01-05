@@ -1,7 +1,7 @@
 import { createNotification } from "../../../helpers/Notification";
 import { client } from '../../graphql';
 import { MUTATION_CHANGE_ACTIVE_STANDARD, MUTATION_CREATE_STANDARD, MUTATION_DELETE_STANDARD, MUTATION_UPDATE_STANDARD } from '../../graphql/GeneralAcademic/Standard/StandardMutations';
-import { QUERY_GET_ALL_STANDARD, QUERY_GET_STANDARD } from '../../graphql/GeneralAcademic/Standard/StandardQueries';
+import { QUERY_GET_ALL_STANDARD, QUERY_GET_DROPDOWNS_STANDARD, QUERY_GET_STANDARD } from '../../graphql/GeneralAcademic/Standard/StandardQueries';
 
 
 export const getListAllGeneralStandard = () => {
@@ -176,6 +176,25 @@ export const deleteStandard = (id: any, showToast: boolean) => {
       if (showToast) {
         createNotification('error', 'error', '');
       }
+      return error;
+    }
+  };
+};
+
+export const getDropdownsGeneralAcademicStandard = () => {
+  return async (dispatch: any) => {
+    try {
+      let listData = {};
+      await client
+        .query({
+          query: QUERY_GET_DROPDOWNS_STANDARD,
+        })
+        .then((result: any) => {
+          listData = result.data;
+        });
+      return listData;
+    } catch (error) {
+      createNotification('error', 'error', '');
       return error;
     }
   };

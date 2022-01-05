@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { NavLink, withRouter } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
 import ProfileImg from '../../../../assets/img/profiles/l-1.jpg';
 import {
@@ -17,11 +18,13 @@ import MenuIcon from './topNav/MenuIcon';
 import MobileMenuIcon from './topNav/MobileMenuIcon';
 import TopnavDarkSwitch from './topNav/TopnavDarkSwitch';
 
+
 const TopNav = (props: any) => {
   const [topNavState, setTopNavState] = useState({
     isInFullScreen: false,
     searchKeyword: '',
   });
+  let navigate = useNavigate();
 
   const { messages } = props.intl;
 
@@ -147,8 +150,8 @@ const TopNav = (props: any) => {
     });
   };
 
-  const handleLogout = () => {
-    props.logout({}).then(props.history.push('/login'));
+  const handleLogout = () => {   
+    props.logout({}).then(navigate('/login'));
   };
 
   const menuButtonClick = (e: any, menuClickCount: any, containerClassnames: any) => {
@@ -309,4 +312,4 @@ const mapStateToProps = ({ translateReducer, loginReducer, menuReducer }: any) =
   return { loginReducer, translateReducer, menuReducer };
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(TopNav));
+export default connect(mapStateToProps, mapDispatchToProps)(TopNav);

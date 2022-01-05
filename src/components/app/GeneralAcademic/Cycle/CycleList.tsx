@@ -57,13 +57,13 @@ const GeneralCycleList = (props: any) => {
   };
 
   const changeActiveData = async (active: any, id: any) => {
-    await props.changeActiveCycle(active, id).then((formData: any) => {
+    await props.changeActiveCycle(active, id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
 
   const deleteData = async (id: any) => {
-    await props.deleteCycle(id).then((formData: any) => {
+    await props.deleteCycle(id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
@@ -111,16 +111,15 @@ const GeneralCycleList = (props: any) => {
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
           />
-          <AddNewModal
+          <CycleCreateEdit
+            data={data}
             modalOpen={modalOpen}
             toggleModal={() => {
               setData(null);
               return setModalOpen(!modalOpen);
             }}
             onSubmit={onSubmit}
-          >
-            <CycleCreateEdit data={data} />
-          </AddNewModal>
+          />
         </>
       ) : (
         <></>

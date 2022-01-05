@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { COLUMN_LIST } from '../../../constants/Speciality/SpecialityConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as specialityActions from '../../../stores/actions/SpecialityActions';
-import AddNewModal from '../../common/Data/AddNewModal';
 import DataList from '../../common/Data/DataList';
 import SpecialityCreateEdit from './SpecialityCreateEdit';
 
@@ -58,13 +57,13 @@ const SpecialityList = (props: any) => {
   };
 
   const changeActiveData = async (active: any, id: any) => {
-    await props.changeActiveSpeciality(active, id).then((formData: any) => {
+    await props.changeActiveSpeciality(active, id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
 
   const deleteData = async (id: any) => {
-    await props.deleteSpeciality(id).then((formData: any) => {
+    await props.deleteSpeciality(id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
@@ -112,16 +111,15 @@ const SpecialityList = (props: any) => {
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
           />
-          <AddNewModal
+          <SpecialityCreateEdit
+            data={data}
             modalOpen={modalOpen}
             toggleModal={() => {
               setData(null);
               return setModalOpen(!modalOpen);
             }}
             onSubmit={onSubmit}
-          >
-            <SpecialityCreateEdit data={data} />
-          </AddNewModal>
+          />
         </>
       ) : (
         <></>

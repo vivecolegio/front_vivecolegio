@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { COLUMN_LIST } from '../../../../constants/GeneralStandard/standardConstants';
 import { createNotification } from '../../../../helpers/Notification';
 import * as standardActions from '../../../../stores/actions/GeneralAcademic/StandardActions';
-import AddNewModal from '../../../common/Data/AddNewModal';
 import DataList from '../../../common/Data/DataList';
 import StandardCreateEdit from './StandardCreateEdit';
 
@@ -58,13 +57,13 @@ const GeneralStandardList = (props: any) => {
   };
 
   const changeActiveData = async (active: any, id: any) => {
-    await props.changeActiveStandard(active, id).then((formData: any) => {
+    await props.changeActiveStandard(active, id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
 
   const deleteData = async (id: any) => {
-    await props.deleteStandard(id).then((formData: any) => {
+    await props.deleteStandard(id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
@@ -112,16 +111,15 @@ const GeneralStandardList = (props: any) => {
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
           />
-          <AddNewModal
+          <StandardCreateEdit
+            data={data}
             modalOpen={modalOpen}
             toggleModal={() => {
               setData(null);
               return setModalOpen(!modalOpen);
             }}
             onSubmit={onSubmit}
-          >
-            <StandardCreateEdit data={data} />
-          </AddNewModal>
+          />
         </>
       ) : (
         <></>

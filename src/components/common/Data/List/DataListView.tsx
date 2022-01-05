@@ -1,7 +1,7 @@
 import classnames from 'classnames';
 import React from 'react';
 import { ContextMenuTrigger } from 'react-contextmenu';
-import { Button, Card, CustomInput } from 'reactstrap';
+import { Button, Card, Input } from 'reactstrap';
 import { Colxx } from '../../CustomBootstrap';
 
 const DataListView = ({
@@ -38,7 +38,7 @@ const DataListView = ({
                   </p>
                 );
               })}
-              <p className={withChildren === true ? "w-35 mb-0 text-center text-muted text-small w-sm-100" : "w-25 mb-0 text-center text-muted text-small w-sm-100"}>
+              <p className={withChildren === true ? "w-45 mb-0 text-center text-muted text-small w-sm-100" : "w-35 mb-0 text-center text-muted text-small w-sm-100"}>
                 <Button
                   color="blue"
                   disabled={!currentMenu.updateAction}
@@ -91,7 +91,7 @@ const DataListView = ({
               </p>
             </div>
             <div className="custom-control custom-checkbox pl-1 align-self-center pr-4">
-              <CustomInput
+              <Input
                 className="item-check mb-0"
                 type="checkbox"
                 id={`check_${item.id}`}

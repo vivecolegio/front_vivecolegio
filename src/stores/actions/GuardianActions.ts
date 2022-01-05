@@ -1,7 +1,7 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
 import { MUTATION_CHANGE_ACTIVE_GUARDIAN, MUTATION_CREATE_GUARDIAN, MUTATION_DELETE_GUARDIAN, MUTATION_UPDATE_GUARDIAN } from '../graphql/Guardian/GuardianMutations';
-import { QUERY_GET_ALL_GUARDIAN, QUERY_GET_GUARDIAN } from '../graphql/Guardian/GuardianQueries';
+import { QUERY_GET_ALL_GUARDIAN, QUERY_GET_DROPDOWNS_GUARDIAN, QUERY_GET_GUARDIAN } from '../graphql/Guardian/GuardianQueries';
 
 
 export const getListAllGuardian = () => {
@@ -176,6 +176,28 @@ export const deleteGuardian = (id: any, showToast: boolean) => {
       if (showToast) {
         createNotification('error', 'error', '');
       }
+      return error;
+    }
+  };
+};
+
+export const getDropdownsGuardian = (type: string) => {
+  return async (dispatch: any) => {
+    try {
+      let listData = {};
+      await client
+        .query({
+          query: QUERY_GET_DROPDOWNS_GUARDIAN,
+          variables:{
+            type
+          }
+        })
+        .then((result: any) => {
+          listData = result.data;
+        });
+      return listData;
+    } catch (error) {
+      createNotification('error', 'error', '');
       return error;
     }
   };

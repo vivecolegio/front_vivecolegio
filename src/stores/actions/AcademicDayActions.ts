@@ -1,7 +1,7 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
 import { MUTATION_CHANGE_ACTIVE_ACADEMIC_DAY, MUTATION_CREATE_ACADEMIC_DAY, MUTATION_DELETE_ACADEMIC_DAY, MUTATION_UPDATE_ACADEMIC_DAY } from '../graphql/AcademicDay/AcademicDayMutations';
-import { QUERY_GET_ALL_ACADEMIC_DAY, QUERY_GET_ACADEMIC_DAY } from '../graphql/AcademicDay/AcademicDayQueries';
+import { QUERY_GET_ALL_ACADEMIC_DAY, QUERY_GET_ACADEMIC_DAY, QUERY_GET_DROPDOWNS_ACADEMIC_DAY } from '../graphql/AcademicDay/AcademicDayQueries';
 
 
 export const getListAllAcademicDay = () => {
@@ -176,6 +176,26 @@ export const deleteAcademicDay = (id: any, showToast: boolean) => {
       if (showToast) {
         createNotification('error', 'error', '');
       }
+      return error;
+    }
+  };
+};
+
+
+export const getDropdownsAcademicDay = () => {
+  return async (dispatch: any) => {
+    try {
+      let listData = {};
+      await client
+        .query({
+          query: QUERY_GET_DROPDOWNS_ACADEMIC_DAY,
+        })
+        .then((result: any) => {
+          listData = result.data;
+        });
+      return listData;
+    } catch (error) {
+      createNotification('error', 'error', '');
       return error;
     }
   };

@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { COLUMN_LIST } from '../../../constants/Municipality/municipalityConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as municipalityActions from '../../../stores/actions/MunicipalityActions';
-import AddNewModal from '../../common/Data/AddNewModal';
 import DataList from '../../common/Data/DataList';
 import MunicipalityCreateEdit from './MunicipalityCreateEdit';
 
@@ -57,13 +56,13 @@ const MunicipalityList = (props: any) => {
   };
 
   const changeActiveData = async (active: any, id: any) => {
-    await props.changeActiveMunicipality(active, id).then((formData: any) => {
+    await props.changeActiveMunicipality(active, id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
 
   const deleteData = async (id: any) => {
-    await props.deleteMunicipality(id).then((formData: any) => {
+    await props.deleteMunicipality(id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
@@ -111,16 +110,15 @@ const MunicipalityList = (props: any) => {
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
           />
-          <AddNewModal
+          <MunicipalityCreateEdit
+            data={data}
             modalOpen={modalOpen}
             toggleModal={() => {
               setData(null);
               return setModalOpen(!modalOpen);
             }}
             onSubmit={onSubmit}
-          >
-            <MunicipalityCreateEdit data={data} />
-          </AddNewModal>
+          />
         </>
       ) : (
         <></>

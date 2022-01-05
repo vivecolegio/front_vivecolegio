@@ -1,62 +1,69 @@
 import React, { useEffect, useState } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import Loader from 'react-loader-spinner';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
 import { loaderColor, loaderIcon } from '../../../../constants/defaultValues';
 import IntlMessages from '../../../../helpers/IntlMessages';
-import * as cycleActions from '../../../../stores/actions/GeneralAcademic/CycleActions';
 import * as gradeActions from '../../../../stores/actions/GeneralAcademic/GradeActions';
 import { Colxx } from '../../../common/CustomBootstrap';
+import AddNewModal from '../../../common/Data/AddNewModal';
 import CreateEditAuditInformation from '../../../common/Data/CreateEditAuditInformation';
 
 const GeneralGradeCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
   const [cyclesList, setCyclesList] = useState(null);
+  const [cycle, setCycle] = useState(null);
 
-  const methods = useFormContext();
+  const methods = useForm({
+    mode: 'onChange',
+    reValidateMode: 'onChange',
+  });
+
+  const { handleSubmit, control, register, reset, setValue, getValues } = methods;
 
   useEffect(() => {
-    getCycles();
-    if (props?.data?.id) {    
-      if (props?.data?.generalAcademicCycle !== undefined && props?.data?.generalAcademicCycle != null) {
+    cleanForm();
+    getDropdowns();
+    if (props?.data?.id) {
+      if (
+        props?.data?.generalAcademicCycle !== undefined &&
+        props?.data?.generalAcademicCycle != null
+      ) {
         setCycle({
           key: props?.data?.generalAcademicCycle?.id,
           label: props?.data?.generalAcademicCycle?.name,
           value: props?.data?.generalAcademicCycle?.id,
         });
       }
-    } else {
-      methods.reset();
     }
     setLoading(false);
   }, [props?.data]);
 
-  const getCycles = async () => {
-    props.getListAllCycle().then((listData: any) => {
+  const cleanForm = async () => {
+    reset();
+    setCycle(null);
+  };
+
+  const getDropdowns = async () => {
+    props.getDropdownsGeneralGrades().then((data: any) => {
       setCyclesList(
-        listData.map((c: any) => {
+        data.dataCycles.edges.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };
         }),
       );
     });
   };
 
-  const data = {
-    name:
-      props?.data?.id || props?.data?.name === methods.getValues('name')
-        ? props?.data?.name
-        : methods.getValues('name'),
-    generalAcademicCycle:
-      props?.data?.id ||
-      props?.data?.generalAcademicCycle === methods.getValues('generalAcademicCycle')
-        ? {
-            value: props?.data?.generalAcademicCycle?.id,
-            label: props?.data?.generalAcademicCycle?.name,
-          }
-        : methods.getValues('generalAcademicCycle'),
-  };
+  const { ref: nameRef, ...nameRest } = register('name', {
+    required: true,
+    value: props?.data?.id ? props?.data?.name : '',
+  });
+  register('generalAcademicCycleId', {
+    required: true,
+    value: props?.data?.id ? props?.data?.generalAcademicCycleId : '',
+  });
 
   const auditInfo = {
     createdAt: props?.data?.id ? props?.data?.createdAt : null,
@@ -65,8 +72,6 @@ const GeneralGradeCreateEdit = (props: any) => {
     updatedByUser: props?.data?.id ? props?.data?.updatedByUser : null,
     version: props?.data?.id ? props?.data?.version : null,
   };
-
-  const [cycle, setCycle] = useState(null);
 
   return (
     <>
@@ -78,49 +83,58 @@ const GeneralGradeCreateEdit = (props: any) => {
         </>
       ) : (
         <>
-          <ModalBody>
-            <div className="form-group">
-              <Label>
-                <IntlMessages id="menu.grade" />
-              </Label>
-              <Input
-                {...methods.register('name', { required: true })}
-                name="name"
-                defaultValue={data.name}
-              />
-            </div>
-            <div className="form-group">
-              <Label>
-                <IntlMessages id="menu.cycleAcademic" />
-              </Label>
-              <Select
-                 placeholder={<IntlMessages id="forms.select" />}    
-                {...methods.register('generalAcademicCycleId', { required: true })}
-                className="react-select"
-                classNamePrefix="react-select"
-                options={cyclesList}
-                value={cycle}
-                onChange={(selectedOption) => {
-                  methods.setValue('generalAcademicCycleId', selectedOption?.key);
-                  setCycle(selectedOption);
-                }}
-              />
-            </div>
-          </ModalBody>
-          {props?.data?.id ? (
-            <ModalFooter className="p-3">
-              <CreateEditAuditInformation loading={loading} auditInfo={auditInfo} />
-            </ModalFooter>
-          ) : (
-            <></>
-          )}
+          <AddNewModal
+            modalOpen={props.modalOpen}
+            toggleModal={() => {
+              cleanForm();
+              props.toggleModal();
+            }}
+            onSubmit={props.onSubmit}
+            data={props.data}
+            methods={methods}
+            control={control}
+            handleSubmit={handleSubmit}
+          >
+            <ModalBody>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="menu.grade" />
+                </Label>
+                <Input {...nameRest} innerRef={nameRef} className="form-control" />
+              </div>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="menu.cycleAcademic" />
+                </Label>
+                <Select
+                  placeholder={<IntlMessages id="forms.select" />}
+                  {...register('generalAcademicCycleId', { required: true })}
+                  className="react-select"
+                  classNamePrefix="react-select"
+                  options={cyclesList}
+                  value={cycle}
+                  onChange={(selectedOption) => {
+                    setValue('generalAcademicCycleId', selectedOption?.key);
+                    setCycle(selectedOption);
+                  }}
+                />
+              </div>
+            </ModalBody>
+            {props?.data?.id ? (
+              <ModalFooter className="p-3">
+                <CreateEditAuditInformation loading={loading} auditInfo={auditInfo} />
+              </ModalFooter>
+            ) : (
+              <></>
+            )}
+          </AddNewModal>
         </>
       )}
     </>
   );
 };
 
-const mapDispatchToProps = { ...gradeActions, ...cycleActions };
+const mapDispatchToProps = { ...gradeActions };
 
 const mapStateToProps = () => {
   return {};

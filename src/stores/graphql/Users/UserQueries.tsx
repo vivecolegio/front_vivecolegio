@@ -59,3 +59,32 @@ export const QUERY_GET_USER = gql`
     }
   }
 `;
+
+export const QUERY_GET_DROPDOWNS_USER = gql`
+  query getDropdownsUser {
+    dataRoles: getAllRole(allData: false, orderCreated: false) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+    dataGenders: getAllGender(allData: false, orderCreated: false) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+    dataDocumentTypes: getAllDocumentType(allData: false, orderCreated: false) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+  }
+`;

@@ -45,3 +45,24 @@ export const QUERY_GET_SPECIALITY = gql`
     }
   }
 `;
+
+export const QUERY_GET_DROPDOWNS_SPECIALITY = gql`
+  query getDropdownsSpeciality {
+    dataSchools: getAllSchool(allData: false, orderCreated: false) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+    dataModalities: getAllModality(allData: false, orderCreated: false) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+  }
+`;

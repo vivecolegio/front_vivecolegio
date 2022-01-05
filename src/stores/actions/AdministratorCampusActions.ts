@@ -1,7 +1,7 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
 import { MUTATION_CHANGE_ACTIVE_ADMINISTRATOR_CAMPUS, MUTATION_CREATE_ADMINISTRATOR_CAMPUS, MUTATION_DELETE_ADMINISTRATOR_CAMPUS, MUTATION_UPDATE_ADMINISTRATOR_CAMPUS } from '../graphql/AdministratorCampus/AdministratorCampusMutations';
-import { QUERY_GET_ALL_ADMINISTRATOR_CAMPUS, QUERY_GET_ADMINISTRATOR_CAMPUS } from '../graphql/AdministratorCampus/AdministratorCampusQueries';
+import { QUERY_GET_ALL_ADMINISTRATOR_CAMPUS, QUERY_GET_ADMINISTRATOR_CAMPUS, QUERY_GET_DROPDOWNS_ADMINISTRATOR } from '../graphql/AdministratorCampus/AdministratorCampusQueries';
 
 
 export const getListAllAdministratorCampus = () => {
@@ -176,6 +176,28 @@ export const deleteAdministrator = (id: any, showToast: boolean) => {
       if (showToast) {
         createNotification('error', 'error', '');
       }
+      return error;
+    }
+  };
+};
+
+export const getDropdownsAdministratorCampus = (type: string) => {
+  return async (dispatch: any) => {
+    try {
+      let listData = {};
+      await client
+        .query({
+          query: QUERY_GET_DROPDOWNS_ADMINISTRATOR,
+          variables:{
+            type
+          }
+        })
+        .then((result: any) => {
+          listData = result.data;
+        });
+      return listData;
+    } catch (error) {
+      createNotification('error', 'error', '');
       return error;
     }
   };

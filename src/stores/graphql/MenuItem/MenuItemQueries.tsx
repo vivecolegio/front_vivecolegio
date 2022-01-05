@@ -31,14 +31,17 @@ export const QUERY_GET_MENU_ITEM = gql`
       fullAccess
       activateAction
       inactiveAction
+      rolesId
       roles {
         id
         name
       }
+      moduleId
       module {
         id
         name
       }
+      menuId
       menu {
         id
         name
@@ -50,6 +53,36 @@ export const QUERY_GET_MENU_ITEM = gql`
       }
       updatedByUser {
         name
+      }
+    }
+  }
+`;
+
+
+export const QUERY_GET_DROPDOWNS_SUBMENUS = gql`
+  query getDropdownsSubmenus {
+    dataRoles: getAllRole(allData: false, orderCreated: false) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+    dataMenus: getAllMenu(allData: false, orderCreated: false) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+    dataModules: getAllModule(allData: false, orderCreated: false) {
+      edges {
+        node {
+          id
+          name
+        }
       }
     }
   }

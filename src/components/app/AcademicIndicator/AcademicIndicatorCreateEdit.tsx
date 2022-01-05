@@ -1,18 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import Loader from 'react-loader-spinner';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
 import { loaderColor, loaderIcon } from '../../../constants/defaultValues';
 import IntlMessages from '../../../helpers/IntlMessages';
-import * as asignatureActions from '../../../stores/actions/Academic/AsignatureActions';
-import * as gradeActions from '../../../stores/actions/Academic/GradeActions';
-import * as standardActions from '../../../stores/actions/Academic/StandardActions';
-import * as schoolActions from '../../../stores/actions/SchoolActions';
 import * as AcademicIndicatorActions from '../../../stores/actions/AcademicIndicatorActions';
 import { Colxx } from '../../common/CustomBootstrap';
-import CreateEditAuditInformation from '../../common/Data/CreateEditAuditInformation'
+import AddNewModal from '../../common/Data/AddNewModal';
+import CreateEditAuditInformation from '../../common/Data/CreateEditAuditInformation';
 
 const AcademicIndicatorCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
@@ -20,15 +17,22 @@ const AcademicIndicatorCreateEdit = (props: any) => {
   const [standardsList, setStandardsList] = useState(null);
   const [asignaturesList, setAsignaturesList] = useState(null);
   const [schoolsList, setSchoolsList] = useState(null);
+  const [standard, setStandard] = useState(null);
+  const [school, setSchool] = useState(null);
+  const [grade, setGrade] = useState(null);
+  const [asignature, setAsignature] = useState(null);
 
-  const methods = useFormContext();
+  const methods = useForm({
+    mode: 'onChange',
+    reValidateMode: 'onChange',
+  });
+
+  const { handleSubmit, control, register, reset, setValue, getValues } = methods;
 
   useEffect(() => {
-    getStandards();
-    getAsignatures();
-    getSchools();
-    getGrades();
-    if (props?.data?.id) {    
+    cleanForm();
+    getDropdowns();
+    if (props?.data?.id) {
       if (props?.data?.academicStandard !== undefined && props?.data?.academicStandard != null) {
         setStandard({
           key: props?.data?.academicStandard?.id,
@@ -43,7 +47,10 @@ const AcademicIndicatorCreateEdit = (props: any) => {
           value: props?.data?.school?.id,
         });
       }
-      if (props?.data?.academicAsignature !== undefined && props?.data?.academicAsignature != null) {
+      if (
+        props?.data?.academicAsignature !== undefined &&
+        props?.data?.academicAsignature != null
+      ) {
         setAsignature({
           key: props?.data?.academicAsignature?.id,
           label: props?.data?.academicAsignature?.name,
@@ -57,55 +64,63 @@ const AcademicIndicatorCreateEdit = (props: any) => {
           value: props?.data?.academicGrade?.id,
         });
       }
-    } else {
-      methods.reset();
     }
     setLoading(false);
   }, [props?.data]);
 
-  const getStandards = async () => {
-    props.getListAllAcademicStandard().then((listData: any) => {
+  const cleanForm = async () => {
+    reset();
+    setStandard(null);
+    setSchool(null);
+    setAsignature(null);
+    setGrade(null);
+  };
+
+  const getDropdowns = async () => {
+    props.getDropdownsAcademicIndicator().then((data: any) => {
+      setSchoolsList(
+        data.dataSchools.edges.map((c: any) => {
+          return { label: c.node.name, value: c.node.id, key: c.node.id };
+        }),
+      );
       setStandardsList(
-        listData.map((c: any) => {
+        data.dataStandards.edges.map((c: any) => {
           return { label: c.node.standard, value: c.node.id, key: c.node.id };
         }),
       );
-    });
-  };
-  const getSchools = async () => {
-    props.getListAllSchool().then((listData: any) => {
-      setSchoolsList(
-        listData.map((c: any) => {
-          return { label: c.node.name, value: c.node.id, key: c.node.id };
-        }),
-      );
-    });
-  };
-  const getAsignatures = async () => {
-    props.getListAllAcademicAsignature().then((listData: any) => {
       setAsignaturesList(
-        listData.map((c: any) => {
+        data.dataAsignatures.edges.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };
         }),
       );
-    });
-  };
-  const getGrades = async () => {
-    props.getListAllGrade().then((listData: any) => {
       setGradesList(
-        listData.map((c: any) => {
+        data.dataGrades.edges.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };
         }),
       );
     });
   };
 
-  const data = {
-    indicator:
-      props?.data?.id || props?.data?.indicator === methods.getValues('indicator')
-        ? props?.data?.indicator
-        : methods.getValues('indicator'),  
-  };
+  const { ref: indicatoreRef, ...indicatorRest } = register('indicator', {
+    required: true,
+    value: props?.data?.id ? props?.data?.indicator : '',
+  });
+  register('academicAsignatureId', {
+    required: true,
+    value: props?.data?.id ? props?.data?.academicAsignatureId : '',
+  });
+  register('academicGradeId', {
+    required: true,
+    value: props?.data?.id ? props?.data?.academicGradeId : '',
+  });
+  register('academicStandardId', {
+    required: true,
+    value: props?.data?.id ? props?.data?.academicStandardId : '',
+  });
+  register('schoolId', {
+    required: true,
+    value: props?.data?.id ? props?.data?.schoolId : '',
+  });
 
   const auditInfo = {
     createdAt: props?.data?.id ? props?.data?.createdAt : null,
@@ -114,11 +129,6 @@ const AcademicIndicatorCreateEdit = (props: any) => {
     updatedByUser: props?.data?.id ? props?.data?.updatedByUser : null,
     version: props?.data?.id ? props?.data?.version : null,
   };
-
-  const [standard, setStandard] = useState(null);
-  const [school, setSchool] = useState(null);
-  const [grade, setGrade] = useState(null);
-  const [asignature, setAsignature] = useState(null);
 
   return (
     <>
@@ -130,100 +140,109 @@ const AcademicIndicatorCreateEdit = (props: any) => {
         </>
       ) : (
         <>
-          <ModalBody>
-            <div className="form-group">
-              <Label>
-                <IntlMessages id="forms.indicator" />
-              </Label>
-              <Input
-                {...methods.register('indicator', { required: true })}
-                name="indicator"
-                defaultValue={data.indicator}
-              />
-            </div>
-            <div className="form-group">
-              <Label>
-                <IntlMessages id="menu.asignature" />
-              </Label>
-              <Select
-                 placeholder={<IntlMessages id="forms.select" />}    
-                {...methods.register('academicAsignatureId', { required: true })}
-                className="react-select"
-                classNamePrefix="react-select"
-                options={asignaturesList}
-                value={asignature}
-                onChange={(selectedOption) => {
-                  methods.setValue('academicAsignatureId', selectedOption?.key);
-                  setAsignature(selectedOption);
-                }}
-              />
-            </div>
-            <div className="form-group">
-              <Label>
-                <IntlMessages id="menu.grade" />
-              </Label>
-              <Select
-                 placeholder={<IntlMessages id="forms.select" />}    
-                {...methods.register('academicGradeId', { required: true })}
-                className="react-select"
-                classNamePrefix="react-select"
-                options={gradesList}
-                value={grade}
-                onChange={(selectedOption) => {
-                  methods.setValue('academicGradeId', selectedOption?.key);
-                  setGrade(selectedOption);
-                }}
-              />
-            </div>
-            <div className="form-group">
-              <Label>
-                <IntlMessages id="menu.standardAcademic" />
-              </Label>
-              <Select
-                 placeholder={<IntlMessages id="forms.select" />}    
-                {...methods.register('academicStandardId', { required: true })}
-                className="react-select"
-                classNamePrefix="react-select"
-                options={standardsList}
-                value={standard}
-                onChange={(selectedOption) => {
-                  methods.setValue('academicStandardId', selectedOption?.key);
-                  setStandard(selectedOption);
-                }}
-              />
-            </div>
-            <div className="form-group">
-              <Label>
-                <IntlMessages id="menu.school" />
-              </Label>
-              <Select
-                 placeholder={<IntlMessages id="forms.select" />}    
-                {...methods.register('schoolId', { required: true })}
-                className="react-select"
-                classNamePrefix="react-select"
-                options={schoolsList}
-                value={school}
-                onChange={(selectedOption) => {
-                  methods.setValue('schoolId', selectedOption?.key);
-                  setSchool(selectedOption);
-                }}
-              />
-            </div>
-          </ModalBody>
-          {props?.data?.id ? (
-            <ModalFooter className="p-3">
-              <CreateEditAuditInformation loading={loading} auditInfo={auditInfo} />
-            </ModalFooter>
-          ) : (
-            <></>
-          )}
+          <AddNewModal
+            modalOpen={props.modalOpen}
+            toggleModal={() => {
+              cleanForm();
+              props.toggleModal();
+            }}
+            onSubmit={props.onSubmit}
+            data={props.data}
+            methods={methods}
+            control={control}
+            handleSubmit={handleSubmit}
+          >
+            <ModalBody>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="forms.indicator" />
+                </Label>
+                <Input {...indicatorRest} innerRef={indicatoreRef} className="form-control" />
+              </div>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="menu.asignature" />
+                </Label>
+                <Select
+                  placeholder={<IntlMessages id="forms.select" />}
+                  {...register('academicAsignatureId', { required: true })}
+                  className="react-select"
+                  classNamePrefix="react-select"
+                  options={asignaturesList}
+                  value={asignature}
+                  onChange={(selectedOption) => {
+                    setValue('academicAsignatureId', selectedOption?.key);
+                    setAsignature(selectedOption);
+                  }}
+                />
+              </div>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="menu.grade" />
+                </Label>
+                <Select
+                  placeholder={<IntlMessages id="forms.select" />}
+                  {...register('academicGradeId', { required: true })}
+                  className="react-select"
+                  classNamePrefix="react-select"
+                  options={gradesList}
+                  value={grade}
+                  onChange={(selectedOption) => {
+                    setValue('academicGradeId', selectedOption?.key);
+                    setGrade(selectedOption);
+                  }}
+                />
+              </div>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="menu.standardAcademic" />
+                </Label>
+                <Select
+                  placeholder={<IntlMessages id="forms.select" />}
+                  {...register('academicStandardId', { required: true })}
+                  className="react-select"
+                  classNamePrefix="react-select"
+                  options={standardsList}
+                  value={standard}
+                  onChange={(selectedOption) => {
+                    setValue('academicStandardId', selectedOption?.key);
+                    setStandard(selectedOption);
+                  }}
+                />
+              </div>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="menu.school" />
+                </Label>
+                <Select
+                  placeholder={<IntlMessages id="forms.select" />}
+                  {...register('schoolId', { required: true })}
+                  className="react-select"
+                  classNamePrefix="react-select"
+                  options={schoolsList}
+                  value={school}
+                  onChange={(selectedOption) => {
+                    setValue('schoolId', selectedOption?.key);
+                    setSchool(selectedOption);
+                  }}
+                />
+              </div>
+            </ModalBody>
+            {props?.data?.id ? (
+              <ModalFooter className="p-3">
+                <CreateEditAuditInformation loading={loading} auditInfo={auditInfo} />
+              </ModalFooter>
+            ) : (
+              <></>
+            )}
+          </AddNewModal>
         </>
       )}
     </>
   );
 };
 
-const mapDispatchToProps = { ...AcademicIndicatorActions, ...gradeActions, ...standardActions, ...asignatureActions, ...schoolActions };
+const mapDispatchToProps = { ...AcademicIndicatorActions };
 
 const mapStateToProps = () => {
   return {};

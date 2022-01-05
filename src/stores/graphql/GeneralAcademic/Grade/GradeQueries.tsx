@@ -41,3 +41,17 @@ export const QUERY_GET_GRADE = gql`
     }
   }
 `;
+
+
+export const QUERY_GET_DROPDOWNS_GRADE = gql`
+  query getDropdownsGeneralCycles {
+    dataCycles: getAllGeneralAcademicCycle(allData: false, orderCreated: false) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+  }
+`;

@@ -77,13 +77,13 @@ const AdministratorSchoolList = (props: any) => {
   };
 
   const changeActiveData = async (active: any, id: any) => {
-    await props.changeActiveAdministrator(active, id).then((formData: any) => {
+    await props.changeActiveAdministrator(active, id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
 
   const deleteData = async (id: any) => {
-    await props.deleteAdministrator(id).then((formData: any) => {
+    await props.deleteAdministrator(id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
@@ -131,16 +131,15 @@ const AdministratorSchoolList = (props: any) => {
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
           />
-          <AddNewModal
+          <AdministratorCreateEdit
+            data={data}
             modalOpen={modalOpen}
             toggleModal={() => {
               setData(null);
               return setModalOpen(!modalOpen);
             }}
             onSubmit={onSubmit}
-          >
-            <AdministratorCreateEdit data={data} />
-          </AddNewModal>
+          />
         </>
       ) : (
         <></>

@@ -44,3 +44,16 @@ export const QUERY_GET_SCHOOL_YEAR = gql`
     }
   }
 `;
+
+export const QUERY_GET_DROPDOWNS_SCHOOL_YEAR = gql`
+  query getDropdownsSchoolYear {
+    dataSchools: getAllSchool(allData: false, orderCreated: false) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+  }
+`;

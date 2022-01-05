@@ -1,7 +1,7 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
 import { MUTATION_CHANGE_ACTIVE_CAMPUS, MUTATION_CREATE_CAMPUS, MUTATION_DELETE_CAMPUS, MUTATION_UPDATE_CAMPUS } from '../graphql/Campus/CampusMutations';
-import { QUERY_GET_ALL_CAMPUS, QUERY_GET_CAMPUS } from '../graphql/Campus/CampusQueries';
+import { QUERY_GET_ALL_CAMPUS, QUERY_GET_CAMPUS, QUERY_GET_DROPDOWNS_CAMPUS } from '../graphql/Campus/CampusQueries';
 
 
 export const getListAllCampus = () => {
@@ -176,6 +176,25 @@ export const deleteCampus = (id: any, showToast: boolean) => {
       if (showToast) {
         createNotification('error', 'error', '');
       }
+      return error;
+    }
+  };
+};
+
+export const getDropdownsCampus = () => {
+  return async (dispatch: any) => {
+    try {
+      let listData = {};
+      await client
+        .query({
+          query: QUERY_GET_DROPDOWNS_CAMPUS,
+        })
+        .then((result: any) => {
+          listData = result.data;
+        });
+      return listData;
+    } catch (error) {
+      createNotification('error', 'error', '');
       return error;
     }
   };

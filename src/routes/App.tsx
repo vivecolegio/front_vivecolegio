@@ -2,7 +2,7 @@ import React, { Suspense, useEffect, useState } from 'react';
 import { useClearCache } from 'react-clear-cache';
 import { IntlProvider } from 'react-intl';
 import { connect } from 'react-redux';
-import { HashRouter, Route, Switch } from 'react-router-dom';
+import { HashRouter, Route, Routes } from 'react-router-dom';
 import AreaList from '../components/app/Academic/Area/AreaList';
 import AsignatureList from '../components/app/Academic/Asignature/AsignatureList';
 import GradeList from '../components/app/Academic/Grade/GradeList';
@@ -93,64 +93,64 @@ const App = (props: any) => {
           <Suspense fallback={<div className="loading" />} />
           <HashRouter>
             <Layout permissions={permissions}>
-              <Switch>
-                <Route exact path="/" component={Login} />
-                <Route exact path="/login" component={Login} />
-                <Route exact path="/home" component={permissions ? Home : Login} />
+              <Routes>
+                <Route path="/" element={<Login/>} />
+                <Route path="/login" element={<Login/>} />
+                <Route path="/home" element={permissions ? <Home/> : <Login/>} />
                 {permissions ? (
                   <>                  
-                    <Route exact path="/profile" component={permissions ? Profile : Login} />
+                    <Route path="/profile" element={permissions ? <Profile/> : <Login/>} />
                     {/* ADMIN */}
-                    <Route exact path="/roles" component={permissions ? RoleList : Login} />
-                    <Route exact path="/users" component={permissions ? UserList : Login} />
-                    <Route exact path="/modules" component={permissions ? ModuleList : Login} />
-                    <Route exact path="/menus" component={permissions ? MenuList : Login} />
-                    <Route exact path="/submenus" component={permissions ? SubmenuList: Login} /> 
-                    <Route exact path="/submenus/:idMenu" component={permissions ? SubmenuList: Login} /> 
-                    <Route exact path="/genders" component={permissions ? GenderList : Login} />
-                    <Route exact path="/documentTypes" component={permissions ? DocumentTypeList : Login} />
-                    <Route exact path="/municipality" component={permissions ? MunicipalityList : Login} />
+                    <Route path="/roles" element={permissions ? <RoleList/> : <Login/> }/>
+                    <Route path="/users" element={permissions ? <UserList/> : <Login/>} />
+                    <Route path="/modules" element={permissions ? <ModuleList/> : <Login/>} />
+                    <Route path="/menus" element={permissions ? <MenuList/> : <Login/>} />
+                    <Route path="/submenus" element={permissions ? <SubmenuList/>: <Login/>} /> 
+                    <Route path="/submenus/:idMenu" element={permissions ? <SubmenuList/>: <Login/>} /> 
+                    <Route path="/genders" element={permissions ? <GenderList/> : <Login/>} />
+                    <Route path="/documentTypes" element={permissions ? <DocumentTypeList/> : <Login/>} />
+                    <Route path="/municipality" element={permissions ? <MunicipalityList/> : <Login/>} />
                     {/* ADMIN */}     
                     {/* PERSONAL */}                
-                    <Route exact path="/schools" component={permissions ? SchoolList : Login} />
-                    <Route exact path="/campus" component={permissions ? CampusList : Login} />
-                    <Route exact path="/students" component={permissions ? StudentsList : Login} />
-                    <Route exact path="/teachers" component={permissions ? TeacherList : Login} />
-                    <Route exact path="/guardians" component={permissions ? GuardianList : Login} />
-                    <Route exact path="/administratorsSchool" component={permissions ? AdministratorSchoolList : Login} />
-                    <Route exact path="/administratorsCampus" component={permissions ? AdministratorCampusList : Login} />
-                    <Route exact path="/coordinatorsCampus" component={permissions ? CoordinatorCampusList : Login} />
+                    <Route path="/schools" element={permissions ? <SchoolList/> : <Login/>} />
+                    <Route path="/campus" element={permissions ? <CampusList/> : <Login/>} />
+                    <Route path="/students" element={permissions ? <StudentsList/> : <Login/>} />
+                    <Route path="/teachers" element={permissions ? <TeacherList/> : <Login/>} />
+                    <Route path="/guardians" element={permissions ? <GuardianList/> : <Login/>} />
+                    <Route path="/administratorsSchool" element={permissions ? <AdministratorSchoolList/> : <Login/>} />
+                    <Route path="/administratorsCampus" element={permissions ? <AdministratorCampusList/> : <Login/>} />
+                    <Route path="/coordinatorsCampus" element={permissions ? <CoordinatorCampusList/> : <Login/>} />
                     {/* PERSONAL */}
                     {/* GENERAL ACADEMIC */}        
-                    <Route exact path="/general/areas" component={permissions ? GeneralAreaList : Login} />
-                    <Route exact path="/general/asignatures" component={permissions ? GeneralAsignatureList : Login} />
-                    <Route exact path="/general/cycles" component={permissions ? GeneralCycleList : Login} />
-                    <Route exact path="/general/performanceLevel" component={permissions ? GeneralPerformanceLevelList : Login} />
-                    <Route exact path="/general/standardAcademic" component={permissions ? GeneralStandardList : Login} />
-                    <Route exact path="/general/grades" component={permissions ? GeneralGradeList : Login} />
+                    <Route path="/general/areas" element={permissions ? <GeneralAreaList/> : <Login/>} />
+                    <Route path="/general/asignatures" element={permissions ? <GeneralAsignatureList/> : <Login/>} />
+                    <Route path="/general/cycles" element={permissions ? <GeneralCycleList/> : <Login/>} />
+                    <Route path="/general/performanceLevel" element={permissions ? <GeneralPerformanceLevelList/> : <Login/>} />
+                    <Route path="/general/standardAcademic" element={permissions ? <GeneralStandardList/> : <Login/>} />
+                    <Route path="/general/grades" element={permissions ? <GeneralGradeList/> : <Login/>} />
                     {/* GENERAL ACADEMIC */} 
                     {/* ACADEMIC */}        
-                    <Route exact path="/areas" component={permissions ? AreaList : Login} />
-                    <Route exact path="/asignatures" component={permissions ? AsignatureList : Login} />
-                    <Route exact path="/performanceLevel" component={permissions ? PerformanceLevelList : Login} />
-                    <Route exact path="/standardAcademic" component={permissions ? StandardList : Login} />
-                    <Route exact path="/grades" component={permissions ? GradeList : Login} />
-                    <Route exact path="/educationLevel" component={permissions ? EducationLevelList : Login} />
-                    <Route exact path="/evaluativeComponent" component={permissions ? ComponentEvaluativeList : Login} />
-                    <Route exact path="/modality" component={permissions ? ModalityList : Login} />
-                    <Route exact path="/schoolYear" component={permissions ? SchoolYearList : Login} />
-                    <Route exact path="/speciality" component={permissions ? SpecialityList : Login} />
-                    <Route exact path="/periodAcademic" component={permissions ? AcademicPeriodList : Login} />
-                    <Route exact path="/indicatorAcademic" component={permissions ? AcademicIndicatorList : Login} />
-                    <Route exact path="/gradeAssignment" component={permissions ? GradeAssignmentList : Login} />
-                    <Route exact path="/academicDay" component={permissions ? AcademicDayList : Login} />
-                    <Route exact path="/academicHour" component={permissions ? AcademicHourList : Login} />
+                    <Route path="/areas" element={permissions ? <AreaList/> : <Login/>} />
+                    <Route path="/asignatures" element={permissions ? <AsignatureList/> : <Login/>} />
+                    <Route path="/performanceLevel" element={permissions ? <PerformanceLevelList/> : <Login/>} />
+                    <Route path="/standardAcademic" element={permissions ? <StandardList/> : <Login/>} />
+                    <Route path="/grades" element={permissions ? <GradeList/> : <Login/>} />
+                    <Route path="/educationLevel" element={permissions ? <EducationLevelList/> : <Login/>} />
+                    <Route path="/evaluativeComponent" element={permissions ? <ComponentEvaluativeList/> : <Login/>} />
+                    <Route path="/modality" element={permissions ? <ModalityList/> : <Login/>} />
+                    <Route path="/schoolYear" element={permissions ? <SchoolYearList/> : <Login/>} />
+                    <Route path="/speciality" element={permissions ? <SpecialityList/> : <Login/>} />
+                    <Route path="/periodAcademic" element={permissions ? <AcademicPeriodList/> : <Login/>} />
+                    <Route path="/indicatorAcademic" element={permissions ? <AcademicIndicatorList/> : <Login/>} />
+                    <Route path="/gradeAssignment" element={permissions ? <GradeAssignmentList/> : <Login/>} />
+                    <Route path="/academicDay" element={permissions ? <AcademicDayList/> : <Login/>} />
+                    <Route path="/academicHour" element={permissions ? <AcademicHourList/> : <Login/>} />
                     {/* ACADEMIC */} 
                   </>
                 ) : (
                   <></>
                 )}
-              </Switch>
+              </Routes>
             </Layout>
           </HashRouter>
         </>

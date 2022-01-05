@@ -57,13 +57,13 @@ const GeneralAreaList = (props: any) => {
   };
 
   const changeActiveData = async (active: any, id: any) => {
-    await props.changeActiveArea(active, id).then((formData: any) => {
+    await props.changeActiveArea(active, id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
 
   const deleteData = async (id: any) => {
-    await props.deleteArea(id).then((formData: any) => {
+    await props.deleteArea(id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
@@ -111,16 +111,15 @@ const GeneralAreaList = (props: any) => {
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
           />
-          <AddNewModal
+          <AreaCreateEdit
+            data={data}
             modalOpen={modalOpen}
             toggleModal={() => {
               setData(null);
               return setModalOpen(!modalOpen);
             }}
             onSubmit={onSubmit}
-          >
-            <AreaCreateEdit data={data} />
-          </AddNewModal>
+          />
         </>
       ) : (
         <></>

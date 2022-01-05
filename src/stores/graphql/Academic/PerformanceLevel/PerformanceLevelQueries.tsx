@@ -45,3 +45,24 @@ export const QUERY_GET_PERFORMANCE_LEVEL = gql`
     }
   }
 `;
+
+export const QUERY_GET_DROPDOWNS_PERFORMANCE_LEVEL = gql`
+  query getDropdownsPerformanceLevel {
+    dataSchools: getAllSchool(allData: false, orderCreated: false) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+    dataGeneralPerformanceLevels: getAllGeneralPerformanceLevel(allData: false, orderCreated: false) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+  }
+`;

@@ -1,7 +1,7 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
 import { MUTATION_CHANGE_ACTIVE_COMPONENT_EVALUATIVE, MUTATION_CREATE_COMPONENT_EVALUATIVE, MUTATION_DELETE_COMPONENT_EVALUATIVE, MUTATION_UPDATE_COMPONENT_EVALUATIVE } from '../graphql/ComponentEvaluative/ComponentEvaluativeMutations';
-import { QUERY_GET_ALL_COMPONENT_EVALUATIVE, QUERY_GET_COMPONENT_EVALUATIVE } from '../graphql/ComponentEvaluative/ComponentEvaluativeQueries';
+import { QUERY_GET_ALL_COMPONENT_EVALUATIVE, QUERY_GET_COMPONENT_EVALUATIVE, QUERY_GET_DROPDOWNS_COMPONENT_EVALUATIVE } from '../graphql/ComponentEvaluative/ComponentEvaluativeQueries';
 
 
 export const getListAllComponentEvaluative = () => {
@@ -48,7 +48,7 @@ export const dataComponentEvaluative = (id: any) => {
 export const saveNewComponentEvaluative = (data: any) => {
   return async (dispatch: any) => {
     try {
-      let model: {};
+      let model: any = {};
       model = {
         ...model,
       };
@@ -57,6 +57,7 @@ export const saveNewComponentEvaluative = (data: any) => {
         ...data,
       };
       let dataCreate = null;
+      model.weight = model.weight && !isNaN(model.weight) ? parseFloat(model.weight) : 0;
       await client
         .mutate({
           mutation: MUTATION_CREATE_COMPONENT_EVALUATIVE,
@@ -83,7 +84,7 @@ export const saveNewComponentEvaluative = (data: any) => {
 export const updateComponentEvaluative = (data: any, id: any) => {
   return async (dispatch: any) => {
     try {
-      let model: {};
+      let model: any = {};
       model = {
         ...model,
       };
@@ -92,6 +93,7 @@ export const updateComponentEvaluative = (data: any, id: any) => {
         ...data,
       };
       let dataUpdate = null;
+      model.weight = model.weight && !isNaN(model.weight) ? parseFloat(model.weight) : 0;
       await client
         .mutate({
           mutation: MUTATION_UPDATE_COMPONENT_EVALUATIVE,
@@ -176,6 +178,25 @@ export const deleteComponentEvaluative = (id: any, showToast: boolean) => {
       if (showToast) {
         createNotification('error', 'error', '');
       }
+      return error;
+    }
+  };
+};
+
+export const getDropdownsComponentEvaluative = () => {
+  return async (dispatch: any) => {
+    try {
+      let listData = {};
+      await client
+        .query({
+          query: QUERY_GET_DROPDOWNS_COMPONENT_EVALUATIVE,
+        })
+        .then((result: any) => {
+          listData = result.data;
+        });
+      return listData;
+    } catch (error) {
+      createNotification('error', 'error', '');
       return error;
     }
   };

@@ -110,16 +110,15 @@ const UserList = (props: any) => {
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}         
           />
-          <AddNewModal
+          <UserCreateEdit
+            data={data}
             modalOpen={modalOpen}
             toggleModal={() => {
               setData(null);
               return setModalOpen(!modalOpen);
             }}
             onSubmit={onSubmit}
-          >
-            <UserCreateEdit data={data} />
-          </AddNewModal>
+          />
         </>
       ) : (
         <></>

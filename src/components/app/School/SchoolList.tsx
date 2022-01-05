@@ -57,13 +57,13 @@ const SchoolList = (props: any) => {
   };
 
   const changeActiveData = async (active: any, id: any) => {
-    await props.changeActiveSchool(active, id).then((formData: any) => {
+    await props.changeActiveSchool(active, id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
 
   const deleteData = async (id: any) => {
-    await props.deleteSchool(id).then((formData: any) => {
+    await props.deleteSchool(id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
@@ -111,16 +111,15 @@ const SchoolList = (props: any) => {
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
           />
-          <AddNewModal
+          <SchoolCreateEdit
+            data={data}
             modalOpen={modalOpen}
             toggleModal={() => {
               setData(null);
               return setModalOpen(!modalOpen);
             }}
             onSubmit={onSubmit}
-          >
-            <SchoolCreateEdit data={data} />
-          </AddNewModal>
+          />
         </>
       ) : (
         <></>

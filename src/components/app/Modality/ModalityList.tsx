@@ -58,13 +58,13 @@ const ModalityList = (props: any) => {
   };
 
   const changeActiveData = async (active: any, id: any) => {
-    await props.changeActiveModality(active, id).then((formData: any) => {
+    await props.changeActiveModality(active, id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
 
   const deleteData = async (id: any) => {
-    await props.deleteModality(id).then((formData: any) => {
+    await props.deleteModality(id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
@@ -112,16 +112,15 @@ const ModalityList = (props: any) => {
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
           />
-          <AddNewModal
+          <ModalityCreateEdit
+            data={data}
             modalOpen={modalOpen}
             toggleModal={() => {
               setData(null);
               return setModalOpen(!modalOpen);
             }}
             onSubmit={onSubmit}
-          >
-            <ModalityCreateEdit data={data} />
-          </AddNewModal>
+          />
         </>
       ) : (
         <></>

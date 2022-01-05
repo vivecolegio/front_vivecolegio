@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import Loader from 'react-loader-spinner';
 import { connect } from 'react-redux';
 import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
@@ -7,26 +7,32 @@ import { loaderColor, loaderIcon } from '../../../../constants/defaultValues';
 import IntlMessages from '../../../../helpers/IntlMessages';
 import * as areaActions from '../../../../stores/actions/GeneralAcademic/AreaActions';
 import { Colxx } from '../../../common/CustomBootstrap';
+import AddNewModal from '../../../common/Data/AddNewModal';
 import CreateEditAuditInformation from '../../../common/Data/CreateEditAuditInformation';
 
 const GeneralAreaCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
 
-  const methods = useFormContext();
+  const methods = useForm({
+    mode: 'onChange',
+    reValidateMode: 'onChange',
+  });
+
+  const { handleSubmit, control, register, reset, setValue, getValues } = methods;
 
   useEffect(() => {
-    if (props?.data?.id) {
-      console.log(props?.data);
-    }
+    cleanForm();
     setLoading(false);
   }, [props?.data]);
 
-  const data = {
-    name:
-      props?.data?.id || props?.data?.name === methods.getValues('name')
-        ? props?.data?.name
-        : methods.getValues('name'),
+  const cleanForm = async () => {
+    reset();
   };
+
+  const { ref: nameRef, ...nameRest } = register('name', {
+    required: true,
+    value: props?.data?.id ? props?.data?.name : '',
+  });
 
   const auditInfo = {
     createdAt: props?.data?.id ? props?.data?.createdAt : null,
@@ -35,6 +41,7 @@ const GeneralAreaCreateEdit = (props: any) => {
     updatedByUser: props?.data?.id ? props?.data?.updatedByUser : null,
     version: props?.data?.id ? props?.data?.version : null,
   };
+
   return (
     <>
       {loading ? (
@@ -45,23 +52,32 @@ const GeneralAreaCreateEdit = (props: any) => {
         </>
       ) : (
         <>
-          <ModalBody>
-            <Label>
-              <IntlMessages id="forms.name" />
-            </Label>
-            <Input
-              {...methods.register('name', { required: true })}
-              name="name"
-              defaultValue={data.name}
-            />
-          </ModalBody>
-          {props?.data?.id ? (
-            <ModalFooter className="p-3">
-              <CreateEditAuditInformation loading={loading} auditInfo={auditInfo} />
-            </ModalFooter>
-          ) : (
-            <></>
-          )}
+          <AddNewModal
+            modalOpen={props.modalOpen}
+            toggleModal={() => {
+              cleanForm();
+              props.toggleModal();
+            }}
+            onSubmit={props.onSubmit}
+            data={props.data}
+            methods={methods}
+            control={control}
+            handleSubmit={handleSubmit}
+          >
+            <ModalBody>
+              <Label>
+                <IntlMessages id="forms.name" />
+              </Label>
+              <Input {...nameRest} innerRef={nameRef} className="form-control" />
+            </ModalBody>
+            {props?.data?.id ? (
+              <ModalFooter className="p-3">
+                <CreateEditAuditInformation loading={loading} auditInfo={auditInfo} />
+              </ModalFooter>
+            ) : (
+              <></>
+            )}
+          </AddNewModal>
         </>
       )}
     </>

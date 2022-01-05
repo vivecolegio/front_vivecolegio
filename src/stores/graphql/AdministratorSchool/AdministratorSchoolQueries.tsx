@@ -74,3 +74,41 @@ export const QUERY_GET_ADMINISTRATOR = gql`
     }
   }
 `;
+
+export const QUERY_GET_DROPDOWNS_ADMINISTRATOR = gql`
+  query getDropdownsAdministrator ($type : String!) {
+    dataSchools: getAllSchool(allData: false, orderCreated: false) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+    dataRoles: getAllRoleType(type: $type) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+    dataGenders: getAllGender(allData: false, orderCreated: false) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+    dataDocumentTypes: getAllDocumentType(allData: false, orderCreated: false) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+  }
+`;
+

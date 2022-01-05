@@ -77,13 +77,13 @@ const GuardianList = (props: any) => {
   };
 
   const changeActiveData = async (active: any, id: any) => {
-    await props.changeActiveGuardian(active, id).then((formData: any) => {
+    await props.changeActiveGuardian(active, id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
 
   const deleteData = async (id: any) => {
-    await props.deleteGuardian(id).then((formData: any) => {
+    await props.deleteGuardian(id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
@@ -131,16 +131,15 @@ const GuardianList = (props: any) => {
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
           />
-          <AddNewModal
+          <GuardianCreateEdit
+            data={data}
             modalOpen={modalOpen}
             toggleModal={() => {
               setData(null);
               return setModalOpen(!modalOpen);
             }}
             onSubmit={onSubmit}
-          >
-            <GuardianCreateEdit data={data} />
-          </AddNewModal>
+          />
         </>
       ) : (
         <></>

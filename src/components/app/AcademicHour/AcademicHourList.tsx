@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { COLUMN_LIST } from '../../../constants/AcademicHour/academicHourConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as academicDayActions from '../../../stores/actions/AcademicHourActions';
-import AddNewModal from '../../common/Data/AddNewModal';
 import DataList from '../../common/Data/DataList';
 import AcademicHourCreateEdit from './AcademicHourCreateEdit';
 
@@ -17,10 +16,10 @@ const AcademicHourList = (props: any) => {
     props.getListAllAcademicHour().then((listData: any) => {
       setDataTable(
         listData.map((c: any) => {
-          c.node.academicDay_format = c.node.academicDay ? c.node.user.academicDay.workingDay : '';         
+          c.node.academicDay_format = c?.node?.academicDay ? `${c?.node?.academicDay?.workingDay  } - ${  c?.node?.academicDay?.typeDay}` : '';         
           return c;
         }),
-      );
+        );
     });
   }, []);
 
@@ -28,7 +27,7 @@ const AcademicHourList = (props: any) => {
     props.getListAllAcademicHour().then((listData: any) => {
       setDataTable(
         listData.map((c: any) => {
-          c.node.academicDay_format = c.node.academicDay ? c.node.user.academicDay.workingDay : '';         
+          c.node.academicDay_format = c?.node?.academicDay ? `${c?.node?.academicDay?.workingDay  } - ${  c?.node?.academicDay?.typeDay}` : '';         
           return c;
         }),
       );
@@ -67,13 +66,13 @@ const AcademicHourList = (props: any) => {
   };
 
   const changeActiveData = async (active: any, id: any) => {
-    await props.changeActiveAcademicHour(active, id).then((formData: any) => {
+    await props.changeActiveAcademicHour(active, id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
 
   const deleteData = async (id: any) => {
-    await props.deleteAcademicHour(id).then((formData: any) => {
+    await props.deleteAcademicHour(id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
@@ -121,16 +120,15 @@ const AcademicHourList = (props: any) => {
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
           />
-          <AddNewModal
+          <AcademicHourCreateEdit
+            data={data}
             modalOpen={modalOpen}
             toggleModal={() => {
               setData(null);
               return setModalOpen(!modalOpen);
             }}
             onSubmit={onSubmit}
-          >
-            <AcademicHourCreateEdit data={data} />
-          </AddNewModal>
+          />
         </>
       ) : (
         <></>

@@ -59,13 +59,13 @@ const GenderList = (props: any) => {
   };
 
   const changeActiveData = async (active: any, id: any) => {
-    await props.changeActiveGender(active, id).then((formData: any) => {
+    await props.changeActiveGender(active, id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
 
   const deleteData = async (id: any) => {
-    await props.deleteGender(id).then((formData: any) => {
+    await props.deleteGender(id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
@@ -103,16 +103,15 @@ const GenderList = (props: any) => {
             changeActiveDataAll={changeActiveDataAll} 
             changeActiveData={changeActiveData}
           />
-          <AddNewModal
+          <GenderCreateEdit
+            data={data}
             modalOpen={modalOpen}
             toggleModal={() => {
               setData(null);
               return setModalOpen(!modalOpen);
             }}
             onSubmit={onSubmit}
-          >
-            <GenderCreateEdit data={data} />
-          </AddNewModal>
+          />
         </>
       ) : (
         <></>

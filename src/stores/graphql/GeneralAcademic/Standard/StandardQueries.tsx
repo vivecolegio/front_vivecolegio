@@ -47,3 +47,24 @@ export const QUERY_GET_STANDARD = gql`
     }
   }
 `;
+
+export const QUERY_GET_DROPDOWNS_STANDARD = gql`
+  query getDropdownsAcademicArea {
+    dataAsignatures: getAllGeneralAcademicAsignature(allData: false, orderCreated: false) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+    dataCycles: getAllGeneralAcademicCycle(allData: false, orderCreated: false) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+  }
+`;

@@ -38,3 +38,16 @@ export const QUERY_GET_CAMPUS = gql`
     }
   }
 `;
+
+export const QUERY_GET_DROPDOWNS_CAMPUS = gql`
+  query getDropdownsAcademicArea {
+    dataSchools: getAllSchool(allData: false, orderCreated: false) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+  }
+`;

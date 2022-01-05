@@ -44,7 +44,6 @@ const SchoolYearList = (props: any) => {
   };
 
   const onSubmit = async (dataForm: any) => {
-    console.log(dataForm);
     if (data === null) {
       await props.saveNewSchoolYear(dataForm).then((id: any) => {
         if (id !== undefined) {
@@ -71,13 +70,13 @@ const SchoolYearList = (props: any) => {
   };
 
   const changeActiveData = async (active: any, id: any) => {
-    await props.changeActiveSchoolYear(active, id).then((formData: any) => {
+    await props.changeActiveSchoolYear(active, id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
 
   const deleteData = async (id: any) => {
-    await props.deleteSchoolYear(id).then((formData: any) => {
+    await props.deleteSchoolYear(id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
@@ -125,16 +124,15 @@ const SchoolYearList = (props: any) => {
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
           />
-          <AddNewModal
+          <SchoolYearCreateEdit
+            data={data}
             modalOpen={modalOpen}
             toggleModal={() => {
               setData(null);
               return setModalOpen(!modalOpen);
             }}
             onSubmit={onSubmit}
-          >
-            <SchoolYearCreateEdit data={data} />
-          </AddNewModal>
+          />
         </>
       ) : (
         <></>

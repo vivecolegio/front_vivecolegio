@@ -61,6 +61,7 @@ const esMessages = {
   /* 05.Esquemas */
   'pages.add-new': 'AGREGAR NUEVO',
   'pages.add-new-modal-title': 'Agregar ítem nuevo',
+  'pages.add-edit-modal-title': 'Editar ítem',
   'pages.display-options': 'Opciones de Pantalla',
   'pages.orderby': 'Ordenar por : ',
   'pages.sortby': 'Organizar : ',

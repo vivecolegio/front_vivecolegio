@@ -1,6 +1,7 @@
+import { DevTool } from '@hookform/devtools';
 import React, { useEffect, useState } from 'react';
 import ReactDatePicker from 'react-datepicker';
-import { useFormContext } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import Loader from 'react-loader-spinner';
 import { connect } from 'react-redux';
 import Select from 'react-select';
@@ -8,11 +9,8 @@ import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
 import { loaderColor, loaderIcon } from '../../../constants/defaultValues';
 import IntlMessages from '../../../helpers/IntlMessages';
 import * as AdministratorActions from '../../../stores/actions/AdministratorSchoolActions';
-import * as DocumentTypeActions from '../../../stores/actions/DocumentTypeActions';
-import * as GenderActions from '../../../stores/actions/GenderActions';
-import * as RoleActions from '../../../stores/actions/RoleActions';
-import * as SchoolActions from '../../../stores/actions/SchoolActions';
 import { Colxx } from '../../common/CustomBootstrap';
+import AddNewModal from '../../common/Data/AddNewModal';
 import CreateEditAuditInformation from '../../common/Data/CreateEditAuditInformation';
 
 const AdministratorSchoolCreateEdit = (props: any) => {
@@ -39,13 +37,16 @@ const AdministratorSchoolCreateEdit = (props: any) => {
     roleId: null,
   });
 
-  const methods = useFormContext();
+  const methods = useForm({
+    mode: 'onChange',
+    reValidateMode: 'onChange',
+  });
+
+  const { handleSubmit, control, register, reset, setValue, getValues } = methods;
 
   useEffect(() => {
-    getSchoolsList();
-    getRolesList();
-    getDocumentTypesList();
-    getGendersList();
+    cleanForm();
+    getDropdowns();
     if (props?.data?.id) {
       if (props?.data?.school !== undefined && props?.data?.school != null) {
         setSchool({
@@ -108,48 +109,64 @@ const AdministratorSchoolCreateEdit = (props: any) => {
           value: props?.data?.user?.documentType?.id,
         });
       }
-    } else {
-      methods.reset();
     }
     setLoading(false);
   }, [props?.data]);
 
-  const getSchoolsList = async () => {
-    props.getListAllSchool().then((listData: any) => {
+  const cleanForm = async () => {
+    reset();
+    setSchool(null);
+    setNewUser({
+      name: null,
+      lastName: null,
+      phone: null,
+      email: null,
+      documentNumber: null,
+      password: null,
+      username: null,
+      genderId: null,
+      documentTypeId: null,
+      roleId: null,
+    });
+    setBirtdate(null);
+    setRole(null);
+    setGender(null);
+    setDocumentType(null);
+  };
+
+  const getDropdowns = async () => {
+    props.getDropdownsAdministratorSchool('SchoolAdministrator').then((data: any) => {
       setSchoolsList(
-        listData.map((c: any) => {
+        data.dataSchools.edges.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };
         }),
       );
-    });
-  };
-  const getRolesList = async () => {
-    props.getListAllRoleAssignable('SchoolAdministrator').then((listData: any) => {
       setRolesList(
-        listData.map((c: any) => {
+        data.dataRoles.edges.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };
         }),
       );
-    });
-  };
-  const getDocumentTypesList = async () => {
-    props.getListAllDocumentType().then((listData: any) => {
-      setDocumentTypesList(
-        listData.map((c: any) => {
-          return { label: c.node.name, value: c.node.id, key: c.node.id };
-        }),
-      );
-    });
-  };
-  const getGendersList = async () => {
-    props.getListAllGender().then((listData: any) => {
       setGendersList(
-        listData.map((c: any) => {
+        data.dataGenders.edges.map((c: any) => {
+          return { label: c.node.name, value: c.node.id, key: c.node.id };
+        }),
+      );
+      setDocumentTypesList(
+        data.dataDocumentTypes.edges.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };
         }),
       );
     });
   };
+
+  register('schoolId', {
+    required: true,
+    value: props?.data?.id ? props?.data?.schoolId : '',
+  });
+  register('newUser', {
+    required: true,
+    value: newUser,
+  });
 
   const auditInfo = {
     createdAt: props?.data?.id ? props?.data?.createdAt : null,
@@ -161,6 +178,7 @@ const AdministratorSchoolCreateEdit = (props: any) => {
 
   return (
     <>
+     <DevTool control={methods.control} placement="top-left" />
       {loading ? (
         <>
           <Colxx sm={12} className="d-flex justify-content-center">
@@ -169,187 +187,200 @@ const AdministratorSchoolCreateEdit = (props: any) => {
         </>
       ) : (
         <>
-          <ModalBody>
-            <div className="form-group">
-              <Label>
-                <IntlMessages id="forms.name" />
-              </Label>
-              <Input
-                name="name"
-                defaultValue={newUser.name}
-                onChange={(data) => {
-                  methods.setValue('newUser', { ...newUser });
-                  setNewUser({ ...newUser, ...{ name: data.target.value } });
-                }}
-              />
-            </div>
-            <div className="form-group">
-              <Label>
-                <IntlMessages id="forms.lastname" />
-              </Label>
-              <Input
-                name="lastName"
-                defaultValue={newUser.lastName}
-                onChange={(data) => {
-                  methods.setValue('newUser', { ...newUser });
-                  setNewUser({ ...newUser, ...{ lastName: data.target.value } });
-                }}
-              />
-            </div>
-            <div className="form-group">
-              <Label>
-                <IntlMessages id="forms.phone" />
-              </Label>
-              <Input
-                name="phone"
-                defaultValue={newUser.phone}
-                onChange={(data) => {
-                  methods.setValue('newUser', { ...newUser });
-                  setNewUser({ ...newUser, ...{ phone: data.target.value } });
-                }}
-              />
-            </div>
-            <div className="form-group">
-              <Label>
-                <IntlMessages id="forms.email" />
-              </Label>
-              <Input
-                name="email"
-                defaultValue={newUser.email}
-                onChange={(data) => {
-                  methods.setValue('newUser', { ...newUser });
-                  setNewUser({ ...newUser, ...{ email: data.target.value } });
-                }}
-              />
-            </div>
-            <div className="form-group">
-              <Label>
-                <IntlMessages id="forms.birthdate" />
-              </Label>
-              <ReactDatePicker
-                selected={birtdate}
-                onChange={(date) => {
-                  methods.setValue('newUser', { ...newUser });
-                  setNewUser({ ...newUser, ...{ birthdate: date as Date } });
-                  setBirtdate(date as Date);
-                }}
-              />
-            </div>
-            <div className="form-group">
-              <Label>
-                <IntlMessages id="forms.user" />
-              </Label>
-              <Input
-                name="username"
-                defaultValue={newUser.username}
-                onChange={(data) => {
-                  methods.setValue('newUser', { ...newUser });
-                  setNewUser({ ...newUser, ...{ username: data.target.value } });
-                }}
-              />
-            </div>
-            <div className="form-group">
-              <Label>
-                <IntlMessages id="user.password" />
-              </Label>
-              <Input
-                name="password"
-                defaultValue={newUser.password}
-                onChange={(data) => {
-                  methods.setValue('newUser', { ...newUser });
-                  setNewUser({ ...newUser, ...{ password: data.target.value } });
-                }}
-              />
-            </div>
-            <div className="form-group">
-              <Label>
-                <IntlMessages id="forms.role" />
-              </Label>
-              <Select
-                placeholder={<IntlMessages id="forms.select" />}
-                className="react-select"
-                classNamePrefix="react-select"
-                options={rolesList}
-                value={role}
-                onChange={(selectedOption) => {
-                  newUser.roleId = selectedOption?.key;
-                  methods.setValue('newUser', { ...newUser });
-                  setRole(selectedOption);
-                }}
-              />
-            </div>
-            <div className="form-group">
-              <Label>
-                <IntlMessages id="forms.gender" />
-              </Label>
-              <Select
-                placeholder={<IntlMessages id="forms.select" />}
-                className="react-select"
-                classNamePrefix="react-select"
-                options={gendersList}
-                value={gender}
-                onChange={(selectedOption) => {
-                  newUser.genderId = selectedOption?.key;
-                  methods.setValue('newUser', { ...newUser });
-                  setGender(selectedOption);
-                }}
-              />
-            </div>
-            <div className="form-group">
-              <Label>
-                <IntlMessages id="forms.documentType" />
-              </Label>
-              <Select
-                placeholder={<IntlMessages id="forms.select" />}
-                className="react-select"
-                classNamePrefix="react-select"
-                options={documentTypesList}
-                value={documentType}
-                onChange={(selectedOption) => {
-                  newUser.documentTypeId = selectedOption?.key;
-                  methods.setValue('newUser', { ...newUser });
-                  setDocumentType(selectedOption);
-                }}
-              />
-            </div>
-            <div className="form-group">
-              <Label>
-                <IntlMessages id="forms.documentNumber" />
-              </Label>
-              <Input
-                name="documentNumber"
-                defaultValue={newUser.documentNumber}
-                onChange={(data) => {
-                  methods.setValue('newUser', { ...newUser });
-                  setNewUser({ ...newUser, ...{ documentNumber: data.target.value } });
-                }}
-              />
-            </div>
-            <div className="form-group">
-              <Label>
-                <IntlMessages id="menu.school" />
-              </Label>
-              <Select
-                placeholder={<IntlMessages id="forms.select" />}
-                {...methods.register('schoolId', { required: true })}
-                className="react-select"
-                classNamePrefix="react-select"
-                options={schoolsList}
-                value={school}
-                onChange={(selectedOption) => {
-                  methods.setValue('schoolId', selectedOption?.key);
-                  setSchool(selectedOption);
-                }}
-              />
-            </div>
-          </ModalBody>
-          {props?.data?.id ? (
-            <ModalFooter className="p-3">
-              <CreateEditAuditInformation loading={loading} auditInfo={auditInfo} />
-            </ModalFooter>
-          ) : (
-            <></>
-          )}
+          <AddNewModal
+            modalOpen={props.modalOpen}
+            toggleModal={() => {
+              cleanForm();
+              props.toggleModal();
+            }}
+            onSubmit={props.onSubmit}
+            data={props.data}
+            methods={methods}
+            control={control}
+            handleSubmit={handleSubmit}
+          >
+            <ModalBody>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="forms.name" />
+                </Label>
+                <Input
+                  name="name"
+                  defaultValue={newUser.name}
+                  onChange={(data) => {
+                    setValue('newUser', { ...newUser });
+                    setNewUser({ ...newUser, ...{ name: data.target.value } });
+                  }}
+                />
+              </div>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="forms.lastname" />
+                </Label>
+                <Input
+                  name="lastName"
+                  defaultValue={newUser.lastName}
+                  onChange={(data) => {
+                    setValue('newUser', { ...newUser });
+                    setNewUser({ ...newUser, ...{ lastName: data.target.value } });
+                  }}
+                />
+              </div>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="forms.phone" />
+                </Label>
+                <Input
+                  name="phone"
+                  defaultValue={newUser.phone}
+                  onChange={(data) => {
+                    setValue('newUser', { ...newUser });
+                    setNewUser({ ...newUser, ...{ phone: data.target.value } });
+                  }}
+                />
+              </div>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="forms.email" />
+                </Label>
+                <Input
+                  name="email"
+                  defaultValue={newUser.email}
+                  onChange={(data) => {
+                    setValue('newUser', { ...newUser });
+                    setNewUser({ ...newUser, ...{ email: data.target.value } });
+                  }}
+                />
+              </div>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="forms.birthdate" />
+                </Label>
+                <ReactDatePicker
+                  selected={birtdate}
+                  onChange={(date) => {
+                    setValue('newUser', { ...newUser });
+                    setNewUser({ ...newUser, ...{ birthdate: date as Date } });
+                    setBirtdate(date as Date);
+                  }}
+                />
+              </div>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="forms.user" />
+                </Label>
+                <Input
+                  name="username"
+                  defaultValue={newUser.username}
+                  onChange={(data) => {
+                    setValue('newUser', { ...newUser });
+                    setNewUser({ ...newUser, ...{ username: data.target.value } });
+                  }}
+                />
+              </div>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="user.password" />
+                </Label>
+                <Input
+                  name="password"
+                  defaultValue={newUser.password}
+                  onChange={(data) => {
+                    setValue('newUser', { ...newUser });
+                    setNewUser({ ...newUser, ...{ password: data.target.value } });
+                  }}
+                />
+              </div>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="forms.role" />
+                </Label>
+                <Select
+                  placeholder={<IntlMessages id="forms.select" />}
+                  className="react-select"
+                  classNamePrefix="react-select"
+                  options={rolesList}
+                  value={role}
+                  onChange={(selectedOption) => {
+                    newUser.roleId = selectedOption?.key;
+                    setValue('newUser', { ...newUser });
+                    setRole(selectedOption);
+                  }}
+                />
+              </div>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="forms.gender" />
+                </Label>
+                <Select
+                  placeholder={<IntlMessages id="forms.select" />}
+                  className="react-select"
+                  classNamePrefix="react-select"
+                  options={gendersList}
+                  value={gender}
+                  onChange={(selectedOption) => {
+                    newUser.genderId = selectedOption?.key;
+                    setValue('newUser', { ...newUser });
+                    setGender(selectedOption);
+                  }}
+                />
+              </div>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="forms.documentType" />
+                </Label>
+                <Select
+                  placeholder={<IntlMessages id="forms.select" />}
+                  className="react-select"
+                  classNamePrefix="react-select"
+                  options={documentTypesList}
+                  value={documentType}
+                  onChange={(selectedOption) => {
+                    newUser.documentTypeId = selectedOption?.key;
+                    setValue('newUser', { ...newUser });
+                    setDocumentType(selectedOption);
+                  }}
+                />
+              </div>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="forms.documentNumber" />
+                </Label>
+                <Input
+                  name="documentNumber"
+                  defaultValue={newUser.documentNumber}
+                  onChange={(data) => {
+                    setValue('newUser', { ...newUser });
+                    setNewUser({ ...newUser, ...{ documentNumber: data.target.value } });
+                  }}
+                />
+              </div>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="menu.school" />
+                </Label>
+                <Select
+                  placeholder={<IntlMessages id="forms.select" />}
+                  {...register('schoolId', { required: true })}
+                  className="react-select"
+                  classNamePrefix="react-select"
+                  options={schoolsList}
+                  value={school}
+                  onChange={(selectedOption: any) => {
+                    setValue('schoolId', selectedOption?.key);
+                    setSchool(selectedOption);
+                  }}
+                />
+              </div>
+            </ModalBody>
+            {props?.data?.id ? (
+              <ModalFooter className="p-3">
+                <CreateEditAuditInformation loading={loading} auditInfo={auditInfo} />
+              </ModalFooter>
+            ) : (
+              <></>
+            )}
+          </AddNewModal>
         </>
       )}
     </>
@@ -358,10 +389,6 @@ const AdministratorSchoolCreateEdit = (props: any) => {
 
 const mapDispatchToProps = {
   ...AdministratorActions,
-  ...SchoolActions,
-  ...RoleActions,
-  ...GenderActions,
-  ...DocumentTypeActions,
 };
 
 const mapStateToProps = () => {

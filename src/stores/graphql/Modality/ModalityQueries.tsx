@@ -40,3 +40,16 @@ export const QUERY_GET_MODALITY = gql`
     }
   }
 `;
+
+export const QUERY_GET_DROPDOWNS_MODALITY = gql`
+  query getDropdownsModality {
+    dataSchools: getAllSchool(allData: false, orderCreated: false) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+  }
+`;

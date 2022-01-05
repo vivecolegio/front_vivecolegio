@@ -1,30 +1,37 @@
+import { DevTool } from '@hookform/devtools';
 import React, { useEffect, useState } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import Loader from 'react-loader-spinner';
-import TimePicker from 'react-time-picker';
-import DatePicker from 'react-datepicker';
 import { connect } from 'react-redux';
 import Select from 'react-select';
-import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
-// import CustomSelectInput from 'components/common/CustomSelectInput';
+import TimePicker from 'react-time-picker';
+import { Label, ModalBody, ModalFooter } from 'reactstrap';
 import { loaderColor, loaderIcon } from '../../../constants/defaultValues';
 import IntlMessages from '../../../helpers/IntlMessages';
 import * as AcademicHourActions from '../../../stores/actions/AcademicHourActions';
-import * as CampusActions from '../../../stores/actions/CampusActions';
-import * as academicDayActions from '../../../stores/actions/AcademicDayActions';
 import { Colxx } from '../../common/CustomBootstrap';
+import AddNewModal from '../../common/Data/AddNewModal';
 import CreateEditAuditInformation from '../../common/Data/CreateEditAuditInformation';
 
 const AcademicHourCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
   const [campusList, setCampusList] = useState(null);
   const [academicDayList, setAcademicDayList] = useState(null);
+  const [campus, setCampus] = useState(null);
+  const [academicDay, setAcademicDay] = useState(null);
+  const [startTime, setStartTime] = useState(null);
+  const [endTime, setEndTime] = useState(null);
 
-  const methods = useFormContext();
+  const methods = useForm({
+    mode: 'onChange',
+    reValidateMode: 'onChange',
+  });
+
+  const { handleSubmit, control, register, reset, setValue, getValues } = methods;
 
   useEffect(() => {  
-    getCampusList();
-    getAcademicDayList();
+    cleanForm();
+    getDropdowns();
     if (props?.data?.id) {      
       if (props?.data?.campus !== undefined && props?.data?.campus != null) {
         setCampus({
@@ -36,7 +43,7 @@ const AcademicHourCreateEdit = (props: any) => {
       if (props?.data?.academicDay !== undefined && props?.data?.academicDay != null) {
         setAcademicDay({
           key: props?.data?.academicDay?.id,
-          label: `${props?.data?.workingDay  } - ${  props?.data?.typeDay}`,
+          label: `${props?.data?.academicDay?.workingDay  } - ${  props?.data?.academicDay?.typeDay}`,
           value: props?.data?.academicDay?.id,
         });
       }   
@@ -46,32 +53,49 @@ const AcademicHourCreateEdit = (props: any) => {
       if (props?.data?.endTime !== undefined && props?.data?.endTime != null) {
         setEndTime(props?.data?.endTime);
       }  
-    } else {
-      methods.reset();
-    }
+    } 
     setLoading(false);
   }, [props?.data]);
 
-  const getCampusList = async () => {
-    props.getListAllCampus().then((listData: any) => {
+  const cleanForm = async () => {
+    reset();
+    setCampus(null);
+    setAcademicDay(null);
+    setStartTime(null);
+    setEndTime(null);
+  };
+
+  const getDropdowns = async () => {
+    props.getDropdownsAcademicHour().then((data: any) => {
       setCampusList(
-        listData.map((c: any) => {
+        data.dataCampus.edges.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };
         }),
       );
-    });
-  };
-
-  const getAcademicDayList = async () => {
-    props.getListAllAcademicDay().then((listData: any) => {
       setAcademicDayList(
-        listData.map((c: any) => {
+        data.dataAcademicDay.edges.map((c: any) => {
           return { label: `${c.node.workingDay  } - ${  c.node.typeDay}`, value: c.node.id, key: c.node.id };
         }),
       );
     });
   };
 
+  register('startTime', {
+    required: true,
+    value: props?.data?.id ? props?.data?.startTime : '',
+  });
+  register('endTime', {
+    required: true,
+    value: props?.data?.id ? props?.data?.endTime : '',
+  });
+  register('academicDayId', {
+    required: true,
+    value: props?.data?.id ? props?.data?.academicDayId : '',
+  });
+  register('campusId', {
+    required: true,
+    value: props?.data?.id ? props?.data?.campusId : '',
+  });
 
   const auditInfo = {
     createdAt: props?.data?.id ? props?.data?.createdAt : null,
@@ -81,13 +105,9 @@ const AcademicHourCreateEdit = (props: any) => {
     version: props?.data?.id ? props?.data?.version : null,
   };
 
-  const [campus, setCampus] = useState(null);
-  const [academicDay, setAcademicDay] = useState(null);
-  const [startTime, setStartTime] = useState(null);
-  const [endTime, setEndTime] = useState(null);
-
   return (
     <>
+     <DevTool control={methods.control} placement="top-left" />
       {loading ? (
         <>
           <Colxx sm={12} className="d-flex justify-content-center">
@@ -96,6 +116,18 @@ const AcademicHourCreateEdit = (props: any) => {
         </>
       ) : (
         <>
+        <AddNewModal
+            modalOpen={props.modalOpen}
+            toggleModal={() => {
+              cleanForm();
+              props.toggleModal();
+            }}
+            onSubmit={props.onSubmit}
+            data={props.data}
+            methods={methods}
+            control={control}
+            handleSubmit={handleSubmit}
+          >
           <ModalBody>
           <div className="form-group">
               <Label>
@@ -103,12 +135,12 @@ const AcademicHourCreateEdit = (props: any) => {
               </Label>
               <TimePicker
                 value={startTime} 
-                {...methods.register('startTime', { required: true })}
+                {...register('startTime', { required: true })}
                 clockIcon={null}              
                 disableClock={true}
                 format="HH:mm"              
                 onChange={(date) => {
-                  methods.setValue('startTime', date as Date);
+                  setValue('startTime', date as Date);
                   setStartTime(date as Date);
                 } }/>
             </div>
@@ -118,12 +150,12 @@ const AcademicHourCreateEdit = (props: any) => {
               </Label>
               <TimePicker
                 value={endTime} 
-                {...methods.register('endTime', { required: true })}
+                {...register('endTime', { required: true })}
                 clockIcon={null}              
                 disableClock={true}
                 format="HH:mm"              
                 onChange={(date) => {
-                  methods.setValue('endTime', date as Date);
+                  setValue('endTime', date as Date);
                   setEndTime(date as Date);
                 } }/>
             </div>             
@@ -133,13 +165,13 @@ const AcademicHourCreateEdit = (props: any) => {
               </Label>
               <Select
                 placeholder={<IntlMessages id="forms.select" />}    
-                {...methods.register('academicDayId', { required: true })}
+                {...register('academicDayId', { required: true })}
                 className="react-select"
                 classNamePrefix="react-select"
                 options={academicDayList}
                 value={academicDay}
                 onChange={(selectedOption) => {
-                  methods.setValue('academicDayId', selectedOption?.key);
+                  setValue('academicDayId', selectedOption?.key);
                   setAcademicDay(selectedOption);
                 }}
               />
@@ -150,13 +182,13 @@ const AcademicHourCreateEdit = (props: any) => {
               </Label>
               <Select
                 placeholder={<IntlMessages id="forms.select" />}    
-                {...methods.register('campusId', { required: true })}
+                {...register('campusId', { required: true })}
                 className="react-select"
                 classNamePrefix="react-select"
                 options={campusList}
                 value={campus}
                 onChange={(selectedOption) => {
-                  methods.setValue('campusId', selectedOption?.key);
+                  setValue('campusId', selectedOption?.key);
                   setCampus(selectedOption);
                 }}
               />
@@ -169,13 +201,14 @@ const AcademicHourCreateEdit = (props: any) => {
           ) : (
             <></>
           )}
+          </AddNewModal>
         </>
       )}
     </>
   );
 };
 
-const mapDispatchToProps = { ...AcademicHourActions, ...academicDayActions, ...CampusActions };
+const mapDispatchToProps = { ...AcademicHourActions };
 
 const mapStateToProps = () => {
   return {};

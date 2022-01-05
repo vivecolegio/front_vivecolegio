@@ -1,7 +1,7 @@
 import { createNotification } from "../../../helpers/Notification";
 import { client } from '../../graphql';
 import { MUTATION_CHANGE_ACTIVE_PERFORMANCE_LEVEL, MUTATION_CREATE_PERFORMANCE_LEVEL, MUTATION_DELETE_PERFORMANCE_LEVEL, MUTATION_UPDATE_PERFORMANCE_LEVEL } from '../../graphql/Academic/PerformanceLevel/PerformanceLevelMutations';
-import { QUERY_GET_ALL_PERFORMANCE_LEVEL, QUERY_GET_PERFORMANCE_LEVEL } from '../../graphql/Academic/PerformanceLevel/PerformanceLevelQueries';
+import { QUERY_GET_ALL_PERFORMANCE_LEVEL, QUERY_GET_DROPDOWNS_PERFORMANCE_LEVEL, QUERY_GET_PERFORMANCE_LEVEL } from '../../graphql/Academic/PerformanceLevel/PerformanceLevelQueries';
 
 
 export const getListAllPerformanceLevel = () => {
@@ -48,7 +48,7 @@ export const dataPerformanceLevel = (id: any) => {
 export const saveNewPerformanceLevel = (data: any) => {
   return async (dispatch: any) => {
     try {
-      let model: {};
+      let model: any = {};
       model = {
         ...model,
       };
@@ -57,6 +57,8 @@ export const saveNewPerformanceLevel = (data: any) => {
         ...data,
       };
       let dataCreate = null;
+      model.minimumScore = model.minimumScore && !isNaN(model.minimumScore) ? parseFloat(model.minimumScore) : 0;
+      model.topScore = model.topScore && !isNaN(model.topScore) ? parseFloat(model.topScore) : 0;
       await client
         .mutate({
           mutation: MUTATION_CREATE_PERFORMANCE_LEVEL,
@@ -83,7 +85,7 @@ export const saveNewPerformanceLevel = (data: any) => {
 export const updatePerformanceLevel = (data: any, id: any) => {
   return async (dispatch: any) => {
     try {
-      let model: {};
+      let model: any = {};
       model = {
         ...model,
       };
@@ -92,6 +94,8 @@ export const updatePerformanceLevel = (data: any, id: any) => {
         ...data,
       };
       let dataUpdate = null;
+      model.minimumScore = model.minimumScore && !isNaN(model.minimumScore) ? parseFloat(model.minimumScore) : 0;
+      model.topScore = model.topScore && !isNaN(model.topScore) ? parseFloat(model.topScore) : 0;
       await client
         .mutate({
           mutation: MUTATION_UPDATE_PERFORMANCE_LEVEL,
@@ -176,6 +180,25 @@ export const deletePerformanceLevel = (id: any, showToast: boolean) => {
       if (showToast) {
         createNotification('error', 'error', '');
       }
+      return error;
+    }
+  };
+};
+
+export const getDropdownsPerformanceLevel = () => {
+  return async (dispatch: any) => {
+    try {
+      let listData = {};
+      await client
+        .query({
+          query: QUERY_GET_DROPDOWNS_PERFORMANCE_LEVEL,
+        })
+        .then((result: any) => {
+          listData = result.data;
+        });
+      return listData;
+    } catch (error) {
+      createNotification('error', 'error', '');
       return error;
     }
   };

@@ -1,7 +1,7 @@
 import { createNotification } from "../../../helpers/Notification";
 import { client } from '../../graphql';
 import { MUTATION_CHANGE_ACTIVE_ASIGNATURE, MUTATION_CREATE_ASIGNATURE, MUTATION_DELETE_ASIGNATURE, MUTATION_UPDATE_ASIGNATURE } from '../../graphql/Academic/Asignature/AsignatureMutations';
-import { QUERY_GET_ALL_ASIGNATURE, QUERY_GET_ASIGNATURE } from '../../graphql/Academic/Asignature/AsignatureQueries';
+import { QUERY_GET_ALL_ASIGNATURE, QUERY_GET_ASIGNATURE, QUERY_GET_DROPDOWNS_ASIGNATURE } from '../../graphql/Academic/Asignature/AsignatureQueries';
 
 
 export const getListAllAcademicAsignature = () => {
@@ -48,7 +48,7 @@ export const dataAsignature = (id: any) => {
 export const saveNewAsignature = (data: any) => {
   return async (dispatch: any) => {
     try {
-      let model: {};
+      let model: any = {};
       model = {
         ...model,
       };
@@ -57,6 +57,7 @@ export const saveNewAsignature = (data: any) => {
         ...data,
       };
       let dataCreate = null;
+      model.weight = model.weight && !isNaN(model.weight) ? parseFloat(model.weight) : 0;
       await client
         .mutate({
           mutation: MUTATION_CREATE_ASIGNATURE,
@@ -83,7 +84,7 @@ export const saveNewAsignature = (data: any) => {
 export const updateAsignature = (data: any, id: any) => {
   return async (dispatch: any) => {
     try {
-      let model: {};
+      let model: any = {};
       model = {
         ...model,
       };
@@ -92,6 +93,7 @@ export const updateAsignature = (data: any, id: any) => {
         ...data,
       };
       let dataUpdate = null;
+      model.weight = model.weight && !isNaN(model.weight) ? parseFloat(model.weight) : 0;
       await client
         .mutate({
           mutation: MUTATION_UPDATE_ASIGNATURE,
@@ -176,6 +178,25 @@ export const deleteAsignature = (id: any, showToast: boolean) => {
       if (showToast) {
         createNotification('error', 'error', '');
       }
+      return error;
+    }
+  };
+};
+
+export const getDropdownsAcademicAsignature = () => {
+  return async (dispatch: any) => {
+    try {
+      let listData = {};
+      await client
+        .query({
+          query: QUERY_GET_DROPDOWNS_ASIGNATURE,
+        })
+        .then((result: any) => {
+          listData = result.data;
+        });
+      return listData;
+    } catch (error) {
+      createNotification('error', 'error', '');
       return error;
     }
   };

@@ -1,7 +1,7 @@
 import { createNotification } from "../../../helpers/Notification";
 import { client } from '../../graphql';
 import { MUTATION_CHANGE_ACTIVE_AREA, MUTATION_CREATE_AREA, MUTATION_DELETE_AREA, MUTATION_UPDATE_AREA } from '../../graphql/Academic/Area/AreaMutations';
-import { QUERY_GET_ALL_AREA, QUERY_GET_AREA } from '../../graphql/Academic/Area/AreaQueries';
+import { QUERY_GET_ALL_AREA, QUERY_GET_AREA, QUERY_GET_DROPDOWNS_AREA } from '../../graphql/Academic/Area/AreaQueries';
 
 
 export const getListAllAcademicArea = () => {
@@ -181,4 +181,25 @@ export const deleteArea = (id: any, showToast: boolean) => {
     }
   };
 };
+
+export const getDropdownsAcademicArea = () => {
+  return async (dispatch: any) => {
+    try {
+      let listData = {};
+      await client
+        .query({
+          query: QUERY_GET_DROPDOWNS_AREA,
+        })
+        .then((result: any) => {
+          listData = result.data;
+        });
+      return listData;
+    } catch (error) {
+      createNotification('error', 'error', '');
+      return error;
+    }
+  };
+};
+
+
 

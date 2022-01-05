@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useForm, useFormContext } from 'react-hook-form';
 import Loader from 'react-loader-spinner';
 import { connect } from 'react-redux';
 import Select from 'react-select';
@@ -13,6 +13,7 @@ import * as generalStandardActions from '../../../../stores/actions/GeneralAcade
 import { Colxx } from '../../../common/CustomBootstrap';
 import CreateEditAuditInformation from '../../../common/Data/CreateEditAuditInformation';
 import * as schoolActions from '../../../../stores/actions/SchoolActions';
+import AddNewModal from '../../../common/Data/AddNewModal';
 
 const StandardCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
@@ -20,14 +21,21 @@ const StandardCreateEdit = (props: any) => {
   const [cyclesList, setCyclesList] = useState(null);
   const [standardList, setStandardsList] = useState(null);
   const [schoolList, setSchoolList] = useState(null);
+  const [cycle, setCycle] = useState(null);
+  const [asignature, setAsignature] = useState(null);
+  const [standard, setStandard] = useState(null);
+  const [school, setSchool] = useState(null);
 
-  const methods = useFormContext();
+  const methods = useForm({
+    mode: 'onChange',
+    reValidateMode: 'onChange',
+  });
+
+  const { handleSubmit, control, register, reset, setValue, getValues } = methods;
 
   useEffect(() => {
-    getAsignatures();
-    getCycles();
-    getStandards();
-    getSchool();
+    cleanForm();
+    getDropdowns();
     if (props?.data?.id) {    
       if (props?.data?.academicAsignature !== undefined && props?.data?.academicAsignature != null) {
         setAsignature({
@@ -50,63 +58,70 @@ const StandardCreateEdit = (props: any) => {
           value: props?.data?.generalAcademicStandard?.id,
         });
       }
-    } else {
-      methods.reset();
-    }
+      if (props?.data?.school !== undefined && props?.data?.school != null) {
+        setSchool({
+          key: props?.data?.school?.id,
+          label: props?.data?.school?.name,
+          value: props?.data?.school?.id,
+        });
+      }
+    } 
     setLoading(false);
   }, [props?.data]);
 
-  const getAsignatures = async () => {
-    props.getListAllAcademicAsignature().then((listData: any) => {
+  const cleanForm = async () => {
+    reset();
+    setCycle(null);
+    setStandard(null);
+    setAsignature(null);
+    setSchool(null);
+  };
+
+  const getDropdowns = async () => {
+    props.getDropdownsAcademicStandard().then((data: any) => {
+      setSchoolList(
+        data.dataSchools.edges.map((c: any) => {
+          return { label: c.node.name, value: c.node.id, key: c.node.id };
+        }),
+      );
       setAsignaturesList(
-        listData.map((c: any) => {
+        data.dataAsignatures.edges.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };
         }),
       );
-    });
-  };
-  const getCycles = async () => {
-    props.getListAllCycle().then((listData: any) => {
       setCyclesList(
-        listData.map((c: any) => {
+        data.dataCycles.edges.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };
         }),
       );
-    });
-  };
-  const getStandards = async () => {
-    props.getListAllGeneralStandard().then((listData: any) => {
       setStandardsList(
-        listData.map((c: any) => {
+        data.dataGeneralStandards.edges.map((c: any) => {
           return { label: c.node.standard, value: c.node.id, key: c.node.id };
         }),
       );
     });
   };
-  const getSchool = async () => {
-    props.getListAllSchool().then((listData: any) => {
-      setSchoolList(
-        listData.map((c: any) => {
-          return { label: c.node.name, value: c.node.id, key: c.node.id };
-        }),
-      );
-    });
-  };
 
-  const data = {
-    standard:
-      props?.data?.id || props?.data?.standard === methods.getValues('standard')
-        ? props?.data?.standard
-        : methods.getValues('standard'),
-    type:
-      props?.data?.id || props?.data?.type === methods.getValues('type')
-        ? props?.data?.type
-        : methods.getValues('type'),
-    subtype:
-      props?.data?.id || props?.data?.subtype === methods.getValues('subtype')
-        ? props?.data?.subtype
-        : methods.getValues('subtype'),    
-  };
+  const { ref: standardRef, ...standardRest } = register('standard', {
+    required: true,
+    value: props?.data?.id ? props?.data?.standard : '',
+  });
+  register('schoolId', {
+    required: true,
+    value: props?.data?.id ? props?.data?.schoolId : '',
+  });
+  register('generalAcademicCycleId', {
+    required: true,
+    value: props?.data?.id ? props?.data?.generalAcademicCycleId : '',
+  });
+  register('academicAsignatureId', {
+    required: true,
+    value: props?.data?.id ? props?.data?.academicAsignatureId : '',
+  });
+  register('generalAcademicStandardId', {
+    required: true,
+    value: props?.data?.id ? props?.data?.generalAcademicStandardId : '',
+  });
 
   const auditInfo = {
     createdAt: props?.data?.id ? props?.data?.createdAt : null,
@@ -116,10 +131,6 @@ const StandardCreateEdit = (props: any) => {
     version: props?.data?.id ? props?.data?.version : null,
   };
 
-  const [cycle, setCycle] = useState(null);
-  const [asignature, setAsignature] = useState(null);
-  const [standard, setStandard] = useState(null);
-  const [school, setSchool] = useState(null);
 
   return (
     <>
@@ -131,16 +142,24 @@ const StandardCreateEdit = (props: any) => {
         </>
       ) : (
         <>
+        <AddNewModal
+            modalOpen={props.modalOpen}
+            toggleModal={() => {
+              cleanForm();
+              props.toggleModal();
+            }}
+            onSubmit={props.onSubmit}
+            data={props.data}
+            methods={methods}
+            control={control}
+            handleSubmit={handleSubmit}
+          >
           <ModalBody>
             <div className="form-group">
               <Label>
                 <IntlMessages id="forms.standard" />
               </Label>
-              <Input
-                {...methods.register('standard', { required: true })}
-                name="standard"
-                defaultValue={data.standard}
-              />
+              <Input {...standardRest} innerRef={standardRef} className="form-control" />
             </div>                      
             <div className="form-group">
               <Label>
@@ -148,13 +167,13 @@ const StandardCreateEdit = (props: any) => {
               </Label>
               <Select
                 placeholder={<IntlMessages id="forms.select" />}    
-                {...methods.register('academicAsignatureId', { required: true })}
+                {...register('academicAsignatureId', { required: true })}
                 className="react-select"
                 classNamePrefix="react-select"
                 options={asignaturesList}
                 value={asignature}
                 onChange={(selectedOption) => {
-                  methods.setValue('academicAsignatureId', selectedOption?.key);
+                  setValue('academicAsignatureId', selectedOption?.key);
                   setAsignature(selectedOption);
                 }}
               />             
@@ -165,13 +184,13 @@ const StandardCreateEdit = (props: any) => {
               </Label>
               <Select
                 placeholder={<IntlMessages id="forms.select" />}    
-                {...methods.register('generalAcademicCycleId', { required: true })}
+                {...register('generalAcademicCycleId', { required: true })}
                 className="react-select"
                 classNamePrefix="react-select"
                 options={cyclesList}
                 value={cycle}
                 onChange={(selectedOption) => {
-                  methods.setValue('generalAcademicCycleId', selectedOption?.key);
+                  setValue('generalAcademicCycleId', selectedOption?.key);
                   setCycle(selectedOption);
                 }}
               /> 
@@ -183,13 +202,13 @@ const StandardCreateEdit = (props: any) => {
               </Label>
               <Select
                 placeholder={<IntlMessages id="forms.select" />}    
-                {...methods.register('generalAcademicStandardId', { required: true })}
+                {...register('generalAcademicStandardId', { required: true })}
                 className="react-select"
                 classNamePrefix="react-select"
                 options={standardList}
                 value={standard}
                 onChange={(selectedOption) => {
-                  methods.setValue('generalAcademicStandardId', selectedOption?.key);
+                  setValue('generalAcademicStandardId', selectedOption?.key);
                   setStandard(selectedOption);
                 }}
               /> 
@@ -200,13 +219,13 @@ const StandardCreateEdit = (props: any) => {
               </Label>
               <Select
                 placeholder={<IntlMessages id="forms.select" />}
-                {...methods.register('schoolId', { required: true })}
+                {...register('schoolId', { required: true })}
                 className="react-select"
                 classNamePrefix="react-select"
                 options={schoolList}
                 value={school}
                 onChange={(selectedOption) => {
-                  methods.setValue('schoolId', selectedOption?.key);
+                  setValue('schoolId', selectedOption?.key);
                   setSchool(selectedOption);
                 }}
               />
@@ -219,13 +238,14 @@ const StandardCreateEdit = (props: any) => {
           ) : (
             <></>
           )}
+          </AddNewModal>
         </>
       )}
     </>
   );
 };
 
-const mapDispatchToProps = { ...standardActions, ...asignatureActions, ...cycleActions, ...generalStandardActions,  ...schoolActions };
+const mapDispatchToProps = { ...standardActions };
 
 const mapStateToProps = () => {
   return {};

@@ -1,7 +1,7 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
 import { MUTATION_CHANGE_ACTIVE_COORDINATOR_CAMPUS, MUTATION_CREATE_COORDINATOR_CAMPUS, MUTATION_DELETE_COORDINATOR_CAMPUS, MUTATION_UPDATE_COORDINATOR_CAMPUS } from '../graphql/CoordinatorCampus/CoordinatorCampusMutations';
-import { QUERY_GET_ALL_COORDINATOR_CAMPUS, QUERY_GET_COORDINATOR_CAMPUS } from '../graphql/CoordinatorCampus/CoordinatorCampusQueries';
+import { QUERY_GET_ALL_COORDINATOR_CAMPUS, QUERY_GET_COORDINATOR_CAMPUS, QUERY_GET_DROPDOWNS_COORDINATOR } from '../graphql/CoordinatorCampus/CoordinatorCampusQueries';
 
 
 export const getListAllCoordinatorCampus = () => {
@@ -176,6 +176,28 @@ export const deleteCoordinator = (id: any, showToast: boolean) => {
       if (showToast) {
         createNotification('error', 'error', '');
       }
+      return error;
+    }
+  };
+};
+
+export const getDropdownsCoordinatorCampus = (type: string) => {
+  return async (dispatch: any) => {
+    try {
+      let listData = {};
+      await client
+        .query({
+          query: QUERY_GET_DROPDOWNS_COORDINATOR,
+          variables:{
+            type
+          }
+        })
+        .then((result: any) => {
+          listData = result.data;
+        });
+      return listData;
+    } catch (error) {
+      createNotification('error', 'error', '');
       return error;
     }
   };

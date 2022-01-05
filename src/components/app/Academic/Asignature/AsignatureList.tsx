@@ -58,13 +58,13 @@ const AsignatureList = (props: any) => {
   };
 
   const changeActiveData = async (active: any, id: any) => {
-    await props.changeActiveAsignature(active, id).then((formData: any) => {
+    await props.changeActiveAsignature(active, id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
 
   const deleteData = async (id: any) => {
-    await props.deleteAsignature(id).then((formData: any) => {
+    await props.deleteAsignature(id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
@@ -112,7 +112,8 @@ const AsignatureList = (props: any) => {
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
           />
-          <AddNewModal
+          <AsignatureCreateEdit
+            data={data}
             modalOpen={modalOpen}
             toggleModal={() => {
               setData(null);
@@ -120,8 +121,7 @@ const AsignatureList = (props: any) => {
             }}
             onSubmit={onSubmit}
           >
-            <AsignatureCreateEdit data={data} />
-          </AddNewModal>
+          </AsignatureCreateEdit>
         </>
       ) : (
         <></>

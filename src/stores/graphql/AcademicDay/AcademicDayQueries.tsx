@@ -40,3 +40,16 @@ export const QUERY_GET_ACADEMIC_DAY = gql`
     }
   }
 `;
+
+export const QUERY_GET_DROPDOWNS_ACADEMIC_DAY = gql`
+  query getDropdownsAcademicDay {
+    dataCampus: getAllCampus(allData: false, orderCreated: false) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+  }
+`;

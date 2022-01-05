@@ -62,6 +62,7 @@ const enMessages = {
   /* 05.Pages */
   'pages.add-new': 'ADD NEW',
   'pages.add-new-modal-title': 'Add New Item',
+  'pages.add-edit-modal-title': 'Edit Item',
   'pages.display-options': 'Display Options',
   'pages.orderby': 'Order By : ',
   'pages.sortby': 'Sort By : ',

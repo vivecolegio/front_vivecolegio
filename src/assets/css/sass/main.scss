@@ -24,7 +24,7 @@ input.form-control[readonly] {
 }
 
 .max-w-50 {
-  max-width: 50%!important;
+  max-width: 50% !important;
 }
 
 .cursor-pointer {
@@ -32,15 +32,16 @@ input.form-control[readonly] {
 }
 
 .mt-20 {
-   margin-top: 20%!important;
+  margin-top: 20% !important;
 }
 
-.m-auto{
+.m-auto {
   margin: auto;
 }
 
-.dropdown-item.active, .dropdown-item:active{
-  color: #fff!important;
+.dropdown-item.active,
+.dropdown-item:active {
+  color: #fff !important;
 }
 
 .react-time-picker.react-time-picker--closed.react-time-picker--enabled {
@@ -67,76 +68,160 @@ input.form-control[readonly] {
   line-height: 1;
 }
 
-.react-time-picker__wrapper{
-  border: none!important;
+.react-time-picker__wrapper {
+  border: none !important;
 }
 
-.border-separator-right{
+.border-separator-right {
   border-right: 3px #922c88 solid;
 }
 
 .btn-blue {
- border-color: #48A9F8!important;
- background-color: #48A9F8!important;
- color: white;
+  border-color: #48a9f8 !important;
+  background-color: #48a9f8 !important;
+  color: white;
 }
 
 .btn-green {
- border-color: #8BC740!important;
- background-color: #8BC740!important;
- color: white;
+  border-color: #8bc740 !important;
+  background-color: #8bc740 !important;
+  color: white;
 }
 
 .btn-orange {
- border-color: #FF6746!important;
- background-color: #FF6746!important;
- color: white;
+  border-color: #ff6746 !important;
+  background-color: #ff6746 !important;
+  color: white;
 }
 
 .btn-blue:hover {
- border-color: #4194d8!important;
- background-color: #4194d8!important;
- color: white;
+  border-color: #4194d8 !important;
+  background-color: #4194d8 !important;
+  color: white;
 }
 
 .btn-green:hover {
- border-color: #77ac38!important;
- background-color: #77ac38!important;
- color: white;
+  border-color: #77ac38 !important;
+  background-color: #77ac38 !important;
+  color: white;
 }
 
 .btn-orange:hover {
- border-color: #da5c40!important;
- background-color: #da5c40!important;
- color: white;
+  border-color: #da5c40 !important;
+  background-color: #da5c40 !important;
+  color: white;
 }
 
 .border-yellow {
   border: 2px solid #fdbc18;
 }
 
-// .navbar .navbar-logo {  
+// .navbar .navbar-logo {
 //   position: initial;
 //   margin-left: 1rem;
 // }
 
 .font-1rem {
-  font-size: 1rem!important;
+  font-size: 1rem !important;
 }
 
 .font-1-5rem {
-  font-size: 1.5rem!important;
+  font-size: 1.5rem !important;
 }
 
 .font-0-8rem {
-  font-size: 0.8rem!important;
+  font-size: 0.8rem !important;
 }
 
 .h-270 {
-  height: 270px!important;
+  height: 270px !important;
 }
 
 // remove item separator "|" in footer breadcrumb
 footer.page-footer .breadcrumb-item + .breadcrumb-item::before {
-  color: transparent!important;
+  color: transparent !important;
+}
+
+.w-35 {
+  width: 35% !important;
+}
+
+.w-45 {
+  width: 45% !important;
+}
+
+
+.form-check-input:checked[type=checkbox] {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3l6-6'/%3e%3c/svg%3e");
+}
+.form-check-input:checked {
+  background-color: $theme-color-1;
+  border-color: $theme-color-1;
+}
+.form-check-input[type=checkbox] {
+  border-radius: 0.25em;
+}
+.form-check .form-check-input {
+  float: left;
+  margin-left: -1.5em;
+}
+.form-check-input {
+  width: 1.2em;
+  height: 1.2em;
+  margin-top: 0.25em;
+  vertical-align: top;
+  background-color: #fff;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  border: 1px solid rgba(0,0,0,.25);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  -webkit-print-color-adjust: exact;
+  color-adjust: exact;
+  position: inherit;
+  margin-left: 0;
+
+}
+
+.visually-hidden{
+    clip: rect(0,0,0,0);
+    border: 0;
+    height: 1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+}
+
+.input-group-prepend>.btn{
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+}
+
+// .check-all .custom-control {
+//   margin-top: 11px;
+// }
+
+.check-button .custom-control {
+  min-height: 1rem;
+}
+// .custom-control {
+//   display: block;
+//   min-height: 1.5rem;
+//   padding-left: 1.5rem;
+//   position: relative;
+// }
+
+.form-check-input.checkAll:checked {
+  background-color: transparent!important;
+  border-color: #ffffff!important;
+}
+.form-check-input.checkAll{
+  background-color: transparent!important;
+  border-color: #ffffff!important;
 }

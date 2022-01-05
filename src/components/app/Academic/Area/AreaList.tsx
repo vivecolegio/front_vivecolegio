@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { COLUMN_LIST } from '../../../../constants/Area/areaConstants';
 import { createNotification } from '../../../../helpers/Notification';
 import * as areaActions from '../../../../stores/actions/Academic/AreaActions';
-import AddNewModal from '../../../common/Data/AddNewModal';
 import DataList from '../../../common/Data/DataList';
 import AreaCreateEdit from './AreaCreateEdit';
 
@@ -57,13 +56,13 @@ const AreaList = (props: any) => {
   };
 
   const changeActiveData = async (active: any, id: any) => {
-    await props.changeActiveArea(active, id).then((formData: any) => {
+    await props.changeActiveArea(active, id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
 
   const deleteData = async (id: any) => {
-    await props.deleteArea(id).then((formData: any) => {
+    await props.deleteArea(id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
@@ -111,16 +110,15 @@ const AreaList = (props: any) => {
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
           />
-          <AddNewModal
+          <AreaCreateEdit
+            data={data}
             modalOpen={modalOpen}
             toggleModal={() => {
               setData(null);
               return setModalOpen(!modalOpen);
             }}
             onSubmit={onSubmit}
-          >
-            <AreaCreateEdit data={data} />
-          </AddNewModal>
+          />
         </>
       ) : (
         <></>

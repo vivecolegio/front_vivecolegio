@@ -15,7 +15,7 @@ const AcademicDayList = (props: any) => {
   const [data, setData] = useState(null);
   useEffect(() => {
     props.getListAllAcademicDay().then((listData: any) => {
-      
+      setDataTable(listData);
     });
   }, []);
 
@@ -57,13 +57,13 @@ const AcademicDayList = (props: any) => {
   };
 
   const changeActiveData = async (active: any, id: any) => {
-    await props.changeActiveAcademicDay(active, id).then((formData: any) => {
+    await props.changeActiveAcademicDay(active, id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
 
   const deleteData = async (id: any) => {
-    await props.deleteAcademicDay(id).then((formData: any) => {
+    await props.deleteAcademicDay(id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
@@ -111,16 +111,15 @@ const AcademicDayList = (props: any) => {
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
           />
-          <AddNewModal
+          <AcademicDayCreateEdit
+            data={data}
             modalOpen={modalOpen}
             toggleModal={() => {
               setData(null);
               return setModalOpen(!modalOpen);
             }}
             onSubmit={onSubmit}
-          >
-            <AcademicDayCreateEdit data={data} />
-          </AddNewModal>
+          />
         </>
       ) : (
         <></>

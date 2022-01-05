@@ -58,13 +58,13 @@ const ComponentEvaluativeList = (props: any) => {
   };
 
   const changeActiveData = async (active: any, id: any) => {
-    await props.changeActiveComponentEvaluative(active, id).then((formData: any) => {
+    await props.changeActiveComponentEvaluative(active, id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
 
   const deleteData = async (id: any) => {
-    await props.deleteComponentEvaluative(id).then((formData: any) => {
+    await props.deleteComponentEvaluative(id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
@@ -112,16 +112,15 @@ const ComponentEvaluativeList = (props: any) => {
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
           />
-          <AddNewModal
+          <ComponentEvaluativeCreateEdit
+            data={data}
             modalOpen={modalOpen}
             toggleModal={() => {
               setData(null);
               return setModalOpen(!modalOpen);
             }}
             onSubmit={onSubmit}
-          >
-            <ComponentEvaluativeCreateEdit data={data} />
-          </AddNewModal>
+          />
         </>
       ) : (
         <></>

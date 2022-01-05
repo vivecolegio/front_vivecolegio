@@ -1,7 +1,7 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
 import { MUTATION_CHANGE_ACTIVE_ACADEMIC_PERIOD, MUTATION_CREATE_ACADEMIC_PERIOD, MUTATION_DELETE_ACADEMIC_PERIOD, MUTATION_UPDATE_ACADEMIC_PERIOD } from '../graphql/AcademicPeriod/AcademicPeriodMutations';
-import { QUERY_GET_ALL_ACADEMIC_PERIOD, QUERY_GET_ACADEMIC_PERIOD } from '../graphql/AcademicPeriod/AcademicPeriodQueries';
+import { QUERY_GET_ALL_ACADEMIC_PERIOD, QUERY_GET_ACADEMIC_PERIOD, QUERY_GET_DROPDOWNS_ACADEMIC_PERIOD } from '../graphql/AcademicPeriod/AcademicPeriodQueries';
 
 
 export const getListAllAcademicPeriod = () => {
@@ -48,7 +48,7 @@ export const dataAcademicPeriod = (id: any) => {
 export const saveNewAcademicPeriod = (data: any) => {
   return async (dispatch: any) => {
     try {
-      let model: {};
+      let model: any = {};
       model = {
         ...model,
       };
@@ -57,6 +57,7 @@ export const saveNewAcademicPeriod = (data: any) => {
         ...data,
       };
       let dataCreate = null;
+      model.weight = model.weight && !isNaN(model.weight) ? parseFloat(model.weight) : 0;
       await client
         .mutate({
           mutation: MUTATION_CREATE_ACADEMIC_PERIOD,
@@ -83,7 +84,7 @@ export const saveNewAcademicPeriod = (data: any) => {
 export const updateAcademicPeriod = (data: any, id: any) => {
   return async (dispatch: any) => {
     try {
-      let model: {};
+      let model: any = {};
       model = {
         ...model,
       };
@@ -92,6 +93,7 @@ export const updateAcademicPeriod = (data: any, id: any) => {
         ...data,
       };
       let dataUpdate = null;
+      model.weight = model.weight && !isNaN(model.weight) ? parseFloat(model.weight) : 0;
       await client
         .mutate({
           mutation: MUTATION_UPDATE_ACADEMIC_PERIOD,
@@ -176,6 +178,25 @@ export const deleteAcademicPeriod = (id: any, showToast: boolean) => {
       if (showToast) {
         createNotification('error', 'error', '');
       }
+      return error;
+    }
+  };
+};
+
+export const getDropdownsAcademicPeriod = () => {
+  return async (dispatch: any) => {
+    try {
+      let listData = {};
+      await client
+        .query({
+          query: QUERY_GET_DROPDOWNS_ACADEMIC_PERIOD,
+        })
+        .then((result: any) => {
+          listData = result.data;
+        });
+      return listData;
+    } catch (error) {
+      createNotification('error', 'error', '');
       return error;
     }
   };

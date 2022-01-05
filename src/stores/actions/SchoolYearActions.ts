@@ -1,7 +1,7 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
 import { MUTATION_CHANGE_ACTIVE_SCHOOL_YEAR, MUTATION_CREATE_SCHOOL_YEAR, MUTATION_DELETE_SCHOOL_YEAR, MUTATION_UPDATE_SCHOOL_YEAR } from '../graphql/SchoolYear/SchoolYearMutations';
-import { QUERY_GET_ALL_SCHOOL_YEAR, QUERY_GET_SCHOOL_YEAR } from '../graphql/SchoolYear/SchoolYearQueries';
+import { QUERY_GET_ALL_SCHOOL_YEAR, QUERY_GET_DROPDOWNS_SCHOOL_YEAR, QUERY_GET_SCHOOL_YEAR } from '../graphql/SchoolYear/SchoolYearQueries';
 
 
 export const getListAllSchoolYear = () => {
@@ -48,7 +48,7 @@ export const dataSchoolYear = (id: any) => {
 export const saveNewSchoolYear = (data: any) => {
   return async (dispatch: any) => {
     try {
-      let model: {};
+      let model: any = {};
       model = {
         ...model,
       };
@@ -57,6 +57,8 @@ export const saveNewSchoolYear = (data: any) => {
         ...data,
       };
       let dataCreate = null;
+      model.schoolYear = model.schoolYear && !isNaN(model.schoolYear) ? parseFloat(model.schoolYear) : 0;
+      model.folioNumber = model.folioNumber && !isNaN(model.folioNumber) ? parseFloat(model.folioNumber) : 0;
       await client
         .mutate({
           mutation: MUTATION_CREATE_SCHOOL_YEAR,
@@ -83,7 +85,7 @@ export const saveNewSchoolYear = (data: any) => {
 export const updateSchoolYear = (data: any, id: any) => {
   return async (dispatch: any) => {
     try {
-      let model: {};
+      let model: any = {};
       model = {
         ...model,
       };
@@ -92,6 +94,8 @@ export const updateSchoolYear = (data: any, id: any) => {
         ...data,
       };
       let dataUpdate = null;
+      model.schoolYear = model.schoolYear && !isNaN(model.schoolYear) ? parseFloat(model.schoolYear) : 0;
+      model.folioNumber = model.folioNumber && !isNaN(model.folioNumber) ? parseFloat(model.folioNumber) : 0;
       await client
         .mutate({
           mutation: MUTATION_UPDATE_SCHOOL_YEAR,
@@ -176,6 +180,25 @@ export const deleteSchoolYear = (id: any, showToast: boolean) => {
       if (showToast) {
         createNotification('error', 'error', '');
       }
+      return error;
+    }
+  };
+};
+
+export const getDropdownsSchoolYear = () => {
+  return async (dispatch: any) => {
+    try {
+      let listData = {};
+      await client
+        .query({
+          query: QUERY_GET_DROPDOWNS_SCHOOL_YEAR,
+        })
+        .then((result: any) => {
+          listData = result.data;
+        });
+      return listData;
+    } catch (error) {
+      createNotification('error', 'error', '');
       return error;
     }
   };

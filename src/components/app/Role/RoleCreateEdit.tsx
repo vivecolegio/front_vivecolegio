@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import Loader from 'react-loader-spinner';
 import { connect } from 'react-redux';
-import { CustomInput, Input, Label, ModalBody, ModalFooter } from 'reactstrap';
+import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
 import { loaderColor, loaderIcon } from '../../../constants/defaultValues';
 import IntlMessages from '../../../helpers/IntlMessages';
 import * as menuActions from '../../../stores/actions/MenuModelActions';
@@ -92,7 +92,7 @@ const RoleCreateEdit = (props: any) => {
               </h6>
             </div>
             <div className="form-group">              
-              <CustomInput
+              <Input
                 className="itemCheck mb-0"
                 type="checkbox"
                 id={`check_isSchoolAdministrator`}
@@ -104,7 +104,7 @@ const RoleCreateEdit = (props: any) => {
               />
             </div>
             <div className="form-group">              
-              <CustomInput
+              <Input
                 className="itemCheck mb-0"
                 type="checkbox"
                 id={`check_isCampusAdministrator`}
@@ -116,7 +116,7 @@ const RoleCreateEdit = (props: any) => {
               />
             </div>
             <div className="form-group">              
-              <CustomInput
+              <Input
                 className="itemCheck mb-0"
                 type="checkbox"
                 id={`check_isCampusCoordinator`}
@@ -128,7 +128,7 @@ const RoleCreateEdit = (props: any) => {
               />
             </div>
             <div className="form-group">              
-              <CustomInput
+              <Input
                 className="itemCheck mb-0"
                 type="checkbox"
                 id={`check_isStudent`}
@@ -140,7 +140,7 @@ const RoleCreateEdit = (props: any) => {
               />
             </div>
             <div className="form-group">              
-              <CustomInput
+              <Input
                 className="itemCheck mb-0"
                 type="checkbox"
                 id={`check_isTeacher`}
@@ -152,7 +152,7 @@ const RoleCreateEdit = (props: any) => {
               />
             </div>
             <div className="form-group">              
-              <CustomInput
+              <Input
                 className="itemCheck mb-0"
                 type="checkbox"
                 id={`check_isGuardian`}

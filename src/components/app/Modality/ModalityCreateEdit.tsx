@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import Loader from 'react-loader-spinner';
 import { connect } from 'react-redux';
 import Select from 'react-select';
@@ -7,19 +7,26 @@ import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
 import { loaderColor, loaderIcon } from '../../../constants/defaultValues';
 import IntlMessages from '../../../helpers/IntlMessages';
 import * as modalityActions from '../../../stores/actions/ModalityActions';
-import * as schoolActions from '../../../stores/actions/SchoolActions';
 import { Colxx } from '../../common/CustomBootstrap';
+import AddNewModal from '../../common/Data/AddNewModal';
 import CreateEditAuditInformation from '../../common/Data/CreateEditAuditInformation';
 
 const ModalityCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
   const [schoolList, setSchoolList] = useState(null);
+  const [school, setSchool] = useState(null);
 
-  const methods = useFormContext();
+  const methods = useForm({
+    mode: 'onChange',
+    reValidateMode: 'onChange',
+  });
+
+  const { handleSubmit, control, register, reset, setValue, getValues } = methods;
 
   useEffect(() => {
-    getSchool();
-    if (props?.data?.id) {  
+    cleanForm();
+    getDropdowns();
+    if (props?.data?.id) {
       if (props?.data?.school !== undefined && props?.data?.school != null) {
         setSchool({
           key: props?.data?.school?.id,
@@ -27,33 +34,37 @@ const ModalityCreateEdit = (props: any) => {
           value: props?.data?.school?.id,
         });
       }
-    } else {
-      methods.reset();
     }
     setLoading(false);
   }, [props?.data]);
 
+  const cleanForm = async () => {
+    reset();
+    setSchool(null);
+  };
 
-  const getSchool = async () => {
-    props.getListAllSchool().then((listData: any) => {
+  const getDropdowns = async () => {
+    props.getDropdownsModality().then((data: any) => {
       setSchoolList(
-        listData.map((c: any) => {
+        data.dataSchools.edges.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };
         }),
       );
     });
   };
 
-  const data = {
-    name:
-      props?.data?.id || props?.data?.name === methods.getValues('name')
-        ? props?.data?.name
-        : methods.getValues('name'),   
-    code:
-      props?.data?.id || props?.data?.code === methods.getValues('code')
-        ? props?.data?.code
-        : methods.getValues('code'),
-  };
+  const { ref: nameRef, ...nameRest } = register('name', {
+    required: true,
+    value: props?.data?.id ? props?.data?.name : '',
+  });
+  const { ref: codeRef, ...codeRest } = register('code', {
+    required: true,
+    value: props?.data?.id ? props?.data?.code : '',
+  });
+  register('schoolId', {
+    required: true,
+    value: props?.data?.id ? props?.data?.schoolId : '',
+  });
 
   const auditInfo = {
     createdAt: props?.data?.id ? props?.data?.createdAt : null,
@@ -62,8 +73,6 @@ const ModalityCreateEdit = (props: any) => {
     updatedByUser: props?.data?.id ? props?.data?.updatedByUser : null,
     version: props?.data?.id ? props?.data?.version : null,
   };
-
-  const [school, setSchool] = useState(null);
 
   return (
     <>
@@ -75,59 +84,64 @@ const ModalityCreateEdit = (props: any) => {
         </>
       ) : (
         <>
-          <ModalBody>
-            <div className="form-group">
-              <Label>
-                <IntlMessages id="forms.name" />
-              </Label>
-              <Input
-                {...methods.register('name', { required: true })}
-                name="name"
-                defaultValue={data.name}
-              />
-            </div>          
-            <div className="form-group">
-              <Label>
-                <IntlMessages id="forms.code" />
-              </Label>
-              <Input
-                {...methods.register('code', { required: true })}
-                name="code"
-                defaultValue={data.code}
-              />
-            </div>                            
-            <div className="form-group">
-              <Label>
-                <IntlMessages id="menu.school" />
-              </Label>
-              <Select
-                placeholder={<IntlMessages id="forms.select" />}
-                {...methods.register('schoolId', { required: true })}
-                className="react-select"
-                classNamePrefix="react-select"
-                options={schoolList}
-                value={school}
-                onChange={(selectedOption) => {
-                  methods.setValue('schoolId', selectedOption?.key);
-                  setSchool(selectedOption);
-                }}
-              />
-            </div>
-          </ModalBody>
-          {props?.data?.id ? (
-            <ModalFooter className="p-3">
-              <CreateEditAuditInformation loading={loading} auditInfo={auditInfo} />
-            </ModalFooter>
-          ) : (
-            <></>
-          )}
+          <AddNewModal
+            modalOpen={props.modalOpen}
+            toggleModal={() => {
+              cleanForm();
+              props.toggleModal();
+            }}
+            onSubmit={props.onSubmit}
+            data={props.data}
+            methods={methods}
+            control={control}
+            handleSubmit={handleSubmit}
+          >
+            <ModalBody>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="forms.name" />
+                </Label>
+                <Input {...nameRest} innerRef={nameRef} className="form-control" />
+              </div>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="forms.code" />
+                </Label>
+                <Input {...codeRest} innerRef={codeRef} className="form-control" />
+              </div>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="menu.school" />
+                </Label>
+                <Select
+                  placeholder={<IntlMessages id="forms.select" />}
+                  {...register('schoolId', { required: true })}
+                  className="react-select"
+                  classNamePrefix="react-select"
+                  options={schoolList}
+                  value={school}
+                  onChange={(selectedOption) => {
+                    setValue('schoolId', selectedOption?.key);
+                    setSchool(selectedOption);
+                  }}
+                />
+              </div>
+            </ModalBody>
+            {props?.data?.id ? (
+              <ModalFooter className="p-3">
+                <CreateEditAuditInformation loading={loading} auditInfo={auditInfo} />
+              </ModalFooter>
+            ) : (
+              <></>
+            )}
+          </AddNewModal>
         </>
       )}
     </>
   );
 };
 
-const mapDispatchToProps = { ...modalityActions, ...schoolActions };
+const mapDispatchToProps = { ...modalityActions };
 
 const mapStateToProps = () => {
   return {};

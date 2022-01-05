@@ -9,7 +9,11 @@ export const QUERY_GET_ALL_ACADEMIC_HOUR = gql`
           id
           active
           startTime                        
-          endTime                        
+          endTime  
+          academicDay  {
+            workingDay
+            typeDay
+          }                        
         }
       }
       totalCount
@@ -42,6 +46,28 @@ export const QUERY_GET_ACADEMIC_HOUR = gql`
       }
       updatedByUser {
         name
+      }
+    }
+  }
+`;
+
+export const QUERY_GET_DROPDOWNS_ACADEMIC_HOUR = gql`
+  query getDropdownsAcademicHour {
+    dataCampus: getAllCampus(allData: false, orderCreated: false) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+    dataAcademicDay: getAllAcademicDay(allData: false, orderCreated: false) {
+      edges {
+        node {
+          id
+          workingDay
+          typeDay
+        }
       }
     }
   }

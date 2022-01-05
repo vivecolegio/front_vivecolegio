@@ -77,13 +77,13 @@ const CoordinatorCampusList = (props: any) => {
   };
 
   const changeActiveData = async (active: any, id: any) => {
-    await props.changeActiveCoordinator(active, id).then((formData: any) => {
+    await props.changeActiveCoordinator(active, id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
 
   const deleteData = async (id: any) => {
-    await props.deleteCoordinator(id).then((formData: any) => {
+    await props.deleteCoordinator(id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
@@ -131,16 +131,15 @@ const CoordinatorCampusList = (props: any) => {
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
           />
-          <AddNewModal
+          <CoordinatorCampusCreateEdit
+            data={data}
             modalOpen={modalOpen}
             toggleModal={() => {
               setData(null);
               return setModalOpen(!modalOpen);
             }}
             onSubmit={onSubmit}
-          >
-            <CoordinatorCampusCreateEdit data={data} />
-          </AddNewModal>
+          />
         </>
       ) : (
         <></>

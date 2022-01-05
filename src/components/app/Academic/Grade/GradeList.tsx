@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { COLUMN_LIST } from '../../../../constants/AcademicGrade/AcademicGradeConstants';
 import { createNotification } from '../../../../helpers/Notification';
 import * as gradeActions from '../../../../stores/actions/Academic/GradeActions';
-import AddNewModal from '../../../common/Data/AddNewModal';
 import DataList from '../../../common/Data/DataList';
 import GradeCreateEdit from './GradeCreateEdit';
 
@@ -74,13 +73,13 @@ const GradeList = (props: any) => {
   };
 
   const changeActiveData = async (active: any, id: any) => {
-    await props.changeActiveGrade(active, id).then((formData: any) => {
+    await props.changeActiveGrade(active, id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
 
   const deleteData = async (id: any) => {
-    await props.deleteGrade(id).then((formData: any) => {
+    await props.deleteGrade(id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
@@ -128,16 +127,15 @@ const GradeList = (props: any) => {
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
           />
-          <AddNewModal
+          <GradeCreateEdit
+            data={data}
             modalOpen={modalOpen}
             toggleModal={() => {
               setData(null);
               return setModalOpen(!modalOpen);
             }}
             onSubmit={onSubmit}
-          >
-            <GradeCreateEdit data={data} />
-          </AddNewModal>
+          />
         </>
       ) : (
         <></>

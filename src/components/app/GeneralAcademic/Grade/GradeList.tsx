@@ -68,13 +68,13 @@ const GeneralGradeList = (props: any) => {
   };
 
   const changeActiveData = async (active: any, id: any) => {
-    await props.changeActiveGrade(active, id).then((formData: any) => {
+    await props.changeActiveGrade(active, id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
 
   const deleteData = async (id: any) => {
-    await props.deleteGrade(id).then((formData: any) => {
+    await props.deleteGrade(id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
@@ -122,16 +122,15 @@ const GeneralGradeList = (props: any) => {
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
           />
-          <AddNewModal
+          <GradeCreateEdit
+            data={data}
             modalOpen={modalOpen}
             toggleModal={() => {
               setData(null);
               return setModalOpen(!modalOpen);
             }}
             onSubmit={onSubmit}
-          >
-            <GradeCreateEdit data={data} />
-          </AddNewModal>
+          />
         </>
       ) : (
         <></>

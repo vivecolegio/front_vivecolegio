@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
+import { DevTool } from '@hookform/devtools';
 import Loader from 'react-loader-spinner';
 import { connect } from 'react-redux';
 import Select from 'react-select';
@@ -7,23 +8,32 @@ import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
 import { loaderColor, loaderIcon } from '../../../../constants/defaultValues';
 import IntlMessages from '../../../../helpers/IntlMessages';
 import * as areaActions from '../../../../stores/actions/Academic/AreaActions';
-import * as generalAreaActions from '../../../../stores/actions/GeneralAcademic/AreaActions';
-import * as schoolActions from '../../../../stores/actions/SchoolActions';
 import { Colxx } from '../../../common/CustomBootstrap';
+import AddNewModal from '../../../common/Data/AddNewModal';
 import CreateEditAuditInformation from '../../../common/Data/CreateEditAuditInformation';
 
 const AreaCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
   const [generalAreasList, setGeneralAreasList] = useState(null);
   const [schoolList, setSchoolList] = useState(null);
+  const [generalAcademicArea, setGeneralArea] = useState(null);
+  const [school, setSchool] = useState(null);
 
-  const methods = useFormContext();
+  const methods = useForm({
+    mode: 'onChange',
+    reValidateMode: 'onChange',
+  });
+
+  const { handleSubmit, control, register, reset, setValue, getValues } = methods;
 
   useEffect(() => {
-    getGeneralArea();
-    getSchool();
-    if (props?.data?.id) {    
-      if (props?.data?.generalAcademicArea !== undefined && props?.data?.generalAcademicArea != null) {
+    cleanForm();
+    getDropdowns();
+    if (props?.data?.id) {
+      if (
+        props?.data?.generalAcademicArea !== undefined &&
+        props?.data?.generalAcademicArea != null
+      ) {
         setGeneralArea({
           key: props?.data?.generalAcademicArea?.id,
           label: props?.data?.generalAcademicArea?.name,
@@ -37,42 +47,47 @@ const AreaCreateEdit = (props: any) => {
           value: props?.data?.school?.id,
         });
       }
-    } else {
-      methods.reset();
-    }
+    } 
     setLoading(false);
   }, [props?.data]);
 
-  const getGeneralArea = async () => {
-    props.getListAllGeneralArea().then((listData: any) => {
-      setGeneralAreasList(
-        listData.map((c: any) => {
-          return { label: c.node.name, value: c.node.id, key: c.node.id };
-        }),
-      );
-    });
+  const cleanForm = async () => {
+    reset();
+    setGeneralArea(null);
+    setSchool(null);
   };
 
-  const getSchool = async () => {
-    props.getListAllSchool().then((listData: any) => {
+  const getDropdowns = async () => {
+    props.getDropdownsAcademicArea().then((data: any) => {
       setSchoolList(
-        listData.map((c: any) => {
+        data.dataSchools.edges.map((c: any) => {
+          return { label: c.node.name, value: c.node.id, key: c.node.id };
+        }),
+      );
+      setGeneralAreasList(
+        data.dataGeneralAreas.edges.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };
         }),
       );
     });
   };
 
-  const data = {
-    name:
-      props?.data?.id || props?.data?.name === methods.getValues('name')
-        ? props?.data?.name
-        : methods.getValues('name'),
-    abbreviation:
-      props?.data?.id || props?.data?.abbreviation === methods.getValues('abbreviation')
-        ? props?.data?.abbreviation
-        : methods.getValues('abbreviation'),
-  };
+  const { ref: nameRef, ...nameRest } = register('name', {
+    required: true,
+    value: props?.data?.id ? props?.data?.name : '',
+  });
+  const { ref: abbreviationRef, ...abbreviationRest } = register('abbreviation', {
+    required: true,
+    value: props?.data?.id ? props?.data?.abbreviation : '',
+  });
+  register('generalAcademicAreaId', {
+    required: true,
+    value: props?.data?.id ? props?.data?.generalAcademicAreaId : '',
+  });
+  register('schoolId', {
+    required: true,
+    value: props?.data?.id ? props?.data?.schoolId : '',
+  });
 
   const auditInfo = {
     createdAt: props?.data?.id ? props?.data?.createdAt : null,
@@ -82,12 +97,9 @@ const AreaCreateEdit = (props: any) => {
     version: props?.data?.id ? props?.data?.version : null,
   };
 
-  const [generalAcademicArea, setGeneralArea] = useState(null);
-  const [school, setSchool] = useState(null);
-
-
   return (
     <>
+     <DevTool control={methods.control} placement="top-left" />
       {loading ? (
         <>
           <Colxx sm={12} className="d-flex justify-content-center">
@@ -96,77 +108,82 @@ const AreaCreateEdit = (props: any) => {
         </>
       ) : (
         <>
-          <ModalBody>
-            <div className="form-group">
-              <Label>
-                <IntlMessages id="forms.name" />
-              </Label>
-              <Input
-                {...methods.register('name', { required: true })}
-                name="name"
-                defaultValue={data.name}
-              />
-            </div>
-            <div className="form-group">
-              <Label>
-                <IntlMessages id="forms.abbreviation" />
-              </Label>
-              <Input
-                {...methods.register('abbreviation', { required: true })}
-                name="abbreviation"
-                defaultValue={data.abbreviation}
-              />
-            </div>
-            <div className="form-group">
-              <Label>
-                <IntlMessages id="menu.area" /> { ' - ' }
-                <IntlMessages id="menu.general" />
-              </Label>
-              <Select
-                 placeholder={<IntlMessages id="forms.select" />}    
-                {...methods.register('generalAcademicAreaId', { required: true })}
-                className="react-select"
-                classNamePrefix="react-select"
-                options={generalAreasList}
-                value={generalAcademicArea}
-                onChange={(selectedOption) => {
-                  methods.setValue('generalAcademicAreaId', selectedOption?.key);
-                  setGeneralArea(selectedOption);
-                }}
-              />
-            </div>
-            <div className="form-group">
-              <Label>
-                <IntlMessages id="menu.school" />
-              </Label>
-              <Select
-                 placeholder={<IntlMessages id="forms.select" />}    
-                {...methods.register('schoolId', { required: true })}
-                className="react-select"
-                classNamePrefix="react-select"
-                options={schoolList}
-                value={school}
-                onChange={(selectedOption) => {
-                  methods.setValue('schoolId', selectedOption?.key);
-                  setSchool(selectedOption);
-                }}
-              />
-            </div>
-          </ModalBody>
-          {props?.data?.id ? (
-            <ModalFooter className="p-3">
-              <CreateEditAuditInformation loading={loading} auditInfo={auditInfo} />
-            </ModalFooter>
-          ) : (
-            <></>
-          )}
+          <AddNewModal
+            modalOpen={props.modalOpen}
+            toggleModal={() => {
+              cleanForm();
+              props.toggleModal();
+            }}
+            onSubmit={props.onSubmit}
+            data={props.data}
+            methods={methods}
+            control={control}
+            handleSubmit={handleSubmit}
+          >
+            <ModalBody>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="forms.name" />
+                </Label>
+                <Input {...nameRest} innerRef={nameRef} className="form-control" />
+              </div>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="forms.abbreviation" />
+                </Label>
+                <Input {...abbreviationRest} innerRef={abbreviationRef} className="form-control" />
+              </div>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="menu.area" /> {' - '}
+                  <IntlMessages id="menu.general" />
+                </Label>
+                <Select
+                  placeholder={<IntlMessages id="forms.select" />}
+                  {...register('generalAcademicAreaId', { required: true })}
+                  className="react-select"
+                  classNamePrefix="react-select"
+                  options={generalAreasList}
+                  value={generalAcademicArea}
+                  onChange={(selectedOption) => {
+                    setValue('generalAcademicAreaId', selectedOption?.key);
+                    setGeneralArea(selectedOption);
+                  }}
+                />
+              </div>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="menu.school" />
+                </Label>
+                <Select
+                  placeholder={<IntlMessages id="forms.select" />}
+                  {...register('schoolId', { required: true })}
+                  className="react-select"
+                  classNamePrefix="react-select"
+                  options={schoolList}
+                  value={school}
+                  onChange={(selectedOption) => {
+                    setValue('schoolId', selectedOption?.key);
+                    setSchool(selectedOption);
+                  }}
+                />
+              </div>
+            </ModalBody>
+            {props?.data?.id ? (
+              <ModalFooter className="p-3">
+                <CreateEditAuditInformation loading={loading} auditInfo={auditInfo} />
+              </ModalFooter>
+            ) : (
+              <></>
+            )}
+          </AddNewModal>
         </>
       )}
     </>
   );
 };
 
-const mapDispatchToProps = { ...areaActions, ...generalAreaActions, ...schoolActions };
+const mapDispatchToProps = { ...areaActions };
 
 const mapStateToProps = () => {
   return {};

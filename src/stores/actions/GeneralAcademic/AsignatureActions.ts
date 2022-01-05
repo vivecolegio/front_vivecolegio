@@ -1,7 +1,7 @@
 import { createNotification } from "../../../helpers/Notification";
 import { client } from '../../graphql';
 import { MUTATION_CHANGE_ACTIVE_ASIGNATURE, MUTATION_CREATE_ASIGNATURE, MUTATION_DELETE_ASIGNATURE, MUTATION_UPDATE_ASIGNATURE } from '../../graphql/GeneralAcademic/Asignature/AsignatureMutations';
-import { QUERY_GET_ALL_ASIGNATURE, QUERY_GET_ASIGNATURE } from '../../graphql/GeneralAcademic/Asignature/AsignatureQueries';
+import { QUERY_GET_ALL_ASIGNATURE, QUERY_GET_ASIGNATURE, QUERY_GET_DROPDOWNS_ASIGNATURE } from '../../graphql/GeneralAcademic/Asignature/AsignatureQueries';
 
 
 export const getListAllGeneralAsignature = () => {
@@ -176,6 +176,25 @@ export const deleteAsignature = (id: any, showToast: boolean) => {
       if (showToast) {
         createNotification('error', 'error', '');
       }
+      return error;
+    }
+  };
+};
+
+export const getDropdownsGeneralAsignature = () => {
+  return async (dispatch: any) => {
+    try {
+      let listData = {};
+      await client
+        .query({
+          query: QUERY_GET_DROPDOWNS_ASIGNATURE,
+        })
+        .then((result: any) => {
+          listData = result.data;
+        });
+      return listData;
+    } catch (error) {
+      createNotification('error', 'error', '');
       return error;
     }
   };

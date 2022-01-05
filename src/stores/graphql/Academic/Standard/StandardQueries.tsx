@@ -53,3 +53,40 @@ export const QUERY_GET_STANDARD = gql`
     }
   }
 `;
+
+export const QUERY_GET_DROPDOWNS_STANDARD = gql`
+  query getDropdownsAcademicStandard {
+    dataSchools: getAllSchool(allData: false, orderCreated: false) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+    dataAsignatures: getAllAcademicAsignature(allData: false, orderCreated: false) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+    dataCycles: getAllGeneralAcademicCycle(allData: false, orderCreated: false) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+    dataGeneralStandards: getAllGeneralAcademicStandard(allData: false, orderCreated: false) {
+      edges {
+        node {
+          id
+          standard
+        }
+      }
+    }
+  }
+`;

@@ -1,22 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-
+import { useParams } from 'react-router';
 import { COLUMN_LIST } from '../../../constants/Menu/menuConstants';
-import * as menuItemActions from '../../../stores/actions/MenuItemActions';
+import { createNotification } from '../../../helpers/Notification';
 import * as loginActions from '../../../stores/actions/LoginActions';
-import AddNewModal from '../../common/Data/AddNewModal';
+import * as menuItemActions from '../../../stores/actions/MenuItemActions';
 import DataList from '../../common/Data/DataList';
 import MenuItemCreateEdit from './SubmenuCreateEdit';
-import { createNotification } from '../../../helpers/Notification';
+
 
 const MenuItemList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
   const [columns, setColumns] = useState(COLUMN_LIST);
   const [modalOpen, setModalOpen] = useState(false);
 
+  let params = useParams();
+
   const [data, setData] = useState(null);
   useEffect(() => {
-    const { idMenu } = props.match.params;
+    const { idMenu } = params;
     if(idMenu) {
       console.log('servicio de consulta submenus por id');
     } else {
@@ -66,13 +68,13 @@ const MenuItemList = (props: any) => {
   };
 
   const changeActiveData = async (active: any, id: any) => {
-    await props.changeActiveMenuItem(active, id).then((formData: any) => {
+    await props.changeActiveMenuItem(active, id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
 
   const deleteData = async (id: any) => {
-    await props.deleteMenuItem(id).then((formData: any) => {
+    await props.deleteMenuItem(id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
@@ -126,7 +128,8 @@ const MenuItemList = (props: any) => {
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
           />
-          <AddNewModal
+          <MenuItemCreateEdit
+            data={data}
             isLg={true}
             modalOpen={modalOpen}
             toggleModal={() => { 
@@ -134,9 +137,7 @@ const MenuItemList = (props: any) => {
               return setModalOpen(!modalOpen);
             }}
             onSubmit={onSubmit}
-          >
-            <MenuItemCreateEdit data={data} />
-          </AddNewModal>
+          />
         </>
       ) : (
         <></>

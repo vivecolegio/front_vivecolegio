@@ -1,28 +1,36 @@
 import React, { useEffect, useState } from 'react';
-import { useFormContext } from 'react-hook-form';
+import DatePicker from 'react-datepicker';
+import { useForm } from 'react-hook-form';
 import Loader from 'react-loader-spinner';
 import { connect } from 'react-redux';
 import Select from 'react-select';
-import DatePicker from 'react-datepicker';
 import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
 import { loaderColor, loaderIcon } from '../../../constants/defaultValues';
 import IntlMessages from '../../../helpers/IntlMessages';
 import * as academicPeriodActions from '../../../stores/actions/AcademicPeriodActions';
-import * as schoolActions from '../../../stores/actions/SchoolActions';
-import * as schoolYearActions from '../../../stores/actions/SchoolYearActions';
 import { Colxx } from '../../common/CustomBootstrap';
+import AddNewModal from '../../common/Data/AddNewModal';
 import CreateEditAuditInformation from '../../common/Data/CreateEditAuditInformation';
 
 const AcademicPeriodCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
   const [schoolList, setSchoolList] = useState(null);
   const [schoolYearsList, setSchoolYearsList] = useState(null);
+  const [school, setSchool] = useState(null);
+  const [schoolYear, setSchoolYear] = useState(null);
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
 
-  const methods = useFormContext();
+  const methods = useForm({
+    mode: 'onChange',
+    reValidateMode: 'onChange',
+  });
+
+  const { handleSubmit, control, register, reset, setValue, getValues } = methods;
 
   useEffect(() => {
-    getSchool();
-    getSchoolYear();
+    cleanForm();
+    getDropdowns();
     if (props?.data?.id) {  
       if (props?.data?.school !== undefined && props?.data?.school != null) {
         setSchool({
@@ -44,39 +52,46 @@ const AcademicPeriodCreateEdit = (props: any) => {
       if (props?.data?.endDate !== undefined && props?.data?.endDate != null) {
         setEndDate(new Date(props?.data?.endDate));
       }
-    } else {
-      methods.reset();
-    }
+    } 
     setLoading(false);
   }, [props?.data]);
 
+  const cleanForm = async () => {
+    reset();
+    setStartDate(null);
+    setEndDate(null);
+    setSchoolYear(null);
+    setSchool(null);
+  };
 
-  const getSchool = async () => {
-    props.getListAllSchool().then((listData: any) => {
+  const getDropdowns = async () => {
+    props.getDropdownsAcademicPeriod().then((data: any) => {
       setSchoolList(
-        listData.map((c: any) => {
+        data.dataSchools.edges.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };
         }),
       );
-    });
-  };
-
-  const getSchoolYear = async () => {
-    props.getListAllSchoolYear().then((listData: any) => {
       setSchoolYearsList(
-        listData.map((c: any) => {
+        data.dataSchoolYears.edges.map((c: any) => {
           return { label: c.node.schoolYear, value: c.node.id, key: c.node.id };
         }),
       );
     });
   };
 
-  const data = {
-    weight:
-      props?.data?.id || props?.data?.weight === methods.getValues('weight')
-        ? props?.data?.weight
-        : methods.getValues('weight'),   
-  };
+  const { ref: weightRef, ...weightRest } = register('weight', {
+    required: true,
+    value: props?.data?.id ? props?.data?.weight : '',
+  });
+  register('startDate', {
+    required: true,
+    value: props?.data?.id ? props?.data?.startDate : '',
+  });
+  register('endDate', {
+    required: true,
+    value: props?.data?.id ? props?.data?.endDate : '',
+  });
+  
 
   const auditInfo = {
     createdAt: props?.data?.id ? props?.data?.createdAt : null,
@@ -84,15 +99,6 @@ const AcademicPeriodCreateEdit = (props: any) => {
     createdByUser: props?.data?.id ? props?.data?.createdByUser : null,
     updatedByUser: props?.data?.id ? props?.data?.updatedByUser : null,
     version: props?.data?.id ? props?.data?.version : null,
-  };
-
-  const [school, setSchool] = useState(null);
-  const [schoolYear, setSchoolYear] = useState(null);
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
-
-  const handleChangeNumber = (event: any, name: any) => {
-    methods.setValue(name, parseFloat(event.target.value));
   };
 
   return (
@@ -105,28 +111,34 @@ const AcademicPeriodCreateEdit = (props: any) => {
         </>
       ) : (
         <>
+        <AddNewModal
+            modalOpen={props.modalOpen}
+            toggleModal={() => {
+              cleanForm();
+              props.toggleModal();
+            }}
+            onSubmit={props.onSubmit}
+            data={props.data}
+            methods={methods}
+            control={control}
+            handleSubmit={handleSubmit}
+          >
           <ModalBody>                  
             <div className="form-group">
               <Label>
                 <IntlMessages id="forms.weight" />
               </Label>
-              <Input
-                onChange={(e) => {
-                  return handleChangeNumber(e, 'weight');
-                }}
-                name="weight"
-                defaultValue={data.weight}
-              />
+              <Input {...weightRest} innerRef={weightRef} className="form-control" />
             </div>    
             <div className="form-group">
               <Label>
                 <IntlMessages id="forms.startDate" />
               </Label>
               <DatePicker
-                {...methods.register('startDate', { required: true })}
+                {...register('startDate', { required: true })}
                 selected={startDate}
                 onChange={(date: any) => {
-                  methods.setValue('startDate', date as Date);
+                  setValue('startDate', date as Date);
                   setStartDate(date as Date);
                 }}
               />
@@ -136,10 +148,10 @@ const AcademicPeriodCreateEdit = (props: any) => {
                 <IntlMessages id="forms.endDate" />
               </Label>
               <DatePicker
-                {...methods.register('endDate', { required: true })}
+                {...register('endDate', { required: true })}
                 selected={endDate}
                 onChange={(date:any) => {
-                  methods.setValue('endDate', date as Date);
+                  setValue('endDate', date as Date);
                   setEndDate(date as Date);
                 }}
               />
@@ -150,13 +162,13 @@ const AcademicPeriodCreateEdit = (props: any) => {
               </Label>
               <Select
                 placeholder={<IntlMessages id="forms.select" />}
-                {...methods.register('schoolYearId', { required: true })}
+                {...register('schoolYearId', { required: true })}
                 className="react-select"
                 classNamePrefix="react-select"
                 options={schoolYearsList}
                 value={schoolYear}
                 onChange={(selectedOption) => {
-                  methods.setValue('schoolYearId', selectedOption?.key);
+                  setValue('schoolYearId', selectedOption?.key);
                   setSchoolYear(selectedOption);
                 }}
               />
@@ -167,13 +179,13 @@ const AcademicPeriodCreateEdit = (props: any) => {
               </Label>
               <Select
                 placeholder={<IntlMessages id="forms.select" />}
-                {...methods.register('schoolId', { required: true })}
+                {...register('schoolId', { required: true })}
                 className="react-select"
                 classNamePrefix="react-select"
                 options={schoolList}
                 value={school}
                 onChange={(selectedOption) => {
-                  methods.setValue('schoolId', selectedOption?.key);
+                  setValue('schoolId', selectedOption?.key);
                   setSchool(selectedOption);
                 }}
               />
@@ -186,13 +198,14 @@ const AcademicPeriodCreateEdit = (props: any) => {
           ) : (
             <></>
           )}
+          </AddNewModal>
         </>
       )}
     </>
   );
 };
 
-const mapDispatchToProps = { ...academicPeriodActions, ...schoolActions, ...schoolYearActions };
+const mapDispatchToProps = { ...academicPeriodActions };
 
 const mapStateToProps = () => {
   return {};

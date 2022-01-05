@@ -65,3 +65,40 @@ export const QUERY_GET_GRADE = gql`
     }
   }
 `;
+
+export const QUERY_GET_DROPDOWNS_GRADE = gql`
+  query getDropdownsAcademicArea {
+    dataSchools: getAllSchool(allData: false, orderCreated: false) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+    dataCycles: getAllGeneralAcademicCycle(allData: false, orderCreated: false) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+    dataSpecialities: getAllSpecialty(allData: false, orderCreated: false) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+    dataEducationLevels: getAllEducationLevel(allData: false, orderCreated: false) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+  }
+`;

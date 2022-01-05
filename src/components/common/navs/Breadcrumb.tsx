@@ -27,10 +27,12 @@ const BreadcrumbContainer = ({ heading, match }:any) => {
 };
 
 const BreadcrumbItems = ({ match }:any) => {
-  const path = match.path.substr(1);
+  const path = match.substr(1);
   let paths = path.split('/');
   if (paths[paths.length - 1].indexOf(':') > -1) {
-    paths = paths.filter((x:any) => {return x.indexOf(':') === -1});
+    paths = paths.filter((x: any) => {
+      return x.indexOf(':') === -1;
+    });
   }
   return (
     <>

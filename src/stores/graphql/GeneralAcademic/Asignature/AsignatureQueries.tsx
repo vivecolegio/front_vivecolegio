@@ -38,3 +38,16 @@ export const QUERY_GET_ASIGNATURE = gql`
     }
   }
 `;
+
+export const QUERY_GET_DROPDOWNS_ASIGNATURE = gql`
+  query getDropdownsGeneralAsignature {
+    dataGeneralAreas: getAllGeneralAcademicArea(allData: false, orderCreated: false) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+  }
+`;
