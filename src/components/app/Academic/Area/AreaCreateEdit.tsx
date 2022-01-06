@@ -1,6 +1,6 @@
+import { DevTool } from '@hookform/devtools';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { DevTool } from '@hookform/devtools';
 import Loader from 'react-loader-spinner';
 import { connect } from 'react-redux';
 import Select from 'react-select';
@@ -47,7 +47,7 @@ const AreaCreateEdit = (props: any) => {
           value: props?.data?.school?.id,
         });
       }
-    } 
+    }
     setLoading(false);
   }, [props?.data]);
 
@@ -55,6 +55,13 @@ const AreaCreateEdit = (props: any) => {
     reset();
     setGeneralArea(null);
     setSchool(null);
+    if (props?.loginReducer?.schoolId && !props?.data?.id) {
+      // set value when register is new and sesion contains value
+      register('schoolId', {
+        required: true,
+        value: props?.loginReducer?.schoolId,
+      });
+    }
   };
 
   const getDropdowns = async () => {
@@ -99,7 +106,7 @@ const AreaCreateEdit = (props: any) => {
 
   return (
     <>
-     <DevTool control={methods.control} placement="top-left" />
+      <DevTool control={methods.control} placement="top-left" />
       {loading ? (
         <>
           <Colxx sm={12} className="d-flex justify-content-center">
@@ -151,23 +158,27 @@ const AreaCreateEdit = (props: any) => {
                   }}
                 />
               </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="menu.school" />
-                </Label>
-                <Select
-                  placeholder={<IntlMessages id="forms.select" />}
-                  {...register('schoolId', { required: true })}
-                  className="react-select"
-                  classNamePrefix="react-select"
-                  options={schoolList}
-                  value={school}
-                  onChange={(selectedOption) => {
-                    setValue('schoolId', selectedOption?.key);
-                    setSchool(selectedOption);
-                  }}
-                />
-              </div>
+              {!props?.loginReducer?.schoolId ? (
+                <div className="form-group">
+                  <Label>
+                    <IntlMessages id="menu.school" />
+                  </Label>
+                  <Select
+                    placeholder={<IntlMessages id="forms.select" />}
+                    {...register('schoolId', { required: true })}
+                    className="react-select"
+                    classNamePrefix="react-select"
+                    options={schoolList}
+                    value={school}
+                    onChange={(selectedOption) => {
+                      setValue('schoolId', selectedOption?.key);
+                      setSchool(selectedOption);
+                    }}
+                  />
+                </div>
+              ) : (
+                ''
+              )}
             </ModalBody>
             {props?.data?.id ? (
               <ModalFooter className="p-3">
@@ -185,8 +196,8 @@ const AreaCreateEdit = (props: any) => {
 
 const mapDispatchToProps = { ...areaActions };
 
-const mapStateToProps = () => {
-  return {};
+const mapStateToProps = ({ loginReducer }: any) => {
+  return { loginReducer };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AreaCreateEdit);

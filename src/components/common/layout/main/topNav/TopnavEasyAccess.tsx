@@ -12,7 +12,7 @@ const TopnavEasyAccess = () => {
         </DropdownToggle>
         <DropdownMenu
           className="position-absolute mt-3"
-          right
+          end
           id="iconMenuDropdown"
         >
           <NavLink to="#" className="icon-menu-item">

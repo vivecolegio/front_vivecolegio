@@ -341,7 +341,8 @@ const Sidebar = (props: any) => {
                             target="_blank"
                           >
                             <i className={item.icon} />{' '}
-                            <IntlMessages id={item.label} />
+                            {/* <IntlMessages id={item.label} /> */}
+                            {item.label}
                           </a>
                         ) : (
                           <NavLink
@@ -350,7 +351,8 @@ const Sidebar = (props: any) => {
                             data-flag={item.id}
                           >
                             <i className={item.icon} />{' '}
-                            <IntlMessages id={item.label} />
+                            {item.label}
+                            {/* <IntlMessages id={item.label} /> */}
                           </NavLink>
                         )}
                       </NavItem>
@@ -397,7 +399,8 @@ const Sidebar = (props: any) => {
                                   target="_blank"
                                 >
                                   <i className={sub.icon} />{' '}
-                                  <IntlMessages id={sub.label} />
+                                  {/* <IntlMessages id={sub.label} /> */}
+                                  {sub.label}
                                 </a>
                               ) : sub.subs && sub.subs.length > 0 ? (
                                 <>
@@ -419,7 +422,8 @@ const Sidebar = (props: any) => {
                                     }
                                   >
                                     <i className="simple-icon-arrow-down" />{' '}
-                                    <IntlMessages id={sub.label} />
+                                    {/* <IntlMessages id={sub.label} /> */}
+                                    {sub.label}
                                   </NavLink>
 
                                   <Collapse
@@ -472,7 +476,8 @@ const Sidebar = (props: any) => {
                                   onClick={() => {return setOnclickMenu(!onClickMenu)}}
                                 >
                                   <i className={sub.icon} />{' '}
-                                  <IntlMessages id={sub.label} />
+                                  {/* <IntlMessages id={sub.label} /> */}
+                                  {sub.label}
                                 </NavLink>
                               )}
                             </NavItem>

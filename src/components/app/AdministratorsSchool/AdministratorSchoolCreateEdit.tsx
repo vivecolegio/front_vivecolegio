@@ -132,6 +132,13 @@ const AdministratorSchoolCreateEdit = (props: any) => {
     setRole(null);
     setGender(null);
     setDocumentType(null);
+    if (props?.loginReducer?.schoolId && !props?.data?.id) {
+      // set value when register is new and sesion contains value
+      register('schoolId', {
+        required: true,
+        value: props?.loginReducer?.schoolId,
+      });
+    }
   };
 
   const getDropdowns = async () => {
@@ -178,7 +185,7 @@ const AdministratorSchoolCreateEdit = (props: any) => {
 
   return (
     <>
-     <DevTool control={methods.control} placement="top-left" />
+      <DevTool control={methods.control} placement="top-left" />
       {loading ? (
         <>
           <Colxx sm={12} className="d-flex justify-content-center">
@@ -355,23 +362,27 @@ const AdministratorSchoolCreateEdit = (props: any) => {
                   }}
                 />
               </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="menu.school" />
-                </Label>
-                <Select
-                  placeholder={<IntlMessages id="forms.select" />}
-                  {...register('schoolId', { required: true })}
-                  className="react-select"
-                  classNamePrefix="react-select"
-                  options={schoolsList}
-                  value={school}
-                  onChange={(selectedOption: any) => {
-                    setValue('schoolId', selectedOption?.key);
-                    setSchool(selectedOption);
-                  }}
-                />
-              </div>
+              {!props?.loginReducer?.schoolId ? (
+                <div className="form-group">
+                  <Label>
+                    <IntlMessages id="menu.school" />
+                  </Label>
+                  <Select
+                    placeholder={<IntlMessages id="forms.select" />}
+                    {...register('schoolId', { required: true })}
+                    className="react-select"
+                    classNamePrefix="react-select"
+                    options={schoolsList}
+                    value={school}
+                    onChange={(selectedOption: any) => {
+                      setValue('schoolId', selectedOption?.key);
+                      setSchool(selectedOption);
+                    }}
+                  />
+                </div>
+              ) : (
+                ''
+              )}
             </ModalBody>
             {props?.data?.id ? (
               <ModalFooter className="p-3">
@@ -391,8 +402,8 @@ const mapDispatchToProps = {
   ...AdministratorActions,
 };
 
-const mapStateToProps = () => {
-  return {};
+const mapStateToProps = ({ loginReducer }: any) => {
+  return { loginReducer };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdministratorSchoolCreateEdit);

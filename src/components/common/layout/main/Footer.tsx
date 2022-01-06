@@ -7,7 +7,7 @@ import SingleLightbox from '../pages/SingleLightbox';
 
 const Footer = () => {
   return (
-    <footer className="page-footer bg-white">
+    <footer className="page-footer">
       <div className="footer-content">
         <div className="container-fluid">
           <Row>

@@ -1,19 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { useForm, useFormContext } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import Loader from 'react-loader-spinner';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
 import { loaderColor, loaderIcon } from '../../../../constants/defaultValues';
 import IntlMessages from '../../../../helpers/IntlMessages';
-import * as asignatureActions from '../../../../stores/actions/Academic/AsignatureActions';
-import * as cycleActions from '../../../../stores/actions/GeneralAcademic/CycleActions';
 import * as standardActions from '../../../../stores/actions/Academic/StandardActions';
-import * as generalStandardActions from '../../../../stores/actions/GeneralAcademic/StandardActions';
 import { Colxx } from '../../../common/CustomBootstrap';
-import CreateEditAuditInformation from '../../../common/Data/CreateEditAuditInformation';
-import * as schoolActions from '../../../../stores/actions/SchoolActions';
 import AddNewModal from '../../../common/Data/AddNewModal';
+import CreateEditAuditInformation from '../../../common/Data/CreateEditAuditInformation';
 
 const StandardCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
@@ -36,22 +32,31 @@ const StandardCreateEdit = (props: any) => {
   useEffect(() => {
     cleanForm();
     getDropdowns();
-    if (props?.data?.id) {    
-      if (props?.data?.academicAsignature !== undefined && props?.data?.academicAsignature != null) {
+    if (props?.data?.id) {
+      if (
+        props?.data?.academicAsignature !== undefined &&
+        props?.data?.academicAsignature != null
+      ) {
         setAsignature({
           key: props?.data?.academicAsignature?.id,
           label: props?.data?.academicAsignature?.name,
           value: props?.data?.academicAsignature?.id,
         });
       }
-      if (props?.data?.generalAcademicCycle !== undefined && props?.data?.generalAcademicCycle != null) {
+      if (
+        props?.data?.generalAcademicCycle !== undefined &&
+        props?.data?.generalAcademicCycle != null
+      ) {
         setCycle({
           key: props?.data?.generalAcademicCycle?.id,
           label: props?.data?.generalAcademicCycle?.name,
           value: props?.data?.generalAcademicCycle?.id,
         });
       }
-      if (props?.data?.generalAcademicStandard !== undefined && props?.data?.generalAcademicStandard != null) {
+      if (
+        props?.data?.generalAcademicStandard !== undefined &&
+        props?.data?.generalAcademicStandard != null
+      ) {
         setStandard({
           key: props?.data?.generalAcademicStandard?.id,
           label: props?.data?.generalAcademicStandard?.standard,
@@ -65,7 +70,7 @@ const StandardCreateEdit = (props: any) => {
           value: props?.data?.school?.id,
         });
       }
-    } 
+    }
     setLoading(false);
   }, [props?.data]);
 
@@ -75,6 +80,13 @@ const StandardCreateEdit = (props: any) => {
     setStandard(null);
     setAsignature(null);
     setSchool(null);
+    if (props?.loginReducer?.schoolId && !props?.data?.id) {
+      // set value when register is new and sesion contains value
+      register('schoolId', {
+        required: true,
+        value: props?.loginReducer?.schoolId,
+      });
+    }
   };
 
   const getDropdowns = async () => {
@@ -131,7 +143,6 @@ const StandardCreateEdit = (props: any) => {
     version: props?.data?.id ? props?.data?.version : null,
   };
 
-
   return (
     <>
       {loading ? (
@@ -142,7 +153,7 @@ const StandardCreateEdit = (props: any) => {
         </>
       ) : (
         <>
-        <AddNewModal
+          <AddNewModal
             modalOpen={props.modalOpen}
             toggleModal={() => {
               cleanForm();
@@ -154,90 +165,94 @@ const StandardCreateEdit = (props: any) => {
             control={control}
             handleSubmit={handleSubmit}
           >
-          <ModalBody>
-            <div className="form-group">
-              <Label>
-                <IntlMessages id="forms.standard" />
-              </Label>
-              <Input {...standardRest} innerRef={standardRef} className="form-control" />
-            </div>                      
-            <div className="form-group">
-              <Label>
-                <IntlMessages id="menu.asignature" />
-              </Label>
-              <Select
-                placeholder={<IntlMessages id="forms.select" />}    
-                {...register('academicAsignatureId', { required: true })}
-                className="react-select"
-                classNamePrefix="react-select"
-                options={asignaturesList}
-                value={asignature}
-                onChange={(selectedOption) => {
-                  setValue('academicAsignatureId', selectedOption?.key);
-                  setAsignature(selectedOption);
-                }}
-              />             
-            </div>
-            <div className="form-group">
-              <Label>
-                <IntlMessages id="menu.cycleAcademic" />
-              </Label>
-              <Select
-                placeholder={<IntlMessages id="forms.select" />}    
-                {...register('generalAcademicCycleId', { required: true })}
-                className="react-select"
-                classNamePrefix="react-select"
-                options={cyclesList}
-                value={cycle}
-                onChange={(selectedOption) => {
-                  setValue('generalAcademicCycleId', selectedOption?.key);
-                  setCycle(selectedOption);
-                }}
-              /> 
-            </div>
-            <div className="form-group">
-              <Label>
-                <IntlMessages id="forms.standard" /> { ' - ' }
-                <IntlMessages id="menu.general" />
-              </Label>
-              <Select
-                placeholder={<IntlMessages id="forms.select" />}    
-                {...register('generalAcademicStandardId', { required: true })}
-                className="react-select"
-                classNamePrefix="react-select"
-                options={standardList}
-                value={standard}
-                onChange={(selectedOption) => {
-                  setValue('generalAcademicStandardId', selectedOption?.key);
-                  setStandard(selectedOption);
-                }}
-              /> 
-            </div>
-            <div className="form-group">
-              <Label>
-                <IntlMessages id="menu.school" />
-              </Label>
-              <Select
-                placeholder={<IntlMessages id="forms.select" />}
-                {...register('schoolId', { required: true })}
-                className="react-select"
-                classNamePrefix="react-select"
-                options={schoolList}
-                value={school}
-                onChange={(selectedOption) => {
-                  setValue('schoolId', selectedOption?.key);
-                  setSchool(selectedOption);
-                }}
-              />
-            </div>
-          </ModalBody>
-          {props?.data?.id ? (
-            <ModalFooter className="p-3">
-              <CreateEditAuditInformation loading={loading} auditInfo={auditInfo} />
-            </ModalFooter>
-          ) : (
-            <></>
-          )}
+            <ModalBody>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="forms.standard" />
+                </Label>
+                <Input {...standardRest} innerRef={standardRef} className="form-control" />
+              </div>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="menu.asignature" />
+                </Label>
+                <Select
+                  placeholder={<IntlMessages id="forms.select" />}
+                  {...register('academicAsignatureId', { required: true })}
+                  className="react-select"
+                  classNamePrefix="react-select"
+                  options={asignaturesList}
+                  value={asignature}
+                  onChange={(selectedOption) => {
+                    setValue('academicAsignatureId', selectedOption?.key);
+                    setAsignature(selectedOption);
+                  }}
+                />
+              </div>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="menu.cycleAcademic" />
+                </Label>
+                <Select
+                  placeholder={<IntlMessages id="forms.select" />}
+                  {...register('generalAcademicCycleId', { required: true })}
+                  className="react-select"
+                  classNamePrefix="react-select"
+                  options={cyclesList}
+                  value={cycle}
+                  onChange={(selectedOption) => {
+                    setValue('generalAcademicCycleId', selectedOption?.key);
+                    setCycle(selectedOption);
+                  }}
+                />
+              </div>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="forms.standard" /> {' - '}
+                  <IntlMessages id="menu.general" />
+                </Label>
+                <Select
+                  placeholder={<IntlMessages id="forms.select" />}
+                  {...register('generalAcademicStandardId', { required: true })}
+                  className="react-select"
+                  classNamePrefix="react-select"
+                  options={standardList}
+                  value={standard}
+                  onChange={(selectedOption) => {
+                    setValue('generalAcademicStandardId', selectedOption?.key);
+                    setStandard(selectedOption);
+                  }}
+                />
+              </div>
+              {!props?.loginReducer?.schoolId ? (
+                <div className="form-group">
+                  <Label>
+                    <IntlMessages id="menu.school" />
+                  </Label>
+                  <Select
+                    placeholder={<IntlMessages id="forms.select" />}
+                    {...register('schoolId', { required: true })}
+                    className="react-select"
+                    classNamePrefix="react-select"
+                    options={schoolList}
+                    value={school}
+                    onChange={(selectedOption) => {
+                      setValue('schoolId', selectedOption?.key);
+                      setSchool(selectedOption);
+                    }}
+                  />
+                </div>
+              ) : (
+                ''
+              )}
+            </ModalBody>
+            {props?.data?.id ? (
+              <ModalFooter className="p-3">
+                <CreateEditAuditInformation loading={loading} auditInfo={auditInfo} />
+              </ModalFooter>
+            ) : (
+              <></>
+            )}
           </AddNewModal>
         </>
       )}
@@ -247,8 +262,8 @@ const StandardCreateEdit = (props: any) => {
 
 const mapDispatchToProps = { ...standardActions };
 
-const mapStateToProps = () => {
-  return {};
+const mapStateToProps = ({ loginReducer }: any) => {
+  return { loginReducer };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(StandardCreateEdit);

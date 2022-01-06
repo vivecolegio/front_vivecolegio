@@ -6,7 +6,9 @@ const INITIAL_STATE = {
   roleMenus: {},
   name: '',
   campus: '',
+  campusId: '',
   school: '',
+  schoolId: '',
 };
 
 export default (state = INITIAL_STATE, action: any) => {
@@ -19,7 +21,9 @@ export default (state = INITIAL_STATE, action: any) => {
         roleMenus: action.payload.roleMenus,
         name: action.payload.name,
         campus: action.payload.campus,
+        campusId: action.payload.campusId,
         school: action.payload.school,
+        schoolId: action.payload.schoolId,
       };
     case ME:
       return {
@@ -33,6 +37,10 @@ export default (state = INITIAL_STATE, action: any) => {
         role: {},
         roleMenus : [],
         name: '',
+        campus: '',
+        campusId: '',
+        school: '',
+        schoolId: ''
       };
     default:
       return state;

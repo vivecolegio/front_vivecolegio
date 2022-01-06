@@ -43,7 +43,7 @@ const AsignatureCreateEdit = (props: any) => {
           value: props?.data?.school?.id,
         });
       }
-    } 
+    }
     setLoading(false);
   }, [props?.data]);
 
@@ -51,6 +51,13 @@ const AsignatureCreateEdit = (props: any) => {
     reset();
     setArea(null);
     setSchool(null);
+    if (props?.loginReducer?.schoolId && !props?.data?.id) {
+      // set value when register is new and sesion contains value
+      register('schoolId', {
+        required: true,
+        value: props?.loginReducer?.schoolId,
+      });
+    }
   };
 
   const getDropdowns = async () => {
@@ -103,7 +110,7 @@ const AsignatureCreateEdit = (props: any) => {
         </>
       ) : (
         <>
-        <AddNewModal
+          <AddNewModal
             modalOpen={props.modalOpen}
             toggleModal={() => {
               cleanForm();
@@ -115,73 +122,78 @@ const AsignatureCreateEdit = (props: any) => {
             control={control}
             handleSubmit={handleSubmit}
           >
-          <ModalBody>
-            <div className="form-group">
-              <Label>
-                <IntlMessages id="forms.name" />
-              </Label>
-              <Input {...nameRest} innerRef={nameRef} className="form-control" />
-            </div>
-            <div className="form-group">
-              <Label>
-                <IntlMessages id="forms.abbreviation" />
-              </Label>
-              <Input {...abbreviationRest} innerRef={abbreviationRef} className="form-control" />
-            </div>
-            <div className="form-group">
-              <Label>
-                <IntlMessages id="forms.code" />
-              </Label>
-              <Input {...codeRest} innerRef={codeRef} className="form-control" />
-            </div>
-            <div className="form-group">
-              <Label>
-                <IntlMessages id="forms.weight" />
-              </Label>
-              <Input {...weightRest} innerRef={weightRef} className="form-control" />
-            </div>
-            <div className="form-group">
-              <Label>
-                <IntlMessages id="menu.area" />
-              </Label>
-              <Select
-                placeholder={<IntlMessages id="forms.select" />}
-                {...register('academicAreaId', { required: true })}
-                className="react-select"
-                classNamePrefix="react-select"
-                options={areasList}
-                value={area}
-                onChange={(selectedOption) => {
-                  setValue('academicAreaId', selectedOption?.key);
-                  setArea(selectedOption);
-                }}
-              />
-            </div>
-            <div className="form-group">
-              <Label>
-                <IntlMessages id="menu.school" />
-              </Label>
-              <Select
-                placeholder={<IntlMessages id="forms.select" />}
-                {...register('schoolId', { required: true })}
-                className="react-select"
-                classNamePrefix="react-select"
-                options={schoolList}
-                value={school}
-                onChange={(selectedOption) => {
-                  setValue('schoolId', selectedOption?.key);
-                  setSchool(selectedOption);
-                }}
-              />
-            </div>
-          </ModalBody>
-          {props?.data?.id ? (
-            <ModalFooter className="p-3">
-              <CreateEditAuditInformation loading={loading} auditInfo={auditInfo} />
-            </ModalFooter>
-          ) : (
-            <></>
-          )}
+            <ModalBody>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="forms.name" />
+                </Label>
+                <Input {...nameRest} innerRef={nameRef} className="form-control" />
+              </div>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="forms.abbreviation" />
+                </Label>
+                <Input {...abbreviationRest} innerRef={abbreviationRef} className="form-control" />
+              </div>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="forms.code" />
+                </Label>
+                <Input {...codeRest} innerRef={codeRef} className="form-control" />
+              </div>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="forms.weight" />
+                </Label>
+                <Input {...weightRest} innerRef={weightRef} className="form-control" />
+              </div>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="menu.area" />
+                </Label>
+                <Select
+                  placeholder={<IntlMessages id="forms.select" />}
+                  {...register('academicAreaId', { required: true })}
+                  className="react-select"
+                  classNamePrefix="react-select"
+                  options={areasList}
+                  value={area}
+                  onChange={(selectedOption) => {
+                    setValue('academicAreaId', selectedOption?.key);
+                    setArea(selectedOption);
+                  }}
+                />
+              </div>
+
+              {!props?.loginReducer?.schoolId ? (
+                <div className="form-group">
+                  <Label>
+                    <IntlMessages id="menu.school" />
+                  </Label>
+                  <Select
+                    placeholder={<IntlMessages id="forms.select" />}
+                    {...register('schoolId', { required: true })}
+                    className="react-select"
+                    classNamePrefix="react-select"
+                    options={schoolList}
+                    value={school}
+                    onChange={(selectedOption) => {
+                      setValue('schoolId', selectedOption?.key);
+                      setSchool(selectedOption);
+                    }}
+                  />
+                </div>
+              ) : (
+                ''
+              )}
+            </ModalBody>
+            {props?.data?.id ? (
+              <ModalFooter className="p-3">
+                <CreateEditAuditInformation loading={loading} auditInfo={auditInfo} />
+              </ModalFooter>
+            ) : (
+              <></>
+            )}
           </AddNewModal>
         </>
       )}
@@ -191,8 +203,8 @@ const AsignatureCreateEdit = (props: any) => {
 
 const mapDispatchToProps = { ...asignatureActions };
 
-const mapStateToProps = () => {
-  return {};
+const mapStateToProps = ({ loginReducer }: any) => {
+  return { loginReducer };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AsignatureCreateEdit);

@@ -128,7 +128,7 @@ const ColorSwitcher = () => {
               name="radiusRadio"
               id="rounded"
               label="Rounded"
-              inline
+              inline="true"
               defaultChecked={radius === 'rounded'}
               onChange={() => {return setRadius('rounded')}}
             />
@@ -137,7 +137,7 @@ const ColorSwitcher = () => {
               name="radiusRadio"
               id="flat"
               label="Flat"
-              inline
+              inline="true"
               defaultChecked={radius === 'flat'}
               onChange={() => {return setRadius('flat')}}
             />

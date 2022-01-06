@@ -220,7 +220,7 @@ const TopNav = (props: any) => {
               <DropdownToggle caret color="light" size="sm" className="language-button">
                 <span className="name">{props.translateReducer.locale.toUpperCase()}</span>
               </DropdownToggle>
-              <DropdownMenu className="mt-3" right>
+              <DropdownMenu className="mt-3" end>
                 {localeOptions.map((l) => {
                   return (
                     <DropdownItem
@@ -279,7 +279,7 @@ const TopNav = (props: any) => {
                   <img className="border-yellow" alt="Profile" src={ProfileImg} />
                 </span>
               </DropdownToggle>
-              <DropdownMenu className="mt-3" right>
+              <DropdownMenu className="mt-3" end>
                 <NavLink to="/profile">
                   <DropdownItem>
                     <IntlMessages id="layouts.profile" />

@@ -68,7 +68,7 @@ const TopnavNotifications = () => {
         </DropdownToggle>
         <DropdownMenu
           className="position-absolute mt-3 scroll"
-          right
+          end
           id="notificationDropdown"
         >
           <PerfectScrollbar

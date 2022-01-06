@@ -18,7 +18,7 @@ export const login = (user: any) => {
         .then((result: any) => {
           data = result.data;
           if(data !=null){
-            localStorage.setItem('token', data.data.jwt);            
+            localStorage.setItem('token', data.data.jwt);         
             dispatch({
               type: LOGIN,
               payload: {
@@ -28,6 +28,8 @@ export const login = (user: any) => {
                 name: data.data.name,
                 campus: data.data.campus && data.data.campus[0] ? data.data.campus[0].name : "",
                 school: data.data.schools && data.data.schools[0] ? data.data.schools[0].name : "",
+                campusId: data.data.campus && data.data.campus[0] ? data.data.campus[0].id : "",
+                schoolId: data.data.schools && data.data.schools[0] ? data.data.schools[0].id : "",
               },
             });
           }else{

@@ -31,7 +31,7 @@ const AcademicPeriodCreateEdit = (props: any) => {
   useEffect(() => {
     cleanForm();
     getDropdowns();
-    if (props?.data?.id) {  
+    if (props?.data?.id) {
       if (props?.data?.school !== undefined && props?.data?.school != null) {
         setSchool({
           key: props?.data?.school?.id,
@@ -52,7 +52,7 @@ const AcademicPeriodCreateEdit = (props: any) => {
       if (props?.data?.endDate !== undefined && props?.data?.endDate != null) {
         setEndDate(new Date(props?.data?.endDate));
       }
-    } 
+    }
     setLoading(false);
   }, [props?.data]);
 
@@ -62,6 +62,13 @@ const AcademicPeriodCreateEdit = (props: any) => {
     setEndDate(null);
     setSchoolYear(null);
     setSchool(null);
+    if (props?.loginReducer?.schoolId && !props?.data?.id) {
+      // set value when register is new and sesion contains value
+      register('schoolId', {
+        required: true,
+        value: props?.loginReducer?.schoolId,
+      });
+    }
   };
 
   const getDropdowns = async () => {
@@ -91,7 +98,6 @@ const AcademicPeriodCreateEdit = (props: any) => {
     required: true,
     value: props?.data?.id ? props?.data?.endDate : '',
   });
-  
 
   const auditInfo = {
     createdAt: props?.data?.id ? props?.data?.createdAt : null,
@@ -111,7 +117,7 @@ const AcademicPeriodCreateEdit = (props: any) => {
         </>
       ) : (
         <>
-        <AddNewModal
+          <AddNewModal
             modalOpen={props.modalOpen}
             toggleModal={() => {
               cleanForm();
@@ -123,81 +129,85 @@ const AcademicPeriodCreateEdit = (props: any) => {
             control={control}
             handleSubmit={handleSubmit}
           >
-          <ModalBody>                  
-            <div className="form-group">
-              <Label>
-                <IntlMessages id="forms.weight" />
-              </Label>
-              <Input {...weightRest} innerRef={weightRef} className="form-control" />
-            </div>    
-            <div className="form-group">
-              <Label>
-                <IntlMessages id="forms.startDate" />
-              </Label>
-              <DatePicker
-                {...register('startDate', { required: true })}
-                selected={startDate}
-                onChange={(date: any) => {
-                  setValue('startDate', date as Date);
-                  setStartDate(date as Date);
-                }}
-              />
-            </div>
-            <div className="form-group">
-              <Label>
-                <IntlMessages id="forms.endDate" />
-              </Label>
-              <DatePicker
-                {...register('endDate', { required: true })}
-                selected={endDate}
-                onChange={(date:any) => {
-                  setValue('endDate', date as Date);
-                  setEndDate(date as Date);
-                }}
-              />
-            </div>   
-            <div className="form-group">
-              <Label>
-                <IntlMessages id="menu.schoolYear" />
-              </Label>
-              <Select
-                placeholder={<IntlMessages id="forms.select" />}
-                {...register('schoolYearId', { required: true })}
-                className="react-select"
-                classNamePrefix="react-select"
-                options={schoolYearsList}
-                value={schoolYear}
-                onChange={(selectedOption) => {
-                  setValue('schoolYearId', selectedOption?.key);
-                  setSchoolYear(selectedOption);
-                }}
-              />
-            </div>
-            <div className="form-group">
-              <Label>
-                <IntlMessages id="menu.school" />
-              </Label>
-              <Select
-                placeholder={<IntlMessages id="forms.select" />}
-                {...register('schoolId', { required: true })}
-                className="react-select"
-                classNamePrefix="react-select"
-                options={schoolList}
-                value={school}
-                onChange={(selectedOption) => {
-                  setValue('schoolId', selectedOption?.key);
-                  setSchool(selectedOption);
-                }}
-              />
-            </div>
-          </ModalBody>
-          {props?.data?.id ? (
-            <ModalFooter className="p-3">
-              <CreateEditAuditInformation loading={loading} auditInfo={auditInfo} />
-            </ModalFooter>
-          ) : (
-            <></>
-          )}
+            <ModalBody>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="forms.weight" />
+                </Label>
+                <Input {...weightRest} innerRef={weightRef} className="form-control" />
+              </div>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="forms.startDate" />
+                </Label>
+                <DatePicker
+                  {...register('startDate', { required: true })}
+                  selected={startDate}
+                  onChange={(date: any) => {
+                    setValue('startDate', date as Date);
+                    setStartDate(date as Date);
+                  }}
+                />
+              </div>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="forms.endDate" />
+                </Label>
+                <DatePicker
+                  {...register('endDate', { required: true })}
+                  selected={endDate}
+                  onChange={(date: any) => {
+                    setValue('endDate', date as Date);
+                    setEndDate(date as Date);
+                  }}
+                />
+              </div>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="menu.schoolYear" />
+                </Label>
+                <Select
+                  placeholder={<IntlMessages id="forms.select" />}
+                  {...register('schoolYearId', { required: true })}
+                  className="react-select"
+                  classNamePrefix="react-select"
+                  options={schoolYearsList}
+                  value={schoolYear}
+                  onChange={(selectedOption) => {
+                    setValue('schoolYearId', selectedOption?.key);
+                    setSchoolYear(selectedOption);
+                  }}
+                />
+              </div>
+              {!props?.loginReducer?.schoolId ? (
+                <div className="form-group">
+                  <Label>
+                    <IntlMessages id="menu.school" />
+                  </Label>
+                  <Select
+                    placeholder={<IntlMessages id="forms.select" />}
+                    {...register('schoolId', { required: true })}
+                    className="react-select"
+                    classNamePrefix="react-select"
+                    options={schoolList}
+                    value={school}
+                    onChange={(selectedOption) => {
+                      setValue('schoolId', selectedOption?.key);
+                      setSchool(selectedOption);
+                    }}
+                  />
+                </div>
+              ) : (
+                ''
+              )}
+            </ModalBody>
+            {props?.data?.id ? (
+              <ModalFooter className="p-3">
+                <CreateEditAuditInformation loading={loading} auditInfo={auditInfo} />
+              </ModalFooter>
+            ) : (
+              <></>
+            )}
           </AddNewModal>
         </>
       )}
@@ -207,8 +217,8 @@ const AcademicPeriodCreateEdit = (props: any) => {
 
 const mapDispatchToProps = { ...academicPeriodActions };
 
-const mapStateToProps = () => {
-  return {};
+const mapStateToProps = ({ loginReducer }: any) => {
+  return { loginReducer };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AcademicPeriodCreateEdit);

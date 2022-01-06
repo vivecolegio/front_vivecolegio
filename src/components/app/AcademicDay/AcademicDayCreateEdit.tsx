@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useForm, useFormContext } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import Loader from 'react-loader-spinner';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
-// import CustomSelectInput from 'components/common/CustomSelectInput';
 import { loaderColor, loaderIcon } from '../../../constants/defaultValues';
 import IntlMessages from '../../../helpers/IntlMessages';
 import * as AcademicDayActions from '../../../stores/actions/AcademicDayActions';
-import * as CampusActions from '../../../stores/actions/CampusActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import AddNewModal from '../../common/Data/AddNewModal';
 import CreateEditAuditInformation from '../../common/Data/CreateEditAuditInformation';
@@ -25,24 +23,31 @@ const AcademicDayCreateEdit = (props: any) => {
 
   const { handleSubmit, control, register, reset, setValue, getValues } = methods;
 
-  useEffect(() => {  
+  useEffect(() => {
     cleanForm();
     getDropdowns();
-    if (props?.data?.id) {      
+    if (props?.data?.id) {
       if (props?.data?.campus !== undefined && props?.data?.campus != null) {
         setCampus({
           key: props?.data?.campus?.id,
           label: props?.data?.campus?.name,
           value: props?.data?.campus?.id,
         });
-      }   
-    } 
+      }
+    }
     setLoading(false);
   }, [props?.data]);
 
   const cleanForm = async () => {
     reset();
     setCampus(null);
+    if (props?.loginReducer?.campusId && !props?.data?.id) {
+      // set value when register is new and sesion contains value
+      register('campusId', {
+        required: true,
+        value: props?.loginReducer?.campusId,
+      });
+    }
   };
 
   const getDropdowns = async () => {
@@ -86,7 +91,7 @@ const AcademicDayCreateEdit = (props: any) => {
         </>
       ) : (
         <>
-        <AddNewModal
+          <AddNewModal
             modalOpen={props.modalOpen}
             toggleModal={() => {
               cleanForm();
@@ -98,44 +103,48 @@ const AcademicDayCreateEdit = (props: any) => {
             control={control}
             handleSubmit={handleSubmit}
           >
-          <ModalBody>
-          <div className="form-group">
-              <Label>
-                <IntlMessages id="forms.workingDay" />
-              </Label>
-              <Input {...workingDayRest} innerRef={workingDayRef} className="form-control" />
-            </div>
-            <div className="form-group">
-              <Label>
-                <IntlMessages id="forms.type" />
-              </Label>
-              <Input {...typeDayRest} innerRef={typeDayRef} className="form-control" />
-            </div>             
-            <div className="form-group">
-              <Label>
-                <IntlMessages id="menu.campus" />
-              </Label>
-              <Select
-                placeholder={<IntlMessages id="forms.select" />}    
-                {...register('campusId', { required: true })}
-                className="react-select"
-                classNamePrefix="react-select"
-                options={campusList}
-                value={campus}
-                onChange={(selectedOption) => {
-                  setValue('campusId', selectedOption?.key);
-                  setCampus(selectedOption);
-                }}
-              />
-            </div>
-          </ModalBody>
-          {props?.data?.id ? (
-            <ModalFooter className="p-3">
-              <CreateEditAuditInformation loading={loading} auditInfo={auditInfo} />
-            </ModalFooter>
-          ) : (
-            <></>
-          )}
+            <ModalBody>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="forms.workingDay" />
+                </Label>
+                <Input {...workingDayRest} innerRef={workingDayRef} className="form-control" />
+              </div>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="forms.type" />
+                </Label>
+                <Input {...typeDayRest} innerRef={typeDayRef} className="form-control" />
+              </div>
+              {!props?.loginReducer?.campusId ? (
+                <div className="form-group">
+                  <Label>
+                    <IntlMessages id="menu.campus" />
+                  </Label>
+                  <Select
+                    placeholder={<IntlMessages id="forms.select" />}
+                    {...register('campusId', { required: true })}
+                    className="react-select"
+                    classNamePrefix="react-select"
+                    options={campusList}
+                    value={campus}
+                    onChange={(selectedOption) => {
+                      setValue('campusId', selectedOption?.key);
+                      setCampus(selectedOption);
+                    }}
+                  />
+                </div>
+              ) : (
+                ''
+              )}
+            </ModalBody>
+            {props?.data?.id ? (
+              <ModalFooter className="p-3">
+                <CreateEditAuditInformation loading={loading} auditInfo={auditInfo} />
+              </ModalFooter>
+            ) : (
+              <></>
+            )}
           </AddNewModal>
         </>
       )}
@@ -145,8 +154,8 @@ const AcademicDayCreateEdit = (props: any) => {
 
 const mapDispatchToProps = { ...AcademicDayActions };
 
-const mapStateToProps = () => {
-  return {};
+const mapStateToProps = ({ loginReducer }: any) => {
+  return { loginReducer };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AcademicDayCreateEdit);

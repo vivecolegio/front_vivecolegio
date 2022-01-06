@@ -88,7 +88,7 @@ const ListPageHeading = ({
                 />
               </div>
               <DropdownToggle caret color="primary" className="dropdown-toggle-split btn-lg" />
-              <DropdownMenu right>
+              <DropdownMenu end>
                 <DropdownItem 
                 disabled={!currentMenu.deleteAction}
                 onClick={() => {
@@ -167,7 +167,7 @@ const ListPageHeading = ({
                 <DropdownToggle caret color="outline-dark" size="xs">
                   {selectedPageSize}
                 </DropdownToggle>
-                <DropdownMenu right>
+                <DropdownMenu end>
                   {pageSizes.map((size: any, index: any) => {
                     return (
                       <DropdownItem

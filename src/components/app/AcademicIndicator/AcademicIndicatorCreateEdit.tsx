@@ -74,6 +74,13 @@ const AcademicIndicatorCreateEdit = (props: any) => {
     setSchool(null);
     setAsignature(null);
     setGrade(null);
+    if (props?.loginReducer?.schoolId && !props?.data?.id) {
+      // set value when register is new and sesion contains value
+      register('schoolId', {
+        required: true,
+        value: props?.loginReducer?.schoolId,
+      });
+    }
   };
 
   const getDropdowns = async () => {
@@ -210,23 +217,27 @@ const AcademicIndicatorCreateEdit = (props: any) => {
                   }}
                 />
               </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="menu.school" />
-                </Label>
-                <Select
-                  placeholder={<IntlMessages id="forms.select" />}
-                  {...register('schoolId', { required: true })}
-                  className="react-select"
-                  classNamePrefix="react-select"
-                  options={schoolsList}
-                  value={school}
-                  onChange={(selectedOption) => {
-                    setValue('schoolId', selectedOption?.key);
-                    setSchool(selectedOption);
-                  }}
-                />
-              </div>
+              {!props?.loginReducer?.schoolId ? (
+                <div className="form-group">
+                  <Label>
+                    <IntlMessages id="menu.school" />
+                  </Label>
+                  <Select
+                    placeholder={<IntlMessages id="forms.select" />}
+                    {...register('schoolId', { required: true })}
+                    className="react-select"
+                    classNamePrefix="react-select"
+                    options={schoolsList}
+                    value={school}
+                    onChange={(selectedOption) => {
+                      setValue('schoolId', selectedOption?.key);
+                      setSchool(selectedOption);
+                    }}
+                  />
+                </div>
+              ) : (
+                ''
+              )}
             </ModalBody>
             {props?.data?.id ? (
               <ModalFooter className="p-3">
@@ -244,8 +255,8 @@ const AcademicIndicatorCreateEdit = (props: any) => {
 
 const mapDispatchToProps = { ...AcademicIndicatorActions };
 
-const mapStateToProps = () => {
-  return {};
+const mapStateToProps = ({ loginReducer }: any) => {
+  return { loginReducer };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AcademicIndicatorCreateEdit);
