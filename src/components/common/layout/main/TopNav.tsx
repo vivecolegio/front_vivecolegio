@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { NavLink } from 'react-router-dom';
 import { useNavigate } from 'react-router';
+import { NavLink } from 'react-router-dom';
 import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
+import NavImg2 from '../../../../assets/img/logos/gobernacion.png';
+import NavImg1 from '../../../../assets/img/logos/ufps.png';
 import ProfileImg from '../../../../assets/img/profiles/l-1.jpg';
 import {
   isDarkSwitchActive,
   localeOptions,
-  menuHiddenBreakpoint,
+  menuHiddenBreakpoint
 } from '../../../../constants/defaultValues';
 import IntlMessages from '../../../../helpers/IntlMessages';
 import { getDirection, setDirection } from '../../../../helpers/Utils';
@@ -17,7 +19,7 @@ import * as LocaleActions from '../../../../stores/actions/TranslateActions';
 import MenuIcon from './topNav/MenuIcon';
 import MobileMenuIcon from './topNav/MobileMenuIcon';
 import TopnavDarkSwitch from './topNav/TopnavDarkSwitch';
-
+import TopnavNotifications from './topNav/TopnavNotifications';
 
 const TopNav = (props: any) => {
   const [topNavState, setTopNavState] = useState({
@@ -150,7 +152,7 @@ const TopNav = (props: any) => {
     });
   };
 
-  const handleLogout = () => {   
+  const handleLogout = () => {
     props.logout({}).then(navigate('/login'));
   };
 
@@ -240,16 +242,18 @@ const TopNav = (props: any) => {
             <span className="logo d-none d-sm-block" />
             <span className="logo-mobile d-block d-sm-none" />
           </div>
-          <a className="navbar-logo" href="/">
+          {/* <a className="navbar-logo" href="/home">
             <span className="logo d-none d-sm-block" />
             <span className="logo-mobile d-block d-sm-none" />
-          </a>
+          </a>          */}
         </div>
-        <div className="navbar-right">
+        <div className="navbar-right">      
+            <img className="mr-3" alt="LOGO" src={NavImg1} />
+             <img className="mr-3" alt="LOGO" src={NavImg2} />
           {isDarkSwitchActive && <TopnavDarkSwitch />}
           <div className="header-icons d-inline-block align-middle">
-            {/* <TopnavEasyAccess />
-            <TopnavNotifications /> */}
+            {/* <TopnavEasyAccess/> */}
+            <TopnavNotifications />          
             <button
               className="header-icon btn btn-empty d-none d-sm-inline-block"
               type="button"
@@ -267,9 +271,7 @@ const TopNav = (props: any) => {
             <p className="text-muted text-small mb-1">{props?.loginReducer?.school}</p>
             {props?.loginReducer?.campus ? (
               <p className="text-muted text-small mb-0">{props?.loginReducer?.campus}</p>
-            ) : (
-              null
-            )}
+            ) : null}
           </div>
           <div className="user d-inline-block">
             <UncontrolledDropdown className="dropdown-menu-right">
@@ -283,6 +285,11 @@ const TopNav = (props: any) => {
                 <NavLink to="/profile">
                   <DropdownItem>
                     <IntlMessages id="layouts.profile" />
+                  </DropdownItem>
+                </NavLink>
+                <NavLink to="/mySchedule">
+                  <DropdownItem>
+                    <IntlMessages id="layouts.mySchedule" />
                   </DropdownItem>
                 </NavLink>
                 <DropdownItem divider />

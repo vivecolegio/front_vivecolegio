@@ -47,7 +47,7 @@ const GuardianCreateEdit = (props: any) => {
 
   useEffect(() => {
     cleanForm();
-    getDropdowns();
+    getDropdowns(props?.loginReducer?.schoolId);
     if (props?.data?.id) {
       if (props?.data?.school !== undefined && props?.data?.school != null) {
         setSchool({
@@ -157,8 +157,8 @@ const GuardianCreateEdit = (props: any) => {
     }
   };
 
-  const getDropdowns = async () => {
-    props.getDropdownsGuardian('Guardian').then((data: any) => {
+  const getDropdowns = async (schoolId: any) => {
+    props.getDropdownsGuardian('Guardian', schoolId).then((data: any) => {
       setSchoolsList(
         data.dataSchools.edges.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };
@@ -399,8 +399,9 @@ const GuardianCreateEdit = (props: any) => {
                     options={schoolsList}
                     value={school}
                     onChange={(selectedOption) => {
-                      setValue('schoolId', selectedOption?.key);
+                      setValue('schoolId', [selectedOption?.key]);
                       setSchool(selectedOption);
+                      getDropdowns(selectedOption?.key);
                     }}
                   />
                 </div>
@@ -420,7 +421,7 @@ const GuardianCreateEdit = (props: any) => {
                     options={campusList}
                     value={campus}
                     onChange={(selectedOption) => {
-                      setValue('campusId', selectedOption?.key);
+                      setValue('campusId', [selectedOption?.key]);
                       setCampus(selectedOption);
                     }}
                   />

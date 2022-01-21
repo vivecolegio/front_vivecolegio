@@ -5,6 +5,7 @@ import { NavLink } from 'react-router-dom';
 import { Badge, Button, Card, Input } from 'reactstrap';
 import { Colxx } from '../../CustomBootstrap';
 import ProfileImg from '../../../../assets/img/profiles/l-1.jpg';
+import IntlMessages from '../../../../helpers/IntlMessages';
 
 const ThumbListView = ({ 
   item,
@@ -64,7 +65,7 @@ const ThumbListView = ({
                   }}
                 >
                   <i className="simple-icon-eye font-1rem mr-2" />
-                  Detalle
+                  <IntlMessages id="pages.detail" />
                 </Button>{' '}
                 <Button
                   color="orange"
@@ -75,7 +76,7 @@ const ThumbListView = ({
                   }}
                 >
                   <i className="simple-icon-trash font-1rem mr-2" />
-                  Eliminar
+                  <IntlMessages id="pages.delete" />
                 </Button>{' '}
                 <Button
                   color={item.active ? 'danger' : 'green'}
@@ -86,7 +87,7 @@ const ThumbListView = ({
                   }}
                 >
                   <i className={item.active ? 'simple-icon-close font-1rem mr-2' : 'simple-icon-check font-1rem mr-2'} />
-                  {item.active ? 'Inactivar' : 'Activar'}
+                  {item.active ? <IntlMessages id="pages.inactivate" /> : <IntlMessages id="pages.activate" />}
                 </Button>{' '}                
                 {withChildren === true ? (
                   childrenButtons.map((button:any) => {

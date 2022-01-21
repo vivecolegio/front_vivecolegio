@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { COLUMN_LIST } from '../../../constants/AcademicDay/academicDayConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as academicDayActions from '../../../stores/actions/AcademicDayActions';
-import AddNewModal from '../../common/Data/AddNewModal';
 import DataList from '../../common/Data/DataList';
 import AcademicDayCreateEdit from './AcademicDayCreateEdit';
 
@@ -14,13 +13,13 @@ const AcademicDayList = (props: any) => {
 
   const [data, setData] = useState(null);
   useEffect(() => {
-    props.getListAllAcademicDay().then((listData: any) => {
+    props.getListAllAcademicDay(props?.loginReducer?.campusId).then((listData: any) => {
       setDataTable(listData);
     });
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllAcademicDay().then((listData: any) => {
+    props.getListAllAcademicDay(props?.loginReducer?.campusId).then((listData: any) => {
       setDataTable(listData);
     });
   };
@@ -129,8 +128,8 @@ const AcademicDayList = (props: any) => {
 };
 const mapDispatchToProps = { ...academicDayActions };
 
-const mapStateToProps = () => {
-  return {};
+const mapStateToProps = ({ loginReducer }: any) => {
+  return { loginReducer };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AcademicDayList);

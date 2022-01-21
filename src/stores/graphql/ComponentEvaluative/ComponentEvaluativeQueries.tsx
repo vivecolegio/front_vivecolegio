@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const QUERY_GET_ALL_COMPONENT_EVALUATIVE = gql`
-  query getAllEvaluativeComponent {
-    data: getAllEvaluativeComponent(orderCreated: true, allData: true) {
+  query getAllEvaluativeComponent($schoolId: String!) {
+    data: getAllEvaluativeComponent(orderCreated: true, allData: true, schoolId: $schoolId) {
       edges {
         cursor
         node {

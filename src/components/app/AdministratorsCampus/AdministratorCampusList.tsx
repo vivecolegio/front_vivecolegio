@@ -13,7 +13,7 @@ const AdministratorList = (props: any) => {
 
   const [data, setData] = useState(null);
   useEffect(() => {
-    props.getListAllAdministratorCampus().then((listData: any) => {
+    props.getListAllAdministratorCampus(props?.loginReducer?.schoolId).then((listData: any) => {
       setDataTable(
         listData.map((c: any) => {
           c.node.name = c.node.user ? c.node.user.name : '';
@@ -27,7 +27,7 @@ const AdministratorList = (props: any) => {
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllAdministratorCampus().then((listData: any) => {
+    props.getListAllAdministratorCampus(props?.loginReducer?.schoolId).then((listData: any) => {
       setDataTable(
         listData.map((c: any) => {
           c.node.name = c.node.user ? c.node.user.name : '';
@@ -148,8 +148,8 @@ const AdministratorList = (props: any) => {
 };
 const mapDispatchToProps = { ...administratorCampusActions };
 
-const mapStateToProps = () => {
-  return {};
+const mapStateToProps = ({ loginReducer }: any) => {
+  return { loginReducer };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdministratorList);

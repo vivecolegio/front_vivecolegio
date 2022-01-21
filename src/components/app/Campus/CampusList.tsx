@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { COLUMN_LIST } from '../../../constants/Campus/campusConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as campusActions from '../../../stores/actions/CampusActions';
-import AddNewModal from '../../common/Data/AddNewModal';
 import DataList from '../../common/Data/DataList';
 import CampusCreateEdit from './CampusCreateEdit';
 
@@ -14,13 +13,13 @@ const CampusList = (props: any) => {
 
   const [data, setData] = useState(null);
   useEffect(() => {
-    props.getListAllCampus().then((listData: any) => {
+    props.getListAllCampus(props?.loginReducer?.schoolId).then((listData: any) => {
       setDataTable(listData);
     });
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllCampus().then((listData: any) => {
+    props.getListAllCampus(props?.loginReducer?.schoolId).then((listData: any) => {
       setDataTable(listData);
     });
   };
@@ -130,8 +129,8 @@ const CampusList = (props: any) => {
 };
 const mapDispatchToProps = { ...campusActions };
 
-const mapStateToProps = () => {
-  return {};
+const mapStateToProps = ({ loginReducer }: any) => {
+  return { loginReducer };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CampusList);

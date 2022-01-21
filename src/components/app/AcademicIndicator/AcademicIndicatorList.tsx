@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { COLUMN_LIST } from '../../../constants/AcademicIndicator/AcademicIndicatorConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as academicIndicatorActions from '../../../stores/actions/AcademicIndicatorActions';
-import AddNewModal from '../../common/Data/AddNewModal';
 import DataList from '../../common/Data/DataList';
 import AcademicIndicatorCreateEdit from './AcademicIndicatorCreateEdit';
 
@@ -14,13 +13,13 @@ const AcademicIndicatorList = (props: any) => {
 
   const [data, setData] = useState(null);
   useEffect(() => {
-    props.getListAllAcademicIndicator().then((listData: any) => {
+    props.getListAllAcademicIndicator(props?.loginReducer?.schoolId).then((listData: any) => {
       setDataTable(listData);
     });
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllAcademicIndicator().then((listData: any) => {
+    props.getListAllAcademicIndicator(props?.loginReducer?.schoolId).then((listData: any) => {
       setDataTable(listData);
     });
   };
@@ -71,7 +70,7 @@ const AcademicIndicatorList = (props: any) => {
 
   const deleteAll = async (items: any) => {
     items.map(async (item: any) => {
-      await props.deleteUser(item.id, false).then(
+      await props.deleteAcademicIndicator(item.id, false).then(
         () => {},
         () => {
           createNotification('error', 'error', '');
@@ -84,7 +83,7 @@ const AcademicIndicatorList = (props: any) => {
 
   const changeActiveDataAll = async (items: any) => {
     items.map(async (item: any) => {
-      await props.changeActiveUser(!item.active, item.id, false).then(
+      await props.changeActiveAcademicIndicator(!item.active, item.id, false).then(
         () => {},
         () => {
           createNotification('error', 'error', '');
@@ -130,8 +129,8 @@ const AcademicIndicatorList = (props: any) => {
 };
 const mapDispatchToProps = { ...academicIndicatorActions };
 
-const mapStateToProps = () => {
-  return {};
+const mapStateToProps = ({ loginReducer }: any) => {
+  return { loginReducer };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AcademicIndicatorList);

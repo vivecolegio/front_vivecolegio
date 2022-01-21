@@ -13,13 +13,13 @@ const StandardList = (props: any) => {
 
   const [data, setData] = useState(null);
   useEffect(() => {
-    props.getListAllAcademicStandard().then((listData: any) => {
+    props.getListAllAcademicStandard(props?.loginReducer?.schoolId).then((listData: any) => {
       setDataTable(listData);
     });
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllAcademicStandard().then((listData: any) => {
+    props.getListAllAcademicStandard(props?.loginReducer?.schoolId).then((listData: any) => {
       setDataTable(listData);
     });
   };
@@ -129,8 +129,8 @@ const StandardList = (props: any) => {
 };
 const mapDispatchToProps = { ...standardActions };
 
-const mapStateToProps = () => {
-  return {};
+const mapStateToProps = ({ loginReducer }: any) => {
+  return { loginReducer };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(StandardList);

@@ -9,17 +9,17 @@ import AreaCreateEdit from './AreaCreateEdit';
 const AreaList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
   const [columns, setColumns] = useState(COLUMN_LIST);
-  const [modalOpen, setModalOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);  
 
   const [data, setData] = useState(null);
   useEffect(() => {
-    props.getListAllAcademicArea().then((listData: any) => {
+    props.getListAllAcademicArea(props?.loginReducer?.schoolId).then((listData: any) => {
       setDataTable(listData);
     });
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllAcademicArea().then((listData: any) => {
+    props.getListAllAcademicArea(props?.loginReducer?.schoolId).then((listData: any) => {
       setDataTable(listData);
     });
   };
@@ -128,8 +128,8 @@ const AreaList = (props: any) => {
 };
 const mapDispatchToProps = { ...areaActions };
 
-const mapStateToProps = () => {
-  return {};
+const mapStateToProps = ({ loginReducer }: any) => {
+  return { loginReducer };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AreaList);

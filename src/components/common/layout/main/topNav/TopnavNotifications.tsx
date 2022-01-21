@@ -1,61 +1,41 @@
 /* eslint-disable react/no-array-index-key */
-import React from 'react';
-import {
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  NavLink,
-} from 'reactstrap';
+import moment from 'moment';
+import React, { useEffect, useState } from 'react';
 import PerfectScrollbar from 'react-perfect-scrollbar';
-import { adminRoot } from '../../../../../constants/defaultValues';
+import { connect } from 'react-redux';
+import { useNavigate } from 'react-router';
+import {
+  DropdownMenu, DropdownToggle, NavLink, UncontrolledDropdown
+} from 'reactstrap';
+import * as notificationActions from '../../../../../stores/actions/NotificationAction';
 
-const NotificationItem = ({ img, title, date }:any) => {
+
+const NotificationItem = ({ title, dateSend, message }:any) => {
+  let navigate = useNavigate();
+  const goToNotifications = async (id: any) => {
+    navigate(`/notifications`)
+  };
   return (
-    <div className="d-flex flex-row mb-3 pb-3 border-bottom">
-      <NavLink to={`${adminRoot}/pages/product/details`}>
-        <img
-          src={img}
-          alt={title}
-          className="img-thumbnail list-thumbnail xsmall border-0 rounded-circle"
-        />
-      </NavLink>
+    <div onClick={goToNotifications} className="d-flex flex-row mb-3 pb-3 border-bottom cursor-pointer">    
+        <i className='iconsminds-mail-send icon-big text-primary'/>
       <div className="pl-3 pr-2">
-        <NavLink to={`${adminRoot}/pages/product/details`}>
-          <p className="font-weight-medium mb-1">{title}</p>
-          <p className="text-muted mb-0 text-small">{date}</p>
-        </NavLink>
+          <p className="font-weight-medium mb-0">{title}</p>
+          <p className="text-muted mb-0 text-small">{moment(dateSend).format('YYYY-MM-DD h:mm a')}</p>
       </div>
     </div>
   );
 };
 
-const TopnavNotifications = () => {
-  const notifications = [
-    {
-      img: '/assets/img/profiles/l-2.jpg',
-      title: 'Joisse Kaycee just sent a new comment!',
-      date: '09.04.2018 - 12:45',
-      id: 1,
-    },
-    {
-      img: '/assets/img/notifications/thumb-1.jpg',
-      title: '1 item is out of stock!',
-      date: '09.04.2018 - 12:45',
-      id: 2,
-    },
-    {
-      img: '/assets/img/notifications/thumb-2.jpg',
-      title: 'New order received! It is total $147,20.',
-      date: '09.04.2018 - 12:45',
-      id: 3,
-    },
-    {
-      img: '/assets/img/notifications/thumb-3.jpg',
-      title: '3 items just added to wish list by a user!',
-      date: '09.04.2018 - 12:45',
-      id: 4,
-    },
-  ]
+const TopnavNotifications = (props: any) => {
+  const [notifications, setNotifications] = useState([]);
+  
+  useEffect(() => {
+    props.getListSomeNotification(props?.loginReducer?.userId).then((listData: any) => {
+      setNotifications(listData.filter((x:any)=>(!x?.node?.dateRead)).map((c:any)=>{return c.node}));
+    });
+  }, []);
+
+
   return (
     <div className="position-relative d-inline-block">
       <UncontrolledDropdown className="dropdown-menu-right">
@@ -64,7 +44,7 @@ const TopnavNotifications = () => {
           color="empty"
         >
           <i className="simple-icon-bell" />
-          <span className="count">3</span>
+          <span className="count">{notifications.length}</span>          
         </DropdownToggle>
         <DropdownMenu
           className="position-absolute mt-3 scroll"
@@ -74,8 +54,8 @@ const TopnavNotifications = () => {
           <PerfectScrollbar
             options={{ suppressScrollX: true, wheelPropagation: false }}
           >
-            {notifications.map((notification, index) => {
-              return <NotificationItem key={index} {...notification} />;
+            {notifications.map((notification: any) => {
+              return <NotificationItem key={notification?.id} {...notification} />;
             })}
           </PerfectScrollbar>
         </DropdownMenu>
@@ -84,4 +64,12 @@ const TopnavNotifications = () => {
   );
 };
 
-export default TopnavNotifications;
+const mapDispatchToProps = { ...notificationActions };
+
+const mapStateToProps = ({ loginReducer }: any) => {
+  return { loginReducer };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TopnavNotifications);
+
+

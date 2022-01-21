@@ -1,9 +1,8 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
 import { Row } from 'reactstrap';
+import FooterImg1 from '../../../../assets/img/logos/mintic.png';
+import FooterImg2 from '../../../../assets/img/logos/minciencias.png';
 import { Colxx } from '../../../common/CustomBootstrap';
-import ProfileImg from '../../../../assets/logos/black.png';
-import SingleLightbox from '../pages/SingleLightbox';
 
 const Footer = () => {
   return (
@@ -11,17 +10,15 @@ const Footer = () => {
       <div className="footer-content">
         <div className="container-fluid">
           <Row>
-            <Colxx xxs="12" sm="6">
-              
-            </Colxx>
-            <Colxx className="col-sm-6 d-none d-sm-block">
+            <Colxx xxs="12" sm="5" lg="5"></Colxx>
+            <Colxx xxs="12" sm="7" lg="7" className="d-none d-sm-block">
               <ul className="breadcrumb pt-0 pr-0 float-right">
                 <li className="breadcrumb-item mb-0">
-                  <img alt="LOGO" src={ProfileImg} />
+                  <img alt="LOGO" src={FooterImg1} />
                 </li>
                 <li className="breadcrumb-item mb-0">
-                  <img alt="LOGO" src={ProfileImg} /> 
-                </li>               
+                  <img alt="LOGO" src={FooterImg2} />
+                </li>
               </ul>
             </Colxx>
           </Row>

@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const QUERY_GET_ALL_COORDINATOR_CAMPUS = gql`
-  query getAllCampusCoordinator {
-    data: getAllCampusCoordinator(orderCreated: true, allData: true) {
+  query getAllCampusCoordinator($schoolId: String!) {
+    data: getAllCampusCoordinator(orderCreated: true, allData: true, schoolId: $schoolId) {
       edges {
         cursor
         node {
@@ -81,7 +81,7 @@ export const QUERY_GET_COORDINATOR_CAMPUS = gql`
 `;
 
 export const QUERY_GET_DROPDOWNS_COORDINATOR = gql`
-  query getDropdownsCoordinator ($type : String!) {
+  query getDropdownsCoordinator ($type : String!, $schoolId: String!) {
     dataSchools: getAllSchool(allData: false, orderCreated: false) {
       edges {
         node {
@@ -90,7 +90,7 @@ export const QUERY_GET_DROPDOWNS_COORDINATOR = gql`
         }
       }
     }
-    dataCampus: getAllCampus(allData: false, orderCreated: false) {
+    dataCampus: getAllCampus(allData: false, orderCreated: false, schoolId: $schoolId) {
       edges {
         node {
           id

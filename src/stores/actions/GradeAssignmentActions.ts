@@ -4,13 +4,16 @@ import { MUTATION_CHANGE_ACTIVE_GRADE_ASSIGNMENT, MUTATION_CREATE_GRADE_ASSIGNME
 import { QUERY_GET_ALL_GRADE_ASSIGNMENT, QUERY_GET_DROPDOWNS_GRADE_ASSIGNMENT, QUERY_GET_GRADE_ASSIGNMENT } from '../graphql/GradeAssignment/GradeAssignmentQueries';
 
 
-export const getListAllGradeAssignment = () => {
+export const getListAllGradeAssignment = (schoolId:string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
       await client
         .query({
           query: QUERY_GET_ALL_GRADE_ASSIGNMENT,
+          variables:{
+            schoolId
+          }
         })
         .then((result: any) => {
           listData = result.data.data.edges;
@@ -183,13 +186,16 @@ export const deleteGradeAssignment = (id: any, showToast: boolean) => {
   };
 };
 
-export const getDropdownsGradeAssignment = () => {
+export const getDropdownsGradeAssignment = (schoolId:string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
       await client
         .query({
           query: QUERY_GET_DROPDOWNS_GRADE_ASSIGNMENT,
+          variables:{
+            schoolId
+          }
         })
         .then((result: any) => {
           listData = result.data;

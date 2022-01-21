@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const QUERY_GET_ALL_AREA = gql`
-  query getAllAcademicArea {
-    data: getAllAcademicArea(orderCreated: true, allData: true) {
+  query getAllAcademicArea($schoolId: String!) {
+    data: getAllAcademicArea(orderCreated: true, allData: true, schoolId: $schoolId) {
       edges {
         cursor
         node {

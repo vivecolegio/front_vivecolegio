@@ -59,7 +59,7 @@ const RoleList = (props: any) => {
   };
 
   const changeActiveData = async (active: any, id: any) => {
-    await props.changeActiveRole(active, id).then((formData: any) => {
+    await props.changeActiveRole(active, id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
@@ -104,16 +104,15 @@ const RoleList = (props: any) => {
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll} 
           />
-          <AddNewModal      
+          <RoleCreateEdit   
+            data={data}   
             modalOpen={modalOpen}
             toggleModal={() => {
               setData(null);
               return setModalOpen(!modalOpen);
             }}
             onSubmit={onSubmit}
-          >
-            <RoleCreateEdit data={data} />
-          </AddNewModal>
+          />
         </>
       ) : (
         <></>

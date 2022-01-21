@@ -4,13 +4,16 @@ import { MUTATION_CHANGE_ACTIVE_ACADEMIC_PERIOD, MUTATION_CREATE_ACADEMIC_PERIOD
 import { QUERY_GET_ALL_ACADEMIC_PERIOD, QUERY_GET_ACADEMIC_PERIOD, QUERY_GET_DROPDOWNS_ACADEMIC_PERIOD } from '../graphql/AcademicPeriod/AcademicPeriodQueries';
 
 
-export const getListAllAcademicPeriod = () => {
+export const getListAllAcademicPeriod = (schoolId:string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
       await client
         .query({
           query: QUERY_GET_ALL_ACADEMIC_PERIOD,
+          variables:{
+            schoolId
+          }
         })
         .then((result: any) => {
           listData = result.data.data.edges;
@@ -183,13 +186,16 @@ export const deleteAcademicPeriod = (id: any, showToast: boolean) => {
   };
 };
 
-export const getDropdownsAcademicPeriod = () => {
+export const getDropdownsAcademicPeriod = (schoolId:string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
       await client
         .query({
           query: QUERY_GET_DROPDOWNS_ACADEMIC_PERIOD,
+          variables:{
+            schoolId
+          }
         })
         .then((result: any) => {
           listData = result.data;

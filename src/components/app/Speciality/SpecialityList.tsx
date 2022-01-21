@@ -13,13 +13,13 @@ const SpecialityList = (props: any) => {
 
   const [data, setData] = useState(null);
   useEffect(() => {
-    props.getListAllSpeciality().then((listData: any) => {
+    props.getListAllSpeciality(props?.loginReducer?.schoolId).then((listData: any) => {
       setDataTable(listData);
     });
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllSpeciality().then((listData: any) => {
+    props.getListAllSpeciality(props?.loginReducer?.schoolId).then((listData: any) => {
       setDataTable(listData);
     });
   };
@@ -129,8 +129,8 @@ const SpecialityList = (props: any) => {
 };
 const mapDispatchToProps = { ...specialityActions };
 
-const mapStateToProps = () => {
-  return {};
+const mapStateToProps = ({ loginReducer }: any) => {
+  return { loginReducer };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SpecialityList);

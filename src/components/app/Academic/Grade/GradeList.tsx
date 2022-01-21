@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+import { useNavigate } from 'react-router';
 import { COLUMN_LIST } from '../../../../constants/AcademicGrade/AcademicGradeConstants';
 import { createNotification } from '../../../../helpers/Notification';
 import * as gradeActions from '../../../../stores/actions/Academic/GradeActions';
@@ -10,10 +11,12 @@ const GradeList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
   const [columns, setColumns] = useState(COLUMN_LIST);
   const [modalOpen, setModalOpen] = useState(false);
-
   const [data, setData] = useState(null);
+
+  let navigate = useNavigate();
+
   useEffect(() => {
-    props.getListAllGrade().then((listData: any) => {
+    props.getListAllGrade(props?.loginReducer?.schoolId).then((listData: any) => {
       setDataTable(
         listData.map((c: any) => {
           c.node.cycle_format = c.node.generalAcademicCycle ? c.node.generalAcademicCycle.name : '';
@@ -27,7 +30,7 @@ const GradeList = (props: any) => {
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllGrade().then((listData: any) => {
+    props.getListAllGrade(props?.loginReducer?.schoolId).then((listData: any) => {
       setDataTable(
         listData.map((c: any) => {
           c.node.cycle_format = c.node.generalAcademicCycle ? c.node.generalAcademicCycle.name : '';
@@ -84,6 +87,21 @@ const GradeList = (props: any) => {
     });
   };
 
+  const additionalFunction = async (id: any, type: string) => {
+    console.log(type);
+    switch (type) {
+      case 'goToChildren':
+        goToChildren(id);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const goToChildren = async (id: any) => {
+    navigate(`/course/${id}`);
+  };
+
   const deleteAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.deleteGrade(item.id, false).then(
@@ -126,6 +144,17 @@ const GradeList = (props: any) => {
             changeActiveData={changeActiveData}
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
+            additionalFunction={additionalFunction}
+            childrenButtons={[
+              {
+                id: 0,
+                label: 'Cursos',
+                color: 'secondary',
+                icon: 'simple-icon-link',
+                action: 'goToChildren',
+              },
+            ]}
+            withChildren={true}
           />
           <GradeCreateEdit
             data={data}
@@ -145,8 +174,8 @@ const GradeList = (props: any) => {
 };
 const mapDispatchToProps = { ...gradeActions };
 
-const mapStateToProps = () => {
-  return {};
+const mapStateToProps = ({ loginReducer }: any) => {
+  return { loginReducer };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GradeList);

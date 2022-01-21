@@ -48,7 +48,7 @@ const AddNewModal = ({
               onClick={() => {
                 onSubmit(methods.getValues());
               }}
-              disabled={!isValid}
+              // disabled={!isValid}
             >
               <IntlMessages id="pages.submit" />
             </Button>

@@ -4,13 +4,16 @@ import { MUTATION_CHANGE_ACTIVE_MODALITY, MUTATION_CREATE_MODALITY, MUTATION_DEL
 import { QUERY_GET_ALL_MODALITY, QUERY_GET_DROPDOWNS_MODALITY, QUERY_GET_MODALITY } from '../graphql/Modality/ModalityQueries';
 
 
-export const getListAllModality = () => {
+export const getListAllModality = (schoolId:string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
       await client
         .query({
           query: QUERY_GET_ALL_MODALITY,
+          variables:{
+            schoolId
+          }
         })
         .then((result: any) => {
           listData = result.data.data.edges;

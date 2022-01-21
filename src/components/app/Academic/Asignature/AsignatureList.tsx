@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { COLUMN_LIST } from '../../../../constants/Asignature/asignatureConstants';
 import { createNotification } from '../../../../helpers/Notification';
 import * as asignatureActions from '../../../../stores/actions/Academic/AsignatureActions';
-import AddNewModal from '../../../common/Data/AddNewModal';
 import DataList from '../../../common/Data/DataList';
 import AsignatureCreateEdit from './AsignatureCreateEdit';
 
@@ -14,13 +13,13 @@ const AsignatureList = (props: any) => {
 
   const [data, setData] = useState(null);
   useEffect(() => {
-    props.getListAllAcademicAsignature().then((listData: any) => {
+    props.getListAllAcademicAsignature(props?.loginReducer?.schoolId).then((listData: any) => {
       setDataTable(listData);
     });
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllAcademicAsignature().then((listData: any) => {
+    props.getListAllAcademicAsignature(props?.loginReducer?.schoolId).then((listData: any) => {
       setDataTable(listData);
     });
   };
@@ -131,8 +130,8 @@ const AsignatureList = (props: any) => {
 };
 const mapDispatchToProps = { ...asignatureActions };
 
-const mapStateToProps = () => {
-  return {};
+const mapStateToProps = ({ loginReducer }: any) => {
+  return { loginReducer };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AsignatureList);

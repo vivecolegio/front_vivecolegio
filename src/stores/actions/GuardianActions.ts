@@ -181,7 +181,7 @@ export const deleteGuardian = (id: any, showToast: boolean) => {
   };
 };
 
-export const getDropdownsGuardian = (type: string) => {
+export const getDropdownsGuardian = (type: string, schoolId:string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
@@ -189,7 +189,8 @@ export const getDropdownsGuardian = (type: string) => {
         .query({
           query: QUERY_GET_DROPDOWNS_GUARDIAN,
           variables:{
-            type
+            type,
+            schoolId
           }
         })
         .then((result: any) => {

@@ -375,7 +375,7 @@ const AdministratorSchoolCreateEdit = (props: any) => {
                     options={schoolsList}
                     value={school}
                     onChange={(selectedOption: any) => {
-                      setValue('schoolId', selectedOption?.key);
+                      setValue('schoolId', [selectedOption?.key]);
                       setSchool(selectedOption);
                     }}
                   />

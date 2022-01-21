@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { COLUMN_LIST } from '../../../constants/AcademicPeriod/AcademicPeriodConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as academicIndicatorActions from '../../../stores/actions/AcademicPeriodActions';
-import AddNewModal from '../../common/Data/AddNewModal';
 import DataList from '../../common/Data/DataList';
 import AcademicPeriodCreateEdit from './AcademicPeriodCreateEdit';
 
@@ -15,7 +14,7 @@ const AcademicPeriodList = (props: any) => {
 
   const [data, setData] = useState(null);
   useEffect(() => {
-    props.getListAllAcademicPeriod().then((listData: any) => {
+    props.getListAllAcademicPeriod(props?.loginReducer?.schoolId).then((listData: any) => {
       setDataTable(
         listData.map((c: any) => {
           c.node.startDate = c.node.startDate ? moment(c.node.startDate).format('YYYY-MM-DD') : '';
@@ -28,7 +27,7 @@ const AcademicPeriodList = (props: any) => {
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllAcademicPeriod().then((listData: any) => {
+    props.getListAllAcademicPeriod(props?.loginReducer?.schoolId).then((listData: any) => {
       setDataTable(
         listData.map((c: any) => {
           c.node.startDate = c.node.startDate ? moment(c.node.startDate).format('YYYY-MM-DD') : '';
@@ -145,8 +144,8 @@ const AcademicPeriodList = (props: any) => {
 };
 const mapDispatchToProps = { ...academicIndicatorActions };
 
-const mapStateToProps = () => {
-  return {};
+const mapStateToProps = ({ loginReducer }: any) => {
+  return { loginReducer };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AcademicPeriodList);

@@ -20,16 +20,17 @@ const MenuItemList = (props: any) => {
   useEffect(() => {
     const { idMenu } = params;
     if(idMenu) {
-      console.log('servicio de consulta submenus por id');
-    } else {
-      props.getListAllMenuItem().then((listData: any) => {
+      props.getListAllMenuItem(idMenu).then((listData: any) => {
         setDataTable(listData);
       });
+    } else {
+      setDataTable([]);
     }  
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllMenuItem().then((listData: any) => {
+    const { idMenu } = params;
+    props.getListAllMenuItem(idMenu).then((listData: any) => {
       setDataTable(listData);
     });
   };

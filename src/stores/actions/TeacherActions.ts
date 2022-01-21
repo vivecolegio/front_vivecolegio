@@ -4,13 +4,17 @@ import { MUTATION_CHANGE_ACTIVE_TEACHER, MUTATION_CREATE_TEACHER, MUTATION_DELET
 import { QUERY_GET_ALL_TEACHER, QUERY_GET_DROPDOWNS_TEACHER, QUERY_GET_TEACHER } from '../graphql/Teacher/TeacherQueries';
 
 
-export const getListAllTeacher = () => {
+export const getListAllTeacher = (campusId:string ,schoolId:string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
       await client
         .query({
           query: QUERY_GET_ALL_TEACHER,
+          variables:{
+            campusId,
+            schoolId
+          }
         })
         .then((result: any) => {
           listData = result.data.data.edges;
@@ -181,7 +185,7 @@ export const deleteTeacher = (id: any, showToast: boolean) => {
   };
 };
 
-export const getDropdownsTeacher = (type: string) => {
+export const getDropdownsTeacher = (type: string, schoolId:string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
@@ -189,7 +193,8 @@ export const getDropdownsTeacher = (type: string) => {
         .query({
           query: QUERY_GET_DROPDOWNS_TEACHER,
           variables:{
-            type
+            type,
+            schoolId
           }
         })
         .then((result: any) => {

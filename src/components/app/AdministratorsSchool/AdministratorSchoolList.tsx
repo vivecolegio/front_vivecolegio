@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { COLUMN_LIST } from '../../../constants/AdministratorSchool/administratorSchoolConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as administratorSchoolActions from '../../../stores/actions/AdministratorSchoolActions';
-import AddNewModal from '../../common/Data/AddNewModal';
 import DataList from '../../common/Data/DataList';
 import AdministratorCreateEdit from './AdministratorSchoolCreateEdit';
 
@@ -14,7 +13,7 @@ const AdministratorSchoolList = (props: any) => {
 
   const [data, setData] = useState(null);
   useEffect(() => {
-    props.getListAllAdministrator().then((listData: any) => {
+    props.getListAllAdministrator(props?.loginReducer?.schoolId).then((listData: any) => {
       setDataTable(
         listData.map((c: any) => {
           c.node.name = c.node.user ? c.node.user.name : '';
@@ -28,7 +27,7 @@ const AdministratorSchoolList = (props: any) => {
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllAdministrator().then((listData: any) => {
+    props.getListAllAdministrator(props?.loginReducer?.schoolId).then((listData: any) => {
       setDataTable(
         listData.map((c: any) => {
           c.node.name = c.node.user ? c.node.user.name : '';
@@ -149,8 +148,8 @@ const AdministratorSchoolList = (props: any) => {
 };
 const mapDispatchToProps = { ...administratorSchoolActions };
 
-const mapStateToProps = () => {
-  return {};
+const mapStateToProps = ({ loginReducer }: any) => {
+  return { loginReducer };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdministratorSchoolList);

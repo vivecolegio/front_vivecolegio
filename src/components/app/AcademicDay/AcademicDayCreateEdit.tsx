@@ -51,7 +51,7 @@ const AcademicDayCreateEdit = (props: any) => {
   };
 
   const getDropdowns = async () => {
-    props.getDropdownsAcademicDay().then((data: any) => {
+    props.getDropdownsAcademicDay(props?.loginReducer?.schoolId).then((data: any) => {
       setCampusList(
         data.dataCampus.edges.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };

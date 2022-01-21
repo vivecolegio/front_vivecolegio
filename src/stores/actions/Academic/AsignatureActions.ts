@@ -4,13 +4,16 @@ import { MUTATION_CHANGE_ACTIVE_ASIGNATURE, MUTATION_CREATE_ASIGNATURE, MUTATION
 import { QUERY_GET_ALL_ASIGNATURE, QUERY_GET_ASIGNATURE, QUERY_GET_DROPDOWNS_ASIGNATURE } from '../../graphql/Academic/Asignature/AsignatureQueries';
 
 
-export const getListAllAcademicAsignature = () => {
+export const getListAllAcademicAsignature = (schoolId:string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
       await client
         .query({
           query: QUERY_GET_ALL_ASIGNATURE,
+          variables:{
+            schoolId
+          }
         })
         .then((result: any) => {
           listData = result.data.data.edges;
@@ -183,13 +186,16 @@ export const deleteAsignature = (id: any, showToast: boolean) => {
   };
 };
 
-export const getDropdownsAcademicAsignature = () => {
+export const getDropdownsAcademicAsignature = (schoolId:string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
       await client
         .query({
           query: QUERY_GET_DROPDOWNS_ASIGNATURE,
+          variables:{
+            schoolId
+          }
         })
         .then((result: any) => {
           listData = result.data;

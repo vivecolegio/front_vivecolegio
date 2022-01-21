@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { COLUMN_LIST } from '../../../constants/AdministratorSchool/administratorSchoolConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as coordinatorCampusActions from '../../../stores/actions/CoordinatorCampusActions';
-import AddNewModal from '../../common/Data/AddNewModal';
 import DataList from '../../common/Data/DataList';
 import CoordinatorCampusCreateEdit from './CoordinatorCampusCreateEdit';
 
@@ -14,7 +13,7 @@ const CoordinatorCampusList = (props: any) => {
 
   const [data, setData] = useState(null);
   useEffect(() => {
-    props.getListAllCoordinatorCampus().then((listData: any) => {
+    props.getListAllCoordinatorCampus(props?.loginReducer?.schoolId).then((listData: any) => {
       setDataTable(
         listData.map((c: any) => {
           c.node.name = c.node.user ? c.node.user.name : '';
@@ -28,7 +27,7 @@ const CoordinatorCampusList = (props: any) => {
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllCoordinatorCampus().then((listData: any) => {
+    props.getListAllCoordinatorCampus(props?.loginReducer?.schoolId).then((listData: any) => {
       setDataTable(
         listData.map((c: any) => {
           c.node.name = c.node.user ? c.node.user.name : '';
@@ -149,8 +148,8 @@ const CoordinatorCampusList = (props: any) => {
 };
 const mapDispatchToProps = { ...coordinatorCampusActions };
 
-const mapStateToProps = () => {
-  return {};
+const mapStateToProps = ({ loginReducer }: any) => {
+  return { loginReducer };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CoordinatorCampusList);

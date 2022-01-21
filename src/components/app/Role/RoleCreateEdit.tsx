@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import Loader from 'react-loader-spinner';
 import { connect } from 'react-redux';
 import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
@@ -8,26 +8,34 @@ import IntlMessages from '../../../helpers/IntlMessages';
 import * as menuActions from '../../../stores/actions/MenuModelActions';
 import * as roleActions from '../../../stores/actions/RoleActions';
 import { Colxx } from '../../common/CustomBootstrap';
+import AddNewModal from '../../common/Data/AddNewModal';
 import CreateEditAuditInformation from '../../common/Data/CreateEditAuditInformation';
 
 const RoleCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
 
-  const methods = useFormContext();
+  const methods = useForm({
+    mode: 'onChange',
+    reValidateMode: 'onChange',
+  });
+
+  const { handleSubmit, control, register, reset, setValue, getValues } = methods;
 
   useEffect(() => {
-    if (props?.data?.id) {
-    } else {
-      methods.reset();
-    }
+    cleanForm();
     setLoading(false);
   }, [props?.data]);
 
+  const cleanForm = async () => {
+    reset();
+  };
+
+  const { ref: nameRef, ...nameRest } = register('name', {
+    required: true,
+    value: props?.data?.id ? props?.data?.name : '',
+  });
+
   const data = {
-    name:
-      props?.data?.id || props?.data?.name === methods.getValues('name')
-        ? props?.data?.name
-        : methods.getValues('name'),
     isSchoolAdministrator:
       props?.data?.id ||
       props?.data?.isSchoolAdministrator === methods.getValues('isSchoolAdministrator')
@@ -75,102 +83,117 @@ const RoleCreateEdit = (props: any) => {
         </>
       ) : (
         <>
-          <ModalBody>
-            <div className="form-group">
-              <Label>
-                <IntlMessages id="forms.name" />
-              </Label>
-              <Input
-                {...methods.register('name', { required: true })}
-                name="name"
-                defaultValue={data.name}
-              />
-            </div>
-            <div className="form-group mt-5">              
-             <h6>
-                <IntlMessages id="forms.assignableRoles" />
-              </h6>
-            </div>
-            <div className="form-group">              
-              <Input
-                className="itemCheck mb-0"
-                type="checkbox"
-                id={`check_isSchoolAdministrator`}
-                defaultChecked={data.isSchoolAdministrator}
-                onChange={() => {
-                  methods.setValue('isSchoolAdministrator', !data.isSchoolAdministrator);
-                }}
-                label={<IntlMessages id="menu.administratorsSchool" />}
-              />
-            </div>
-            <div className="form-group">              
-              <Input
-                className="itemCheck mb-0"
-                type="checkbox"
-                id={`check_isCampusAdministrator`}
-                defaultChecked={data.isCampusAdministrator}
-                onChange={() => {
-                  methods.setValue('isCampusAdministrator', !data.isCampusAdministrator);
-                }}
-                label={<IntlMessages id="menu.administratorsCampus" />}
-              />
-            </div>
-            <div className="form-group">              
-              <Input
-                className="itemCheck mb-0"
-                type="checkbox"
-                id={`check_isCampusCoordinator`}
-                defaultChecked={data.isCampusCoordinator}
-                onChange={() => {
-                  methods.setValue('isCampusCoordinator', !data.isCampusCoordinator);
-                }}
-                label={<IntlMessages id="menu.coordinatorsCampus" />}
-              />
-            </div>
-            <div className="form-group">              
-              <Input
-                className="itemCheck mb-0"
-                type="checkbox"
-                id={`check_isStudent`}
-                defaultChecked={data.isStudent}
-                onChange={() => {
-                  methods.setValue('isStudent', !data.isStudent);
-                }}
-                label={<IntlMessages id="menu.students" />}
-              />
-            </div>
-            <div className="form-group">              
-              <Input
-                className="itemCheck mb-0"
-                type="checkbox"
-                id={`check_isTeacher`}
-                defaultChecked={data.isTeacher}
-                onChange={() => {
-                  methods.setValue('isTeacher', !data.isTeacher);
-                }}
-                label={<IntlMessages id="menu.teachers" />}
-              />
-            </div>
-            <div className="form-group">              
-              <Input
-                className="itemCheck mb-0"
-                type="checkbox"
-                id={`check_isGuardian`}
-                defaultChecked={data.isGuardian}
-                onChange={() => {
-                  methods.setValue('isGuardian', !data.isGuardian);
-                }}
-                label={<IntlMessages id="menu.guardians" />}
-              />
-            </div>
-          </ModalBody>
-          {props?.data?.id ? (
-            <ModalFooter className="p-3">
-              <CreateEditAuditInformation loading={loading} auditInfo={auditInfo} />
-            </ModalFooter>
-          ) : (
-            <></>
-          )}
+          <AddNewModal
+            modalOpen={props.modalOpen}
+            toggleModal={() => {
+              cleanForm();
+              props.toggleModal();
+            }}
+            onSubmit={props.onSubmit}
+            data={props.data}
+            methods={methods}
+            control={control}
+            handleSubmit={handleSubmit}
+          >
+            <ModalBody>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="forms.name" />
+                </Label>
+                <Input {...nameRest} innerRef={nameRef} className="form-control" />
+              </div>
+              <div className="form-group mt-5">
+                <h6>
+                  <IntlMessages id="forms.assignableRoles" />
+                </h6>
+              </div>
+              <div className="form-group d-flex align-items-center">
+                <Input
+                  className="itemCheck m-0 mr-2"
+                  type="checkbox"
+                  id={`check_isSchoolAdministrator`}
+                  defaultChecked={data.isSchoolAdministrator}
+                  onChange={() => {
+                    setValue('isSchoolAdministrator', !data.isSchoolAdministrator);
+                  }}
+                  label=""
+                />
+                {<IntlMessages id="menu.administratorsSchool" />}
+              </div>
+              <div className="form-group d-flex align-items-center">
+                <Input
+                  className="itemCheck m-0 mr-2"
+                  type="checkbox"
+                  id={`check_isCampusAdministrator`}
+                  defaultChecked={data.isCampusAdministrator}
+                  onChange={() => {
+                    setValue('isCampusAdministrator', !data.isCampusAdministrator);
+                  }}
+                  label=""
+                />
+                {<IntlMessages id="menu.administratorsCampus" />}
+              </div>
+              <div className="form-group d-flex align-items-center">
+                <Input
+                  className="itemCheck m-0 mr-2"
+                  type="checkbox"
+                  id={`check_isCampusCoordinator`}
+                  defaultChecked={data.isCampusCoordinator}
+                  onChange={() => {
+                    setValue('isCampusCoordinator', !data.isCampusCoordinator);
+                  }}
+                  label=""
+                />
+                {<IntlMessages id="menu.coordinatorsCampus" />}
+              </div>
+              <div className="form-group d-flex align-items-center">
+                <Input
+                  className="itemCheck m-0 mr-2"
+                  type="checkbox"
+                  id={`check_isStudent`}
+                  defaultChecked={data.isStudent}
+                  onChange={() => {
+                    setValue('isStudent', !data.isStudent);
+                  }}
+                  label=""
+                />
+                {<IntlMessages id="menu.students" />}
+              </div>
+              <div className="form-group d-flex align-items-center">
+                <Input
+                  className="itemCheck m-0 mr-2"
+                  type="checkbox"
+                  id={`check_isTeacher`}
+                  defaultChecked={data.isTeacher}
+                  onChange={() => {
+                    setValue('isTeacher', !data.isTeacher);
+                  }}
+                  label=""
+                />
+                {<IntlMessages id="menu.teachers" />}
+              </div>
+              <div className="form-group d-flex align-items-center">
+                <Input
+                  className="itemCheck m-0 mr-2"
+                  type="checkbox"
+                  id={`check_isGuardian`}
+                  defaultChecked={data.isGuardian}
+                  onChange={() => {
+                    setValue('isGuardian', !data.isGuardian);
+                  }}
+                  label=""
+                />
+                <span>{<IntlMessages id="menu.guardians" />}</span>
+              </div>
+            </ModalBody>
+            {props?.data?.id ? (
+              <ModalFooter className="p-3">
+                <CreateEditAuditInformation loading={loading} auditInfo={auditInfo} />
+              </ModalFooter>
+            ) : (
+              <></>
+            )}
+          </AddNewModal>
         </>
       )}
     </>

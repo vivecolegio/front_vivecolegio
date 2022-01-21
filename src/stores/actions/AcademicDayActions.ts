@@ -4,13 +4,16 @@ import { MUTATION_CHANGE_ACTIVE_ACADEMIC_DAY, MUTATION_CREATE_ACADEMIC_DAY, MUTA
 import { QUERY_GET_ALL_ACADEMIC_DAY, QUERY_GET_ACADEMIC_DAY, QUERY_GET_DROPDOWNS_ACADEMIC_DAY } from '../graphql/AcademicDay/AcademicDayQueries';
 
 
-export const getListAllAcademicDay = () => {
+export const getListAllAcademicDay = (campusId:string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
       await client
         .query({
           query: QUERY_GET_ALL_ACADEMIC_DAY,
+          variables:{
+            campusId
+          }
         })
         .then((result: any) => {
           listData = result.data.data.edges;
@@ -182,13 +185,16 @@ export const deleteAcademicDay = (id: any, showToast: boolean) => {
 };
 
 
-export const getDropdownsAcademicDay = () => {
+export const getDropdownsAcademicDay = (schoolId:string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
       await client
         .query({
           query: QUERY_GET_DROPDOWNS_ACADEMIC_DAY,
+          variables:{
+            schoolId
+          }
         })
         .then((result: any) => {
           listData = result.data;

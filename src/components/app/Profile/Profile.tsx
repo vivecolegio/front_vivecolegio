@@ -8,7 +8,7 @@ import IntlMessages from '../../../helpers/IntlMessages';
 import * as userActions from '../../../stores/actions/UserActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import SingleLightbox from '../../common/layout/pages/SingleLightbox';
-import BannerImg from '../../../assets/img/social/header.jpg';
+import BannerImg from '../../../assets/img/logos/banner.png';
 import ProfileImg from '../../../assets/img/profiles/l-1.jpg';
 
 const Profile = (props: any) => {
@@ -44,7 +44,7 @@ const Profile = (props: any) => {
                     <SingleLightbox
                       thumb={BannerImg}
                       large={BannerImg}
-                      className="social-header h-270 card-img"
+                      className="social-header h-250 card-img"
                     />
                   </Card>
                 </Colxx>

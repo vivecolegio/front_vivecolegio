@@ -4,13 +4,16 @@ import { MUTATION_CHANGE_ACTIVE_CAMPUS, MUTATION_CREATE_CAMPUS, MUTATION_DELETE_
 import { QUERY_GET_ALL_CAMPUS, QUERY_GET_CAMPUS, QUERY_GET_DROPDOWNS_CAMPUS } from '../graphql/Campus/CampusQueries';
 
 
-export const getListAllCampus = () => {
+export const getListAllCampus = (schoolId:string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
       await client
         .query({
           query: QUERY_GET_ALL_CAMPUS,
+          variables:{
+            schoolId
+          }
         })
         .then((result: any) => {
           listData = result.data.data.edges;

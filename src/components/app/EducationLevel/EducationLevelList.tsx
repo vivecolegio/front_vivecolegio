@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { COLUMN_LIST } from '../../../constants/EducationLevel/EducationLevelConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as educationLevelActions from '../../../stores/actions/EducationLevelActions';
-import AddNewModal from '../../common/Data/AddNewModal';
 import DataList from '../../common/Data/DataList';
 import EdicationLevelCreateEdit from './EducationLevelCreateEdit';
 
@@ -14,13 +13,13 @@ const EducationLevelList = (props: any) => {
 
   const [data, setData] = useState(null);
   useEffect(() => {
-    props.getListAllEducationLevel().then((listData: any) => {
+    props.getListAllEducationLevel(props?.loginReducer?.schoolId).then((listData: any) => {
       setDataTable(listData);
     });
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllEducationLevel().then((listData: any) => {
+    props.getListAllEducationLevel(props?.loginReducer?.schoolId).then((listData: any) => {
       setDataTable(listData);
     });
   };
@@ -129,8 +128,8 @@ const EducationLevelList = (props: any) => {
 };
 const mapDispatchToProps = { ...educationLevelActions };
 
-const mapStateToProps = () => {
-  return {};
+const mapStateToProps = ({ loginReducer }: any) => {
+  return { loginReducer };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EducationLevelList);

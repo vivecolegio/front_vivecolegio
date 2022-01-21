@@ -4,13 +4,16 @@ import { MUTATION_CHANGE_ACTIVE_PERFORMANCE_LEVEL, MUTATION_CREATE_PERFORMANCE_L
 import { QUERY_GET_ALL_PERFORMANCE_LEVEL, QUERY_GET_DROPDOWNS_PERFORMANCE_LEVEL, QUERY_GET_PERFORMANCE_LEVEL } from '../../graphql/Academic/PerformanceLevel/PerformanceLevelQueries';
 
 
-export const getListAllPerformanceLevel = () => {
+export const getListAllPerformanceLevel = (schoolId:string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
       await client
         .query({
           query: QUERY_GET_ALL_PERFORMANCE_LEVEL,
+          variables:{
+            schoolId
+          }
         })
         .then((result: any) => {
           listData = result.data.data.edges;

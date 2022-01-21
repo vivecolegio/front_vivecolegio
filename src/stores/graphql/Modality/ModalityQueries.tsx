@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const QUERY_GET_ALL_MODALITY = gql`
-  query getAllModality {
-    data: getAllModality(orderCreated: true, allData: true) {
+  query getAllModality($schoolId: String!) {
+    data: getAllModality(orderCreated: true, allData: true, schoolId: $schoolId) {
       edges {
         cursor
         node {

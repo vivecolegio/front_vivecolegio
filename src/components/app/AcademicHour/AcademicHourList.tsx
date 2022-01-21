@@ -13,7 +13,7 @@ const AcademicHourList = (props: any) => {
 
   const [data, setData] = useState(null);
   useEffect(() => {
-    props.getListAllAcademicHour().then((listData: any) => {
+    props.getListAllAcademicHour(props?.loginReducer?.campusId).then((listData: any) => {
       setDataTable(
         listData.map((c: any) => {
           c.node.academicDay_format = c?.node?.academicDay ? `${c?.node?.academicDay?.workingDay  } - ${  c?.node?.academicDay?.typeDay}` : '';         
@@ -24,7 +24,7 @@ const AcademicHourList = (props: any) => {
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllAcademicHour().then((listData: any) => {
+    props.getListAllAcademicHour(props?.loginReducer?.campusId).then((listData: any) => {
       setDataTable(
         listData.map((c: any) => {
           c.node.academicDay_format = c?.node?.academicDay ? `${c?.node?.academicDay?.workingDay  } - ${  c?.node?.academicDay?.typeDay}` : '';         
@@ -138,8 +138,8 @@ const AcademicHourList = (props: any) => {
 };
 const mapDispatchToProps = { ...academicDayActions };
 
-const mapStateToProps = () => {
-  return {};
+const mapStateToProps = ({ loginReducer }: any) => {
+  return { loginReducer };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AcademicHourList);

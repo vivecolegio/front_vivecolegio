@@ -1,16 +1,20 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
 import { MUTATION_CHANGE_ACTIVE_STUDENT, MUTATION_CREATE_STUDENT, MUTATION_DELETE_STUDENT, MUTATION_UPDATE_STUDENT } from '../graphql/Student/StudentMutations';
-import { QUERY_GET_ALL_STUDENT, QUERY_GET_DROPDOWNS_STUDENT, QUERY_GET_STUDENT } from '../graphql/Student/StudentQueries';
+import { QUERY_GET_ALL_STUDENT, QUERY_GET_COURSES_OF_GRADES, QUERY_GET_DROPDOWNS_STUDENT, QUERY_GET_STUDENT } from '../graphql/Student/StudentQueries';
 
 
-export const getListAllStudent = () => {
+export const getListAllStudent = (campusId:string ,schoolId:string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
       await client
         .query({
           query: QUERY_GET_ALL_STUDENT,
+          variables:{
+            campusId,
+            schoolId
+          }
         })
         .then((result: any) => {
           listData = result.data.data.edges;
@@ -181,7 +185,7 @@ export const deleteStudent = (id: any, showToast: boolean) => {
   };
 };
 
-export const getDropdownsStudent = (type: string) => {
+export const getDropdownsStudent = (type: string, schoolId:string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
@@ -189,7 +193,31 @@ export const getDropdownsStudent = (type: string) => {
         .query({
           query: QUERY_GET_DROPDOWNS_STUDENT,
           variables:{
-            type
+            type,
+            schoolId
+          }
+        })
+        .then((result: any) => {
+          listData = result.data;
+        });
+      return listData;
+    } catch (error) {
+      createNotification('error', 'error', '');
+      return error;
+    }
+  };
+};
+
+export const getCoursesOfGrade = (academicGradeId:string, campusId: string) => {
+  return async (dispatch: any) => {
+    try {
+      let listData = {};
+      await client
+        .query({
+          query: QUERY_GET_COURSES_OF_GRADES,
+          variables:{
+            academicGradeId,
+            campusId
           }
         })
         .then((result: any) => {

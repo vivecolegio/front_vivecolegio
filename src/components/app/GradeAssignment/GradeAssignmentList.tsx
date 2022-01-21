@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { COLUMN_LIST } from '../../../constants/GradeAssignment/GradeAssignmentConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as academicIndicatorActions from '../../../stores/actions/GradeAssignmentActions';
-import AddNewModal from '../../common/Data/AddNewModal';
 import DataList from '../../common/Data/DataList';
 import GradeAssignmentCreateEdit from './GradeAssignmentCreateEdit';
 
@@ -14,7 +13,7 @@ const GradeAssignmentList = (props: any) => {
 
   const [data, setData] = useState(null);
   useEffect(() => {
-    props.getListAllGradeAssignment().then((listData: any) => {
+    props.getListAllGradeAssignment(props?.loginReducer?.schoolId).then((listData: any) => {
       setDataTable(
         listData.map((c: any) => {
           c.node.grade_format = c.node.academicGrade ? c.node.academicGrade.name : '';
@@ -28,7 +27,7 @@ const GradeAssignmentList = (props: any) => {
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllGradeAssignment().then((listData: any) => {
+    props.getListAllGradeAssignment(props?.loginReducer?.schoolId).then((listData: any) => {
       setDataTable(
         listData.map((c: any) => {
           c.node.grade_format = c.node.academicGrade ? c.node.academicGrade.name : '';
@@ -146,8 +145,8 @@ const GradeAssignmentList = (props: any) => {
 };
 const mapDispatchToProps = { ...academicIndicatorActions };
 
-const mapStateToProps = () => {
-  return {};
+const mapStateToProps = ({ loginReducer }: any) => {
+  return { loginReducer };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GradeAssignmentList);

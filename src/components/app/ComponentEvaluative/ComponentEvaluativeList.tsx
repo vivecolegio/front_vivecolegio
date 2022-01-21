@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { COLUMN_LIST } from '../../../constants/Asignature/asignatureConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as componentEvaluativeActions from '../../../stores/actions/ComponentEvaluativeActions';
-import AddNewModal from '../../common/Data/AddNewModal';
 import DataList from '../../common/Data/DataList';
 import ComponentEvaluativeCreateEdit from './ComponentEvaluativeCreateEdit';
 
@@ -14,13 +13,13 @@ const ComponentEvaluativeList = (props: any) => {
 
   const [data, setData] = useState(null);
   useEffect(() => {
-    props.getListAllComponentEvaluative().then((listData: any) => {
+    props.getListAllComponentEvaluative(props?.loginReducer?.schoolId).then((listData: any) => {
       setDataTable(listData);
     });
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllComponentEvaluative().then((listData: any) => {
+    props.getListAllComponentEvaluative(props?.loginReducer?.schoolId).then((listData: any) => {
       setDataTable(listData);
     });
   };
@@ -130,8 +129,8 @@ const ComponentEvaluativeList = (props: any) => {
 };
 const mapDispatchToProps = { ...componentEvaluativeActions };
 
-const mapStateToProps = () => {
-  return {};
+const mapStateToProps = ({ loginReducer }: any) => {
+  return { loginReducer };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ComponentEvaluativeList);

@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { COLUMN_LIST } from '../../../constants/Modality/ModalityConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as modalityActions from '../../../stores/actions/ModalityActions';
-import AddNewModal from '../../common/Data/AddNewModal';
 import DataList from '../../common/Data/DataList';
 import ModalityCreateEdit from './ModalityCreateEdit';
 
@@ -14,13 +13,13 @@ const ModalityList = (props: any) => {
 
   const [data, setData] = useState(null);
   useEffect(() => {
-    props.getListAllModality().then((listData: any) => {
+    props.getListAllModality(props?.loginReducer?.schoolId).then((listData: any) => {
       setDataTable(listData);
     });
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllModality().then((listData: any) => {
+    props.getListAllModality(props?.loginReducer?.schoolId).then((listData: any) => {
       setDataTable(listData);
     });
   };
@@ -130,8 +129,8 @@ const ModalityList = (props: any) => {
 };
 const mapDispatchToProps = { ...modalityActions };
 
-const mapStateToProps = () => {
-  return {};
+const mapStateToProps = ({ loginReducer }: any) => {
+  return { loginReducer };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ModalityList);

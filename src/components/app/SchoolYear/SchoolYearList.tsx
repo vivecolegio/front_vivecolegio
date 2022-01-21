@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { COLUMN_LIST } from '../../../constants/SchoolYear/schoolYearConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as schoolYearActions from '../../../stores/actions/SchoolYearActions';
-import AddNewModal from '../../common/Data/AddNewModal';
 import DataList from '../../common/Data/DataList';
 import SchoolYearCreateEdit from './SchoolYearCreateEdit';
 
@@ -15,7 +14,7 @@ const SchoolYearList = (props: any) => {
 
   const [data, setData] = useState(null);
   useEffect(() => {
-    props.getListAllSchoolYear().then((listData: any) => {
+    props.getListAllSchoolYear(props?.loginReducer?.schoolId).then((listData: any) => {
       setDataTable(
         listData.map((c: any) => {
           c.node.startDate = c.node.startDate ? moment(c.node.startDate).format('YYYY-MM-DD') : '';
@@ -27,7 +26,7 @@ const SchoolYearList = (props: any) => {
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllSchoolYear().then((listData: any) => {
+    props.getListAllSchoolYear(props?.loginReducer?.schoolId).then((listData: any) => {
       setDataTable(
         listData.map((c: any) => {
           c.node.startDate = c.node.startDate ? moment(c.node.startDate).format('YYYY-MM-DD') : '';
@@ -142,8 +141,8 @@ const SchoolYearList = (props: any) => {
 };
 const mapDispatchToProps = { ...schoolYearActions };
 
-const mapStateToProps = () => {
-  return {};
+const mapStateToProps = ({ loginReducer }: any) => {
+  return { loginReducer };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SchoolYearList);

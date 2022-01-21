@@ -48,7 +48,7 @@ const AdministratorCreateEdit = (props: any) => {
 
   useEffect(() => {
     cleanForm();
-    getDropdowns();
+    getDropdowns(props?.loginReducer?.schoolId);
     if (props?.data?.id) {
       if (props?.data?.school !== undefined && props?.data?.school != null) {
         setSchool({
@@ -158,8 +158,8 @@ const AdministratorCreateEdit = (props: any) => {
     }
   };
 
-  const getDropdowns = async () => {
-    props.getDropdownsAdministratorCampus('CampusAdministrator').then((data: any) => {
+  const getDropdowns = async (schoolId: any) => {
+    props.getDropdownsAdministratorCampus('CampusAdministrator', schoolId).then((data: any) => {
       setSchoolsList(
         data.dataSchools.edges.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };
@@ -401,8 +401,9 @@ const AdministratorCreateEdit = (props: any) => {
                     options={schoolsList}
                     value={school}
                     onChange={(selectedOption) => {
-                      setValue('schoolId', selectedOption?.key);
+                      setValue('schoolId', [selectedOption?.key]);
                       setSchool(selectedOption);
+                      getDropdowns(selectedOption?.key);
                     }}
                   />
                 </div>
@@ -422,7 +423,7 @@ const AdministratorCreateEdit = (props: any) => {
                     options={campusList}
                     value={campus}
                     onChange={(selectedOption) => {
-                      setValue('campusId', selectedOption?.key);
+                      setValue('campusId', [selectedOption?.key]);
                       setCampus(selectedOption);
                     }}
                   />

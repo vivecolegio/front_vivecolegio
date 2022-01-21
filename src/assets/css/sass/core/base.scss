@@ -49,8 +49,9 @@ body {
 }
 
 .fixed-background {
-  background: url('../../../../assets/img/login/bg.png');
+  //background: url('../../../../assets/img/login/bg.png');
   // background-size: cover;
+  background: linear-gradient(90deg, rgba(0,202,254,1) 42%, rgba(0,165,223,1) 87%);
   width: 100%;
   height: 100%;
   position: fixed;
@@ -211,7 +212,7 @@ hr {
 
 .logo-single {
   width: 110px;
-  height: 38px;
+  height: 50px;
   background: url($logo-path) no-repeat;
   background-position: center center;
   display: inline-block;

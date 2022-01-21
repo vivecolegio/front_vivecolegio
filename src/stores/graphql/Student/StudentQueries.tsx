@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const QUERY_GET_ALL_STUDENT = gql`
-  query getAllStudent {
-    data: getAllStudent(orderCreated: true, allData: true) {
+  query getAllStudent($campusId: String!,$schoolId: String!) {
+    data: getAllStudent(orderCreated: true, allData: true, campusId: $campusId, schoolId: $schoolId) {
       edges {
         cursor
         node {
@@ -37,6 +37,16 @@ export const QUERY_GET_STUDENT = gql`
       schoolId     
       campusId
       userId
+      academicGradeId
+      academicGrade {
+        id
+        name
+      }
+      courseId
+      course {
+        id
+        name
+      }
       school  {
         id
         name
@@ -85,7 +95,7 @@ export const QUERY_GET_STUDENT = gql`
 `;
 
 export const QUERY_GET_DROPDOWNS_STUDENT = gql`
-  query getDropdownsStudent ($type : String!) {
+  query getDropdownsStudent ($type : String!, $schoolId: String!) {
     dataSchools: getAllSchool(allData: false, orderCreated: false) {
       edges {
         node {
@@ -94,7 +104,7 @@ export const QUERY_GET_DROPDOWNS_STUDENT = gql`
         }
       }
     }
-    dataCampus: getAllCampus(allData: false, orderCreated: false) {
+    dataCampus: getAllCampus(allData: false, orderCreated: false, schoolId: $schoolId) {
       edges {
         node {
           id
@@ -126,6 +136,28 @@ export const QUERY_GET_DROPDOWNS_STUDENT = gql`
         }
       }
     }
+    dataGrades: getAllAcademicGrade(allData: false, orderCreated: false, schoolId: $schoolId) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
   }
 `;
+
+export const QUERY_GET_COURSES_OF_GRADES = gql`
+  query getCoursesOfGrade ($academicGradeId: String!, $campusId: String!) {    
+    dataCourses: getAllCourse(allData: false, orderCreated: false, academicGradeId: $academicGradeId, campusId: $campusId) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+  }
+`;
+
 

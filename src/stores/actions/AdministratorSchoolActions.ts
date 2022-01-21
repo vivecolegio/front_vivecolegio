@@ -4,13 +4,16 @@ import { MUTATION_CHANGE_ACTIVE_ADMINISTRATOR, MUTATION_CREATE_ADMINISTRATOR, MU
 import { QUERY_GET_ALL_ADMINISTRATOR, QUERY_GET_ADMINISTRATOR, QUERY_GET_DROPDOWNS_ADMINISTRATOR } from '../graphql/AdministratorSchool/AdministratorSchoolQueries';
 
 
-export const getListAllAdministrator = () => {
+export const getListAllAdministrator = (schoolId:string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
       await client
         .query({
           query: QUERY_GET_ALL_ADMINISTRATOR,
+          variables:{
+            schoolId
+          }
         })
         .then((result: any) => {
           listData = result.data.data.edges;

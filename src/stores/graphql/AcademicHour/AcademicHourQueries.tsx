@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const QUERY_GET_ALL_ACADEMIC_HOUR = gql`
-  query getAllAcademicHour {
-    data: getAllAcademicHour(orderCreated: true, allData: true) {
+  query getAllAcademicHour($campusId: String!) {
+    data: getAllAcademicHour(orderCreated: true, allData: true, campusId: $campusId) {
       edges {
         cursor
         node {
@@ -52,8 +52,8 @@ export const QUERY_GET_ACADEMIC_HOUR = gql`
 `;
 
 export const QUERY_GET_DROPDOWNS_ACADEMIC_HOUR = gql`
-  query getDropdownsAcademicHour {
-    dataCampus: getAllCampus(allData: false, orderCreated: false) {
+  query getDropdownsAcademicHour($schoolId: String!, $campusId: String!) {
+    dataCampus: getAllCampus(allData: false, orderCreated: false, schoolId: $schoolId) {
       edges {
         node {
           id
@@ -61,7 +61,7 @@ export const QUERY_GET_DROPDOWNS_ACADEMIC_HOUR = gql`
         }
       }
     }
-    dataAcademicDay: getAllAcademicDay(allData: false, orderCreated: false) {
+    dataAcademicDay: getAllAcademicDay(allData: false, orderCreated: false, campusId: $campusId) {
       edges {
         node {
           id

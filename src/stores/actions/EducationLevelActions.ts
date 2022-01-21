@@ -4,13 +4,16 @@ import { MUTATION_CHANGE_ACTIVE_EDUCATION_LEVEL, MUTATION_CREATE_EDUCATION_LEVEL
 import { QUERY_GET_ALL_EDUCATION_LEVEL, QUERY_GET_DROPDOWNS_EDUCATION_LEVEL, QUERY_GET_EDUCATION_LEVEL } from '../graphql/EducationLevel/EducationLevelQueries';
 
 
-export const getListAllEducationLevel = () => {
+export const getListAllEducationLevel = (schoolId:string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
       await client
         .query({
           query: QUERY_GET_ALL_EDUCATION_LEVEL,
+          variables:{
+            schoolId
+          }
         })
         .then((result: any) => {
           listData = result.data.data.edges;

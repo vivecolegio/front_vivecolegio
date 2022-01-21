@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const QUERY_GET_ALL_ASIGNATURE = gql`
-  query getAllAcademicAsignature {
-    data: getAllAcademicAsignature(orderCreated: true, allData: true) {
+  query getAllAcademicAsignature($schoolId: String!) {
+    data: getAllAcademicAsignature(orderCreated: true, allData: true, schoolId: $schoolId) {
       edges {
         cursor
         node {
@@ -48,7 +48,7 @@ export const QUERY_GET_ASIGNATURE = gql`
 `;
 
 export const QUERY_GET_DROPDOWNS_ASIGNATURE = gql`
-  query getDropdownsAcademicAsignature {
+  query getDropdownsAcademicAsignature($schoolId: String!) {
     dataSchools: getAllSchool(allData: false, orderCreated: false) {
       edges {
         node {
@@ -57,7 +57,7 @@ export const QUERY_GET_DROPDOWNS_ASIGNATURE = gql`
         }
       }
     }
-    dataAreas: getAllAcademicArea(allData: false, orderCreated: false) {
+    dataAreas: getAllAcademicArea(allData: false, orderCreated: false, schoolId: $schoolId) {
       edges {
         node {
           id

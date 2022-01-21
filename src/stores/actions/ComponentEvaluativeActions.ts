@@ -4,13 +4,16 @@ import { MUTATION_CHANGE_ACTIVE_COMPONENT_EVALUATIVE, MUTATION_CREATE_COMPONENT_
 import { QUERY_GET_ALL_COMPONENT_EVALUATIVE, QUERY_GET_COMPONENT_EVALUATIVE, QUERY_GET_DROPDOWNS_COMPONENT_EVALUATIVE } from '../graphql/ComponentEvaluative/ComponentEvaluativeQueries';
 
 
-export const getListAllComponentEvaluative = () => {
+export const getListAllComponentEvaluative = (schoolId:string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
       await client
         .query({
           query: QUERY_GET_ALL_COMPONENT_EVALUATIVE,
+          variables:{
+            schoolId
+          }
         })
         .then((result: any) => {
           listData = result.data.data.edges;

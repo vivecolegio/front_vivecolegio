@@ -47,7 +47,7 @@ const TeacherCreateEdit = (props: any) => {
 
   useEffect(() => {
     cleanForm();
-    getDropdowns();
+    getDropdowns(props?.loginReducer?.schoolId);
     if (props?.data?.id) {
       if (props?.data?.school !== undefined && props?.data?.school != null) {
         setSchool({
@@ -57,11 +57,9 @@ const TeacherCreateEdit = (props: any) => {
         });
       }
       if (props?.data?.campus !== undefined && props?.data?.campus != null) {
-        setCampus({
-          key: props?.data?.campus?.id,
-          label: props?.data?.campus?.name,
-          value: props?.data?.campus?.id,
-        });
+        setCampus(props?.data?.campus.map((c: any) => {
+          return { label: c.name, value: c.id, key: c.id };
+        }));
       }
       if (props?.data?.user !== undefined && props?.data?.user != null) {
         setNewUser({
@@ -140,25 +138,18 @@ const TeacherCreateEdit = (props: any) => {
     setBirtdate(null);
     setRole(null);
     setGender(null);
-    setDocumentType(null);
-    if (props?.loginReducer?.campusId && !props?.data?.id) {
-      // set value when register is new and sesion contains value
-      register('campusId', {
-        required: true,
-        value: props?.loginReducer?.campusId,
-      });
-    }
+    setDocumentType(null);  
     if (props?.loginReducer?.schoolId && !props?.data?.id) {
       // set value when register is new and sesion contains value
       register('schoolId', {
         required: true,
-        value: props?.loginReducer?.schoolId,
+        value: [props?.loginReducer?.schoolId],
       });
     }
   };
 
-  const getDropdowns = async () => {
-    props.getDropdownsTeacher('Teacher').then((data: any) => {
+  const getDropdowns = async (schoolId: any) => {
+    props.getDropdownsTeacher('Teacher', schoolId).then((data: any) => {
       setSchoolsList(
         data.dataSchools.edges.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };
@@ -399,35 +390,33 @@ const TeacherCreateEdit = (props: any) => {
                     options={schoolsList}
                     value={school}
                     onChange={(selectedOption) => {
-                      setValue('schoolId', selectedOption?.key);
+                      setValue('schoolId', [selectedOption?.key]);
                       setSchool(selectedOption);
+                      getDropdowns(selectedOption?.key);
                     }}
                   />
                 </div>
               ) : (
                 ''
               )}
-              {!props?.loginReducer?.campusId ? (
-                <div className="form-group">
-                  <Label>
-                    <IntlMessages id="menu.campus" />
-                  </Label>
-                  <Select
-                    placeholder={<IntlMessages id="forms.select" />}
-                    {...register('campusId', { required: true })}
-                    className="react-select"
-                    classNamePrefix="react-select"
-                    options={campusList}
-                    value={campus}
-                    onChange={(selectedOption) => {
-                      setValue('campusId', selectedOption?.key);
-                      setCampus(selectedOption);
-                    }}
-                  />
-                </div>
-              ) : (
-                ''
-              )}
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="menu.campus" />
+                </Label>        
+                <Select
+                  placeholder={<IntlMessages id="forms.select" />}
+                  isMulti 
+                  {...register('campusId', { required: true })}
+                  className="react-select"
+                  classNamePrefix="react-select"
+                  options={campusList}
+                  value={campus}
+                  onChange={(selectedOption: any) => {
+                    setValue('campusId', selectedOption.map((c:any)=>{return c.key}));
+                    setCampus(selectedOption);                    
+                  }}
+                />
+              </div>
             </ModalBody>
             {props?.data?.id ? (
               <ModalFooter className="p-3">

@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const QUERY_GET_ALL_SPECIALITY = gql`
-  query getAllSpecialty {
-    data: getAllSpecialty(orderCreated: true, allData: true) {
+  query getAllSpecialty($schoolId: String!) {
+    data: getAllSpecialty(orderCreated: true, allData: true, schoolId: $schoolId) {
       edges {
         cursor
         node {
@@ -47,7 +47,7 @@ export const QUERY_GET_SPECIALITY = gql`
 `;
 
 export const QUERY_GET_DROPDOWNS_SPECIALITY = gql`
-  query getDropdownsSpeciality {
+  query getDropdownsSpeciality($schoolId: String!) {
     dataSchools: getAllSchool(allData: false, orderCreated: false) {
       edges {
         node {
@@ -56,7 +56,7 @@ export const QUERY_GET_DROPDOWNS_SPECIALITY = gql`
         }
       }
     }
-    dataModalities: getAllModality(allData: false, orderCreated: false) {
+    dataModalities: getAllModality(allData: false, orderCreated: false, schoolId: $schoolId) {
       edges {
         node {
           id

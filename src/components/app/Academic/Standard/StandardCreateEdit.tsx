@@ -90,7 +90,7 @@ const StandardCreateEdit = (props: any) => {
   };
 
   const getDropdowns = async () => {
-    props.getDropdownsAcademicStandard().then((data: any) => {
+    props.getDropdownsAcademicStandard(props?.loginReducer?.schoolId).then((data: any) => {
       setSchoolList(
         data.dataSchools.edges.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };

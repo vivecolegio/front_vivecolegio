@@ -4,13 +4,16 @@ import { MUTATION_CHANGE_ACTIVE_ADMINISTRATOR_CAMPUS, MUTATION_CREATE_ADMINISTRA
 import { QUERY_GET_ALL_ADMINISTRATOR_CAMPUS, QUERY_GET_ADMINISTRATOR_CAMPUS, QUERY_GET_DROPDOWNS_ADMINISTRATOR } from '../graphql/AdministratorCampus/AdministratorCampusQueries';
 
 
-export const getListAllAdministratorCampus = () => {
+export const getListAllAdministratorCampus = (schoolId:string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
       await client
         .query({
           query: QUERY_GET_ALL_ADMINISTRATOR_CAMPUS,
+          variables:{
+            schoolId
+          }
         })
         .then((result: any) => {
           listData = result.data.data.edges;
@@ -181,7 +184,7 @@ export const deleteAdministrator = (id: any, showToast: boolean) => {
   };
 };
 
-export const getDropdownsAdministratorCampus = (type: string) => {
+export const getDropdownsAdministratorCampus = (type: string, schoolId:string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
@@ -189,7 +192,8 @@ export const getDropdownsAdministratorCampus = (type: string) => {
         .query({
           query: QUERY_GET_DROPDOWNS_ADMINISTRATOR,
           variables:{
-            type
+            type,
+            schoolId
           }
         })
         .then((result: any) => {

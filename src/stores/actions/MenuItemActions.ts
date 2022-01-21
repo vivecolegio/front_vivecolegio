@@ -4,13 +4,16 @@ import { MUTATION_CHANGE_ACTIVE_MENU_ITEM, MUTATION_CREATE_MENU_ITEM, MUTATION_D
 import { QUERY_GET_ALL_MENU_ITEM, QUERY_GET_DROPDOWNS_SUBMENUS, QUERY_GET_MENU_ITEM } from '../graphql/MenuItem/MenuItemQueries';
 
 
-export const getListAllMenuItem = () => {
+export const getListAllMenuItem = (menuId:string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
       await client
         .query({
           query: QUERY_GET_ALL_MENU_ITEM,
+          variables:{
+            menuId
+          }
         })
         .then((result: any) => {
           listData = result.data.data.edges;

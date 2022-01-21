@@ -17,6 +17,7 @@ import AdministratorSchoolList from '../components/app/AdministratorsSchool/Admi
 import CampusList from '../components/app/Campus/CampusList';
 import ComponentEvaluativeList from '../components/app/ComponentEvaluative/ComponentEvaluativeList';
 import CoordinatorCampusList from '../components/app/CoordinatorCampus/CoordinatorCampusList';
+import CourseList from '../components/app/Course/CourseList';
 import DocumentTypeList from '../components/app/DocumentType/DocumentTypeList';
 import EducationLevelList from '../components/app/EducationLevel/EducationLevelList';
 import GenderList from '../components/app/Gender/GenderList';
@@ -33,8 +34,11 @@ import MenuList from '../components/app/Menu/MenuList';
 import ModalityList from '../components/app/Modality/ModalityList';
 import ModuleList from '../components/app/Module/ModuleList';
 import MunicipalityList from '../components/app/Municipality/MunicipalityList';
+import NotificationDetail from '../components/app/NotificationDetail/NotificationDetail';
 import Profile from '../components/app/Profile/Profile';
 import RoleList from '../components/app/Role/RoleList';
+import OfficeSchedule from '../components/app/Schedule/OfficeSchedule';
+import SchoolSchedule from '../components/app/Schedule/SchoolSchedule';
 import SchoolList from '../components/app/School/SchoolList';
 import SchoolYearList from '../components/app/SchoolYear/SchoolYearList';
 import SpecialityList from '../components/app/Speciality/SpecialityList';
@@ -96,55 +100,58 @@ const App = (props: any) => {
               <Routes>
                 <Route path="/" element={<Login/>} />
                 <Route path="/login" element={<Login/>} />
-                <Route path="/home" element={permissions ? <Home/> : <Login/>} />
+                <Route path="/home" element={ <Home/> } />
                 {permissions ? (
                   <>                  
-                    <Route path="/profile" element={permissions ? <Profile/> : <Login/>} />
+                    <Route path="/profile" element={ <Profile/> } />
+                    <Route path="/mySchedule" element={ <OfficeSchedule/> } />
+                    <Route path="/notifications" element={ <NotificationDetail/> } />
                     {/* ADMIN */}
-                    <Route path="/roles" element={permissions ? <RoleList/> : <Login/> }/>
-                    <Route path="/users" element={permissions ? <UserList/> : <Login/>} />
-                    <Route path="/modules" element={permissions ? <ModuleList/> : <Login/>} />
-                    <Route path="/menus" element={permissions ? <MenuList/> : <Login/>} />
-                    <Route path="/submenus" element={permissions ? <SubmenuList/>: <Login/>} /> 
-                    <Route path="/submenus/:idMenu" element={permissions ? <SubmenuList/>: <Login/>} /> 
-                    <Route path="/genders" element={permissions ? <GenderList/> : <Login/>} />
-                    <Route path="/documentTypes" element={permissions ? <DocumentTypeList/> : <Login/>} />
-                    <Route path="/municipality" element={permissions ? <MunicipalityList/> : <Login/>} />
+                    <Route path="/roles" element={ <RoleList/>  }/>
+                    <Route path="/users" element={ <UserList/> } />
+                    <Route path="/modules" element={ <ModuleList/> } />
+                    <Route path="/menus" element={ <MenuList/> } />
+                    <Route path="/submenus" element={ <SubmenuList/>} /> 
+                    <Route path="/submenus/:idMenu" element={ <SubmenuList/>} /> 
+                    <Route path="/genders" element={ <GenderList/> } />
+                    <Route path="/documentTypes" element={ <DocumentTypeList/> } />
+                    <Route path="/municipality" element={ <MunicipalityList/> } />
                     {/* ADMIN */}     
                     {/* PERSONAL */}                
-                    <Route path="/schools" element={permissions ? <SchoolList/> : <Login/>} />
-                    <Route path="/campus" element={permissions ? <CampusList/> : <Login/>} />
-                    <Route path="/students" element={permissions ? <StudentsList/> : <Login/>} />
-                    <Route path="/teachers" element={permissions ? <TeacherList/> : <Login/>} />
-                    <Route path="/guardians" element={permissions ? <GuardianList/> : <Login/>} />
-                    <Route path="/administratorsSchool" element={permissions ? <AdministratorSchoolList/> : <Login/>} />
-                    <Route path="/administratorsCampus" element={permissions ? <AdministratorCampusList/> : <Login/>} />
-                    <Route path="/coordinatorsCampus" element={permissions ? <CoordinatorCampusList/> : <Login/>} />
+                    <Route path="/schools" element={ <SchoolList/> } />
+                    <Route path="/campus" element={ <CampusList/> } />
+                    <Route path="/students" element={ <StudentsList/> } />
+                    <Route path="/teachers" element={ <TeacherList/> } />
+                    <Route path="/guardians" element={ <GuardianList/> } />
+                    <Route path="/administratorsSchool" element={ <AdministratorSchoolList/> } />
+                    <Route path="/administratorsCampus" element={ <AdministratorCampusList/> } />
+                    <Route path="/coordinatorsCampus" element={ <CoordinatorCampusList/> } />
                     {/* PERSONAL */}
                     {/* GENERAL ACADEMIC */}        
-                    <Route path="/general/areas" element={permissions ? <GeneralAreaList/> : <Login/>} />
-                    <Route path="/general/asignatures" element={permissions ? <GeneralAsignatureList/> : <Login/>} />
-                    <Route path="/general/cycles" element={permissions ? <GeneralCycleList/> : <Login/>} />
-                    <Route path="/general/performanceLevel" element={permissions ? <GeneralPerformanceLevelList/> : <Login/>} />
-                    <Route path="/general/standardAcademic" element={permissions ? <GeneralStandardList/> : <Login/>} />
-                    <Route path="/general/grades" element={permissions ? <GeneralGradeList/> : <Login/>} />
+                    <Route path="/general/areas" element={ <GeneralAreaList/> } />
+                    <Route path="/general/asignatures" element={ <GeneralAsignatureList/> } />
+                    <Route path="/general/cycles" element={ <GeneralCycleList/> } />
+                    <Route path="/general/performanceLevel" element={ <GeneralPerformanceLevelList/> } />
+                    <Route path="/general/standardAcademic" element={ <GeneralStandardList/> } />
+                    <Route path="/general/grades" element={ <GeneralGradeList/> } />
                     {/* GENERAL ACADEMIC */} 
                     {/* ACADEMIC */}        
-                    <Route path="/areas" element={permissions ? <AreaList/> : <Login/>} />
-                    <Route path="/asignatures" element={permissions ? <AsignatureList/> : <Login/>} />
-                    <Route path="/performanceLevel" element={permissions ? <PerformanceLevelList/> : <Login/>} />
-                    <Route path="/standardAcademic" element={permissions ? <StandardList/> : <Login/>} />
-                    <Route path="/grades" element={permissions ? <GradeList/> : <Login/>} />
-                    <Route path="/educationLevel" element={permissions ? <EducationLevelList/> : <Login/>} />
-                    <Route path="/evaluativeComponent" element={permissions ? <ComponentEvaluativeList/> : <Login/>} />
-                    <Route path="/modality" element={permissions ? <ModalityList/> : <Login/>} />
-                    <Route path="/schoolYear" element={permissions ? <SchoolYearList/> : <Login/>} />
-                    <Route path="/speciality" element={permissions ? <SpecialityList/> : <Login/>} />
-                    <Route path="/periodAcademic" element={permissions ? <AcademicPeriodList/> : <Login/>} />
-                    <Route path="/indicatorAcademic" element={permissions ? <AcademicIndicatorList/> : <Login/>} />
-                    <Route path="/gradeAssignment" element={permissions ? <GradeAssignmentList/> : <Login/>} />
-                    <Route path="/academicDay" element={permissions ? <AcademicDayList/> : <Login/>} />
-                    <Route path="/academicHour" element={permissions ? <AcademicHourList/> : <Login/>} />
+                    <Route path="/areas" element={ <AreaList/> } />
+                    <Route path="/asignatures" element={ <AsignatureList/> } />
+                    <Route path="/performanceLevel" element={ <PerformanceLevelList/> } />
+                    <Route path="/standardAcademic" element={ <StandardList/> } />
+                    <Route path="/grades" element={ <GradeList/> } />
+                    <Route path="/educationLevel" element={ <EducationLevelList/> } />
+                    <Route path="/evaluativeComponent" element={ <ComponentEvaluativeList/> } />
+                    <Route path="/modality" element={ <ModalityList/> } />
+                    <Route path="/schoolYear" element={ <SchoolYearList/> } />
+                    <Route path="/speciality" element={ <SpecialityList/> } />
+                    <Route path="/periodAcademic" element={ <AcademicPeriodList/> } />
+                    <Route path="/indicatorAcademic" element={ <AcademicIndicatorList/> } />
+                    <Route path="/gradeAssignment" element={ <GradeAssignmentList/> } />
+                    <Route path="/academicDay" element={ <AcademicDayList/> } />
+                    <Route path="/academicHour" element={ <AcademicHourList/> } />
+                    <Route path="/course/:academicGradeId" element={ <CourseList/> } />
                     {/* ACADEMIC */} 
                   </>
                 ) : (

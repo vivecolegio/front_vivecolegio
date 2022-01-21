@@ -61,7 +61,7 @@ const AsignatureCreateEdit = (props: any) => {
   };
 
   const getDropdowns = async () => {
-    props.getDropdownsAcademicAsignature().then((data: any) => {
+    props.getDropdownsAcademicAsignature(props?.loginReducer?.schoolId).then((data: any) => {
       setSchoolList(
         data.dataSchools.edges.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };

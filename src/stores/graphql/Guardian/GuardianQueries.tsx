@@ -81,7 +81,7 @@ export const QUERY_GET_GUARDIAN = gql`
 `;
 
 export const QUERY_GET_DROPDOWNS_GUARDIAN = gql`
-  query getDropdownsGuardian ($type : String!) {
+  query getDropdownsGuardian ($type : String!, $schoolId: String!) {
     dataSchools: getAllSchool(allData: false, orderCreated: false) {
       edges {
         node {
@@ -90,7 +90,7 @@ export const QUERY_GET_DROPDOWNS_GUARDIAN = gql`
         }
       }
     }
-    dataCampus: getAllCampus(allData: false, orderCreated: false) {
+    dataCampus: getAllCampus(allData: false, orderCreated: false, schoolId: $schoolId) {
       edges {
         node {
           id

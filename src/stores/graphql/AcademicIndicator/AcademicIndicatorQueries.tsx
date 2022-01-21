@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const QUERY_GET_ALL_ACADEMIC_INDICATOR = gql`
-  query getAllAcademicIndicator {
-    data: getAllAcademicIndicator(orderCreated: true, allData: true) {
+  query getAllAcademicIndicator($schoolId: String!) {
+    data: getAllAcademicIndicator(orderCreated: true, allData: true, schoolId: $schoolId) {
       edges {
         cursor
         node {
@@ -55,7 +55,7 @@ export const QUERY_GET_ACADEMIC_INDICATOR = gql`
 `;
 
 export const QUERY_GET_DROPDOWNS_ACADEMIC_INDICATOR = gql`
-  query getDropdownsAcademicIndicator {
+  query getDropdownsAcademicIndicator($schoolId: String!) {
     dataSchools: getAllSchool(allData: false, orderCreated: false) {
       edges {
         node {
@@ -64,7 +64,7 @@ export const QUERY_GET_DROPDOWNS_ACADEMIC_INDICATOR = gql`
         }
       }
     }
-    dataStandards: getAllAcademicStandard(allData: false, orderCreated: false) {
+    dataStandards: getAllAcademicStandard(allData: false, orderCreated: false, schoolId: $schoolId) {
       edges {
         node {
           id
@@ -72,7 +72,7 @@ export const QUERY_GET_DROPDOWNS_ACADEMIC_INDICATOR = gql`
         }
       }
     }
-    dataAsignatures: getAllAcademicAsignature(allData: false, orderCreated: false) {
+    dataAsignatures: getAllAcademicAsignature(allData: false, orderCreated: false, schoolId: $schoolId) {
       edges {
         node {
           id
@@ -80,7 +80,7 @@ export const QUERY_GET_DROPDOWNS_ACADEMIC_INDICATOR = gql`
         }
       }
     }
-    dataGrades: getAllAcademicGrade(allData: false, orderCreated: false) {
+    dataGrades: getAllAcademicGrade(allData: false, orderCreated: false, schoolId: $schoolId) {
       edges {
         node {
           id

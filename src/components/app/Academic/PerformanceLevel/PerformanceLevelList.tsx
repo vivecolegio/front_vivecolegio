@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { COLUMN_LIST } from '../../../../constants/PerformanceLevel/performanceLevelConstants';
 import { createNotification } from '../../../../helpers/Notification';
 import * as performanceLevelActions from '../../../../stores/actions/Academic/PerformanceLevelActions';
-import AddNewModal from '../../../common/Data/AddNewModal';
 import DataList from '../../../common/Data/DataList';
 import PerformanceLevelCreateEdit from './PerformanceLevelCreateEdit';
 
@@ -14,13 +13,13 @@ const PerformanceLevelList = (props: any) => {
 
   const [data, setData] = useState(null);
   useEffect(() => {
-    props.getListAllPerformanceLevel().then((listData: any) => {
+    props.getListAllPerformanceLevel(props?.loginReducer?.schoolId).then((listData: any) => {
       setDataTable(listData);
     });
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllPerformanceLevel().then((listData: any) => {
+    props.getListAllPerformanceLevel(props?.loginReducer?.schoolId).then((listData: any) => {
       setDataTable(listData);
     });
   };
@@ -129,8 +128,8 @@ const PerformanceLevelList = (props: any) => {
 };
 const mapDispatchToProps = { ...performanceLevelActions };
 
-const mapStateToProps = () => {
-  return {};
+const mapStateToProps = ({ loginReducer }: any) => {
+  return { loginReducer };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PerformanceLevelList);

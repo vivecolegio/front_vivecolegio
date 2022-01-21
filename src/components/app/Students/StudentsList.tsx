@@ -1,13 +1,12 @@
 /* eslint-disable no-await-in-loop */
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-
 import { COLUMN_LIST } from '../../../constants/Student/studentConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as studentActions from '../../../stores/actions/StudentActions';
-import AddNewModal from '../../common/Data/AddNewModal';
 import DataList from '../../common/Data/DataList';
 import StudentCreateEdit from './StudentsCreateEdit';
+
 
 const StudentList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
@@ -16,7 +15,7 @@ const StudentList = (props: any) => {
 
   const [data, setData] = useState(null);
   useEffect(() => {
-    props.getListAllStudent().then((listData: any) => {
+    props.getListAllStudent(props?.loginReducer?.campusId, props?.loginReducer?.schoolId).then((listData: any) => {
       setDataTable(listData.map((c:any)=>{
         c.node.name = c.node.user ? c.node.user.name : ''; 
         c.node.lastName = c.node.user ? c.node.user.lastName : ''; 
@@ -28,7 +27,7 @@ const StudentList = (props: any) => {
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllStudent().then((listData: any) => {     
+    props.getListAllStudent(props?.loginReducer?.campusId, props?.loginReducer?.schoolId).then((listData: any) => {     
       setDataTable(listData.map((c:any)=>{
         c.node.name = c.node.user ? c.node.user.name : ''; 
         c.node.lastName = c.node.user ? c.node.user.lastName : ''; 
@@ -139,8 +138,8 @@ const StudentList = (props: any) => {
 };
 const mapDispatchToProps = { ...studentActions };
 
-const mapStateToProps = () => {
-  return {};
+const mapStateToProps = ({ loginReducer }: any) => {
+  return { loginReducer };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(StudentList);

@@ -22,9 +22,13 @@ const StudentCreateEdit = (props: any) => {
   const [rolesList, setRolesList] = useState(null);
   const [documentTypesList, setDocumentTypesList] = useState(null);
   const [gendersList, setGendersList] = useState(null);
+  const [gradeList, setGradesList] = useState(null);
+  const [courseList, setCourseList] = useState(null);
   const [birtdate, setBirtdate] = useState(null);
   const [role, setRole] = useState(null);
   const [gender, setGender] = useState(null);
+  const [grade, setGrade] = useState(null);
+  const [course, setCourse] = useState(null);
   const [documentType, setDocumentType] = useState(null);
   const [newUser, setNewUser] = useState({
     name: null,
@@ -48,7 +52,7 @@ const StudentCreateEdit = (props: any) => {
 
   useEffect(() => {
     cleanForm();
-    getDropdowns();
+    getDropdowns(props?.loginReducer?.schoolId);
     if (props?.data?.id) {
       if (props?.data?.school !== undefined && props?.data?.school != null) {
         setSchool({
@@ -62,6 +66,20 @@ const StudentCreateEdit = (props: any) => {
           key: props?.data?.campus.id,
           label: props?.data?.campus.name,
           value: props?.data?.campus.id,
+        });
+      }
+      if (props?.data?.academicGrade !== undefined && props?.data?.academicGrade != null) {
+        setGrade({
+          key: props?.data?.academicGrade.id,
+          label: props?.data?.academicGrade.name,
+          value: props?.data?.academicGrade.id,
+        });
+      }
+      if (props?.data?.course !== undefined && props?.data?.course != null) {
+        setCourse({
+          key: props?.data?.course.id,
+          label: props?.data?.course.name,
+          value: props?.data?.course.id,
         });
       }
       if (props?.data?.user !== undefined && props?.data?.user != null) {
@@ -158,8 +176,8 @@ const StudentCreateEdit = (props: any) => {
     }
   };
 
-  const getDropdowns = async () => {
-    props.getDropdownsStudent('Student').then((data: any) => {
+  const getDropdowns = async (schoolId: any) => {
+    props.getDropdownsStudent('Student', schoolId).then((data: any) => {
       setSchoolsList(
         data.dataSchools.edges.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };
@@ -185,6 +203,21 @@ const StudentCreateEdit = (props: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };
         }),
       );
+      setGradesList(
+        data.dataGrades.edges.map((c: any) => {
+          return { label: c.node.name, value: c.node.id, key: c.node.id };
+        }),
+      );
+    });
+  };
+
+  const getCourses = async (academicGradeId: any) => {
+    props.getCoursesOfGrade(academicGradeId, props?.loginReducer?.campusId).then((data: any) => {
+      setCourseList(
+        data.dataCourses.edges.map((c: any) => {
+          return { label: c.node.name, value: c.node.id, key: c.node.id };
+        }),
+      );
     });
   };
 
@@ -195,6 +228,14 @@ const StudentCreateEdit = (props: any) => {
   register('campusId', {
     required: true,
     value: props?.data?.id ? props?.data?.campusId : '',
+  });
+  register('academicGradeId', {
+    required: true,
+    value: props?.data?.id ? props?.data?.academicGradeId : '',
+  });
+  register('courseId', {
+    required: true,
+    value: props?.data?.id ? props?.data?.courseId : '',
   });
   register('newUser', {
     required: true,
@@ -387,6 +428,41 @@ const StudentCreateEdit = (props: any) => {
                   }}
                 />
               </div>
+              <div className="form-group">
+                  <Label>
+                    <IntlMessages id="forms.grade" />
+                  </Label>
+                  <Select
+                    placeholder={<IntlMessages id="forms.select" />}
+                    {...register('academicGradeId', { required: true })}
+                    className="react-select"
+                    classNamePrefix="react-select"
+                    options={gradeList}
+                    value={grade}
+                    onChange={(selectedOption) => {
+                      setValue('academicGradeId', selectedOption?.key);
+                      setGrade(selectedOption);
+                      getCourses(selectedOption?.key);
+                    }}
+                  />
+                </div>
+                <div className="form-group">
+                  <Label>
+                    <IntlMessages id="forms.course" />
+                  </Label>
+                  <Select
+                    placeholder={<IntlMessages id="forms.select" />}
+                    {...register('courseId', { required: true })}
+                    className="react-select"
+                    classNamePrefix="react-select"
+                    options={courseList}
+                    value={course}
+                    onChange={(selectedOption) => {
+                      setValue('courseId', selectedOption?.key);
+                      setCourse(selectedOption);
+                    }}
+                  />
+                </div>
               {!props?.loginReducer?.schoolId ? (
                 <div className="form-group">
                   <Label>
@@ -400,8 +476,9 @@ const StudentCreateEdit = (props: any) => {
                     options={schoolsList}
                     value={school}
                     onChange={(selectedOption) => {
-                      setValue('schoolId', selectedOption?.key);
+                      setValue('schoolId', [selectedOption?.key]);
                       setSchool(selectedOption);
+                      getDropdowns(selectedOption?.key);
                     }}
                   />
                 </div>
@@ -421,8 +498,9 @@ const StudentCreateEdit = (props: any) => {
                     options={campusList}
                     value={campus}
                     onChange={(selectedOption) => {
-                      setValue('campusId', selectedOption?.key);
+                      setValue('campusId', [selectedOption?.key]);
                       setCampus(selectedOption);
+                      getDropdowns(selectedOption?.key);
                     }}
                   />
                 </div>

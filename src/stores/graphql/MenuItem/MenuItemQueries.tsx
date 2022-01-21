@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const QUERY_GET_ALL_MENU_ITEM = gql`
-  query getAllMenuItem {
-    data: getAllMenuItem(orderCreated: true, allData: true) {
+  query getAllMenuItem($menuId: String!) {
+    data: getAllMenuItem(orderCreated: true, allData: true, menuId: $menuId) {
       edges {
         cursor
         node {
@@ -24,6 +24,7 @@ export const QUERY_GET_MENU_ITEM = gql`
       name
       version
       icon
+      order
       createAction
       deleteAction
       updateAction

@@ -4,13 +4,16 @@ import { MUTATION_CHANGE_ACTIVE_SPECIALITY, MUTATION_CREATE_SPECIALITY, MUTATION
 import { QUERY_GET_ALL_SPECIALITY, QUERY_GET_DROPDOWNS_SPECIALITY, QUERY_GET_SPECIALITY } from '../graphql/Speciality/SpecialityQueries';
 
 
-export const getListAllSpeciality = () => {
+export const getListAllSpeciality = (schoolId:string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
       await client
         .query({
           query: QUERY_GET_ALL_SPECIALITY,
+          variables:{
+            schoolId
+          }
         })
         .then((result: any) => {
           listData = result.data.data.edges;
@@ -181,13 +184,16 @@ export const deleteSpeciality = (id: any, showToast: boolean) => {
   };
 };
 
-export const getDropdownsSpeciality = () => {
+export const getDropdownsSpeciality = (schoolId:string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
       await client
         .query({
           query: QUERY_GET_DROPDOWNS_SPECIALITY,
+          variables:{
+            schoolId
+          }
         })
         .then((result: any) => {
           listData = result.data;

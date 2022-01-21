@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const QUERY_GET_ALL_ADMINISTRATOR = gql`
-  query getAllSchoolAdministrator {
-    data: getAllSchoolAdministrator(orderCreated: true, allData: true) {
+  query getAllSchoolAdministrator($schoolId: String!) {
+    data: getAllSchoolAdministrator(orderCreated: true, allData: true, schoolId: $schoolId) {
       edges {
         cursor
         node {

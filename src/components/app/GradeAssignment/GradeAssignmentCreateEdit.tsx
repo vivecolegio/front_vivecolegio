@@ -74,7 +74,7 @@ const GradeAssignmentCreateEdit = (props: any) => {
   };
 
   const getDropdowns = async () => {
-    props.getDropdownsGradeAssignment().then((data: any) => {
+    props.getDropdownsGradeAssignment(props?.loginReducer?.schoolId).then((data: any) => {
       setSchoolsList(
         data.dataSchools.edges.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };

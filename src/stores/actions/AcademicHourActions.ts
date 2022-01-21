@@ -4,13 +4,16 @@ import { MUTATION_CHANGE_ACTIVE_ACADEMIC_HOUR, MUTATION_CREATE_ACADEMIC_HOUR, MU
 import { QUERY_GET_ALL_ACADEMIC_HOUR, QUERY_GET_ACADEMIC_HOUR, QUERY_GET_DROPDOWNS_ACADEMIC_HOUR } from '../graphql/AcademicHour/AcademicHourQueries';
 
 
-export const getListAllAcademicHour = () => {
+export const getListAllAcademicHour = (campusId:string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
       await client
         .query({
           query: QUERY_GET_ALL_ACADEMIC_HOUR,
+          variables:{
+            campusId
+          }
         })
         .then((result: any) => {
           listData = result.data.data.edges;
@@ -181,13 +184,17 @@ export const deleteAcademicHour = (id: any, showToast: boolean) => {
   };
 };
 
-export const getDropdownsAcademicHour = () => {
+export const getDropdownsAcademicHour = (schoolId: string, campusId: string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
       await client
         .query({
           query: QUERY_GET_DROPDOWNS_ACADEMIC_HOUR,
+          variables:{
+            schoolId,
+            campusId
+          }
         })
         .then((result: any) => {
           listData = result.data;

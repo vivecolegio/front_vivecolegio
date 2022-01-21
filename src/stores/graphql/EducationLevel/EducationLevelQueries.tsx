@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const QUERY_GET_ALL_EDUCATION_LEVEL = gql`
-  query getAllEducationLevel {
-    data: getAllEducationLevel(orderCreated: true, allData: true) {
+  query getAllEducationLevel($schoolId: String!) {
+    data: getAllEducationLevel(orderCreated: true, allData: true, schoolId: $schoolId) {
       edges {
         cursor
         node {

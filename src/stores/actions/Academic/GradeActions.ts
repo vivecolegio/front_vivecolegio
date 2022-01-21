@@ -4,13 +4,16 @@ import { MUTATION_CHANGE_ACTIVE_GRADE, MUTATION_CREATE_GRADE, MUTATION_DELETE_GR
 import { QUERY_GET_ALL_GRADE, QUERY_GET_DROPDOWNS_GRADE, QUERY_GET_GRADE } from '../../graphql/Academic/Grade/GradeQueries';
 
 
-export const getListAllGrade = () => {
+export const getListAllGrade = (schoolId:string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
       await client
         .query({
           query: QUERY_GET_ALL_GRADE,
+          variables:{
+            schoolId
+          }
         })
         .then((result: any) => {
           listData = result.data.data.edges;
@@ -181,13 +184,16 @@ export const deleteGrade = (id: any, showToast: boolean) => {
   };
 };
 
-export const getDropdownsAcademicGrade = () => {
+export const getDropdownsAcademicGrade = (schoolId:string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
       await client
         .query({
           query: QUERY_GET_DROPDOWNS_GRADE,
+          variables:{
+            schoolId
+          }
         })
         .then((result: any) => {
           listData = result.data;

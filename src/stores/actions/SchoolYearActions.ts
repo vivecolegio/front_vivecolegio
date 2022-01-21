@@ -4,13 +4,16 @@ import { MUTATION_CHANGE_ACTIVE_SCHOOL_YEAR, MUTATION_CREATE_SCHOOL_YEAR, MUTATI
 import { QUERY_GET_ALL_SCHOOL_YEAR, QUERY_GET_DROPDOWNS_SCHOOL_YEAR, QUERY_GET_SCHOOL_YEAR } from '../graphql/SchoolYear/SchoolYearQueries';
 
 
-export const getListAllSchoolYear = () => {
+export const getListAllSchoolYear = (schoolId:string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
       await client
         .query({
           query: QUERY_GET_ALL_SCHOOL_YEAR,
+          variables:{
+            schoolId
+          }
         })
         .then((result: any) => {
           listData = result.data.data.edges;

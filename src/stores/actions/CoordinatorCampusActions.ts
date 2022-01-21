@@ -4,13 +4,16 @@ import { MUTATION_CHANGE_ACTIVE_COORDINATOR_CAMPUS, MUTATION_CREATE_COORDINATOR_
 import { QUERY_GET_ALL_COORDINATOR_CAMPUS, QUERY_GET_COORDINATOR_CAMPUS, QUERY_GET_DROPDOWNS_COORDINATOR } from '../graphql/CoordinatorCampus/CoordinatorCampusQueries';
 
 
-export const getListAllCoordinatorCampus = () => {
+export const getListAllCoordinatorCampus = (schoolId:string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
       await client
         .query({
           query: QUERY_GET_ALL_COORDINATOR_CAMPUS,
+          variables:{
+            schoolId
+          }
         })
         .then((result: any) => {
           listData = result.data.data.edges;
@@ -181,7 +184,7 @@ export const deleteCoordinator = (id: any, showToast: boolean) => {
   };
 };
 
-export const getDropdownsCoordinatorCampus = (type: string) => {
+export const getDropdownsCoordinatorCampus = (type: string, schoolId:string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
@@ -189,7 +192,8 @@ export const getDropdownsCoordinatorCampus = (type: string) => {
         .query({
           query: QUERY_GET_DROPDOWNS_COORDINATOR,
           variables:{
-            type
+            type,
+            schoolId
           }
         })
         .then((result: any) => {

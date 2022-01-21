@@ -14,7 +14,7 @@ const TeacherList = (props: any) => {
 
   const [data, setData] = useState(null);
   useEffect(() => {
-    props.getListAllTeacher().then((listData: any) => {
+    props.getListAllTeacher(props?.loginReducer?.campusId, props?.loginReducer?.schoolId).then((listData: any) => {
       setDataTable(
         listData.map((c: any) => {
           c.node.name = c.node.user ? c.node.user.name : '';
@@ -28,7 +28,7 @@ const TeacherList = (props: any) => {
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllTeacher().then((listData: any) => {
+    props.getListAllTeacher(props?.loginReducer?.campusId, props?.loginReducer?.schoolId).then((listData: any) => {
       setDataTable(
         listData.map((c: any) => {
           c.node.name = c.node.user ? c.node.user.name : '';
@@ -149,8 +149,8 @@ const TeacherList = (props: any) => {
 };
 const mapDispatchToProps = { ...teacherActions };
 
-const mapStateToProps = () => {
-  return {};
+const mapStateToProps = ({ loginReducer }: any) => {
+  return { loginReducer };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TeacherList);

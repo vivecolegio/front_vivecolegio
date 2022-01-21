@@ -4,13 +4,16 @@ import { MUTATION_CHANGE_ACTIVE_ACADEMIC_INDICATOR, MUTATION_CREATE_ACADEMIC_IND
 import { QUERY_GET_ALL_ACADEMIC_INDICATOR, QUERY_GET_ACADEMIC_INDICATOR, QUERY_GET_DROPDOWNS_ACADEMIC_INDICATOR } from '../graphql/AcademicIndicator/AcademicIndicatorQueries';
 
 
-export const getListAllAcademicIndicator = () => {
+export const getListAllAcademicIndicator = (schoolId:string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
       await client
         .query({
           query: QUERY_GET_ALL_ACADEMIC_INDICATOR,
+          variables:{
+            schoolId
+          }
         })
         .then((result: any) => {
           listData = result.data.data.edges;
@@ -181,13 +184,16 @@ export const deleteAcademicIndicator = (id: any, showToast: boolean) => {
   };
 };
 
-export const getDropdownsAcademicIndicator = () => {
+export const getDropdownsAcademicIndicator = (schoolId:string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
       await client
         .query({
           query: QUERY_GET_DROPDOWNS_ACADEMIC_INDICATOR,
+          variables:{
+            schoolId
+          }
         })
         .then((result: any) => {
           listData = result.data;

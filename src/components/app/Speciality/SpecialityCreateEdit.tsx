@@ -59,11 +59,11 @@ const SpecialityCreateEdit = (props: any) => {
         required: true,
         value: props?.loginReducer?.schoolId,
       });
-    }
+    }    
   };
 
   const getDropdowns = async () => {
-    props.getDropdownsSpeciality().then((data: any) => {
+    props.getDropdownsSpeciality(props?.loginReducer?.schoolId).then((data: any) => {
       setSchoolList(
         data.dataSchools.edges.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };
