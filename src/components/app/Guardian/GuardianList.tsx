@@ -14,7 +14,7 @@ const GuardianList = (props: any) => {
 
   const [data, setData] = useState(null);
   useEffect(() => {
-    props.getListAllGuardian().then((listData: any) => {
+    props.getListAllGuardian(props?.loginReducer?.schoolId).then((listData: any) => {
       setDataTable(
         listData.map((c: any) => {
           c.node.name = c.node.user ? c.node.user.name : '';
@@ -28,7 +28,7 @@ const GuardianList = (props: any) => {
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllGuardian().then((listData: any) => {
+    props.getListAllGuardian(props?.loginReducer?.schoolId).then((listData: any) => {
       setDataTable(
         listData.map((c: any) => {
           c.node.name = c.node.user ? c.node.user.name : '';
@@ -149,8 +149,8 @@ const GuardianList = (props: any) => {
 };
 const mapDispatchToProps = { ...guardianActions };
 
-const mapStateToProps = () => {
-  return {};
+const mapStateToProps = ({ loginReducer }: any) => {
+  return { loginReducer };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GuardianList);

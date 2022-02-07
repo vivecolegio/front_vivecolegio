@@ -4,13 +4,16 @@ import { MUTATION_CHANGE_ACTIVE_GUARDIAN, MUTATION_CREATE_GUARDIAN, MUTATION_DEL
 import { QUERY_GET_ALL_GUARDIAN, QUERY_GET_DROPDOWNS_GUARDIAN, QUERY_GET_GUARDIAN } from '../graphql/Guardian/GuardianQueries';
 
 
-export const getListAllGuardian = () => {
+export const getListAllGuardian = (schoolId:string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
       await client
         .query({
           query: QUERY_GET_ALL_GUARDIAN,
+          variables:{
+            schoolId
+          }
         })
         .then((result: any) => {
           listData = result.data.data.edges;

@@ -104,7 +104,8 @@ const App = (props: any) => {
                 {permissions ? (
                   <>                  
                     <Route path="/profile" element={ <Profile/> } />
-                    <Route path="/mySchedule" element={ <OfficeSchedule/> } />
+                    <Route path="/myScheduleOffice" element={ <OfficeSchedule/> } />
+                    <Route path="/myScheduleShool" element={ <SchoolSchedule/> } />
                     <Route path="/notifications" element={ <NotificationDetail/> } />
                     {/* ADMIN */}
                     <Route path="/roles" element={ <RoleList/>  }/>
@@ -112,7 +113,6 @@ const App = (props: any) => {
                     <Route path="/modules" element={ <ModuleList/> } />
                     <Route path="/menus" element={ <MenuList/> } />
                     <Route path="/submenus" element={ <SubmenuList/>} /> 
-                    <Route path="/submenus/:idMenu" element={ <SubmenuList/>} /> 
                     <Route path="/genders" element={ <GenderList/> } />
                     <Route path="/documentTypes" element={ <DocumentTypeList/> } />
                     <Route path="/municipality" element={ <MunicipalityList/> } />
@@ -151,7 +151,7 @@ const App = (props: any) => {
                     <Route path="/gradeAssignment" element={ <GradeAssignmentList/> } />
                     <Route path="/academicDay" element={ <AcademicDayList/> } />
                     <Route path="/academicHour" element={ <AcademicHourList/> } />
-                    <Route path="/course/:academicGradeId" element={ <CourseList/> } />
+                    <Route path="/course" element={ <CourseList/> } />
                     {/* ACADEMIC */} 
                   </>
                 ) : (

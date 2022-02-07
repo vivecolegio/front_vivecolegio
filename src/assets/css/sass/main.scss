@@ -350,3 +350,12 @@ body.background main {
 .chat-app .scrollbar-container{
   height: calc(100vh - -20px - 310px);
 }
+
+.table th, .table td {
+  border-color: #cbc9c9 !important;
+}
+
+body.background {
+  overflow-x: hidden;
+  overflow-y: hidden;
+}

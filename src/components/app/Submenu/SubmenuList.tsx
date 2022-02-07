@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { useParams } from 'react-router';
+import { useSearchParams } from 'react-router-dom';
 import { COLUMN_LIST } from '../../../constants/Menu/menuConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as loginActions from '../../../stores/actions/LoginActions';
@@ -14,11 +14,11 @@ const MenuItemList = (props: any) => {
   const [columns, setColumns] = useState(COLUMN_LIST);
   const [modalOpen, setModalOpen] = useState(false);
 
-  let params = useParams();
+  let [params] = useSearchParams();
 
   const [data, setData] = useState(null);
   useEffect(() => {
-    const { idMenu } = params;
+    const  idMenu  = params.get('id');
     if(idMenu) {
       props.getListAllMenuItem(idMenu).then((listData: any) => {
         setDataTable(listData);
@@ -29,7 +29,7 @@ const MenuItemList = (props: any) => {
   }, []);
 
   const getDataTable = async () => {
-    const { idMenu } = params;
+    const  idMenu  = params.get('id');
     props.getListAllMenuItem(idMenu).then((listData: any) => {
       setDataTable(listData);
     });

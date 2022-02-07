@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { useParams } from 'react-router';
+import { useSearchParams } from 'react-router-dom';
 import { COLUMN_LIST } from '../../../constants/Course/CourseConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as courseActions from '../../../stores/actions/CourseActions';
@@ -12,18 +12,18 @@ const CourseList = (props: any) => {
   const [columns, setColumns] = useState(COLUMN_LIST);
   const [modalOpen, setModalOpen] = useState(false);
 
-  let params = useParams();
+  let [params] = useSearchParams();
 
   const [data, setData] = useState(null);
   useEffect(() => {
-    const { academicGradeId } = params;
+    const  academicGradeId  = params.get('id');
     props.getListAllCourse(props?.loginReducer?.campusId, academicGradeId).then((listData: any) => {
       setDataTable(listData);
     });
   }, []);
 
   const getDataTable = async () => {
-    const { academicGradeId } = params;
+    const  academicGradeId  = params.get('id');;
     props.getListAllCourse(props?.loginReducer?.campusId, academicGradeId).then((listData: any) => {
       setDataTable(listData);
     });

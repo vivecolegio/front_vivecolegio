@@ -99,7 +99,7 @@ const GradeList = (props: any) => {
   };
 
   const goToChildren = async (id: any) => {
-    navigate(`/course/${id}`);
+    navigate(`/course?id=${id}`);
   };
 
   const deleteAll = async (items: any) => {

@@ -59,7 +59,7 @@ const SpecialityCreateEdit = (props: any) => {
         required: true,
         value: props?.loginReducer?.schoolId,
       });
-    }    
+    }   
   };
 
   const getDropdowns = async () => {

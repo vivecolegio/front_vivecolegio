@@ -3,6 +3,7 @@ import Loader from 'react-loader-spinner';
 import { connect } from 'react-redux';
 import { Card } from 'reactstrap';
 import { loaderColor, loaderIcon } from '../../../constants/defaultValues';
+import IntlMessages from '../../../helpers/IntlMessages';
 import { Colxx } from '../../common/CustomBootstrap';
 
 const SchoolSchedule = (props: any) => {
@@ -33,6 +34,10 @@ const SchoolSchedule = (props: any) => {
         <>
           <Colxx xxs="12" className="mb-5">
             <Card className="card-body">
+              <h1 className="mb-4 text-muted font-bold">
+                <i className="iconsminds-calendar-4"></i>
+                <IntlMessages id="layouts.mySchedule" />
+              </h1>              
               <table className="table table-bordered">
                 <thead>
                   <tr>

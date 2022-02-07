@@ -286,12 +286,7 @@ const TopNav = (props: any) => {
                   <DropdownItem>
                     <IntlMessages id="layouts.profile" />
                   </DropdownItem>
-                </NavLink>
-                <NavLink to="/mySchedule">
-                  <DropdownItem>
-                    <IntlMessages id="layouts.mySchedule" />
-                  </DropdownItem>
-                </NavLink>
+                </NavLink>                
                 <DropdownItem divider />
                 <DropdownItem
                   onClick={() => {

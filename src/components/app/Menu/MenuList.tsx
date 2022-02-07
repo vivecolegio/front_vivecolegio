@@ -85,7 +85,7 @@ const MenuList = (props: any) => {
   };
 
   const goToChildren = async (id: any) => {
-    navigate(`/submenus/${id}`)
+    navigate(`/submenus?id=${id}`)
   };
 
   const me = async () => {
