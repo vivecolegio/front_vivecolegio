@@ -27,3 +27,11 @@ export const MUTATION_DELETE_STUDENT = gql`
     delete: deleteStudent(id: $id)
   }
 `;
+
+export const MUTATION_ASSOCIATE_GUARDIAN = gql`
+  mutation updateGuardian($id: String!, $input: NewGuardian!) {
+    update: updateGuardian(id: $id, data: $input) {
+      id
+    }
+  }
+`;

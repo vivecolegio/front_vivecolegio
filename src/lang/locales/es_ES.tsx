@@ -61,6 +61,7 @@ const esMessages = {
   'message.success':'¡Proceso exitoso!',  
   'message.error':'Ha ocurrido un error en el proceso.',
   'message.notPermissions':'No cuentas con permisos para acceder al módulo, por favor contacte al administrador.',
+  'message.guardiansFound':'Acudientes encontrados, por favor seleccione uno.',
 
   /* 05.Esquemas */
   'pages.add-new': 'AGREGAR NUEVO',
@@ -125,6 +126,7 @@ const esMessages = {
   'menu.asignatures': 'Asignaturas',
   'menu.cycleAcademic': 'Ciclo Académico',
   'menu.students': 'Estudiantes',
+  'menu.student': 'Estudiante',
   'menu.administrators': 'Administrativos',
   'menu.administratorsSchool': 'Administrator Colegio',
   'menu.administratorsCampus': 'Administrator Sede',
@@ -155,6 +157,8 @@ const esMessages = {
   'menu.gradeAssignment': 'Asignación de grado',
   'menu.academicDay': 'Día académico',
   'menu.academicHour': 'Hora académica',
+  'menu.course': 'Curso',
+  'menu.assignGuardian': 'Asignar acudiente',
   'forms.inputRequired': 'Campo Requerido',
   'forms.cancel': 'Cancelar',
   'forms.auditInformation': 'Información Auditoria',
@@ -212,6 +216,8 @@ const esMessages = {
   'forms.to': 'Para',
   'forms.grade': 'Grado',
   'forms.course': 'Curso',
+  'forms.guardian': 'Acudiente',
+  'forms.search': 'Buscar',
 };
 
 export default esMessages;

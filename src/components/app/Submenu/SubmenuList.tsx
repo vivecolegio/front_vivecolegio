@@ -18,19 +18,15 @@ const MenuItemList = (props: any) => {
 
   const [data, setData] = useState(null);
   useEffect(() => {
-    const  idMenu  = params.get('id');
-    if(idMenu) {
-      props.getListAllMenuItem(idMenu).then((listData: any) => {
+    const  idMenu  = params.get('id');   
+      props.getListAllMenuItem(idMenu ? idMenu : '').then((listData: any) => {
         setDataTable(listData);
       });
-    } else {
-      setDataTable([]);
-    }  
   }, []);
 
   const getDataTable = async () => {
     const  idMenu  = params.get('id');
-    props.getListAllMenuItem(idMenu).then((listData: any) => {
+    props.getListAllMenuItem(idMenu ? idMenu : '').then((listData: any) => {
       setDataTable(listData);
     });
   };

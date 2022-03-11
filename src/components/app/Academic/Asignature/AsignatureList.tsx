@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
 import { COLUMN_LIST } from '../../../../constants/Asignature/asignatureConstants';
 import { createNotification } from '../../../../helpers/Notification';
 import * as asignatureActions from '../../../../stores/actions/Academic/AsignatureActions';
@@ -11,15 +12,19 @@ const AsignatureList = (props: any) => {
   const [columns, setColumns] = useState(COLUMN_LIST);
   const [modalOpen, setModalOpen] = useState(false);
 
+  let [params] = useSearchParams();
+
   const [data, setData] = useState(null);
   useEffect(() => {
-    props.getListAllAcademicAsignature(props?.loginReducer?.schoolId).then((listData: any) => {
+    const  areaId  = params.get('id');
+    props.getListAllAcademicAsignature(props?.loginReducer?.schoolId, areaId ? areaId : '').then((listData: any) => {
       setDataTable(listData);
     });
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllAcademicAsignature(props?.loginReducer?.schoolId).then((listData: any) => {
+    const  areaId  = params.get('id');
+    props.getListAllAcademicAsignature(props?.loginReducer?.schoolId, areaId ? areaId : '').then((listData: any) => {
       setDataTable(listData);
     });
   };

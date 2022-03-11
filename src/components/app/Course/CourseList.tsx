@@ -17,14 +17,14 @@ const CourseList = (props: any) => {
   const [data, setData] = useState(null);
   useEffect(() => {
     const  academicGradeId  = params.get('id');
-    props.getListAllCourse(props?.loginReducer?.campusId, academicGradeId).then((listData: any) => {
+    props.getListAllCourse(props?.loginReducer?.campusId, academicGradeId ? academicGradeId : '').then((listData: any) => {
       setDataTable(listData);
     });
   }, []);
 
   const getDataTable = async () => {
     const  academicGradeId  = params.get('id');;
-    props.getListAllCourse(props?.loginReducer?.campusId, academicGradeId).then((listData: any) => {
+    props.getListAllCourse(props?.loginReducer?.campusId, academicGradeId ? academicGradeId : '').then((listData: any) => {
       setDataTable(listData);
     });
   };

@@ -61,6 +61,7 @@ const enMessages = {
   'message.success':'Process successful!',
   'message.error':'An error has occurred in the process.',
   'message.notPermissions':"You don't have permissions to access the module, please contact the administrator.",
+  'message.guardiansFound':'Found guardians, please select one.',
 
 
   /* 05.Pages */
@@ -131,6 +132,7 @@ const enMessages = {
   'menu.cycleAcademic': 'Academic Cycle',
   'menu.indicatorAcademic': 'Academic Indicator',
   'menu.students': 'Students',
+  'menu.student': 'Student',
   'menu.administrators': 'Administrative',
   'menu.administratorsSchool': 'School Administrator',
   'menu.administratorsCampus': 'Campus Administrator',
@@ -157,6 +159,8 @@ const enMessages = {
   'menu.gradeAssignment': 'Grade Assignment',
   'menu.academicDay': 'Academic Day',
   'menu.academicHour': 'Academic Hour',
+  'menu.course': 'Course',
+  'menu.assignGuardian': 'Assign Guardian',
   'list.activate': 'Active',
   'list.inactivate': 'Inactive',
   'forms.inputRequired': 'Field Required',
@@ -216,6 +220,8 @@ const enMessages = {
   'forms.to': 'To',
   'forms.grade': 'Grade',
   'forms.course': 'Course',
+  'forms.guardian': 'Guardian',
+  'forms.search': 'Search',
 };
 
 export default enMessages;

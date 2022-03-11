@@ -39,7 +39,16 @@ export const QUERY_GET_GUARDIAN = gql`
       campus  {
         id
         name
-      }                  
+      }    
+      studentsId 
+      students {
+        user {
+          id
+          name
+          lastName
+          documentNumber
+        }
+      }             
       userId
       user {
         id

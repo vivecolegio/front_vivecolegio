@@ -160,4 +160,20 @@ export const QUERY_GET_COURSES_OF_GRADES = gql`
   }
 `;
 
+export const QUERY_GET_GUARDIANS_BY_CRITERIA = gql`
+  query getAllSearchGuardian ($documentNumber: String!, $documentTypeId: String!) {    
+    data: getAllSearchGuardian(documentTypeId: $documentTypeId, documentNumber: $documentNumber) {
+      edges {
+        node {
+          user{
+            id
+            name
+            lastName
+          }
+        }
+      }
+    }
+  }
+`;
+
 

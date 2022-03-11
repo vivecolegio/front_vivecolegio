@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+import { useNavigate } from 'react-router';
 import { COLUMN_LIST } from '../../../../constants/Area/areaConstants';
 import { createNotification } from '../../../../helpers/Notification';
 import * as areaActions from '../../../../stores/actions/Academic/AreaActions';
@@ -10,6 +11,8 @@ const AreaList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
   const [columns, setColumns] = useState(COLUMN_LIST);
   const [modalOpen, setModalOpen] = useState(false);  
+
+  let navigate = useNavigate();
 
   const [data, setData] = useState(null);
   useEffect(() => {
@@ -80,6 +83,21 @@ const AreaList = (props: any) => {
     createNotification('success', 'success', '');
   };
 
+  const additionalFunction = async (id: any, type: string) => {
+    console.log(type);
+    switch (type) {
+      case 'goToChildren':
+        goToChildren(id);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const goToChildren = async (id: any) => {
+    navigate(`/asignatures?id=${id}`);
+  };
+
   const changeActiveDataAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.changeActiveArea(!item.active, item.id, false).then(
@@ -109,6 +127,17 @@ const AreaList = (props: any) => {
             changeActiveData={changeActiveData}
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
+            additionalFunction={additionalFunction}
+            childrenButtons={[
+              {
+                id: 0,
+                label: 'Asignaturas',
+                color: 'secondary',
+                icon: 'simple-icon-link',
+                action: 'goToChildren',
+              },
+            ]}
+            withChildren={true}
           />
           <AreaCreateEdit
             data={data}
