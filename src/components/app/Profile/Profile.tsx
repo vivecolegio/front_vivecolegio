@@ -2,14 +2,14 @@ import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import Loader from 'react-loader-spinner';
 import { connect } from 'react-redux';
-import { Badge, Card, CardBody } from 'reactstrap';
+import { Badge, Card, CardBody, Input, InputGroup } from 'reactstrap';
+import BannerImg from '../../../assets/img/logos/banner.png';
+import ProfileImg from '../../../assets/img/profiles/l-1.jpg';
 import { loaderColor, loaderIcon } from '../../../constants/defaultValues';
 import IntlMessages from '../../../helpers/IntlMessages';
 import * as userActions from '../../../stores/actions/UserActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import SingleLightbox from '../../common/layout/pages/SingleLightbox';
-import BannerImg from '../../../assets/img/logos/banner.png';
-import ProfileImg from '../../../assets/img/profiles/l-1.jpg';
 
 const Profile = (props: any) => {
   const [loading, setLoading] = useState(true);
@@ -39,37 +39,47 @@ const Profile = (props: any) => {
         </>
       ) : (
         <>
-        <Colxx xxs="12" className="mb-5">
-                  <Card>
-                    <SingleLightbox
-                      thumb={BannerImg}
-                      large={BannerImg}
-                      className="social-header h-250 card-img"
-                    />
-                  </Card>
-                </Colxx>
+          <Colxx xxs="12" className="mb-5">
+            <Card>
+              <SingleLightbox
+                thumb={BannerImg}
+                large={BannerImg}
+                className="social-header h-250 card-img"
+              />
+            </Card>
+          </Colxx>
           <Colxx xxs="12" lg="5" xl="5" className="col-left m-auto">
             <SingleLightbox
               thumb={ProfileImg}
               large={ProfileImg}
               className="img-thumbnail card-img social-profile-img"
-            />            
+            />
             <Card>
               <CardBody>
                 <div className="text-center pt-4 mb-4 mt-4">
                   <p className="pt-2 mb-1 font-1-5rem">
-                    <strong>{user ? user.name : ''} {user ? user.lastName : ''}</strong>
+                    <strong>
+                      {user ? user.name : ''} {user ? user.lastName : ''}
+                    </strong>
                   </p>
                   <p className="text-muted mb-2 font-1rem">{user ? user.email : ''}</p>
                   <Badge color="outline-info font-0-8rem" pill>
                     {user ? user.role.name : ''}
                   </Badge>
                 </div>
-                <hr/>
+                <InputGroup className="mb-3">
+                  <Input
+                    type="file"
+                    id="exampleCustomFileBrowser2"
+                    name="customFile"
+                  />
+                </InputGroup>
+                <hr />
                 <div className="row mt-4">
                   <div className="col-md-6 text-right">
                     <p className="text-muted text-small mb-2 d-flex align-items-center justify-content-end">
-                      <i className="iconsminds-id-card mr-2 font-1rem text-info" /> {user ? user.documentType.name : ''}
+                      <i className="iconsminds-id-card mr-2 font-1rem text-info" />{' '}
+                      {user ? user.documentType.name : ''}
                     </p>
                     <p className="mb-3 font-1rem">{user ? user.documentNumber : ''}</p>
                   </div>

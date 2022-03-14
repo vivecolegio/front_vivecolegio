@@ -308,7 +308,7 @@ footer.page-footer .breadcrumb-item + .breadcrumb-item::before {
 }
 
 body.background main {
-  height: 95%!important;
+  height: 95% !important;
 }
 
 .divisor {
@@ -319,18 +319,18 @@ body.background main {
 }
 
 .auth-card {
-  flex-direction: column!important;
+  flex-direction: column !important;
 }
 
-.btn-login{
-  padding: 0.3rem 2.5rem 0.3rem 2.5rem!important;
-  background: #ff9933!important;
-  border-color: #ff9933!important;
+.btn-login {
+  padding: 0.3rem 2.5rem 0.3rem 2.5rem !important;
+  background: #ff9933 !important;
+  border-color: #ff9933 !important;
 }
 
-.btn-login:hover{
-  background: #faa046!important;
-  border-color: #faa046!important;
+.btn-login:hover {
+  background: #faa046 !important;
+  border-color: #faa046 !important;
 }
 
 .icon-big {
@@ -347,15 +347,30 @@ body.background main {
   padding-left: 64px;
 }
 
-.chat-app .scrollbar-container{
+.chat-app .scrollbar-container {
   height: calc(100vh - -20px - 310px);
 }
 
-.table th, .table td {
+.table th,
+.table td {
   border-color: #cbc9c9 !important;
 }
 
 body.background {
   overflow-x: hidden;
   overflow-y: hidden;
+}
+
+.center-flex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (min-width: 576px) {
+  .center-flex {
+    display: initial;
+    align-items: initial;
+    justify-content: initial;
+  }
 }

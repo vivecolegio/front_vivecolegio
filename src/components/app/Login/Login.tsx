@@ -65,10 +65,10 @@ const Login = (props: any) => {
       <main>        
         <div className="container">
           <Row className="h-100">
-            <Colxx xxs="3" md="3" className="mx-auto mt-10 text-center">
+            <Colxx xxs="3" md="3" className="mx-auto mt-10 text-center d-none d-sm-none d-sm-block d-md-none d-lg-block">
               <img src={LogoImg} className="width-logo" />
             </Colxx>
-            <Colxx xxs="3" md="3" className="mx-auto mt-5">
+            <Colxx xxs="12" sm="12" md="3" lg="3" className="mx-auto mt-5 center-flex">
               <Card className="auth-card w-330">
                 <div className="form-side pt-4 pb-2 text-center">
                   <NavLink to="/" className="white mt-3">
@@ -108,13 +108,13 @@ const Login = (props: any) => {
                       )}
                     </FormGroup>
                     <div className="d-flex justify-content-center flex-column align-items-center">
-                      <NavLink className="mb-3 mt-3" to="/user/forgot-password">
+                      {/* <NavLink className="mb-3 mt-3" to="/user/forgot-password">
                         <i className='text-info simple-icon-info mr-2 font-bold'></i>
                         <IntlMessages id="user.forgot-password-question" />
-                      </NavLink>
+                      </NavLink> */}
                       <Button
                         color="primary"
-                        className={`mb-3 btn-login btn-shadow btn-multiple-state ${
+                        className={`mb-5 mt-5 btn-login btn-shadow btn-multiple-state ${
                           props.loading ? 'show-spinner' : ''
                         }`}
                         size="lg"
@@ -130,12 +130,12 @@ const Login = (props: any) => {
                           <IntlMessages id="user.login-button" />
                         </span>
                       </Button>
-                      <p>                     
+                      {/* <p>                     
                         <IntlMessages id="user.still-user" /> 
                         <NavLink to="/user/forgot-password">
                           <span className="text-info ml-1 font-bold"><IntlMessages id="user.request-user" /></span>
                         </NavLink>
-                      </p>
+                      </p> */}
                       {/* <span className='line mt-2'></span> */}
                     </div>
                   </Form>
@@ -145,7 +145,7 @@ const Login = (props: any) => {
                 </div>
               </Card>
             </Colxx>
-            <Colxx xxs="5" md="5" className="mx-auto my-auto text-center top-negative">
+            <Colxx xxs="5" md="5" className="mx-auto my-auto text-center top-negative d-none d-sm-none d-sm-block d-md-none d-lg-block">
               <div className="circular-square">
                <img src={LoginImg1}  />
               </div>              
@@ -155,7 +155,7 @@ const Login = (props: any) => {
                 genera paz.<span className='font-1rem ml-1'>(Confucio)</span></h1>
               </div>              
             </Colxx>
-            <Colxx xxs="1" md="1" className="mx-auto my-auto text-center top-negative">
+            <Colxx xxs="1" md="1" className="mx-auto my-auto text-center top-negative d-none d-sm-none d-sm-block d-md-none d-lg-block">
               {/* <div className="circular-square">
                <img src={LoginImg1}  />
               </div>              
@@ -168,7 +168,7 @@ const Login = (props: any) => {
           </Row>         
         </div>      
       </main>
-      <Row>
+      <Row className='d-none d-sm-none d-sm-block d-md-none d-lg-block'>
           <Colxx xxs="12" md="12" className="footer-login">
               <Colxx className="col-sm-8 col-md-8 d-flex justify-content-around">
                     <img className='p-3' alt="LOGO" src={FooterImg1} />

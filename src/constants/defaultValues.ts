@@ -10,7 +10,7 @@ export const defaultMenuType = 'menu-default';
 
 export const subHiddenBreakpoint = 1440;
 export const menuHiddenBreakpoint = 768;
-export const defaultLocale = 'en';
+export const defaultLocale = 'es';
 export const localeOptions = [
   { id: 'en', name: 'English - LTR', direction: 'ltr' },
   { id: 'es', name: 'Español', direction: 'ltr' },
