@@ -52,6 +52,7 @@ const esMessages = {
   'layouts.go-back-home': 'REGRESAR A INICIO',
   'layouts.signout': 'Cerrar sesión',
   'layouts.profile': 'Perfil',
+  'layouts.messages': 'Mensajes',
   'layouts.mySchedule': 'Mi Horario',
   'info.warning':'Alerta',
   'info.error':'Error',

@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 import Select from 'react-select';
 import { Button, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import IntlMessages from '../../../helpers/IntlMessages';
-import * as notificationActions from '../../../stores/actions/NotificationAction';
+import * as inboxActions from '../../../stores/actions/InboxAction';
 
-const NotificationCreate = ({ modalOpen, toggleModal, props }: any) => {
+const InboxCreate = ( props : any) => {
   const [user, setUser] = useState(null);
   const [usersList, setUsersList] = useState(null);
 
@@ -27,7 +27,7 @@ const NotificationCreate = ({ modalOpen, toggleModal, props }: any) => {
   };
 
   const getDropdowns = async () => {
-    props.getDropdownsNotification().then((data: any) => {
+    props.getDropdownsInbox().then((data: any) => {
       setUsersList(
         data.dataUsers.edges.map((c: any) => {
           return { label: `${c.node.name} ${c.node.lastName}`, value: c.node.id, key: c.node.id };
@@ -37,9 +37,10 @@ const NotificationCreate = ({ modalOpen, toggleModal, props }: any) => {
   };
 
   const onSubmit = async (dataForm: any) => {
-    props.saveNewNotification(dataForm).then((data: any) => { 
-      // close modal
-      props.toggleModal();
+    props.saveNewInbox(dataForm).then((data: any) => { 
+       props.toggleModal();
+       cleanForm();
+       props.getInboxs();
      });
   };
 
@@ -60,15 +61,15 @@ const NotificationCreate = ({ modalOpen, toggleModal, props }: any) => {
     <FormProvider {...methods}>
       <form>
         <Modal
-          isOpen={modalOpen}
-          toggle={toggleModal}
+          isOpen={props.modalOpen}
+          toggle={props.toggleModal}
           wrapClassName="modal-right"
           backdrop="static"
         >
           <ModalHeader
-            toggle={toggleModal}
+            toggle={props.toggleModal}
             close={
-              <button type="button" className="close" onClick={toggleModal} aria-label="Close">
+              <button type="button" className="close" onClick={props.toggleModal} aria-label="Close">
                 <span aria-hidden="true">×</span>
               </button>
             }
@@ -107,7 +108,7 @@ const NotificationCreate = ({ modalOpen, toggleModal, props }: any) => {
             </div>
           </ModalBody>
           <ModalFooter>
-            <Button color="secondary" outline onClick={toggleModal}>
+            <Button color="secondary" outline onClick={props.toggleModal}>
               <IntlMessages id="pages.cancel" />
             </Button>
             <Button
@@ -126,10 +127,10 @@ const NotificationCreate = ({ modalOpen, toggleModal, props }: any) => {
   );
 };
 
-const mapDispatchToProps = { ...notificationActions };
+const mapDispatchToProps = { ...inboxActions };
 
 const mapStateToProps = () => {
   return {};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(NotificationCreate);
+export default connect(mapStateToProps, mapDispatchToProps)(InboxCreate);

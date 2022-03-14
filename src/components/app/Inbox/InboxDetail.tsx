@@ -7,20 +7,20 @@ import { Button } from 'reactstrap';
 import ProfileImg from '../../../assets/img/profiles/l-1.jpg';
 import { loaderColor, loaderIcon } from '../../../constants/defaultValues';
 import IntlMessages from '../../../helpers/IntlMessages';
-import * as notificationActions from '../../../stores/actions/NotificationAction';
+import * as inboxActions from '../../../stores/actions/InboxAction';
 import { Colxx } from '../../common/CustomBootstrap';
-import NotificationCreate from './NotificationCreate';
+import InboxCreate from './InboxCreate';
 
-const Notification = (props: any) => {
+const Inbox = (props: any) => {
   const [loading, setLoading] = useState(true);
-  const [notifications, setNotifications] = useState([]);
+  const [notifications, setInboxs] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);  
 
   // const methods = useFormContext();
 
   useEffect(() => {
-    props.getListAllNotification(props?.loginReducer?.userId).then((listData: any) => {
-      setNotifications(
+    props.getListAllInbox(props?.loginReducer?.userId).then((listData: any) => {
+      setInboxs(
         listData.map((c: any) => {
           return c.node;
         }),
@@ -29,9 +29,9 @@ const Notification = (props: any) => {
     setLoading(false);
   }, []);
 
-  const getNotifications = async () => {
-    props.getListAllNotification(props?.loginReducer?.userId).then((listData: any) => {
-      setNotifications(
+  const getInboxs = async () => {
+    props.getListAllInbox(props?.loginReducer?.userId).then((listData: any) => {
+      setInboxs(
         listData.map((c: any) => {
           return c.node;
         }),
@@ -40,8 +40,8 @@ const Notification = (props: any) => {
   };
 
   const markAsRead = async (item: any) => {
-    props.updateNotification({ dateRead: new Date() }, item.id).then((listData: any) => {
-      getNotifications();
+    props.updateInbox({ dateRead: new Date() }, item.id).then((listData: any) => {
+      getInboxs();
     });
   };
 
@@ -134,12 +134,12 @@ const Notification = (props: any) => {
               </div>
             </div>
           </div>
-          <NotificationCreate
+          <InboxCreate
              modalOpen={modalOpen}
+             getInboxs={getInboxs}
              toggleModal={() => {
                return setModalOpen(!modalOpen);
              }}
-             props={props}
           />
         </>
       )}
@@ -147,10 +147,10 @@ const Notification = (props: any) => {
   );
 };
 
-const mapDispatchToProps = { ...notificationActions };
+const mapDispatchToProps = { ...inboxActions };
 
 const mapStateToProps = ({ loginReducer }: any) => {
   return { loginReducer };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Notification);
+export default connect(mapStateToProps, mapDispatchToProps)(Inbox);

@@ -29,12 +29,12 @@ import GeneralPerformanceLevelList from '../components/app/GeneralAcademic/Perfo
 import GeneralStandardList from '../components/app/GeneralAcademic/Standard/StandardList';
 import GradeAssignmentList from '../components/app/GradeAssignment/GradeAssignmentList';
 import GuardianList from '../components/app/Guardian/GuardianList';
+import InboxDetail from '../components/app/Inbox/InboxDetail';
 import Login from '../components/app/Login/Login';
 import MenuList from '../components/app/Menu/MenuList';
 import ModalityList from '../components/app/Modality/ModalityList';
 import ModuleList from '../components/app/Module/ModuleList';
 import MunicipalityList from '../components/app/Municipality/MunicipalityList';
-import NotificationDetail from '../components/app/NotificationDetail/NotificationDetail';
 import Profile from '../components/app/Profile/Profile';
 import RoleList from '../components/app/Role/RoleList';
 import OfficeSchedule from '../components/app/Schedule/OfficeSchedule';
@@ -106,7 +106,7 @@ const App = (props: any) => {
                     <Route path="/profile" element={ <Profile/> } />
                     <Route path="/myScheduleOffice" element={ <OfficeSchedule/> } />
                     <Route path="/myScheduleShool" element={ <SchoolSchedule/> } />
-                    <Route path="/notifications" element={ <NotificationDetail/> } />
+                    <Route path="/messages" element={ <InboxDetail/> } />
                     {/* ADMIN */}
                     <Route path="/roles" element={ <RoleList/>  }/>
                     <Route path="/users" element={ <UserList/> } />

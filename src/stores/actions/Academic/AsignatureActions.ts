@@ -4,7 +4,7 @@ import { MUTATION_CHANGE_ACTIVE_ASIGNATURE, MUTATION_CREATE_ASIGNATURE, MUTATION
 import { QUERY_GET_ALL_ASIGNATURE, QUERY_GET_ASIGNATURE, QUERY_GET_DROPDOWNS_ASIGNATURE } from '../../graphql/Academic/Asignature/AsignatureQueries';
 
 
-export const getListAllAcademicAsignature = (schoolId:string, areaId: string) => {
+export const getListAllAcademicAsignature = (schoolId:string, academicAreaId: string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
@@ -13,7 +13,7 @@ export const getListAllAcademicAsignature = (schoolId:string, areaId: string) =>
           query: QUERY_GET_ALL_ASIGNATURE,
           variables:{
             schoolId,
-            areaId
+            academicAreaId
           }
         })
         .then((result: any) => {

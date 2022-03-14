@@ -53,6 +53,7 @@ const enMessages = {
   'layouts.signout': 'Sign Out',
   'layouts.profile': 'Profile',
   'layouts.mySchedule': 'My Schedule',
+  'layouts.messages': 'Messages',
   'info.warning':'Warning',
   'info.error':'Error',
   'info.markAsRead':'Mark as read',
