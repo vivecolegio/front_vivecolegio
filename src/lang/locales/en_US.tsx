@@ -141,7 +141,7 @@ const enMessages = {
   'menu.standardAcademic': 'Academic Standard',
   'menu.periodAcademic': 'Academic Period',
   'menu.cycleAcademic': 'Academic Cycle',
-  'menu.indicatorAcademic': 'Academic Indicator',
+  'menu.indicatorAcademic': 'Basic learning duties',
   'menu.students': 'Students',
   'menu.student': 'Student',
   'menu.administrators': 'Administrative',
