@@ -13,15 +13,18 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'js/[name].[hash].js',
+    filename: 'js/[id].js',
     publicPath: 'http://vivecolegios.vhmsoluciones.com/',
     chunkFilename: 'js/[id].[chunkhash].js',
   },
   optimization: {
-    minimizer: [new TersetJSPlugin(), new OptimizeCSSAssetsPlugin()],
+    //minimizer: [new TersetJSPlugin(), new OptimizeCSSAssetsPlugin()],
     concatenateModules: false,
     providedExports: false,
     usedExports: false,
+    splitChunks: {
+      chunks: 'all',
+    },
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
@@ -39,25 +42,15 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
-        test: /\.scss$/,
-        use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-          },
-          'css-loader',
-          'sass-loader',
-        ],
+        test: /\.s[ac]ss$/i,
+        use: ['style-loader', 'css-loader', 'sass-loader'],
       },
       {
-        test: /\.css$/,
-        use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-          },
-          'css-loader',
-        ],
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader'],
       },
       {
+        dependency: { not: ['url'] },
         test: /\.jpg|png|gif|woff|eot|ttf|svg|mp4|webm$/,
         use: {
           loader: 'file-loader',
@@ -72,13 +65,19 @@ module.exports = {
         use: 'ts-loader',
         exclude: /node_modules/,
       },
+      {
+        test: /\.m?js/,
+        resolve: {
+          fullySpecified: false,
+        },
+      },
     ],
   },
 
   plugins: [
     new MiniCssExtractPlugin({
-      filename: 'css/[name].[hash].css',
-      chunkFilename: 'css/[id].[hash].css',
+      filename: 'css/[name].[chunkhash].css',
+      chunkFilename: 'css/[id].[chunkhash].css',
     }),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, 'public/index.html'),

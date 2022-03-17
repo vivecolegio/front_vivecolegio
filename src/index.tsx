@@ -3,9 +3,10 @@ import { getCurrentColor, setCurrentColor } from './helpers/Utils';
 
 import './assets/css/vendor/bootstrap.min.css';
 import './assets/css/vendor/bootstrap.rtl.only.min.css';
-import './assets/fonts/iconsmind-s/css/iconsminds.css';
-import './assets/fonts/iconsmind/style.css';
-import './assets/fonts/simple-line-icons/css/simple-line-icons.css';
+//import './assets/fonts/iconsmind-s/css/iconsminds.css';
+//import './assets/fonts/iconsmind/style.css';
+//import './assets/fonts/simple-line-icons/css/simple-line-icons.css';
+import './assets/css/style.css';
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'react-circular-progressbar/dist/styles.css';
