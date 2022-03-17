@@ -17,7 +17,9 @@ const DashboardAnalytics = ({ intl, match }: any) => {
   return (
     <>
       <Row>
-        <Colxx xxs="12">        
+        <Colxx xxs="12">   
+          <p className='lead font-bold mb-0'>Informe</p> 
+          <p>Informe de <strong>avance y desempeño</strong></p>    
           <Separator className="mb-5" />
         </Colxx>
       </Row>
