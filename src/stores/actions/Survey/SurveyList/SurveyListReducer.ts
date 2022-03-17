@@ -20,9 +20,9 @@ const INIT_STATE: any = {
   orderColumn: null,
   loading: false,
   labels: [
-    { label: 'EDUCATION', color: 'secondary' },
-    { label: 'NEW FRAMEWORK', color: 'primary' },
-    { label: 'PERSONAL', color: 'info' },
+    { label: 'INICIAL', color: 'secondary' },
+    { label: 'MEDIO', color: 'primary' },
+    { label: 'AVANZADO', color: 'info' },
   ],
   orderColumns: [
     { column: 'title', label: 'Title' },
@@ -30,7 +30,7 @@ const INIT_STATE: any = {
     { column: 'status', label: 'Status' },
     { column: 'label', label: 'Label' },
   ],
-  categories: ['Development', 'Workplace', 'Hardware'],
+  categories: ['Diagnóstica', 'Formativa', 'Intermedia'],
   selectedItems: [],
 };
 

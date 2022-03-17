@@ -72,7 +72,7 @@ const SurveyDetailApp = (props: any) => {
               toggle={() => setDropdownSplitOpen(!dropdownSplitOpen)}
             >
               <Button outline className="flex-grow-1" size="lg" color="primary">
-                SAVE
+                Guardar
               </Button>
               <DropdownToggle
                 size="lg"
@@ -105,7 +105,7 @@ const SurveyDetailApp = (props: any) => {
                     to="#"
                     onClick={() => setActiveTab('details')}
                   >
-                    DETAILS
+                    Detalles
                   </NavLink>
                 </NavItem>
                 <NavItem>
@@ -117,7 +117,7 @@ const SurveyDetailApp = (props: any) => {
                     })}
                     onClick={() => setActiveTab('results')}
                   >
-                    RESULTS
+                    RESULTADOS
                   </NavLink>
                 </NavItem>
               </Nav>
@@ -155,7 +155,7 @@ const SurveyDetailApp = (props: any) => {
                           className="mt-3"
                           onClick={() => addQuestion()}
                         >
-                          <i className="simple-icon-plus btn-group-icon" /> Add Question
+                          <i className="simple-icon-plus btn-group-icon" /> Nueva pregunta
                         </Button>
                       </div>
                     </Colxx>

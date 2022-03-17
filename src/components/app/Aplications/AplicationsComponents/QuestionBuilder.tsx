@@ -98,13 +98,16 @@ const SurveyQuestionBuilder = ({
           <FormGroup>
             {qAnswers.map((answer: any) => {
               return (
-                <Input
-                  key={answer.id}
-                  type="checkbox"
-                  id={`checkbox${qId}_${answer.id}`}
-                  name={`checkbox${qId}`}
-                  label={answer.label}
-                />
+                <div className='d-flex align-items-center'>
+                  <Input
+                    key={answer.id}
+                    type="checkbox"
+                    id={`checkbox${qId}_${answer.id}`}
+                    name={`checkbox${qId}`}
+                    label={answer.label}
+                  />
+                  <label className='ml-2 mt-3'>{answer.label}</label>
+                </div>
               );
             })}
           </FormGroup>
@@ -114,13 +117,16 @@ const SurveyQuestionBuilder = ({
           <FormGroup>
             {qAnswers.map((answer: any) => {
               return (
-                <Input
-                  key={answer.id}
-                  type="radio"
-                  name={`radio${qId}`}
-                  id={`radio${qId}_${answer.id}`}
-                  label={answer.label}
-                />
+                <div className='d-flex align-items-center'>
+                  <Input
+                    key={answer.id}
+                    type="radio"
+                    name={`radio${qId}`}
+                    id={`radio${qId}_${answer.id}`}
+                    label={answer.label}
+                  />
+                  <label className='ml-2 mt-3'>{answer.label}</label>
+                </div>
               );
             })}
           </FormGroup>
@@ -196,7 +202,7 @@ const SurveyQuestionBuilder = ({
               </FormGroup>
 
               <FormGroup>
-                <Label>Question</Label>
+                <Label>Pregunta</Label>
                 <Input
                   type="text"
                   value={qQuestion}
@@ -206,7 +212,7 @@ const SurveyQuestionBuilder = ({
               <div className="separator mb-4 mt-4" />
 
               <FormGroup>
-                <Label>Answer Type</Label>
+                <Label>Tipo de respuesta</Label>
                 <Select
                   components={{ Input: CustomSelectInput }}
                   className="react-select"
@@ -217,7 +223,7 @@ const SurveyQuestionBuilder = ({
                   options={answerTypes}
                 />
               </FormGroup>
-              {qAnswers.length > 0 && <Label>Answers</Label>}
+              {qAnswers.length > 0 && <Label>Respuestas</Label>}
 
               <ReactSortable
                 list={qAnswers}
@@ -263,7 +269,7 @@ const SurveyQuestionBuilder = ({
                     className="mt-3"
                     onClick={() => addAnswer()}
                   >
-                    <i className="simple-icon-plus btn-group-icon" /> Add Answer
+                    <i className="simple-icon-plus btn-group-icon" /> Añadir respuesta
                   </Button>
                 )}
               </div>

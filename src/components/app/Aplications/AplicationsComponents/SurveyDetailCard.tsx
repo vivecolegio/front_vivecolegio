@@ -8,11 +8,11 @@ const SurveyDetailCard = ({ survey }: any) => {
     <Colxx xxs="12" lg="4" className="mb-4">
       <Card className="mb-4">
         <CardBody>
-          <p className="list-item-heading mb-4">Summary</p>
-          <p className="text-muted text-small mb-2">Name</p>
+          <p className="list-item-heading mb-4">Prueba</p>
+          <p className="text-muted text-small mb-2">Nombre</p>
           <p className="mb-3">{survey.title}</p>
 
-          <p className="text-muted text-small mb-2">Details</p>
+          <p className="text-muted text-small mb-2">Detalles</p>
           <p
             className="mb-3"
             dangerouslySetInnerHTML={{
@@ -20,10 +20,10 @@ const SurveyDetailCard = ({ survey }: any) => {
             }}
           />
 
-          <p className="text-muted text-small mb-2">Category</p>
+          <p className="text-muted text-small mb-2">Categoría</p>
           <p className="mb-3">{survey.category}</p>
 
-          <p className="text-muted text-small mb-2">Label</p>
+          <p className="text-muted text-small mb-2">Etiqueta</p>
           <div>
             <p className="d-sm-inline-block mb-1">
               <Badge color={survey.labelColor} pill>
