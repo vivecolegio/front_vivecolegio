@@ -1,16 +1,13 @@
 import React from 'react';
-import { Badge, FormGroup, Input } from 'reactstrap';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { NavLink } from 'react-router-dom';
-
+import { FormGroup, Input } from 'reactstrap';
 import ApplicationMenu from '../AplicationsComponents/ApplicationMenu';
 
 const SurveyDetailApplicationMenu = () => {
   return (
     <ApplicationMenu>
-      <PerfectScrollbar
-        options={{ suppressScrollX: true, wheelPropagation: false }}
-      >
+      <PerfectScrollbar options={{ suppressScrollX: true, wheelPropagation: false }}>
         <div className="p-4">
           <p className="text-muted text-small">Status</p>
           <ul className="list-unstyled mb-5">
@@ -32,43 +29,22 @@ const SurveyDetailApplicationMenu = () => {
 
           <p className="text-muted text-small">Categories</p>
           <FormGroup className="mb-5">
-            <Input
-              type="checkbox"
-              id="developmentCheck"
-              label="Development"
-              className="mb-2"
-            />
-            <Input
-              type="checkbox"
-              id="workplaceCheck"
-              className="mb-2"
-              label="Workplace"
-            />
-            <Input
-              type="checkbox"
-              id="hardwareCheck"
-              className="mb-2"
-              label="Hardware"
-            />
+            <Input type="checkbox" id="developmentCheck" label="Development" className="mb-2" />
+            <Input type="checkbox" id="workplaceCheck" className="mb-2" label="Workplace" />
+            <Input type="checkbox" id="hardwareCheck" className="mb-2" label="Hardware" />
           </FormGroup>
 
           <p className="text-muted text-small">Labels</p>
           <div>
             <NavLink to="#">
-              <Badge className="mb-1" color="outline-primary" pill>
-                NEW FRAMEWORK
-              </Badge>{' '}
+              <span className="mb-1 badge badge-outline-primary rounded-pill">NEW FRAMEWORK</span>{' '}
             </NavLink>
 
             <NavLink to="#">
-              <Badge className="mb-1" color="outline-secondary" pill>
-                EDUCATION
-              </Badge>{' '}
+              <span className="mb-1 badge badge-outline-secondary rounded-pill">EDUCATION</span>{' '}
             </NavLink>
             <NavLink to="#">
-              <Badge className="mb-1" color="outline-dark" pill>
-                PERSONAL
-              </Badge>{' '}
+              <span className="mb-1 badge badge-outline-info rounded-pill">PERSONAL</span>{' '}
             </NavLink>
           </div>
         </div>

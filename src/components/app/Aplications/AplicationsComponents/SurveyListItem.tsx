@@ -12,7 +12,7 @@ const SurveyListItem = ({ item, handleCheckChange, isSelected }: any) => {
         <div className="d-flex flex-grow-1 min-width-zero">
           <CardBody className="align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
             <NavLink
-              to={`${adminRoot}/applications/survey/${item.id}`}
+              to={`/encuestas-detalle`}
               className="list-item-heading mb-0 truncate w-40 w-xs-100  mb-1 mt-1"
             >
               <i
@@ -31,9 +31,9 @@ const SurveyListItem = ({ item, handleCheckChange, isSelected }: any) => {
               {item.createDate}
             </p>
             <div className="w-15 w-xs-100">
-              <Badge color={item.labelColor} pill>
+              <span className={`badge badge-${item.labelColor} rounded-pill`} >
                 {item.label}
-              </Badge>
+              </span>
             </div>
           </CardBody>
           <div className="custom-control custom-checkbox pl-1 align-self-center mr-4">

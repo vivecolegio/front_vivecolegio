@@ -111,9 +111,9 @@ const SurveyApp = (props: any) => {
                   className="top-right-button mr-1"
                   onClick={() => setModalOpen(true)}
                 >
-                  <IntlMessages id="survey.add-new" />
+                  Nueva encuesta
                 </Button>
-                <ButtonDropdown
+                {/* <ButtonDropdown
                   isOpen={dropdownSplitOpen}
                   toggle={() => setDropdownSplitOpen(!dropdownSplitOpen)}
                 >
@@ -150,7 +150,7 @@ const SurveyApp = (props: any) => {
                       <IntlMessages id="survey.another-action" />
                     </DropdownItem>
                   </DropdownMenu>
-                </ButtonDropdown>
+                </ButtonDropdown> */}
               </div>
             )}
 
@@ -175,7 +175,7 @@ const SurveyApp = (props: any) => {
               isOpen={displayOptionsIsOpen}
             >
               <div className="d-block d-md-inline-block">
-                <UncontrolledDropdown className="mr-1 float-md-left btn-group mb-1">
+                {/* <UncontrolledDropdown className="mr-1 float-md-left btn-group mb-1">
                   <DropdownToggle caret color="outline-dark" size="xs">
                     <IntlMessages id="survey.orderby" />
                     {props.surveyListReducer.orderColumn ? props.surveyListReducer.orderColumn.label : ''}
@@ -192,7 +192,7 @@ const SurveyApp = (props: any) => {
                       );
                     })}
                   </DropdownMenu>
-                </UncontrolledDropdown>
+                </UncontrolledDropdown> */}
                 <div className="search-sm d-inline-block float-md-left mr-1 mb-1 align-top">
                   <input
                     type="text"

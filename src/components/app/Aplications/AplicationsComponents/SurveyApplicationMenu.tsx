@@ -17,7 +17,7 @@ import * as surveyListActions  from '../../../../stores/actions/Survey/SurveyLis
 
 const SurveyApplicationMenu = (props: any) => {
   const addFilter = (column: any, value: any) => {
-    props.getSurveyListWithFilterAction(column, value);
+    props.getSurveyListWithFilter(column, value);
   };
 
   return (
@@ -27,14 +27,13 @@ const SurveyApplicationMenu = (props: any) => {
       >
         <div className="p-4">
           <p className="text-muted text-small">
-            <IntlMessages id="survey.status" />
-            Status
+            Estado
           </p>
           <ul className="list-unstyled mb-5">
             <NavItem className={classnames({ active: !props.surveyListReducer.filter })}>
               <NavLink to="#" onClick={() => addFilter('', '')}>
                 <i className="simple-icon-reload" />
-                <IntlMessages id="survey.all-surveys" />
+                 Todas
                 <span className="float-right">
                   {props.surveyListReducer.loading && props.surveyListReducer.allSurveyItems.length}
                 </span>
@@ -53,7 +52,7 @@ const SurveyApplicationMenu = (props: any) => {
                 onClick={() => addFilter('status', 'ACTIVE')}
               >
                 <i className="simple-icon-refresh" />
-                <IntlMessages id="survey.active-surveys" />
+                Activas
                 <span className="float-right">
                   {props.surveyListReducer.loading &&
                     props.surveyListReducer.surveyItems.filter((x: any) => x.status === 'ACTIVE').length}
@@ -73,7 +72,7 @@ const SurveyApplicationMenu = (props: any) => {
                 onClick={() => addFilter('status', 'COMPLETED')}
               >
                 <i className="simple-icon-check" />
-                <IntlMessages id="survey.completed-surveys" />
+                Completadas
                 <span className="float-right">
                   {props.surveyListReducer.loading &&
                     props.surveyListReducer.surveyItems.filter((x: any) => x.status === 'COMPLETED').length}
@@ -82,7 +81,7 @@ const SurveyApplicationMenu = (props: any) => {
             </NavItem>
           </ul>
           <p className="text-muted text-small">
-            <IntlMessages id="survey.categories" />
+            Categorias
           </p>
           <ul className="list-unstyled mb-5">
             {props.surveyListReducer.categories.map((c: any, index: any) => {
@@ -107,7 +106,7 @@ const SurveyApplicationMenu = (props: any) => {
             })}
           </ul>
           <p className="text-muted text-small">
-            <IntlMessages id="survey.labels" />
+            Etiquetas
           </p>
           <div>
             {props.surveyListReducer.labels.map((l: any, index: any) => {
@@ -117,19 +116,17 @@ const SurveyApplicationMenu = (props: any) => {
                     to="#"
                     onClick={() => addFilter('label', l.label)}
                   >
-                    <Badge
-                      className="mb-1"
-                      color={`${
+                    <span
+                      className={`${
                         props.surveyListReducer.filter &&
                         props.surveyListReducer.filter.column === 'label' &&
                         props.surveyListReducer.filter.value === l.label
-                          ? l.color
-                          : `outline-${l.color}`
+                          ? `badge badge-${l.color} mb-1 rounded-pill`
+                          : `badge badge-outline-${l.color} mb-1 rounded-pill`
                       }`}
-                      pill
                     >
                       {l.label}
-                    </Badge>
+                    </span>
                   </NavLink>
                 </p>
               );

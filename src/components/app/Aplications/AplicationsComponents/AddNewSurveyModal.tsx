@@ -47,7 +47,7 @@ const AddNewSurveyModal = (props: any) => {
       backdrop="static"
     >
       <ModalHeader toggle={props.surveyListReducer.toggleModal}>
-        <IntlMessages id="survey.add-new-title" />
+        Nueva encuesta
       </ModalHeader>
       <ModalBody>
         <Label className="mt-4">
