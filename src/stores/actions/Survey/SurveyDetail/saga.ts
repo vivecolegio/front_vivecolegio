@@ -1,6 +1,6 @@
 import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 
-import surveyDetailData from 'data/survey.detail.json';
+import surveyDetailData from '../../../data/survey.detail.json';
 import { SURVEY_GET_DETAILS, SURVEY_DELETE_QUESTION } from '../../../reducers/types/aplicationsTypes';
 
 import {
@@ -12,6 +12,7 @@ import {
 const getSurveyDetailRequest = async () => {
   // eslint-disable-next-line no-return-await
   return await new Promise((success) => {
+    console.log(surveyDetailData)
     setTimeout(() => {
       success(surveyDetailData.data);
     }, 1000);

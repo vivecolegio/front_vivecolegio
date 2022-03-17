@@ -57,7 +57,7 @@ import Home from '../components/Home';
 import { isMultiColorActive } from '../constants/defaultValues';
 import AppLocale from '../lang';
 import Survey from '../components/app/Aplications/Survey/Survey';
-import SurveyDetail from '../components/app/Aplications/Survey/surveyDetail';
+import SurveyDetail from '../components/app/Aplications/Survey/SurveyDetail';
 
 const App = (props: any) => {
   const { locale } = props.translateReducer;

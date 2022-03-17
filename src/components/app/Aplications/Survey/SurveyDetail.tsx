@@ -36,12 +36,13 @@ const SurveyDetailApp = (props: any) => {
 
   useEffect(() => {
     document.body.classList.add('right-menu');
-    props.getSurveyDetailAction();
+    console.log(props)
+    props.getSurveyDetail();
 
     return () => {
       document.body.classList.remove('right-menu');
     };
-  }, [props.getSurveyDetailAction]);
+  }, [props.getSurveyDetail]);
 
   const addQuestion = () => {
     let nextId = 0;
@@ -53,7 +54,7 @@ const SurveyDetailApp = (props: any) => {
     }
     const newSurvey = { ...props.surveyDetailReducer.survey };
     newSurvey.questions.push({ id: nextId });
-    props.saveSurveyAction(newSurvey);
+    props.saveSurvey(newSurvey);
   };
 
   return (
@@ -136,7 +137,7 @@ const SurveyDetailApp = (props: any) => {
                                 {...item}
                                 expanded={!item.title && true}
                                 deleteClick={(id: any) =>
-                                  props.deleteSurveyQuestionAction(
+                                  props.deleteSurveyQuestion(
                                     id,
                                     props.surveyDetailReducer.survey,
                                   )

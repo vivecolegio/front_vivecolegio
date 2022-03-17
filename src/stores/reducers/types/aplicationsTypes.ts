@@ -36,4 +36,7 @@ export const SURVEY_DELETE_QUESTION = 'SURVEY_DELETE_QUESTION';
 export const SURVEY_SAVE = 'SURVEY_SAVE';
 
 export * from '../../actions/Chat/ChatActions';
+export * from '../../actions/Survey/SurveyDetail/SurveyDetailActions';
+export * from '../../actions/Survey/SurveyList/SurveyListActions';
+
 

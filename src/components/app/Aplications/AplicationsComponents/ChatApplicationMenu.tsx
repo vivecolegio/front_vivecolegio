@@ -165,10 +165,7 @@ const ChatApplicationMenu = ( props: any
                           to="#"
                           onClick={() => handleContactClick(item.id)}
                         >
-                          <img
-                            src={item.thumb}
-                            className="img-thumbnail border-0 rounded-circle mr-3 list-thumbnail align-self-center xsmall"
-                          />
+                             <span className="img-thumbnail border-0 span-initials rounded-circle mr-3 list-thumbnail align-self-center xsmall">{getInitialsName(item.name)}</span>
                           <div className="d-flex flex-grow-1 min-width-zero">
                             <div className="m-2 pl-0 align-self-center d-flex flex-column flex-lg-row justify-content-between min-width-zero">
                               <div className="min-width-zero">

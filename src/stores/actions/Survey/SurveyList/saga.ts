@@ -1,7 +1,7 @@
 import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 import { getDateWithFormat } from '../../../../helpers/Utils';
 
-import surveyListData from 'data/survey.list.json';
+import surveyListData from '../../../data/survey.list.json';
 import { SURVEY_LIST_GET_LIST, SURVEY_LIST_ADD_ITEM } from '../../../reducers/types/aplicationsTypes';
 
 import {

@@ -47,12 +47,13 @@ const SurveyApp = (props: any) => {
 
   useEffect(() => {
     document.body.classList.add('right-menu');
-    props.getSurveyListAction();
+    console.log(props);
+    props.getSurveyList();
 
     return () => {
       document.body.classList.remove('right-menu');
     };
-  }, [props.getSurveyListAction]);
+  }, [props.getSurveyList]);
 
   const handleCheckChange = (event: any, id: any) => {
     if (lastChecked == null) {
@@ -65,7 +66,7 @@ const SurveyApp = (props: any) => {
     } else {
       selectedList.push(id);
     }
-    props.selectedSurveyItemsChangeAction(selectedList);
+    props.selectedSurveyItemsChange(selectedList);
 
     if (event.shiftKey) {
       let items = props.surveyListReducer.surveyItems;
@@ -78,16 +79,16 @@ const SurveyApp = (props: any) => {
         })
       );
       selectedList = Array.from(new Set(selectedList));
-      props.selectedSurveyItemsChangeAction(selectedList);
+      props.selectedSurveyItemsChange(selectedList);
     }
   };
 
   const handleChangeSelectAll = () => {
     if (props.surveyListReducer.loading) {
       if (props.surveyListReducer.selectedItems.length >= props.surveyListReducer.surveyItems.length) {
-        props.selectedSurveyItemsChangeAction([]);
+        props.selectedSurveyItemsChange([]);
       } else {
-        props.selectedSurveyItemsChangeAction(props.surveyListReducer.surveyItems.map((x: any) => x.id));
+        props.selectedSurveyItemsChange(props.surveyListReducer.surveyItems.map((x: any) => x.id));
       }
     }
   };
@@ -184,7 +185,7 @@ const SurveyApp = (props: any) => {
                       return (
                         <DropdownItem
                           key={index}
-                          onClick={() => props.getSurveyListWithOrderAction(o.column)}
+                          onClick={() => props.getSurveyListWithOrder(o.column)}
                         >
                           {o.label}
                         </DropdownItem>
@@ -201,7 +202,7 @@ const SurveyApp = (props: any) => {
                     defaultValue={props.surveyListReducer.searchKeyword}
                     onKeyPress={(e: any) => {
                       if (e.key === 'Enter') {
-                        props.getSurveyListSearchAction(e.target.value);
+                        props.getSurveyListSearch(e.target.value);
                       }
                     }}
                   />

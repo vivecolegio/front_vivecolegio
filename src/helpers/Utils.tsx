@@ -167,7 +167,7 @@ export const setCurrentUser = (user: any) => {
   }
 };
 
-export const getInitialsName = (names: string) => {
+export const getInitialsName = (names: any) => {
   // let names = name.split(' ') + "*";
   // names += analista.apellidos.split(' ')[0];
   let cad = names.split(' ');
