@@ -56,6 +56,8 @@ import { NotificationContainer } from '../components/common/Notifications';
 import Home from '../components/Home';
 import { isMultiColorActive } from '../constants/defaultValues';
 import AppLocale from '../lang';
+import Survey from '../components/app/Aplications/Survey/Survey';
+import SurveyDetail from '../components/app/Aplications/Survey/surveyDetail';
 
 const App = (props: any) => {
   const { locale } = props.translateReducer;
@@ -162,6 +164,8 @@ const App = (props: any) => {
                     <Route path="/foros" element={ <ForumListApp/> } />
                     <Route path="/foro-detalle" element={ <ForumApp/> } />
                     <Route path="/elecciones-personero" element={ <ElectionsApp/> } />
+                    <Route path="/encuestas" element={ <Survey/> } />
+                    <Route path="/encuestas-detalle" element={ <SurveyDetail/> } />
 
                   </>
                 ) : (
