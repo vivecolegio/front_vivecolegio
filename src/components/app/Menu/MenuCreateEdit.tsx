@@ -174,7 +174,7 @@ const MenuCreateEdit = (props: any) => {
                     onClick={() => {
                       return setModalIcon(true);
                     }}
-                    color="primary"
+                    color="primary"                    
                     size="xs"
                   >
                     <IntlMessages id="forms.seeIcons" />

@@ -16,7 +16,6 @@ const Notifications = (props:any) => {
   
   useEffect(()=>{
     setNotificationsItems(props?.notifications)
-    console.log("cambiando")
   },[props])
 
   const { enterTimeout, leaveTimeout } = props;

@@ -54,6 +54,10 @@ const esMessages = {
   'layouts.profile': 'Perfil',
   'layouts.messages': 'Mensajes',
   'layouts.mySchedule': 'Mi Horario',
+  'layouts.chat': 'Chat',
+  'layouts.forums': 'Foros',
+  'layouts.details': 'Detalles',
+  'layouts.comments': 'Comentarios',
   'info.warning':'Alerta',
   'info.error':'Error',
   'info.markAsRead':'Marcar leído',
@@ -89,6 +93,13 @@ const esMessages = {
   'pages.orders': 'PEDIDOS',
   'pages.of': 'de',
   'pages.newMessage': 'Nuevo mensaje',
+  'pages.send': 'Enviar',
+  'pages.candidates': 'Candidatos',
+  'pages.results': 'Resultados',
+
+
+  'chat.messages': 'Mensajes',
+  'chat.contacts': 'Contactos',
 
   'icons.alignmentAndParagraph': 'Alineación y párrafos',
   'icons.arrows': 'Flechas',

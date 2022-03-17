@@ -54,6 +54,10 @@ const enMessages = {
   'layouts.profile': 'Profile',
   'layouts.mySchedule': 'My Schedule',
   'layouts.messages': 'Messages',
+  'layouts.chat': 'Chat',
+  'layouts.forums': 'Forums',
+  'layouts.details': 'Details',
+  'layouts.comments': 'Comments',
   'info.warning':'Warning',
   'info.error':'Error',
   'info.markAsRead':'Mark as read',
@@ -90,6 +94,12 @@ const enMessages = {
   'pages.orders': 'ORDERS',
   'pages.of': 'of',
   'pages.newMessage': 'New message',
+  'pages.send': 'Send',
+  'pages.candidates': 'Candidates',
+  'pages.results': 'Results',
+
+  'chat.messages': 'Messages',
+  'chat.contacts': 'Contacts',
 
   'icons.alignmentAndParagraph': 'Alignment & Paragraph',
   'icons.arrows': 'Flechas',

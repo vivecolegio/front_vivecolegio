@@ -166,3 +166,15 @@ export const setCurrentUser = (user: any) => {
     console.log('>>>>: src/helpers/Utils.js : setCurrentUser -> error', error);
   }
 };
+
+export const getInitialsName = (names: string) => {
+  // let names = name.split(' ') + "*";
+  // names += analista.apellidos.split(' ')[0];
+  let cad = names.split(' ');
+  let initials = cad[0].substring(0, 1).toUpperCase();
+  if (names.length > 1) {
+    initials += cad[cad.length - 1].substring(0, 1).toUpperCase();
+  }
+  return initials;
+};
+

@@ -46,6 +46,10 @@ import StudentsList from '../components/app/Students/StudentsList';
 import SubmenuList from '../components/app/Submenu/SubmenuList';
 import TeacherList from '../components/app/Teacher/TeacherList';
 import UserList from '../components/app/User/UserList';
+import ChatApp from '../components/app/Aplications/Chat/Chat';
+import ForumListApp from '../components/app/Aplications/Forums/ForumList';
+import ForumApp from '../components/app/Aplications/Forums/Forum';
+import ElectionsApp from '../components/app/Aplications/Elections/Elections';
 import ColorSwitcher from '../components/common/ColorSwitcher';
 import Layout from '../components/common/layout/Layout';
 import { NotificationContainer } from '../components/common/Notifications';
@@ -153,6 +157,12 @@ const App = (props: any) => {
                     <Route path="/academicHour" element={ <AcademicHourList/> } />
                     <Route path="/course" element={ <CourseList/> } />
                     {/* ACADEMIC */} 
+                    {/* APPLICATIONS */} 
+                    <Route path="/chat" element={ <ChatApp/> } />
+                    <Route path="/foros" element={ <ForumListApp/> } />
+                    <Route path="/foro-detalle" element={ <ForumApp/> } />
+                    <Route path="/elecciones-personero" element={ <ElectionsApp/> } />
+
                   </>
                 ) : (
                   <></>
