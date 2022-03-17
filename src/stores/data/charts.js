@@ -185,7 +185,7 @@ export const smallChartData1 = {
       pointHoverRadius: 2,
       fill: false,
       borderWidth: 2,
-      data: [1250, 1300, 1550, 921, 1810, 1106, 1610],
+      data: [2, 3, 4, 2, 3, 2, 4],
       datalabels: {
         align: 'end',
         anchor: 'end',
@@ -208,7 +208,7 @@ export const smallChartData2 = {
       pointHoverRadius: 2,
       fill: false,
       borderWidth: 2,
-      data: [115, 120, 300, 222, 105, 85, 36],
+      data: [ 4, 2, 3, 2, 4,5,1],
       datalabels: {
         align: 'end',
         anchor: 'end',
@@ -231,7 +231,7 @@ export const smallChartData3 = {
       pointHoverRadius: 2,
       fill: false,
       borderWidth: 2,
-      data: [350, 452, 762, 952, 630, 385, 258],
+      data: [ 4, 2, 3, 2, 4,5,1],
       datalabels: {
         align: 'end',
         anchor: 'end',
@@ -254,7 +254,7 @@ export const smallChartData4 = {
       pointHoverRadius: 2,
       fill: false,
       borderWidth: 2,
-      data: [200, 452, 250, 630, 125, 85, 20],
+      data: [ 4, 2, 3, 2, 4,5,1],
       datalabels: {
         align: 'end',
         anchor: 'end',

@@ -68,7 +68,7 @@ const Scatter = ({ data }: any) => {
                 const { yLabel } = tooltipModel.dataPoints[0];
                 const { xLabel } = tooltipModel.dataPoints[0];
                 const label = tooltipModel.body[0].lines[0].split(':')[0];
-                changeState(`$${addCommas(yLabel)}`, `${label}-${xLabel}`);
+                changeState(`${addCommas(yLabel)}`, `${label}-${xLabel}`);
               }
             },
           },
