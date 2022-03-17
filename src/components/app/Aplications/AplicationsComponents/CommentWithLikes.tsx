@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { injectIntl } from 'react-intl';
 import ProfileImg from '../../../../assets/img/profiles/l-1.jpg';
+import { getInitialsName } from '../../../../helpers/Utils';
 
 const CommentWithLikes = ({ intl, className, data }: any) => {
   const getLikeLabel = (likeCount: any) => {
@@ -16,11 +17,7 @@ const CommentWithLikes = ({ intl, className, data }: any) => {
       className={`d-flex flex-row mb-3 border-bottom justify-content-between ${className}`}
     >
       <NavLink to="#">
-        <img
-          src={ProfileImg}
-          alt={data.name}
-          className="img-thumbnail border-0 rounded-circle list-thumbnail align-self-center xsmall"
-        />
+      <span className="img-thumbnail border-0 span-initials rounded-circle mr-3 list-thumbnail align-self-center xsmall">{getInitialsName(data.sender)}</span>
       </NavLink>
       <div className="pl-3 flex-grow-1">
         <NavLink to="#">

@@ -167,7 +167,7 @@ const App = (props: any) => {
                     <Route path="/elecciones-personero" element={ <ElectionsApp/> } />
                     <Route path="/encuestas" element={ <Survey/> } />
                     <Route path="/encuestas-detalle" element={ <SurveyDetail/> } />
-                    <Route path="/informe-avance-desempeño" element={ <Analytics/> } />
+                    <Route path="/informe-avance-desempeno" element={ <Analytics/> } />
 
                   </>
                 ) : (

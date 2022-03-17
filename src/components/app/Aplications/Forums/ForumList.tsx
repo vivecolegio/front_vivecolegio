@@ -14,21 +14,9 @@ const ForumListApp = (props: any) => {
 
   useEffect(() => {
     setItems([
-      {id:'foro-detalle',title: 'Foro de aprendizaje 1', category:'Categoria', description:'Esta es la descripcion del foro'},
-      {id:'foro-detalle',title: 'Foro de aprendizaje 1', category:'Categoria', description:'Esta es la descripcion del foro'},
-      {id:'foro-detalle',title: 'Foro de aprendizaje 1', category:'Categoria', description:'Esta es la descripcion del foro'},
-      {id:'foro-detalle',title: 'Foro de aprendizaje 1', category:'Categoria', description:'Esta es la descripcion del foro'},
-      {id:'foro-detalle',title: 'Foro de aprendizaje 1', category:'Categoria', description:'Esta es la descripcion del foro'},
-      {id:'foro-detalle',title: 'Foro de aprendizaje 1', category:'Categoria', description:'Esta es la descripcion del foro'},
-      {id:'foro-detalle',title: 'Foro de aprendizaje 1', category:'Categoria', description:'Esta es la descripcion del foro'},
-      {id:'foro-detalle',title: 'Foro de aprendizaje 1', category:'Categoria', description:'Esta es la descripcion del foro'},
-      {id:'foro-detalle',title: 'Foro de aprendizaje 1', category:'Categoria', description:'Esta es la descripcion del foro'},
-      {id:'foro-detalle',title: 'Foro de aprendizaje 1', category:'Categoria', description:'Esta es la descripcion del foro'},
-      {id:'foro-detalle',title: 'Foro de aprendizaje 1', category:'Categoria', description:'Esta es la descripcion del foro'},
-      {id:'foro-detalle',title: 'Foro de aprendizaje 1', category:'Categoria', description:'Esta es la descripcion del foro'},
-      {id:'foro-detalle',title: 'Foro de aprendizaje 1', category:'Categoria', description:'Esta es la descripcion del foro'},
-      {id:'foro-detalle',title: 'Foro de aprendizaje 1', category:'Categoria', description:'Esta es la descripcion del foro'},
-      {id:'foro-detalle',title: 'Foro de aprendizaje 1', category:'Categoria', description:'Esta es la descripcion del foro'},
+      {id:'foro-detalle',title: 'Foro de aprendizaje', date: '2022-03-17', category:'Asignatura', description:'Matemáticas'},
+      {id:'foro-detalle',title: 'Foro de aprendizaje', date: '2022-06-17', category:'Asignatura', description:'Inglés'},
+      {id:'foro-detalle',title: 'Foro de aprendizaje', date: '2022-10-17', category:'Asignatura', description:'Ciencias Naturales'},
     ]);
     setTotalPage(15);
     setIsLoading(false);
@@ -61,9 +49,9 @@ const ForumListApp = (props: any) => {
                           {item.title}
                         </p>
                         <p className="mb-1 text-muted text-small">
-                          Products | {item.category}
+                          Asignatura | {item.description}
                         </p>
-                        <p className="mb-4 text-small">{item.description}</p>
+                        <p className="mb-4 text-small">{item.date}</p>
                       </NavLink>
                       {items.length !== i + 1 && <Separator />}
                     </div>

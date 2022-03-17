@@ -32,50 +32,43 @@ const ElectionsApp = (props: any) => {
   const dataPeople = [
     {
       name: 'Voto en blanco',
-      status: '',
+      status: '--',
       thumb: ProfileImgEmpty,
       large: ProfileImgEmpty,
       key: 0,
     },
     {
-      name: 'Mayra Sibley',
-      status: 'Working hard!',
+      name: 'Maria Daniela Cárdenas Diaz',
+      status: 'Once A',
       thumb: ProfileImg,
       large: ProfileImg,
       key: 1,
     },
     {
-      name: 'Mayra Sibley',
-      status: 'Working hard!',
+      name: 'Dany Sofia Rincón Florez',
+      status: 'Once B',
       thumb: ProfileImg,
       large: ProfileImg,
       key: 2,
     },
     {
-      name: 'Mayra Sibley',
-      status: 'Working hard!',
+      name: 'Jose Daniel Pedraza',
+      status: 'Once C',
       thumb: ProfileImg,
       large: ProfileImg,
       key: 3,
     },
     {
-      name: 'Mayra Sibley',
-      status: 'Working hard!',
+      name: 'Luis Alberto Botero Castaño',
+      status: 'Once D',
       thumb: ProfileImg,
       large: ProfileImg,
       key: 4,
     },
-    {
-      name: 'Mayra Sibley',
-      status: 'Working hard!',
-      thumb: ProfileImg,
-      large: ProfileImg,
-      key: 5,
-    },
   ];
 
   const doughnutChartData = {
-    labels: ['Cakes', 'Cupcakes', 'Desserts'],
+    labels: ['Maria Cárdenas', 'Dany Rincón', 'Jose Pedraza', 'Luis Botero', 'Voto en blanco'],
     datasets: [
       {
         label: '',
@@ -86,7 +79,7 @@ const ElectionsApp = (props: any) => {
           colors.themeColor1_10,
         ],
         borderWidth: 2,
-        data: [15, 25, 20],
+        data: [45, 25, 36, 48, 10],
       },
     ],
   };
@@ -95,7 +88,7 @@ const ElectionsApp = (props: any) => {
     <>
      <Row>
         <Colxx xxs="12">
-          <h1>Sarah Kortney </h1>
+          <h1 className='font-bold'>Elecciones-personero 2022 </h1>
          
 
           <Nav tabs className="separator-tabs ml-0 mb-5">

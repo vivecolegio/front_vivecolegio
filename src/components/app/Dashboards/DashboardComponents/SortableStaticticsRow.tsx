@@ -30,6 +30,7 @@ const SortableStaticticsRow = ({ messages }: any) => {
 
   return (
     <></>
+    // OJOOOOO REVISAR
     // <ReactSortable
     //   list={state}
     //   setList={setState}
