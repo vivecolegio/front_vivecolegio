@@ -1,28 +1,23 @@
 const data = [
   {
-    title: 'Basic Information',
+    title: 'Matemáticas',
     total: 18,
     status: 12,
   },
   {
-    title: 'Portfolio',
+    title: 'Inglés',
     total: 8,
     status: 1,
   },
   {
-    title: 'Billing Details',
+    title: 'Ciencias Naturales',
     total: 6,
     status: 2,
   },
   {
-    title: 'Interests',
+    title: 'Lenguaje',
     total: 10,
     status: 0,
-  },
-  {
-    title: 'Legal Documents',
-    total: 2,
-    status: 1,
-  },
+  }
 ];
 export default data;

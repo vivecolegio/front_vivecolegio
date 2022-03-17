@@ -38,7 +38,7 @@ export const polarAreaChartData = {
 };
 
 export const areaChartData = {
-  labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+  labels: ['Lun', 'Mar', 'Mie', 'Jue', 'Vie'],
   datasets: [
     {
       label: '',
@@ -155,7 +155,7 @@ export const pieChartData = {
 };
 
 export const doughnutChartData = {
-  labels: ['Cakes', 'Cupcakes', 'Desserts'],
+  labels: ['Mate.', 'Inglés', 'Ciencias N.', 'Leng.'],
   datasets: [
     {
       label: '',
@@ -166,7 +166,7 @@ export const doughnutChartData = {
         colors.themeColor1_10,
       ],
       borderWidth: 2,
-      data: [15, 25, 20],
+      data: [15, 25, 20, 21],
     },
   ],
 };
@@ -175,7 +175,7 @@ export const smallChartData1 = {
   labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
   datasets: [
     {
-      label: 'Total Orders',
+      label: 'Rendimiento matemáticas',
       borderColor: colors.themeColor1,
       pointBorderColor: colors.themeColor1,
       pointHoverBackgroundColor: colors.themeColor1,
@@ -198,7 +198,7 @@ export const smallChartData2 = {
   labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
   datasets: [
     {
-      label: 'Pending Orders',
+      label: 'Rendimiento Inglés',
       borderColor: colors.themeColor1,
       pointBorderColor: colors.themeColor1,
       pointHoverBackgroundColor: colors.themeColor1,
@@ -221,7 +221,7 @@ export const smallChartData3 = {
   labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
   datasets: [
     {
-      label: 'Total Orders',
+      label: 'Rendimiento ciencias naturales',
       borderColor: colors.themeColor1,
       pointBorderColor: colors.themeColor1,
       pointHoverBackgroundColor: colors.themeColor1,
@@ -231,7 +231,7 @@ export const smallChartData3 = {
       pointHoverRadius: 2,
       fill: false,
       borderWidth: 2,
-      data: [350, 452, 762, 952, 630, 85, 158],
+      data: [350, 452, 762, 952, 630, 385, 258],
       datalabels: {
         align: 'end',
         anchor: 'end',
@@ -244,7 +244,7 @@ export const smallChartData4 = {
   labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
   datasets: [
     {
-      label: 'Total Orders',
+      label: 'Rendimiento lenguaje',
       borderColor: colors.themeColor1,
       pointBorderColor: colors.themeColor1,
       pointHoverBackgroundColor: colors.themeColor1,
@@ -264,7 +264,7 @@ export const smallChartData4 = {
 };
 
 export const conversionChartData = {
-  labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+  labels: ['Semana 1', 'Semana 2', 'Semana 3', 'Semana 4', 'Semana 5'],
   datasets: [
     {
       label: '',

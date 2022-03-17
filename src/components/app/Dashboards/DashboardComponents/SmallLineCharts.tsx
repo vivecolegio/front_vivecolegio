@@ -15,7 +15,7 @@ const SmallLineCharts = ({ itemClass = 'dashboard-small-chart' }) => {
   return (
     <Row>
       <Colxx xxs="6" className="mb-4">
-        <Card className={itemClass}>
+        <Card className={`${itemClass} rounded-card`}>
           <CardBody>
             <SmallLineChart data={smallChartData1} />
           </CardBody>

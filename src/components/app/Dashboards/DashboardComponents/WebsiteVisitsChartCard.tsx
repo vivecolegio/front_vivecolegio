@@ -15,15 +15,15 @@ import { areaChartData } from '../../../../stores/data/charts';
 
 const WebsiteVisitsChartCard = ({ className = '', controls = true }) => {
   return (
-    <Card className={`${className} dashboard-filled-line-chart`}>
+    <Card className={`${className} dashboard-filled-line-chart rounded-card`}>
       <CardBody>
         <div className="float-left float-none-xs">
           <div className="d-inline-block">
             <h5 className="d-inline">
-              <IntlMessages id="dashboards.website-visits" />
+              Rendimiento académico individual
             </h5>
             <span className="text-muted text-small d-block">
-              <IntlMessages id="dashboards.unique-visitors" />
+              Detalle de rendimiento académico por estudiante
             </span>
           </div>
         </div>
@@ -31,14 +31,14 @@ const WebsiteVisitsChartCard = ({ className = '', controls = true }) => {
           <div className="btn-group float-right float-none-xs mt-2">
             <UncontrolledDropdown>
               <DropdownToggle caret color="primary" className="btn-xs" outline>
-                <IntlMessages id="dashboards.this-week" />
+                Opciones
               </DropdownToggle>
               <DropdownMenu right>
                 <DropdownItem>
-                  <IntlMessages id="dashboards.last-week" />
+                  Opcion 1
                 </DropdownItem>
                 <DropdownItem>
-                  <IntlMessages id="dashboards.this-month" />
+                Opcion 1
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>

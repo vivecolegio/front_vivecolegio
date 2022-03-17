@@ -8,7 +8,7 @@ const RadialProgressCard = ({
   isSortable = false,
 }) => {
   return (
-    <Card>
+    <Card className='rounded-card h-150'>
       {isSortable && (
         <CardHeader className="p-0 position-relative">
           <div className="position-absolute handle card-icon">
@@ -16,9 +16,9 @@ const RadialProgressCard = ({
           </div>
         </CardHeader>
       )}
-      <CardBody className="d-flex justify-content-between align-items-center">
+      <CardBody className="d-flex justify-content-between align-items-center rounded-card">
         <CardTitle className="mb-0">{title}</CardTitle>
-        <div className="progress-bar-circle">
+        <div className="progress-bar-circle w-80">
           <CircularProgressbar
             strokeWidth={4}
             value={percent}

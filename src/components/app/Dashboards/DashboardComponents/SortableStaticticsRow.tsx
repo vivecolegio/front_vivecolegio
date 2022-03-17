@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ReactSortable } from 'react-sortablejs';
+import { Row } from 'reactstrap';
 
 import { Colxx } from '../../../../components/common/CustomBootstrap';
 import RadialProgressCard from './RadialProgressCard';
@@ -8,28 +9,27 @@ const SortableStaticticsRow = ({ messages }: any) => {
   const [state, setState] = useState([
     {
       key: 1,
-      title: 'dashboards.payment-status',
+      title: 'Experiencias de arpendizaje completadas',
       percent: 64,
     },
     {
       key: 2,
-      title: 'dashboards.work-progress',
+      title: 'Deberes basicos de aprendizaje aprobados',
       percent: 75,
     },
     {
       key: 3,
-      title: 'dashboards.tasks-completed',
+      title: 'Experiencias de arpendizaje pendientes',
       percent: 32,
     },
     {
       key: 4,
-      title: 'dashboards.payments-done',
+      title: 'Avance del periodo academico',
       percent: 45,
     },
   ]);
 
   return (
-    <></>
     // OJOOOOO REVISAR
     // <ReactSortable
     //   list={state}
@@ -37,17 +37,21 @@ const SortableStaticticsRow = ({ messages }: any) => {
     //   options={{ handle: '.handle' }}
     //   className="row"
     // >
-    //   {state.map((x) => {
-    //     return (
-    //       <Colxx xl="3" lg="6" className="mb-4" key={x.key}>
-    //         <RadialProgressCard
-    //           title={messages[x.title]}
-    //           percent={x.percent}
-    //           isSortable
-    //         />
-    //       </Colxx>
-    //     );
-    //   })}
+    <>
+     <Row>
+      {state.map((x) => {
+        return (          
+          <Colxx xl="3" lg="6" className="mb-4" key={x.key}>
+            <RadialProgressCard
+              title={x.title}
+              percent={x.percent}
+              isSortable
+            />
+          </Colxx>
+        );
+      })}
+      </Row>
+      </>
     // </ReactSortable>
   );
 };

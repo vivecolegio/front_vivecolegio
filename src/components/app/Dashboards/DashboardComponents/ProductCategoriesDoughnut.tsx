@@ -8,10 +8,10 @@ import { doughnutChartData } from '../../../../stores/data/charts';
 
 const ProductCategoriesDoughnut = () => {
   return (
-    <Card className="h-100">
+    <Card className="h-100 rounded-card">
       <CardBody>
         <CardTitle>
-          <IntlMessages id="dashboards.product-categories" />
+          Distribucion de experiencias de aprendizaje por asignatura
         </CardTitle>
         <div className="dashboard-donut-chart">
           <DoughnutChart shadow data={doughnutChartData} />

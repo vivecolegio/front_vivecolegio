@@ -43,7 +43,7 @@ const DashboardAnalytics = ({ intl, match }: any) => {
         </Colxx>
       </Row>
       <SortableStaticticsRow messages={messages} />
-      <Row>
+      {/* <Row>
         <Colxx xxs="12" lg="6" className="mb-4">
           <OrderStockRadarChart />
         </Colxx>
@@ -55,7 +55,7 @@ const DashboardAnalytics = ({ intl, match }: any) => {
         <Colxx xxs="12" className="mb-4">
           <SalesChartCard />
         </Colxx>
-      </Row>
+      </Row> */}
     </>
   );
 };

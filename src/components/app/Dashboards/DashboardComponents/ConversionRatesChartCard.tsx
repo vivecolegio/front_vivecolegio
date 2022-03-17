@@ -15,33 +15,33 @@ import { conversionChartData } from '../../../../stores/data/charts';
 
 const ConversionRatesChartCard = () => {
   return (
-    <Card className="dashboard-filled-line-chart">
+    <Card className="dashboard-filled-line-chart rounded-card">
       <CardBody>
         <div className="float-left float-none-xs">
           <div className="d-inline-block">
-            <h5 className="d-inline">
-              <IntlMessages id="dashboards.conversion-rates" />
+          <h5 className="d-inline">
+              Rendimiento académico grupal
             </h5>
             <span className="text-muted text-small d-block">
-              <IntlMessages id="dashboards.per-session" />
+              Detalle de rendimiento académico por grupo
             </span>
           </div>
         </div>
 
         <div className="btn-group float-right float-none-xs mt-2">
-          <UncontrolledDropdown>
-            <DropdownToggle caret color="secondary" className="btn-xs" outline>
-              <IntlMessages id="dashboards.this-week" />
-            </DropdownToggle>
-            <DropdownMenu right>
-              <DropdownItem>
-                <IntlMessages id="dashboards.last-week" />
-              </DropdownItem>
-              <DropdownItem>
-                <IntlMessages id="dashboards.this-month" />
-              </DropdownItem>
-            </DropdownMenu>
-          </UncontrolledDropdown>
+        <UncontrolledDropdown>
+              <DropdownToggle caret color="primary" className="btn-xs" outline>
+                Opciones
+              </DropdownToggle>
+              <DropdownMenu right>
+                <DropdownItem>
+                  Opcion 1
+                </DropdownItem>
+                <DropdownItem>
+                Opcion 1
+                </DropdownItem>
+              </DropdownMenu>
+            </UncontrolledDropdown>
         </div>
       </CardBody>
 

@@ -7,10 +7,10 @@ import data from '../../../../stores/data/profileStatuses';
 
 const ProfileStatuses = ({ cardClass = 'h-100' }) => {
   return (
-    <Card className={cardClass}>
+    <Card className={`${cardClass} rounded-card`}>
       <CardBody>
         <CardTitle>
-          <IntlMessages id="dashboards.profile-status" />
+          Experiencias de aprendizajes 
         </CardTitle>
         {data.map((s: any, index: any) => {
           return (
