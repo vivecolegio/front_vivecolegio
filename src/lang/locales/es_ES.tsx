@@ -152,7 +152,7 @@ const esMessages = {
   'menu.cycles': 'Ciclo',
   'menu.standardAcademic': 'Estándar Académico',
   'menu.periodAcademic': 'Periodo Académico',
-  'menu.indicatorAcademic': 'Indicador Académico',
+  'menu.indicatorAcademic': 'Deberes Básicos de aprendizaje',
   'menu.performanceLevel': 'Nivel de desempeño',
   'menu.staff': 'Personal',
   'menu.grade': 'Grado',
