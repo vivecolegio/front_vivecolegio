@@ -58,6 +58,7 @@ import { isMultiColorActive } from '../constants/defaultValues';
 import AppLocale from '../lang';
 import Survey from '../components/app/Aplications/Survey/Survey';
 import SurveyDetail from '../components/app/Aplications/Survey/SurveyDetail';
+import Analytics from '../components/app/Dashboards/Analytics';
 
 const App = (props: any) => {
   const { locale } = props.translateReducer;
@@ -166,6 +167,7 @@ const App = (props: any) => {
                     <Route path="/elecciones-personero" element={ <ElectionsApp/> } />
                     <Route path="/encuestas" element={ <Survey/> } />
                     <Route path="/encuestas-detalle" element={ <SurveyDetail/> } />
+                    <Route path="/dashboard" element={ <Analytics/> } />
 
                   </>
                 ) : (
