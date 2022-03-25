@@ -66,6 +66,7 @@ const ForumApp = (props: any) => {
     dataSend.forumId = id;
     props.saveIntetactionForum(dataSend).then((listData: any) => {
       getComments();
+      cleanForm();
     });
   };
 
