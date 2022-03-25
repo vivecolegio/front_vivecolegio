@@ -29,7 +29,6 @@ const ForumListApp = (props: any) => {
     inactiveAction : false,
   });
 
-
   const methods = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -202,9 +201,11 @@ const ForumListApp = (props: any) => {
                             </p>
                             <p className="mb-4 text-small">{item?.node?.details}</p>
                           </NavLink> 
+                          {currentMenu?.deleteAction ? 
                           <i className='text-danger font-20 simple-icon-trash cursor-pointer' onClick={() => {
                               return deleteData(item.node.id);
                             }}></i>
+                            : ''}
                         </div>                                         
                         {items.length !== i + 1 && <Separator />}
                       </div>

@@ -7,10 +7,10 @@ export const QUERY_GET_ALL_FORUM = gql`
         cursor
         node {
           id
-          name 
+          name
           details
-          description  
-          active               
+          description
+          active
         }
       }
       totalCount
@@ -22,10 +22,10 @@ export const QUERY_GET_FORUM = gql`
   query getForum($id: String!) {
     data: getForum(id: $id) {
       id
-      name 
+      name
       details
-      description  
-      version      
+      description
+      version
       createdAt
       updatedAt
       createdByUser {
@@ -33,7 +33,27 @@ export const QUERY_GET_FORUM = gql`
       }
       updatedByUser {
         name
-      }   
+      }
+    }
+  }
+`;
+
+export const QUERY_GET_INTERACTION_FORUM = gql`
+  query getAllForumInteraction($forumId: String!) {
+    data: getAllForumInteraction(forumId: $forumId) {
+      edges {
+        cursor
+        node {
+          id
+          comment
+          active
+          createdByUser {
+            name
+            lastName
+          }
+        }
+      }
+      totalCount
     }
   }
 `;

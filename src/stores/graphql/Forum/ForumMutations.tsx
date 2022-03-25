@@ -8,6 +8,14 @@ export const MUTATION_CREATE_FORUM = gql`
   }
 `;
 
+export const MUTATION_CREATE_INTERACTION_FORUM = gql`
+  mutation createForumInteraction($input: NewForumInteraction!) {
+    create: createForumInteraction(data: $input) {
+      id
+    }
+  }
+`;
+
 export const MUTATION_UPDATE_FORUM = gql`
   mutation updateForum($id: String!, $input: NewForum!) {
     update: updateForum(id: $id, data: $input) {

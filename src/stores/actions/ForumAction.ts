@@ -1,7 +1,7 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
-import { MUTATION_CHANGE_ACTIVE_FORUM, MUTATION_CREATE_FORUM, MUTATION_DELETE_FORUM, MUTATION_UPDATE_FORUM } from '../graphql/Forum/ForumMutations';
-import { QUERY_GET_ALL_FORUM, QUERY_GET_FORUM } from '../graphql/Forum/ForumQueries';
+import { MUTATION_CHANGE_ACTIVE_FORUM, MUTATION_CREATE_FORUM, MUTATION_CREATE_INTERACTION_FORUM, MUTATION_DELETE_FORUM, MUTATION_UPDATE_FORUM } from '../graphql/Forum/ForumMutations';
+import { QUERY_GET_ALL_FORUM, QUERY_GET_FORUM, QUERY_GET_INTERACTION_FORUM } from '../graphql/Forum/ForumQueries';
 
 
 export const getListAllForum = (schoolId:string) => {
@@ -49,6 +49,28 @@ export const dataForum = (id: any) => {
   };
 };
 
+export const dataForumInteraction = (forumId: any) => {
+  return async (dispatch: any) => {
+    try {
+      let data = {};
+      await client
+        .query({
+          query: QUERY_GET_INTERACTION_FORUM,
+          variables: {
+            forumId,
+          },
+        })
+        .then((result: any) => {
+          data = result.data;
+        });
+      return data;
+    } catch (error) {
+      createNotification('error', 'error', '');
+      return error;
+    }
+  };
+};
+
 export const saveNewForum = (data: any) => {
   return async (dispatch: any) => {
     try {
@@ -64,6 +86,41 @@ export const saveNewForum = (data: any) => {
       await client
         .mutate({
           mutation: MUTATION_CREATE_FORUM,
+          variables: { input: model },
+        })
+        .then((dataResponse: any) => {
+          if (dataResponse.errors?.length > 0) {
+            dataResponse.errors.forEach((error: any) => {
+              createNotification('error', 'error', '');
+            });
+          } else {
+            dataCreate = dataResponse.data.create.id;
+            createNotification('success', 'success', '');
+          }
+        });
+      return dataCreate as any;
+    } catch (error) {
+      createNotification('error', 'error', '');
+      return error;
+    }
+  };
+};
+
+export const saveIntetactionForum = (data: any) => {
+  return async (dispatch: any) => {
+    try {
+      let model: {};
+      model = {
+        ...model,
+      };
+      model = {
+        ...model,
+        ...data,
+      };
+      let dataCreate = null;
+      await client
+        .mutate({
+          mutation: MUTATION_CREATE_INTERACTION_FORUM,
           variables: { input: model },
         })
         .then((dataResponse: any) => {
