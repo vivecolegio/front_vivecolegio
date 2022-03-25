@@ -296,12 +296,7 @@ const TopNav = (props: any) => {
                   <DropdownItem>
                     <IntlMessages id="layouts.chat" />
                   </DropdownItem>
-                </NavLink>                
-                <NavLink to="/foros">
-                  <DropdownItem>
-                    <IntlMessages id="layouts.forums" />
-                  </DropdownItem>
-                </NavLink>                
+                </NavLink>                                           
                 <DropdownItem divider />
                 <DropdownItem
                   onClick={() => {

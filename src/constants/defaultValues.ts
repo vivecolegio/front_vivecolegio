@@ -49,4 +49,4 @@ export const colors = [
 ];
 
 export const loaderIcon = 'Watch';
-export const loaderColor = '#000000'
+export const loaderColor = '#8ae0f6';

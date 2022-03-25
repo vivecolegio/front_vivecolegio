@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import Loader from 'react-loader-spinner';
+import {Loader} from '../../../common/Loader';
 import { connect } from 'react-redux';
 import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
-import { loaderColor, loaderIcon } from '../../../../constants/defaultValues';
 import IntlMessages from '../../../../helpers/IntlMessages';
 import * as areaActions from '../../../../stores/actions/GeneralAcademic/AreaActions';
 import { Colxx } from '../../../common/CustomBootstrap';
@@ -47,7 +46,7 @@ const GeneralPerformanceCreateEdit = (props: any) => {
       {loading ? (
         <>
           <Colxx sm={12} className="d-flex justify-content-center">
-            <Loader type={loaderIcon} color={loaderColor} height={30} width={30} />
+            <Loader/>
           </Colxx>
         </>
       ) : (

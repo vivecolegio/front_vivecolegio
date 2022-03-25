@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import Loader from 'react-loader-spinner';
+import {Loader} from '../../common/Loader';
 import { connect } from 'react-redux';
 import { Card } from 'reactstrap';
-import { loaderColor, loaderIcon } from '../../../constants/defaultValues';
 import IntlMessages from '../../../helpers/IntlMessages';
 import { Colxx } from '../../common/CustomBootstrap';
 
@@ -27,17 +26,17 @@ const SchoolSchedule = (props: any) => {
       {loading ? (
         <>
           <Colxx sm={12} className="d-flex justify-content-center">
-            <Loader type={loaderIcon} color={loaderColor} height={30} width={30} />
+            <Loader/>
           </Colxx>
         </>
       ) : (
         <>
           <Colxx xxs="12" className="mb-5">
-            <Card className="card-body">
-              <h1 className="mb-4 text-muted font-bold">
-                <i className="iconsminds-calendar-4"></i>
+              <h1 className="mb-4 font-bold">
+                <i className="iconsminds-calendar-4 text-primary mr-2"></i>
                 <IntlMessages id="layouts.mySchedule" />
               </h1>              
+            <Card className="card-body rounded-card">
               <table className="table table-bordered">
                 <thead>
                   <tr>

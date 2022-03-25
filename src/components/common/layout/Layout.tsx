@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 
 import Basic from './basic/Basic';
 import Main from './main/Main';
+ 
+
 
 const Layout = (props: any) => {
   const { userId } = props.loginReducer;

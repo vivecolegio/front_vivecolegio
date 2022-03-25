@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useSearchParams } from 'react-router-dom';
 import {
   Button,
   Card,
@@ -19,13 +19,23 @@ import {
 import IntlMessages from '../../../../helpers/IntlMessages';
 import { Colxx } from '../../../common/CustomBootstrap';
 import CommentWithLikes from '../AplicationsComponents/CommentWithLikes';
+import * as forumActions from '../../../../stores/actions/ForumAction';
 
 const ForumApp = (props: any) => {
   const [activeTab, setActiveTab] = useState('details');
+  const [data, setData] = useState(null);
 
   let navigate = useNavigate();
 
-  useEffect(() => {}, []);
+  let [params] = useSearchParams();
+
+  useEffect(() => {
+    const  id  = params.get('id');
+    props.dataForum(id).then((res: any) => {
+      console.log(res)
+      setData(res.data);
+    });
+  }, []);
 
   const comments = [
     {
@@ -34,7 +44,7 @@ const ForumApp = (props: any) => {
       thumb: '/assets/img/profiles/l-1.jpg',
       rate: 5,
       key: 0,
-      sender: 'Natali Gamboa'
+      sender: 'Natali Gamboa',
     },
     {
       title: 'gracias por responder, pero por favor, puedes terminar la demostración? De verdad que no entiendo cómo concluir.',
@@ -42,7 +52,7 @@ const ForumApp = (props: any) => {
       thumb: '/assets/img/profiles/l-2.jpg',
       rate: 4,
       key: 1,
-      sender: 'Juan Jose Arias'
+      sender: 'Juan Jose Arias',
     },
     {
       title: '(kA+mB)t=kAt+mBt=kA+mB',
@@ -50,7 +60,7 @@ const ForumApp = (props: any) => {
       thumb: '/assets/img/profiles/l-3.jpg',
       rate: 5,
       key: 2,
-      sender: 'William Delgado'
+      sender: 'William Delgado',
     },
     {
       title: 'demostrar que V=Vt, para eso se tiene que A=At y B=Bt y a la propiedad asociativa luego V=kA+mB=kAt+mBt=(kA+mB)t=Vt cqd',
@@ -58,7 +68,7 @@ const ForumApp = (props: any) => {
       thumb: '/assets/img/profiles/l-4.jpg',
       rate: 3,
       key: 3,
-      sender: 'Santiago Rivera'
+      sender: 'Santiago Rivera',
     },
   ];
 
@@ -76,8 +86,8 @@ const ForumApp = (props: any) => {
                   className="lead mr-3 cursor-pointer iconsminds-left-1 text-primary"
                 ></i>
                 <div>
-                  <p className="mb-0 lead font-bold">Matriz simétrica</p>
-                  <p className="mb-0 ">Comprobación de una matriz simétrica paso a paso.</p>
+                  <p className="mb-0 lead font-bold">{data?.name}</p>
+                  <p className="mb-0 ">{data?.description}</p>
                 </div>
               </div>
             </CardBody>
@@ -91,7 +101,7 @@ const ForumApp = (props: any) => {
                       active: activeTab === 'details',
                       'nav-link': true,
                     })}
-                    onClick={() => setActiveTab('details')}
+                    onClick={() => {return setActiveTab('details')}}
                     to="#"
                   >
                     <IntlMessages id="layouts.details" />
@@ -103,7 +113,7 @@ const ForumApp = (props: any) => {
                       active: activeTab === 'comments',
                       'nav-link': true,
                     })}
-                    onClick={() => setActiveTab('comments')}
+                    onClick={() => {return setActiveTab('comments')}}
                     to="#"
                   >
                     <IntlMessages id="layouts.comments" />
@@ -118,17 +128,7 @@ const ForumApp = (props: any) => {
                 <Row>
                   <Colxx sm="12">
                     <CardBody>
-                      <p className="font-weight-bold">Enunciado</p>
-                      <p>
-                      Probar con un contraejemplo de la siguiente proposición: A y B son matrices simétricas, si y solo si la matriz kA+mB es simétrica para cualquier par de números reales k y m.                      
-                      </p>
-                      <br />
-                      <p className="font-weight-bold">Criterios</p>
-                      <p>
-                        Explicar paso a paso y enumerados como se demuestra la matriz simétrica.
-                        Gracias, quedo atento a sus comentarios.
-                      </p>
-                      <br />
+                      <p>{data?.details}</p>
                     </CardBody>
                   </Colxx>
                 </Row>
@@ -168,10 +168,10 @@ const ForumApp = (props: any) => {
     </>
   );
 };
-const mapDispatchToProps = {};
+const mapDispatchToProps = { ...forumActions };
 
-const mapStateToProps = ({}: any) => {
-  return {};
+const mapStateToProps = ({ loginReducer }: any) => {
+  return { loginReducer };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ForumApp);

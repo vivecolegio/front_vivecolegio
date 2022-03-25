@@ -1,6 +1,6 @@
+import {Loader} from '../../../common/Loader';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import Loader from 'react-loader-spinner';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
@@ -105,7 +105,7 @@ const AsignatureCreateEdit = (props: any) => {
       {loading ? (
         <>
           <Colxx sm={12} className="d-flex justify-content-center">
-            <Loader type={loaderIcon} color={loaderColor} height={30} width={30} />
+            <Loader/>
           </Colxx>
         </>
       ) : (

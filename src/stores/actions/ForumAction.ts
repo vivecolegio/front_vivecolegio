@@ -1,22 +1,23 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
-import { MUTATION_CHANGE_ACTIVE_GUARDIAN, MUTATION_CREATE_GUARDIAN, MUTATION_DELETE_GUARDIAN, MUTATION_UPDATE_GUARDIAN } from '../graphql/Guardian/GuardianMutations';
-import { QUERY_GET_ALL_GUARDIAN, QUERY_GET_DROPDOWNS_GUARDIAN, QUERY_GET_GUARDIAN } from '../graphql/Guardian/GuardianQueries';
+import { MUTATION_CHANGE_ACTIVE_FORUM, MUTATION_CREATE_FORUM, MUTATION_DELETE_FORUM, MUTATION_UPDATE_FORUM } from '../graphql/Forum/ForumMutations';
+import { QUERY_GET_ALL_FORUM, QUERY_GET_FORUM } from '../graphql/Forum/ForumQueries';
 
 
-export const getListAllGuardian = (schoolId:string) => {
+export const getListAllForum = (schoolId:string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
       await client
         .query({
-          query: QUERY_GET_ALL_GUARDIAN,
+          query: QUERY_GET_ALL_FORUM,
           variables:{
             schoolId,
           },
         })
-        .then((result: any) => {
+        .then((result: any) => {          
           listData = result.data.data.edges;
+          console.log(listData)
         });
       return listData;
     } catch (error) {
@@ -26,13 +27,13 @@ export const getListAllGuardian = (schoolId:string) => {
   };
 };
 
-export const dataGuardian = (id: any) => {
+export const dataForum = (id: any) => {
   return async (dispatch: any) => {
     try {
       let data = {};
       await client
         .query({
-          query: QUERY_GET_GUARDIAN,
+          query: QUERY_GET_FORUM,
           variables: {
             id,
           },
@@ -48,7 +49,7 @@ export const dataGuardian = (id: any) => {
   };
 };
 
-export const saveNewGuardian = (data: any) => {
+export const saveNewForum = (data: any) => {
   return async (dispatch: any) => {
     try {
       let model: {};
@@ -62,7 +63,7 @@ export const saveNewGuardian = (data: any) => {
       let dataCreate = null;
       await client
         .mutate({
-          mutation: MUTATION_CREATE_GUARDIAN,
+          mutation: MUTATION_CREATE_FORUM,
           variables: { input: model },
         })
         .then((dataResponse: any) => {
@@ -83,7 +84,7 @@ export const saveNewGuardian = (data: any) => {
   };
 };
 
-export const updateGuardian = (data: any, id: any) => {
+export const updateForum = (data: any, id: any) => {
   return async (dispatch: any) => {
     try {
       let model: {};
@@ -97,7 +98,7 @@ export const updateGuardian = (data: any, id: any) => {
       let dataUpdate = null;
       await client
         .mutate({
-          mutation: MUTATION_UPDATE_GUARDIAN,
+          mutation: MUTATION_UPDATE_FORUM,
           variables: { id, input: model },
         })
         .then((dataReponse: any) => {
@@ -118,13 +119,13 @@ export const updateGuardian = (data: any, id: any) => {
   };
 };
 
-export const changeActiveGuardian = (active: any, id: any, showToast: boolean) => {
+export const changeActiveForum = (active: any, id: any, showToast: boolean) => {
   return async (dispatch: any) => {
     try {
       let dataChangeActive = null;
       await client
         .mutate({
-          mutation: MUTATION_CHANGE_ACTIVE_GUARDIAN,
+          mutation: MUTATION_CHANGE_ACTIVE_FORUM,
           variables: { id, active },
         })
         .then((dataReponse: any) => {
@@ -151,13 +152,14 @@ export const changeActiveGuardian = (active: any, id: any, showToast: boolean) =
   };
 };
 
-export const deleteGuardian = (id: any, showToast: boolean) => {
+
+export const deleteForum = (id: any, showToast: boolean) => {
   return async (dispatch: any) => {
     try {
       let dataDelete = null;
       await client
         .mutate({
-          mutation: MUTATION_DELETE_GUARDIAN,
+          mutation: MUTATION_DELETE_FORUM,
           variables: { id },
         })
         .then((dataReponse: any) => {
@@ -179,29 +181,6 @@ export const deleteGuardian = (id: any, showToast: boolean) => {
       if (showToast) {
         createNotification('error', 'error', '');
       }
-      return error;
-    }
-  };
-};
-
-export const getDropdownsGuardian = (type: string, schoolId:string) => {
-  return async (dispatch: any) => {
-    try {
-      let listData = {};
-      await client
-        .query({
-          query: QUERY_GET_DROPDOWNS_GUARDIAN,
-          variables:{
-            type,
-            schoolId
-          }
-        })
-        .then((result: any) => {
-          listData = result.data;
-        });
-      return listData;
-    } catch (error) {
-      createNotification('error', 'error', '');
       return error;
     }
   };

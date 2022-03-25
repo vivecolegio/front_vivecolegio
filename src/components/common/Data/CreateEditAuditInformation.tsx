@@ -1,8 +1,7 @@
 import React from 'react';
-import Loader from 'react-loader-spinner';
+import {Loader} from '../../common/Loader';
 import { Input, Label } from 'reactstrap';
 import moment from 'moment';
-import { loaderColor, loaderIcon } from '../../../constants/defaultValues';
 import IntlMessages from '../../../helpers/IntlMessages';
 import { Colxx, Separator } from '../CustomBootstrap';
 
@@ -23,7 +22,7 @@ const CreateEditAuditInformation = (props: any) => {
           <div>
             {loading ? (
               <Colxx sm={12} className="d-flex justify-content-center">
-                <Loader type={loaderIcon} color={loaderColor} height={30} width={30} />
+                <Loader/>
               </Colxx>
             ) : (
               <>

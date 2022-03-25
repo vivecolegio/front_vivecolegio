@@ -2,7 +2,7 @@ import classnames from 'classnames';
 import React, { useEffect, useState } from 'react';
 import ReactDatePicker from 'react-datepicker';
 import { useForm } from 'react-hook-form';
-import Loader from 'react-loader-spinner';
+import {Loader} from '../../common/Loader';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import Select from 'react-select';
@@ -18,7 +18,6 @@ import {
   TabContent,
   TabPane,
 } from 'reactstrap';
-import { loaderColor, loaderIcon } from '../../../constants/defaultValues';
 import IntlMessages from '../../../helpers/IntlMessages';
 import * as StudentActions from '../../../stores/actions/StudentActions';
 import { Colxx } from '../../common/CustomBootstrap';
@@ -297,7 +296,7 @@ const StudentCreateEdit = (props: any) => {
       {loading ? (
         <>
           <Colxx sm={12} className="d-flex justify-content-center">
-            <Loader type={loaderIcon} color={loaderColor} height={30} width={30} />
+            <Loader/>
           </Colxx>
         </>
       ) : (

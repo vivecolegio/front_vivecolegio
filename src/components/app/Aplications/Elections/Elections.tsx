@@ -11,7 +11,7 @@ import {
   NavItem,
   Row,
   TabContent,
-  TabPane
+  TabPane,
 } from 'reactstrap';
 import IntlMessages from '../../../../helpers/IntlMessages';
 import { Colxx } from '../../../common/CustomBootstrap';
@@ -23,11 +23,16 @@ import { ThemeColors } from '../../../../helpers/ThemeColors';
 
 const ElectionsApp = (props: any) => {
   const [activeTab, setActiveTab] = useState('people');
+  const [itemSelected, setItemSelected] = useState(null);
   const colors = ThemeColors();
 
   let navigate = useNavigate();
 
   useEffect(() => {}, []);
+
+  const setItemHandle = (key: any) => {
+    setItemSelected(key);
+}
 
   const dataPeople = [
     {
@@ -98,7 +103,7 @@ const ElectionsApp = (props: any) => {
                   active: activeTab === 'people',
                   'nav-link': true,
                 })}
-                onClick={() => setActiveTab('people')}
+                onClick={() => {return setActiveTab('people')}}
                 to="#"
               >
                 <IntlMessages id="pages.candidates" />
@@ -110,7 +115,7 @@ const ElectionsApp = (props: any) => {
                   active: activeTab === 'results',
                   'nav-link': true,
                 })}
-                onClick={() => setActiveTab('results')}
+                onClick={() => {return setActiveTab('results')}}
                 to="#"
               >
                 <IntlMessages id="pages.results" />
@@ -129,7 +134,7 @@ const ElectionsApp = (props: any) => {
                       lg="4"
                       key={`people_${itemData.key}`}
                     >
-                      <UserCardBasic data={itemData} />
+                      <UserCardBasic itemSelected={itemSelected} data={itemData} setItem={setItemHandle} />
                     </Colxx>
                   );
                 })}
