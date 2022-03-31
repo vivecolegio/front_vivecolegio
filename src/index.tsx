@@ -12,7 +12,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'react-circular-progressbar/dist/styles.css';
 import 'react-image-lightbox/style.css';
 import 'react-perfect-scrollbar/dist/css/styles.css';
-import 'video.js/dist/video-js.css';
+//import 'video.js/dist/video-js.css';
 
 const color =
   isMultiColorActive || isDarkSwitchActive ? getCurrentColor() : defaultColor;
