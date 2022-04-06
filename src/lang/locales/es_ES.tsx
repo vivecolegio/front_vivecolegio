@@ -178,6 +178,7 @@ const esMessages = {
   'menu.category': 'Categoría',
   'menu.learning': 'Aprendizaje',
   'menu.statement': 'Enunciado',
+  'menu.evidenceLearning': 'Evidencia de aprendizaje',
   'forms.inputRequired': 'Campo Requerido',
   'forms.cancel': 'Cancelar',
   'forms.auditInformation': 'Información Auditoria',

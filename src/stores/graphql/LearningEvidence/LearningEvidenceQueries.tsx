@@ -7,7 +7,7 @@ export const QUERY_GET_ALL_LEARNING_EVIDENCE = gql`
         cursor
         node {
           id
-          name
+          statement
           active
         }
       }
@@ -20,17 +20,16 @@ export const QUERY_GET_LEARNING_EVIDENCE = gql`
   query getEvidenceLearning($id: String!) {
     data: getEvidenceLearning(id: $id) {
       id
-      name
-      abbreviation
+      statement
       schoolId
       school {
         id
         name
       }
-      generalEvidenceLearningId 
-      generalEvidenceLearning {
+      learningId 
+      learning {
         id 
-        name
+        statement
       }
       version
       createdAt
@@ -46,7 +45,7 @@ export const QUERY_GET_LEARNING_EVIDENCE = gql`
 `;
 
 export const QUERY_GET_DROPDOWNS_LEARNING_EVIDENCE = gql`
-  query getDropdownsEvidenceLearning {
+  query getDropdownsEvidenceLearning($schoolId: String!) {
     dataSchools: getAllSchool(allData: false, orderCreated: false) {
       edges {
         node {
@@ -55,11 +54,11 @@ export const QUERY_GET_DROPDOWNS_LEARNING_EVIDENCE = gql`
         }
       }
     }
-    dataGeneralAreas: getAllGeneralEvidenceLearning(allData: false, orderCreated: false) {
+    dataLearnings: getAllLearning(allData: false, orderCreated: false, schoolId: $schoolId) {
       edges {
         node {
           id
-          name
+          statement
         }
       }
     }

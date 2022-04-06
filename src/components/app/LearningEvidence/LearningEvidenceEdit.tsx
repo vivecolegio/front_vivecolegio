@@ -64,7 +64,7 @@ const LearningEvidenceCreateEdit = (props: any) => {
   };
 
   const getDropdowns = async () => {
-    props.getDropdownsLearningEvidence().then((data: any) => {
+    props.getDropdownsLearningEvidence(props?.loginReducer?.schoolId).then((data: any) => {
       setSchoolList(
         data.dataSchools.edges.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };
@@ -125,7 +125,7 @@ const LearningEvidenceCreateEdit = (props: any) => {
             <ModalBody>
               <div className="form-group">
                 <Label>
-                  <IntlMessages id="menus.statement" />
+                  <IntlMessages id="menu.statement" />
                 </Label>
                 <Input {...statementRest} innerRef={statementRef} className="form-control" />
               </div>

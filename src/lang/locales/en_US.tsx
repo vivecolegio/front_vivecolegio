@@ -179,6 +179,7 @@ const enMessages = {
   'menu.category': 'Category',
   'menu.learning': 'Learning',
   'menu.statement': 'Statement',
+  'menu.evidenceLearning': 'Evidence Learning',
   'list.activate': 'Active',
   'list.inactivate': 'Inactive',
   'forms.inputRequired': 'Field Required',

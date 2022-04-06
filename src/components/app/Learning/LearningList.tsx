@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { COLUMN_LIST } from '../../../constants/Learning/LearningConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as learningActions from '../../../stores/actions/LearningActions';
@@ -15,6 +16,8 @@ const Learning = (props: any) => {
   let [params] = useSearchParams();
   const  asignatureId  = params.get('asignatureId');
   const  gradeId  = params.get('gradeId');
+
+  let navigate = useNavigate();
 
   const [data, setData] = useState(null);
   useEffect(() => {
@@ -115,6 +118,18 @@ const Learning = (props: any) => {
     createNotification('success', 'success', '');
   };
 
+  const additionalFunction = async (item: any, type: string) => {
+    switch (type) {
+      case 'goToChildrenLearning':
+        goToChildren(`/evidenceLearning`);
+        break;
+    }
+  };
+
+  const goToChildren = async (url: string) => {
+    navigate(url);
+  };
+
   return (
     <>
       {' '}
@@ -131,6 +146,17 @@ const Learning = (props: any) => {
             changeActiveData={changeActiveData}
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
+            additionalFunction={additionalFunction}
+            childrenButtons={[
+              {
+                id: 0,
+                label: 'Evidencias de aprendizaje',
+                color: 'secondary',
+                icon: 'iconsminds-library',
+                action: 'goToChildrenLearning',
+              },             
+            ]}
+            withChildren={true}
           />
           <LearningCreateEdit
             data={data}

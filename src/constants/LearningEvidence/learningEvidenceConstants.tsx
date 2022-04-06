@@ -1,3 +1,3 @@
 export const COLUMN_LIST = [
-  { column: 'statement', label: 'menus.statement' },
+  { column: 'statement', label: 'menu.statement' },
 ];

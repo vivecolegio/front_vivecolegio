@@ -185,13 +185,16 @@ export const deleteLearningEvidence = (id: any, showToast: boolean) => {
   };
 };
 
-export const getDropdownsLearningEvidence = () => {
+export const getDropdownsLearningEvidence = (schoolId:string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
       await client
         .query({
           query: QUERY_GET_DROPDOWNS_LEARNING_EVIDENCE,
+          variables: {
+            schoolId,
+          },
         })
         .then((result: any) => {
           listData = result.data;

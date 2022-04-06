@@ -62,6 +62,7 @@ import Analytics from '../components/app/Dashboards/Analytics';
 import AcademicAsignatureCourseList from '../components/app/AcademicAsignatureCourse/AcademicAsignatureCourseList';
 import BasicLearningDutiesList from '../components/app/BasicLearningDuties/BasicLearningDutiesList';
 import LearningList from '../components/app/Learning/LearningList';
+import LearningEvidenceList from '../components/app/LearningEvidence/LearningEvidenceList';
 
 const App = (props: any) => {
   const { locale } = props.translateReducer;
@@ -165,6 +166,7 @@ const App = (props: any) => {
                     <Route path="/academicAsignatureCourse" element={ <AcademicAsignatureCourseList/> } />
                     <Route path="/dba" element={ <BasicLearningDutiesList/> } />
                     <Route path="/learning" element={ <LearningList/> } />
+                    <Route path="/evidenceLearning" element={ <LearningEvidenceList/> } />
                     {/* ACADEMIC */} 
                     {/* APPLICATIONS */} 
                     <Route path="/chat" element={ <ChatApp/> } />
