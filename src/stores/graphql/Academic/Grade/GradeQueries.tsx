@@ -48,6 +48,11 @@ export const QUERY_GET_GRADE = gql`
         id
         name
       }
+      generalAcademicGradeId
+      generalAcademicGrade {
+        id
+        name
+      }
       schoolId
       school {
         id
@@ -93,6 +98,14 @@ export const QUERY_GET_DROPDOWNS_GRADE = gql`
       }
     }
     dataEducationLevels: getAllEducationLevel(allData: false, orderCreated: false, schoolId: $schoolId) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+    dataGeneralGrades: getAllGeneralAcademicGrade(allData: false, orderCreated: false) {
       edges {
         node {
           id

@@ -34,15 +34,15 @@ const DataListView = ({
             <div className="p-3 card-body align-self-center d-flex flex-column flex-lg-row justify-content-between min-width-zero align-items-lg-center">
               {columns.map((column: any) => {
                 return (
-                  <p key={column.column} className="mb-1 text-muted text-small w-10 w-sm-100">
+                  <p key={column.column} className="mb-1 text-muted text-small">
                     {item[`${column.column}`]}
                   </p>
                 );
               })}
-              <p className={withChildren === true ? "w-45 mb-0 text-center text-muted text-small w-sm-100" : "w-35 mb-0 text-center text-muted text-small w-sm-100"}>
+              <p className={"mb-0 text-center text-muted text-small"}>
+                { currentMenu.updateAction ? 
                 <Button
                   color="blue"
-                  disabled={!currentMenu.updateAction}
                   size="xs"
                   onClick={() => {
                     return viewEditData(item.id);
@@ -50,10 +50,11 @@ const DataListView = ({
                 >
                   <i className="simple-icon-eye font-1rem mr-2" />
                   <IntlMessages id="pages.detail" />
-                </Button>{' '}
+                </Button> : ''}
+                {' '}
+                { currentMenu.deleteAction ? 
                 <Button
                   color="orange"
-                  disabled={!currentMenu.deleteAction}
                   size="xs"
                   onClick={() => {
                     return deleteData(item.id);
@@ -61,10 +62,10 @@ const DataListView = ({
                 >
                   <i className="simple-icon-trash font-1rem mr-2" />
                   <IntlMessages id="pages.delete" />
-                </Button>{' '}
+                </Button> : '' }{' '}
+                {currentMenu.inactiveAction ? 
                 <Button
                   color={item.active ? 'danger' : 'green'}
-                  disabled={item.active ? !currentMenu.inactiveAction : !currentMenu.activateAction}
                   size="xs"
                   onClick={() => {
                     return changeActiveData(!item.active, item.id);
@@ -72,7 +73,7 @@ const DataListView = ({
                 >
                   <i className={item.active ? 'simple-icon-close font-1rem mr-2' : 'simple-icon-check font-1rem mr-2'} />
                   {item.active ? <IntlMessages id="pages.inactivate" /> : <IntlMessages id="pages.activate" />}
-                </Button>{' '}                
+                </Button> : '' }{' '}                
                 {withChildren === true ? (
                   childrenButtons.map((button:any) => {
                     return <Button
@@ -80,7 +81,7 @@ const DataListView = ({
                       color={button.color}
                       size="xs"
                       onClick={() => {
-                         return additionalFunction(item.id, button.action);
+                         return additionalFunction(item, button.action);
                       }}>
                       <i className={button.icon + ' font-1rem mr-2'} />
                       {button.label}

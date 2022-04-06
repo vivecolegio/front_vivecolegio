@@ -10,7 +10,7 @@ import PerformanceLevelList from '../components/app/Academic/PerformanceLevel/Pe
 import StandardList from '../components/app/Academic/Standard/StandardList';
 import AcademicDayList from '../components/app/AcademicDay/AcademicDayList';
 import AcademicHourList from '../components/app/AcademicHour/AcademicHourList';
-import AcademicIndicatorList from '../components/app/AcademicIndicator/AcademicIndicatorList';
+import AcademicIndicatorList from '../components/app/BasicLearningDuties/BasicLearningDutiesList';
 import AcademicPeriodList from '../components/app/AcademicPeriod/AcademicPeriodList';
 import AdministratorCampusList from '../components/app/AdministratorsCampus/AdministratorCampusList';
 import AdministratorSchoolList from '../components/app/AdministratorsSchool/AdministratorSchoolList';
@@ -59,6 +59,9 @@ import AppLocale from '../lang';
 import Survey from '../components/app/Aplications/Survey/Survey';
 import SurveyDetail from '../components/app/Aplications/Survey/SurveyDetail';
 import Analytics from '../components/app/Dashboards/Analytics';
+import AcademicAsignatureCourseList from '../components/app/AcademicAsignatureCourse/AcademicAsignatureCourseList';
+import BasicLearningDutiesList from '../components/app/BasicLearningDuties/BasicLearningDutiesList';
+import LearningList from '../components/app/Learning/LearningList';
 
 const App = (props: any) => {
   const { locale } = props.translateReducer;
@@ -159,6 +162,9 @@ const App = (props: any) => {
                     <Route path="/academicDay" element={ <AcademicDayList/> } />
                     <Route path="/academicHour" element={ <AcademicHourList/> } />
                     <Route path="/course" element={ <CourseList/> } />
+                    <Route path="/academicAsignatureCourse" element={ <AcademicAsignatureCourseList/> } />
+                    <Route path="/dba" element={ <BasicLearningDutiesList/> } />
+                    <Route path="/learning" element={ <LearningList/> } />
                     {/* ACADEMIC */} 
                     {/* APPLICATIONS */} 
                     <Route path="/chat" element={ <ChatApp/> } />

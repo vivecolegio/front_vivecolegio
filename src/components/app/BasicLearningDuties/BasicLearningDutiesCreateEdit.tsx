@@ -3,21 +3,21 @@ import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
-import IntlMessages from '../../../../helpers/IntlMessages';
-import * as asignatureActions from '../../../../stores/actions/Academic/AsignatureActions';
-import { Colxx } from '../../../common/CustomBootstrap';
-import AddNewModal from '../../../common/Data/AddNewModal';
-import CreateEditAuditInformation from '../../../common/Data/CreateEditAuditInformation';
-import { Loader } from '../../../common/Loader';
+import IntlMessages from '../../../helpers/IntlMessages';
+import * as GeneralBasicLearningRightActions from '../../../stores/actions/BasicLearningDutiesActions';
+import { Colxx } from '../../common/CustomBootstrap';
+import AddNewModal from '../../common/Data/AddNewModal';
+import CreateEditAuditInformation from '../../common/Data/CreateEditAuditInformation';
+import { Loader } from '../../common/Loader';
 
-const AsignatureCreateEdit = (props: any) => {
+const GeneralBasicLearningRightCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
-  const [areasList, setAreasList] = useState(null);
-  const [schoolList, setSchoolList] = useState(null);
-  const [generalAcademicAsignaturesList, setGeneralAcademicAsignaturesList] = useState(null);
-  const [area, setArea] = useState(null);
+  const [gradesList, setGradesList] = useState(null);
+  const [asignaturesList, setAsignaturesList] = useState(null);
+  const [schoolsList, setSchoolsList] = useState(null);
   const [school, setSchool] = useState(null);
-  const [generalAcademicAsignature, setGeneralAcademicAsignature] = useState(null);
+  const [grade, setGrade] = useState(null);
+  const [asignature, setAsignature] = useState(null);
 
   const methods = useForm({
     mode: 'onChange',
@@ -29,14 +29,7 @@ const AsignatureCreateEdit = (props: any) => {
   useEffect(() => {
     cleanForm();
     getDropdowns();
-    if (props?.data?.id) {
-      if (props?.data?.academicArea !== undefined && props?.data?.academicArea != null) {
-        setArea({
-          key: props?.data?.academicArea?.id,
-          label: props?.data?.academicArea?.name,
-          value: props?.data?.academicArea?.id,
-        });
-      }
+    if (props?.data?.id) {     
       if (props?.data?.school !== undefined && props?.data?.school != null) {
         setSchool({
           key: props?.data?.school?.id,
@@ -44,11 +37,21 @@ const AsignatureCreateEdit = (props: any) => {
           value: props?.data?.school?.id,
         });
       }
-      if (props?.data?.generalAcademicAsignature !== undefined && props?.data?.generalAcademicAsignature != null) {
-        setGeneralAcademicAsignature({
+      if (
+        props?.data?.generalAcademicAsignature !== undefined &&
+        props?.data?.generalAcademicAsignature != null
+      ) {
+        setAsignature({
           key: props?.data?.generalAcademicAsignature?.id,
           label: props?.data?.generalAcademicAsignature?.name,
           value: props?.data?.generalAcademicAsignature?.id,
+        });
+      }
+      if (props?.data?.generalAcademicGrade !== undefined && props?.data?.generalAcademicGrade != null) {
+        setGrade({
+          key: props?.data?.generalAcademicGrade?.id,
+          label: props?.data?.generalAcademicGrade?.name,
+          value: props?.data?.generalAcademicGrade?.id,
         });
       }
     }
@@ -57,58 +60,58 @@ const AsignatureCreateEdit = (props: any) => {
 
   const cleanForm = async () => {
     reset();
-    setArea(null);
     setSchool(null);
-    setGeneralAcademicAsignature(null);
-    if (props?.loginReducer?.schoolId && !props?.data?.id) {
-      // set value when register is new and sesion contains value
-      register('schoolId', {
-        required: true,
-        value: props?.loginReducer?.schoolId,
-      });
-    }
+    setAsignature(null);
+    setGrade(null);
+    // if (props?.loginReducer?.schoolId && !props?.data?.id) {
+    //   // set value when register is new and sesion contains value
+    //   register('schoolId', {
+    //     required: true,
+    //     value: props?.loginReducer?.schoolId,
+    //   });
+    // }
   };
 
   const getDropdowns = async () => {
-    props.getDropdownsAcademicAsignature(props?.loginReducer?.schoolId).then((data: any) => {
-      setSchoolList(
+    props.getDropdownsGeneralBasicLearningRight(props?.loginReducer?.schoolId).then((data: any) => {
+      setSchoolsList(
         data.dataSchools.edges.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };
         }),
       );
-      setAreasList(
-        data.dataAreas.edges.map((c: any) => {
+      setAsignaturesList(
+        data.dataAsignatures.edges.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };
         }),
       );
-      setGeneralAcademicAsignaturesList(
-        data.dataGeneralAsignatures.edges.map((c: any) => {
+      setGradesList(
+        data.dataGrades.edges.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };
         }),
       );
     });
   };
 
-  const { ref: nameRef, ...nameRest } = register('name', {
+  const { ref: dbaRef, ...dbaRest } = register('dba', {
     required: true,
-    value: props?.data?.id ? props?.data?.name : '',
+    value: props?.data?.id ? props?.data?.dba : '',
   });
-  const { ref: abbreviationRef, ...abbreviationRest } = register('abbreviation', {
+  const { ref: categoryRef, ...categoryRest } = register('category', {
     required: true,
-    value: props?.data?.id ? props?.data?.abbreviation : '',
+    value: props?.data?.id ? props?.data?.category : '',
   });
-  const { ref: codeRef, ...codeRest } = register('code', {
+  register('generalAcademicAsignatureId', {
     required: true,
-    value: props?.data?.id ? props?.data?.code : '',
+    value: props?.data?.id ? props?.data?.generalAcademicAsignatureId : '',
   });
-  const { ref: maxWeightRef, ...maxWeightRest } = register('maxWeight', {
+  register('generalAcademicGradeId', {
     required: true,
-    value: props?.data?.id ? props?.data?.maxWeight : '',
+    value: props?.data?.id ? props?.data?.generalAcademicGradeId : '',
   });
-  const { ref: minWeightRef, ...minWeightRest } = register('minWeight', {
-    required: true,
-    value: props?.data?.id ? props?.data?.minWeight : '',
-  });
+  // register('schoolId', {
+  //   required: true,
+  //   value: props?.data?.id ? props?.data?.schoolId : '',
+  // });
 
   const auditInfo = {
     createdAt: props?.data?.id ? props?.data?.createdAt : null,
@@ -143,50 +146,15 @@ const AsignatureCreateEdit = (props: any) => {
             <ModalBody>
               <div className="form-group">
                 <Label>
-                  <IntlMessages id="forms.name" />
+                  <IntlMessages id="menu.dba" />
                 </Label>
-                <Input {...nameRest} innerRef={nameRef} className="form-control" />
+                <Input {...dbaRest} innerRef={dbaRef} className="form-control" />
               </div>
               <div className="form-group">
                 <Label>
-                  <IntlMessages id="forms.abbreviation" />
+                  <IntlMessages id="menu.category" />
                 </Label>
-                <Input {...abbreviationRest} innerRef={abbreviationRef} className="form-control" />
-              </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="forms.code" />
-                </Label>
-                <Input {...codeRest} innerRef={codeRef} className="form-control" />
-              </div>
-              <div className="form-group">
-                <Label>
-                  Max. <IntlMessages id="forms.weight" />
-                </Label>
-                <Input {...maxWeightRest} innerRef={maxWeightRef} className="form-control" />
-              </div>
-              <div className="form-group">
-                <Label>
-                  Min. <IntlMessages id="forms.weight" />
-                </Label>
-                <Input {...minWeightRest} innerRef={minWeightRef} className="form-control" />
-              </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="menu.area" />
-                </Label>
-                <Select
-                  placeholder={<IntlMessages id="forms.select" />}
-                  {...register('academicAreaId', { required: true })}
-                  className="react-select"
-                  classNamePrefix="react-select"
-                  options={areasList}
-                  value={area}
-                  onChange={(selectedOption) => {
-                    setValue('academicAreaId', selectedOption?.key);
-                    setArea(selectedOption);
-                  }}
-                />
+                <Input {...categoryRest} innerRef={categoryRef} className="form-control" />
               </div>
               <div className="form-group">
                 <Label>
@@ -197,15 +165,31 @@ const AsignatureCreateEdit = (props: any) => {
                   {...register('generalAcademicAsignatureId', { required: true })}
                   className="react-select"
                   classNamePrefix="react-select"
-                  options={generalAcademicAsignaturesList}
-                  value={generalAcademicAsignature}
+                  options={asignaturesList}
+                  value={asignature}
                   onChange={(selectedOption) => {
                     setValue('generalAcademicAsignatureId', selectedOption?.key);
-                    setGeneralAcademicAsignature(selectedOption);
+                    setAsignature(selectedOption);
                   }}
                 />
               </div>
-
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="menu.grade" />
+                </Label>
+                <Select
+                  placeholder={<IntlMessages id="forms.select" />}
+                  {...register('generalAcademicGradeId', { required: true })}
+                  className="react-select"
+                  classNamePrefix="react-select"
+                  options={gradesList}
+                  value={grade}
+                  onChange={(selectedOption) => {
+                    setValue('generalAcademicGradeId', selectedOption?.key);
+                    setGrade(selectedOption);
+                  }}
+                />
+              </div>
               {!props?.loginReducer?.schoolId ? (
                 <div className="form-group">
                   <Label>
@@ -216,7 +200,7 @@ const AsignatureCreateEdit = (props: any) => {
                     {...register('schoolId', { required: true })}
                     className="react-select"
                     classNamePrefix="react-select"
-                    options={schoolList}
+                    options={schoolsList}
                     value={school}
                     onChange={(selectedOption) => {
                       setValue('schoolId', selectedOption?.key);
@@ -242,10 +226,10 @@ const AsignatureCreateEdit = (props: any) => {
   );
 };
 
-const mapDispatchToProps = { ...asignatureActions };
+const mapDispatchToProps = { ...GeneralBasicLearningRightActions };
 
 const mapStateToProps = ({ loginReducer }: any) => {
   return { loginReducer };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AsignatureCreateEdit);
+export default connect(mapStateToProps, mapDispatchToProps)(GeneralBasicLearningRightCreateEdit);

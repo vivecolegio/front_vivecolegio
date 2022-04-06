@@ -26,7 +26,7 @@ const Sidebar = (props: any) => {
     handleWindowResize(event);
     setSelectedLiActive(setHasSubItemStatus);
     handleProps();
-    let { roleMenus } = props.loginReducer
+    let { roleMenus } = props.loginReducer 
     roleMenus = roleMenus.map((c:any)=>{
         return {
           id: c.name,
@@ -34,7 +34,7 @@ const Sidebar = (props: any) => {
           label: c.name,
           to: `${adminRoot}/${c.name}`,
           newWindow: false,
-          subs: c.menuItemsLogin.map((x:any)=>{
+          subs: c.menuItemsLogin.filter((x: any)=>{return (x.isHidden !== true)}).map((x:any)=>{
             return {
               icon: x.icon,
               label: x.name,

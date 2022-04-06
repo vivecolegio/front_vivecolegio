@@ -1,18 +1,19 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
-import { MUTATION_CHANGE_ACTIVE_MENU_ITEM, MUTATION_CREATE_MENU_ITEM, MUTATION_DELETE_MENU_ITEM, MUTATION_UPDATE_MENU_ITEM } from '../graphql/MenuItem/MenuItemMutations';
-import { QUERY_GET_ALL_MENU_ITEM, QUERY_GET_DROPDOWNS_SUBMENUS, QUERY_GET_MENU_ITEM } from '../graphql/MenuItem/MenuItemQueries';
+import { MUTATION_CHANGE_ACTIVE_GENERAL_BASIC_LEARNING_RIGHT, MUTATION_CREATE_GENERAL_BASIC_LEARNING_RIGHT, MUTATION_DELETE_GENERAL_BASIC_LEARNING_RIGHT, MUTATION_UPDATE_GENERAL_BASIC_LEARNING_RIGHT } from '../graphql/BasicLearningDuties/BasicLearningDutiesMutations';
+import { QUERY_GET_ALL_GENERAL_BASIC_LEARNING_RIGHT, QUERY_GET_GENERAL_BASIC_LEARNING_RIGHT, QUERY_GET_DROPDOWNS_GENERAL_BASIC_LEARNING_RIGHT } from '../graphql/BasicLearningDuties/BasicLearningDutiesQueries';
 
 
-export const getListAllMenuItem = (menuId:string) => {
+export const getListAllGeneralBasicLearningRight = (generalAcademicAsignatureId : string, generalAcademicGradeId: string ) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
       await client
         .query({
-          query: QUERY_GET_ALL_MENU_ITEM,
-          variables:{
-            menuId,
+          query: QUERY_GET_ALL_GENERAL_BASIC_LEARNING_RIGHT,
+          variables: {
+            generalAcademicAsignatureId,
+            generalAcademicGradeId,
           },
         })
         .then((result: any) => {
@@ -26,13 +27,13 @@ export const getListAllMenuItem = (menuId:string) => {
   };
 };
 
-export const dataMenuItem = (id: any) => {
+export const dataGeneralBasicLearningRight = (id: any) => {
   return async (dispatch: any) => {
     try {
       let data = {};
       await client
         .query({
-          query: QUERY_GET_MENU_ITEM,
+          query: QUERY_GET_GENERAL_BASIC_LEARNING_RIGHT,
           variables: {
             id,
           },
@@ -48,10 +49,10 @@ export const dataMenuItem = (id: any) => {
   };
 };
 
-export const saveNewMenuItem = (data: any) => {
+export const saveNewGeneralBasicLearningRight = (data: any) => {
   return async (dispatch: any) => {
     try {
-      let model: any = {};
+      let model: {};
       model = {
         ...model,
       };
@@ -60,10 +61,9 @@ export const saveNewMenuItem = (data: any) => {
         ...data,
       };
       let dataCreate = null;
-      model.order = model.order && !isNaN(model.order) ? parseFloat(model.order) : 0;
       await client
         .mutate({
-          mutation: MUTATION_CREATE_MENU_ITEM,
+          mutation: MUTATION_CREATE_GENERAL_BASIC_LEARNING_RIGHT,
           variables: { input: model },
         })
         .then((dataResponse: any) => {
@@ -84,10 +84,10 @@ export const saveNewMenuItem = (data: any) => {
   };
 };
 
-export const updateMenuItem = (data: any, id: any) => {
+export const updateGeneralBasicLearningRight = (data: any, id: any) => {
   return async (dispatch: any) => {
     try {
-      let model: any = {};
+      let model: {};
       model = {
         ...model,
       };
@@ -95,11 +95,10 @@ export const updateMenuItem = (data: any, id: any) => {
         ...model,
         ...data,
       };
-      model.order = model.order && !isNaN(model.order) ? parseFloat(model.order) : 0;
       let dataUpdate = null;
       await client
         .mutate({
-          mutation: MUTATION_UPDATE_MENU_ITEM,
+          mutation: MUTATION_UPDATE_GENERAL_BASIC_LEARNING_RIGHT,
           variables: { id, input: model },
         })
         .then((dataReponse: any) => {
@@ -120,13 +119,13 @@ export const updateMenuItem = (data: any, id: any) => {
   };
 };
 
-export const changeActiveMenuItem = (active: any, id: any, showToast: boolean) => {
+export const changeActiveGeneralBasicLearningRight = (active: any, id: any, showToast: boolean) => {
   return async (dispatch: any) => {
     try {
       let dataChangeActive = null;
       await client
         .mutate({
-          mutation: MUTATION_CHANGE_ACTIVE_MENU_ITEM,
+          mutation: MUTATION_CHANGE_ACTIVE_GENERAL_BASIC_LEARNING_RIGHT,
           variables: { id, active },
         })
         .then((dataReponse: any) => {
@@ -153,13 +152,13 @@ export const changeActiveMenuItem = (active: any, id: any, showToast: boolean) =
   };
 };
 
-export const deleteMenuItem = (id: any, showToast: boolean) => {
+export const deleteGeneralBasicLearningRight = (id: any, showToast: boolean) => {
   return async (dispatch: any) => {
     try {
       let dataDelete = null;
       await client
         .mutate({
-          mutation: MUTATION_DELETE_MENU_ITEM,
+          mutation: MUTATION_DELETE_GENERAL_BASIC_LEARNING_RIGHT,
           variables: { id },
         })
         .then((dataReponse: any) => {
@@ -186,13 +185,16 @@ export const deleteMenuItem = (id: any, showToast: boolean) => {
   };
 };
 
-export const getDropdownsSubmenus = () => {
+export const getDropdownsGeneralBasicLearningRight = (schoolId: string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
       await client
         .query({
-          query: QUERY_GET_DROPDOWNS_SUBMENUS,
+          query: QUERY_GET_DROPDOWNS_GENERAL_BASIC_LEARNING_RIGHT,
+          variables: {
+            schoolId,
+          },
         })
         .then((result: any) => {
           listData = result.data;
@@ -204,4 +206,3 @@ export const getDropdownsSubmenus = () => {
     }
   };
 };
-

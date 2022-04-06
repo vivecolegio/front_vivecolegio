@@ -25,6 +25,7 @@ export const QUERY_GET_MENU_ITEM = gql`
       version
       icon
       order
+      isHidden
       createAction
       deleteAction
       updateAction

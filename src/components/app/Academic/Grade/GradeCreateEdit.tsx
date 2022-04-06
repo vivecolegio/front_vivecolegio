@@ -1,26 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import {Loader} from '../../../common/Loader';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
-import { loaderColor, loaderIcon } from '../../../../constants/defaultValues';
 import IntlMessages from '../../../../helpers/IntlMessages';
 import * as gradeActions from '../../../../stores/actions/Academic/GradeActions';
 import { Colxx } from '../../../common/CustomBootstrap';
 import AddNewModal from '../../../common/Data/AddNewModal';
 import CreateEditAuditInformation from '../../../common/Data/CreateEditAuditInformation';
+import { Loader } from '../../../common/Loader';
 
 const GradeCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
   const [cyclesList, setCyclesList] = useState(null);
   const [educationLevelsList, setEducationLevelsList] = useState(null);
   const [specialitiesList, setSpecialitiesList] = useState(null);
+  const [generalAcademicGradesList, setGeneralAcademicGradesList] = useState(null);
   const [schoolsList, setSchoolsList] = useState(null);
   const [cycle, setCycle] = useState(null);
   const [school, setSchool] = useState(null);
   const [educationLevel, setEducationLevel] = useState(null);
   const [speciality, setSpeciality] = useState(null);
+  const [generalAcademicGrade, setGeneralAcademicGrade] = useState(null);
 
   const methods = useForm({
     mode: 'onChange',
@@ -64,6 +65,13 @@ const GradeCreateEdit = (props: any) => {
           value: props?.data?.specialty?.id,
         });
       }
+      if (props?.data?.generalAcademicGrade !== undefined && props?.data?.generalAcademicGrade != null) {
+        setGeneralAcademicGrade({
+          key: props?.data?.generalAcademicGrade?.id,
+          label: props?.data?.generalAcademicGrade?.name,
+          value: props?.data?.generalAcademicGrade?.id,
+        });
+      }
     }
     setLoading(false);
   }, [props?.data]);
@@ -73,6 +81,7 @@ const GradeCreateEdit = (props: any) => {
     setCycle(null);
     setSchool(null);
     setSpeciality(null);
+    setGeneralAcademicGrade(null);
     setEducationLevel(null);
     if (props?.loginReducer?.schoolId && !props?.data?.id) {
       // set value when register is new and sesion contains value
@@ -105,6 +114,11 @@ const GradeCreateEdit = (props: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };
         }),
       );
+      setGeneralAcademicGradesList(
+        data.dataGeneralGrades.edges.map((c: any) => {
+          return { label: c.node.name, value: c.node.id, key: c.node.id };
+        }),
+      );
     });
   };
 
@@ -127,6 +141,10 @@ const GradeCreateEdit = (props: any) => {
   register('educationLevelId', {
     required: true,
     value: props?.data?.id ? props?.data?.educationLevelId : '',
+  });
+  register('generalAcademicGradeId', {
+    required: true,
+    value: props?.data?.id ? props?.data?.generalAcademicGradeId : '',
   });
 
   const auditInfo = {
@@ -214,6 +232,23 @@ const GradeCreateEdit = (props: any) => {
                   onChange={(selectedOption) => {
                     setValue('specialtyId', selectedOption?.key);
                     setSpeciality(selectedOption);
+                  }}
+                />
+              </div>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="menu.grade" />
+                </Label>
+                <Select
+                  placeholder={<IntlMessages id="forms.select" />}
+                  {...register('generalAcademicGradeId', { required: true })}
+                  className="react-select"
+                  classNamePrefix="react-select"
+                  options={generalAcademicGradesList}
+                  value={generalAcademicGrade}
+                  onChange={(selectedOption) => {
+                    setValue('generalAcademicGradeId', selectedOption?.key);
+                    setGeneralAcademicGrade(selectedOption);
                   }}
                 />
               </div>

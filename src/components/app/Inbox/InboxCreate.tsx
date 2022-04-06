@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm, useFormState } from 'react-hook-form';
 import { connect } from 'react-redux';
 import Select from 'react-select';
-import { Button, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { Badge, Button, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import IntlMessages from '../../../helpers/IntlMessages';
 import * as inboxActions from '../../../stores/actions/InboxAction';
 
@@ -78,8 +78,16 @@ const InboxCreate = ( props : any) => {
           </ModalHeader>
           <ModalBody>
             <div className="form-group">
-              <Label>
+              <Label className='d-flex justify-content-between align-items-center'>
                 <IntlMessages id="forms.to" />
+                <div>
+                  <Badge className='mr-2' color="primary" >
+                    <IntlMessages id="menu.users" />
+                  </Badge>
+                  <Badge color="secondary" >
+                    <IntlMessages id="menu.courses" />
+                  </Badge>
+                </div>
               </Label>
               <Select
                 placeholder={<IntlMessages id="forms.select" />}

@@ -1,18 +1,20 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
-import { MUTATION_CHANGE_ACTIVE_MENU_ITEM, MUTATION_CREATE_MENU_ITEM, MUTATION_DELETE_MENU_ITEM, MUTATION_UPDATE_MENU_ITEM } from '../graphql/MenuItem/MenuItemMutations';
-import { QUERY_GET_ALL_MENU_ITEM, QUERY_GET_DROPDOWNS_SUBMENUS, QUERY_GET_MENU_ITEM } from '../graphql/MenuItem/MenuItemQueries';
+import { MUTATION_CHANGE_ACTIVE_LEARNING, MUTATION_CREATE_LEARNING, MUTATION_DELETE_LEARNING, MUTATION_UPDATE_LEARNING } from '../graphql/Learning/LearningMutations';
+import { QUERY_GET_ALL_LEARNING, QUERY_GET_LEARNING, QUERY_GET_DROPDOWNS_LEARNING, QUERY_GET_GENERAL_BASIC_LEARNING_RIGHT } from '../graphql/Learning/LearningQueries';
 
 
-export const getListAllMenuItem = (menuId:string) => {
+export const getListAllLearning = (schoolId: string, academicAsignatureId: string, academicGradeId: string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
       await client
         .query({
-          query: QUERY_GET_ALL_MENU_ITEM,
-          variables:{
-            menuId,
+          query: QUERY_GET_ALL_LEARNING,
+          variables: {
+            schoolId,
+            academicAsignatureId,
+            academicGradeId,
           },
         })
         .then((result: any) => {
@@ -26,13 +28,13 @@ export const getListAllMenuItem = (menuId:string) => {
   };
 };
 
-export const dataMenuItem = (id: any) => {
+export const dataLearning = (id: any) => {
   return async (dispatch: any) => {
     try {
       let data = {};
       await client
         .query({
-          query: QUERY_GET_MENU_ITEM,
+          query: QUERY_GET_LEARNING,
           variables: {
             id,
           },
@@ -48,10 +50,10 @@ export const dataMenuItem = (id: any) => {
   };
 };
 
-export const saveNewMenuItem = (data: any) => {
+export const saveNewLearning = (data: any) => {
   return async (dispatch: any) => {
     try {
-      let model: any = {};
+      let model: {};
       model = {
         ...model,
       };
@@ -60,10 +62,9 @@ export const saveNewMenuItem = (data: any) => {
         ...data,
       };
       let dataCreate = null;
-      model.order = model.order && !isNaN(model.order) ? parseFloat(model.order) : 0;
       await client
         .mutate({
-          mutation: MUTATION_CREATE_MENU_ITEM,
+          mutation: MUTATION_CREATE_LEARNING,
           variables: { input: model },
         })
         .then((dataResponse: any) => {
@@ -84,10 +85,10 @@ export const saveNewMenuItem = (data: any) => {
   };
 };
 
-export const updateMenuItem = (data: any, id: any) => {
+export const updateLearning = (data: any, id: any) => {
   return async (dispatch: any) => {
     try {
-      let model: any = {};
+      let model: {};
       model = {
         ...model,
       };
@@ -95,11 +96,10 @@ export const updateMenuItem = (data: any, id: any) => {
         ...model,
         ...data,
       };
-      model.order = model.order && !isNaN(model.order) ? parseFloat(model.order) : 0;
       let dataUpdate = null;
       await client
         .mutate({
-          mutation: MUTATION_UPDATE_MENU_ITEM,
+          mutation: MUTATION_UPDATE_LEARNING,
           variables: { id, input: model },
         })
         .then((dataReponse: any) => {
@@ -120,13 +120,13 @@ export const updateMenuItem = (data: any, id: any) => {
   };
 };
 
-export const changeActiveMenuItem = (active: any, id: any, showToast: boolean) => {
+export const changeActiveLearning = (active: any, id: any, showToast: boolean) => {
   return async (dispatch: any) => {
     try {
       let dataChangeActive = null;
       await client
         .mutate({
-          mutation: MUTATION_CHANGE_ACTIVE_MENU_ITEM,
+          mutation: MUTATION_CHANGE_ACTIVE_LEARNING,
           variables: { id, active },
         })
         .then((dataReponse: any) => {
@@ -153,13 +153,13 @@ export const changeActiveMenuItem = (active: any, id: any, showToast: boolean) =
   };
 };
 
-export const deleteMenuItem = (id: any, showToast: boolean) => {
+export const deleteLearning = (id: any, showToast: boolean) => {
   return async (dispatch: any) => {
     try {
       let dataDelete = null;
       await client
         .mutate({
-          mutation: MUTATION_DELETE_MENU_ITEM,
+          mutation: MUTATION_DELETE_LEARNING,
           variables: { id },
         })
         .then((dataReponse: any) => {
@@ -186,13 +186,16 @@ export const deleteMenuItem = (id: any, showToast: boolean) => {
   };
 };
 
-export const getDropdownsSubmenus = () => {
+export const getDropdownsLearning = (schoolId: string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
       await client
         .query({
-          query: QUERY_GET_DROPDOWNS_SUBMENUS,
+          query: QUERY_GET_DROPDOWNS_LEARNING,
+          variables: {
+            schoolId,
+          },
         })
         .then((result: any) => {
           listData = result.data;
@@ -205,3 +208,25 @@ export const getDropdownsSubmenus = () => {
   };
 };
 
+export const getGeneralBasicLearningRightList = (generalAcademicAsignatureId: string, generalAcademicGradeId: string) => {
+  return async (dispatch: any) => {
+    try {
+      let listData = {};
+      await client
+        .query({
+          query: QUERY_GET_GENERAL_BASIC_LEARNING_RIGHT,
+          variables: {
+            generalAcademicAsignatureId,
+            generalAcademicGradeId,
+          },
+        })
+        .then((result: any) => {
+          listData = result.data;
+        });
+      return listData;
+    } catch (error) {
+      createNotification('error', 'error', '');
+      return error;
+    }
+  };
+};

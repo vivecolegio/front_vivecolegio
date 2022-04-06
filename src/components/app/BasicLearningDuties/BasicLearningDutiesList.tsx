@@ -1,26 +1,47 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { COLUMN_LIST } from '../../../constants/AcademicIndicator/AcademicIndicatorConstants';
+import { useSearchParams } from 'react-router-dom';
+import { COLUMN_LIST } from '../../../constants/BasicLearningDuties/BasicLearningDutiesConstants';
 import { createNotification } from '../../../helpers/Notification';
-import * as academicIndicatorActions from '../../../stores/actions/AcademicIndicatorActions';
+import * as generalBasicLearningRightActions from '../../../stores/actions/BasicLearningDutiesActions';
 import DataList from '../../common/Data/DataList';
-import AcademicIndicatorCreateEdit from './AcademicIndicatorCreateEdit';
+import GeneralBasicLearningRightCreateEdit from './BasicLearningDutiesCreateEdit';
 
-const AcademicIndicatorList = (props: any) => {
+const GeneralBasicLearningRightList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
   const [columns, setColumns] = useState(COLUMN_LIST);
   const [modalOpen, setModalOpen] = useState(false);
 
+  let [params] = useSearchParams();
+  const  asignatureId  = params.get('asignatureId');
+  const  gradeId  = params.get('gradeId');
+
   const [data, setData] = useState(null);
   useEffect(() => {
-    props.getListAllAcademicIndicator(props?.loginReducer?.schoolId).then((listData: any) => {
-      setDataTable(listData);
+    props.getListAllGeneralBasicLearningRight(asignatureId, gradeId).then((listData: any) => {
+      setDataTable(
+        listData.map((c: any) => {
+          c.node.grade_format = c.node.generalAcademicGrade ? c.node.generalAcademicGrade.name : '';
+          c.node.asignature_format = c.node.generalAcademicAsignature
+            ? c.node.generalAcademicAsignature.name
+            : '';
+          return c;
+        }),
+      );
     });
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllAcademicIndicator(props?.loginReducer?.schoolId).then((listData: any) => {
-      setDataTable(listData);
+    props.getListAllGeneralBasicLearningRight(asignatureId, gradeId).then((listData: any) => {
+      setDataTable(
+        listData.map((c: any) => {
+          c.node.grade_format = c.node.generalAcademicGrade ? c.node.generalAcademicGrade.name : '';
+          c.node.asignature_format = c.node.generalAcademicAsignature
+            ? c.node.generalAcademicAsignature.name
+            : '';
+          return c;
+        }),
+      );
     });
   };
 
@@ -32,14 +53,14 @@ const AcademicIndicatorList = (props: any) => {
   const onSubmit = async (dataForm: any) => {
     console.log(dataForm);
     if (data === null) {
-      await props.saveNewAcademicIndicator(dataForm).then((id: any) => {
+      await props.saveNewGeneralBasicLearningRight(dataForm).then((id: any) => {
         if (id !== undefined) {
           setModalOpen(false);
           refreshDataTable();
         }
       });
     } else {
-      await props.updateAcademicIndicator(dataForm, data.id).then((id: any) => {
+      await props.updateGeneralBasicLearningRight(dataForm, data.id).then((id: any) => {
         if (id !== undefined) {
           setModalOpen(false);
           setData(null);
@@ -50,27 +71,27 @@ const AcademicIndicatorList = (props: any) => {
   };
 
   const viewEditData = async (id: any) => {
-    await props.dataAcademicIndicator(id).then((formData: any) => {
+    await props.dataGeneralBasicLearningRight(id).then((formData: any) => {
       setData(formData.data);
       setModalOpen(true);
     });
   };
 
   const changeActiveData = async (active: any, id: any) => {
-    await props.changeActiveAcademicIndicator(active, id, true).then((formData: any) => {
+    await props.changeActiveGeneralBasicLearningRight(active, id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
 
   const deleteData = async (id: any) => {
-    await props.deleteAcademicIndicator(id, true).then((formData: any) => {
+    await props.deleteGeneralBasicLearningRight(id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
 
   const deleteAll = async (items: any) => {
     items.map(async (item: any) => {
-      await props.deleteAcademicIndicator(item.id, false).then(
+      await props.deleteGeneralBasicLearningRight(item.id, false).then(
         () => {},
         () => {
           createNotification('error', 'error', '');
@@ -83,7 +104,7 @@ const AcademicIndicatorList = (props: any) => {
 
   const changeActiveDataAll = async (items: any) => {
     items.map(async (item: any) => {
-      await props.changeActiveAcademicIndicator(!item.active, item.id, false).then(
+      await props.changeActiveGeneralBasicLearningRight(!item.active, item.id, false).then(
         () => {},
         () => {
           createNotification('error', 'error', '');
@@ -111,7 +132,7 @@ const AcademicIndicatorList = (props: any) => {
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
           />
-          <AcademicIndicatorCreateEdit
+          <GeneralBasicLearningRightCreateEdit
             data={data}
             modalOpen={modalOpen}
             toggleModal={() => {
@@ -127,10 +148,10 @@ const AcademicIndicatorList = (props: any) => {
     </>
   );
 };
-const mapDispatchToProps = { ...academicIndicatorActions };
+const mapDispatchToProps = { ...generalBasicLearningRightActions };
 
 const mapStateToProps = ({ loginReducer }: any) => {
   return { loginReducer };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AcademicIndicatorList);
+export default connect(mapStateToProps, mapDispatchToProps)(GeneralBasicLearningRightList);

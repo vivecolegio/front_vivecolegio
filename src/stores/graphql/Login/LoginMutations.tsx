@@ -26,6 +26,7 @@ export const MUTATION_LOGIN = gql`
           id
           name
           icon
+          isHidden
           createAction
           deleteAction
           updateAction
@@ -53,6 +54,7 @@ export const QUERY_ME = gql`
           id
           name
           icon
+          isHidden
           createAction
           deleteAction
           updateAction

@@ -149,6 +149,7 @@ const enMessages = {
   'menu.administratorsCampus': 'Campus Administrator',
   'menu.coordinatorsCampus': 'Campus Coordinator',
   'menu.teachers': 'Teachers',
+  'menu.teacher': 'Teacher',
   'menu.guardians': 'Guardians',
   'menu.institutions': 'Institutions',
   'menu.school': 'School',
@@ -171,7 +172,13 @@ const enMessages = {
   'menu.academicDay': 'Academic Day',
   'menu.academicHour': 'Academic Hour',
   'menu.course': 'Course',
+  'menu.courses': 'Courses',
   'menu.assignGuardian': 'Assign Guardian',
+  'menu.academicAsignatureCourse': 'Academic Charge',
+  'menu.dba': 'General basic learning right',
+  'menu.category': 'Category',
+  'menu.learning': 'Learning',
+  'menu.statement': 'Statement',
   'list.activate': 'Active',
   'list.inactivate': 'Inactive',
   'forms.inputRequired': 'Field Required',
@@ -233,6 +240,7 @@ const enMessages = {
   'forms.course': 'Course',
   'forms.guardian': 'Guardian',
   'forms.search': 'Search',
+  'forms.hidden': 'Hidden',
 };
 
 export default enMessages;

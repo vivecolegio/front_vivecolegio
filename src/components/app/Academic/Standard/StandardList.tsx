@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
 import { COLUMN_LIST } from '../../../../constants/Standard/standardConstants';
 import { createNotification } from '../../../../helpers/Notification';
 import * as standardActions from '../../../../stores/actions/Academic/StandardActions';
@@ -11,15 +12,19 @@ const StandardList = (props: any) => {
   const [columns, setColumns] = useState(COLUMN_LIST);
   const [modalOpen, setModalOpen] = useState(false);
 
+  let [params] = useSearchParams();
+  const  asignatureId  = params.get('asignatureId');
+  const  gradeId  = params.get('gradeId');
+
   const [data, setData] = useState(null);
   useEffect(() => {
-    props.getListAllAcademicStandard(props?.loginReducer?.schoolId).then((listData: any) => {
+    props.getListAllAcademicStandard(props?.loginReducer?.schoolId, asignatureId ? asignatureId : '', gradeId ? gradeId : '').then((listData: any) => {
       setDataTable(listData);
     });
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllAcademicStandard(props?.loginReducer?.schoolId).then((listData: any) => {
+    props.getListAllAcademicStandard(props?.loginReducer?.schoolId, asignatureId ? asignatureId : '', gradeId ? gradeId : '').then((listData: any) => {
       setDataTable(listData);
     });
   };

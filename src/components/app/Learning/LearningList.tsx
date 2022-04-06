@@ -1,29 +1,47 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { useNavigate } from 'react-router';
-import { COLUMN_LIST } from '../../../../constants/Area/areaConstants';
-import { createNotification } from '../../../../helpers/Notification';
-import * as areaActions from '../../../../stores/actions/Academic/AreaActions';
-import DataList from '../../../common/Data/DataList';
-import AreaCreateEdit from './AreaCreateEdit';
+import { useSearchParams } from 'react-router-dom';
+import { COLUMN_LIST } from '../../../constants/Learning/LearningConstants';
+import { createNotification } from '../../../helpers/Notification';
+import * as learningActions from '../../../stores/actions/LearningActions';
+import DataList from '../../common/Data/DataList';
+import LearningCreateEdit from './LearningCreateEdit';
 
-const AreaList = (props: any) => {
+const Learning = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
   const [columns, setColumns] = useState(COLUMN_LIST);
-  const [modalOpen, setModalOpen] = useState(false);  
+  const [modalOpen, setModalOpen] = useState(false);
 
-  let navigate = useNavigate();
+  let [params] = useSearchParams();
+  const  asignatureId  = params.get('asignatureId');
+  const  gradeId  = params.get('gradeId');
 
   const [data, setData] = useState(null);
   useEffect(() => {
-    props.getListAllAcademicArea(props?.loginReducer?.schoolId).then((listData: any) => {
-      setDataTable(listData);
+    props.getListAllLearning(props?.loginReducer?.schoolId, asignatureId ? asignatureId : '', gradeId ? gradeId : '').then((listData: any) => {
+      setDataTable(
+        listData.map((c: any) => {
+          c.node.grade_format = c.node.generalAcademicGrade ? c.node.generalAcademicGrade.name : '';
+          c.node.asignature_format = c.node.generalAcademicAsignature
+            ? c.node.generalAcademicAsignature.name
+            : '';
+          return c;
+        }),
+      );
     });
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllAcademicArea(props?.loginReducer?.schoolId).then((listData: any) => {
-      setDataTable(listData);
+    props.getListAllLearning(props?.loginReducer?.schoolId, asignatureId ? asignatureId : '', gradeId ? gradeId : '').then((listData: any) => {
+      setDataTable(
+        listData.map((c: any) => {
+          c.node.grade_format = c.node.generalAcademicGrade ? c.node.generalAcademicGrade.name : '';
+          c.node.asignature_format = c.node.generalAcademicAsignature
+            ? c.node.generalAcademicAsignature.name
+            : '';
+          return c;
+        }),
+      );
     });
   };
 
@@ -33,15 +51,16 @@ const AreaList = (props: any) => {
   };
 
   const onSubmit = async (dataForm: any) => {
+    console.log(dataForm);
     if (data === null) {
-      await props.saveNewArea(dataForm).then((id: any) => {
+      await props.saveNewLearning(dataForm).then((id: any) => {
         if (id !== undefined) {
           setModalOpen(false);
           refreshDataTable();
         }
       });
     } else {
-      await props.updateArea(dataForm, data.id).then((id: any) => {
+      await props.updateLearning(dataForm, data.id).then((id: any) => {
         if (id !== undefined) {
           setModalOpen(false);
           setData(null);
@@ -52,27 +71,27 @@ const AreaList = (props: any) => {
   };
 
   const viewEditData = async (id: any) => {
-    await props.dataArea(id).then((formData: any) => {
+    await props.dataLearning(id).then((formData: any) => {
       setData(formData.data);
       setModalOpen(true);
     });
   };
 
   const changeActiveData = async (active: any, id: any) => {
-    await props.changeActiveArea(active, id, true).then((formData: any) => {
+    await props.changeActiveLearning(active, id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
 
   const deleteData = async (id: any) => {
-    await props.deleteArea(id, true).then((formData: any) => {
+    await props.deleteLearning(id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
 
   const deleteAll = async (items: any) => {
     items.map(async (item: any) => {
-      await props.deleteArea(item.id, false).then(
+      await props.deleteLearning(item.id, false).then(
         () => {},
         () => {
           createNotification('error', 'error', '');
@@ -83,24 +102,9 @@ const AreaList = (props: any) => {
     createNotification('success', 'success', '');
   };
 
-  const additionalFunction = async (item: any, type: string) => {
-    console.log(type);
-    switch (type) {
-      case 'goToChildren':
-        goToChildren(item.id);
-        break;
-      default:
-        break;
-    }
-  };
-
-  const goToChildren = async (id: any) => {
-    navigate(`/asignatures?id=${id}`);
-  };
-
   const changeActiveDataAll = async (items: any) => {
     items.map(async (item: any) => {
-      await props.changeActiveArea(!item.active, item.id, false).then(
+      await props.changeActiveLearning(!item.active, item.id, false).then(
         () => {},
         () => {
           createNotification('error', 'error', '');
@@ -127,19 +131,8 @@ const AreaList = (props: any) => {
             changeActiveData={changeActiveData}
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
-            additionalFunction={additionalFunction}
-            childrenButtons={[
-              {
-                id: 0,
-                label: 'Asignaturas',
-                color: 'secondary',
-                icon: 'simple-icon-link',
-                action: 'goToChildren',
-              },
-            ]}
-            withChildren={true}
           />
-          <AreaCreateEdit
+          <LearningCreateEdit
             data={data}
             modalOpen={modalOpen}
             toggleModal={() => {
@@ -155,10 +148,10 @@ const AreaList = (props: any) => {
     </>
   );
 };
-const mapDispatchToProps = { ...areaActions };
+const mapDispatchToProps = { ...learningActions };
 
 const mapStateToProps = ({ loginReducer }: any) => {
   return { loginReducer };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AreaList);
+export default connect(mapStateToProps, mapDispatchToProps)(Learning);

@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const QUERY_GET_ALL_STANDARD = gql`
-  query getAllAcademicStandard($schoolId: String!) {
-    data: getAllAcademicStandard(orderCreated: true, allData: true, schoolId: $schoolId) {
+  query getAllAcademicStandard($schoolId: String!, $academicAsignatureId: String!, $academicGradeId: String!) {
+    data: getAllAcademicStandard(orderCreated: true, allData: true, schoolId: $schoolId,academicAsignatureId: $academicAsignatureId, academicGradeId: $academicGradeId) {
       edges {
         cursor
         node {
@@ -36,9 +36,9 @@ export const QUERY_GET_STANDARD = gql`
         id
         name
       }
-      generalAcademicCycleId 
-      generalAcademicCycle {
-        id 
+      academicGradeId 
+      academicGrade {
+        id
         name
       }
       version
@@ -72,7 +72,7 @@ export const QUERY_GET_DROPDOWNS_STANDARD = gql`
         }
       }
     }
-    dataCycles: getAllGeneralAcademicCycle(allData: false, orderCreated: false) {
+    dataGrades: getAllAcademicGrade(allData: false, orderCreated: false, schoolId: $schoolId) {
       edges {
         node {
           id

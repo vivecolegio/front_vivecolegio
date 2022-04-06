@@ -49,10 +49,10 @@ const ListPageHeading = ({
           </h1>
 
           <div className="text-zero top-right-button-container">
+            {currentMenu.createAction ? 
             <Button
               color="primary"
               size="lg"
-              disabled={!currentMenu.createAction}
               className="top-right-button"
               onClick={() => {
                 return toggleModal();
@@ -60,7 +60,10 @@ const ListPageHeading = ({
             >
               <IntlMessages id="pages.add-new" />
             </Button>
+            : ''}
             {'  '}
+            { currentMenu.deleteAction || currentMenu.activateAction || currentMenu.inactiveAction ? 
+              <>
             <ButtonDropdown
               isOpen={dropdownSplitOpen}              
               toggle={() => {
@@ -86,25 +89,27 @@ const ListPageHeading = ({
                     />
                   }
                 />
-              </div>
+              </div>             
               <DropdownToggle caret color="primary" className="dropdown-toggle-split btn-lg" />
               <DropdownMenu end>
+                {currentMenu.deleteAction ? 
                 <DropdownItem 
-                disabled={!currentMenu.deleteAction}
                 onClick={() => {
                     return deleteAll();
                   }}>
                   <IntlMessages id="pages.delete" />
-                </DropdownItem>               
+                </DropdownItem>  : '' }
+                {currentMenu.activateAction || currentMenu.inactiveAction ? 
                 <DropdownItem 
-                disabled={!currentMenu.activateAction || !currentMenu.inactiveAction}
                 onClick={() => {
                     return changeActiveDataAll();
                   }}>
                   <IntlMessages id="pages.activateInactivate" />
-                </DropdownItem>
-              </DropdownMenu>
+                </DropdownItem> : ''}
+              </DropdownMenu>             
             </ButtonDropdown>
+            </>
+              : ''}
           </div>
           <BreadcrumbContainer match={match} heading={null} />
         </div>

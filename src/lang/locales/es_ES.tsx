@@ -144,6 +144,7 @@ const esMessages = {
   'menu.administratorsCampus': 'Administrator Sede',
   'menu.coordinatorsCampus': 'Coordinador Sede',
   'menu.teachers': 'Docentes',
+  'menu.teacher': 'Docente',
   'menu.guardians': 'Acudientes',
   'menu.institutions': 'Instituciones',
   'menu.school': 'Colegio',
@@ -170,7 +171,13 @@ const esMessages = {
   'menu.academicDay': 'Día académico',
   'menu.academicHour': 'Hora académica',
   'menu.course': 'Curso',
+  'menu.courses': 'Cursos',
   'menu.assignGuardian': 'Asignar acudiente',
+  'menu.academicAsignatureCourse': 'Carga académica',
+  'menu.dba': 'Deberes básicos de aprendizaje',
+  'menu.category': 'Categoría',
+  'menu.learning': 'Aprendizaje',
+  'menu.statement': 'Enunciado',
   'forms.inputRequired': 'Campo Requerido',
   'forms.cancel': 'Cancelar',
   'forms.auditInformation': 'Información Auditoria',
@@ -230,6 +237,7 @@ const esMessages = {
   'forms.course': 'Curso',
   'forms.guardian': 'Acudiente',
   'forms.search': 'Buscar',
+  'forms.hidden': 'Oculto',
 };
 
 export default esMessages;

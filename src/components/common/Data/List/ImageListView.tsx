@@ -139,7 +139,7 @@ const ImageListView = ({
                             color={button.color}
                             size="xs"
                             onClick={() => {
-                              return additionalFunction(item.id, button.action);
+                              return additionalFunction(item, button.action);
                             }}
                           >
                             <i className={button.icon + ' font-1rem mr-2'} />

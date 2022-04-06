@@ -3,23 +3,25 @@ import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
-import IntlMessages from '../../../../helpers/IntlMessages';
-import * as standardActions from '../../../../stores/actions/Academic/StandardActions';
-import { Colxx } from '../../../common/CustomBootstrap';
-import AddNewModal from '../../../common/Data/AddNewModal';
-import CreateEditAuditInformation from '../../../common/Data/CreateEditAuditInformation';
-import { Loader } from '../../../common/Loader';
+import IntlMessages from '../../../helpers/IntlMessages';
+import * as academicIndicatorActions from '../../../stores/actions/AcademicAsignatureCourseActions';
+import { Colxx } from '../../common/CustomBootstrap';
+import AddNewModal from '../../common/Data/AddNewModal';
+import CreateEditAuditInformation from '../../common/Data/CreateEditAuditInformation';
+import { Loader } from '../../common/Loader';
 
-const StandardCreateEdit = (props: any) => {
+const GradeAssignmentCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
+  const [coursesList, setCoursesList] = useState(null);
   const [asignaturesList, setAsignaturesList] = useState(null);
+  const [campusList, setCampusList] = useState(null);
   const [gradesList, setGradesList] = useState(null);
-  const [standardList, setStandardsList] = useState(null);
-  const [schoolList, setSchoolList] = useState(null);
-  const [cycle, setCycle] = useState(null);
+  const [teachersList, setTeachersList] = useState(null);
+  const [campus, setCampus] = useState(null);
+  const [course, setCourse] = useState(null);
+  const [teacher, setTeacher] = useState(null);
   const [asignature, setAsignature] = useState(null);
-  const [standard, setStandard] = useState(null);
-  const [school, setSchool] = useState(null);
+  const [grade, setGrade] = useState(null);
 
   const methods = useForm({
     mode: 'onChange',
@@ -32,6 +34,13 @@ const StandardCreateEdit = (props: any) => {
     cleanForm();
     getDropdowns();
     if (props?.data?.id) {
+      if (props?.data?.campus !== undefined && props?.data?.campus != null) {
+        setCampus({
+          key: props?.data?.campus?.id,
+          label: props?.data?.campus?.name,
+          value: props?.data?.campus?.id,
+        });
+      }
       if (
         props?.data?.academicAsignature !== undefined &&
         props?.data?.academicAsignature != null
@@ -42,31 +51,18 @@ const StandardCreateEdit = (props: any) => {
           value: props?.data?.academicAsignature?.id,
         });
       }
-      if (
-        props?.data?.academicGrade !== undefined &&
-        props?.data?.academicGrade != null
-      ) {
-        setCycle({
-          key: props?.data?.academicGrade?.id,
-          label: props?.data?.academicGrade?.name,
-          value: props?.data?.academicGrade?.id,
+      if (props?.data?.course !== undefined && props?.data?.course != null) {
+        setCourse({
+          key: props?.data?.course?.id,
+          label: props?.data?.course?.name,
+          value: props?.data?.course?.id,
         });
       }
-      if (
-        props?.data?.generalAcademicStandard !== undefined &&
-        props?.data?.generalAcademicStandard != null
-      ) {
-        setStandard({
-          key: props?.data?.generalAcademicStandard?.id,
-          label: props?.data?.generalAcademicStandard?.standard,
-          value: props?.data?.generalAcademicStandard?.id,
-        });
-      }
-      if (props?.data?.school !== undefined && props?.data?.school != null) {
-        setSchool({
-          key: props?.data?.school?.id,
-          label: props?.data?.school?.name,
-          value: props?.data?.school?.id,
+      if (props?.data?.teacher !== undefined && props?.data?.teacher != null) {
+        setTeacher({
+          key: props?.data?.teacher?.id,
+          label: `${props?.data?.teacher?.user.name} ${props?.data?.teacher?.user.lastName}`,
+          value: props?.data?.teacher?.id,
         });
       }
     }
@@ -75,23 +71,25 @@ const StandardCreateEdit = (props: any) => {
 
   const cleanForm = async () => {
     reset();
-    setCycle(null);
-    setStandard(null);
+    setCourse(null);
     setAsignature(null);
-    setSchool(null);
-    if (props?.loginReducer?.schoolId && !props?.data?.id) {
+    setCampus(null);
+    setTeacher(null);
+    if (props?.loginReducer?.campusId && !props?.data?.id) {
       // set value when register is new and sesion contains value
-      register('schoolId', {
+      register('campusId', {
         required: true,
-        value: props?.loginReducer?.schoolId,
+        value: props?.loginReducer?.campusId,
       });
     }
   };
 
   const getDropdowns = async () => {
-    props.getDropdownsAcademicStandard(props?.loginReducer?.schoolId).then((data: any) => {
-      setSchoolList(
-        data.dataSchools.edges.map((c: any) => {
+    console.log(props?.loginReducer?.campusId)
+    props.getDropdownsAcademicAsignatureCourse(props?.loginReducer?.schoolId, props?.loginReducer?.campusId).then((data: any) => {
+      console.log(data);
+      setCampusList(
+        data.dataCampus.edges.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };
         }),
       );
@@ -104,34 +102,44 @@ const StandardCreateEdit = (props: any) => {
         data.dataGrades.edges.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };
         }),
-      );
-      setStandardsList(
-        data.dataGeneralStandards.edges.map((c: any) => {
-          return { label: c.node.standard, value: c.node.id, key: c.node.id };
+      );     
+      setTeachersList(
+        data.dataTeachers.edges.map((c: any) => {
+          return { label: `${c.node.user.name} ${c.node.user.lastName}`, value: c.node.id, key: c.node.id };
         }),
       );
     });
   };
 
-  const { ref: standardRef, ...standardRest } = register('standard', {
+  const getCourses = async (academicGradeId: any) => {
+    props.getCoursesOfGrade(academicGradeId, props?.loginReducer?.campusId).then((data: any) => {
+      setCoursesList(
+        data.dataCourses.edges.map((c: any) => {
+          return { label: c.node.name, value: c.node.id, key: c.node.id };
+        }),
+      );
+    });
+  };
+
+  const { ref: weightRef, ...weightRest } = register('weight', {
     required: true,
-    value: props?.data?.id ? props?.data?.standard : '',
-  });
-  register('schoolId', {
-    required: true,
-    value: props?.data?.id ? props?.data?.schoolId : '',
-  });
-  register('academicGradeId', {
-    required: true,
-    value: props?.data?.id ? props?.data?.academicGradeId : '',
+    value: props?.data?.id ? props?.data?.weight : '',
   });
   register('academicAsignatureId', {
     required: true,
     value: props?.data?.id ? props?.data?.academicAsignatureId : '',
   });
-  register('generalAcademicStandardId', {
+  register('courseId', {
     required: true,
-    value: props?.data?.id ? props?.data?.generalAcademicStandardId : '',
+    value: props?.data?.id ? props?.data?.courseId : '',
+  });
+  register('campusId', {
+    required: true,
+    value: props?.data?.id ? props?.data?.campusId : '',
+  });
+  register('teacherId', {
+    required: true,
+    value: props?.data?.id ? props?.data?.teacherId : '',
   });
 
   const auditInfo = {
@@ -167,9 +175,13 @@ const StandardCreateEdit = (props: any) => {
             <ModalBody>
               <div className="form-group">
                 <Label>
-                  <IntlMessages id="forms.standard" />
+                  <IntlMessages id="forms.weight" />
                 </Label>
-                <Input {...standardRest} innerRef={standardRef} className="form-control" />
+                <Input
+                  {...weightRest}
+                  innerRef={weightRef}
+                  className="form-control"
+                />
               </div>
               <div className="form-group">
                 <Label>
@@ -194,50 +206,65 @@ const StandardCreateEdit = (props: any) => {
                 </Label>
                 <Select
                   placeholder={<IntlMessages id="forms.select" />}
-                  {...register('academicGradeId', { required: true })}
                   className="react-select"
                   classNamePrefix="react-select"
                   options={gradesList}
-                  value={cycle}
+                  value={grade}
                   onChange={(selectedOption) => {
-                    setValue('academicGradeId', selectedOption?.key);
-                    setCycle(selectedOption);
+                    setGrade(selectedOption);
+                    getCourses(selectedOption?.key);
                   }}
                 />
               </div>
               <div className="form-group">
                 <Label>
-                  <IntlMessages id="forms.standard" /> {' - '}
-                  <IntlMessages id="menu.general" />
+                  <IntlMessages id="menu.course" />
                 </Label>
                 <Select
                   placeholder={<IntlMessages id="forms.select" />}
-                  {...register('generalAcademicStandardId', { required: true })}
+                  {...register('courseId', { required: true })}
                   className="react-select"
                   classNamePrefix="react-select"
-                  options={standardList}
-                  value={standard}
+                  options={coursesList}
+                  value={course}
                   onChange={(selectedOption) => {
-                    setValue('generalAcademicStandardId', selectedOption?.key);
-                    setStandard(selectedOption);
+                    setValue('courseId', selectedOption?.key);
+                    setCourse(selectedOption);
+                  }}
+                />
+              </div>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="menu.teacher" />
+                </Label>
+                <Select
+                  placeholder={<IntlMessages id="forms.select" />}
+                  {...register('teacherId', { required: true })}
+                  className="react-select"
+                  classNamePrefix="react-select"
+                  options={teachersList}
+                  value={teacher}
+                  onChange={(selectedOption) => {
+                    setValue('teacherId', selectedOption?.key);
+                    setTeacher(selectedOption);
                   }}
                 />
               </div>
               {!props?.loginReducer?.schoolId ? (
                 <div className="form-group">
                   <Label>
-                    <IntlMessages id="menu.school" />
+                    <IntlMessages id="menu.campus" />
                   </Label>
                   <Select
                     placeholder={<IntlMessages id="forms.select" />}
                     {...register('schoolId', { required: true })}
                     className="react-select"
                     classNamePrefix="react-select"
-                    options={schoolList}
-                    value={school}
+                    options={campusList}
+                    value={campus}
                     onChange={(selectedOption) => {
-                      setValue('schoolId', selectedOption?.key);
-                      setSchool(selectedOption);
+                      setValue('campusId', selectedOption?.key);
+                      setCampus(selectedOption);
                     }}
                   />
                 </div>
@@ -259,10 +286,12 @@ const StandardCreateEdit = (props: any) => {
   );
 };
 
-const mapDispatchToProps = { ...standardActions };
+const mapDispatchToProps = {
+  ...academicIndicatorActions,
+};
 
 const mapStateToProps = ({ loginReducer }: any) => {
   return { loginReducer };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(StandardCreateEdit);
+export default connect(mapStateToProps, mapDispatchToProps)(GradeAssignmentCreateEdit);

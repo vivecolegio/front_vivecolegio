@@ -12,8 +12,8 @@ export const getListAllGrade = (schoolId:string) => {
         .query({
           query: QUERY_GET_ALL_GRADE,
           variables:{
-            schoolId
-          }
+            schoolId,
+          },
         })
         .then((result: any) => {
           listData = result.data.data.edges;
@@ -192,8 +192,8 @@ export const getDropdownsAcademicGrade = (schoolId:string) => {
         .query({
           query: QUERY_GET_DROPDOWNS_GRADE,
           variables:{
-            schoolId
-          }
+            schoolId,
+          },
         })
         .then((result: any) => {
           listData = result.data;

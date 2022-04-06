@@ -4,7 +4,7 @@ import { MUTATION_CHANGE_ACTIVE_STANDARD, MUTATION_CREATE_STANDARD, MUTATION_DEL
 import { QUERY_GET_ALL_STANDARD, QUERY_GET_DROPDOWNS_STANDARD, QUERY_GET_STANDARD } from '../../graphql/Academic/Standard/StandardQueries';
 
 
-export const getListAllAcademicStandard = (schoolId:string) => {
+export const getListAllAcademicStandard = (schoolId:string, academicAsignatureId: string, academicGradeId: string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
@@ -12,8 +12,10 @@ export const getListAllAcademicStandard = (schoolId:string) => {
         .query({
           query: QUERY_GET_ALL_STANDARD,
           variables:{
-            schoolId
-          }
+            schoolId,
+            academicAsignatureId,
+            academicGradeId,
+          },
         })
         .then((result: any) => {
           listData = result.data.data.edges;
@@ -192,8 +194,8 @@ export const getDropdownsAcademicStandard = (schoolId:string) => {
         .query({
           query: QUERY_GET_DROPDOWNS_STANDARD,
           variables:{
-            schoolId
-          }
+            schoolId,
+          },
         })
         .then((result: any) => {
           listData = result.data;

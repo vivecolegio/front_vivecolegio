@@ -23,7 +23,8 @@ export const QUERY_GET_ASIGNATURE = gql`
       name
       abbreviation
       code
-      weight
+      minWeight
+      maxWeight
       version
       schoolId
       school {
@@ -32,6 +33,11 @@ export const QUERY_GET_ASIGNATURE = gql`
       }
       academicAreaId
       academicArea {
+        id 
+        name
+      }
+      generalAcademicAsignatureId
+      generalAcademicAsignature {
         id 
         name
       }
@@ -58,6 +64,14 @@ export const QUERY_GET_DROPDOWNS_ASIGNATURE = gql`
       }
     }
     dataAreas: getAllAcademicArea(allData: false, orderCreated: false, schoolId: $schoolId) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+    dataGeneralAsignatures: getAllGeneralAcademicAsignature(allData: false, orderCreated: false) {
       edges {
         node {
           id

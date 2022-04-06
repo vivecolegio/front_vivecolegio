@@ -73,11 +73,11 @@ const MenuList = (props: any) => {
     });
   };
 
-  const additionalFunction = async (id: any, type: string) => {
+  const additionalFunction = async (item: any, type: string) => {
     console.log(type)
      switch (type) {
        case 'goToChildren':
-         goToChildren(id);
+         goToChildren(item.id);
          break;     
        default:
          break;

@@ -13,8 +13,8 @@ export const getListAllAcademicAsignature = (schoolId:string, academicAreaId: st
           query: QUERY_GET_ALL_ASIGNATURE,
           variables:{
             schoolId,
-            academicAreaId
-          }
+            academicAreaId,
+          },
         })
         .then((result: any) => {
           listData = result.data.data.edges;
@@ -61,7 +61,8 @@ export const saveNewAsignature = (data: any) => {
         ...data,
       };
       let dataCreate = null;
-      model.weight = model.weight && !isNaN(model.weight) ? parseFloat(model.weight) : 0;
+      model.maxWeight = model.weight && !isNaN(model.maxWeight) ? parseFloat(model.maxWeight) : 0;
+      model.minWeight = model.weight && !isNaN(model.minWeight) ? parseFloat(model.minWeight) : 0;
       await client
         .mutate({
           mutation: MUTATION_CREATE_ASIGNATURE,
@@ -97,7 +98,8 @@ export const updateAsignature = (data: any, id: any) => {
         ...data,
       };
       let dataUpdate = null;
-      model.weight = model.weight && !isNaN(model.weight) ? parseFloat(model.weight) : 0;
+      model.maxWeight = model.weight && !isNaN(model.maxWeight) ? parseFloat(model.maxWeight) : 0;
+      model.minWeight = model.weight && !isNaN(model.minWeight) ? parseFloat(model.minWeight) : 0;
       await client
         .mutate({
           mutation: MUTATION_UPDATE_ASIGNATURE,
@@ -195,8 +197,8 @@ export const getDropdownsAcademicAsignature = (schoolId:string) => {
         .query({
           query: QUERY_GET_DROPDOWNS_ASIGNATURE,
           variables:{
-            schoolId
-          }
+            schoolId,
+          },
         })
         .then((result: any) => {
           listData = result.data;
