@@ -121,7 +121,7 @@ const Learning = (props: any) => {
   const additionalFunction = async (item: any, type: string) => {
     switch (type) {
       case 'goToChildrenLearning':
-        goToChildren(`/evidenceLearning`);
+        goToChildren(`/evidenceLearning?idLearning=${item.id}`);
         break;
     }
   };
