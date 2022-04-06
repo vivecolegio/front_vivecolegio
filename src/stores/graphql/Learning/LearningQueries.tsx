@@ -72,6 +72,14 @@ export const QUERY_GET_LEARNING = gql`
 
 export const QUERY_GET_DROPDOWNS_LEARNING = gql`
   query getDropdownsLearning($schoolId: String!) {
+    dataSchools: getAllSchool(allData: false, orderCreated: false) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
     dataAsignatures: getAllAcademicAsignature(
       allData: false
       orderCreated: false

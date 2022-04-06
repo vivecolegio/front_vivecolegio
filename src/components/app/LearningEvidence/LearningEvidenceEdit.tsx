@@ -4,19 +4,19 @@ import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
-import IntlMessages from '../../../../helpers/IntlMessages';
-import * as areaActions from '../../../../stores/actions/Academic/AreaActions';
-import { Colxx } from '../../../common/CustomBootstrap';
-import AddNewModal from '../../../common/Data/AddNewModal';
-import CreateEditAuditInformation from '../../../common/Data/CreateEditAuditInformation';
-import { Loader } from '../../../common/Loader';
+import IntlMessages from '../../../helpers/IntlMessages';
+import * as learningEvidenceActions from '../../../stores/actions/LearningEvidenceActions';
+import { Colxx } from '../../common/CustomBootstrap';
+import AddNewModal from '../../common/Data/AddNewModal';
+import CreateEditAuditInformation from '../../common/Data/CreateEditAuditInformation';
+import { Loader } from '../../common/Loader';
 
-const AreaCreateEdit = (props: any) => {
+const LearningEvidenceCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
-  const [generalAreasList, setGeneralAreasList] = useState(null);
+  const [learningList, setLearningList] = useState(null);
   const [schoolList, setSchoolList] = useState(null);
-  const [generalAcademicArea, setGeneralArea] = useState(null);
   const [school, setSchool] = useState(null);
+  const [learning, setLearning] = useState(null);
 
   const methods = useForm({
     mode: 'onChange',
@@ -30,13 +30,13 @@ const AreaCreateEdit = (props: any) => {
     getDropdowns();
     if (props?.data?.id) {
       if (
-        props?.data?.generalAcademicArea !== undefined &&
-        props?.data?.generalAcademicArea != null
+        props?.data?.learning !== undefined &&
+        props?.data?.learning != null
       ) {
-        setGeneralArea({
-          key: props?.data?.generalAcademicArea?.id,
-          label: props?.data?.generalAcademicArea?.name,
-          value: props?.data?.generalAcademicArea?.id,
+        setLearning({
+          key: props?.data?.learning?.id,
+          label: props?.data?.learning?.statement,
+          value: props?.data?.learning?.id,
         });
       }
       if (props?.data?.school !== undefined && props?.data?.school != null) {
@@ -52,7 +52,7 @@ const AreaCreateEdit = (props: any) => {
 
   const cleanForm = async () => {
     reset();
-    setGeneralArea(null);
+    setLearning(null);
     setSchool(null);
     if (props?.loginReducer?.schoolId && !props?.data?.id) {
       // set value when register is new and sesion contains value
@@ -64,31 +64,27 @@ const AreaCreateEdit = (props: any) => {
   };
 
   const getDropdowns = async () => {
-    props.getDropdownsAcademicArea().then((data: any) => {
+    props.getDropdownsLearningEvidence().then((data: any) => {
       setSchoolList(
         data.dataSchools.edges.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };
         }),
       );
-      setGeneralAreasList(
-        data.dataGeneralAreas.edges.map((c: any) => {
-          return { label: c.node.name, value: c.node.id, key: c.node.id };
+      setLearningList(
+        data.dataLearnings.edges.map((c: any) => {
+          return { label: c.node.statement, value: c.node.id, key: c.node.id };
         }),
       );
     });
   };
 
-  const { ref: nameRef, ...nameRest } = register('name', {
+  const { ref: statementRef, ...statementRest } = register('statement', {
     required: true,
     value: props?.data?.id ? props?.data?.name : '',
   });
-  const { ref: abbreviationRef, ...abbreviationRest } = register('abbreviation', {
+  register('learningId', {
     required: true,
-    value: props?.data?.id ? props?.data?.abbreviation : '',
-  });
-  register('generalAcademicAreaId', {
-    required: true,
-    value: props?.data?.id ? props?.data?.generalAcademicAreaId : '',
+    value: props?.data?.id ? props?.data?.learningId : '',
   });
   register('schoolId', {
     required: true,
@@ -129,31 +125,24 @@ const AreaCreateEdit = (props: any) => {
             <ModalBody>
               <div className="form-group">
                 <Label>
-                  <IntlMessages id="forms.name" />
+                  <IntlMessages id="menus.statement" />
                 </Label>
-                <Input {...nameRest} innerRef={nameRef} className="form-control" />
+                <Input {...statementRest} innerRef={statementRef} className="form-control" />
               </div>
               <div className="form-group">
                 <Label>
-                  <IntlMessages id="forms.abbreviation" />
-                </Label>
-                <Input {...abbreviationRest} innerRef={abbreviationRef} className="form-control" />
-              </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="menu.area" /> {' - '}
-                  <IntlMessages id="menu.general" />
+                  <IntlMessages id="menu.learning" /> 
                 </Label>
                 <Select
                   placeholder={<IntlMessages id="forms.select" />}
-                  {...register('generalAcademicAreaId', { required: true })}
+                  {...register('learningId', { required: true })}
                   className="react-select"
                   classNamePrefix="react-select"
-                  options={generalAreasList}
-                  value={generalAcademicArea}
+                  options={learningList}
+                  value={learning}
                   onChange={(selectedOption) => {
-                    setValue('generalAcademicAreaId', selectedOption?.key);
-                    setGeneralArea(selectedOption);
+                    setValue('learningId', selectedOption?.key);
+                    setLearning(selectedOption);
                   }}
                 />
               </div>
@@ -193,10 +182,10 @@ const AreaCreateEdit = (props: any) => {
   );
 };
 
-const mapDispatchToProps = { ...areaActions };
+const mapDispatchToProps = { ...learningEvidenceActions };
 
 const mapStateToProps = ({ loginReducer }: any) => {
   return { loginReducer };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AreaCreateEdit);
+export default connect(mapStateToProps, mapDispatchToProps)(LearningEvidenceCreateEdit);

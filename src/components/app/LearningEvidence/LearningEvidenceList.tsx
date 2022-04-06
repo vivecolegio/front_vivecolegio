@@ -1,47 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { useSearchParams } from 'react-router-dom';
-import { COLUMN_LIST } from '../../../constants/Learning/LearningConstants';
+import { useNavigate } from 'react-router';
+import { COLUMN_LIST } from '../../../constants/LearningEvidence/learningEvidenceConstants';
 import { createNotification } from '../../../helpers/Notification';
-import * as learningActions from '../../../stores/actions/LearningActions';
+import * as learningEvidenceActions from '../../../stores/actions/LearningEvidenceActions';
 import DataList from '../../common/Data/DataList';
-import LearningCreateEdit from './LearningCreateEdit';
+import LearningEvidenceCreateEdit from './LearningEvidenceEdit';
 
-const Learning = (props: any) => {
+const LearningEvidenceList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
   const [columns, setColumns] = useState(COLUMN_LIST);
-  const [modalOpen, setModalOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);  
 
-  let [params] = useSearchParams();
-  const  asignatureId  = params.get('asignatureId');
-  const  gradeId  = params.get('gradeId');
+  let navigate = useNavigate();
 
   const [data, setData] = useState(null);
   useEffect(() => {
-    props.getListAllLearning(props?.loginReducer?.schoolId, asignatureId ? asignatureId : '', gradeId ? gradeId : '').then((listData: any) => {
-      setDataTable(
-        listData.map((c: any) => {
-          c.node.grade_format = c.node.academicGrade ? c.node.academicGrade.name : '';
-          c.node.asignature_format = c.node.academicAsignature
-            ? c.node.academicAsignature.name
-            : '';
-          return c;
-        }),
-      );
+    props.getListAllLearningEvidence(props?.loginReducer?.schoolId).then((listData: any) => {
+      setDataTable(listData);
     });
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllLearning(props?.loginReducer?.schoolId, asignatureId ? asignatureId : '', gradeId ? gradeId : '').then((listData: any) => {
-      setDataTable(
-        listData.map((c: any) => {
-          c.node.grade_format = c.node.academicGrade ? c.node.academicGrade.name : '';
-          c.node.asignature_format = c.node.academicAsignature
-            ? c.node.academicAsignature.name
-            : '';
-          return c;
-        }),
-      );
+    props.getListAllLearningEvidence(props?.loginReducer?.schoolId).then((listData: any) => {
+      setDataTable(listData);
     });
   };
 
@@ -51,16 +33,15 @@ const Learning = (props: any) => {
   };
 
   const onSubmit = async (dataForm: any) => {
-    console.log(dataForm);
     if (data === null) {
-      await props.saveNewLearning(dataForm).then((id: any) => {
+      await props.saveNewLearningEvidence(dataForm).then((id: any) => {
         if (id !== undefined) {
           setModalOpen(false);
           refreshDataTable();
         }
       });
     } else {
-      await props.updateLearning(dataForm, data.id).then((id: any) => {
+      await props.updateLearningEvidence(dataForm, data.id).then((id: any) => {
         if (id !== undefined) {
           setModalOpen(false);
           setData(null);
@@ -71,27 +52,27 @@ const Learning = (props: any) => {
   };
 
   const viewEditData = async (id: any) => {
-    await props.dataLearning(id).then((formData: any) => {
+    await props.dataLearningEvidence(id).then((formData: any) => {
       setData(formData.data);
       setModalOpen(true);
     });
   };
 
   const changeActiveData = async (active: any, id: any) => {
-    await props.changeActiveLearning(active, id, true).then((formData: any) => {
+    await props.changeActiveLearningEvidence(active, id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
 
   const deleteData = async (id: any) => {
-    await props.deleteLearning(id, true).then((formData: any) => {
+    await props.deleteLearningEvidence(id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
 
   const deleteAll = async (items: any) => {
     items.map(async (item: any) => {
-      await props.deleteLearning(item.id, false).then(
+      await props.deleteLearningEvidence(item.id, false).then(
         () => {},
         () => {
           createNotification('error', 'error', '');
@@ -102,9 +83,24 @@ const Learning = (props: any) => {
     createNotification('success', 'success', '');
   };
 
+  const additionalFunction = async (item: any, type: string) => {
+    console.log(type);
+    switch (type) {
+      case 'goToChildren':
+        goToChildren(item.id);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const goToChildren = async (id: any) => {
+    navigate(`/asignatures?id=${id}`);
+  };
+
   const changeActiveDataAll = async (items: any) => {
     items.map(async (item: any) => {
-      await props.changeActiveLearning(!item.active, item.id, false).then(
+      await props.changeActiveLearningEvidence(!item.active, item.id, false).then(
         () => {},
         () => {
           createNotification('error', 'error', '');
@@ -131,8 +127,19 @@ const Learning = (props: any) => {
             changeActiveData={changeActiveData}
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
+            additionalFunction={additionalFunction}
+            childrenButtons={[
+              {
+                id: 0,
+                label: 'Asignaturas',
+                color: 'secondary',
+                icon: 'simple-icon-link',
+                action: 'goToChildren',
+              },
+            ]}
+            withChildren={true}
           />
-          <LearningCreateEdit
+          <LearningEvidenceCreateEdit
             data={data}
             modalOpen={modalOpen}
             toggleModal={() => {
@@ -148,10 +155,10 @@ const Learning = (props: any) => {
     </>
   );
 };
-const mapDispatchToProps = { ...learningActions };
+const mapDispatchToProps = { ...learningEvidenceActions };
 
 const mapStateToProps = ({ loginReducer }: any) => {
   return { loginReducer };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Learning);
+export default connect(mapStateToProps, mapDispatchToProps)(LearningEvidenceList);

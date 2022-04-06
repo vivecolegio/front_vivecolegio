@@ -14,8 +14,6 @@ const GeneralBasicLearningRightCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
   const [gradesList, setGradesList] = useState(null);
   const [asignaturesList, setAsignaturesList] = useState(null);
-  const [schoolsList, setSchoolsList] = useState(null);
-  const [school, setSchool] = useState(null);
   const [grade, setGrade] = useState(null);
   const [asignature, setAsignature] = useState(null);
 
@@ -30,13 +28,6 @@ const GeneralBasicLearningRightCreateEdit = (props: any) => {
     cleanForm();
     getDropdowns();
     if (props?.data?.id) {     
-      if (props?.data?.school !== undefined && props?.data?.school != null) {
-        setSchool({
-          key: props?.data?.school?.id,
-          label: props?.data?.school?.name,
-          value: props?.data?.school?.id,
-        });
-      }
       if (
         props?.data?.generalAcademicAsignature !== undefined &&
         props?.data?.generalAcademicAsignature != null
@@ -60,25 +51,12 @@ const GeneralBasicLearningRightCreateEdit = (props: any) => {
 
   const cleanForm = async () => {
     reset();
-    setSchool(null);
     setAsignature(null);
     setGrade(null);
-    // if (props?.loginReducer?.schoolId && !props?.data?.id) {
-    //   // set value when register is new and sesion contains value
-    //   register('schoolId', {
-    //     required: true,
-    //     value: props?.loginReducer?.schoolId,
-    //   });
-    // }
   };
 
   const getDropdowns = async () => {
     props.getDropdownsGeneralBasicLearningRight(props?.loginReducer?.schoolId).then((data: any) => {
-      setSchoolsList(
-        data.dataSchools.edges.map((c: any) => {
-          return { label: c.node.name, value: c.node.id, key: c.node.id };
-        }),
-      );
       setAsignaturesList(
         data.dataAsignatures.edges.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };
@@ -108,10 +86,6 @@ const GeneralBasicLearningRightCreateEdit = (props: any) => {
     required: true,
     value: props?.data?.id ? props?.data?.generalAcademicGradeId : '',
   });
-  // register('schoolId', {
-  //   required: true,
-  //   value: props?.data?.id ? props?.data?.schoolId : '',
-  // });
 
   const auditInfo = {
     createdAt: props?.data?.id ? props?.data?.createdAt : null,
@@ -189,28 +163,7 @@ const GeneralBasicLearningRightCreateEdit = (props: any) => {
                     setGrade(selectedOption);
                   }}
                 />
-              </div>
-              {!props?.loginReducer?.schoolId ? (
-                <div className="form-group">
-                  <Label>
-                    <IntlMessages id="menu.school" />
-                  </Label>
-                  <Select
-                    placeholder={<IntlMessages id="forms.select" />}
-                    {...register('schoolId', { required: true })}
-                    className="react-select"
-                    classNamePrefix="react-select"
-                    options={schoolsList}
-                    value={school}
-                    onChange={(selectedOption) => {
-                      setValue('schoolId', selectedOption?.key);
-                      setSchool(selectedOption);
-                    }}
-                  />
-                </div>
-              ) : (
-                ''
-              )}
+              </div>    
             </ModalBody>
             {props?.data?.id ? (
               <ModalFooter className="p-3">
