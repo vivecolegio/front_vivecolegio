@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const QUERY_GET_ALL_LEARNING_EVIDENCE = gql`
-  query getAllEvidenceLearning($schoolId: String!) {
-    data: getAllEvidenceLearning(orderCreated: true, allData: true, schoolId: $schoolId) {
+  query getAllEvidenceLearning($schoolId: String!, $learningId: String!) {
+    data: getAllEvidenceLearning(orderCreated: true, allData: true, schoolId: $schoolId, learningId: $learningId) {
       edges {
         cursor
         node {
@@ -45,20 +45,12 @@ export const QUERY_GET_LEARNING_EVIDENCE = gql`
 `;
 
 export const QUERY_GET_DROPDOWNS_LEARNING_EVIDENCE = gql`
-  query getDropdownsEvidenceLearning($schoolId: String!) {
+  query getDropdownsEvidenceLearning {
     dataSchools: getAllSchool(allData: false, orderCreated: false) {
       edges {
         node {
           id
           name
-        }
-      }
-    }
-    dataLearnings: getAllLearning(allData: false, orderCreated: false, schoolId: $schoolId) {
-      edges {
-        node {
-          id
-          statement
         }
       }
     }

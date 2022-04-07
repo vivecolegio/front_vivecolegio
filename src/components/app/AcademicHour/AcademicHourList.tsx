@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+import { useNavigate } from 'react-router';
+import { useSearchParams } from 'react-router-dom';
 import { COLUMN_LIST } from '../../../constants/AcademicHour/academicHourConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as academicDayActions from '../../../stores/actions/AcademicHourActions';
@@ -11,26 +13,22 @@ const AcademicHourList = (props: any) => {
   const [columns, setColumns] = useState(COLUMN_LIST);
   const [modalOpen, setModalOpen] = useState(false);
 
+  let navigate = useNavigate();
+
+  let [params] = useSearchParams();
+  const  academicDayId  = params.get('academicDayId');
+  const  academicDayName  = params.get('academicDayName');
+
   const [data, setData] = useState(null);
   useEffect(() => {
-    props.getListAllAcademicHour(props?.loginReducer?.campusId).then((listData: any) => {
-      setDataTable(
-        listData.map((c: any) => {
-          c.node.academicDay_format = c?.node?.academicDay ? `${c?.node?.academicDay?.workingDay  } - ${  c?.node?.academicDay?.typeDay}` : '';         
-          return c;
-        }),
-        );
+    props.getListAllAcademicHour(props?.loginReducer?.campusId, academicDayId).then((listData: any) => {
+      setDataTable(listData);
     });
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllAcademicHour(props?.loginReducer?.campusId).then((listData: any) => {
-      setDataTable(
-        listData.map((c: any) => {
-          c.node.academicDay_format = c?.node?.academicDay ? `${c?.node?.academicDay?.workingDay  } - ${  c?.node?.academicDay?.typeDay}` : '';         
-          return c;
-        }),
-      );
+    props.getListAllAcademicHour(props?.loginReducer?.campusId, academicDayId).then((listData: any) => {
+      setDataTable(listData);
     });
   };
 
@@ -103,6 +101,10 @@ const AcademicHourList = (props: any) => {
     createNotification('success', 'success', '');
   };
 
+  const goTo = async (url: string) => {
+    navigate(url);
+  };
+
   return (
     <>
       {' '}
@@ -119,6 +121,19 @@ const AcademicHourList = (props: any) => {
             changeActiveData={changeActiveData}
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
+            header={
+              <>
+                <div className='mt-4'>
+                  <h2 className='mb-0'>
+                   <span className='text-green font-bold'>{academicDayName}</span>
+                  </h2>
+                  <p className='text-muted d-flex align-items-center cursor-pointer' onClick={() => {return goTo('/academicDay')}}>
+                    <i className='simple-icon-arrow-left-circle mr-2'></i>
+                    Regresar a días académicos
+                  </p>
+                </div>
+              </>
+            }
           />
           <AcademicHourCreateEdit
             data={data}

@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
+import { useSearchParams } from 'react-router-dom';
 import { COLUMN_LIST } from '../../../constants/LearningEvidence/learningEvidenceConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as learningEvidenceActions from '../../../stores/actions/LearningEvidenceActions';
 import DataList from '../../common/Data/DataList';
-import LearningEvidenceCreateEdit from './LearningEvidenceEdit';
+import LearningEvidenceCreateEdit from './LearningEvidenceCreateEdit';
 
 const LearningEvidenceList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
@@ -14,15 +15,19 @@ const LearningEvidenceList = (props: any) => {
 
   let navigate = useNavigate();
 
+  let [params] = useSearchParams();
+  const  learningId  = params.get('learningId');
+  const  learningName  = params.get('learningName');
+
   const [data, setData] = useState(null);
   useEffect(() => {
-    props.getListAllLearningEvidence(props?.loginReducer?.schoolId).then((listData: any) => {
+    props.getListAllLearningEvidence(props?.loginReducer?.schoolId, learningId).then((listData: any) => {
       setDataTable(listData);
     });
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllLearningEvidence(props?.loginReducer?.schoolId).then((listData: any) => {
+    props.getListAllLearningEvidence(props?.loginReducer?.schoolId, learningId).then((listData: any) => {
       setDataTable(listData);
     });
   };
@@ -83,21 +88,6 @@ const LearningEvidenceList = (props: any) => {
     createNotification('success', 'success', '');
   };
 
-  const additionalFunction = async (item: any, type: string) => {
-    console.log(type);
-    switch (type) {
-      case 'goToChildren':
-        goToChildren(item.id);
-        break;
-      default:
-        break;
-    }
-  };
-
-  const goToChildren = async (id: any) => {
-    navigate(`/asignatures?id=${id}`);
-  };
-
   const changeActiveDataAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.changeActiveLearningEvidence(!item.active, item.id, false).then(
@@ -109,6 +99,10 @@ const LearningEvidenceList = (props: any) => {
     });
     refreshDataTable();
     createNotification('success', 'success', '');
+  };
+
+  const goTo = async () => {
+    navigate(-1);
   };
 
   return (
@@ -127,17 +121,19 @@ const LearningEvidenceList = (props: any) => {
             changeActiveData={changeActiveData}
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
-            additionalFunction={additionalFunction}
-            childrenButtons={[
-              {
-                id: 0,
-                label: 'Asignaturas',
-                color: 'secondary',
-                icon: 'simple-icon-link',
-                action: 'goToChildren',
-              },
-            ]}
-            withChildren={true}
+            header={
+              <>
+                <div className='mt-4'>
+                  <h2 className='mb-0'>
+                    <span className='text-green font-bold'>{learningName}</span>
+                  </h2>
+                  <p className='text-muted d-flex align-items-center cursor-pointer' onClick={() => {return goTo()}}>
+                    <i className='simple-icon-arrow-left-circle mr-2'></i>
+                    Regresar a aprendizajes
+                  </p>
+                </div>
+              </>
+            }
           />
           <LearningEvidenceCreateEdit
             data={data}

@@ -122,7 +122,7 @@ const GeneralBasicLearningRightCreateEdit = (props: any) => {
                 <Label>
                   <IntlMessages id="menu.dba" />
                 </Label>
-                <Input {...dbaRest} innerRef={dbaRef} className="form-control" />
+                <Input type='textarea' rows="6" {...dbaRest} innerRef={dbaRef} className="form-control" />
               </div>
               <div className="form-group">
                 <Label>

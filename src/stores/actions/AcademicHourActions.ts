@@ -4,7 +4,7 @@ import { MUTATION_CHANGE_ACTIVE_ACADEMIC_HOUR, MUTATION_CREATE_ACADEMIC_HOUR, MU
 import { QUERY_GET_ALL_ACADEMIC_HOUR, QUERY_GET_ACADEMIC_HOUR, QUERY_GET_DROPDOWNS_ACADEMIC_HOUR } from '../graphql/AcademicHour/AcademicHourQueries';
 
 
-export const getListAllAcademicHour = (campusId:string) => {
+export const getListAllAcademicHour = (campusId:string, academicDayId: string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
@@ -13,6 +13,7 @@ export const getListAllAcademicHour = (campusId:string) => {
           query: QUERY_GET_ALL_ACADEMIC_HOUR,
           variables:{
             campusId,
+            academicDayId,
           },
         })
         .then((result: any) => {

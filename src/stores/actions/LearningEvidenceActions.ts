@@ -4,7 +4,7 @@ import { MUTATION_CHANGE_ACTIVE_LEARNING_EVIDENCE, MUTATION_CREATE_LEARNING_EVID
 import { QUERY_GET_ALL_LEARNING_EVIDENCE, QUERY_GET_LEARNING_EVIDENCE, QUERY_GET_DROPDOWNS_LEARNING_EVIDENCE } from '../graphql/LearningEvidence/LearningEvidenceQueries';
 
 
-export const getListAllLearningEvidence = (schoolId:string) => {
+export const getListAllLearningEvidence = (schoolId:string, learningId: string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
@@ -13,6 +13,7 @@ export const getListAllLearningEvidence = (schoolId:string) => {
           query: QUERY_GET_ALL_LEARNING_EVIDENCE,
           variables:{
             schoolId,
+            learningId,
           },
         })
         .then((result: any) => {
@@ -185,16 +186,13 @@ export const deleteLearningEvidence = (id: any, showToast: boolean) => {
   };
 };
 
-export const getDropdownsLearningEvidence = (schoolId:string) => {
+export const getDropdownsLearningEvidence = () => {
   return async (dispatch: any) => {
     try {
       let listData = {};
       await client
         .query({
           query: QUERY_GET_DROPDOWNS_LEARNING_EVIDENCE,
-          variables: {
-            schoolId,
-          },
         })
         .then((result: any) => {
           listData = result.data;

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+import { useNavigate } from 'react-router';
 import { COLUMN_LIST } from '../../../constants/AcademicDay/academicDayConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as academicDayActions from '../../../stores/actions/AcademicDayActions';
@@ -10,6 +11,8 @@ const AcademicDayList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
   const [columns, setColumns] = useState(COLUMN_LIST);
   const [modalOpen, setModalOpen] = useState(false);
+
+  let navigate = useNavigate();
 
   const [data, setData] = useState(null);
   useEffect(() => {
@@ -93,6 +96,18 @@ const AcademicDayList = (props: any) => {
     createNotification('success', 'success', '');
   };
 
+  const additionalFunction = async (item: any, type: string) => {
+    switch (type) {
+      case 'goToChildren':
+        goToChildren(`/academicHour?academicDayId=${item.id}&academicDayName=${item.name}`);
+        break;
+    }
+  };
+
+  const goToChildren = async (url: string) => {
+    navigate(url);
+  };
+
   return (
     <>
       {' '}
@@ -109,6 +124,17 @@ const AcademicDayList = (props: any) => {
             changeActiveData={changeActiveData}
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
+            additionalFunction={additionalFunction}
+            childrenButtons={[
+              {
+                id: 0,
+                label: 'Horas académicas',
+                color: 'secondary',
+                icon: 'iconsminds-time-backup',
+                action: 'goToChildren',
+              },             
+            ]}
+            withChildren={true}
           />
           <AcademicDayCreateEdit
             data={data}

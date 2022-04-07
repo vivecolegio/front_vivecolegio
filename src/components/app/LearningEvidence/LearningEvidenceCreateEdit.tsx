@@ -2,6 +2,7 @@ import { DevTool } from '@hookform/devtools';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
 import Select from 'react-select';
 import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
 import IntlMessages from '../../../helpers/IntlMessages';
@@ -17,6 +18,9 @@ const LearningEvidenceCreateEdit = (props: any) => {
   const [schoolList, setSchoolList] = useState(null);
   const [school, setSchool] = useState(null);
   const [learning, setLearning] = useState(null);
+
+  let [params] = useSearchParams();
+  const  learningId  = params.get('learningId');
 
   const methods = useForm({
     mode: 'onChange',
@@ -59,20 +63,22 @@ const LearningEvidenceCreateEdit = (props: any) => {
       register('schoolId', {
         required: true,
         value: props?.loginReducer?.schoolId,
-      });
+      });      
+    }
+    if (learningId && !props?.data?.id) {
+      // set value when register is new and learning id
+      register('learningId', {
+        required: true,
+        value: learningId,
+      });    
     }
   };
 
   const getDropdowns = async () => {
-    props.getDropdownsLearningEvidence(props?.loginReducer?.schoolId).then((data: any) => {
+    props.getDropdownsLearningEvidence().then((data: any) => {
       setSchoolList(
         data.dataSchools.edges.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };
-        }),
-      );
-      setLearningList(
-        data.dataLearnings.edges.map((c: any) => {
-          return { label: c.node.statement, value: c.node.id, key: c.node.id };
         }),
       );
     });
@@ -127,24 +133,7 @@ const LearningEvidenceCreateEdit = (props: any) => {
                 <Label>
                   <IntlMessages id="menu.statement" />
                 </Label>
-                <Input {...statementRest} innerRef={statementRef} className="form-control" />
-              </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="menu.learning" /> 
-                </Label>
-                <Select
-                  placeholder={<IntlMessages id="forms.select" />}
-                  {...register('learningId', { required: true })}
-                  className="react-select"
-                  classNamePrefix="react-select"
-                  options={learningList}
-                  value={learning}
-                  onChange={(selectedOption) => {
-                    setValue('learningId', selectedOption?.key);
-                    setLearning(selectedOption);
-                  }}
-                />
+                <Input type='textarea' rows="6" {...statementRest} innerRef={statementRef} className="form-control" />
               </div>
               {!props?.loginReducer?.schoolId ? (
                 <div className="form-group">
