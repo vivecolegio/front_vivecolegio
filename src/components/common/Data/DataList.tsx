@@ -173,6 +173,7 @@ const DataList = (props: any) => {
       <div className="disable-text-selection">
         <ListPageHeading
           items={items}
+          header={props?.header}
           heading="menu.data-list"
           displayMode={displayMode}
           changeDisplayMode={setDisplayMode}

@@ -32,14 +32,14 @@ const DataListView = ({
         >
           <div className="pl-2 d-flex flex-grow-1 min-width-zero">
             <div className="p-3 card-body align-self-center d-flex flex-column flex-lg-row justify-content-between min-width-zero align-items-lg-center">
-              {columns.map((column: any) => {
+              {columns.filter((c:any)=>{return (c.label)}).map((column: any) => {
                 return (
-                  <p key={column.column} className="mb-1 text-muted text-small">
+                  <p key={column.column} style={{ 'width':column.width }} className="mb-1 text-muted text-small">
                     {item[`${column.column}`]}
                   </p>
                 );
               })}
-              <p className={"mb-0 text-center text-muted text-small"}>
+              <p className={"mb-0 text-center text-muted text-small"} style={{ 'width':columns[columns.length - 1].width }}>
                 { currentMenu.updateAction ? 
                 <Button
                   color="blue"

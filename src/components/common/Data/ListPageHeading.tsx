@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState } from 'react';
 import { injectIntl } from 'react-intl';
 import { Button, ButtonDropdown, Card, Collapse, Input, DropdownItem, DropdownMenu, DropdownToggle, Row, UncontrolledDropdown } from 'reactstrap';
@@ -35,6 +36,7 @@ const ListPageHeading = ({
   changeActiveDataAll,
   currentMenu,
   withChildren,
+  header,
 }: any) => {
   const [dropdownSplitOpen, setDropdownSplitOpen] = useState(false);
   const [displayOptionsIsOpen, setDisplayOptionsIsOpen] = useState(false);
@@ -190,22 +192,23 @@ const ListPageHeading = ({
             </div>
           </Collapse>
         </div>
+        {header}
         {displayMode === 'list' ?
         <>
         <Separator className="pt-2 mb-2" />
         <Card>
           <div className="pl-2 d-flex flex-grow-1 min-width-zero">
             <div className="p-3 card-body align-self-center d-flex flex-colum flex-lg-row justify-content-between min-width-zero align-items-lg-center">
-              {columns?.map((item: any) => {
+              {columns?.filter((c:any)=>{return (c.label)}).map((item: any) => {
                 return (
                   <p key={item.label} 
-                  className="w-10 mb-1 text-muted text-small w-sm-100"
+                  className="mb-1 text-muted text-small" style={{ 'width':item.width }}
                   >
                     <IntlMessages id={item.label}/>
                   </p>
                 );
               })}
-              <p className={withChildren === true ? "w-45 mb-1 text-muted text-small w-sm-100 text-center" : "w-35 mb-1 text-muted text-small w-sm-100 text-center"}><IntlMessages id="pages.actions"/></p>
+              <p style={{ 'width':columns[columns.length - 1].width }} className={"mb-1 text-muted text-small text-center"}><IntlMessages id="pages.actions"/></p>
             </div>
           </div>
         </Card>

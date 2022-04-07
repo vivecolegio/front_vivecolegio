@@ -1,20 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import {Loader} from '../../common/Loader';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
-import { loaderColor, loaderIcon } from '../../../constants/defaultValues';
 import IntlMessages from '../../../helpers/IntlMessages';
 import * as AcademicDayActions from '../../../stores/actions/AcademicDayActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import AddNewModal from '../../common/Data/AddNewModal';
 import CreateEditAuditInformation from '../../common/Data/CreateEditAuditInformation';
+import { Loader } from '../../common/Loader';
 
 const AcademicDayCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
   const [campusList, setCampusList] = useState(null);
   const [campus, setCampus] = useState(null);
+  const [day, setDay] = useState(null);
+  const [days, setDays] = useState([
+    { label: 'LUNES', key: 'MONDAY' },
+    { label: 'MARTES', key: 'TUESDAY' },
+    { label: 'MIERCOLES', key: 'WEDNESDAY' },
+    { label: 'JUEVES', key: 'THURSDAY' },
+    { label: 'VIERNES', key: 'FRIDAY' },
+    { label: 'SABADO', key: 'SATURDAY' },
+    { label: 'DOMINGO', key: 'SUNDAY' },
+  ]);
 
   const methods = useForm({
     mode: 'onChange',
@@ -60,17 +69,17 @@ const AcademicDayCreateEdit = (props: any) => {
     });
   };
 
-  const { ref: typeDayRef, ...typeDayRest } = register('typeDay', {
+  const { ref: nameRef, ...nameRest } = register('name', {
     required: true,
-    value: props?.data?.id ? props?.data?.typeDay : '',
-  });
-  const { ref: workingDayRef, ...workingDayRest } = register('workingDay', {
-    required: true,
-    value: props?.data?.id ? props?.data?.workingDay : '',
+    value: props?.data?.id ? props?.data?.name : '',
   });
   register('campusId', {
     required: true,
     value: props?.data?.id ? props?.data?.campusId : '',
+  });
+  register('day', {
+    required: true,
+    value: props?.data?.id ? props?.data?.day : '',
   });
 
   const auditInfo = {
@@ -86,7 +95,7 @@ const AcademicDayCreateEdit = (props: any) => {
       {loading ? (
         <>
           <Colxx sm={12} className="d-flex justify-content-center">
-            <Loader/>
+            <Loader />
           </Colxx>
         </>
       ) : (
@@ -108,13 +117,24 @@ const AcademicDayCreateEdit = (props: any) => {
                 <Label>
                   <IntlMessages id="forms.workingDay" />
                 </Label>
-                <Input {...workingDayRest} innerRef={workingDayRef} className="form-control" />
+                <Select
+                  placeholder={<IntlMessages id="forms.select" />}
+                  {...register('day', { required: true })}
+                  className="react-select"
+                  classNamePrefix="react-select"
+                  options={days}
+                  value={day}
+                  onChange={(selectedOption) => {
+                    setValue('day', selectedOption?.key);
+                    setDay(selectedOption);
+                  }}
+                />
               </div>
               <div className="form-group">
                 <Label>
-                  <IntlMessages id="forms.type" />
+                  <IntlMessages id="forms.name" />
                 </Label>
-                <Input {...typeDayRest} innerRef={typeDayRef} className="form-control" />
+                <Input {...nameRest} innerRef={nameRef} className="form-control" />
               </div>
               {!props?.loginReducer?.campusId ? (
                 <div className="form-group">

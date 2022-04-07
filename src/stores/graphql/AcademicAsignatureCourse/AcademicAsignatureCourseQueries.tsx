@@ -10,14 +10,21 @@ export const QUERY_GET_ALL_ACADEMIC_ASIGNATURE_COURSE = gql`
           academicAsignatureId 
           academicAsignature {
             name
-            generalAcademicAsignatureId          
+            generalAcademicAsignatureId  
+            generalAcademicAsignature {
+              name
+            }       
           }           
           course {
             id 
             name
             academicGradeId
             academicGrade{
+              name
               generalAcademicGradeId
+              generalAcademicGrade {
+                name
+              }
             }            
           }           
           active          

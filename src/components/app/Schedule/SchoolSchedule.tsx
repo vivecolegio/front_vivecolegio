@@ -1,25 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import {Loader} from '../../common/Loader';
 import { connect } from 'react-redux';
 import { Card } from 'reactstrap';
 import IntlMessages from '../../../helpers/IntlMessages';
 import { Colxx } from '../../common/CustomBootstrap';
+import { Loader } from '../../common/Loader';
+import * as academicDayActions from '../../../stores/actions/AcademicDayActions';
 
 const SchoolSchedule = (props: any) => {
   const [loading, setLoading] = useState(true);
-  // const [user, setUser] = useState(null);
+  const [academicDays, setAcademicsDays] = useState(null);
 
   useEffect(() => {
-    // getUser();
+    getAcademicDays();
     setLoading(false);
   }, [props?.data]);
 
-  // const getUser = async () => {
-  //   props.dataUser(props?.loginReducer?.userId).then((resp: any) => {
-  //     setUser(resp.data);
-  //     console.log(resp);
-  //   });
-  // };
+  const getAcademicDays = async () => {
+    props.getListAllAcademicDay(props?.loginReducer?.campusId).then((listData: any) => {
+      setAcademicsDays(listData);
+    });
+  };
 
   return (
     <>
@@ -41,11 +41,12 @@ const SchoolSchedule = (props: any) => {
                 <thead>
                   <tr>
                     <th className="text-center">Horario</th>
-                    <th className="text-center">Lunes</th>
-                    <th className="text-center">Martes</th>
-                    <th className="text-center">Miércoles</th>
-                    <th className="text-center">Jueves</th>
-                    <th className="text-center">Viernes</th>
+                    { academicDays ? 
+                        academicDays.map((item:any)=>{
+                          return  <th key={item.id} className="text-center">{item?.node?.name}</th>   
+                        })
+                      : ''
+                    }                                    
                   </tr>
                 </thead>
                 <tbody>
@@ -103,7 +104,7 @@ const SchoolSchedule = (props: any) => {
   );
 };
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = { ...academicDayActions };
 
 const mapStateToProps = ({ loginReducer }: any) => {
   return { loginReducer };

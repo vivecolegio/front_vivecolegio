@@ -228,7 +228,7 @@ const esMessages = {
   'forms.indicator': 'Indicador',
   'forms.hourlyIntensity': 'Intensidad Horaria',
   'forms.gradeAssignment': 'Asignación de grado',
-  'forms.workingDay': 'Día de trabajo',
+  'forms.workingDay': 'Día',
   'forms.permissions': 'Permisos',
   'forms.assignableRoles': 'Perfiles asignables al rol:',
   'forms.subject': 'Asunto',

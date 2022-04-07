@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+import { useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
 import { COLUMN_LIST } from '../../../../constants/Standard/standardConstants';
 import { createNotification } from '../../../../helpers/Notification';
@@ -12,9 +13,13 @@ const StandardList = (props: any) => {
   const [columns, setColumns] = useState(COLUMN_LIST);
   const [modalOpen, setModalOpen] = useState(false);
 
+  let navigate = useNavigate();
+
   let [params] = useSearchParams();
   const  asignatureId  = params.get('asignatureId');
+  const  asignatureName  = params.get('asignatureName');
   const  gradeId  = params.get('gradeId');
+  const  gradeName  = params.get('gradeName');
 
   const [data, setData] = useState(null);
   useEffect(() => {
@@ -99,6 +104,11 @@ const StandardList = (props: any) => {
     createNotification('success', 'success', '');
   };
 
+  const goTo = async (url: string) => {
+    navigate(url);
+  };
+
+
   return (
     <>
       {' '}
@@ -115,6 +125,19 @@ const StandardList = (props: any) => {
             changeActiveData={changeActiveData}
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
+            header={
+              <>
+                <div className='mt-4'>
+                  <h2 className='mb-0'>
+                    <span className='text-info font-bold'>{asignatureName}</span> - <span className='text-green font-bold'>{gradeName}</span>
+                  </h2>
+                  <p className='text-muted d-flex align-items-center cursor-pointer' onClick={() => {return goTo('/academicAsignatureCourse')}}>
+                    <i className='simple-icon-arrow-left-circle mr-2'></i>
+                    Regresar a carga académica
+                  </p>
+                </div>
+              </>
+            }
           />
           <StandardCreateEdit
             data={data}

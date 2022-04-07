@@ -73,7 +73,7 @@ input.form-control[readonly] {
 }
 
 .border-separator-right {
-  border-right: 3px #922c88 solid;
+  border-right: 3px #fdbc18 solid;
 }
 
 .btn-blue {
@@ -82,16 +82,28 @@ input.form-control[readonly] {
   color: white;
 }
 
+.text-blue {
+  color: #48a9f8;
+}
+
 .btn-green {
   border-color: #8bc740 !important;
   background-color: #8bc740 !important;
   color: white;
 }
 
+.text-green {
+  color: #8bc740;
+}
+
 .btn-orange {
   border-color: #ff6746 !important;
   background-color: #ff6746 !important;
   color: white;
+}
+
+.text-orange {
+  color: #ff6746;
 }
 
 .btn-blue:hover {

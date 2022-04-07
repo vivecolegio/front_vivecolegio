@@ -115,7 +115,7 @@ const LearningEvidenceList = (props: any) => {
     <>
       {' '}
       {dataTable !== null ? (
-        <>
+        <>        
           <DataList
             data={dataTable}
             columns={columns}

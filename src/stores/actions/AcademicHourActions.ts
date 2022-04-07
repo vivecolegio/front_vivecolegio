@@ -12,8 +12,8 @@ export const getListAllAcademicHour = (campusId:string) => {
         .query({
           query: QUERY_GET_ALL_ACADEMIC_HOUR,
           variables:{
-            campusId
-          }
+            campusId,
+          },
         })
         .then((result: any) => {
           listData = result.data.data.edges;
@@ -193,8 +193,8 @@ export const getDropdownsAcademicHour = (schoolId: string, campusId: string) => 
           query: QUERY_GET_DROPDOWNS_ACADEMIC_HOUR,
           variables:{
             schoolId,
-            campusId
-          }
+            campusId,
+          },
         })
         .then((result: any) => {
           listData = result.data;

@@ -8,8 +8,8 @@ export const QUERY_GET_ALL_ACADEMIC_DAY = gql`
         node {
           id
           active         
-          workingDay
-          typeDay         
+          day
+          name       
         }
       }
       totalCount
@@ -21,8 +21,8 @@ export const QUERY_GET_ACADEMIC_DAY = gql`
   query getAcademicDay($id: String!) {
     data: getAcademicDay(id: $id) {
       id
-      workingDay
-      typeDay                       
+      day
+      name                       
       campusId     
       campus  {
         id

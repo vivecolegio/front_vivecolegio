@@ -16,31 +16,35 @@ const AcademicAsignatureCourseList = (props: any) => {
 
   const [data, setData] = useState(null);
   useEffect(() => {
-    props.getListAllAcademicAsignatureCourse(props?.loginReducer?.campusId).then((listData: any) => {
-      setDataTable(
-        listData.map((c: any) => {
-          c.node.course_format = c.node.course ? c.node.course.name : '';
-          c.node.asignature_format = c.node.academicAsignature
-            ? c.node.academicAsignature.name
-            : '';
-          return c;
-        }),
-      );
-    });
+    props
+      .getListAllAcademicAsignatureCourse(props?.loginReducer?.campusId)
+      .then((listData: any) => {
+        setDataTable(
+          listData.map((c: any) => {
+            c.node.course_format = c.node.course ? c.node.course.name : '';
+            c.node.asignature_format = c.node.academicAsignature
+              ? c.node.academicAsignature.name
+              : '';
+            return c;
+          }),
+        );
+      });
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllAcademicAsignatureCourse(props?.loginReducer?.campusId).then((listData: any) => {
-      setDataTable(
-        listData.map((c: any) => {
-          c.node.course_format = c.node.course ? c.node.course.name : '';
-          c.node.asignature_format = c.node.academicAsignature
-            ? c.node.academicAsignature.name
-            : '';
-          return c;
-        }),
-      );
-    });
+    props
+      .getListAllAcademicAsignatureCourse(props?.loginReducer?.campusId)
+      .then((listData: any) => {
+        setDataTable(
+          listData.map((c: any) => {
+            c.node.course_format = c.node.course ? c.node.course.name : '';
+            c.node.asignature_format = c.node.academicAsignature
+              ? c.node.academicAsignature.name
+              : '';
+            return c;
+          }),
+        );
+      });
   };
 
   const refreshDataTable = async () => {
@@ -116,13 +120,19 @@ const AcademicAsignatureCourseList = (props: any) => {
   const additionalFunction = async (item: any, type: string) => {
     switch (type) {
       case 'goToChildrenStandard':
-        goToChildren(`/standardAcademic?gradeId=${item?.course?.academicGradeId}&asignatureId=${item.academicAsignatureId}`);
+        goToChildren(
+          `/standardAcademic?gradeId=${item?.course?.academicGradeId}&gradeName=${item?.course?.academicGrade?.name}&asignatureId=${item.academicAsignatureId}&asignatureName=${item.academicAsignature?.name}`,
+        );
         break;
       case 'goToChildrenDBA':
-        goToChildren(`/dba?gradeId=${item?.course?.academicGrade?.generalAcademicGradeId}&asignatureId=${item.academicAsignature?.generalAcademicAsignatureId}`);
+        goToChildren(
+          `/dba?gradeId=${item?.course?.academicGrade?.generalAcademicGradeId}&gradeName=${item?.course?.academicGrade?.generalAcademicGrade?.name}&asignatureId=${item.academicAsignature?.generalAcademicAsignatureId}&asignatureName=${item.academicAsignature?.generalAcademicAsignature?.name}`,
+        );
         break;
       case 'goToChildrenLearning':
-        goToChildren(`/learning?gradeId=${item?.course?.academicGradeId}&asignatureId=${item.academicAsignatureId}`);
+        goToChildren(
+          `/learning?gradeId=${item?.course?.academicGradeId}&gradeName=${item?.course?.academicGrade?.name}&asignatureId=${item.academicAsignatureId}&asignatureName=${item.academicAsignature?.name}`,
+        );
         break;
       default:
         break;

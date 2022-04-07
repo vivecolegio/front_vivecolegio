@@ -1,6 +1,7 @@
 export const COLUMN_LIST = [
-  { column: 'name', label: 'forms.name' },
-  { column: 'lastName', label: 'forms.lastname' },
-  { column: 'phone', label: 'forms.phone' },
-  { column: 'email', label: 'forms.email' }, 
+  { column: 'name', label: 'forms.name', width: '15%' },
+  { column: 'lastName', label: 'forms.lastname', width: '15%' },
+  { column: 'phone', label: 'forms.phone', width: '15%' },
+  { column: 'email', label: 'forms.email', width: '15%' }, 
+  { width:'40%' },
 ];

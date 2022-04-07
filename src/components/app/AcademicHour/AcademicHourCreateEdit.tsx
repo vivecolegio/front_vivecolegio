@@ -1,17 +1,16 @@
 import { DevTool } from '@hookform/devtools';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import {Loader} from '../../common/Loader';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import TimePicker from 'react-time-picker';
 import { Label, ModalBody, ModalFooter } from 'reactstrap';
-import { loaderColor, loaderIcon } from '../../../constants/defaultValues';
 import IntlMessages from '../../../helpers/IntlMessages';
 import * as AcademicHourActions from '../../../stores/actions/AcademicHourActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import AddNewModal from '../../common/Data/AddNewModal';
 import CreateEditAuditInformation from '../../common/Data/CreateEditAuditInformation';
+import { Loader } from '../../common/Loader';
 
 const AcademicHourCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
@@ -43,7 +42,7 @@ const AcademicHourCreateEdit = (props: any) => {
       if (props?.data?.academicDay !== undefined && props?.data?.academicDay != null) {
         setAcademicDay({
           key: props?.data?.academicDay?.id,
-          label: `${props?.data?.academicDay?.workingDay} - ${props?.data?.academicDay?.typeDay}`,
+          label: `${props?.data?.academicDay?.day} - ${props?.data?.academicDay?.name}`,
           value: props?.data?.academicDay?.id,
         });
       }
@@ -82,7 +81,7 @@ const AcademicHourCreateEdit = (props: any) => {
       setAcademicDayList(
         data.dataAcademicDay.edges.map((c: any) => {
           return {
-            label: `${c.node.workingDay} - ${c.node.typeDay}`,
+            label: `${c.node.day} - ${c.node.name}`,
             value: c.node.id,
             key: c.node.id,
           };

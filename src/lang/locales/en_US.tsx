@@ -231,7 +231,7 @@ const enMessages = {
   'forms.indicator': 'Indicator',
   'forms.hourlyIntensity': 'Hourly Intensity',
   'forms.gradeAssignment': 'Grade Assignment',
-  'forms.workingDay': 'Working Day', 
+  'forms.workingDay': 'Day', 
   'forms.permissions': 'Permissions',   
   'forms.assignableRoles': 'Profiles assignable to the role:', 
   'forms.subject': 'Subject',

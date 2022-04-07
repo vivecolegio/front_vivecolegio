@@ -8,11 +8,12 @@ export const QUERY_GET_ALL_ACADEMIC_HOUR = gql`
         node {
           id
           active
+          order
           startTime                        
           endTime  
-          academicDay  {
-            workingDay
-            typeDay
+          academicDay  {            
+            name
+            day
           }                        
         }
       }
@@ -35,8 +36,8 @@ export const QUERY_GET_ACADEMIC_HOUR = gql`
       academicDayId     
       academicDay  {
         id
-        workingDay
-        typeDay 
+        name
+        day 
       }                       
       version
       createdAt
@@ -65,8 +66,8 @@ export const QUERY_GET_DROPDOWNS_ACADEMIC_HOUR = gql`
       edges {
         node {
           id
-          workingDay
-          typeDay
+          name
+          day
         }
       }
     }

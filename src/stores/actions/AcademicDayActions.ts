@@ -12,8 +12,8 @@ export const getListAllAcademicDay = (campusId:string) => {
         .query({
           query: QUERY_GET_ALL_ACADEMIC_DAY,
           variables:{
-            campusId
-          }
+            campusId,
+          },
         })
         .then((result: any) => {
           listData = result.data.data.edges;
@@ -193,8 +193,8 @@ export const getDropdownsAcademicDay = (schoolId:string) => {
         .query({
           query: QUERY_GET_DROPDOWNS_ACADEMIC_DAY,
           variables:{
-            schoolId
-          }
+            schoolId,
+          },
         })
         .then((result: any) => {
           listData = result.data;

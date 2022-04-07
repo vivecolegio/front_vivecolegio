@@ -15,7 +15,9 @@ const Learning = (props: any) => {
 
   let [params] = useSearchParams();
   const  asignatureId  = params.get('asignatureId');
+  const  asignatureName  = params.get('asignatureName');
   const  gradeId  = params.get('gradeId');
+  const  gradeName  = params.get('gradeName');
 
   let navigate = useNavigate();
 
@@ -130,6 +132,11 @@ const Learning = (props: any) => {
     navigate(url);
   };
 
+  const goTo = async (url: string) => {
+    navigate(url);
+  };
+
+
   return (
     <>
       {' '}
@@ -145,6 +152,19 @@ const Learning = (props: any) => {
             deleteData={deleteData}
             changeActiveData={changeActiveData}
             deleteAll={deleteAll}
+            header={
+              <>
+                <div className='mt-4'>
+                  <h2 className='mb-0'>
+                    <span className='text-info font-bold'>{asignatureName}</span> - <span className='text-green font-bold'>{gradeName}</span>
+                  </h2>
+                  <p className='text-muted d-flex align-items-center cursor-pointer' onClick={() => {return goTo('/academicAsignatureCourse')}}>
+                    <i className='simple-icon-arrow-left-circle mr-2'></i>
+                    Regresar a carga académica
+                  </p>
+                </div>
+              </>
+            }
             changeActiveDataAll={changeActiveDataAll}
             additionalFunction={additionalFunction}
             childrenButtons={[
