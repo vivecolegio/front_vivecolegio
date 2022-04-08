@@ -180,6 +180,9 @@ const enMessages = {
   'menu.learning': 'Learning',
   'menu.statement': 'Statement',
   'menu.evidenceLearning': 'Evidence Learning',
+  'menu.experienceLearning': 'Experience Learning',
+  'menu.myClasses': 'My Classes',
+  'menu.learnings': 'Learnings',  
   'list.activate': 'Active',
   'list.inactivate': 'Inactive',
   'forms.inputRequired': 'Field Required',
@@ -242,6 +245,8 @@ const enMessages = {
   'forms.guardian': 'Guardian',
   'forms.search': 'Search',
   'forms.hidden': 'Hidden',
+  'forms.experienceType': 'Experience Type',
+  'forms.title': 'Title',
 };
 
 export default enMessages;

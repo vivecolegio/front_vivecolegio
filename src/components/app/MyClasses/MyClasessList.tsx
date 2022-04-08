@@ -5,7 +5,6 @@ import { COLUMN_LIST } from '../../../constants/AcademicAsignatureCourse/Academi
 import { createNotification } from '../../../helpers/Notification';
 import * as academicIndicatorActions from '../../../stores/actions/AcademicAsignatureCourseActions';
 import DataList from '../../common/Data/DataList';
-import AcademicAsignatureCourseCreateEdit from './AcademicAsignatureCourseCreateEdit';
 
 const AcademicAsignatureCourseList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
@@ -119,21 +118,11 @@ const AcademicAsignatureCourseList = (props: any) => {
 
   const additionalFunction = async (item: any, type: string) => {
     switch (type) {
-      case 'goToChildrenStandard':
+      case 'goToChildrenExperience':
         goToChildren(
-          `/standardAcademic?gradeId=${item?.course?.academicGradeId}&gradeName=${item?.course?.name}&asignatureId=${item.academicAsignatureId}&asignatureName=${item.academicAsignature?.name}`,
+          `/experienceLearning?gradeId=${item?.course?.academicGradeId}&gradeName=${item?.course?.name}&asignatureId=${item.academicAsignatureId}&asignatureName=${item.academicAsignature?.name}&academicAsignatureCourseId=${item?.id}`,
         );
-        break;
-      case 'goToChildrenDBA':
-        goToChildren(
-          `/dba?gradeId=${item?.course?.academicGrade?.generalAcademicGradeId}&gradeName=${item?.course?.name}&asignatureId=${item.academicAsignature?.generalAcademicAsignatureId}&asignatureName=${item.academicAsignature?.generalAcademicAsignature?.name}`,
-        );
-        break;
-      case 'goToChildrenLearning':
-        goToChildren(
-          `/learning?gradeId=${item?.course?.academicGradeId}&gradeName=${item?.course?.name}&asignatureId=${item.academicAsignatureId}&asignatureName=${item.academicAsignature?.name}`,
-        );
-        break;
+        break;      
       default:
         break;
     }
@@ -163,36 +152,27 @@ const AcademicAsignatureCourseList = (props: any) => {
             childrenButtons={[
               {
                 id: 0,
-                label: 'Estándares',
+                label: 'Experiencias de aprendizaje',
                 color: 'secondary',
-                icon: 'iconsminds-check',
-                action: 'goToChildrenStandard',
-              },
+                icon: 'iconsminds-blackboard',
+                action: 'goToChildrenExperience',
+              },            
               {
                 id: 1,
-                label: 'DBA',
+                label: 'Plan de nivelación',
                 color: 'info',
-                icon: 'iconsminds-brain',
-                action: 'goToChildrenDBA',
-              },
+                icon: 'iconsminds-handshake',
+                action: 'goToChildren',
+              },            
               {
                 id: 2,
-                label: 'Aprendizaje',
+                label: 'Valoraciones',
                 color: 'warning',
-                icon: 'iconsminds-idea',
-                action: 'goToChildrenLearning',
-              },
+                icon: 'iconsminds-letter-open',
+                action: 'goToChildren',
+              },            
             ]}
             withChildren={true}
-          />
-          <AcademicAsignatureCourseCreateEdit
-            data={data}
-            modalOpen={modalOpen}
-            toggleModal={() => {
-              setData(null);
-              return setModalOpen(!modalOpen);
-            }}
-            onSubmit={onSubmit}
           />
         </>
       ) : (

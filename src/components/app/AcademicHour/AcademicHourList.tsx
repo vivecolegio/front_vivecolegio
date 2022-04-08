@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
 import { COLUMN_LIST } from '../../../constants/AcademicHour/academicHourConstants';
 import { createNotification } from '../../../helpers/Notification';
-import * as academicDayActions from '../../../stores/actions/AcademicHourActions';
+import * as academicHourActions from '../../../stores/actions/AcademicHourActions';
 import DataList from '../../common/Data/DataList';
 import AcademicHourCreateEdit from './AcademicHourCreateEdit';
 
@@ -151,7 +151,7 @@ const AcademicHourList = (props: any) => {
     </>
   );
 };
-const mapDispatchToProps = { ...academicDayActions };
+const mapDispatchToProps = { ...academicHourActions };
 
 const mapStateToProps = ({ loginReducer }: any) => {
   return { loginReducer };

@@ -8,6 +8,8 @@ export const QUERY_GET_ALL_PERFORMANCE_LEVEL = gql`
         node {
           id
           name
+          topScore
+          minimumScore
           active
         }
       }

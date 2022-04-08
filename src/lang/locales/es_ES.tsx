@@ -179,6 +179,9 @@ const esMessages = {
   'menu.learning': 'Aprendizaje',
   'menu.statement': 'Enunciado',
   'menu.evidenceLearning': 'Evidencia de aprendizaje',
+  'menu.experienceLearning': 'Experiencia de aprendizaje',
+  'menu.myClasses': 'Mis Clases',
+  'menu.learnings': 'Aprendizajes',
   'forms.inputRequired': 'Campo Requerido',
   'forms.cancel': 'Cancelar',
   'forms.auditInformation': 'Información Auditoria',
@@ -239,6 +242,8 @@ const esMessages = {
   'forms.guardian': 'Acudiente',
   'forms.search': 'Buscar',
   'forms.hidden': 'Oculto',
+  'forms.experienceType': 'Tipo de experiencia',
+  'forms.title': 'Título',
 };
 
 export default esMessages;

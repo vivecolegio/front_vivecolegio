@@ -25,6 +25,7 @@ const ListPageListing = ({
   changeActiveData,
   deleteData,
   withChildren,
+  filterChildren,
   childrenButtons,
   additionalFunction,
   currentMenu,
@@ -47,6 +48,7 @@ const ListPageListing = ({
               changeActiveData={changeActiveData}
               deleteData={deleteData}
               withChildren={withChildren}
+              filterChildren={filterChildren}
               childrenButtons={childrenButtons}
               currentMenu={currentMenu}
               additionalFunction={additionalFunction}
@@ -68,6 +70,7 @@ const ListPageListing = ({
               changeActiveData={changeActiveData}
               deleteData={deleteData}
               withChildren={withChildren}
+              filterChildren={filterChildren}
               childrenButtons={childrenButtons}
               currentMenu={currentMenu}
               additionalFunction={additionalFunction}
@@ -88,6 +91,7 @@ const ListPageListing = ({
             changeActiveData={changeActiveData}
             deleteData={deleteData}
             withChildren={withChildren}
+            filterChildren={filterChildren}
             childrenButtons={childrenButtons}
             currentMenu={currentMenu}
             additionalFunction={additionalFunction}

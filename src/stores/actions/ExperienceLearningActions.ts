@@ -1,19 +1,19 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
-import { MUTATION_CHANGE_ACTIVE_COURSE, MUTATION_CREATE_COURSE, MUTATION_DELETE_COURSE, MUTATION_UPDATE_COURSE } from '../graphql/Course/CourseMutations';
-import { QUERY_GET_ALL_COURSE, QUERY_GET_COURSE, QUERY_GET_DROPDOWNS_COURSE } from '../graphql/Course/CourseQueries';
+import { MUTATION_CHANGE_ACTIVE_EXPERIENCE_LEARNING, MUTATION_CREATE_EXPERIENCE_LEARNING, MUTATION_DELETE_EXPERIENCE_LEARNING, MUTATION_UPDATE_EXPERIENCE_LEARNING } from '../graphql/ExperienceLearning/ExperienceLearningMutations';
+import { QUERY_GET_ALL_EXPERIENCE_LEARNING, QUERY_GET_EXPERIENCE_LEARNING, QUERY_GET_DROPDOWNS_EXPERIENCE_LEARNING } from '../graphql/ExperienceLearning/ExperienceLearningQueries';
 
 
-export const getListAllCourse = (campusId:string, academicGradeId: string) => {
+export const getListAllExperienceLearning = (campusId:string, academicAsignatureCourseId : string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
       await client
         .query({
-          query: QUERY_GET_ALL_COURSE,
+          query: QUERY_GET_ALL_EXPERIENCE_LEARNING,
           variables:{
             campusId,
-            academicGradeId,
+            academicAsignatureCourseId ,
           },
         })
         .then((result: any) => {
@@ -27,13 +27,13 @@ export const getListAllCourse = (campusId:string, academicGradeId: string) => {
   };
 };
 
-export const dataCourse = (id: any) => {
+export const dataExperienceLearning = (id: any) => {
   return async (dispatch: any) => {
     try {
       let data = {};
       await client
         .query({
-          query: QUERY_GET_COURSE,
+          query: QUERY_GET_EXPERIENCE_LEARNING,
           variables: {
             id,
           },
@@ -49,10 +49,10 @@ export const dataCourse = (id: any) => {
   };
 };
 
-export const saveNewCourse = (data: any) => {
+export const saveNewExperienceLearning = (data: any) => {
   return async (dispatch: any) => {
     try {
-      let model: any = {};
+      let model: {};
       model = {
         ...model,
       };
@@ -63,7 +63,7 @@ export const saveNewCourse = (data: any) => {
       let dataCreate = null;
       await client
         .mutate({
-          mutation: MUTATION_CREATE_COURSE,
+          mutation: MUTATION_CREATE_EXPERIENCE_LEARNING,
           variables: { input: model },
         })
         .then((dataResponse: any) => {
@@ -84,10 +84,10 @@ export const saveNewCourse = (data: any) => {
   };
 };
 
-export const updateCourse = (data: any, id: any) => {
+export const updateExperienceLearning = (data: any, id: any) => {
   return async (dispatch: any) => {
     try {
-      let model: any = {};
+      let model: {};
       model = {
         ...model,
       };
@@ -98,7 +98,7 @@ export const updateCourse = (data: any, id: any) => {
       let dataUpdate = null;
       await client
         .mutate({
-          mutation: MUTATION_UPDATE_COURSE,
+          mutation: MUTATION_UPDATE_EXPERIENCE_LEARNING,
           variables: { id, input: model },
         })
         .then((dataReponse: any) => {
@@ -119,13 +119,13 @@ export const updateCourse = (data: any, id: any) => {
   };
 };
 
-export const changeActiveCourse = (active: any, id: any, showToast: boolean) => {
+export const changeActiveExperienceLearning = (active: any, id: any, showToast: boolean) => {
   return async (dispatch: any) => {
     try {
       let dataChangeActive = null;
       await client
         .mutate({
-          mutation: MUTATION_CHANGE_ACTIVE_COURSE,
+          mutation: MUTATION_CHANGE_ACTIVE_EXPERIENCE_LEARNING,
           variables: { id, active },
         })
         .then((dataReponse: any) => {
@@ -152,13 +152,13 @@ export const changeActiveCourse = (active: any, id: any, showToast: boolean) => 
   };
 };
 
-export const deleteCourse = (id: any, showToast: boolean) => {
+export const deleteExperienceLearning = (id: any, showToast: boolean) => {
   return async (dispatch: any) => {
     try {
       let dataDelete = null;
       await client
         .mutate({
-          mutation: MUTATION_DELETE_COURSE,
+          mutation: MUTATION_DELETE_EXPERIENCE_LEARNING,
           variables: { id },
         })
         .then((dataReponse: any) => {
@@ -185,15 +185,17 @@ export const deleteCourse = (id: any, showToast: boolean) => {
   };
 };
 
-export const getDropdownsCourse = (schoolId:string) => {
+export const getDropdownsExperienceLearning = (schoolId: string, academicAsignatureId: string, academicGradeId: string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
       await client
         .query({
-          query: QUERY_GET_DROPDOWNS_COURSE,
+          query: QUERY_GET_DROPDOWNS_EXPERIENCE_LEARNING,
           variables:{
             schoolId,
+            academicAsignatureId,
+            academicGradeId,
           },
         })
         .then((result: any) => {

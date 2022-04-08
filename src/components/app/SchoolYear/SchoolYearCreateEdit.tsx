@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import { useForm } from 'react-hook-form';
-import {Loader} from '../../common/Loader';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
-import { loaderColor, loaderIcon } from '../../../constants/defaultValues';
 import IntlMessages from '../../../helpers/IntlMessages';
 import * as schoolYearActions from '../../../stores/actions/SchoolYearActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import AddNewModal from '../../common/Data/AddNewModal';
 import CreateEditAuditInformation from '../../common/Data/CreateEditAuditInformation';
+import { Loader } from '../../common/Loader';
 
 const SchoolYearCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);

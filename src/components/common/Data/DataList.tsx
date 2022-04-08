@@ -230,6 +230,7 @@ const DataList = (props: any) => {
           changeActiveData={props?.changeActiveData}
           deleteData={props?.deleteData}
           withChildren={props?.withChildren}
+          filterChildren={props?.filterChildren}
           childrenButtons={props?.childrenButtons}    
           currentMenu={currentMenu}
           additionalFunction={props?.additionalFunction}

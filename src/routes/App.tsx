@@ -8,18 +8,27 @@ import AsignatureList from '../components/app/Academic/Asignature/AsignatureList
 import GradeList from '../components/app/Academic/Grade/GradeList';
 import PerformanceLevelList from '../components/app/Academic/PerformanceLevel/PerformanceLevelList';
 import StandardList from '../components/app/Academic/Standard/StandardList';
+import AcademicAsignatureCourseList from '../components/app/AcademicAsignatureCourse/AcademicAsignatureCourseList';
 import AcademicDayList from '../components/app/AcademicDay/AcademicDayList';
 import AcademicHourList from '../components/app/AcademicHour/AcademicHourList';
-import AcademicIndicatorList from '../components/app/BasicLearningDuties/BasicLearningDutiesList';
 import AcademicPeriodList from '../components/app/AcademicPeriod/AcademicPeriodList';
 import AdministratorCampusList from '../components/app/AdministratorsCampus/AdministratorCampusList';
 import AdministratorSchoolList from '../components/app/AdministratorsSchool/AdministratorSchoolList';
+import ChatApp from '../components/app/Aplications/Chat/Chat';
+import ElectionsApp from '../components/app/Aplications/Elections/Elections';
+import ForumApp from '../components/app/Aplications/Forums/Forum';
+import ForumListApp from '../components/app/Aplications/Forums/ForumList';
+import Survey from '../components/app/Aplications/Survey/Survey';
+import SurveyDetail from '../components/app/Aplications/Survey/SurveyDetail';
+import { default as AcademicIndicatorList, default as BasicLearningDutiesList } from '../components/app/BasicLearningDuties/BasicLearningDutiesList';
 import CampusList from '../components/app/Campus/CampusList';
 import ComponentEvaluativeList from '../components/app/ComponentEvaluative/ComponentEvaluativeList';
 import CoordinatorCampusList from '../components/app/CoordinatorCampus/CoordinatorCampusList';
 import CourseList from '../components/app/Course/CourseList';
+import Analytics from '../components/app/Dashboards/Analytics';
 import DocumentTypeList from '../components/app/DocumentType/DocumentTypeList';
 import EducationLevelList from '../components/app/EducationLevel/EducationLevelList';
+import ExperienceLearningList from '../components/app/ExperienceLearning/ExperienceLearningList';
 import GenderList from '../components/app/Gender/GenderList';
 import GeneralAreaList from '../components/app/GeneralAcademic/Area/AreaList';
 import GeneralAsignatureList from '../components/app/GeneralAcademic/Asignature/AsignatureList';
@@ -30,11 +39,14 @@ import GeneralStandardList from '../components/app/GeneralAcademic/Standard/Stan
 import GradeAssignmentList from '../components/app/GradeAssignment/GradeAssignmentList';
 import GuardianList from '../components/app/Guardian/GuardianList';
 import InboxDetail from '../components/app/Inbox/InboxDetail';
+import LearningList from '../components/app/Learning/LearningList';
+import LearningEvidenceList from '../components/app/LearningEvidence/LearningEvidenceList';
 import Login from '../components/app/Login/Login';
 import MenuList from '../components/app/Menu/MenuList';
 import ModalityList from '../components/app/Modality/ModalityList';
 import ModuleList from '../components/app/Module/ModuleList';
 import MunicipalityList from '../components/app/Municipality/MunicipalityList';
+import MyClasessList from '../components/app/MyClasses/MyClasessList';
 import Profile from '../components/app/Profile/Profile';
 import RoleList from '../components/app/Role/RoleList';
 import OfficeSchedule from '../components/app/Schedule/OfficeSchedule';
@@ -45,24 +57,14 @@ import SpecialityList from '../components/app/Speciality/SpecialityList';
 import StudentsList from '../components/app/Students/StudentsList';
 import SubmenuList from '../components/app/Submenu/SubmenuList';
 import TeacherList from '../components/app/Teacher/TeacherList';
+import TraditionalValuation from '../components/app/TraditionalValuation/TraditionalValuation';
 import UserList from '../components/app/User/UserList';
-import ChatApp from '../components/app/Aplications/Chat/Chat';
-import ForumListApp from '../components/app/Aplications/Forums/ForumList';
-import ForumApp from '../components/app/Aplications/Forums/Forum';
-import ElectionsApp from '../components/app/Aplications/Elections/Elections';
 import ColorSwitcher from '../components/common/ColorSwitcher';
 import Layout from '../components/common/layout/Layout';
 import { NotificationContainer } from '../components/common/Notifications';
 import Home from '../components/Home';
 import { isMultiColorActive } from '../constants/defaultValues';
 import AppLocale from '../lang';
-import Survey from '../components/app/Aplications/Survey/Survey';
-import SurveyDetail from '../components/app/Aplications/Survey/SurveyDetail';
-import Analytics from '../components/app/Dashboards/Analytics';
-import AcademicAsignatureCourseList from '../components/app/AcademicAsignatureCourse/AcademicAsignatureCourseList';
-import BasicLearningDutiesList from '../components/app/BasicLearningDuties/BasicLearningDutiesList';
-import LearningList from '../components/app/Learning/LearningList';
-import LearningEvidenceList from '../components/app/LearningEvidence/LearningEvidenceList';
 
 const App = (props: any) => {
   const { locale } = props.translateReducer;
@@ -167,6 +169,9 @@ const App = (props: any) => {
                     <Route path="/dba" element={ <BasicLearningDutiesList/> } />
                     <Route path="/learning" element={ <LearningList/> } />
                     <Route path="/evidenceLearning" element={ <LearningEvidenceList/> } />
+                    <Route path="/experienceLearning" element={ <ExperienceLearningList/> } />
+                    <Route path="/myClasses" element={ <MyClasessList/> } />
+                    <Route path="/traditionalValuation" element={ <TraditionalValuation/> } />
                     {/* ACADEMIC */} 
                     {/* APPLICATIONS */} 
                     <Route path="/chat" element={ <ChatApp/> } />
