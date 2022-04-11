@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const QUERY_GET_ALL_LEARNING = gql`
-  query getAllLearning($schoolId: String!, $academicAsignatureId: String!, $academicGradeId: String!) {
-    data: getAllLearning(orderCreated: true, allData: true,schoolId: $schoolId, academicAsignatureId: $academicAsignatureId, academicGradeId: $academicGradeId) {
+  query getAllLearning($schoolId: String!, $academicAsignatureId: String!, $academicGradeId: String!, $academicPeriodsId: [String!]) {
+    data: getAllLearning(orderCreated: true, allData: true,schoolId: $schoolId, academicAsignatureId: $academicAsignatureId, academicGradeId: $academicGradeId, academicPeriodsId: $academicPeriodsId) {
       edges {
         cursor
         node {
@@ -40,6 +40,11 @@ export const QUERY_GET_LEARNING = gql`
       statement
       academicAsignatureId
       academicAsignature {
+        id
+        name
+      }
+      academicPeriodsId
+      academicPeriods {
         id
         name
       }
@@ -99,6 +104,14 @@ export const QUERY_GET_DROPDOWNS_LEARNING = gql`
           id
           name
           generalAcademicGradeId
+        }
+      }
+    }
+    dataAcademicPeriods: getAllAcademicPeriod(allData: false, orderCreated: false, schoolId: $schoolId) {
+      edges {
+        node {
+          id
+          name
         }
       }
     }

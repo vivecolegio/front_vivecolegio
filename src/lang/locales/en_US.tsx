@@ -247,6 +247,7 @@ const enMessages = {
   'forms.hidden': 'Hidden',
   'forms.experienceType': 'Experience Type',
   'forms.title': 'Title',
+  'forms.date': 'Date',
 };
 
 export default enMessages;

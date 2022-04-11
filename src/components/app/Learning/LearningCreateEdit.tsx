@@ -15,11 +15,13 @@ const LearningCreateEdit = (props: any) => {
   const [gradesList, setGradesList] = useState(null);
   const [asignaturesList, setAsignaturesList] = useState(null);
   const [standardsList, setStandardsList] = useState(null);
+  const [academicPeriodList, setAcademicPeriodList] = useState(null);
   const [generalBasicLearningRightList, setGeneralBasicLearningRightList] = useState(null);
   const [grade, setGrade] = useState(null);
   const [asignature, setAsignature] = useState(null);
   const [generalBasicLearningRight, setGeneralBasicLearningRight] = useState(null);
   const [standard, setStandard] = useState(null);
+  const [academicPeriod, setAcademicPeriod] = useState(null);
   const [schoolsList, setSchoolsList] = useState(null);
   const [school, setSchool] = useState(null);
 
@@ -114,6 +116,11 @@ const LearningCreateEdit = (props: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };
         }),
       );
+      setAcademicPeriodList(
+        data.dataAcademicPeriods.edges.map((c: any) => {
+          return { label: c.node.name, value: c.node.id, key: c.node.id };
+        }),
+      );
     });
   };
 
@@ -151,6 +158,10 @@ const LearningCreateEdit = (props: any) => {
   register('schoolId', {
     required: true,
     value: props?.data?.id ? props?.data?.schoolId : '',
+  });
+  register('academicPeriodsId', {
+    required: true,
+    value: props?.data?.id ? props?.data?.academicPeriodsId  : '',
   });
 
   const auditInfo = {
@@ -258,6 +269,29 @@ const LearningCreateEdit = (props: any) => {
                   onChange={(selectedOption) => {
                     setValue('academicStandardId', selectedOption?.key);
                     setStandard(selectedOption);
+                  }}
+                />
+              </div>  
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="menu.periodAcademic" />
+                </Label>
+                <Select
+                  placeholder={<IntlMessages id="forms.select" />}
+                  isMulti
+                  {...register("academicPeriodsId", { required: true })}
+                  className="react-select"
+                  classNamePrefix="react-select"
+                  options={academicPeriodList}
+                  value={academicPeriod}
+                  onChange={(selectedOption: any) => {
+                    setValue(
+                      "academicPeriodsId",
+                      selectedOption.map((c: any) => {
+                        return c.key;
+                      }),
+                    );
+                    setAcademicPeriod(selectedOption);
                   }}
                 />
               </div>  

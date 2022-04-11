@@ -4,7 +4,7 @@ import { MUTATION_CHANGE_ACTIVE_LEARNING, MUTATION_CREATE_LEARNING, MUTATION_DEL
 import { QUERY_GET_ALL_LEARNING, QUERY_GET_LEARNING, QUERY_GET_DROPDOWNS_LEARNING, QUERY_GET_GENERAL_BASIC_LEARNING_RIGHT } from '../graphql/Learning/LearningQueries';
 
 
-export const getListAllLearning = (schoolId: string, academicAsignatureId: string, academicGradeId: string) => {
+export const getListAllLearning = (schoolId: string, academicAsignatureId: string, academicGradeId: string, academicPeriodsId:string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
@@ -15,6 +15,7 @@ export const getListAllLearning = (schoolId: string, academicAsignatureId: strin
             schoolId,
             academicAsignatureId,
             academicGradeId,
+            academicPeriodsId,
           },
         })
         .then((result: any) => {

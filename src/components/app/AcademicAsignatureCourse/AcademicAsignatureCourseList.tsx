@@ -22,6 +22,7 @@ const AcademicAsignatureCourseList = (props: any) => {
         setDataTable(
           listData.map((c: any) => {
             c.node.course_format = c.node.course ? c.node.course.name : '';
+            c.node.grade_format = c?.node?.course?.academicGrade?.name;
             c.node.asignature_format = c.node.academicAsignature
               ? c.node.academicAsignature.name
               : '';
@@ -38,6 +39,7 @@ const AcademicAsignatureCourseList = (props: any) => {
         setDataTable(
           listData.map((c: any) => {
             c.node.course_format = c.node.course ? c.node.course.name : '';
+            c.node.grade_format = c?.node?.course?.academicGrade?.name;
             c.node.asignature_format = c.node.academicAsignature
               ? c.node.academicAsignature.name
               : '';
@@ -121,17 +123,17 @@ const AcademicAsignatureCourseList = (props: any) => {
     switch (type) {
       case 'goToChildrenStandard':
         goToChildren(
-          `/standardAcademic?gradeId=${item?.course?.academicGradeId}&gradeName=${item?.course?.name}&asignatureId=${item.academicAsignatureId}&asignatureName=${item.academicAsignature?.name}`,
+          `/standardAcademic?gradeId=${item?.course?.academicGradeId}&gradeName=${item?.course?.academicGrade?.generalAcademicGrade?.generalAcademicCycle?.name}&asignatureId=${item.academicAsignatureId}&asignatureName=${item.academicAsignature?.name}`,
         );
         break;
       case 'goToChildrenDBA':
         goToChildren(
-          `/dba?gradeId=${item?.course?.academicGrade?.generalAcademicGradeId}&gradeName=${item?.course?.name}&asignatureId=${item.academicAsignature?.generalAcademicAsignatureId}&asignatureName=${item.academicAsignature?.generalAcademicAsignature?.name}`,
+          `/dba?gradeId=${item?.course?.academicGrade?.generalAcademicGradeId}&gradeName=${item?.course?.academicGrade?.name}&asignatureId=${item.academicAsignature?.generalAcademicAsignatureId}&asignatureName=${item.academicAsignature?.generalAcademicAsignature?.name}`,
         );
         break;
       case 'goToChildrenLearning':
         goToChildren(
-          `/learning?gradeId=${item?.course?.academicGradeId}&gradeName=${item?.course?.name}&asignatureId=${item.academicAsignatureId}&asignatureName=${item.academicAsignature?.name}`,
+          `/learning?gradeId=${item?.course?.academicGradeId}&gradeName=${item?.course?.academicGrade?.generalAcademicGrade?.generalAcademicCycle?.name}&asignatureId=${item.academicAsignatureId}&asignatureName=${item.academicAsignature?.name}`,
         );
         break;
       default:

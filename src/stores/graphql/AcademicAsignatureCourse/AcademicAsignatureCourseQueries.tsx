@@ -24,6 +24,9 @@ export const QUERY_GET_ALL_ACADEMIC_ASIGNATURE_COURSE = gql`
               generalAcademicGradeId
               generalAcademicGrade {
                 name
+                generalAcademicCycle {
+                  name
+                }
               }
             }            
           }           

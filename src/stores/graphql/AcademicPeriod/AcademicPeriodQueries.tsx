@@ -7,6 +7,7 @@ export const QUERY_GET_ALL_ACADEMIC_PERIOD = gql`
         cursor
         node {
           id
+          name
           schoolYear {
             schoolYear
           }
@@ -24,7 +25,8 @@ export const QUERY_GET_ALL_ACADEMIC_PERIOD = gql`
 export const QUERY_GET_ACADEMIC_PERIOD = gql`
   query getAcademicPeriod($id: String!) {
     data: getAcademicPeriod(id: $id) {
-      id   
+      id  
+      name 
       schoolYear {
         id
         schoolYear

@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import { useForm } from 'react-hook-form';
-import {Loader} from '../../common/Loader';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
-import { loaderColor, loaderIcon } from '../../../constants/defaultValues';
 import IntlMessages from '../../../helpers/IntlMessages';
 import * as academicPeriodActions from '../../../stores/actions/AcademicPeriodActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import AddNewModal from '../../common/Data/AddNewModal';
 import CreateEditAuditInformation from '../../common/Data/CreateEditAuditInformation';
+import { Loader } from '../../common/Loader';
 
 const AcademicPeriodCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
@@ -90,6 +89,10 @@ const AcademicPeriodCreateEdit = (props: any) => {
     required: true,
     value: props?.data?.id ? props?.data?.weight : '',
   });
+  const { ref: nameRef, ...nameRest } = register('name', {
+    required: true,
+    value: props?.data?.id ? props?.data?.name : '',
+  });
   register('startDate', {
     required: true,
     value: props?.data?.id ? props?.data?.startDate : '',
@@ -130,6 +133,12 @@ const AcademicPeriodCreateEdit = (props: any) => {
             handleSubmit={handleSubmit}
           >
             <ModalBody>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="forms.name" />
+                </Label>
+                <Input {...nameRest} innerRef={nameRef} className="form-control" />
+              </div>
               <div className="form-group">
                 <Label>
                   <IntlMessages id="forms.weight" />

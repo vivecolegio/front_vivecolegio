@@ -21,6 +21,7 @@ const AcademicAsignatureCourseList = (props: any) => {
         setDataTable(
           listData.map((c: any) => {
             c.node.course_format = c.node.course ? c.node.course.name : '';
+            c.node.grade_format = c?.node?.course?.academicGrade?.name;
             c.node.asignature_format = c.node.academicAsignature
               ? c.node.academicAsignature.name
               : '';
@@ -37,6 +38,7 @@ const AcademicAsignatureCourseList = (props: any) => {
         setDataTable(
           listData.map((c: any) => {
             c.node.course_format = c.node.course ? c.node.course.name : '';
+            c.node.grade_format = c?.node?.course?.academicGrade?.name;
             c.node.asignature_format = c.node.academicAsignature
               ? c.node.academicAsignature.name
               : '';
@@ -120,9 +122,9 @@ const AcademicAsignatureCourseList = (props: any) => {
     switch (type) {
       case 'goToChildrenExperience':
         goToChildren(
-          `/experienceLearning?gradeId=${item?.course?.academicGradeId}&gradeName=${item?.course?.name}&asignatureId=${item.academicAsignatureId}&asignatureName=${item.academicAsignature?.name}&academicAsignatureCourseId=${item?.id}`,
+          `/experienceLearning?gradeId=${item?.course?.academicGradeId}&gradeName=${item?.course?.academicGrade?.name}&asignatureId=${item.academicAsignatureId}&asignatureName=${item.academicAsignature?.name}&academicAsignatureCourseId=${item?.id}`,
         );
-        break;      
+        break;
       default:
         break;
     }
@@ -156,21 +158,21 @@ const AcademicAsignatureCourseList = (props: any) => {
                 color: 'secondary',
                 icon: 'iconsminds-blackboard',
                 action: 'goToChildrenExperience',
-              },            
+              },
               {
                 id: 1,
                 label: 'Plan de nivelación',
                 color: 'info',
                 icon: 'iconsminds-handshake',
                 action: 'goToChildren',
-              },            
+              },
               {
                 id: 2,
                 label: 'Valoraciones',
                 color: 'warning',
                 icon: 'iconsminds-letter-open',
                 action: 'goToChildren',
-              },            
+              },
             ]}
             withChildren={true}
           />

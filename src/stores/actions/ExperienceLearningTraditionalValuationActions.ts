@@ -1,18 +1,18 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
-import { MUTATION_CHANGE_ACTIVE_ACADEMIC_PERIOD, MUTATION_CREATE_ACADEMIC_PERIOD, MUTATION_DELETE_ACADEMIC_PERIOD, MUTATION_UPDATE_ACADEMIC_PERIOD } from '../graphql/AcademicPeriod/AcademicPeriodMutations';
-import { QUERY_GET_ALL_ACADEMIC_PERIOD, QUERY_GET_ACADEMIC_PERIOD, QUERY_GET_DROPDOWNS_ACADEMIC_PERIOD } from '../graphql/AcademicPeriod/AcademicPeriodQueries';
+import { MUTATION_CHANGE_ACTIVE_EXPERIENCE_LEARNING_TRADITIONAL_VALUATION, MUTATION_CREATE_EXPERIENCE_LEARNING_TRADITIONAL_VALUATION, MUTATION_DELETE_EXPERIENCE_LEARNING_TRADITIONAL_VALUATION, MUTATION_UPDATE_EXPERIENCE_LEARNING_TRADITIONAL_VALUATION } from '../graphql/ExperienceLearningTraditionalValuation/ExperienceLearningTraditionalValuationMutations';
+import { QUERY_GET_ALL_EXPERIENCE_LEARNING_TRADITIONAL_VALUATION, QUERY_GET_EXPERIENCE_LEARNING_TRADITIONAL_VALUATION } from '../graphql/ExperienceLearningTraditionalValuation/ExperienceLearningTraditionalValuationQueries';
 
 
-export const getListAllAcademicPeriod = (schoolId:string) => {
+export const getListAllExperienceLearningTraditionalValuationActions = (campusId:string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
       await client
         .query({
-          query: QUERY_GET_ALL_ACADEMIC_PERIOD,
+          query: QUERY_GET_ALL_EXPERIENCE_LEARNING_TRADITIONAL_VALUATION,
           variables:{
-            schoolId,
+            campusId,
           },
         })
         .then((result: any) => {
@@ -26,13 +26,13 @@ export const getListAllAcademicPeriod = (schoolId:string) => {
   };
 };
 
-export const dataAcademicPeriod = (id: any) => {
+export const dataExperienceLearningTraditionalValuationActions = (id: any) => {
   return async (dispatch: any) => {
     try {
       let data = {};
       await client
         .query({
-          query: QUERY_GET_ACADEMIC_PERIOD,
+          query: QUERY_GET_EXPERIENCE_LEARNING_TRADITIONAL_VALUATION,
           variables: {
             id,
           },
@@ -48,7 +48,7 @@ export const dataAcademicPeriod = (id: any) => {
   };
 };
 
-export const saveNewAcademicPeriod = (data: any) => {
+export const saveNewExperienceLearningTraditionalValuationActions = (data: any, showToast: boolean) => {
   return async (dispatch: any) => {
     try {
       let model: any = {};
@@ -60,31 +60,37 @@ export const saveNewAcademicPeriod = (data: any) => {
         ...data,
       };
       let dataCreate = null;
-      model.weight = model.weight && !isNaN(model.weight) ? parseFloat(model.weight) : 0;
+      model.assessment = model.assessment && !isNaN(model.assessment) ? parseFloat(model.assessment) : 0;
       await client
         .mutate({
-          mutation: MUTATION_CREATE_ACADEMIC_PERIOD,
+          mutation: MUTATION_CREATE_EXPERIENCE_LEARNING_TRADITIONAL_VALUATION,
           variables: { input: model },
         })
         .then((dataResponse: any) => {
           if (dataResponse.errors?.length > 0) {
             dataResponse.errors.forEach((error: any) => {
-              createNotification('error', 'error', '');
+              if (showToast) {
+                createNotification('error', 'error', '');
+              }
             });
           } else {
             dataCreate = dataResponse.data.create.id;
-            createNotification('success', 'success', '');
+            if (showToast) {
+              createNotification('success', 'success', '');
+            }
           }
         });
       return dataCreate as any;
     } catch (error) {
-      createNotification('error', 'error', '');
+      if (showToast) {
+        createNotification('error', 'error', '');
+      }
       return error;
     }
   };
 };
 
-export const updateAcademicPeriod = (data: any, id: any) => {
+export const updateExperienceLearningTraditionalValuationActions = (data: any, id: any) => {
   return async (dispatch: any) => {
     try {
       let model: any = {};
@@ -96,10 +102,10 @@ export const updateAcademicPeriod = (data: any, id: any) => {
         ...data,
       };
       let dataUpdate = null;
-      model.weight = model.weight && !isNaN(model.weight) ? parseFloat(model.weight) : 0;
+      model.assessment = model.assessment && !isNaN(model.assessment) ? parseFloat(model.assessment) : 0;
       await client
         .mutate({
-          mutation: MUTATION_UPDATE_ACADEMIC_PERIOD,
+          mutation: MUTATION_UPDATE_EXPERIENCE_LEARNING_TRADITIONAL_VALUATION,
           variables: { id, input: model },
         })
         .then((dataReponse: any) => {
@@ -120,13 +126,13 @@ export const updateAcademicPeriod = (data: any, id: any) => {
   };
 };
 
-export const changeActiveAcademicPeriod = (active: any, id: any, showToast: boolean) => {
+export const changeActiveExperienceLearningTraditionalValuationActions = (active: any, id: any, showToast: boolean) => {
   return async (dispatch: any) => {
     try {
       let dataChangeActive = null;
       await client
         .mutate({
-          mutation: MUTATION_CHANGE_ACTIVE_ACADEMIC_PERIOD,
+          mutation: MUTATION_CHANGE_ACTIVE_EXPERIENCE_LEARNING_TRADITIONAL_VALUATION,
           variables: { id, active },
         })
         .then((dataReponse: any) => {
@@ -153,13 +159,13 @@ export const changeActiveAcademicPeriod = (active: any, id: any, showToast: bool
   };
 };
 
-export const deleteAcademicPeriod = (id: any, showToast: boolean) => {
+export const deleteExperienceLearningTraditionalValuationActions = (id: any, showToast: boolean) => {
   return async (dispatch: any) => {
     try {
       let dataDelete = null;
       await client
         .mutate({
-          mutation: MUTATION_DELETE_ACADEMIC_PERIOD,
+          mutation: MUTATION_DELETE_EXPERIENCE_LEARNING_TRADITIONAL_VALUATION,
           variables: { id },
         })
         .then((dataReponse: any) => {
@@ -186,24 +192,3 @@ export const deleteAcademicPeriod = (id: any, showToast: boolean) => {
   };
 };
 
-export const getDropdownsAcademicPeriod = (schoolId:string) => {
-  return async (dispatch: any) => {
-    try {
-      let listData = {};
-      await client
-        .query({
-          query: QUERY_GET_DROPDOWNS_ACADEMIC_PERIOD,
-          variables:{
-            schoolId,
-          },
-        })
-        .then((result: any) => {
-          listData = result.data;
-        });
-      return listData;
-    } catch (error) {
-      createNotification('error', 'error', '');
-      return error;
-    }
-  };
-};

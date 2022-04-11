@@ -4,7 +4,7 @@ import { MUTATION_CHANGE_ACTIVE_EXPERIENCE_LEARNING, MUTATION_CREATE_EXPERIENCE_
 import { QUERY_GET_ALL_EXPERIENCE_LEARNING, QUERY_GET_EXPERIENCE_LEARNING, QUERY_GET_DROPDOWNS_EXPERIENCE_LEARNING } from '../graphql/ExperienceLearning/ExperienceLearningQueries';
 
 
-export const getListAllExperienceLearning = (campusId:string, academicAsignatureCourseId : string) => {
+export const getListAllExperienceLearning = (campusId:string, academicAsignatureCourseId : string, academicPeriodId: string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
@@ -13,7 +13,8 @@ export const getListAllExperienceLearning = (campusId:string, academicAsignature
           query: QUERY_GET_ALL_EXPERIENCE_LEARNING,
           variables:{
             campusId,
-            academicAsignatureCourseId ,
+            academicAsignatureCourseId,
+            academicPeriodId,
           },
         })
         .then((result: any) => {

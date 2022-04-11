@@ -24,6 +24,7 @@ export const QUERY_GET_COURSE = gql`
       version 
       name
       order  
+      studentsId
       students {
         id
         user{

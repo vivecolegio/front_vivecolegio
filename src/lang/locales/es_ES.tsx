@@ -244,6 +244,7 @@ const esMessages = {
   'forms.hidden': 'Oculto',
   'forms.experienceType': 'Tipo de experiencia',
   'forms.title': 'Título',
+  'forms.date': 'Fecha',
 };
 
 export default esMessages;

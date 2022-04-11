@@ -5,11 +5,14 @@ import { useNavigate } from 'react-router';
 import { COLUMN_LIST } from '../../../constants/Learning/LearningConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as learningActions from '../../../stores/actions/LearningActions';
+import * as academicPeriodActions from '../../../stores/actions/AcademicPeriodActions';
 import DataList from '../../common/Data/DataList';
 import LearningCreateEdit from './LearningCreateEdit';
 
 const Learning = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
+  const [academicPeriods, setAcademicPeriods] = useState(null);
+  let [academicPeriod, setAcademicPeriod] = useState([]);
   const [columns, setColumns] = useState(COLUMN_LIST);
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -34,10 +37,13 @@ const Learning = (props: any) => {
         }),
       );
     });
+    props.getListAllAcademicPeriod(props?.loginReducer?.schoolId).then((listData: any) => {
+      setAcademicPeriods(listData);  
+    });
   }, []);
 
-  const getDataTable = async () => {
-    props.getListAllLearning(props?.loginReducer?.schoolId, asignatureId ? asignatureId : '', gradeId ? gradeId : '').then((listData: any) => {
+  const getDataTable = async (idAcademicPeriod:any = []) => {
+    props.getListAllLearning(props?.loginReducer?.schoolId, asignatureId ? asignatureId : '', gradeId ? gradeId : '', idAcademicPeriod.length > 0 ?idAcademicPeriod : undefined ).then((listData: any) => {
       setDataTable(
         listData.map((c: any) => {
           c.node.grade_format = c.node.academicGrade ? c.node.academicGrade.name : '';
@@ -128,6 +134,17 @@ const Learning = (props: any) => {
     }
   };
 
+  const filterByPeriod = async (item: any) => {
+    if(academicPeriod.find((c:any)=>{return (c === item?.node?.id)})){
+      academicPeriod = academicPeriod.filter((c:any)=>{return (c !== item?.node?.id)});
+    } else {
+      academicPeriod.push(item?.node?.id)
+    }
+    setAcademicPeriod(academicPeriod);
+    setDataTable(null);
+    getDataTable(academicPeriod);
+  };
+
   const goToChildren = async (url: string) => {
     navigate(url);
   };
@@ -154,7 +171,8 @@ const Learning = (props: any) => {
             deleteAll={deleteAll}
             header={
               <>
-                <div className='mt-4'>
+              <div className='d-flex justify-content-between mt-4'>
+                <div>
                   <h2 className='mb-0'>
                     <span className='text-info font-bold'>{asignatureName}</span> - <span className='text-green font-bold'>{gradeName}</span>
                   </h2>
@@ -162,6 +180,22 @@ const Learning = (props: any) => {
                     <i className='simple-icon-arrow-left-circle mr-2'></i>
                     Regresar a carga académica
                   </p>
+                </div>
+                <div>
+                {academicPeriods ? 
+                   academicPeriods.map((item: any) => {
+                    return (
+                      <>
+                      <button onClick={() => {return filterByPeriod(item);}} key={item?.node?.id} className={`btn ${academicPeriod.find((c:any)=>{return (c === item?.node?.id)}) ? "btn-info" : "btn-outline-info"}`}
+                          type="button"
+                        >
+                          <i className='iconsminds-pen-2'></i>{' '}
+                          {item?.node?.name}
+                      </button>{' '}
+                      </>
+                    )})
+                :''}
+                </div>
                 </div>
               </>
             }
@@ -194,7 +228,7 @@ const Learning = (props: any) => {
     </>
   );
 };
-const mapDispatchToProps = { ...learningActions };
+const mapDispatchToProps = { ...learningActions, ...academicPeriodActions };
 
 const mapStateToProps = ({ loginReducer }: any) => {
   return { loginReducer };
