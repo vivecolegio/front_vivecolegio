@@ -4,6 +4,17 @@ export const MUTATION_CREATE_EXPERIENCE_LEARNING_TRADITIONAL_VALUATION = gql`
   mutation createExperienceLearningTraditionalValuation($input: NewExperienceLearningTraditionalValuation!) {
     create: createExperienceLearningTraditionalValuation(data: $input) {
       id
+      assessment
+      experienceLearningId
+      studentId
+      student {
+        id
+        user {
+          id 
+          name
+          lastName          
+        }
+      }
     }
   }
 `;

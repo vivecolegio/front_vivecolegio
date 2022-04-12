@@ -182,6 +182,7 @@ const esMessages = {
   'menu.experienceLearning': 'Experiencia de aprendizaje',
   'menu.myClasses': 'Mis Clases',
   'menu.learnings': 'Aprendizajes',
+  'menu.rubricValuation': 'Criterios de rúbrica de valoración',  
   'forms.inputRequired': 'Campo Requerido',
   'forms.cancel': 'Cancelar',
   'forms.auditInformation': 'Información Auditoria',
@@ -245,6 +246,7 @@ const esMessages = {
   'forms.experienceType': 'Tipo de experiencia',
   'forms.title': 'Título',
   'forms.date': 'Fecha',
+  'forms.criteria': 'Criterio',
 };
 
 export default esMessages;

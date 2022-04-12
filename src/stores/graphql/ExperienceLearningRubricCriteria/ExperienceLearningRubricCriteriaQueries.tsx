@@ -1,0 +1,84 @@
+import { gql } from '@apollo/client';
+
+export const QUERY_GET_ALL_EXPERIENCE_LEARNING_RUBRIC_CRITERIA = gql`
+  query getAllExperienceLearningRubricCriteria($experienceLearningId: String!) {
+    data: getAllExperienceLearningRubricCriteria(
+      orderCreated: true
+      allData: true
+      experienceLearningId: $experienceLearningId
+    ) {
+      edges {
+        cursor
+        node {
+          id
+          active
+          weight
+          criteria
+          experienceLearningId
+          experienceLearning {
+            id
+            title
+          }
+        }
+      }
+      totalCount
+    }
+  }
+`;
+
+export const QUERY_GET_EXPERIENCE_LEARNING_RUBRIC_CRITERIA = gql`
+  query getExperienceLearningRubricCriteria($id: String!) {
+    data: getExperienceLearningRubricCriteria(id: $id) {
+      id
+      weight
+      criteria
+      evidenceLearningId
+      evidenceLearnig {
+        id
+        statement
+      }
+      experienceLearningRubricCriteriaPerformanceLevel {
+        criteria
+        performanceLevelId
+      }
+      experienceLearningId
+      experienceLearning {
+        id
+        title
+      }
+      version
+      createdAt
+      updatedAt
+      createdByUser {
+        name
+      }
+      updatedByUser {
+        name
+      }
+    }
+  }
+`;
+
+export const QUERY_GET_DROPDOWNS_EXPERIENCE_LEARNING_RUBRIC_CRITERIA = gql`
+  query getDropdownsExperienceLearningRubricCriteria($id: String!, $schoolId: String!) {
+    dataExperienceLearning: getExperienceLearning(id: $id) {
+      id
+      evidenciceLearningsId
+      evidenciceLearnings {
+        id
+        statement
+      }
+    }
+    dataPerformanceLevels: getAllPerformanceLevel(orderCreated: true, allData: true, schoolId: $schoolId) {
+      edges {
+        cursor
+        node {
+          id
+          name
+          topScore
+          minimumScore
+        }
+      }
+    }
+  }
+`;

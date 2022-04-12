@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
 import Select from 'react-select';
 import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
 import IntlMessages from '../../../helpers/IntlMessages';
@@ -12,18 +13,20 @@ import { Loader } from '../../common/Loader';
 
 const LearningCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
-  const [gradesList, setGradesList] = useState(null);
-  const [asignaturesList, setAsignaturesList] = useState(null);
   const [standardsList, setStandardsList] = useState(null);
   const [academicPeriodList, setAcademicPeriodList] = useState(null);
-  const [generalBasicLearningRightList, setGeneralBasicLearningRightList] = useState(null);
-  const [grade, setGrade] = useState(null);
-  const [asignature, setAsignature] = useState(null);
+  const [generalBasicLearningRightList, setGeneralBasicLearningRightList] = useState(null); 
   const [generalBasicLearningRight, setGeneralBasicLearningRight] = useState(null);
   const [standard, setStandard] = useState(null);
   const [academicPeriod, setAcademicPeriod] = useState(null);
   const [schoolsList, setSchoolsList] = useState(null);
   const [school, setSchool] = useState(null);
+
+  let [params] = useSearchParams();
+  const  asignatureId  = params.get('asignatureId');
+  const  asignatureGeneralId  = params.get('asignatureGeneralId');
+  const  gradeId  = params.get('gradeId');
+  const  gradeGeneralId  = params.get('gradeGeneralId');
 
   const methods = useForm({
     mode: 'onChange',
@@ -35,24 +38,8 @@ const LearningCreateEdit = (props: any) => {
   useEffect(() => {
     cleanForm();
     getDropdowns();
+    getDBAS();
     if (props?.data?.id) {     
-      if (
-        props?.data?.academicAsignature !== undefined &&
-        props?.data?.academicAsignature != null
-      ) {
-        setAsignature({
-          key: props?.data?.academicAsignature?.id,
-          label: props?.data?.academicAsignature?.name,
-          value: props?.data?.academicAsignature?.id,
-        });
-      }
-      if (props?.data?.academicGrade !== undefined && props?.data?.academicGrade != null) {
-        setGrade({
-          key: props?.data?.academicGrade?.id,
-          label: props?.data?.academicGrade?.name,
-          value: props?.data?.academicGrade?.id,
-        });
-      }
       if (props?.data?.generalBasicLearningRight !== undefined && props?.data?.generalBasicLearningRight != null) {
         setGeneralBasicLearningRight({
           key: props?.data?.generalBasicLearningRight?.id,
@@ -74,16 +61,20 @@ const LearningCreateEdit = (props: any) => {
           value: props?.data?.school?.id,
         });
       }
+      if (props?.data?.academicPeriods !== undefined && props?.data?.academicPeriods != null) {
+        setAcademicPeriod(props?.data?.academicPeriods.map((c: any) => {
+          return { label: c.name, value: c.id, key: c.id };
+        }));
+      }
     }
     setLoading(false);
   }, [props?.data]);
 
   const cleanForm = async () => {
     reset();
-    setAsignature(null);
-    setGrade(null);
     setStandard(null);
     setSchool(null);
+    setAcademicPeriod(null);
     setGeneralBasicLearningRight(null);
     if (props?.loginReducer?.schoolId && !props?.data?.id) {
       // set value when register is new and sesion contains value
@@ -92,20 +83,24 @@ const LearningCreateEdit = (props: any) => {
         value: props?.loginReducer?.schoolId,
       });
     }
+    if (asignatureId && !props?.data?.id) {
+      // set value when register is new and sesion contains value
+      register('academicAsignatureId', {
+        required: true,
+        value: asignatureId,
+      });
+    }
+    if (gradeId && !props?.data?.id) {
+      // set value when register is new and sesion contains value
+      register('academicGradeId', {
+        required: true,
+        value: gradeId,
+      });
+    }
   };
 
   const getDropdowns = async () => {
     props.getDropdownsLearning(props?.loginReducer?.schoolId).then((data: any) => {
-      setAsignaturesList(
-        data.dataAsignatures.edges.map((c: any) => {
-          return { label: c.node.name, value: c.node.id, key: c.node.id, idGeneral: c.node.generalAcademicAsignatureId };
-        }),
-      );
-      setGradesList(
-        data.dataGrades.edges.map((c: any) => {
-          return { label: c.node.name, value: c.node.id, key: c.node.id, idGeneral: c.node.generalAcademicGradeId };
-        }),
-      );
       setStandardsList(
         data.dataStandards.edges.map((c: any) => {
           return { label: c.node.standard, value: c.node.id, key: c.node.id };
@@ -124,9 +119,8 @@ const LearningCreateEdit = (props: any) => {
     });
   };
 
-  const getDBAS = async (generalAcademicAsignatureId: any,generalAcademicGradeId: any) => {
-    props.getGeneralBasicLearningRightList(generalAcademicAsignatureId, generalAcademicGradeId).then((data: any) => {
-      console.log(data)
+  const getDBAS = async () => {
+    props.getGeneralBasicLearningRightList(asignatureGeneralId, gradeGeneralId).then((data: any) => {
       setGeneralBasicLearningRightList(
         data.data.edges.map((c: any) => {
           return { label: c.node.dba, value: c.node.id, key: c.node.id };
@@ -203,46 +197,9 @@ const LearningCreateEdit = (props: any) => {
               </div>             
               <div className="form-group">
                 <Label>
-                  <IntlMessages id="menu.asignature" />
-                </Label>
-                <Select
-                  placeholder={<IntlMessages id="forms.select" />}
-                  {...register('academicAsignatureId', { required: true })}
-                  className="react-select"
-                  classNamePrefix="react-select"
-                  options={asignaturesList}
-                  value={asignature}
-                  onChange={(selectedOption) => {
-                    setValue('academicAsignatureId', selectedOption?.key);
-                    setAsignature(selectedOption);
-                  }}
-                />
-              </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="menu.grade" />
-                </Label>
-                <Select
-                 isDisabled={!asignature}
-                  placeholder={<IntlMessages id="forms.select" />}
-                  {...register('academicGradeId', { required: true })}
-                  className="react-select"
-                  classNamePrefix="react-select"
-                  options={gradesList}
-                  value={grade}
-                  onChange={(selectedOption) => {
-                    setValue('academicGradeId', selectedOption?.key);
-                    setGrade(selectedOption);
-                    getDBAS(asignature?.idGeneral, selectedOption?.idGeneral);
-                  }}
-                />
-              </div>
-              <div className="form-group">
-                <Label>
                   <IntlMessages id="menu.dba" />
                 </Label>
                 <Select
-                  isDisabled={!grade || !asignature}
                   placeholder={<IntlMessages id="forms.select" />}
                   {...register('generalBasicLearningRightId', { required: true })}
                   className="react-select"

@@ -7,6 +7,7 @@ export const QUERY_GET_ALL_STUDENT = gql`
         cursor
         node {
           id
+          code
           active         
           school  {
             id
@@ -34,6 +35,7 @@ export const QUERY_GET_STUDENT = gql`
   query getStudent($id: String!) {
     data: getStudent(id: $id) {
       id
+      code
       schoolId     
       campusId
       userId

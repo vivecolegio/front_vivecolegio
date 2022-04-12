@@ -85,28 +85,6 @@ export const QUERY_GET_DROPDOWNS_LEARNING = gql`
         }
       }
     }
-    dataAsignatures: getAllAcademicAsignature(
-      allData: false
-      orderCreated: false
-      schoolId: $schoolId
-    ) {
-      edges {
-        node {
-          id
-          name
-          generalAcademicAsignatureId
-        }
-      }
-    }
-    dataGrades: getAllAcademicGrade(allData: false, orderCreated: false, schoolId: $schoolId) {
-      edges {
-        node {
-          id
-          name
-          generalAcademicGradeId
-        }
-      }
-    }
     dataAcademicPeriods: getAllAcademicPeriod(allData: false, orderCreated: false, schoolId: $schoolId) {
       edges {
         node {

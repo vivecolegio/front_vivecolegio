@@ -183,6 +183,7 @@ const enMessages = {
   'menu.experienceLearning': 'Experience Learning',
   'menu.myClasses': 'My Classes',
   'menu.learnings': 'Learnings',  
+  'menu.rubricValuation': 'Rubric Valuation Criteria',  
   'list.activate': 'Active',
   'list.inactivate': 'Inactive',
   'forms.inputRequired': 'Field Required',
@@ -248,6 +249,7 @@ const enMessages = {
   'forms.experienceType': 'Experience Type',
   'forms.title': 'Title',
   'forms.date': 'Date',
+  'forms.criteria': 'Criteria',
 };
 
 export default enMessages;

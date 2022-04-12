@@ -4,5 +4,5 @@ export const COLUMN_LIST = [
   { column: 'phone', label: 'forms.phone', width: '20%' },
   { column: 'email', label: 'forms.email', width: '20%' },
   { column: 'role_format', label: 'forms.role', width: '20%' },
-  { width:'40%' },
+  { width:'50%' },
 ];

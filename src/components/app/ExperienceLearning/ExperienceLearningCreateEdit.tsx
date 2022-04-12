@@ -17,11 +17,11 @@ const ExperienceLearningCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
   const [learningList, setLearningList] = useState(null);
   const [learnings, setLearnings] = useState(null);
-  const [evidenceLearningList, setEvidenceLearningList] = useState(null);
-  const [evidenceLearnings, setEvidenceLearnings] = useState(null);
+  const [academicPeriodList, setAcademicPeriodList] = useState(null);
   const [campusList, setCampusList] = useState(null);
   const [campus, setCampus] = useState(null);
   const [date, setDate] = useState(null);
+  const [academicPeriod, setAcademicPeriod] = useState(null);
   const [experienceType, setExperienceType] = useState(null);
   const [experienceTypes, setExperienceTypes] = useState([
     { label: 'Coevaluación', key: 'COEVALUATION' },
@@ -54,6 +54,13 @@ const ExperienceLearningCreateEdit = (props: any) => {
           value: props?.data?.campus?.id,
         });
       }
+      if (props?.data?.academicPeriod !== undefined && props?.data?.academicPeriod != null) {
+        setAcademicPeriod({
+          key: props?.data?.academicPeriod?.id,
+          label: props?.data?.academicPeriod?.name,
+          value: props?.data?.academicPeriod?.id,
+        });
+      }
       if (props?.data?.learnigs !== undefined && props?.data?.learnigs != null) {
         setLearnings(
           props?.data?.learnigs.map((c: any) => {
@@ -78,6 +85,7 @@ const ExperienceLearningCreateEdit = (props: any) => {
     reset();
     setCampus(null);
     setLearnings(null);
+    setAcademicPeriod(null);
     if (props?.loginReducer?.campusId && !props?.data?.id) {
       // set value when register is new and sesion contains value
       register('campusId', {
@@ -104,6 +112,11 @@ const ExperienceLearningCreateEdit = (props: any) => {
       setLearningList(
         data.dataLearnings.edges.map((c: any) => {
           return { label: c.node.statement, value: c.node.id, key: c.node.id };
+        }),
+      );
+      setAcademicPeriodList(
+        data.dataAcademicPeriods.edges.map((c: any) => {
+          return { label: c.node.name, value: c.node.id, key: c.node.id };
         }),
       );
     });
@@ -140,6 +153,10 @@ const ExperienceLearningCreateEdit = (props: any) => {
   register('campusId', {
     required: true,
     value: props?.data?.id ? props?.data?.campusId : '',
+  });
+  register('academicPeriodId', {
+    required: true,
+    value: props?.data?.id ? props?.data?.academicPeriodId  : '',
   });
 
   const auditInfo = {
@@ -207,6 +224,23 @@ const ExperienceLearningCreateEdit = (props: any) => {
                   onChange={(selectedOption) => {
                     setValue('experienceType', selectedOption?.key);
                     setExperienceType(selectedOption);
+                  }}
+                />
+              </div>     
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="menu.periodAcademic" />
+                </Label>
+                <Select
+                  placeholder={<IntlMessages id="forms.select" />}
+                  {...register('academicPeriodId', { required: true })}
+                  className="react-select"
+                  classNamePrefix="react-select"
+                  options={academicPeriodList}
+                  value={academicPeriod}
+                  onChange={(selectedOption) => {
+                    setValue('academicPeriodId', selectedOption?.key);
+                    setAcademicPeriod(selectedOption);
                   }}
                 />
               </div>     

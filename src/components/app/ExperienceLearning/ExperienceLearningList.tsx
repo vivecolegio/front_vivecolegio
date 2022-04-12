@@ -124,9 +124,10 @@ const ExperienceLearningList = (props: any) => {
   };
 
   const filterByPeriod = async (item: any) => {
-    setAcademicPeriod(item);
+    console.log(item)
+    setAcademicPeriod(item?.node?.id === academicPeriod?.node?.id ? null : item);
     setDataTable(null);
-    getDataTable(item?.node?.id);
+    getDataTable(academicPeriod?.node?.id);
   };
 
   const goTo = async (url: string) => {
@@ -142,7 +143,17 @@ const ExperienceLearningList = (props: any) => {
     switch (type) {
       case 'TRADITIONALVALUATION':
         goToChildren(
-          `/traditionalValuation?courseId=${item?.academicAsignatureCourse?.courseId}&learningId=${item?.id}`,
+          `/traditionalValuation?courseId=${item?.academicAsignatureCourse?.courseId}&learningId=${item?.id}&learningName=${item?.title}&asignatureName=${item?.academicAsignatureCourse?.academicAsignature?.name}&courseName=${item?.academicAsignatureCourse?.course?.name}&gradeName=${item?.academicAsignatureCourse?.course?.academicGrade?.name}`,
+        );
+        break;
+      case 'SELFAPPRAISAL':
+        goToChildren(
+          `/selfValuation?courseId=${item?.academicAsignatureCourse?.courseId}&learningId=${item?.id}&learningName=${item?.title}&asignatureName=${item?.academicAsignatureCourse?.academicAsignature?.name}&courseName=${item?.academicAsignatureCourse?.course?.name}&gradeName=${item?.academicAsignatureCourse?.course?.academicGrade?.name}`,
+        );
+        break;
+      case 'VALUATIONRUBRIC':
+        goToChildren(
+          `/rubricValuation?courseId=${item?.academicAsignatureCourse?.courseId}&learningId=${item?.id}&learningName=${item?.title}&asignatureName=${item?.academicAsignatureCourse?.academicAsignature?.name}&courseName=${item?.academicAsignatureCourse?.course?.name}&gradeName=${item?.academicAsignatureCourse?.course?.academicGrade?.name}`,
         );
         break;
       default:
@@ -208,22 +219,27 @@ const ExperienceLearningList = (props: any) => {
             filterChildren={'experienceType'}
             header={
               <>
-                <div className="d-flex justify-content-between mt-4">
-                  <div>
-                    <h2 className="mb-0">
-                      <span className="text-info font-bold">{asignatureName}</span> -{' '}
-                      <span className="text-green font-bold">{gradeName}</span>
-                    </h2>
-                    <p
-                      className="text-muted d-flex align-items-center cursor-pointer"
-                      onClick={() => {
-                        return goTo('/myClasses');
-                      }}
-                    >
-                      <i className="simple-icon-arrow-left-circle mr-2"></i>
-                      Regresar a mis clases
-                    </p>
+                <div className="d-flex justify-content-between mt-4 align-items-center">
+                <div className="mt-4">
+                  <div className="d-flex flex-row">
+                    <span className="mb-0 text-muted mr-4 border-b-info">
+                      <span>Asignatura:</span>{' '}
+                      <h2 className="text-info font-bold">{asignatureName}</h2>
+                    </span>
+                    <span className="mb-0 text-muted border-b-green">
+                      Grado: <h2 className="text-green font-bold">{gradeName}</h2>
+                    </span>
                   </div>
+                  <p
+                    className="text-muted mt-2 d-flex align-items-center cursor-pointer"
+                    onClick={() => {
+                      return goTo('/myClasses');
+                    }}
+                  >
+                    <i className="simple-icon-arrow-left-circle mr-2"></i>
+                    Regresar a mis clases
+                  </p>
+                </div>
                   <div>
                     {academicPeriods
                       ? academicPeriods.map((item: any) => {

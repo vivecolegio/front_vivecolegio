@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
 export const QUERY_GET_ALL_EXPERIENCE_LEARNING = gql`
-  query getAllExperienceLearning($campusId: String!, $academicAsignatureCourseId : String!, $academicPeriodId: String!) {
+  query getAllExperienceLearning($campusId: String!, $academicAsignatureCourseId : String!, $academicPeriodId: String) {
     data: getAllExperienceLearning(orderCreated: true, allData: true, campusId: $campusId, academicAsignatureCourseId : $academicAsignatureCourseId, academicPeriodId: $academicPeriodId ) {
       edges {
         cursor
@@ -9,9 +9,19 @@ export const QUERY_GET_ALL_EXPERIENCE_LEARNING = gql`
           id
           active
           title   
-          experienceType       
+          experienceType 
+          evidenciceLearningsId      
           academicAsignatureCourse {
             courseId
+            course {
+              name
+              academicGrade {
+                name
+              }
+            }
+            academicAsignature {
+              name
+            }
           }    
           academicAsignatureCourseId
         }
@@ -28,6 +38,11 @@ export const QUERY_GET_EXPERIENCE_LEARNING = gql`
       title   
       description
       fecha
+      academicPeriodId
+      academicPeriod {
+        id
+        name
+      }
       learningsId
       learnigs {
         id
@@ -67,6 +82,14 @@ export const QUERY_GET_DROPDOWNS_EXPERIENCE_LEARNING = gql`
         node {
           id
           statement
+        }
+      }
+    }
+    dataAcademicPeriods: getAllAcademicPeriod(allData: false, orderCreated: false, schoolId: $schoolId) {
+      edges {
+        node {
+          id
+          name
         }
       }
     }

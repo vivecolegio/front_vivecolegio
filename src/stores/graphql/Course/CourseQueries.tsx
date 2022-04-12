@@ -27,6 +27,7 @@ export const QUERY_GET_COURSE = gql`
       studentsId
       students {
         id
+        code
         user{
           id
           name

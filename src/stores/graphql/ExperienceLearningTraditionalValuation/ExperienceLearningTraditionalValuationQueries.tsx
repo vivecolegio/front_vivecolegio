@@ -1,13 +1,24 @@
 import { gql } from '@apollo/client';
 
 export const QUERY_GET_ALL_EXPERIENCE_LEARNING_TRADITIONAL_VALUATION = gql`
-  query getAllExperienceLearningTraditionalValuation($campusId: String!) {
-    data: getAllExperienceLearningTraditionalValuation(orderCreated: true, allData: true, campusId: $campusId) {
+  query getAllExperienceLearningTraditionalValuation($experienceLearningId: String!) {
+    data: getAllExperienceLearningTraditionalValuation(orderCreated: true, allData: true, experienceLearningId: $experienceLearningId) {
       edges {
         cursor
         node {
           id                                      
-          active          
+          active  
+          assessment
+          studentId
+          student {
+            id
+            code
+            user {
+              id
+              name
+              lastName
+            }
+          }        
         }
       }
       totalCount

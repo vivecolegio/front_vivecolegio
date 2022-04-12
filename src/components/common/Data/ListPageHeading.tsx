@@ -46,9 +46,9 @@ const ListPageHeading = ({
     <Row>
       <Colxx xxs="12">
         <div className="mb-2">
-          <h1>
+          {/* <h1>
             <IntlMessages id={heading} />
-          </h1>
+          </h1> */}
 
           <div className="text-zero top-right-button-container">
             {currentMenu.createAction ? 
@@ -113,7 +113,7 @@ const ListPageHeading = ({
             </>
               : ''}
           </div>
-          <BreadcrumbContainer match={match} heading={null} />
+          <BreadcrumbContainer match={match} heading={match.replace("/", "")} />
         </div>
 
         <div className="mb-2">

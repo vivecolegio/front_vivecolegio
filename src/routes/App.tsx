@@ -49,10 +49,12 @@ import MunicipalityList from '../components/app/Municipality/MunicipalityList';
 import MyClasessList from '../components/app/MyClasses/MyClasessList';
 import Profile from '../components/app/Profile/Profile';
 import RoleList from '../components/app/Role/RoleList';
+import RubricCriteriaList from '../components/app/RubricCriteria/RubricCriteriaList';
 import OfficeSchedule from '../components/app/Schedule/OfficeSchedule';
 import SchoolSchedule from '../components/app/Schedule/SchoolSchedule';
 import SchoolList from '../components/app/School/SchoolList';
 import SchoolYearList from '../components/app/SchoolYear/SchoolYearList';
+import SelfValuation from '../components/app/SelfValuation/SelfValuation';
 import SpecialityList from '../components/app/Speciality/SpecialityList';
 import StudentsList from '../components/app/Students/StudentsList';
 import SubmenuList from '../components/app/Submenu/SubmenuList';
@@ -172,6 +174,8 @@ const App = (props: any) => {
                     <Route path="/experienceLearning" element={ <ExperienceLearningList/> } />
                     <Route path="/myClasses" element={ <MyClasessList/> } />
                     <Route path="/traditionalValuation" element={ <TraditionalValuation/> } />
+                    <Route path="/selfValuation" element={ <SelfValuation/> } />
+                    <Route path="/rubricValuation" element={ <RubricCriteriaList/> } />
                     {/* ACADEMIC */} 
                     {/* APPLICATIONS */} 
                     <Route path="/chat" element={ <ChatApp/> } />

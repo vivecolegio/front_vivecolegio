@@ -2,7 +2,6 @@ import classnames from 'classnames';
 import React, { useEffect, useState } from 'react';
 import ReactDatePicker from 'react-datepicker';
 import { useForm } from 'react-hook-form';
-import {Loader} from '../../common/Loader';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import Select from 'react-select';
@@ -23,6 +22,7 @@ import * as StudentActions from '../../../stores/actions/StudentActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import AddNewModal from '../../common/Data/AddNewModal';
 import CreateEditAuditInformation from '../../common/Data/CreateEditAuditInformation';
+import { Loader } from '../../common/Loader';
 
 const StudentCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
@@ -179,6 +179,8 @@ const StudentCreateEdit = (props: any) => {
     setSearchValue('');
     setDocumentTypeGuardian(null);
     setGuardian(null);
+    setCourse(null);
+    setGrade(null);
     setActiveTab('student');
     if (props?.loginReducer?.campusId && !props?.data?.id) {
       // set value when register is new and sesion contains value
@@ -241,6 +243,10 @@ const StudentCreateEdit = (props: any) => {
     });
   };
 
+  const { ref: codeRef, ...codeRest } = register('code', {
+    required: true,
+    value: props?.data?.id ? props?.data?.code : '',
+  });
   register('schoolId', {
     required: true,
     value: props?.data?.id ? props?.data?.schoolId : '',
@@ -365,6 +371,12 @@ const StudentCreateEdit = (props: any) => {
                         setNewUser({ ...newUser, ...{ name: data.target.value } });
                       }}
                     />
+                  </div>
+                  <div className="form-group">
+                    <Label>
+                      <IntlMessages id="forms.code" />
+                    </Label>
+                    <Input {...codeRest} innerRef={codeRef} className="form-control" />
                   </div>
                   <div className="form-group">
                     <Label>

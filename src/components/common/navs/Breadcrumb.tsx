@@ -18,7 +18,7 @@ const BreadcrumbContainer = ({ heading, match }:any) => {
     <>
       {heading && (
         <h1>
-          <IntlMessages id={heading} />
+          Listado <IntlMessages id={`menu.${heading}`} />
         </h1>
       )}
       <BreadcrumbItems match={match} />

@@ -4,15 +4,15 @@ import { MUTATION_CHANGE_ACTIVE_EXPERIENCE_LEARNING_TRADITIONAL_VALUATION, MUTAT
 import { QUERY_GET_ALL_EXPERIENCE_LEARNING_TRADITIONAL_VALUATION, QUERY_GET_EXPERIENCE_LEARNING_TRADITIONAL_VALUATION } from '../graphql/ExperienceLearningTraditionalValuation/ExperienceLearningTraditionalValuationQueries';
 
 
-export const getListAllExperienceLearningTraditionalValuationActions = (campusId:string) => {
+export const getListAllExperienceLearningTraditionalValuation = (experienceLearningId: string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
       await client
         .query({
           query: QUERY_GET_ALL_EXPERIENCE_LEARNING_TRADITIONAL_VALUATION,
-          variables:{
-            campusId,
+          variables: {
+            experienceLearningId,
           },
         })
         .then((result: any) => {
@@ -26,7 +26,7 @@ export const getListAllExperienceLearningTraditionalValuationActions = (campusId
   };
 };
 
-export const dataExperienceLearningTraditionalValuationActions = (id: any) => {
+export const dataExperienceLearningTraditionalValuation = (id: any) => {
   return async (dispatch: any) => {
     try {
       let data = {};
@@ -48,7 +48,7 @@ export const dataExperienceLearningTraditionalValuationActions = (id: any) => {
   };
 };
 
-export const saveNewExperienceLearningTraditionalValuationActions = (data: any, showToast: boolean) => {
+export const saveNewExperienceLearningTraditionalValuation = (data: any, showToast: boolean) => {
   return async (dispatch: any) => {
     try {
       let model: any = {};
@@ -60,7 +60,7 @@ export const saveNewExperienceLearningTraditionalValuationActions = (data: any, 
         ...data,
       };
       let dataCreate = null;
-      model.assessment = model.assessment && !isNaN(model.assessment) ? parseFloat(model.assessment) : 0;
+      model.assessment = model.assessment && !isNaN(model.assessment) ? parseFloat(model.assessment) : null;
       await client
         .mutate({
           mutation: MUTATION_CREATE_EXPERIENCE_LEARNING_TRADITIONAL_VALUATION,
@@ -90,7 +90,7 @@ export const saveNewExperienceLearningTraditionalValuationActions = (data: any, 
   };
 };
 
-export const updateExperienceLearningTraditionalValuationActions = (data: any, id: any) => {
+export const updateExperienceLearningTraditionalValuation = (data: any, id: any, showToast: boolean) => {
   return async (dispatch: any) => {
     try {
       let model: any = {};
@@ -102,7 +102,7 @@ export const updateExperienceLearningTraditionalValuationActions = (data: any, i
         ...data,
       };
       let dataUpdate = null;
-      model.assessment = model.assessment && !isNaN(model.assessment) ? parseFloat(model.assessment) : 0;
+      model.assessment = model.assessment && !isNaN(model.assessment) ? parseFloat(model.assessment) : null;
       await client
         .mutate({
           mutation: MUTATION_UPDATE_EXPERIENCE_LEARNING_TRADITIONAL_VALUATION,
@@ -111,22 +111,28 @@ export const updateExperienceLearningTraditionalValuationActions = (data: any, i
         .then((dataReponse: any) => {
           if (dataReponse.errors?.length > 0) {
             dataReponse.errors.forEach((error: any) => {
-              createNotification('error', 'error', '');
+              if (showToast) {
+                createNotification('error', 'error', '');
+              }
             });
           } else {
             dataUpdate = dataReponse.data.update.id;
-            createNotification('success', 'success', '');
+            if (showToast) {
+              createNotification('success', 'success', '');
+            }
           }
         });
       return dataUpdate as any;
     } catch (error) {
-      createNotification('error', 'error', '');
+      if (showToast) {
+        createNotification('error', 'error', '');
+      }
       return error;
     }
   };
 };
 
-export const changeActiveExperienceLearningTraditionalValuationActions = (active: any, id: any, showToast: boolean) => {
+export const changeActiveExperienceLearningTraditionalValuation = (active: any, id: any, showToast: boolean) => {
   return async (dispatch: any) => {
     try {
       let dataChangeActive = null;
@@ -159,7 +165,7 @@ export const changeActiveExperienceLearningTraditionalValuationActions = (active
   };
 };
 
-export const deleteExperienceLearningTraditionalValuationActions = (id: any, showToast: boolean) => {
+export const deleteExperienceLearningTraditionalValuation = (id: any, showToast: boolean) => {
   return async (dispatch: any) => {
     try {
       let dataDelete = null;

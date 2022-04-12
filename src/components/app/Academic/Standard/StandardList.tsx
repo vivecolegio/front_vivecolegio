@@ -16,22 +16,34 @@ const StandardList = (props: any) => {
   let navigate = useNavigate();
 
   let [params] = useSearchParams();
-  const  asignatureId  = params.get('asignatureId');
-  const  asignatureName  = params.get('asignatureName');
-  const  gradeId  = params.get('gradeId');
-  const  gradeName  = params.get('gradeName');
+  const asignatureId = params.get('asignatureId');
+  const asignatureName = params.get('asignatureName');
+  const gradeId = params.get('gradeId');
+  const gradeName = params.get('gradeName');
 
   const [data, setData] = useState(null);
   useEffect(() => {
-    props.getListAllAcademicStandard(props?.loginReducer?.schoolId, asignatureId ? asignatureId : '', gradeId ? gradeId : '').then((listData: any) => {
-      setDataTable(listData);
-    });
+    props
+      .getListAllAcademicStandard(
+        props?.loginReducer?.schoolId,
+        asignatureId ? asignatureId : '',
+        gradeId ? gradeId : '',
+      )
+      .then((listData: any) => {
+        setDataTable(listData);
+      });
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllAcademicStandard(props?.loginReducer?.schoolId, asignatureId ? asignatureId : '', gradeId ? gradeId : '').then((listData: any) => {
-      setDataTable(listData);
-    });
+    props
+      .getListAllAcademicStandard(
+        props?.loginReducer?.schoolId,
+        asignatureId ? asignatureId : '',
+        gradeId ? gradeId : '',
+      )
+      .then((listData: any) => {
+        setDataTable(listData);
+      });
   };
 
   const refreshDataTable = async () => {
@@ -108,7 +120,6 @@ const StandardList = (props: any) => {
     navigate(url);
   };
 
-
   return (
     <>
       {' '}
@@ -127,12 +138,23 @@ const StandardList = (props: any) => {
             changeActiveDataAll={changeActiveDataAll}
             header={
               <>
-                <div className='mt-4'>
-                  <h2 className='mb-0'>
-                    <span className='text-info font-bold'>{asignatureName}</span> - <span className='text-green font-bold'>{gradeName}</span>
-                  </h2>
-                  <p className='text-muted d-flex align-items-center cursor-pointer' onClick={() => {return goTo('/academicAsignatureCourse')}}>
-                    <i className='simple-icon-arrow-left-circle mr-2'></i>
+                <div className="mt-4">
+                  <div className="d-flex flex-row">
+                    <span className="mb-0 text-muted mr-4 border-b-info">
+                      <span>Asignatura:</span>{' '}
+                      <h2 className="text-info font-bold">{asignatureName}</h2>
+                    </span>
+                    <span className="mb-0 text-muted border-b-green">
+                      Ciclo académico: <h2 className="text-green font-bold">{gradeName}</h2>
+                    </span>
+                  </div>
+                  <p
+                    className="text-muted mt-2 d-flex align-items-center cursor-pointer"
+                    onClick={() => {
+                      return goTo('/academicAsignatureCourse');
+                    }}
+                  >
+                    <i className="simple-icon-arrow-left-circle mr-2"></i>
                     Regresar a carga académica
                   </p>
                 </div>

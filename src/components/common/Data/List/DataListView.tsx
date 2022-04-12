@@ -40,7 +40,7 @@ const DataListView = ({
                   </p>
                 );
               })}
-              <p className={"mb-0 text-center text-muted text-small"} style={{ 'width':columns[columns.length - 1].width }}>
+              <p className={"mb-0 flex-gap text-muted text-small"} style={{ 'width':columns[columns.length - 1].width }}>
                 { currentMenu.updateAction ? 
                 <Button
                   color="blue"

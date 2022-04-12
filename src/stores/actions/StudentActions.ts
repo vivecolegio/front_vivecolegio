@@ -13,8 +13,8 @@ export const getListAllStudent = (campusId:string ,schoolId:string) => {
           query: QUERY_GET_ALL_STUDENT,
           variables:{
             campusId,
-            schoolId
-          }
+            schoolId,
+          },
         })
         .then((result: any) => {
           listData = result.data.data.edges;
@@ -52,7 +52,7 @@ export const dataStudent = (id: any) => {
 export const saveNewStudent = (data: any) => {
   return async (dispatch: any) => {
     try {
-      let model: {};
+      let model:any = {};
       model = {
         ...model,
       };
@@ -61,6 +61,7 @@ export const saveNewStudent = (data: any) => {
         ...data,
       };
       let dataCreate = null;
+      model.code = model.code && !isNaN(model.code) ? parseFloat(model.code) : 0;
       await client
         .mutate({
           mutation: MUTATION_CREATE_STUDENT,
@@ -87,7 +88,7 @@ export const saveNewStudent = (data: any) => {
 export const updateStudent = (data: any, id: any) => {
   return async (dispatch: any) => {
     try {
-      let model: {};
+      let model: any = {};
       model = {
         ...model,
       };
@@ -96,6 +97,7 @@ export const updateStudent = (data: any, id: any) => {
         ...data,
       };
       let dataUpdate = null;
+      model.code = model.code && !isNaN(model.code) ? parseFloat(model.code) : 0;
       await client
         .mutate({
           mutation: MUTATION_UPDATE_STUDENT,
