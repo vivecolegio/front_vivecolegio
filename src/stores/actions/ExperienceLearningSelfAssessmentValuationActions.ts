@@ -4,7 +4,7 @@ import { MUTATION_CHANGE_ACTIVE_EXPERIENCE_LEARNING_SELF_ASSESSMENT_VALUATION, M
 import { QUERY_GET_ALL_EXPERIENCE_LEARNING_SELF_ASSESSMENT_VALUATION, QUERY_GET_EXPERIENCE_LEARNING_SELF_ASSESSMENT_VALUATION } from '../graphql/ExperienceLearningSelfAssessmentValuation/ExperienceLearningSelfAssessmentValuationQueries';
 
 
-export const getListAllExperienceLearningSelfAssessmentValuation = (experienceLearningId: string) => {
+export const getListAllExperienceLearningSelfAssessmentValuation = (experienceLearningId: string, studentId: string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
@@ -13,6 +13,7 @@ export const getListAllExperienceLearningSelfAssessmentValuation = (experienceLe
           query: QUERY_GET_ALL_EXPERIENCE_LEARNING_SELF_ASSESSMENT_VALUATION,
           variables: {
             experienceLearningId,
+            studentId,
           },
         })
         .then((result: any) => {
@@ -74,7 +75,7 @@ export const saveNewExperienceLearningSelfAssessmentValuation = (data: any, show
               }
             });
           } else {
-            dataCreate = dataResponse.data.create.id;
+            dataCreate = dataResponse.data.create;
             if (showToast) {
               createNotification('success', 'success', '');
             }

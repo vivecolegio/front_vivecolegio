@@ -36,6 +36,12 @@ const ExperienceLearningRubricCriteriaCreateEdit = (props: any) => {
     getDropdowns(learningId);
     if (props?.data?.id) {
       if (props?.data?.experienceLearningRubricCriteriaPerformanceLevel !== undefined && props?.data?.experienceLearningRubricCriteriaPerformanceLevel != null) {
+        console.log(props?.data?.experienceLearningRubricCriteriaPerformanceLevel.map((c:any)=>{
+          return {
+            performanceLevelId: c.performanceLevelId,
+            criteria: c.criteria,
+          }
+        }))
         setCriteriaPerformances(props?.data?.experienceLearningRubricCriteriaPerformanceLevel.map((c:any)=>{
           return {
             performanceLevelId: c.performanceLevelId,
@@ -118,7 +124,7 @@ const ExperienceLearningRubricCriteriaCreateEdit = (props: any) => {
   });
   register('experienceLearningRubricCriteriaPerformanceLevel', {
     required: true,
-    value: props?.data?.id ? props?.data?.experienceLearningRubricCriteriaPerformanceLevel : '',
+    value: criteriaPerformances,
   });
 
   const auditInfo = {

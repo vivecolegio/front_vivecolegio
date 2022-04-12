@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/default-param-last */
 import { LOGOUT, LOGIN, ME } from './types/loginTypes';
 
 const INITIAL_STATE = {
   userId: '',
+  entityId: '',
   role: {},
   roleMenus: {},
   name: '',
@@ -17,6 +19,7 @@ export default (state = INITIAL_STATE, action: any) => {
       return {
         ...state,
         userId: action.payload.userId,
+        entityId: action.payload.entityId,
         role: action.payload.role,
         roleMenus: action.payload.roleMenus,
         name: action.payload.name,
@@ -34,13 +37,14 @@ export default (state = INITIAL_STATE, action: any) => {
       return {
         ...state,
         userId: '',
+        entityId: '',
         role: {},
         roleMenus : [],
         name: '',
         campus: '',
         campusId: '',
         school: '',
-        schoolId: ''
+        schoolId: '',        
       };
     default:
       return state;

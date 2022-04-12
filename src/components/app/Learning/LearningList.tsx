@@ -140,9 +140,10 @@ const Learning = (props: any) => {
     } else {
       academicPeriod.push(item?.node?.id)
     }
+    console.log(academicPeriod)
     setAcademicPeriod(academicPeriod);
     setDataTable(null);
-    getDataTable(academicPeriod);
+    await getDataTable(academicPeriod);
   };
 
   const goToChildren = async (url: string) => {

@@ -50,6 +50,7 @@ const ExperienceLearningList = (props: any) => {
         idAcademicPeriod ? idAcademicPeriod : undefined,
       )
       .then((listData: any) => {
+        console.log(listData)
         setDataTable(listData);
       });
   };
@@ -124,10 +125,9 @@ const ExperienceLearningList = (props: any) => {
   };
 
   const filterByPeriod = async (item: any) => {
-    console.log(item)
     setAcademicPeriod(item?.node?.id === academicPeriod?.node?.id ? null : item);
     setDataTable(null);
-    getDataTable(academicPeriod?.node?.id);
+    await getDataTable(item?.node?.id);
   };
 
   const goTo = async (url: string) => {
@@ -154,6 +154,11 @@ const ExperienceLearningList = (props: any) => {
       case 'VALUATIONRUBRIC':
         goToChildren(
           `/rubricValuation?courseId=${item?.academicAsignatureCourse?.courseId}&learningId=${item?.id}&learningName=${item?.title}&asignatureName=${item?.academicAsignatureCourse?.academicAsignature?.name}&courseName=${item?.academicAsignatureCourse?.course?.name}&gradeName=${item?.academicAsignatureCourse?.course?.academicGrade?.name}`,
+        );
+        break;
+      case 'COEVALUATION':
+        goToChildren(
+          `/coEvaluation?courseId=${item?.academicAsignatureCourse?.courseId}&learningId=${item?.id}&learningName=${item?.title}&asignatureName=${item?.academicAsignatureCourse?.academicAsignature?.name}&courseName=${item?.academicAsignatureCourse?.course?.name}&gradeName=${item?.academicAsignatureCourse?.course?.academicGrade?.name}`,
         );
         break;
       default:

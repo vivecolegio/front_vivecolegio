@@ -5,7 +5,10 @@ export const MUTATION_LOGIN = gql`
     data: login(username: $username, password: $password) {
       jwt
       name
-      userId
+      student {
+        id
+      }
+      userId      
       schools {
         id
         name

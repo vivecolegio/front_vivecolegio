@@ -10,6 +10,10 @@ export const QUERY_GET_ALL_EXPERIENCE_LEARNING = gql`
           active
           title   
           experienceType 
+          academicPeriodId
+          academicPeriod {
+            name
+          }
           evidenciceLearningsId      
           academicAsignatureCourse {
             courseId
@@ -47,6 +51,7 @@ export const QUERY_GET_EXPERIENCE_LEARNING = gql`
       learnigs {
         id
         statement
+        
       } 
       evidenciceLearningsId
       evidenciceLearnings {

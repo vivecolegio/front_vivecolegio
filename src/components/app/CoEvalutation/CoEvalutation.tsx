@@ -1,4 +1,3 @@
-/* eslint-disable arrow-body-style */
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router';
@@ -8,21 +7,21 @@ import { createNotification } from '../../../helpers/Notification';
 import { getInitialsName } from '../../../helpers/Utils';
 import * as performanceLevelActions from '../../../stores/actions/Academic/PerformanceLevelActions';
 import * as courseActions from '../../../stores/actions/CourseActions';
-import * as experienceLearningSelfAssessmentValuationActions from '../../../stores/actions/ExperienceLearningSelfAssessmentValuationActions';
+import * as experienceLearningTraditionalValuationlActions from '../../../stores/actions/ExperienceLearningTraditionalValuationActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import { Loader } from '../../common/Loader';
 import ThumbnailImage from '../Aplications/AplicationsComponents/ThumbnailImage';
 
-const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
+const ExperienceLearningTraditionalValuationList = (props: any) => {
   const [students, setStudents] = useState(null);
   const [performanceLevels, setPerformanceLevels] = useState(null);
   const [valuations, setValuations] = useState([]);
-  const [criteriaPerformances, setCriteriaPerformances] = useState([]);
 
   let navigate = useNavigate();
   const location = useLocation();
   const history = useNavigate();
   const currentUrl = location.pathname;
+
 
   let [params] = useSearchParams();
   const courseId = params.get('courseId');
@@ -50,17 +49,17 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
       return submenus = submenus.concat(c.menuItemsLogin);      
     });
     let cm = submenus.find((c:any)=>{return (currentUrl.includes(c.module.url))});
+    console.log(cm)    
     if(cm && cm.readAction){
       setCurrentMenu(cm);
     } else {
       history(`/home`);
       createNotification('warning', 'notPermissions', '');
     } 
-    console.log(props?.loginReducer?.entityId, 'ENTIDAD')
+
     props
-      .getListAllExperienceLearningSelfAssessmentValuation(learningId, cm?.createAction ? props?.loginReducer?.entityId : undefined)
-      .then(async (listData: any) => {  
-        console.log(listData)    
+      .getListAllExperienceLearningTraditionalValuation(learningId)
+      .then(async (listData: any) => {
         let valuationsArr: any = [];
         // get performance levels
         await props
@@ -81,11 +80,9 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
           });
         setValuations(valuationsArr);
         // get students of course and find the valuation for each one, but,if it doesn't exist, create it.
-        props.dataCourse(courseId).then((course: any) => {          
-          let studentsArr = cm?.createAction ? [{ id: props?.loginReducer?.entityId }] : course?.data?.students;
-          setStudents(studentsArr);
-          console.log(studentsArr)
-          studentsArr.map(async (c: any, index: number) => {
+        props.dataCourse(courseId).then((course: any) => {
+          setStudents(course?.data?.students);
+          course?.data?.students.map(async (c: any, index: number) => {
             if (
               !valuationsArr.find((d: any) => {
                 return d.studentId === c.id;
@@ -95,20 +92,17 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
                 studentId: c.id,
                 experienceLearningId: learningId,
                 assessment: null,
-                observations: null,
                 campusId: props?.loginReducer?.campusId,
               };
-              console.log(obj)
-              await props.saveNewExperienceLearningSelfAssessmentValuation(obj, false).then(
+              await props.saveNewExperienceLearningTraditionalValuation(obj, false).then(
                 (newValuation: any) => {
-                  valuationsArr.push(newValuation);
+                  valuationsArr.push(newValuation?.data?.create);
+                  setValuations(valuationsArr);
                 },
                 () => {
                   createNotification('error', 'error', '');
                 },
-                );
-                let arr = Object.assign([],valuationsArr);
-                setValuations(arr);
+              );
             }
           });
         });
@@ -119,7 +113,7 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
   const refreshDataTable = async () => {
     setValuations(null);
     props
-      .getListAllExperienceLearningSelfAssessmentValuation(learningId, currentMenu?.createAction ? props?.loginReducer?.entityId : undefined)
+      .getListAllExperienceLearningTraditionalValuation(learningId)
       .then(async (listData: any) => {
         let valuationsArr = listData.map((l: any) => {
           const perf = performanceLevels?.find((c: any) => {
@@ -147,15 +141,6 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
     setValuations(arr);
   };
 
-  const setObservation = async (e: any, valuation: any) => {
-    const elementIndex = valuations.findIndex((obj) => {
-      return obj.id === valuation.id;
-    });
-    valuations[elementIndex].observations = e.target.value;
-    const arr = Object.assign([], valuations);
-    setValuations(arr);
-  };
-
   const goTo = async () => {
     navigate(-1);
   };
@@ -165,10 +150,8 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
     valuations.map(async (item: any) => {
       let obj = {
         assessment: item.assessment,
-        observations: item.observations,
       };
-      console.log(obj)
-      await props.updateExperienceLearningSelfAssessmentValuation(obj, item.id).then(
+      await props.updateExperienceLearningTraditionalValuation(obj, item.id).then(
         () => {
           setLoading(false);
         },
@@ -184,7 +167,7 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
   return (
     <>
       <div className="mt-4 d-flex justify-content-center align-items-center">
-      <h1 className="font-bold">Autoevaluación</h1>
+      <h1 className="font-bold">Coevaluación</h1>
       </div>
       <div className="d-flex justify-content-between align-items-center">
         <div className="mt-4">
@@ -214,12 +197,11 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
             Regresar a experiencias de aprendizaje
           </p>
         </div>
-        {currentMenu?.updateAction ?
         <div>
           <button className="btn btn-blue" type="button" onClick={save}>
             Guardar valoración
           </button>
-        </div> : ''}
+        </div>
       </div>
 
       {loading ? (
@@ -232,23 +214,20 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
         <>
           {valuations !== null ? (
             <>
-              {
-                 criteriaPerformances.map((item: any, index: any) => {
-                  return (
-                    <div key={index} className="form-group">
-                      <span>{item?.performanceLevel?.name}</span>
-                      <span>{item?.criteria}</span>
-                    </div>
-                  );
-                })
-              }
               <table className="table table-bordered">
                 <thead>
                   <tr>
                     <th className="text-center">Código</th>
                     <th className="text-center">Estudiante</th>
+                    { !currentMenu?.createAction ? 
+                      valuations.map((item: any, index: any) => {
+                      return (
+                        <>
+                        <th className="text-center">{item?.student?.code}</th>
+                        </>
+                      )}) : ''
+                     }
                     <th className="text-center">Valoración</th>
-                    <th className="text-center">Observación</th>
                     <th className="text-center">Nivel de desempeño</th>
                   </tr>
                 </thead>
@@ -260,7 +239,7 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
                           <td className="text-center vertical-middle">
                             <span className="font-bold">{item?.student?.code}</span>
                           </td>
-                          <td className="text-center vertical-middle">
+                          <td className="text-center">
                             <div className="d-flex align-items-center justify-content-center">
                               {item?.student?.user?.urlPhoto ? (
                                 <ThumbnailImage
@@ -286,30 +265,36 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
                               </span>
                             </div>
                           </td>
+                          { !currentMenu?.createAction ? 
+                            valuations.map((item2: any, index2: any) => {
+                              return (
+                                <>
+                                  <td className="text-center vertical-middle">
+                                    <Input
+                                      type="number"
+                                      disabled={item2?.student?.code === item?.student?.code}
+                                      onInput={(e) => {
+                                        return getPerformanceLevel(e, item2);
+                                      }}
+                                      {...item2?.assessment}
+                                      defaultValue={item2.assessment}
+                                      className="form-control"
+                                    />
+                                  </td>
+                                </>
+                              )}) : ''
+                            }
                           <td className="text-center vertical-middle">
-                          {currentMenu?.updateAction ?
                             <Input
                               type="number"
+                              disabled={item?.student?.code === 1}
                               onInput={(e) => {
                                 return getPerformanceLevel(e, item);
                               }}
                               {...item?.assessment}
-                              defaultValue={item?.assessment}
+                              defaultValue={item.assessment}
                               className="form-control"
-                            /> : <span>{ item?.assessment }</span> }
-                          </td>
-                          <td className="text-center vertical-middle">
-                          {currentMenu?.updateAction ?
-                            <Input                            
-                              type="textarea"
-                              rows="4"
-                              onInput={(e) => {
-                                return setObservation(e, item);
-                              }}
-                              {...item?.observations}
-                              defaultValue={item?.observations}
-                              className="form-control"
-                            /> : <span>{ item?.observations }</span> }
+                            />
                           </td>
                           <td className="text-center vertical-middle">
                             <Badge color="primary" className="font-0-8rem">
@@ -334,11 +319,11 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
 const mapDispatchToProps = {
   ...courseActions,
   ...performanceLevelActions,
-  ...experienceLearningSelfAssessmentValuationActions,
+  ...experienceLearningTraditionalValuationlActions,
 };
 
 const mapStateToProps = ({ loginReducer }: any) => {
   return { loginReducer };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ExperienceLearningSelfAssessmentValuationList);
+export default connect(mapStateToProps, mapDispatchToProps)(ExperienceLearningTraditionalValuationList);

@@ -1,14 +1,15 @@
 import { gql } from '@apollo/client';
 
 export const QUERY_GET_ALL_EXPERIENCE_LEARNING_SELF_ASSESSMENT_VALUATION = gql`
-  query getAllExperienceLearningSelfAssessmentValuation($experienceLearningId: String!) {
-    data: getAllExperienceLearningSelfAssessmentValuation(orderCreated: true, allData: true, experienceLearningId: $experienceLearningId) {
+  query getAllExperienceLearningSelfAssessmentValuation($experienceLearningId: String!, $studentId: String) {
+    data: getAllExperienceLearningSelfAssessmentValuation(orderCreated: true, allData: true, experienceLearningId: $experienceLearningId, studentId: $studentId) {
       edges {
         cursor
         node {
           id                                      
           active  
           assessment
+          observations
           studentId
           student {
             id

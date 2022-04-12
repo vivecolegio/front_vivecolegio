@@ -23,6 +23,7 @@ export const login = (user: any) => {
               type: LOGIN,
               payload: {
                 userId: data.data.userId,
+                entityId: data?.data?.student?.id,
                 role: data.data.role,
                 roleMenus: data.data.roleMenus,
                 name: data.data.name,

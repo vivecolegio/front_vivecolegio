@@ -63,6 +63,7 @@ export const QUERY_GET_LEARNING = gql`
         id
         dba
       }
+      schoolId
       createdAt
       updatedAt
       createdByUser {
@@ -76,7 +77,7 @@ export const QUERY_GET_LEARNING = gql`
 `;
 
 export const QUERY_GET_DROPDOWNS_LEARNING = gql`
-  query getDropdownsLearning($schoolId: String!) {
+  query getDropdownsLearning($schoolId: String!, $academicAsignatureId: String!, $academicGradeId: String!) {
     dataSchools: getAllSchool(allData: false, orderCreated: false) {
       edges {
         node {
@@ -96,7 +97,9 @@ export const QUERY_GET_DROPDOWNS_LEARNING = gql`
     dataStandards: getAllAcademicStandard(
       allData: false
       orderCreated: false
-      schoolId: $schoolId
+      schoolId: $schoolId,
+      academicAsignatureId: $academicAsignatureId, 
+      academicGradeId: $academicGradeId
     ) {
       edges {
         node {

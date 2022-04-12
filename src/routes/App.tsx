@@ -22,6 +22,7 @@ import Survey from '../components/app/Aplications/Survey/Survey';
 import SurveyDetail from '../components/app/Aplications/Survey/SurveyDetail';
 import { default as AcademicIndicatorList, default as BasicLearningDutiesList } from '../components/app/BasicLearningDuties/BasicLearningDutiesList';
 import CampusList from '../components/app/Campus/CampusList';
+import CoEvalutation from '../components/app/CoEvalutation/CoEvalutation';
 import ComponentEvaluativeList from '../components/app/ComponentEvaluative/ComponentEvaluativeList';
 import CoordinatorCampusList from '../components/app/CoordinatorCampus/CoordinatorCampusList';
 import CourseList from '../components/app/Course/CourseList';
@@ -176,6 +177,7 @@ const App = (props: any) => {
                     <Route path="/traditionalValuation" element={ <TraditionalValuation/> } />
                     <Route path="/selfValuation" element={ <SelfValuation/> } />
                     <Route path="/rubricValuation" element={ <RubricCriteriaList/> } />
+                    <Route path="/coEvaluation" element={ <CoEvalutation/> } />
                     {/* ACADEMIC */} 
                     {/* APPLICATIONS */} 
                     <Route path="/chat" element={ <ChatApp/> } />
