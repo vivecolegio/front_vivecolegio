@@ -1,7 +1,7 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
 import { MUTATION_CHANGE_ACTIVE_ACADEMIC_PERIOD, MUTATION_CREATE_ACADEMIC_PERIOD, MUTATION_DELETE_ACADEMIC_PERIOD, MUTATION_UPDATE_ACADEMIC_PERIOD } from '../graphql/AcademicPeriod/AcademicPeriodMutations';
-import { QUERY_GET_ALL_ACADEMIC_PERIOD, QUERY_GET_ACADEMIC_PERIOD, QUERY_GET_DROPDOWNS_ACADEMIC_PERIOD } from '../graphql/AcademicPeriod/AcademicPeriodQueries';
+import { QUERY_GET_ALL_ACADEMIC_PERIOD, QUERY_GET_ACADEMIC_PERIOD, QUERY_GET_DROPDOWNS_ACADEMIC_PERIOD, QUERY_GET_CURRENT_ACADEMIC_PERIOD } from '../graphql/AcademicPeriod/AcademicPeriodQueries';
 
 
 export const getListAllAcademicPeriod = (schoolId:string) => {
@@ -39,6 +39,28 @@ export const dataAcademicPeriod = (id: any) => {
         })
         .then((result: any) => {
           data = result.data;
+        });
+      return data;
+    } catch (error) {
+      createNotification('error', 'error', '');
+      return error;
+    }
+  };
+};
+
+export const dataCurrentAcademicPeriod = (schoolId: any) => {
+  return async (dispatch: any) => {
+    try {
+      let data = {};
+      await client
+        .query({
+          query: QUERY_GET_CURRENT_ACADEMIC_PERIOD,
+          variables: {
+            schoolId,
+          },
+        })
+        .then((result: any) => {
+          data = result.data.data;
         });
       return data;
     } catch (error) {

@@ -15,7 +15,7 @@ export const QUERY_GET_ALL_ACADEMIC_PERIOD = gql`
           endDate
           weight
           order
-          active          
+          active
         }
       }
       totalCount
@@ -26,12 +26,12 @@ export const QUERY_GET_ALL_ACADEMIC_PERIOD = gql`
 export const QUERY_GET_ACADEMIC_PERIOD = gql`
   query getAcademicPeriod($id: String!) {
     data: getAcademicPeriod(id: $id) {
-      id  
-      name 
+      id
+      name
       schoolYear {
         id
         schoolYear
-      }     
+      }
       startDate
       endDate
       weight
@@ -41,7 +41,7 @@ export const QUERY_GET_ACADEMIC_PERIOD = gql`
       school {
         id
         name
-      }   
+      }
       createdAt
       updatedAt
       createdByUser {
@@ -50,6 +50,22 @@ export const QUERY_GET_ACADEMIC_PERIOD = gql`
       updatedByUser {
         name
       }
+    }
+  }
+`;
+
+export const QUERY_GET_CURRENT_ACADEMIC_PERIOD = gql`
+  query getCurrentAcademicPeriod($schoolId: String!) {
+    data: getCurrentAcademicPeriod(schoolId: $schoolId) {
+      id
+      name
+      schoolYearId
+      schoolYear {
+        schoolYear
+      }
+      startDate
+      endDate
+      weight
     }
   }
 `;

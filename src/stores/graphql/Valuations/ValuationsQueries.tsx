@@ -15,13 +15,33 @@ export const QUERY_GET_VALUATIONS_STUDENT = gql`
 `;
 
 export const QUERY_GET_All_EXPERIENCE_LEARNING_AVERAGE_VALUATION = gql`
-  query getAllExperienceLearningAverageValuation($id: String!) {
-    data: getAllExperienceLearningAverageValuation(id: $id) {
-      
+  query getAllExperienceLearningAverageValuation($evaluativeComponentId : String!, $academicPeriodId: String!, $academicAsignatureCourseId: String!) {
+    data: getAllExperienceLearningAverageValuation(orderCreated: true, allData: true, evaluativeComponentId:$evaluativeComponentId, academicPeriodId: $academicPeriodId, academicAsignatureCourseId: $academicAsignatureCourseId) {
+      edges {
+        cursor
+        node {
           id
           studentId
-          experienceLearningId
-          assessment       
+          evaluativeComponentId
+          average 
+        }
+      }    
+       
+    }
+  }
+`;
+
+export const QUERY_GET_All_ACADEMIC_ASIGNATURE_COURSE_PERIOD_VALUATION = gql`
+  query getAllAcademicAsignatureCoursePeriodValuation($academicPeriodId: String!, $academicAsignatureCourseId: String!) {
+    data: getAllAcademicAsignatureCoursePeriodValuation(orderCreated: true, allData: true, academicPeriodId: $academicPeriodId, academicAsignatureCourseId: $academicAsignatureCourseId) {
+      edges {
+        cursor
+        node {
+          id
+          studentId
+          assessment          
+        }
+      }    
        
     }
   }

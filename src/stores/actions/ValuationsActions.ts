@@ -1,7 +1,7 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
-import { QUERY_GET_All_EXPERIENCE_LEARNING_AVERAGE_VALUATION, QUERY_GET_VALUATIONS_STUDENT } from "../graphql/Valuations/ValuationsQueries";
-import { MUTATION_CREATE_EXPERIENCE_LEARNING_AVERAGE_VALUATION_STUDENTS } from "../graphql/Valuations/ValuationsMutations";
+import { QUERY_GET_All_ACADEMIC_ASIGNATURE_COURSE_PERIOD_VALUATION, QUERY_GET_All_EXPERIENCE_LEARNING_AVERAGE_VALUATION, QUERY_GET_VALUATIONS_STUDENT } from "../graphql/Valuations/ValuationsQueries";
+import { MUTATION_CREATE_ACADEMIC_ASIGNATURE_COURSE_PERIOD_VALUATION_STUDENTS, MUTATION_CREATE_EXPERIENCE_LEARNING_AVERAGE_VALUATION_STUDENTS } from "../graphql/Valuations/ValuationsMutations";
 
 
 // export const getListAllComponentEvaluative = (schoolId:string) => {
@@ -48,7 +48,7 @@ export const getValuationStudents = (id: any) => {
   };
 };
 
-export const getAllExperienceLearningAverageValuation = (id: any) => {
+export const getAllExperienceLearningAverageValuation = (evaluativeComponentId : string, academicPeriodId: string, academicAsignatureCourseId: string) => {
   return async (dispatch: any) => {
     try {
       let data = {};
@@ -56,7 +56,29 @@ export const getAllExperienceLearningAverageValuation = (id: any) => {
         .query({
           query: QUERY_GET_All_EXPERIENCE_LEARNING_AVERAGE_VALUATION,
           variables: {
-            id,
+            evaluativeComponentId,academicPeriodId, academicAsignatureCourseId,
+          },
+        })
+        .then((result: any) => {
+          data = result.data;
+        });
+      return data;
+    } catch (error) {
+      createNotification('error', 'error', '');
+      return error;
+    }
+  };
+};
+
+export const getAllAcademicAsignatureCoursePeriodValuation = (academicPeriodId: string, academicAsignatureCourseId: string) => {
+  return async (dispatch: any) => {
+    try {
+      let data = {};
+      await client
+        .query({
+          query: QUERY_GET_All_ACADEMIC_ASIGNATURE_COURSE_PERIOD_VALUATION,
+          variables: {
+            academicPeriodId, academicAsignatureCourseId,
           },
         })
         .then((result: any) => {
@@ -78,6 +100,32 @@ export const generateExperienceLearningAverageValuationStudents = (evaluativeCom
         .mutate({
           mutation: MUTATION_CREATE_EXPERIENCE_LEARNING_AVERAGE_VALUATION_STUDENTS,
           variables: { evaluativeComponentId,academicPeriodId, academicAsignatureCourseId },
+        })
+        .then((dataResponse: any) => {
+          if (dataResponse.errors?.length > 0) {
+            dataResponse.errors.forEach((error: any) => {            
+                createNotification('error', 'error', '');
+            });
+          } else {
+            dataCreate = dataResponse.data.create.id;
+          }
+        });
+      return dataCreate as any;
+    } catch (error) {
+        createNotification('error', 'error', '');
+      return error;
+    }
+  };
+
+};
+export const generateAcademicAsignatureCoursePeriodValuationStudents = (schoolId : string, academicPeriodId: string, academicAsignatureCourseId: string) => {
+  return async (dispatch: any) => {
+    try {    
+      let dataCreate = null; 
+      await client
+        .mutate({
+          mutation: MUTATION_CREATE_ACADEMIC_ASIGNATURE_COURSE_PERIOD_VALUATION_STUDENTS,
+          variables: { schoolId,academicPeriodId, academicAsignatureCourseId },
         })
         .then((dataResponse: any) => {
           if (dataResponse.errors?.length > 0) {

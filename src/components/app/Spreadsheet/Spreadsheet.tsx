@@ -23,11 +23,9 @@ import TooltipItem from '../../common/TooltipItem';
 const SpreadsheetList = (props: any) => {
   const [students, setStudents] = useState(null);
   const [performanceLevels, setPerformanceLevels] = useState(null);
-  let [valuations, setValuations] = useState([]);
-  let [notes, setNotes] = useState([]);
   const [valuationsAssessment, setValuationsAssessment] = useState([]);
   const [academicPeriods, setAcademicPeriods] = useState(null);
-  let [academicPeriod, setAcademicPeriod] = useState(null);
+  const [currentAcademicPeriod, setCurrentAcademicPeriod] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isFormEnabled, setIsFormEnabled] = useState(true);
   const [currentMenu, setCurrentMenu] = useState({
@@ -39,6 +37,10 @@ const SpreadsheetList = (props: any) => {
     activateAction: false,
     inactiveAction: false,
   });
+  let [valuations, setValuations] = useState([]);
+  let [notes, setNotes] = useState([]);
+  let [averages, setAverages] = useState([]);
+  let [averagesFinal, setAveragesFinal] = useState([]);
 
   let navigate = useNavigate();
   const location = useLocation();
@@ -48,9 +50,7 @@ const SpreadsheetList = (props: any) => {
   let [params] = useSearchParams();
   const academicAsignatureCourseId = params.get('academicAsignatureCourseId');
   const courseId = params.get('courseId');
-  const asignatureId = params.get('asignatureId');
   const asignatureName = params.get('asignatureName');
-  const gradeId = params.get('gradeId');
   const gradeName = params.get('gradeName');
   const courseName = params.get('courseName');
 
@@ -69,32 +69,41 @@ const SpreadsheetList = (props: any) => {
     } else {
       history(`/home`);
       createNotification('warning', 'notPermissions', '');
-    }
-    getSpreadsheet();
+    }       
+    console.log(academicAsignatureCourseId)
+    props.dataCurrentAcademicPeriod(props?.loginReducer?.schoolId).then(async (period: any) => {      
+      await setCurrentAcademicPeriod(period);
+      getSpreadsheet(period?.id);
+      // get averages final
+      props.getAllAcademicAsignatureCoursePeriodValuation(period?.id, academicAsignatureCourseId).then(async (notesFinal: any) => {      
+        setAveragesFinal(notesFinal);
+      });
+    });
   }, []);
 
-  const getSpreadsheet = async () => {
+  const getSpreadsheet = async (periodId: any) => {
+    setLoading(true); 
     props.dataCourse(courseId).then(async (course: any) => {
       setStudents(course?.data?.students.sort(compare));
       let obj: any = [];
       let nts: any = [];
+      let avrgs: any = [];
      
-
-      // OJOOOOOOOOOOOOOO listData[1]?.node?.id ESTO ES EL PERIODO PERO ESTA QUEMADO
       await props.getListAllAcademicPeriod(props?.loginReducer?.schoolId).then((listData: any) => {
+        props.generateExperienceLearningAverageValuationStudents(props?.loginReducer?.schoolId,periodId,academicAsignatureCourseId).then((resp: any) => {
+        }); 
         setAcademicPeriods(listData);
         props
           .getListAllComponentEvaluative(props?.loginReducer?.schoolId)
           .then(async (dataComponents: any) => {
             dataComponents.map(async (c: any) => {
               // get averages for each evaluative component
-              props.generateExperienceLearningAverageValuationStudents(c?.node?.id,listData[1]?.node?.id,academicAsignatureCourseId).then((resp: any) => {
+              props.generateExperienceLearningAverageValuationStudents(c?.node?.id,periodId,academicAsignatureCourseId).then((resp: any) => {
               });
-
-              // await props.getAllExperienceLearningAverageValuation(c?.node?.id,listData[1]?.node?.id,academicAsignatureCourseId).then((averages: any) => {
-              //   console.log(averages);
-              // });                
-
+              props.getAllExperienceLearningAverageValuation(c?.node?.id,periodId,academicAsignatureCourseId).then((resp: any) => {
+                avrgs = avrgs.concat(resp.data.edges);
+                setAverages(avrgs);
+              });
               props
                 .getAllExperienceLearningAcademicAsignatureCourse(
                   academicAsignatureCourseId,
@@ -111,6 +120,7 @@ const SpreadsheetList = (props: any) => {
                     obj.push({
                       experiences: response.data,
                       name: `${c?.node?.name} (${c?.node?.weight}%)`,
+                      evaluativeComponentId: c?.node?.id,
                     });
                   }
                 });
@@ -120,7 +130,6 @@ const SpreadsheetList = (props: any) => {
       setTimeout(() => {
         setValuations(obj);
         setNotes(nts);
-        console.log(nts);
         setLoading(false);
       }, 3000);
     });
@@ -128,6 +137,23 @@ const SpreadsheetList = (props: any) => {
 
   const goTo = async () => {
     navigate(-1);
+  };
+
+  const updateAverages = async () => {
+    let avrgs: any = [];
+    props
+    .getListAllComponentEvaluative(props?.loginReducer?.schoolId)
+    .then(async (dataComponents: any) => {
+      dataComponents.map(async (c: any) => {
+        // get averages for each evaluative component
+        props.generateExperienceLearningAverageValuationStudents(c?.node?.id,currentAcademicPeriod?.id,academicAsignatureCourseId).then((resp: any) => {
+        });
+        props.getAllExperienceLearningAverageValuation(c?.node?.id,currentAcademicPeriod?.id,academicAsignatureCourseId).then((resp: any) => {
+          avrgs = avrgs.concat(resp.data.edges);
+          setAverages(avrgs);
+        });
+      });
+      });
   };
 
   const saveNote = async (event: any,note:any, experience: any, student: any) => {
@@ -138,21 +164,21 @@ const SpreadsheetList = (props: any) => {
       switch (experience.experienceType) {
         case 'SELFAPPRAISAL':
           props.updateExperienceLearningSelfAssessmentValuation(obj, note?.id, true).then((resp: any) => {
-            getSpreadsheet();
+            updateAverages();
           });
           break;
         case 'TRADITIONALVALUATION':
           props.updateExperienceLearningTraditionalValuation(obj, note?.id, true).then((resp: any) => {
-            getSpreadsheet();
+            updateAverages();
           });
           break;
 
-        case 'VALUATIONRUBRIC':
+        case 'VALUATIONRUBRIC': 
           break;
 
         case 'COEVALUATION':
           props.updateExperienceLearningCoEvaluationValuation(obj, note?.id, true).then((resp: any) => {
-            getSpreadsheet();
+            updateAverages();
           });
           break;
 
@@ -319,7 +345,7 @@ const SpreadsheetList = (props: any) => {
                           {valuations.map((item2: any, index2: any) => {
                             return (
                               <>
-                                {item2.experiences.map((e: any) => {
+                                {item2.experiences.map((e: any) => {                               
                                   let note = notes.find(
                                     (n: any) =>
                                       n?.experienceLearningId === e?.id &&
@@ -346,9 +372,15 @@ const SpreadsheetList = (props: any) => {
                                     </>
                                   );
                                 })}
-                                {item2?.experiences?.length > 1 ? (
-                                  <th className="text-center vertical-middle">
-                                    <Input disabled={true} type="number" className="form-control" />
+                                {item2?.experiences?.length > 1 ? (                                
+                                  <th className="text-center vertical-middle">                                     
+                                    <Input disabled={true} defaultValue={
+                                      averages.find(
+                                        (n: any) =>
+                                          item2?.evaluativeComponentId === n?.node?.evaluativeComponentId &&
+                                          item?.id === n?.node?.studentId,
+                                      )?.node?.average
+                                    } className="form-control" />
                                   </th>
                                 ) : (
                                   ''
