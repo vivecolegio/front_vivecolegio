@@ -61,6 +61,7 @@ export const saveNewAcademicPeriod = (data: any) => {
       };
       let dataCreate = null;
       model.weight = model.weight && !isNaN(model.weight) ? parseFloat(model.weight) : 0;
+      model.order = model.order && !isNaN(model.order) ? parseFloat(model.order) : 0;
       await client
         .mutate({
           mutation: MUTATION_CREATE_ACADEMIC_PERIOD,
@@ -97,6 +98,7 @@ export const updateAcademicPeriod = (data: any, id: any) => {
       };
       let dataUpdate = null;
       model.weight = model.weight && !isNaN(model.weight) ? parseFloat(model.weight) : 0;
+      model.order = model.order && !isNaN(model.order) ? parseFloat(model.order) : 0;
       await client
         .mutate({
           mutation: MUTATION_UPDATE_ACADEMIC_PERIOD,

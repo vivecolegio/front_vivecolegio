@@ -69,6 +69,7 @@ export const QUERY_GET_DROPDOWNS_STANDARD = gql`
         node {
           id
           name
+          generalAcademicAsignatureId
         }
       }
     }
@@ -77,14 +78,7 @@ export const QUERY_GET_DROPDOWNS_STANDARD = gql`
         node {
           id
           name
-        }
-      }
-    }
-    dataGeneralStandards: getAllGeneralAcademicStandard(allData: false, orderCreated: false) {
-      edges {
-        node {
-          id
-          standard
+          generalAcademicCycleId
         }
       }
     }

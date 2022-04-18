@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
 import { Badge, Input } from 'reactstrap';
+import { compare } from '../../../helpers/DataTransformations';
 import { createNotification } from '../../../helpers/Notification';
 import { getInitialsName } from '../../../helpers/Utils';
 import * as performanceLevelActions from '../../../stores/actions/Academic/PerformanceLevelActions';
@@ -11,6 +12,7 @@ import * as experienceLearningTraditionalValuationlActions from '../../../stores
 import { Colxx } from '../../common/CustomBootstrap';
 import { Loader } from '../../common/Loader';
 import ThumbnailImage from '../Aplications/AplicationsComponents/ThumbnailImage';
+
 
 const ExperienceLearningTraditionalValuationList = (props: any) => {
   const [students, setStudents] = useState(null);
@@ -30,56 +32,33 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
 
   const [data, setData] = useState(null);
   useEffect(() => {
-    props
-      .getListAllExperienceLearningTraditionalValuation(learningId)
-      .then(async (listData: any) => {
-        let valuationsArr: any = [];
-        // get performance levels
-        await props
-          .getListAllPerformanceLevel(props?.loginReducer?.schoolId)
-          .then((levels: any) => {
-            setPerformanceLevels(levels);
-            // set valuations list and get the performance level for each one
-            valuationsArr = listData.map((l: any) => {
-              const perf = levels?.find((c: any) => {
-                return (
-                  l?.node?.assessment <= c.node.topScore &&
-                  l?.node?.assessment >= c.node.minimumScore
-                );
+    props.generateExperienceLearningTraditionalValuation(learningId).then((response: any) => {
+      props
+        .getListAllExperienceLearningTraditionalValuation(learningId)
+        .then(async (listData: any) => {
+          let valuationsArr: any = [];
+          // get performance levels
+          await props
+            .getListAllPerformanceLevel(props?.loginReducer?.schoolId)
+            .then((levels: any) => {
+              setPerformanceLevels(levels);
+              // set valuations list and get the performance level for each one
+              valuationsArr = listData.map((l: any) => {
+                const perf = levels?.find((c: any) => {
+                  return (
+                    l?.node.assessment &&
+                    l?.node?.assessment <= c.node.topScore &&
+                    l?.node?.assessment >= c.node.minimumScore
+                  );
+                });
+                l.node.performance = perf?.node?.name;
+                l.node.code = l.node.student.code;
+                return l.node;
               });
-              l.node.performance = perf?.node?.name;
-              return l.node;
             });
-          });
-        setValuations(valuationsArr);
-        // get students of course and find the valuation for each one, but,if it doesn't exist, create it.
-        props.dataCourse(courseId).then((course: any) => {
-          setStudents(course?.data?.students);
-          course?.data?.students.map(async (c: any, index: number) => {
-            if (
-              !valuationsArr.find((d: any) => {
-                return d.studentId === c.id;
-              })
-            ) {
-              let obj: any = {
-                studentId: c.id,
-                experienceLearningId: learningId,
-                assessment: null,
-                campusId: props?.loginReducer?.campusId,
-              };
-              await props.saveNewExperienceLearningTraditionalValuation(obj, false).then(
-                (newValuation: any) => {
-                  valuationsArr.push(newValuation?.data?.create);
-                  setValuations(valuationsArr);
-                },
-                () => {
-                  createNotification('error', 'error', '');
-                },
-              );
-            }
-          });
+          setValuations(valuationsArr.sort(compare));         
         });
-      });
+    });
     setLoading(false);
   }, []);
 
@@ -122,7 +101,7 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
     setLoading(true);
     valuations.map(async (item: any) => {
       let obj = {
-        assessment: item.assessment,
+        assessment: item?.assessment,
       };
       await props.updateExperienceLearningTraditionalValuation(obj, item.id).then(
         () => {
@@ -140,8 +119,9 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
   return (
     <>
       <div className="mt-4 d-flex justify-content-center align-items-center">
-      <h1 className="font-bold">Valoración tradicional</h1>
+        <h1 className="font-bold">Valoración tradicional</h1>
       </div>
+      <hr/>
       <div className="d-flex justify-content-between align-items-center">
         <div className="mt-4">
           <div className="d-flex flex-row">
@@ -153,12 +133,13 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
             </span>
             <span className="mb-0 text-muted border-b-orange">
               Curso: <h2 className="text-orange font-bold">{courseName}</h2>
-            </span>           
+            </span>
           </div>
           <div className="d-flex flex-row mt-4">
             <span className="mb-0 mr-4">
-              <span className='text-muted'>Experiencia de aprendizaje:</span> <h4 className="font-bold text-blue">{learningName}</h4>
-            </span>                    
+              <span className="text-muted">Experiencia de aprendizaje:</span>{' '}
+              <h4 className="font-bold text-blue">{learningName}</h4>
+            </span>
           </div>
           <p
             className="text-muted mt-2 d-flex align-items-center cursor-pointer"
@@ -237,7 +218,7 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
                                 return getPerformanceLevel(e, item);
                               }}
                               {...item?.assessment}
-                              defaultValue={item.assessment}
+                              defaultValue={item?.assessment}
                               className="form-control"
                             />
                           </td>
@@ -271,4 +252,7 @@ const mapStateToProps = ({ loginReducer }: any) => {
   return { loginReducer };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ExperienceLearningTraditionalValuationList);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ExperienceLearningTraditionalValuationList);

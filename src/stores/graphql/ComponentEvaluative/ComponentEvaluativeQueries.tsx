@@ -7,7 +7,8 @@ export const QUERY_GET_ALL_COMPONENT_EVALUATIVE = gql`
         cursor
         node {
           id
-          name         
+          name  
+          weight       
           active          
         }
       }

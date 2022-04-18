@@ -89,6 +89,10 @@ const AcademicPeriodCreateEdit = (props: any) => {
     required: true,
     value: props?.data?.id ? props?.data?.weight : '',
   });
+  const { ref: orderRef, ...orderRest } = register('order', {
+    required: true,
+    value: props?.data?.id ? props?.data?.order : '',
+  });
   const { ref: nameRef, ...nameRest } = register('name', {
     required: true,
     value: props?.data?.id ? props?.data?.name : '',
@@ -144,6 +148,12 @@ const AcademicPeriodCreateEdit = (props: any) => {
                   <IntlMessages id="forms.weight" />
                 </Label>
                 <Input {...weightRest} innerRef={weightRef} className="form-control" />
+              </div>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="forms.sorting" />
+                </Label>
+                <Input {...orderRest} innerRef={orderRef} className="form-control" />
               </div>
               <div className="form-group">
                 <Label>

@@ -12,8 +12,8 @@ export const getListAllComponentEvaluative = (schoolId:string) => {
         .query({
           query: QUERY_GET_ALL_COMPONENT_EVALUATIVE,
           variables:{
-            schoolId
-          }
+            schoolId,
+          },
         })
         .then((result: any) => {
           listData = result.data.data.edges;

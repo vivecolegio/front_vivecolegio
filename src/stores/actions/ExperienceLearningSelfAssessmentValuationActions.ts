@@ -1,6 +1,6 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
-import { MUTATION_CHANGE_ACTIVE_EXPERIENCE_LEARNING_SELF_ASSESSMENT_VALUATION, MUTATION_CREATE_EXPERIENCE_LEARNING_SELF_ASSESSMENT_VALUATION, MUTATION_DELETE_EXPERIENCE_LEARNING_SELF_ASSESSMENT_VALUATION, MUTATION_UPDATE_EXPERIENCE_LEARNING_SELF_ASSESSMENT_VALUATION } from '../graphql/ExperienceLearningSelfAssessmentValuation/ExperienceLearningSelfAssessmentValuationMutations';
+import { MUTATION_CHANGE_ACTIVE_EXPERIENCE_LEARNING_SELF_ASSESSMENT_VALUATION, MUTATION_CREATE_EXPERIENCE_LEARNING_SELF_ASSESSMENT_VALUATION, MUTATION_DELETE_EXPERIENCE_LEARNING_SELF_ASSESSMENT_VALUATION, MUTATION_GENERATE_EXPERIENCE_LEARNING_SELF_ASSESSMENT_VALUATION, MUTATION_UPDATE_EXPERIENCE_LEARNING_SELF_ASSESSMENT_VALUATION } from '../graphql/ExperienceLearningSelfAssessmentValuation/ExperienceLearningSelfAssessmentValuationMutations';
 import { QUERY_GET_ALL_EXPERIENCE_LEARNING_SELF_ASSESSMENT_VALUATION, QUERY_GET_EXPERIENCE_LEARNING_SELF_ASSESSMENT_VALUATION } from '../graphql/ExperienceLearningSelfAssessmentValuation/ExperienceLearningSelfAssessmentValuationQueries';
 
 
@@ -86,6 +86,32 @@ export const saveNewExperienceLearningSelfAssessmentValuation = (data: any, show
       if (showToast) {
         createNotification('error', 'error', '');
       }
+      return error;
+    }
+  };
+};
+
+export const generateExperienceLearningSelfAssessmentValuation = (id: any) => {
+  return async (dispatch: any) => {
+    try {    
+      let dataCreate = null; 
+      await client
+        .mutate({
+          mutation: MUTATION_GENERATE_EXPERIENCE_LEARNING_SELF_ASSESSMENT_VALUATION,
+          variables: { id },
+        })
+        .then((dataResponse: any) => {
+          if (dataResponse.errors?.length > 0) {
+            dataResponse.errors.forEach((error: any) => {            
+                createNotification('error', 'error', '');
+            });
+          } else {
+            dataCreate = dataResponse.data.create.id;
+          }
+        });
+      return dataCreate as any;
+    } catch (error) {
+        createNotification('error', 'error', '');
       return error;
     }
   };

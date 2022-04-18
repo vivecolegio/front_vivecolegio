@@ -1,15 +1,13 @@
 import { gql } from '@apollo/client';
 
-export const QUERY_GET_ALL_EXPERIENCE_LEARNING_SELF_ASSESSMENT_VALUATION = gql`
-  query getAllExperienceLearningSelfAssessmentValuation($experienceLearningId: String!, $studentId: String) {
-    data: getAllExperienceLearningSelfAssessmentValuation(orderCreated: true, allData: true, experienceLearningId: $experienceLearningId, studentId: $studentId) {
+export const QUERY_GET_ALL_EXPERIENCE_LEARNING_CO_EVALUATION = gql`
+  query getAllExperienceLearningCoEvaluation($experienceLearningId: String!) {
+    data: getAllExperienceLearningCoEvaluation(orderCreated: true, allData: true, experienceLearningId: $experienceLearningId) {
       edges {
         cursor
         node {
           id                                      
           active  
-          assessment
-          observations
           experienceLearning {
             id
             criteria
@@ -21,6 +19,9 @@ export const QUERY_GET_ALL_EXPERIENCE_LEARNING_SELF_ASSESSMENT_VALUATION = gql`
               }
             }
           }
+          assessment
+          observations
+          coEvaluatorId
           studentId
           student {
             id
@@ -38,9 +39,9 @@ export const QUERY_GET_ALL_EXPERIENCE_LEARNING_SELF_ASSESSMENT_VALUATION = gql`
   }
 `;
 
-export const QUERY_GET_EXPERIENCE_LEARNING_SELF_ASSESSMENT_VALUATION = gql`
-  query getExperienceLearningSelfAssessmentValuation($id: String!) {
-    data: getExperienceLearningSelfAssessmentValuation(id: $id) {
+export const QUERY_GET_EXPERIENCE_LEARNING_CO_EVALUATION = gql`
+  query getExperienceLearningCoEvaluation($id: String!) {
+    data: getExperienceLearningCoEvaluation(id: $id) {
       id        
       createdAt
       updatedAt

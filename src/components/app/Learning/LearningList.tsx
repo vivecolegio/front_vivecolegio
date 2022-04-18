@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router';
 import { COLUMN_LIST } from '../../../constants/Learning/LearningConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as learningActions from '../../../stores/actions/LearningActions';
-import * as academicPeriodActions from '../../../stores/actions/AcademicPeriodActions';
 import DataList from '../../common/Data/DataList';
 import LearningCreateEdit from './LearningCreateEdit';
 
@@ -37,8 +36,8 @@ const Learning = (props: any) => {
         }),
       );
     });
-    props.getListAllAcademicPeriod(props?.loginReducer?.schoolId).then((listData: any) => {
-      setAcademicPeriods(listData);  
+    props.getDropdownsLearning(props?.loginReducer?.schoolId).then((listData: any) => {
+      setAcademicPeriods(listData.dataAcademicPeriods.edges);  
     });
   }, []);
 
@@ -129,16 +128,16 @@ const Learning = (props: any) => {
   const additionalFunction = async (item: any, type: string) => {
     switch (type) {
       case 'goToChildrenLearning':
-        goToChildren(`/evidenceLearning?learningId=${item.id}&learningName=${item.statement}`);
+        goToChildren(`/evidenceLearning?learningId=${item.id}&learningName=${item.statement}&asignatureName=${item?.academicAsignature?.name}&gradeName=${item?.academicGrade?.name}`);
         break;
     }
   };
 
   const filterByPeriod = async (item: any) => {
     if(academicPeriod.find((c:any)=>{return (c === item?.node?.id)})){
-      academicPeriod = academicPeriod.filter((c:any)=>{return (c !== item?.node?.id)});
+      academicPeriod = [];
     } else {
-      academicPeriod.push(item?.node?.id)
+      academicPeriod = [item?.node?.id];
     }
     console.log(academicPeriod)
     setAcademicPeriod(academicPeriod);
@@ -240,7 +239,7 @@ const Learning = (props: any) => {
     </>
   );
 };
-const mapDispatchToProps = { ...learningActions, ...academicPeriodActions };
+const mapDispatchToProps = { ...learningActions };
 
 const mapStateToProps = ({ loginReducer }: any) => {
   return { loginReducer };

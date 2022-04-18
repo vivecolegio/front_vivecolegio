@@ -1,7 +1,7 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
 import { MUTATION_CHANGE_ACTIVE_EXPERIENCE_LEARNING, MUTATION_CREATE_EXPERIENCE_LEARNING, MUTATION_DELETE_EXPERIENCE_LEARNING, MUTATION_UPDATE_EXPERIENCE_LEARNING } from '../graphql/ExperienceLearning/ExperienceLearningMutations';
-import { QUERY_GET_ALL_EXPERIENCE_LEARNING, QUERY_GET_EXPERIENCE_LEARNING, QUERY_GET_DROPDOWNS_EXPERIENCE_LEARNING } from '../graphql/ExperienceLearning/ExperienceLearningQueries';
+import { QUERY_GET_ALL_EXPERIENCE_LEARNING, QUERY_GET_EXPERIENCE_LEARNING, QUERY_GET_DROPDOWNS_EXPERIENCE_LEARNING, QUERY_GET_ALL_EXPERIENCE_LEARNING_ASIGNATURE_COURSE } from '../graphql/ExperienceLearning/ExperienceLearningQueries';
 
 
 export const getListAllExperienceLearning = (campusId:string, academicAsignatureCourseId : string, academicPeriodId: string) => {
@@ -19,6 +19,30 @@ export const getListAllExperienceLearning = (campusId:string, academicAsignature
         })
         .then((result: any) => {
           listData = result.data.data.edges;
+        });
+      return listData;
+    } catch (error) {
+      createNotification('error', 'error', '');
+      return error;
+    }
+  };
+};
+
+export const getAllExperienceLearningAcademicAsignatureCourse = (id : string, academicPeriodId: string, evaluativeComponentId: string) => {
+  return async (dispatch: any) => {
+    try {
+      let listData = {};
+      await client
+        .query({
+          query: QUERY_GET_ALL_EXPERIENCE_LEARNING_ASIGNATURE_COURSE,
+          variables:{
+            id,
+            academicPeriodId,
+            evaluativeComponentId,
+          },
+        })
+        .then((result: any) => {
+          listData = result.data;
         });
       return listData;
     } catch (error) {

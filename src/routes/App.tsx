@@ -22,7 +22,8 @@ import Survey from '../components/app/Aplications/Survey/Survey';
 import SurveyDetail from '../components/app/Aplications/Survey/SurveyDetail';
 import { default as AcademicIndicatorList, default as BasicLearningDutiesList } from '../components/app/BasicLearningDuties/BasicLearningDutiesList';
 import CampusList from '../components/app/Campus/CampusList';
-import CoEvalutation from '../components/app/CoEvalutation/CoEvalutation';
+import CoEvaluation from '../components/app/CoEvaluation/CoEvaluation';
+import CoEvaluationStudents from '../components/app/CoEvaluationStudents/CoEvaluationStudents';
 import ComponentEvaluativeList from '../components/app/ComponentEvaluative/ComponentEvaluativeList';
 import CoordinatorCampusList from '../components/app/CoordinatorCampus/CoordinatorCampusList';
 import CourseList from '../components/app/Course/CourseList';
@@ -57,6 +58,7 @@ import SchoolList from '../components/app/School/SchoolList';
 import SchoolYearList from '../components/app/SchoolYear/SchoolYearList';
 import SelfValuation from '../components/app/SelfValuation/SelfValuation';
 import SpecialityList from '../components/app/Speciality/SpecialityList';
+import Spreadsheet from '../components/app/Spreadsheet/Spreadsheet';
 import StudentsList from '../components/app/Students/StudentsList';
 import SubmenuList from '../components/app/Submenu/SubmenuList';
 import TeacherList from '../components/app/Teacher/TeacherList';
@@ -177,7 +179,9 @@ const App = (props: any) => {
                     <Route path="/traditionalValuation" element={ <TraditionalValuation/> } />
                     <Route path="/selfValuation" element={ <SelfValuation/> } />
                     <Route path="/rubricValuation" element={ <RubricCriteriaList/> } />
-                    <Route path="/coEvaluation" element={ <CoEvalutation/> } />
+                    <Route path="/coEvaluation" element={ <CoEvaluation/> } />
+                    <Route path="/coEvaluationStudents" element={ <CoEvaluationStudents/> } />
+                    <Route path="/spreadsheet" element={ <Spreadsheet/> } />
                     {/* ACADEMIC */} 
                     {/* APPLICATIONS */} 
                     <Route path="/chat" element={ <ChatApp/> } />

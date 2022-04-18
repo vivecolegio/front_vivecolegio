@@ -247,6 +247,7 @@ const esMessages = {
   'forms.title': 'Título',
   'forms.date': 'Fecha',
   'forms.criteria': 'Criterio',
+  'forms.dateDelivery': 'Fecha de entrega',
 };
 
 export default esMessages;

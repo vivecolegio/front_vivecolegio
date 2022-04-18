@@ -18,6 +18,8 @@ const LearningEvidenceList = (props: any) => {
   let [params] = useSearchParams();
   const  learningId  = params.get('learningId');
   const  learningName  = params.get('learningName');
+  const  asignatureName  = params.get('asignatureName');
+  const  gradeName = params.get('gradeName');
 
   const [data, setData] = useState(null);
   useEffect(() => {
@@ -124,10 +126,19 @@ const LearningEvidenceList = (props: any) => {
             header={
               <>
                 <div className='mt-4'>
-                  <h2 className='mb-0'>
-                    <span className='text-green font-bold'>{learningName}</span>
-                  </h2>
-                  <p className='text-muted d-flex align-items-center cursor-pointer' onClick={() => {return goTo()}}>
+                <div className="d-flex flex-row">
+                  <span className="mb-0 text-muted mr-4 border-b-info">
+                      <span>Asignatura:</span>{' '}
+                      <h2 className="text-info font-bold">{asignatureName}</h2>
+                    </span>
+                    <span className="mb-0 text-muted mr-4 border-b-green">
+                      Grado: <h2 className="text-green font-bold">{gradeName}</h2>
+                    </span>
+                    <span className="mb-0 text-muted border-b-blue w-50">
+                      Aprendizaje: <p className="text-blue font-bold">{learningName}</p>
+                    </span>
+                </div>
+                  <p className='text-muted mt-2 d-flex align-items-center cursor-pointer' onClick={() => {return goTo()}}>
                     <i className='simple-icon-arrow-left-circle mr-2'></i>
                     Regresar a aprendizajes
                   </p>

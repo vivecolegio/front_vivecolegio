@@ -1,16 +1,16 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
-import { MUTATION_CHANGE_ACTIVE_EXPERIENCE_LEARNING_TRADITIONAL_VALUATION, MUTATION_CREATE_EXPERIENCE_LEARNING_TRADITIONAL_VALUATION, MUTATION_DELETE_EXPERIENCE_LEARNING_TRADITIONAL_VALUATION, MUTATION_GENERATE_EXPERIENCE_LEARNING_TRADITIONAL_VALUATION, MUTATION_UPDATE_EXPERIENCE_LEARNING_TRADITIONAL_VALUATION } from '../graphql/ExperienceLearningTraditionalValuation/ExperienceLearningTraditionalValuationMutations';
-import { QUERY_GET_ALL_EXPERIENCE_LEARNING_TRADITIONAL_VALUATION, QUERY_GET_EXPERIENCE_LEARNING_TRADITIONAL_VALUATION } from '../graphql/ExperienceLearningTraditionalValuation/ExperienceLearningTraditionalValuationQueries';
+import { MUTATION_CHANGE_ACTIVE_EXPERIENCE_LEARNING_CO_EVALUATION_VALUATION, MUTATION_CREATE_EXPERIENCE_LEARNING_CO_EVALUATION_VALUATION, MUTATION_DELETE_EXPERIENCE_LEARNING_CO_EVALUATION_VALUATION, MUTATION_GENERATE_EXPERIENCE_LEARNING_CO_EVALUATION_VALUATION, MUTATION_UPDATE_EXPERIENCE_LEARNING_CO_EVALUATION_VALUATION } from '../graphql/ExperienceLearningCoEvaluationValuation/ExperienceLearningCoEvaluationValuationMutations';
+import { QUERY_GET_ALL_EXPERIENCE_LEARNING_CO_EVALUATION_VALUATION, QUERY_GET_EXPERIENCE_LEARNING_CO_EVALUATION_VALUATION } from '../graphql/ExperienceLearningCoEvaluationValuation/ExperienceLearningCoEvaluationValuationQueries';
 
 
-export const getListAllExperienceLearningTraditionalValuation = (experienceLearningId: string) => {
+export const getListAllExperienceLearningCoEvaluationValuation = (experienceLearningId: string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
       await client
         .query({
-          query: QUERY_GET_ALL_EXPERIENCE_LEARNING_TRADITIONAL_VALUATION,
+          query: QUERY_GET_ALL_EXPERIENCE_LEARNING_CO_EVALUATION_VALUATION,
           variables: {
             experienceLearningId,
           },
@@ -26,13 +26,13 @@ export const getListAllExperienceLearningTraditionalValuation = (experienceLearn
   };
 };
 
-export const dataExperienceLearningTraditionalValuation = (id: any) => {
+export const dataExperienceLearningCoEvaluationValuation = (id: any) => {
   return async (dispatch: any) => {
     try {
       let data = {};
       await client
         .query({
-          query: QUERY_GET_EXPERIENCE_LEARNING_TRADITIONAL_VALUATION,
+          query: QUERY_GET_EXPERIENCE_LEARNING_CO_EVALUATION_VALUATION,
           variables: {
             id,
           },
@@ -48,7 +48,7 @@ export const dataExperienceLearningTraditionalValuation = (id: any) => {
   };
 };
 
-export const saveNewExperienceLearningTraditionalValuation = (data: any, showToast: boolean) => {
+export const saveNewExperienceLearningCoEvaluationValuation = (data: any, showToast: boolean) => {
   return async (dispatch: any) => {
     try {
       let model: any = {};
@@ -63,7 +63,7 @@ export const saveNewExperienceLearningTraditionalValuation = (data: any, showToa
       model.assessment = model.assessment && !isNaN(model.assessment) ? parseFloat(model.assessment) : null;
       await client
         .mutate({
-          mutation: MUTATION_CREATE_EXPERIENCE_LEARNING_TRADITIONAL_VALUATION,
+          mutation: MUTATION_CREATE_EXPERIENCE_LEARNING_CO_EVALUATION_VALUATION,
           variables: { input: model },
         })
         .then((dataResponse: any) => {
@@ -90,13 +90,13 @@ export const saveNewExperienceLearningTraditionalValuation = (data: any, showToa
   };
 };
 
-export const generateExperienceLearningTraditionalValuation = (id: any) => {
+export const generateExperienceLearningCoEvaluationValuation = (id: any) => {
   return async (dispatch: any) => {
     try {    
       let dataCreate = null; 
       await client
         .mutate({
-          mutation: MUTATION_GENERATE_EXPERIENCE_LEARNING_TRADITIONAL_VALUATION,
+          mutation: MUTATION_GENERATE_EXPERIENCE_LEARNING_CO_EVALUATION_VALUATION,
           variables: { id },
         })
         .then((dataResponse: any) => {
@@ -116,7 +116,7 @@ export const generateExperienceLearningTraditionalValuation = (id: any) => {
   };
 };
 
-export const updateExperienceLearningTraditionalValuation = (data: any, id: any, showToast: boolean) => {
+export const updateExperienceLearningCoEvaluationValuation = (data: any, id: any, showToast: boolean) => {
   return async (dispatch: any) => {
     try {
       let model: any = {};
@@ -131,7 +131,7 @@ export const updateExperienceLearningTraditionalValuation = (data: any, id: any,
       model.assessment = model.assessment && !isNaN(model.assessment) ? parseFloat(model.assessment) : null;
       await client
         .mutate({
-          mutation: MUTATION_UPDATE_EXPERIENCE_LEARNING_TRADITIONAL_VALUATION,
+          mutation: MUTATION_UPDATE_EXPERIENCE_LEARNING_CO_EVALUATION_VALUATION,
           variables: { id, input: model },
         })
         .then((dataReponse: any) => {
@@ -158,13 +158,13 @@ export const updateExperienceLearningTraditionalValuation = (data: any, id: any,
   };
 };
 
-export const changeActiveExperienceLearningTraditionalValuation = (active: any, id: any, showToast: boolean) => {
+export const changeActiveExperienceLearningCoEvaluationValuation = (active: any, id: any, showToast: boolean) => {
   return async (dispatch: any) => {
     try {
       let dataChangeActive = null;
       await client
         .mutate({
-          mutation: MUTATION_CHANGE_ACTIVE_EXPERIENCE_LEARNING_TRADITIONAL_VALUATION,
+          mutation: MUTATION_CHANGE_ACTIVE_EXPERIENCE_LEARNING_CO_EVALUATION_VALUATION,
           variables: { id, active },
         })
         .then((dataReponse: any) => {
@@ -191,13 +191,13 @@ export const changeActiveExperienceLearningTraditionalValuation = (active: any, 
   };
 };
 
-export const deleteExperienceLearningTraditionalValuation = (id: any, showToast: boolean) => {
+export const deleteExperienceLearningCoEvaluationValuation = (id: any, showToast: boolean) => {
   return async (dispatch: any) => {
     try {
       let dataDelete = null;
       await client
         .mutate({
-          mutation: MUTATION_DELETE_EXPERIENCE_LEARNING_TRADITIONAL_VALUATION,
+          mutation: MUTATION_DELETE_EXPERIENCE_LEARNING_CO_EVALUATION_VALUATION,
           variables: { id },
         })
         .then((dataReponse: any) => {

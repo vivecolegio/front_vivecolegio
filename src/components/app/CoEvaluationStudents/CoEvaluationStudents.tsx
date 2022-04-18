@@ -9,16 +9,18 @@ import { createNotification } from '../../../helpers/Notification';
 import { getInitialsName } from '../../../helpers/Utils';
 import * as performanceLevelActions from '../../../stores/actions/Academic/PerformanceLevelActions';
 import * as courseActions from '../../../stores/actions/CourseActions';
-import * as experienceLearningSelfAssessmentValuationActions from '../../../stores/actions/ExperienceLearningSelfAssessmentValuationActions';
+import * as experienceLearningCoEvaluationActions from '../../../stores/actions/ExperienceLearningCoEvaluationActions';
+import * as experienceLearningCoEvaluationValuationActions from '../../../stores/actions/ExperienceLearningCoEvaluationValuationActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import { Loader } from '../../common/Loader';
 import ThumbnailImage from '../Aplications/AplicationsComponents/ThumbnailImage';
 
-const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
+const ExperienceLearningCoEvaluationStudentsList = (props: any) => {
   const [students, setStudents] = useState(null);
   const [performanceLevels, setPerformanceLevels] = useState(null);
   const [valuations, setValuations] = useState([]);
-  const [criteriaPerformances, setCriteriaPerformances] = useState([]);
+  const [valuationsAssessment, setValuationsAssessment] = useState([]);
+  const [tooltipOpen, setTooltipOpen] = useState(false);
 
   let navigate = useNavigate();
   const location = useLocation();
@@ -59,61 +61,65 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
       history(`/home`);
       createNotification('warning', 'notPermissions', '');
     }
-    props.generateExperienceLearningSelfAssessmentValuation(learningId).then((response: any) => {
+    props.dataCourse(courseId).then((course: any) => {
+      setStudents(course?.data?.students.sort(compare));
+    });
+    props.generateExperienceLearningCoEvaluation(learningId).then((response: any) => {
       props
-        .getListAllExperienceLearningSelfAssessmentValuation(
-          learningId,
-          cm?.createAction ? props?.loginReducer?.entityId : undefined,
-        )
-        .then(async (listData: any) => {
-          console.log(listData);
-          let valuationsArr: any = [];
-          // get performance levels
-          await props
-            .getListAllPerformanceLevel(props?.loginReducer?.schoolId)
-            .then((levels: any) => {
-              setPerformanceLevels(levels);
-              // set valuations list and get the performance level for each one
-              valuationsArr = listData.map((l: any) => {
-                const perf = levels?.find((c: any) => {
-                  return (
-                    l?.node.assessment &&
-                    l?.node?.assessment <= c.node.topScore &&
-                    l?.node?.assessment >= c.node.minimumScore
-                  );
+        .generateExperienceLearningCoEvaluationValuation(learningId)
+        .then((responseValuation: any) => {
+          props
+            .getListAllExperienceLearningCoEvaluationValuation(learningId)
+            .then(async (listDataValuation: any) => {
+              console.log(listDataValuation);
+              let valuationsArr: any = [];
+              await props
+                .getListAllPerformanceLevel(props?.loginReducer?.schoolId)
+                .then((levels: any) => {
+                  setPerformanceLevels(levels);
+                  // set valuations list and get the performance level for each one
+                  valuationsArr = listDataValuation.map((l: any) => {
+                    const perf = levels?.find((c: any) => {
+                      return (
+                        l?.node.assessment &&
+                        l?.node?.assessment <= c.node.topScore &&
+                        l?.node?.assessment >= c.node.minimumScore
+                      );
+                    });
+                    l.node.performance = perf?.node?.name;
+                    return l;
+                  });
                 });
-                console.log(perf)
-                l.node.performance = perf?.node?.name;
-                l.node.code = l.node.student.code;
-                return l.node;
-              });
+              console.log(valuationsArr);
+              setValuationsAssessment(valuationsArr);
             });
-          setValuations(valuationsArr.sort(compare));
+          props.getListAllExperienceLearningCoEvaluation(learningId).then(async (listData: any) => {
+            console.log(listData);
+            let valuationsArr: any = [];
+            // get performance levels
+            await props
+              .getListAllPerformanceLevel(props?.loginReducer?.schoolId)
+              .then((levels: any) => {
+                setPerformanceLevels(levels);
+                // set valuations list and get the performance level for each one
+                valuationsArr = listData.map((l: any) => {
+                  const perf = levels?.find((c: any) => {
+                    return (
+                      l?.node.assessment &&
+                      l?.node?.assessment <= c.node.topScore &&
+                      l?.node?.assessment >= c.node.minimumScore
+                    );
+                  });
+                  l.node.performance = perf?.node?.name;
+                  return l.node;
+                });
+              });
+            setValuations(valuationsArr);
+          });
         });
     });
     setLoading(false);
   }, []);
-
-  const refreshDataTable = async () => {
-    setValuations(null);
-    props
-      .getListAllExperienceLearningSelfAssessmentValuation(
-        learningId,
-        currentMenu?.createAction ? props?.loginReducer?.entityId : undefined,
-      )
-      .then(async (listData: any) => {
-        let valuationsArr = listData.map((l: any) => {
-          const perf = performanceLevels?.find((c: any) => {
-            return (
-              l?.node?.assessment <= c.node.topScore && l?.node?.assessment >= c.node.minimumScore
-            );
-          });
-          l.node.performance = perf?.node?.name;
-          return l.node;
-        });
-        setValuations(valuationsArr);
-      });
-  };
 
   const getPerformanceLevel = async (e: any, valuation: any) => {
     const perf = performanceLevels?.find((c: any) => {
@@ -128,43 +134,34 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
     setValuations(arr);
   };
 
-  const setObservation = async (e: any, valuation: any) => {
-    const elementIndex = valuations.findIndex((obj) => {
-      return obj.id === valuation.id;
-    });
-    valuations[elementIndex].observations = e.target.value;
-    const arr = Object.assign([], valuations);
-    setValuations(arr);
+  const saveNote = async (event: any, note: any) => {
+    if (event.key === 'Enter') {
+      let obj = {
+        assessment: event.target.value,
+      };
+      props.updateExperienceLearningCoEvaluation(obj, note?.id, true).then((resp: any) => {});
+    }
+  };
+
+  const saveObservations = async (event: any, note: any) => {
+    if (event.key === 'Enter') {
+      let obj2 = {
+        observations: event.target.value,
+      };
+      props.updateExperienceLearningCoEvaluation(obj2, note?.id, true).then((resp: any) => {});
+    }
   };
 
   const goTo = async () => {
     navigate(-1);
   };
 
-  const saveNote = async (event:any, item:any) => {
-    if (event.key === 'Enter') {
-      let obj = {
-        assessment: event.target.value,
-      };
-      await props.updateExperienceLearningSelfAssessmentValuation(obj, item.id,true).then();
-    }
-  };
-
-  const saveObservations = async (event:any, item:any) => {
-    if (event.key === 'Enter') {
-      let obj = {
-        assessment: event.target.value,
-      };
-      await props.updateExperienceLearningSelfAssessmentValuation(obj, item.id,true).then();
-    }
-  };
-
   return (
     <>
       <div className="mt-4 d-flex justify-content-center align-items-center">
-        <h1 className="font-bold">Autoevaluación</h1>
+        <h1 className="font-bold">Coevaluación</h1>
       </div>
-      <hr/>
+      <hr />
       <div className="d-flex justify-content-between align-items-center">
         <div className="mt-4">
           <div className="d-flex flex-row">
@@ -226,15 +223,6 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
               )}
             </tbody>
           </table>
-          {/* {currentMenu?.updateAction ? (
-            <div className="text-center">
-              <button className="btn btn-blue mb-3" type="button" onClick={save}>
-                Guardar valoración
-              </button>
-            </div>
-          ) : (
-            ''
-          )} */}
         </div>
       </div>
 
@@ -246,16 +234,8 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
         </>
       ) : (
         <>
-          {valuations !== null ? (
+          {students !== null ? (
             <>
-              {criteriaPerformances.map((item: any, index: any) => {
-                return (
-                  <div key={index} className="form-group">
-                    <span>{item?.performanceLevel?.name}</span>
-                    <span>{item?.criteria}</span>
-                  </div>
-                );
-              })}
               <table className="table table-bordered">
                 <thead>
                   <tr>
@@ -267,76 +247,71 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {valuations.map((item: any, index: any) => {
+                  {students.map((item: any, index: any) => {
+                    let note = valuations.find(
+                      (c: any) =>
+                        c?.studentId === item?.id &&
+                        c?.coEvaluatorId === props?.loginReducer?.entityId,
+                    );
                     return (
                       <>
                         <tr key={index}>
                           <td className="text-center vertical-middle">
-                            <span className="font-bold">{item?.student?.code}</span>
+                            <span className="font-bold">{item?.code}</span>
                           </td>
-                          <td className="text-center vertical-middle">
+                          <td className="text-center">
                             <div className="d-flex align-items-center justify-content-center">
-                              {item?.student?.user?.urlPhoto ? (
+                              {item?.user?.urlPhoto ? (
                                 <ThumbnailImage
                                   rounded
                                   small
-                                  src={item?.student?.user?.urlPhoto}
+                                  src={item?.user?.urlPhoto}
                                   alt="profile"
                                   className="mr-4"
                                 />
                               ) : (
                                 <span className="img-thumbnail xl-avatar-initials border-0 span-initials rounded-circle mr-3 list-thumbnail align-self-center xsmall">
                                   {getInitialsName(
-                                    item?.student?.user
-                                      ? item?.student?.user?.name +
-                                          ' ' +
-                                          item?.student?.user?.lastName
+                                    item?.user
+                                      ? item?.user?.name + ' ' + item?.user?.lastName
                                       : 'N N',
                                   )}
                                 </span>
                               )}
                               <span>
-                                {item?.student?.user?.name} {item?.student?.user?.lastName}
+                                {item?.user?.name} {item?.user?.lastName}
                               </span>
                             </div>
                           </td>
                           <td className="text-center vertical-middle">
-                            {currentMenu?.updateAction ? (
-                              <Input
-                                type="number"
-                                onInput={(e) => {
-                                  return getPerformanceLevel(e, item);
-                                }}
-                                onKeyPress={(event: any) => {
-                                  return saveNote(event, item);
-                                }}
-                                {...item?.assessment}
-                                defaultValue={item?.assessment}
-                                className="form-control"
-                              />
-                            ) : (
-                              <span>{item?.assessment}</span>
-                            )}
+                            <Input
+                              disabled={item?.id === props?.loginReducer?.entityId}
+                              type="number"
+                              onInput={(e) => {
+                                return getPerformanceLevel(e, note);
+                              }}
+                              onKeyPress={(event: any) => {
+                                return saveNote(event,note);
+                              }}
+                              defaultValue={note?.assessment}
+                              className="form-control"
+                            />
                           </td>
                           <td className="text-center vertical-middle">
-                            {currentMenu?.updateAction ? (
-                              <Input
-                                type="textarea"
-                                rows="4"
-                                onKeyPress={(event: any) => {
-                                  return saveObservations(event, item);
-                                }}
-                                {...item?.observations}
-                                defaultValue={item?.observations}
-                                className="form-control"
-                              />
-                            ) : (
-                              <span>{item?.observations}</span>
-                            )}
+                            <Input
+                              disabled={item?.id === props?.loginReducer?.entityId}
+                              type="textarea"
+                              rows="4"
+                              onKeyPress={(event: any) => {
+                                return saveObservations(event,note);
+                              }}
+                              defaultValue={note?.observations}
+                              className="form-control"
+                            />
                           </td>
                           <td className="text-center vertical-middle">
                             <Badge color="primary" className="font-0-8rem">
-                              {item?.performance}
+                              {note?.performance || '--'}
                             </Badge>
                           </td>
                         </tr>
@@ -357,7 +332,8 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
 const mapDispatchToProps = {
   ...courseActions,
   ...performanceLevelActions,
-  ...experienceLearningSelfAssessmentValuationActions,
+  ...experienceLearningCoEvaluationActions,
+  ...experienceLearningCoEvaluationValuationActions,
 };
 
 const mapStateToProps = ({ loginReducer }: any) => {
@@ -367,4 +343,4 @@ const mapStateToProps = ({ loginReducer }: any) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(ExperienceLearningSelfAssessmentValuationList);
+)(ExperienceLearningCoEvaluationStudentsList);

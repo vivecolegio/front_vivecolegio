@@ -9,6 +9,10 @@ export const QUERY_GET_ALL_LEARNING = gql`
           id
           statement
           active
+          evidenceLearnings {
+            statement
+            id
+          }
           academicAsignature {
             id
             name
@@ -38,6 +42,10 @@ export const QUERY_GET_LEARNING = gql`
       id
       version
       statement
+      evidenceLearnings {
+        statement
+        id
+      }
       academicAsignatureId
       academicAsignature {
         id
@@ -77,7 +85,7 @@ export const QUERY_GET_LEARNING = gql`
 `;
 
 export const QUERY_GET_DROPDOWNS_LEARNING = gql`
-  query getDropdownsLearning($schoolId: String!, $academicAsignatureId: String!, $academicGradeId: String!) {
+  query getDropdownsLearning($schoolId: String!, $academicAsignatureId: String, $academicGradeId: String) {
     dataSchools: getAllSchool(allData: false, orderCreated: false) {
       edges {
         node {
@@ -86,7 +94,7 @@ export const QUERY_GET_DROPDOWNS_LEARNING = gql`
         }
       }
     }
-    dataAcademicPeriods: getAllAcademicPeriod(allData: false, orderCreated: false, schoolId: $schoolId) {
+    dataAcademicPeriods: getAllAcademicPeriod(allData: false, orderCreated: false, schoolId: $schoolId, orderCustom: true) {
       edges {
         node {
           id

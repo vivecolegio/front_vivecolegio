@@ -5,6 +5,7 @@ import Select from 'react-select';
 import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
 import IntlMessages from '../../../../helpers/IntlMessages';
 import * as standardActions from '../../../../stores/actions/Academic/StandardActions';
+import * as standardGeneralActions from '../../../../stores/actions/GeneralAcademic/StandardActions';
 import { Colxx } from '../../../common/CustomBootstrap';
 import AddNewModal from '../../../common/Data/AddNewModal';
 import CreateEditAuditInformation from '../../../common/Data/CreateEditAuditInformation';
@@ -97,16 +98,22 @@ const StandardCreateEdit = (props: any) => {
       );
       setAsignaturesList(
         data.dataAsignatures.edges.map((c: any) => {
-          return { label: c.node.name, value: c.node.id, key: c.node.id };
+          return { label: c.node.name, value: c.node.id, key: c.node.id, idGeneralAcademicAsignature: c.node.generalAcademicAsignatureId };
         }),
       );
       setGradesList(
         data.dataGrades.edges.map((c: any) => {
-          return { label: c.node.name, value: c.node.id, key: c.node.id };
+          return { label: c.node.name, value: c.node.id, key: c.node.id, idGeneralAcademicCycle: c.node.generalAcademicCycleId };
         }),
       );
+    });
+  };
+
+  const getStandards = async (generalAcademicCycleId: any, generalAcademicAsignatureId: any) => {
+    props.getListAllGeneralStandard(generalAcademicCycleId, generalAcademicAsignatureId).then((data: any) => {
+      console.log(data);
       setStandardsList(
-        data.dataGeneralStandards.edges.map((c: any) => {
+        data.map((c: any) => {
           return { label: c.node.standard, value: c.node.id, key: c.node.id };
         }),
       );
@@ -202,6 +209,7 @@ const StandardCreateEdit = (props: any) => {
                   onChange={(selectedOption) => {
                     setValue('academicGradeId', selectedOption?.key);
                     setCycle(selectedOption);
+                    getStandards(selectedOption?.idGeneralAcademicCycle, asignature?.idGeneralAcademicAsignature);
                   }}
                 />
               </div>
@@ -259,7 +267,7 @@ const StandardCreateEdit = (props: any) => {
   );
 };
 
-const mapDispatchToProps = { ...standardActions };
+const mapDispatchToProps = { ...standardActions, ...standardGeneralActions };
 
 const mapStateToProps = ({ loginReducer }: any) => {
   return { loginReducer };

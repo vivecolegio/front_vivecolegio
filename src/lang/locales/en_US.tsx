@@ -250,6 +250,7 @@ const enMessages = {
   'forms.title': 'Title',
   'forms.date': 'Date',
   'forms.criteria': 'Criteria',
+  'forms.dateDelivery': 'Date delivery',
 };
 
 export default enMessages;

@@ -123,7 +123,7 @@ const AcademicAsignatureCourseList = (props: any) => {
     switch (type) {
       case 'goToChildrenStandard':
         goToChildren(
-          `/standardAcademic?gradeId=${item?.course?.academicGradeId}&gradeName=${item?.course?.academicGrade?.generalAcademicGrade?.generalAcademicCycle?.name}&asignatureId=${item.academicAsignatureId}&asignatureName=${item.academicAsignature?.name}`,
+          `/standardAcademic?gradeId=${item?.course?.academicGradeId}&gradeName=${item?.course?.academicGrade?.generalAcademicCycle?.name}&asignatureId=${item.academicAsignatureId}&asignatureName=${item.academicAsignature?.name}`,
         );
         break;
       case 'goToChildrenDBA':

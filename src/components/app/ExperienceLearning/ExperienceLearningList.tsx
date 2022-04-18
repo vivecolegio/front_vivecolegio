@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
 import { COLUMN_LIST } from '../../../constants/ExperienceLearning/experienceLearningConstants';
 import { createNotification } from '../../../helpers/Notification';
-import * as academicPeriodActions from '../../../stores/actions/AcademicPeriodActions';
 import * as experienceLearningActions from '../../../stores/actions/ExperienceLearningActions';
 import DataList from '../../common/Data/DataList';
 import ExperienceLearningCreateEdit from './ExperienceLearningCreateEdit';
@@ -15,6 +14,7 @@ const ExperienceLearningList = (props: any) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [academicPeriods, setAcademicPeriods] = useState(null);
   const [academicPeriod, setAcademicPeriod] = useState(null);
+  const [role, setRole] = useState(null);
   const [experienceTypes, setExperienceTypes] = useState([
     { label: 'Coevaluación', key: 'COEVALUATION' },
     { label: 'Autoevaluación', key: 'SELFAPPRAISAL' },
@@ -32,14 +32,16 @@ const ExperienceLearningList = (props: any) => {
 
   const [data, setData] = useState(null);
   useEffect(() => {
+    setRole(props?.loginReducer?.role?.name);
     props
       .getListAllExperienceLearning(props?.loginReducer?.campusId, academicAsignatureCourseId)
       .then((listData: any) => {
         setDataTable(listData);
       });
-    props.getListAllAcademicPeriod(props?.loginReducer?.schoolId).then((listData: any) => {
-      setAcademicPeriods(listData);
-    });
+      props.getDropdownsExperienceLearning(props?.loginReducer?.schoolId).then((listData: any) => {
+        console.log(listData)
+        setAcademicPeriods(listData.dataAcademicPeriods.edges);  
+      });
   }, []);
 
   const getDataTable = async (idAcademicPeriod: any = null) => {
@@ -158,8 +160,10 @@ const ExperienceLearningList = (props: any) => {
         break;
       case 'COEVALUATION':
         goToChildren(
-          `/coEvaluation?courseId=${item?.academicAsignatureCourse?.courseId}&learningId=${item?.id}&learningName=${item?.title}&asignatureName=${item?.academicAsignatureCourse?.academicAsignature?.name}&courseName=${item?.academicAsignatureCourse?.course?.name}&gradeName=${item?.academicAsignatureCourse?.course?.academicGrade?.name}`,
-        );
+          role !== 'ESTUDIANTE' ? 
+          `/coEvaluation?courseId=${item?.academicAsignatureCourse?.courseId}&learningId=${item?.id}&learningName=${item?.title}&asignatureName=${item?.academicAsignatureCourse?.academicAsignature?.name}&courseName=${item?.academicAsignatureCourse?.course?.name}&gradeName=${item?.academicAsignatureCourse?.course?.academicGrade?.name}`
+          :  `/coEvaluationStudents?courseId=${item?.academicAsignatureCourse?.courseId}&learningId=${item?.id}&learningName=${item?.title}&asignatureName=${item?.academicAsignatureCourse?.academicAsignature?.name}&courseName=${item?.academicAsignatureCourse?.course?.name}&gradeName=${item?.academicAsignatureCourse?.course?.academicGrade?.name}`,
+        ); 
         break;
       default:
         break;
@@ -190,7 +194,7 @@ const ExperienceLearningList = (props: any) => {
                 color: 'info',
                 icon: 'iconsminds-pen-2',
                 action: 'COEVALUATION',
-              },
+              },            
               {
                 id: 1,
                 label: 'Autoevaluación',
@@ -275,6 +279,7 @@ const ExperienceLearningList = (props: any) => {
           />
           <ExperienceLearningCreateEdit
             data={data}
+            isLg={true}
             modalOpen={modalOpen}
             toggleModal={() => {
               setData(null);
@@ -289,7 +294,7 @@ const ExperienceLearningList = (props: any) => {
     </>
   );
 };
-const mapDispatchToProps = { ...experienceLearningActions, ...academicPeriodActions };
+const mapDispatchToProps = { ...experienceLearningActions };
 
 const mapStateToProps = ({ loginReducer }: any) => {
   return { loginReducer };

@@ -38,3 +38,9 @@ export const MUTATION_DELETE_EXPERIENCE_LEARNING_TRADITIONAL_VALUATION = gql`
     delete: deleteExperienceLearningTraditionalValuation(id: $id)
   }
 `;
+
+export const MUTATION_GENERATE_EXPERIENCE_LEARNING_TRADITIONAL_VALUATION = gql`
+  mutation createExperienceLearningTraditionalValuationStudents($id: String!) {
+    create: createExperienceLearningTraditionalValuationStudents(id: $id)
+  }
+`;

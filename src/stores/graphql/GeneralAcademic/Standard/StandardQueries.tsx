@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const QUERY_GET_ALL_STANDARD = gql`
-  query getAllGeneralAcademicStandard {
-    data: getAllGeneralAcademicStandard(orderCreated: true, allData: true) {
+  query getAllGeneralAcademicStandard($generalAcademicCycleId: String, $generalAcademicAsignatureId: String) {
+    data: getAllGeneralAcademicStandard(orderCreated: true, allData: true, generalAcademicCycleId: $generalAcademicCycleId, generalAcademicAsignatureId: $generalAcademicAsignatureId) {
       edges {
         cursor
         node {

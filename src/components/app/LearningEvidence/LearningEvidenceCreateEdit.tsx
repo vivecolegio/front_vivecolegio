@@ -86,7 +86,7 @@ const LearningEvidenceCreateEdit = (props: any) => {
 
   const { ref: statementRef, ...statementRest } = register('statement', {
     required: true,
-    value: props?.data?.id ? props?.data?.name : '',
+    value: props?.data?.id ? props?.data?.statement : '',
   });
   register('learningId', {
     required: true,

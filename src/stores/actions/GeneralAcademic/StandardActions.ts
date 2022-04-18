@@ -4,13 +4,17 @@ import { MUTATION_CHANGE_ACTIVE_STANDARD, MUTATION_CREATE_STANDARD, MUTATION_DEL
 import { QUERY_GET_ALL_STANDARD, QUERY_GET_DROPDOWNS_STANDARD, QUERY_GET_STANDARD } from '../../graphql/GeneralAcademic/Standard/StandardQueries';
 
 
-export const getListAllGeneralStandard = () => {
+export const getListAllGeneralStandard = (generalAcademicCycleId: any, generalAcademicAsignatureId: any) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
       await client
         .query({
           query: QUERY_GET_ALL_STANDARD,
+          variables : {
+            generalAcademicCycleId,
+            generalAcademicAsignatureId,
+          },
         })
         .then((result: any) => {
           listData = result.data.data.edges;

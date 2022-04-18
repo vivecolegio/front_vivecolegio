@@ -14,6 +14,7 @@ export const QUERY_GET_ALL_ACADEMIC_PERIOD = gql`
           startDate
           endDate
           weight
+          order
           active          
         }
       }
@@ -34,6 +35,7 @@ export const QUERY_GET_ACADEMIC_PERIOD = gql`
       startDate
       endDate
       weight
+      order
       version
       schoolId
       school {
