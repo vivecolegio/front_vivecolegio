@@ -7,8 +7,8 @@ export const MUTATION_CREATE_EXPERIENCE_LEARNING_AVERAGE_VALUATION_STUDENTS = gq
 `;
 
 export const MUTATION_CREATE_ACADEMIC_ASIGNATURE_COURSE_PERIOD_VALUATION_STUDENTS = gql`
-  mutation createExperienceLearningAverageValuationStudents($schoolId : String!, $academicPeriodId: String!, $academicAsignatureCourseId: String!) {
-    create: createExperienceLearningAverageValuationStudents(schoolId : $schoolId, academicPeriodId: $academicPeriodId, academicAsignatureCourseId: $academicAsignatureCourseId)
+  mutation createAcademicAsignatureCoursePeriodValuationStudents($schoolId : String!, $academicPeriodId: String!, $academicAsignatureCourseId: String!) {
+    create: createAcademicAsignatureCoursePeriodValuationStudents(schoolId : $schoolId, academicPeriodId: $academicPeriodId, academicAsignatureCourseId: $academicAsignatureCourseId)
   }
 `;
 

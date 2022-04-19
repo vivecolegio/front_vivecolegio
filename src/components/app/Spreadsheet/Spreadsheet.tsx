@@ -3,22 +3,23 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
-import { Badge, Input, Tooltip } from 'reactstrap';
+import { Badge, Input } from 'reactstrap';
 import { compare } from '../../../helpers/DataTransformations';
 import { createNotification } from '../../../helpers/Notification';
 import { getInitialsName } from '../../../helpers/Utils';
 import * as academicPeriodActions from '../../../stores/actions/AcademicPeriodActions';
+import * as performanceLevelActions from '../../../stores/actions/Academic/PerformanceLevelActions';
 import * as componentEvaluativeActions from '../../../stores/actions/ComponentEvaluativeActions';
 import * as courseActions from '../../../stores/actions/CourseActions';
 import * as experienceLearningActions from '../../../stores/actions/ExperienceLearningActions';
-import * as experienceLearningSelfActions from '../../../stores/actions/ExperienceLearningSelfAssessmentValuationActions';
 import * as experienceLearningCoEvaluationActions from '../../../stores/actions/ExperienceLearningCoEvaluationValuationActions';
+import * as experienceLearningSelfActions from '../../../stores/actions/ExperienceLearningSelfAssessmentValuationActions';
 import * as experienceLearningTraditionalActions from '../../../stores/actions/ExperienceLearningTraditionalValuationActions';
 import * as valuationsActions from '../../../stores/actions/ValuationsActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import { Loader } from '../../common/Loader';
-import ThumbnailImage from '../Aplications/AplicationsComponents/ThumbnailImage';
 import TooltipItem from '../../common/TooltipItem';
+import ThumbnailImage from '../Aplications/AplicationsComponents/ThumbnailImage';
 
 const SpreadsheetList = (props: any) => {
   const [students, setStudents] = useState(null);
@@ -69,41 +70,78 @@ const SpreadsheetList = (props: any) => {
     } else {
       history(`/home`);
       createNotification('warning', 'notPermissions', '');
-    }       
-    console.log(academicAsignatureCourseId)
-    props.dataCurrentAcademicPeriod(props?.loginReducer?.schoolId).then(async (period: any) => {      
+    }
+    console.log(academicAsignatureCourseId);
+    props.dataCurrentAcademicPeriod(props?.loginReducer?.schoolId).then(async (period: any) => {
       await setCurrentAcademicPeriod(period);
       getSpreadsheet(period?.id);
-      // get averages final
-      props.getAllAcademicAsignatureCoursePeriodValuation(period?.id, academicAsignatureCourseId).then(async (notesFinal: any) => {      
-        setAveragesFinal(notesFinal);
-      });
     });
   }, []);
 
   const getSpreadsheet = async (periodId: any) => {
-    setLoading(true); 
+    setLoading(true);
     props.dataCourse(courseId).then(async (course: any) => {
       setStudents(course?.data?.students.sort(compare));
       let obj: any = [];
       let nts: any = [];
       let avrgs: any = [];
+      let levels: any = [];
+
+      await props
+      .getListAllPerformanceLevel(props?.loginReducer?.schoolId)
+      .then((dataLevels: any) => {
+        setPerformanceLevels(dataLevels);
+          levels = dataLevels;        
+        });
      
       await props.getListAllAcademicPeriod(props?.loginReducer?.schoolId).then((listData: any) => {
-        props.generateExperienceLearningAverageValuationStudents(props?.loginReducer?.schoolId,periodId,academicAsignatureCourseId).then((resp: any) => {
-        }); 
+        props
+          .generateAcademicAsignatureCoursePeriodValuationStudents(
+            props?.loginReducer?.schoolId,
+            periodId,
+            academicAsignatureCourseId,
+          )
+          .then((resp: any) => {
+            // get averages final
+            props
+              .getAllAcademicAsignatureCoursePeriodValuation(periodId, academicAsignatureCourseId)
+              .then(async (notesFinal: any) => {
+                setAveragesFinal(notesFinal.data);
+              });
+          });
         setAcademicPeriods(listData);
         props
           .getListAllComponentEvaluative(props?.loginReducer?.schoolId)
           .then(async (dataComponents: any) => {
             dataComponents.map(async (c: any) => {
               // get averages for each evaluative component
-              props.generateExperienceLearningAverageValuationStudents(c?.node?.id,periodId,academicAsignatureCourseId).then((resp: any) => {
-              });
-              props.getAllExperienceLearningAverageValuation(c?.node?.id,periodId,academicAsignatureCourseId).then((resp: any) => {
-                avrgs = avrgs.concat(resp.data.edges);
-                setAverages(avrgs);
-              });
+              props
+                .generateExperienceLearningAverageValuationStudents(
+                  c?.node?.id,
+                  periodId,
+                  academicAsignatureCourseId,
+                )
+                .then((resp: any) => {});
+              props
+                .getAllExperienceLearningAverageValuation(
+                  c?.node?.id,
+                  periodId,
+                  academicAsignatureCourseId,
+                )
+                .then((resp: any) => {
+                  avrgs = avrgs.concat(resp.data.edges.map((l: any) => {
+                    const perf = levels?.find((p: any) => {
+                      return (
+                        l?.node.assessment &&
+                        l?.node?.assessment <= p.node.topScore &&
+                        l?.node?.assessment >= p.node.minimumScore
+                      );
+                    });
+                    l.node.performance = perf?.node?.name;
+                    return l;
+                  }));
+                  setAverages(avrgs);
+                });
               props
                 .getAllExperienceLearningAcademicAsignatureCourse(
                   academicAsignatureCourseId,
@@ -142,44 +180,61 @@ const SpreadsheetList = (props: any) => {
   const updateAverages = async () => {
     let avrgs: any = [];
     props
-    .getListAllComponentEvaluative(props?.loginReducer?.schoolId)
-    .then(async (dataComponents: any) => {
-      dataComponents.map(async (c: any) => {
-        // get averages for each evaluative component
-        props.generateExperienceLearningAverageValuationStudents(c?.node?.id,currentAcademicPeriod?.id,academicAsignatureCourseId).then((resp: any) => {
+      .getListAllComponentEvaluative(props?.loginReducer?.schoolId)
+      .then(async (dataComponents: any) => {
+        dataComponents.map(async (c: any) => {
+          // get averages for each evaluative component
+          props
+            .generateExperienceLearningAverageValuationStudents(
+              c?.node?.id,
+              currentAcademicPeriod?.id,
+              academicAsignatureCourseId,
+            )
+            .then((resp: any) => {});
+          props
+            .getAllExperienceLearningAverageValuation(
+              c?.node?.id,
+              currentAcademicPeriod?.id,
+              academicAsignatureCourseId,
+            )
+            .then((resp: any) => {
+              avrgs = avrgs.concat(resp.data.edges);
+              setAverages(avrgs);
+            });
         });
-        props.getAllExperienceLearningAverageValuation(c?.node?.id,currentAcademicPeriod?.id,academicAsignatureCourseId).then((resp: any) => {
-          avrgs = avrgs.concat(resp.data.edges);
-          setAverages(avrgs);
-        });
-      });
       });
   };
 
-  const saveNote = async (event: any,note:any, experience: any, student: any) => {
-    if (event.key === 'Enter') {   
+  const saveNote = async (event: any, note: any, experience: any, student: any) => {
+    if (event.key === 'Enter') {
       let obj = {
         assessment: event.target.value,
-      }
+      };
       switch (experience.experienceType) {
         case 'SELFAPPRAISAL':
-          props.updateExperienceLearningSelfAssessmentValuation(obj, note?.id, true).then((resp: any) => {
-            updateAverages();
-          });
+          props
+            .updateExperienceLearningSelfAssessmentValuation(obj, note?.id, true)
+            .then((resp: any) => {
+              updateAverages();
+            });
           break;
         case 'TRADITIONALVALUATION':
-          props.updateExperienceLearningTraditionalValuation(obj, note?.id, true).then((resp: any) => {
-            updateAverages();
-          });
+          props
+            .updateExperienceLearningTraditionalValuation(obj, note?.id, true)
+            .then((resp: any) => {
+              updateAverages();
+            });
           break;
 
-        case 'VALUATIONRUBRIC': 
+        case 'VALUATIONRUBRIC':
           break;
 
         case 'COEVALUATION':
-          props.updateExperienceLearningCoEvaluationValuation(obj, note?.id, true).then((resp: any) => {
-            updateAverages();
-          });
+          props
+            .updateExperienceLearningCoEvaluationValuation(obj, note?.id, true)
+            .then((resp: any) => {
+              updateAverages();
+            });
           break;
 
         default:
@@ -287,15 +342,20 @@ const SpreadsheetList = (props: any) => {
                               <>
                                 {/* <th className="text-center vertical-middle">{e?.title}</th> */}
                                 <th className="text-center vertical-middle">
-                                  
-                                  <TooltipItem 
-                                  key={`tooltip_${indexe}`} 
-                                  target={<i className="iconsminds-idea-2 text-warning font-20" id={`tooltip_${indexe}`}></i>}
-                                  item={{
-                                        placement: 'left',
-                                        body: e?.title,
-                                      }} 
-                                    id={indexe} />
+                                  <TooltipItem
+                                    key={`tooltip_${indexe}`}
+                                    target={
+                                      <i
+                                        className="iconsminds-idea-2 text-warning font-20"
+                                        id={`tooltip_${indexe}`}
+                                      ></i>
+                                    }
+                                    item={{
+                                      placement: 'left',
+                                      body: e?.title,
+                                    }}
+                                    id={indexe}
+                                  />
                                 </th>
                               </>
                             );
@@ -345,7 +405,7 @@ const SpreadsheetList = (props: any) => {
                           {valuations.map((item2: any, index2: any) => {
                             return (
                               <>
-                                {item2.experiences.map((e: any) => {                               
+                                {item2.experiences.map((e: any) => {
                                   let note = notes.find(
                                     (n: any) =>
                                       n?.experienceLearningId === e?.id &&
@@ -358,11 +418,9 @@ const SpreadsheetList = (props: any) => {
                                           <>
                                             <Input
                                               onKeyPress={(event: any) => {
-                                                return saveNote(event,note, e, item);
+                                                return saveNote(event, note, e, item);
                                               }}
-                                              defaultValue={
-                                                note?.assessment
-                                              }
+                                              defaultValue={note?.assessment}
                                               disabled={isFormEnabled}
                                               className="form-control"
                                             />
@@ -372,15 +430,20 @@ const SpreadsheetList = (props: any) => {
                                     </>
                                   );
                                 })}
-                                {item2?.experiences?.length > 1 ? (                                
-                                  <th className="text-center vertical-middle">                                     
-                                    <Input disabled={true} defaultValue={
-                                      averages.find(
-                                        (n: any) =>
-                                          item2?.evaluativeComponentId === n?.node?.evaluativeComponentId &&
-                                          item?.id === n?.node?.studentId,
-                                      )?.node?.average
-                                    } className="form-control" />
+                                {item2?.experiences?.length > 1 ? (
+                                  <th className="text-center vertical-middle">
+                                    <Input
+                                      disabled={true}
+                                      defaultValue={
+                                        averages.find(
+                                          (n: any) =>
+                                            item2?.evaluativeComponentId ===
+                                              n?.node?.evaluativeComponentId &&
+                                            item?.id === n?.node?.studentId,
+                                        )?.node?.average
+                                      }
+                                      className="form-control"
+                                    />
                                   </th>
                                 ) : (
                                   ''
@@ -388,13 +451,13 @@ const SpreadsheetList = (props: any) => {
                               </>
                             );
                           })}
-                          <td className="text-center vertical-middle">
-                            {valuationsAssessment.find((c: any) => c?.node?.studentId === item?.id)
-                              ?.node?.assessment || '--'}
+                          <td className="text-center vertical-middle">                            
+                            {averages.find((n: any) => item?.id === n?.node?.studentId)?.node
+                              ?.assessment || '--'}
                           </td>
                           <td className="text-center vertical-middle">
                             <Badge color="primary" className="font-0-8rem">
-                              {valuationsAssessment.find(
+                              {averages.find(
                                 (c: any) => c?.node?.studentId === item?.id,
                               )?.node?.performance || '--'}
                             </Badge>
@@ -425,6 +488,7 @@ const mapDispatchToProps = {
   ...experienceLearningSelfActions,
   ...experienceLearningCoEvaluationActions,
   ...experienceLearningTraditionalActions,
+  ...performanceLevelActions,
 };
 
 const mapStateToProps = ({ loginReducer }: any) => {
