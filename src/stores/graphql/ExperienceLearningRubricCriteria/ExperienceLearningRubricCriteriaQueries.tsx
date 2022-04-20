@@ -19,6 +19,14 @@ export const QUERY_GET_ALL_EXPERIENCE_LEARNING_RUBRIC_CRITERIA = gql`
             id
             title
           }
+          experienceLearningRubricCriteriaPerformanceLevel {
+            criteria
+            performanceLevelId
+            performanceLevel {
+              id
+              name
+            }            
+          }
         }
       }
       totalCount

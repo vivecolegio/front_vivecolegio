@@ -96,8 +96,8 @@ const AcademicDayList = (props: any) => {
     createNotification('success', 'success', '');
   };
 
-  const additionalFunction = async (item: any, type: string) => {
-    switch (type) {
+  const additionalFunction = async (item: any, btn: any) => {
+    switch (btn?.action) {
       case 'goToChildren':
         goToChildren(`/academicHour?academicDayId=${item.id}&academicDayName=${item.name}`);
         break;

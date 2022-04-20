@@ -140,9 +140,9 @@ const ExperienceLearningList = (props: any) => {
     navigate(url);
   };
 
-  const additionalFunction = async (item: any, type: string) => {
+  const additionalFunction = async (item: any, btn: any) => {
     console.log(item);
-    switch (type) {
+    switch (btn?.action) {
       case 'TRADITIONALVALUATION':
         goToChildren(
           `/traditionalValuation?courseId=${item?.academicAsignatureCourse?.courseId}&learningId=${item?.id}&learningName=${item?.title}&asignatureName=${item?.academicAsignatureCourse?.academicAsignature?.name}&courseName=${item?.academicAsignatureCourse?.course?.name}&gradeName=${item?.academicAsignatureCourse?.course?.academicGrade?.name}`,
@@ -154,9 +154,15 @@ const ExperienceLearningList = (props: any) => {
         );
         break;
       case 'VALUATIONRUBRIC':
-        goToChildren(
-          `/rubricValuation?courseId=${item?.academicAsignatureCourse?.courseId}&learningId=${item?.id}&learningName=${item?.title}&asignatureName=${item?.academicAsignatureCourse?.academicAsignature?.name}&courseName=${item?.academicAsignatureCourse?.course?.name}&gradeName=${item?.academicAsignatureCourse?.course?.academicGrade?.name}`,
-        );
+        if(btn.type === 'CRITERIA'){          
+          goToChildren(
+            `/rubricCriteria?courseId=${item?.academicAsignatureCourse?.courseId}&learningId=${item?.id}&learningName=${item?.title}&asignatureName=${item?.academicAsignatureCourse?.academicAsignature?.name}&courseName=${item?.academicAsignatureCourse?.course?.name}&gradeName=${item?.academicAsignatureCourse?.course?.academicGrade?.name}`,
+          );
+        } else {
+          goToChildren(
+            `/rubricValuation?courseId=${item?.academicAsignatureCourse?.courseId}&learningId=${item?.id}&learningName=${item?.title}&asignatureName=${item?.academicAsignatureCourse?.academicAsignature?.name}&courseName=${item?.academicAsignatureCourse?.course?.name}&gradeName=${item?.academicAsignatureCourse?.course?.academicGrade?.name}`,
+          );
+        }
         break;
       case 'COEVALUATION':
         goToChildren(
@@ -215,9 +221,18 @@ const ExperienceLearningList = (props: any) => {
                 color: 'info',
                 icon: 'iconsminds-pen-2',
                 action: 'VALUATIONRUBRIC',
+                type: 'RUBRIC',
               },
               {
                 id: 4,
+                label: 'Criterios de rúbrica',
+                color: 'warning',
+                icon: 'iconsminds-pen-2',
+                action: 'VALUATIONRUBRIC',
+                type: 'CRITERIA',
+              },
+              {
+                id: 5,
                 label: 'Prueba en Línea',
                 color: 'info',
                 icon: 'iconsminds-pen-2',

@@ -52,6 +52,8 @@ import MyClasessList from '../components/app/MyClasses/MyClasessList';
 import Profile from '../components/app/Profile/Profile';
 import RoleList from '../components/app/Role/RoleList';
 import RubricCriteriaList from '../components/app/RubricCriteria/RubricCriteriaList';
+import RubricCriteriaValuation from '../components/app/RubricCriteriaValuation/RubricCriteriaValuation';
+import RubricValuation from '../components/app/RubricValuation/RubricValuation';
 import OfficeSchedule from '../components/app/Schedule/OfficeSchedule';
 import SchoolSchedule from '../components/app/Schedule/SchoolSchedule';
 import SchoolList from '../components/app/School/SchoolList';
@@ -178,7 +180,9 @@ const App = (props: any) => {
                     <Route path="/myClasses" element={ <MyClasessList/> } />
                     <Route path="/traditionalValuation" element={ <TraditionalValuation/> } />
                     <Route path="/selfValuation" element={ <SelfValuation/> } />
-                    <Route path="/rubricValuation" element={ <RubricCriteriaList/> } />
+                    <Route path="/rubricCriteria" element={ <RubricCriteriaList/> } />
+                    <Route path="/rubricValuation" element={ <RubricValuation/> } />
+                    <Route path="/rubricCriteriaValuation" element={ <RubricCriteriaValuation/> } />
                     <Route path="/coEvaluation" element={ <CoEvaluation/> } />
                     <Route path="/coEvaluationStudents" element={ <CoEvaluationStudents/> } />
                     <Route path="/spreadsheet" element={ <Spreadsheet/> } />

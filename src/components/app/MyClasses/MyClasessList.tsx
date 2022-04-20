@@ -118,8 +118,8 @@ const AcademicAsignatureCourseList = (props: any) => {
     createNotification('success', 'success', '');
   };
 
-  const additionalFunction = async (item: any, type: string) => {
-    switch (type) {
+  const additionalFunction = async (item: any, btn: any) => {
+    switch (btn?.action) {
       case 'goToChildrenExperience':
         goToChildren(
           `/experienceLearning?gradeId=${item?.course?.academicGradeId}&gradeName=${item?.course?.academicGrade?.name}&asignatureId=${item.academicAsignatureId}&asignatureName=${item.academicAsignature?.name}&academicAsignatureCourseId=${item?.id}`,

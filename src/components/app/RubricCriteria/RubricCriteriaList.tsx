@@ -13,6 +13,7 @@ const ExperienceLearningRubricCriteriaList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
   const [columns, setColumns] = useState(COLUMN_LIST);
   const [modalOpen, setModalOpen] = useState(false);
+  const [total, setTotal] = useState(0);
 
   let navigate = useNavigate();
 
@@ -28,12 +29,18 @@ const ExperienceLearningRubricCriteriaList = (props: any) => {
   useEffect(() => {
     props.getListAllExperienceLearningRubricCriteria(learningId).then((listData: any) => {
       setDataTable(listData);
+      let count = 0;
+      listData?.map((d:any)=>{
+        count += d?.node?.weight;
+      })
+      setTotal(count);
     });
   }, []);
 
   const getDataTable = async (idAcademicPeriod: any = null) => {
-    props.getListAllExperienceLearningRubricCriteria(learningId).then((listData: any) => {
-      setDataTable(listData);
+    props.getListAllExperienceLearningRubricCriteria(learningId).then(async (listData: any) => {
+      await setDataTable(listData);
+      getCantTotal(listData);
     });
   };
 
@@ -116,9 +123,16 @@ const ExperienceLearningRubricCriteriaList = (props: any) => {
     navigate(url);
   };
 
-  const additionalFunction = async (item: any, type: string) => {
-    console.log(item);
-    switch (type) {
+  const getCantTotal = async (dataList: any[]) => {
+    let count = 0;
+    dataList?.map((d:any)=>{
+      count += d?.node?.weight;
+    })
+    setTotal(count);
+  };
+
+  const additionalFunction = async (item: any, btn: any) => {
+    switch (btn?.action) {
       case 'TRADITIONALVALUATION':
         goToChildren(
           `/traditionalValuation?courseId=${item?.academicAsignatureCourse?.courseId}&learningId=${item?.id}&learningName=${item?.title}&asignatureName=${item?.academicAsignatureCourse?.academicAsignature?.name}&courseName=${item?.academicAsignatureCourse?.course?.name}&gradeName=${item?.academicAsignatureCourse?.course?.academicGrade?.name}`,
@@ -156,6 +170,7 @@ const ExperienceLearningRubricCriteriaList = (props: any) => {
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
             additionalFunction={additionalFunction}
+            createActionDisabled={total >=100 ? true : false}
             childrenButtons={[
               {
                 id: 0,
@@ -227,8 +242,12 @@ const ExperienceLearningRubricCriteriaList = (props: any) => {
                         <i className="simple-icon-arrow-left-circle mr-2"></i>
                         Regresar a experiencias de aprendizaje
                       </p>
-                    </div>
-                  </div>                
+                    </div>                   
+                  </div>  
+                  <div className='d-flex text-right flex-column'>
+                    <span>Peso total:</span>{' '}
+                    <h1 className="text-info font-bold">{total}</h1>                      
+                  </div>              
                 </div>
               </>
             }

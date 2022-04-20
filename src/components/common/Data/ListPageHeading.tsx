@@ -37,6 +37,7 @@ const ListPageHeading = ({
   currentMenu,
   withChildren,
   header,
+  createActionDisabled,
 }: any) => {
   const [dropdownSplitOpen, setDropdownSplitOpen] = useState(false);
   const [displayOptionsIsOpen, setDisplayOptionsIsOpen] = useState(false);
@@ -51,7 +52,7 @@ const ListPageHeading = ({
           </h1> */}
 
           <div className="text-zero top-right-button-container">
-            {currentMenu.createAction ? 
+            {currentMenu.createAction && !createActionDisabled ? 
             <Button
               color="primary"
               size="lg"

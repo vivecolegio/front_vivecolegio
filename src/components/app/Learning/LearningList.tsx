@@ -125,8 +125,8 @@ const Learning = (props: any) => {
     createNotification('success', 'success', '');
   };
 
-  const additionalFunction = async (item: any, type: string) => {
-    switch (type) {
+  const additionalFunction = async (item: any, btn: any) => {
+    switch (btn?.action) {
       case 'goToChildrenLearning':
         goToChildren(`/evidenceLearning?learningId=${item.id}&learningName=${item.statement}&asignatureName=${item?.academicAsignature?.name}&gradeName=${item?.academicGrade?.name}`);
         break;

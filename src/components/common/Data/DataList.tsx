@@ -187,6 +187,7 @@ const DataList = (props: any) => {
           }}
           changePageSize={setSelectedPageSize}
           selectedPageSize={selectedPageSize}
+          createActionDisabled={props?.createActionDisabled}
           totalItemCount={totalItemCount}
           selectedOrderOption={selectedOrderOption}
           match={pathname}

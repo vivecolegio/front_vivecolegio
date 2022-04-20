@@ -13,8 +13,8 @@ const AddNewModal = ({
   methods,
   control,
   handleSubmit,
-  hideFooter
-}: any, ) => {
+  hideFooter,
+}: any ) => {
   const { isValid, errors } = useFormState({ control });
 
   return (

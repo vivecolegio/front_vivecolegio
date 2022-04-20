@@ -87,9 +87,8 @@ const GradeList = (props: any) => {
     });
   };
 
-  const additionalFunction = async (item: any, type: string) => {
-    console.log(type);
-    switch (type) {
+  const additionalFunction = async (item: any, btn: any) => {
+    switch (btn?.action) {
       case 'goToChildren':
         goToChildren(item.id);
         break;

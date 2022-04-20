@@ -35,19 +35,20 @@ const ExperienceLearningRubricCriteriaCreateEdit = (props: any) => {
     cleanForm();
     getDropdowns(learningId);
     if (props?.data?.id) {
-      if (props?.data?.experienceLearningRubricCriteriaPerformanceLevel !== undefined && props?.data?.experienceLearningRubricCriteriaPerformanceLevel != null) {
-        console.log(props?.data?.experienceLearningRubricCriteriaPerformanceLevel.map((c:any)=>{
-          return {
-            performanceLevelId: c.performanceLevelId,
-            criteria: c.criteria,
-          }
-        }))
+      if (props?.data?.experienceLearningRubricCriteriaPerformanceLevel !== undefined && props?.data?.experienceLearningRubricCriteriaPerformanceLevel != null) {      
         setCriteriaPerformances(props?.data?.experienceLearningRubricCriteriaPerformanceLevel.map((c:any)=>{
           return {
             performanceLevelId: c.performanceLevelId,
             criteria: c.criteria,
           }
         }));
+      }
+      if (props?.data?.evidenceLearnig !== undefined && props?.data?.evidenceLearnig != null) {      
+        setEvidenceLearning({
+          key: props?.data?.evidenceLearnig?.id,
+          label: props?.data?.evidenceLearnig?.statement,
+          value: props?.data?.evidenceLearnig?.id,
+        });
       }
     }
     setLoading(false);

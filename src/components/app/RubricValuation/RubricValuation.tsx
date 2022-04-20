@@ -140,6 +140,9 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
   const goTo = async () => {
     navigate(-1);
   };
+  const goToChildren = async (url: string) => {
+    navigate(url);
+  };
 
   const saveNote = async (event:any, item:any) => {
     if (event.key === 'Enter') {
@@ -162,7 +165,7 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
   return (
     <>
       <div className="mt-4 d-flex justify-content-center align-items-center">
-        <h1 className="font-bold">Autoevaluación</h1>
+        <h1 className="font-bold">Rúbrica de valoración</h1>
       </div>
       <hr/>
       <div className="d-flex justify-content-between align-items-center">
@@ -193,40 +196,7 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
             <i className="simple-icon-arrow-left-circle mr-2"></i>
             Regresar a experiencias de aprendizaje
           </p>
-        </div>
-        <div className="mt-4 w-60">
-          <table className="table table-striped table-bordered">
-            <tbody>
-              <tr>
-                <td
-                  className="w-20"
-                  rowSpan={
-                    valuations[0]?.experienceLearning?.experienceLearningPerformanceLevel?.length +
-                    1
-                  }
-                >
-                  <strong>Criterio:</strong> {valuations[0]?.experienceLearning?.criteria}
-                </td>
-              </tr>
-              {valuations[0]?.experienceLearning?.experienceLearningPerformanceLevel.map(
-                (e: any) => {
-                  return (
-                    <>
-                      <tr>
-                        <td>
-                          <strong>Nivel de desempeño:</strong> {e?.performanceLevel?.name}
-                        </td>
-                        <td>
-                          <strong>Criterio:</strong> {e?.criteria}
-                        </td>
-                      </tr>
-                    </>
-                  );
-                },
-              )}
-            </tbody>
-          </table>         
-        </div>
+        </div>      
       </div>
 
       {loading ? (
@@ -255,6 +225,7 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
                     <th className="text-center">Valoración</th>
                     <th className="text-center">Observación</th>
                     <th className="text-center">Nivel de desempeño</th>
+                    <th className="text-center">Valorar rúbrica</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -291,44 +262,26 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
                               </span>
                             </div>
                           </td>
-                          <td className="text-center vertical-middle">
-                            {currentMenu?.updateAction ? (
-                              <Input
-                                type="number"
-                                onInput={(e) => {
-                                  return getPerformanceLevel(e, item);
-                                }}
-                                onKeyPress={(event: any) => {
-                                  return saveNote(event, item);
-                                }}
-                                {...item?.assessment}
-                                defaultValue={item?.assessment}
-                                className="form-control"
-                              />
-                            ) : (
-                              <span>{item?.assessment}</span>
-                            )}
+                          <td className="text-center vertical-middle">                            
+                              <span>{item?.assessment}</span>                            
                           </td>
-                          <td className="text-center vertical-middle">
-                            {currentMenu?.updateAction ? (
-                              <Input
-                                type="textarea"
-                                rows="4"
-                                onKeyPress={(event: any) => {
-                                  return saveObservations(event, item);
-                                }}
-                                {...item?.observations}
-                                defaultValue={item?.observations}
-                                className="form-control"
-                              />
-                            ) : (
+                          <td className="text-center vertical-middle">                           
                               <span>{item?.observations}</span>
-                            )}
                           </td>
                           <td className="text-center vertical-middle">
                             <Badge color="primary" className="font-0-8rem">
                               {item?.performance}
                             </Badge>
+                          </td>
+                          <td className="text-center vertical-middle">
+                          <button className="btn btn-orange mb-3 btn-xs" type="button"
+                          onClick={() => {
+                            goToChildren(
+                              `/rubricCriteriaValuation?courseId=${courseId}&learningId=${learningId}&learningName=${learningName}&asignatureName=${asignatureName}&courseName=${courseName}&gradeName=${gradeName}`,
+                            )
+                          }}>
+                            Valorar criterios
+                          </button>
                           </td>
                         </tr>
                       </>

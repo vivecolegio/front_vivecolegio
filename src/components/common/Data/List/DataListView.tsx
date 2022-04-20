@@ -83,7 +83,7 @@ const DataListView = ({
                       color={button.color}
                       size="xs"
                       onClick={() => {
-                         return additionalFunction(item, button.action);
+                         return additionalFunction(item, button);
                       }}>
                       <i className={button.icon + ' font-1rem mr-2'} />
                       {button.label}
