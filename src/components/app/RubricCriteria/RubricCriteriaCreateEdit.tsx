@@ -172,7 +172,7 @@ const ExperienceLearningRubricCriteriaCreateEdit = (props: any) => {
                 </Label>
                 <Input
                   type="textarea"
-                  rows="6"
+                  rows="2"
                   {...criteriaRest}
                   innerRef={criteriaRef}
                   className="form-control"

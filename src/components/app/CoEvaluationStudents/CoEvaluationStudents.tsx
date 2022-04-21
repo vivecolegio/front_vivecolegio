@@ -301,7 +301,7 @@ const ExperienceLearningCoEvaluationStudentsList = (props: any) => {
                             <Input
                               disabled={item?.id === props?.loginReducer?.entityId}
                               type="textarea"
-                              rows="4"
+                              rows="2"
                               onKeyPress={(event: any) => {
                                 return saveObservations(event,note);
                               }}

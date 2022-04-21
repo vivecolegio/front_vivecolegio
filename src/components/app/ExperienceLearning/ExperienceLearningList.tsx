@@ -39,7 +39,6 @@ const ExperienceLearningList = (props: any) => {
         setDataTable(listData);
       });
       props.getDropdownsExperienceLearning(props?.loginReducer?.schoolId).then((listData: any) => {
-        console.log(listData)
         setAcademicPeriods(listData.dataAcademicPeriods.edges);  
       });
   }, []);

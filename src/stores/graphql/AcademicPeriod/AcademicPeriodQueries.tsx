@@ -23,6 +23,29 @@ export const QUERY_GET_ALL_ACADEMIC_PERIOD = gql`
   }
 `;
 
+export const QUERY_GET_ACADEMIC_PERIODS_ORDER = gql`
+  query getAcademicPeriodsOrder(
+    $schoolId: String!
+  ) {    
+    dataAcademicPeriods: getAllAcademicPeriod(
+      allData: false
+      orderCreated: false
+      schoolId: $schoolId
+      orderCustom: true
+    ) {
+      edges {
+        node {
+          id
+          name
+          startDate
+          endDate
+        }
+      }
+    }
+  }
+`;
+
+
 export const QUERY_GET_ACADEMIC_PERIOD = gql`
   query getAcademicPeriod($id: String!) {
     data: getAcademicPeriod(id: $id) {

@@ -484,7 +484,7 @@ const ExperienceLearningCreateEdit = (props: any) => {
                 </Label>
                 <Input
                   type="textarea"
-                  rows="6"
+                  rows="2"
                   {...descriptionRest}
                   innerRef={descriptionRef}
                   className="form-control"
@@ -498,7 +498,7 @@ const ExperienceLearningCreateEdit = (props: any) => {
                     </Label>
                     <Input
                       type="textarea"
-                      rows="4"
+                      rows="2"
                       {...criteriaRest}
                       innerRef={criteriaRef}
                       className="form-control"

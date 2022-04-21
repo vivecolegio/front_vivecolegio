@@ -6,16 +6,15 @@ import { useSearchParams } from 'react-router-dom';
 import { Input } from 'reactstrap';
 import { createNotification } from '../../../helpers/Notification';
 import * as performanceLevelActions from '../../../stores/actions/Academic/PerformanceLevelActions';
-import * as experienceLearningRubricCriteriaActions from '../../../stores/actions/ExperienceLearningRubricCriteriaActions';
-import * as experienceLearningSelfAssessmentValuationActions from '../../../stores/actions/ExperienceLearningSelfAssessmentValuationActions';
+import * as experienceLearningRubricCriteriaValuationActions from '../../../stores/actions/ExperienceLearningRubricCriteriaValuationActions';
+import * as experienceLearningRubricValuationActions from '../../../stores/actions/ExperienceLearningRubricValuationActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import { Loader } from '../../common/Loader';
 
-const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
-  const [students, setStudents] = useState(null);
-  const [performanceLevels, setPerformanceLevels] = useState(null);
+const ExperienceLearningRubricCriteriaValuationList = (props: any) => {
+  const [rubricValuation, setRubricValuation] = useState(null);
   const [valuations, setValuations] = useState([]);
-  const [criteriaPerformances, setCriteriaPerformances] = useState([]);
+  const [total, setTotal] = useState(0);
 
   let navigate = useNavigate();
   const location = useLocation();
@@ -23,12 +22,14 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
   const currentUrl = location.pathname;
 
   let [params] = useSearchParams();
-  const courseId = params.get('courseId');
+  const studentId = params.get('studentId');
+  const studentName = params.get('studentName');
   const learningId = params.get('learningId');
   const learningName = params.get('learningName');
   const asignatureName = params.get('asignatureName');
   const gradeName = params.get('gradeName');
   const courseName = params.get('courseName');
+  const rubricValuationId = params.get('rubricValuationId');
   const [loading, setLoading] = useState(true);
   const [currentMenu, setCurrentMenu] = useState({
     createAction: false,
@@ -55,60 +56,35 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
     } else {
       history(`/home`);
       createNotification('warning', 'notPermissions', '');
-    }
-    // generate notes
-    props.generateExperienceLearningSelfAssessmentValuation(learningId).then((response: any) => {
-      // get list valuations CAMBIAR POR EL GET DE LOS QUE SON
+    }  
       props
-        .getListAllExperienceLearningRubricCriteria(learningId)
-        .then(async (listData: any) => {
-          setValuations(listData.map((c:any)=>{return c?.node}));
-        //   console.log(listData);
-        //   let valuationsArr: any = [];
-        //   // get performance levels
-        //   await props
-        //     .getListAllPerformanceLevel(props?.loginReducer?.schoolId)
-        //     .then((levels: any) => {
-              
-        //     });
-        //   setValuations(valuationsArr.sort(compare));
+        .dataExperienceLearningRubricValuation(rubricValuationId)
+        .then(async (dataRubricValuation: any) => {
+          setRubricValuation(dataRubricValuation.data);
         });
-    });
+      props
+        .getListAllExperienceLearningRubricCriteriaValuation(learningId, studentId)
+        .then(async (listData: any) => {
+          setValuations(listData.map((c:any)=>{return c?.node}));  
+          let count = 0;
+          listData?.map((d:any)=>{
+            count += d?.node?.experienceLearningRubricCriteria?.weight;
+          })
+          setTotal(count);
+        });
     setLoading(false);
   }, []);
 
   const refreshDataTable = async () => {
     setValuations(null);
     props
-      .getListAllExperienceLearningSelfAssessmentValuation(
+      .getListAllExperienceLearningRubricCriteriaValuation(
         learningId,
-        currentMenu?.createAction ? props?.loginReducer?.entityId : undefined,
+        studentId,
       )
-      .then(async (listData: any) => {
-        // let valuationsArr = listData.map((l: any) => {
-        //   const perf = performanceLevels?.find((c: any) => {
-        //     return (
-        //       l?.node?.assessment <= c.node.topScore && l?.node?.assessment >= c.node.minimumScore
-        //     );
-        //   });
-        //   l.node.performance = perf?.node?.name;
-        //   return l.node;
-        // });
-        setValuations(listData);
+      .then(async (listData: any) => {       
+        setValuations(listData.map((c:any)=>{return c?.node}));
       });
-  };
-
-  const getPerformanceLevel = async (e: any, valuation: any) => {
-    const perf = performanceLevels?.find((c: any) => {
-      return e.target.value <= c.node.topScore && e.target.value >= c.node.minimumScore;
-    });
-    const elementIndex = valuations.findIndex((obj) => {
-      return obj.id === valuation.id;
-    });
-    valuations[elementIndex].performance = perf?.node?.name;
-    valuations[elementIndex].assessment = e.target.value;
-    const arr = Object.assign([], valuations);
-    setValuations(arr);
   };
 
   const goTo = async () => {
@@ -120,7 +96,18 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
       let obj = {
         assessment: event.target.value,
       };
-      await props.updateExperienceLearningSelfAssessmentValuation(obj, item.id,true).then();
+      await props.updateExperienceLearningRubricCriteriaValuation(obj, item.id,true).then();
+      await props.updateExperienceLearningRubricValuationFromCriteria(rubricValuationId,false).then();
+      await refreshDataTable();
+    }
+  };
+
+  const saveObservationRubricValuation = async (event:any, item:any) => {
+    if (event.key === 'Enter') {
+      let obj = {
+        observations: event.target.value,
+      };
+      await props.updateExperienceLearningRubricValuation(obj, rubricValuationId, true).then();
     }
   };
 
@@ -150,6 +137,12 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
               <h4 className="font-bold text-blue">{learningName}</h4>
             </span>
           </div>
+          <div className="d-flex flex-row">
+            <span className="mb-0 mr-4">
+              <span className="text-muted">Estudiante:</span>{' '}
+              <h4 className="font-bold text-orange">{studentName}</h4>
+            </span>
+          </div>
           <p
             className="text-muted mt-2 d-flex align-items-center cursor-pointer"
             onClick={() => {
@@ -161,14 +154,19 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
           </p>
         </div> 
         <div className='mt-4'>
-        <div className="d-flex flex-row">           
-            <span className="mb-0 text-muted mr-4 border-b-green">
-              Nota: <h2 className="text-green font-bold">{gradeName}</h2>
-            </span>
-            <span className="mb-0 text-muted border-b-orange">
-              Observación: <h2 className="text-orange font-bold">{courseName}</h2>
-            </span>
-          </div>                    
+          <div className="d-flex flex-row justify-content-end">           
+              <span className="mb-0 text-muted mr-4">
+                Nota: <h2 className="text-muted font-bold">{rubricValuation?.assessment}</h2>
+              </span>
+              <span className="mb-0 text-muted">
+                Observación:  <Input type='textarea' onKeyPress={(event: any) => {
+                                    return saveObservationRubricValuation(event, rubricValuation);
+                                  }} defaultValue={rubricValuation?.observations} rows="2" className="form-control" />
+              </span>
+            </div>   
+            <div className="d-flex flex-row mt-2">
+              <p className='font-bold text-danger'>{total < 100 ? 'Los criterios no cumplen con el peso de 100%' : ''}</p>
+            </div>                 
         </div>       
       </div>
 
@@ -186,10 +184,15 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
                 <thead>
                   <tr>
                     <th className="text-center">Criterio</th>
+                    <th className="text-center">Peso</th>
+                    <th className="text-center">Evidencia de aprendizaje</th>
                     {
-                      valuations[0]?.experienceLearningRubricCriteriaPerformanceLevel?.map((v:any)=>{
+                      valuations[0]?.experienceLearningRubricCriteria?.experienceLearningRubricCriteriaPerformanceLevel?.map((v:any)=>{
                         return <>
-                        <th>{v?.performanceLevel?.name}</th>
+                        <th>
+                            <div>{v?.performanceLevel?.name}</div>
+                            <div>{`${v?.performanceLevel?.minimumScore} - ${v?.performanceLevel?.topScore}`}</div>
+                         </th>
                         </>
                       })
                     }
@@ -204,14 +207,28 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
                           <td className="text-center vertical-middle">
                             <div className="d-flex align-items-center justify-content-center">                            
                               <span>
-                                {item?.criteria}
+                                {item?.experienceLearningRubricCriteria?.criteria}
+                              </span>
+                            </div>
+                          </td>
+                          <td className="text-center vertical-middle">
+                            <div className="d-flex align-items-center justify-content-center">                            
+                              <span>
+                                {item?.experienceLearningRubricCriteria?.weight}
+                              </span>
+                            </div>
+                          </td>
+                          <td className="text-center vertical-middle">
+                            <div className="d-flex align-items-center justify-content-center">                            
+                              <span>
+                                {item?.experienceLearningRubricCriteria?.evidenceLearnig?.statement}
                               </span>
                             </div>
                           </td>
                           {
-                            item.experienceLearningRubricCriteriaPerformanceLevel?.map((v:any)=>{
+                            item?.experienceLearningRubricCriteria?.experienceLearningRubricCriteriaPerformanceLevel?.map((v:any)=>{
                               return <>
-                              <td>{v?.criteria}</td>
+                              <td className={(item?.assessment <= v?.performanceLevel?.topScore && item?.assessment >= v?.performanceLevel?.minimumScore) ? 'bg-warning-light' : ''}>{v?.criteria}</td>
                               </>
                             })
                           }
@@ -219,9 +236,6 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
                             {currentMenu?.updateAction ? (
                               <Input
                                 type="number"
-                                onInput={(e) => {
-                                  return getPerformanceLevel(e, item);
-                                }}
                                 onKeyPress={(event: any) => {
                                   return saveNote(event, item);
                                 }}
@@ -250,8 +264,8 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
 };
 const mapDispatchToProps = {
   ...performanceLevelActions,
-  ...experienceLearningSelfAssessmentValuationActions,
-  ...experienceLearningRubricCriteriaActions,
+  ...experienceLearningRubricCriteriaValuationActions,
+  ...experienceLearningRubricValuationActions,
 };
 
 const mapStateToProps = ({ loginReducer }: any) => {
@@ -261,4 +275,4 @@ const mapStateToProps = ({ loginReducer }: any) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(ExperienceLearningSelfAssessmentValuationList);
+)(ExperienceLearningRubricCriteriaValuationList);

@@ -9,13 +9,12 @@ import { createNotification } from '../../../helpers/Notification';
 import { getInitialsName } from '../../../helpers/Utils';
 import * as performanceLevelActions from '../../../stores/actions/Academic/PerformanceLevelActions';
 import * as courseActions from '../../../stores/actions/CourseActions';
-import * as experienceLearningSelfAssessmentValuationActions from '../../../stores/actions/ExperienceLearningSelfAssessmentValuationActions';
+import * as experienceLearningRubricValuationActions from '../../../stores/actions/ExperienceLearningRubricValuationActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import { Loader } from '../../common/Loader';
 import ThumbnailImage from '../Aplications/AplicationsComponents/ThumbnailImage';
 
 const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
-  const [students, setStudents] = useState(null);
   const [performanceLevels, setPerformanceLevels] = useState(null);
   const [valuations, setValuations] = useState([]);
   const [criteriaPerformances, setCriteriaPerformances] = useState([]);
@@ -59,11 +58,10 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
       history(`/home`);
       createNotification('warning', 'notPermissions', '');
     }
-    props.generateExperienceLearningSelfAssessmentValuation(learningId).then((response: any) => {
+    props.generateExperienceLearningRubricValuationStudents(learningId).then((response: any) => {
       props
-        .getListAllExperienceLearningSelfAssessmentValuation(
+        .getListAllExperienceLearningRubricValuation(
           learningId,
-          cm?.createAction ? props?.loginReducer?.entityId : undefined,
         )
         .then(async (listData: any) => {
           console.log(listData);
@@ -94,72 +92,11 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
     setLoading(false);
   }, []);
 
-  const refreshDataTable = async () => {
-    setValuations(null);
-    props
-      .getListAllExperienceLearningSelfAssessmentValuation(
-        learningId,
-        currentMenu?.createAction ? props?.loginReducer?.entityId : undefined,
-      )
-      .then(async (listData: any) => {
-        let valuationsArr = listData.map((l: any) => {
-          const perf = performanceLevels?.find((c: any) => {
-            return (
-              l?.node?.assessment <= c.node.topScore && l?.node?.assessment >= c.node.minimumScore
-            );
-          });
-          l.node.performance = perf?.node?.name;
-          return l.node;
-        });
-        setValuations(valuationsArr);
-      });
-  };
-
-  const getPerformanceLevel = async (e: any, valuation: any) => {
-    const perf = performanceLevels?.find((c: any) => {
-      return e.target.value <= c.node.topScore && e.target.value >= c.node.minimumScore;
-    });
-    const elementIndex = valuations.findIndex((obj) => {
-      return obj.id === valuation.id;
-    });
-    valuations[elementIndex].performance = perf?.node?.name;
-    valuations[elementIndex].assessment = e.target.value;
-    const arr = Object.assign([], valuations);
-    setValuations(arr);
-  };
-
-  const setObservation = async (e: any, valuation: any) => {
-    const elementIndex = valuations.findIndex((obj) => {
-      return obj.id === valuation.id;
-    });
-    valuations[elementIndex].observations = e.target.value;
-    const arr = Object.assign([], valuations);
-    setValuations(arr);
-  };
-
   const goTo = async () => {
     navigate(-1);
   };
   const goToChildren = async (url: string) => {
     navigate(url);
-  };
-
-  const saveNote = async (event:any, item:any) => {
-    if (event.key === 'Enter') {
-      let obj = {
-        assessment: event.target.value,
-      };
-      await props.updateExperienceLearningSelfAssessmentValuation(obj, item.id,true).then();
-    }
-  };
-
-  const saveObservations = async (event:any, item:any) => {
-    if (event.key === 'Enter') {
-      let obj = {
-        assessment: event.target.value,
-      };
-      await props.updateExperienceLearningSelfAssessmentValuation(obj, item.id,true).then();
-    }
   };
 
   return (
@@ -277,7 +214,7 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
                           <button className="btn btn-orange mb-3 btn-xs" type="button"
                           onClick={() => {
                             goToChildren(
-                              `/rubricCriteriaValuation?courseId=${courseId}&learningId=${learningId}&learningName=${learningName}&asignatureName=${asignatureName}&courseName=${courseName}&gradeName=${gradeName}`,
+                              `/rubricCriteriaValuation?rubricValuationId=${item?.id}&studentId=${item?.student?.id}&studentName=${item?.student?.user?.name + ' ' + item?.student?.user?.lastName}&courseId=${courseId}&learningId=${learningId}&learningName=${learningName}&asignatureName=${asignatureName}&courseName=${courseName}&gradeName=${gradeName}`,
                             )
                           }}>
                             Valorar criterios
@@ -301,7 +238,7 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
 const mapDispatchToProps = {
   ...courseActions,
   ...performanceLevelActions,
-  ...experienceLearningSelfAssessmentValuationActions,
+  ...experienceLearningRubricValuationActions,
 };
 
 const mapStateToProps = ({ loginReducer }: any) => {

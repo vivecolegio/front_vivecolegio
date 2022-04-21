@@ -214,7 +214,7 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
                     <>
                       <tr>
                         <td>
-                          <strong>Nivel de desempeño:</strong> {e?.performanceLevel?.name}
+                          <strong>Nivel de desempeño:</strong> {`${e?.performanceLevel?.name}: ${e?.performanceLevel?.minimumScore} - ${e?.performanceLevel?.topScore}`}
                         </td>
                         <td>
                           <strong>Criterio:</strong> {e?.criteria}
@@ -313,7 +313,7 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
                             {currentMenu?.updateAction ? (
                               <Input
                                 type="textarea"
-                                rows="4"
+                                rows="2"
                                 onKeyPress={(event: any) => {
                                   return saveObservations(event, item);
                                 }}

@@ -18,6 +18,8 @@ export const QUERY_GET_ALL_EXPERIENCE_LEARNING_SELF_ASSESSMENT_VALUATION = gql`
               performanceLevelId
               performanceLevel {
                 name
+                minimumScore
+                topScore
               }
             }
           }

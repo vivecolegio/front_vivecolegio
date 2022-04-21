@@ -172,7 +172,7 @@ const ExperienceLearningCoEvaluationList = (props: any) => {
                 valuations[0]?.experienceLearning?.experienceLearningPerformanceLevel.map((e:any)=>{
                   return <>
                   <tr>
-                    <td><strong>Nivel de desempeño:</strong> {e?.performanceLevel?.name}</td>
+                    <td><strong>Nivel de desempeño:</strong> {`${e?.performanceLevel?.name}: ${e?.performanceLevel?.minimumScore} - ${e?.performanceLevel?.topScore}`}</td>
                     <td><strong>Criterio:</strong> {e?.criteria}</td>
                   </tr>
                   </>

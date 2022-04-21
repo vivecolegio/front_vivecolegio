@@ -24,7 +24,6 @@ import ThumbnailImage from '../Aplications/AplicationsComponents/ThumbnailImage'
 const SpreadsheetList = (props: any) => {
   const [students, setStudents] = useState(null);
   const [performanceLevels, setPerformanceLevels] = useState(null);
-  const [valuationsAssessment, setValuationsAssessment] = useState([]);
   const [academicPeriods, setAcademicPeriods] = useState(null);
   const [currentAcademicPeriod, setCurrentAcademicPeriod] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -71,7 +70,6 @@ const SpreadsheetList = (props: any) => {
       history(`/home`);
       createNotification('warning', 'notPermissions', '');
     }
-    console.log(academicAsignatureCourseId);
     props.dataCurrentAcademicPeriod(props?.loginReducer?.schoolId).then(async (period: any) => {
       await setCurrentAcademicPeriod(period);
       getSpreadsheet(period?.id);
@@ -94,7 +92,8 @@ const SpreadsheetList = (props: any) => {
           levels = dataLevels;        
         });
      
-      await props.getListAllAcademicPeriod(props?.loginReducer?.schoolId).then((listData: any) => {
+      await props.getListAllAcademicPeriodOrder(props?.loginReducer?.schoolId).then((listData: any) => {
+        console.log(listData, 'DATAAAAAAA')
         props
           .generateAcademicAsignatureCoursePeriodValuationStudents(
             props?.loginReducer?.schoolId,
@@ -109,7 +108,7 @@ const SpreadsheetList = (props: any) => {
                 setAveragesFinal(notesFinal.data);
               });
           });
-        setAcademicPeriods(listData);
+        setAcademicPeriods(listData.dataAcademicPeriods.edges);
         props
           .getListAllComponentEvaluative(props?.loginReducer?.schoolId)
           .then(async (dataComponents: any) => {
@@ -145,7 +144,7 @@ const SpreadsheetList = (props: any) => {
               props
                 .getAllExperienceLearningAcademicAsignatureCourse(
                   academicAsignatureCourseId,
-                  listData[1]?.node?.id,
+                  periodId,
                   c?.node?.id,
                 )
                 .then((response: any) => {
@@ -273,21 +272,44 @@ const SpreadsheetList = (props: any) => {
           </p>
         </div>
         <div>
-          <button className="btn btn-info" type="button">
-            <i className="iconsminds-pen-2"></i> Primer periodo
-          </button>{' '}
-          <button
-            className="btn btn-green"
-            type="button"
-            onClick={() => {
-              return setIsFormEnabled(!isFormEnabled);
-            }}
-          >
-            <i className="iconsminds-file-edit"></i> Habilitar edición
-          </button>{' '}
-          <button className="btn btn-orange" type="button">
-            <i className="iconsminds-delete-file"></i> Cerrar periodo
-          </button>{' '}
+          <div>
+          {academicPeriods
+                        ? academicPeriods.map((item: any) => {
+                            return (
+                              <>
+                                <button
+                                  // onClick={() => {
+                                  //   return filterByPeriod(item);
+                                  // }}
+                                  key={item?.node?.id}
+                                  className={`btn ${
+                                    currentAcademicPeriod === item?.node?.id
+                                      ? 'btn-info'
+                                      : 'btn-outline-info'
+                                  }`}
+                                  type="button"
+                                >
+                                  <i className="iconsminds-pen-2"></i> {item?.node?.name}
+                                </button>{'  '}
+                              </>
+                            );
+                          })
+                        : ''}
+          </div>
+          <div className='d-flex mt-3 justify-content-end'> 
+            <button
+              className="btn btn-green mr-2"
+              type="button"
+              onClick={() => {
+                return setIsFormEnabled(!isFormEnabled);
+              }}
+            >
+              <i className="iconsminds-file-edit"></i> Habilitar edición
+            </button>
+            <button className="btn btn-orange" type="button">
+              <i className="iconsminds-delete-file"></i> Cerrar periodo
+            </button>
+          </div>
         </div>
       </div>
 
