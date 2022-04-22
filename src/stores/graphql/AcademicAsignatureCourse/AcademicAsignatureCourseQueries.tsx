@@ -6,20 +6,20 @@ export const QUERY_GET_ALL_ACADEMIC_ASIGNATURE_COURSE = gql`
       edges {
         cursor
         node {
-          id                          
-          academicAsignatureId 
+          id
+          academicAsignatureId
           academicAsignature {
             name
-            generalAcademicAsignatureId  
+            generalAcademicAsignatureId
             generalAcademicAsignature {
               name
-            }       
-          }           
+            }
+          }
           course {
-            id 
+            id
             name
             academicGradeId
-            academicGrade{
+            academicGrade {
               name
               generalAcademicCycle {
                 name
@@ -31,9 +31,9 @@ export const QUERY_GET_ALL_ACADEMIC_ASIGNATURE_COURSE = gql`
                   name
                 }
               }
-            }            
-          }           
-          active          
+            }
+          }
+          active
         }
       }
       totalCount
@@ -44,24 +44,40 @@ export const QUERY_GET_ALL_ACADEMIC_ASIGNATURE_COURSE = gql`
 export const QUERY_GET_ACADEMIC_ASIGNATURE_COURSE = gql`
   query getAcademicAsignatureCourse($id: String!) {
     data: getAcademicAsignatureCourse(id: $id) {
-      id   
+      id
       weight
-      version        
-      academicAsignatureId              
+      version
+      academicAsignatureId
       academicAsignature {
-        id 
         name
+        generalAcademicAsignatureId
+        generalAcademicAsignature {
+          name
+        }
       }
-      courseId              
       course {
-        id 
+        id
         name
-      }                  
+        academicGradeId
+        academicGrade {
+          name
+          generalAcademicCycle {
+            name
+          }
+          generalAcademicGradeId
+          generalAcademicGrade {
+            name
+            generalAcademicCycle {
+              name
+            }
+          }
+        }
+      }
       campusId
       campus {
         id
         name
-      }   
+      }
       teacherId
       teacher {
         id
@@ -70,7 +86,7 @@ export const QUERY_GET_ACADEMIC_ASIGNATURE_COURSE = gql`
           name
           lastName
         }
-      }   
+      }
       createdAt
       updatedAt
       createdByUser {
@@ -92,8 +108,12 @@ export const QUERY_GET_DROPDOWNS_ACADEMIC_ASIGNATURE_COURSE = gql`
           name
         }
       }
-    }   
-    dataAsignatures: getAllAcademicAsignature(allData: false, orderCreated: false, schoolId: $schoolId) {
+    }
+    dataAsignatures: getAllAcademicAsignature(
+      allData: false
+      orderCreated: false
+      schoolId: $schoolId
+    ) {
       edges {
         node {
           id
@@ -109,11 +129,16 @@ export const QUERY_GET_DROPDOWNS_ACADEMIC_ASIGNATURE_COURSE = gql`
         }
       }
     }
-    dataTeachers: getAllTeacher(allData: false, orderCreated: false, campusId: [$campusId], schoolId: [$schoolId]) {
+    dataTeachers: getAllTeacher(
+      allData: false
+      orderCreated: false
+      campusId: [$campusId]
+      schoolId: [$schoolId]
+    ) {
       edges {
         node {
           id
-          user{
+          user {
             id
             name
             lastName
@@ -125,8 +150,13 @@ export const QUERY_GET_DROPDOWNS_ACADEMIC_ASIGNATURE_COURSE = gql`
 `;
 
 export const QUERY_GET_COURSES_OF_GRADES = gql`
-  query getCoursesOfGrade ($academicGradeId: String!, $campusId: String!) {    
-    dataCourses: getAllCourse(allData: false, orderCreated: false, academicGradeId: $academicGradeId, campusId: $campusId) {
+  query getCoursesOfGrade($academicGradeId: String!, $campusId: String!) {
+    dataCourses: getAllCourse(
+      allData: false
+      orderCreated: false
+      academicGradeId: $academicGradeId
+      campusId: $campusId
+    ) {
       edges {
         node {
           id

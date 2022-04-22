@@ -1,52 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
-import { useSearchParams } from 'react-router-dom';
-import { COLUMN_LIST } from '../../../constants/BasicLearningDuties/BasicLearningDutiesConstants';
+import { COLUMN_LIST } from '../../../constants/QuestionCategoryTestOnline/questionCategoryTestOnlineConstants';
 import { createNotification } from '../../../helpers/Notification';
-import * as generalBasicLearningRightActions from '../../../stores/actions/BasicLearningDutiesActions';
+import * as questionCategoryTestOnlineActions from '../../../stores/actions/QuestionCategoryTestOnlineActions';
+import AddNewModal from '../../common/Data/AddNewModal';
 import DataList from '../../common/Data/DataList';
-import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
-import GeneralBasicLearningRightCreateEdit from './BasicLearningDutiesCreateEdit';
+import QuestionCategoryTestOnlineCreateEdit from './QuestionCategoryTestOnlineCreateEdit';
 
-const GeneralBasicLearningRightList = (props: any) => {
+const QuestionCategoryTestOnlineList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
   const [columns, setColumns] = useState(COLUMN_LIST);
   const [modalOpen, setModalOpen] = useState(false);
 
   let navigate = useNavigate();
 
-  let [params] = useSearchParams();
-  const asignatureId = params.get('asignatureId');
-  const academicAsignatureCourseId = params.get('academicAsignatureCourseId');
-  const gradeId = params.get('gradeId');
-
   const [data, setData] = useState(null);
   useEffect(() => {
-    props.getListAllGeneralBasicLearningRight(asignatureId, gradeId).then((listData: any) => {
-      setDataTable(
-        listData.map((c: any) => {
-          c.node.grade_format = c.node.generalAcademicGrade ? c.node.generalAcademicGrade.name : '';
-          c.node.asignature_format = c.node.generalAcademicAsignature
-            ? c.node.generalAcademicAsignature.name
-            : '';
-          return c;
-        }),
-      );
+    props.getListAllQuestionCategoryTestOnline(props?.loginReducer?.campusId).then((listData: any) => {
+      setDataTable(listData);
     });
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllGeneralBasicLearningRight(asignatureId, gradeId).then((listData: any) => {
-      setDataTable(
-        listData.map((c: any) => {
-          c.node.grade_format = c.node.generalAcademicGrade ? c.node.generalAcademicGrade.name : '';
-          c.node.asignature_format = c.node.generalAcademicAsignature
-            ? c.node.generalAcademicAsignature.name
-            : '';
-          return c;
-        }),
-      );
+    props.getListAllQuestionCategoryTestOnline(props?.loginReducer?.campusId).then((listData: any) => {
+      setDataTable(listData);
     });
   };
 
@@ -56,16 +34,15 @@ const GeneralBasicLearningRightList = (props: any) => {
   };
 
   const onSubmit = async (dataForm: any) => {
-    console.log(dataForm);
     if (data === null) {
-      await props.saveNewGeneralBasicLearningRight(dataForm).then((id: any) => {
+      await props.saveNewQuestionCategoryTestOnline(dataForm).then((id: any) => {
         if (id !== undefined) {
           setModalOpen(false);
           refreshDataTable();
         }
       });
     } else {
-      await props.updateGeneralBasicLearningRight(dataForm, data.id).then((id: any) => {
+      await props.updateQuestionCategoryTestOnline(dataForm, data.id).then((id: any) => {
         if (id !== undefined) {
           setModalOpen(false);
           setData(null);
@@ -76,27 +53,27 @@ const GeneralBasicLearningRightList = (props: any) => {
   };
 
   const viewEditData = async (id: any) => {
-    await props.dataGeneralBasicLearningRight(id).then((formData: any) => {
+    await props.dataQuestionCategoryTestOnline(id).then((formData: any) => {
       setData(formData.data);
       setModalOpen(true);
     });
   };
 
   const changeActiveData = async (active: any, id: any) => {
-    await props.changeActiveGeneralBasicLearningRight(active, id, true).then((formData: any) => {
+    await props.changeActiveQuestionCategoryTestOnline(active, id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
 
   const deleteData = async (id: any) => {
-    await props.deleteGeneralBasicLearningRight(id, true).then((formData: any) => {
+    await props.deleteQuestionCategoryTestOnline(id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
 
   const deleteAll = async (items: any) => {
     items.map(async (item: any) => {
-      await props.deleteGeneralBasicLearningRight(item.id, false).then(
+      await props.deleteQuestionCategoryTestOnline(item.id, false).then(
         () => {},
         () => {
           createNotification('error', 'error', '');
@@ -109,7 +86,7 @@ const GeneralBasicLearningRightList = (props: any) => {
 
   const changeActiveDataAll = async (items: any) => {
     items.map(async (item: any) => {
-      await props.changeActiveGeneralBasicLearningRight(!item.active, item.id, false).then(
+      await props.changeActiveQuestionCategoryTestOnline(!item.active, item.id, false).then(
         () => {},
         () => {
           createNotification('error', 'error', '');
@@ -120,7 +97,19 @@ const GeneralBasicLearningRightList = (props: any) => {
     createNotification('success', 'success', '');
   };
 
-  const goTo = async (url: string) => {
+  const additionalFunction = async (item: any, btn: any) => {
+    switch (btn?.action) {
+      case 'QUESTIONS':
+        goToChildren(
+          `/questionTestOnline`,
+        );
+        break;   
+      default:
+        break;
+    }
+  };
+
+  const goToChildren = async (url: string) => {
     navigate(url);
   };
 
@@ -140,13 +129,19 @@ const GeneralBasicLearningRightList = (props: any) => {
             changeActiveData={changeActiveData}
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
-            header={
-              <>
-              <HeaderInfoAcademic asignatureGeneral grade goTitle="Regresar a carga académica" academicAsignatureCourseId={academicAsignatureCourseId}/>                  
-              </>
-            }
+            additionalFunction={additionalFunction}
+            childrenButtons={[
+              {
+                id: 0,
+                label: 'Preguntas',
+                color: 'info',
+                icon: 'iconsminds-speach-bubble-asking',
+                action: 'QUESTIONS',
+              },
+            ]}
+            withChildren={true}
           />
-          <GeneralBasicLearningRightCreateEdit
+          <QuestionCategoryTestOnlineCreateEdit
             data={data}
             modalOpen={modalOpen}
             toggleModal={() => {
@@ -162,10 +157,10 @@ const GeneralBasicLearningRightList = (props: any) => {
     </>
   );
 };
-const mapDispatchToProps = { ...generalBasicLearningRightActions };
+const mapDispatchToProps = { ...questionCategoryTestOnlineActions };
 
 const mapStateToProps = ({ loginReducer }: any) => {
   return { loginReducer };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(GeneralBasicLearningRightList);
+export default connect(mapStateToProps, mapDispatchToProps)(QuestionCategoryTestOnlineList);

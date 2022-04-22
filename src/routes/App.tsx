@@ -50,6 +50,8 @@ import ModuleList from '../components/app/Module/ModuleList';
 import MunicipalityList from '../components/app/Municipality/MunicipalityList';
 import MyClasessList from '../components/app/MyClasses/MyClasessList';
 import Profile from '../components/app/Profile/Profile';
+import QuestionCategoryTestOnlineList from '../components/app/QuestionCategoryTestOnline/QuestionCategoryTestOnlineList';
+import QuestionTestOnlineList from '../components/app/QuestionTestOnline/QuestionTestOnlineList';
 import RoleList from '../components/app/Role/RoleList';
 import RubricCriteriaList from '../components/app/RubricCriteria/RubricCriteriaList';
 import RubricCriteriaValuation from '../components/app/RubricCriteriaValuation/RubricCriteriaValuation';
@@ -186,6 +188,8 @@ const App = (props: any) => {
                     <Route path="/coEvaluation" element={ <CoEvaluation/> } />
                     <Route path="/coEvaluationStudents" element={ <CoEvaluationStudents/> } />
                     <Route path="/spreadsheet" element={ <Spreadsheet/> } />
+                    <Route path="/questionCategoryTestOnline" element={ <QuestionCategoryTestOnlineList/> } />
+                    <Route path="/questionTestOnline" element={ <QuestionTestOnlineList/> } />
                     {/* ACADEMIC */} 
                     {/* APPLICATIONS */} 
                     <Route path="/chat" element={ <ChatApp/> } />

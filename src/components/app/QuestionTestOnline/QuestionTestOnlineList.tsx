@@ -1,49 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { useNavigate } from 'react-router';
-import { useSearchParams } from 'react-router-dom';
-import { COLUMN_LIST } from '../../../../constants/Standard/standardConstants';
-import { createNotification } from '../../../../helpers/Notification';
-import * as standardActions from '../../../../stores/actions/Academic/StandardActions';
-import DataList from '../../../common/Data/DataList';
-import HeaderInfoAcademic from '../../../common/Data/HeaderInfoAcademic';
-import StandardCreateEdit from './StandardCreateEdit';
+import { COLUMN_LIST } from '../../../constants/QuestionTestOnline/questionTestOnlineConstants';
+import { createNotification } from '../../../helpers/Notification';
+import * as QuestionTestOnlineActions from '../../../stores/actions/QuestionTestOnlineActions';
+import DataList from '../../common/Data/DataList';
+import QuestionTestOnlineCreateEdit from './QuestionTestOnlineCreateEdit';
 
-const StandardList = (props: any) => {
+const QuestionTestOnlineList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
   const [columns, setColumns] = useState(COLUMN_LIST);
   const [modalOpen, setModalOpen] = useState(false);
 
-  let navigate = useNavigate();
-
-  let [params] = useSearchParams();
-  const asignatureId = params.get('asignatureId');
-  const academicAsignatureCourseId = params.get('academicAsignatureCourseId');
-  const gradeId = params.get('gradeId');
-
   const [data, setData] = useState(null);
   useEffect(() => {
-    props
-      .getListAllAcademicStandard(
-        props?.loginReducer?.schoolId,
-        asignatureId ? asignatureId : '',
-        gradeId ? gradeId : '',
-      )
-      .then((listData: any) => {
-        setDataTable(listData);
-      });
+    props.getListAllQuestionTestOnline(props?.loginReducer?.campusId).then((listData: any) => {
+      console.log(listData)
+      setDataTable(listData);
+    });
   }, []);
 
   const getDataTable = async () => {
-    props
-      .getListAllAcademicStandard(
-        props?.loginReducer?.schoolId,
-        asignatureId ? asignatureId : '',
-        gradeId ? gradeId : '',
-      )
-      .then((listData: any) => {
-        setDataTable(listData);
-      });
+    props.getListAllQuestionTestOnline(props?.loginReducer?.campusId).then((listData: any) => {
+      setDataTable(listData);
+    });
   };
 
   const refreshDataTable = async () => {
@@ -52,16 +31,15 @@ const StandardList = (props: any) => {
   };
 
   const onSubmit = async (dataForm: any) => {
-    console.log(dataForm);
     if (data === null) {
-      await props.saveNewStandard(dataForm).then((id: any) => {
+      await props.saveNewQuestionTestOnline(dataForm).then((id: any) => {
         if (id !== undefined) {
           setModalOpen(false);
           refreshDataTable();
         }
       });
     } else {
-      await props.updateStandard(dataForm, data.id).then((id: any) => {
+      await props.updateQuestionTestOnline(dataForm, data.id).then((id: any) => {
         if (id !== undefined) {
           setModalOpen(false);
           setData(null);
@@ -72,27 +50,27 @@ const StandardList = (props: any) => {
   };
 
   const viewEditData = async (id: any) => {
-    await props.dataStandard(id).then((formData: any) => {
+    await props.dataQuestionTestOnline(id).then((formData: any) => {
       setData(formData.data);
       setModalOpen(true);
     });
   };
 
   const changeActiveData = async (active: any, id: any) => {
-    await props.changeActiveStandard(active, id, true).then((formData: any) => {
+    await props.changeActiveQuestionTestOnline(active, id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
 
   const deleteData = async (id: any) => {
-    await props.deleteStandard(id, true).then((formData: any) => {
+    await props.deleteQuestionTestOnline(id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
 
   const deleteAll = async (items: any) => {
     items.map(async (item: any) => {
-      await props.deleteStandard(item.id, false).then(
+      await props.deleteQuestionTestOnline(item.id, false).then(
         () => {},
         () => {
           createNotification('error', 'error', '');
@@ -105,7 +83,7 @@ const StandardList = (props: any) => {
 
   const changeActiveDataAll = async (items: any) => {
     items.map(async (item: any) => {
-      await props.changeActiveStandard(!item.active, item.id, false).then(
+      await props.changeActiveQuestionTestOnline(!item.active, item.id, false).then(
         () => {},
         () => {
           createNotification('error', 'error', '');
@@ -114,10 +92,6 @@ const StandardList = (props: any) => {
     });
     refreshDataTable();
     createNotification('success', 'success', '');
-  };
-
-  const goTo = async (url: string) => {
-    navigate(url);
   };
 
   return (
@@ -136,13 +110,8 @@ const StandardList = (props: any) => {
             changeActiveData={changeActiveData}
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
-            header={
-              <>
-               <HeaderInfoAcademic asignature cicle goTitle="Regresar a carga académica" academicAsignatureCourseId={academicAsignatureCourseId}/>               
-              </>
-            }
           />
-          <StandardCreateEdit
+          <QuestionTestOnlineCreateEdit
             data={data}
             modalOpen={modalOpen}
             toggleModal={() => {
@@ -158,10 +127,10 @@ const StandardList = (props: any) => {
     </>
   );
 };
-const mapDispatchToProps = { ...standardActions };
+const mapDispatchToProps = { ...QuestionTestOnlineActions };
 
 const mapStateToProps = ({ loginReducer }: any) => {
   return { loginReducer };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(StandardList);
+export default connect(mapStateToProps, mapDispatchToProps)(QuestionTestOnlineList);
