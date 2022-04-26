@@ -122,6 +122,7 @@ const QuestionCategoryTestOnlineCreateEdit = (props: any) => {
       ) : (
         <>
           <AddNewModal
+            isLg={true}
             modalOpen={props.modalOpen}
             toggleModal={() => {
               cleanForm();
