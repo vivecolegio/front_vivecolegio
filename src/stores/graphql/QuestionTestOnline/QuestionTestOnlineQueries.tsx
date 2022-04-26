@@ -18,6 +18,17 @@ export const QUERY_GET_ALL_QUESTION_TEST_ONLINE = gql`
   }
 `;
 
+export const QUERY_GET_ALL_QUESTION_TYPES = gql`
+    query getAllQuestionTypeTestOnline {
+      __type(name: "QuestionTypeTestOnline") {
+        name
+        enumValues {
+          name
+        }
+      }
+    }
+`;
+
 export const QUERY_GET_QUESTION_TEST_ONLINE = gql`
   query getQuestionTestOnline($id: String!) {
     data: getQuestionTestOnline(id: $id) {

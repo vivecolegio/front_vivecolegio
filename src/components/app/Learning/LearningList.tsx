@@ -7,6 +7,7 @@ import { createNotification } from '../../../helpers/Notification';
 import * as learningActions from '../../../stores/actions/LearningActions';
 import DataList from '../../common/Data/DataList';
 import LearningCreateEdit from './LearningCreateEdit';
+import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
 
 const Learning = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
@@ -17,9 +18,8 @@ const Learning = (props: any) => {
 
   let [params] = useSearchParams();
   const  asignatureId  = params.get('asignatureId');
-  const  asignatureName  = params.get('asignatureName');
   const  gradeId  = params.get('gradeId');
-  const  gradeName  = params.get('gradeName');
+  const  academicAsignatureCourseId  = params.get('academicAsignatureCourseId');
 
   let navigate = useNavigate();
 
@@ -128,7 +128,7 @@ const Learning = (props: any) => {
   const additionalFunction = async (item: any, btn: any) => {
     switch (btn?.action) {
       case 'goToChildrenLearning':
-        goToChildren(`/evidenceLearning?learningId=${item.id}&learningName=${item.statement}&asignatureName=${item?.academicAsignature?.name}&gradeName=${item?.academicGrade?.name}`);
+        goToChildren(`/evidenceLearning?learningId=${item.id}&academicAsignatureCourseId=${academicAsignatureCourseId}`);
         break;
     }
   };
@@ -149,11 +149,6 @@ const Learning = (props: any) => {
     navigate(url);
   };
 
-  const goTo = async (url: string) => {
-    navigate(url);
-  };
-
-
   return (
     <>
       {' '}
@@ -172,26 +167,7 @@ const Learning = (props: any) => {
             header={
               <>
               <div className='d-flex justify-content-between align-items-center mt-4'>
-              <div className="mt-4">
-                  <div className="d-flex flex-row">
-                    <span className="mb-0 text-muted mr-4 border-b-info">
-                      <span>Asignatura:</span>{' '}
-                      <h2 className="text-info font-bold">{asignatureName}</h2>
-                    </span>
-                    <span className="mb-0 text-muted border-b-green">
-                      Grado: <h2 className="text-green font-bold">{gradeName}</h2>
-                    </span>
-                  </div>
-                  <p
-                    className="text-muted mt-2 d-flex align-items-center cursor-pointer"
-                    onClick={() => {
-                      return goTo('/academicAsignatureCourse');
-                    }}
-                  >
-                    <i className="simple-icon-arrow-left-circle mr-2"></i>
-                    Regresar a carga académica
-                  </p>
-                </div>
+              <HeaderInfoAcademic asignature grade goTitle="Regresar a carga académica" academicAsignatureCourseId={academicAsignatureCourseId}/>        
                 <div>
                 {academicPeriods ? 
                    academicPeriods.map((item: any) => {

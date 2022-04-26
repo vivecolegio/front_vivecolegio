@@ -12,6 +12,8 @@ import { Loader } from '../../common/Loader';
 
 const QuestionCategoryTestOnlineCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
+  const [questionTypes, setQuestionTypes] = useState(null);
+  const [questionType, setQuestionType] = useState(null);
   const [questionCategoryTestOnline, setQuestionCategoryTestOnline] = useState(null);
   const [questionCategoryTestOnlineList, setQuestionCategoryTestOnlineList] = useState([]);
 
@@ -35,6 +37,16 @@ const QuestionCategoryTestOnlineCreateEdit = (props: any) => {
         value: props?.data?.questionCategoryTestOnline?.id,
       });
     }
+    if (
+      props?.data?.questionType !== undefined &&
+      props?.data?.questionType != null
+    ) {
+      setQuestionType({
+        key: props?.data?.questionType,
+        label: props?.data?.questionType,
+        value: props?.data?.questionType,
+      });
+    }
     setLoading(false);
   }, [props?.data]);
 
@@ -54,6 +66,17 @@ const QuestionCategoryTestOnlineCreateEdit = (props: any) => {
       setQuestionCategoryTestOnlineList(
         data.dataCategories.edges.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };
+        }),
+      );
+    });
+    props.getListAllQuestionTypes().then((data: any) => {
+      setQuestionTypes(
+        data.map((q: any) => {
+          return {
+            key: q.name,
+            value: q.name,
+            label: q.name,
+          };
         }),
       );
     });
@@ -119,9 +142,15 @@ const QuestionCategoryTestOnlineCreateEdit = (props: any) => {
               </div>
               <div className="form-group">
                 <Label>
-                  <IntlMessages id="forms.type" />
+                  <IntlMessages id="menu.statement" />
                 </Label>
-                <Input {...questionTypeRest} innerRef={questionTypeRef} className="form-control" />
+                <Input
+                  type="textarea"
+                  rows={2}
+                  {...statementRest}
+                  innerRef={statementRef}
+                  className="form-control"
+                />
               </div>
               <div className="form-group">
                 <Label>
@@ -142,15 +171,97 @@ const QuestionCategoryTestOnlineCreateEdit = (props: any) => {
               </div>
               <div className="form-group">
                 <Label>
-                  <IntlMessages id="menu.statement" />
+                  <IntlMessages id="forms.type" />
                 </Label>
-                <Input
-                  type="textarea"
-                  rows={2}
-                  {...statementRest}
-                  innerRef={statementRef}
-                  className="form-control"
+                <Select
+                  placeholder={<IntlMessages id="forms.select" />}
+                  {...register('questionType', { required: true })}
+                  className="react-select"
+                  classNamePrefix="react-select"
+                  options={questionTypes}
+                  value={questionType}
+                  onChange={(selectedOption) => {
+                    setValue('questionType', selectedOption?.key);
+                    setQuestionType(selectedOption);
+                  }}
                 />
+              </div>
+              <div className="form-group">
+                {questionType?.key === 'ESSAY' ? (
+                  <>
+                    <div className="form-group d-flex align-items-center">
+                      <Input
+                        className="itemCheck m-0 mr-2"
+                        type="checkbox"
+                        id={`check_isSchoolAdministrator`}
+                        label=""
+                      />
+                      Admitir archivo
+                    </div>
+                  </>
+                ) : (
+                  ''
+                )}
+                {questionType?.key === 'TRUEFALSE' ? (
+                  <>
+                    <div className="form-group d-flex align-items-center">
+                      <Input className="itemCheck m-0 mr-2" type="radio" id={`true`} label="" />
+                      Verdadero
+                    </div>
+                    <div className="form-group d-flex align-items-center">
+                      <Input className="itemCheck m-0 mr-2" type="radio" id={`false`} label="" />
+                      Falso
+                    </div>
+                  </>
+                ) : (
+                  ''
+                )}
+                {questionType?.key === 'NUMERICAL' ? (
+                  <>
+                    <div className="form-group d-flex align-items-center">
+                      <Input className="itemCheck m-0 mr-2" type="radio" id={`int`} label="" />
+                      Valor entero
+                    </div>
+                    <div className="form-group d-flex align-items-center">
+                      <Input className="itemCheck m-0 mr-2" type="radio" id={`decimal`} label="" />
+                      Valor decimal
+                    </div>
+                  </>
+                ) : (
+                  ''
+                )}
+                {questionType?.key === 'MULTIPLECHOICE' ? (
+                  <>
+                    <div className="form-group">
+                      <Input className="form-control" type="text" placeholder="Opción A" />
+                    </div>
+                    <div className="form-group">
+                      <Input className="form-control" type="text" placeholder="Opción B" />
+                    </div>
+                    <div className="form-group">
+                      <Input className="form-control" type="text" placeholder="Opción C" />
+                    </div>
+                    <div className="form-group">
+                      <Input className="form-control" type="text" placeholder="Opción D" />
+                    </div>
+                  </>
+                ) : (
+                  ''
+                )}
+              </div>
+              {questionType?.key !== 'ESSAY' ? (
+                <>
+                  <div className="form-group">
+                    <Label>Respuesta correcta</Label>
+                    <Input type="text" className="form-control" />
+                  </div>
+                </>
+              ) : (
+                ''
+              )}
+              <div className="form-group">
+                <Label>Retroalimentación</Label>
+                <Input type="textarea" rows={2} className="form-control" />
               </div>
             </ModalBody>
             {props?.data?.id ? (

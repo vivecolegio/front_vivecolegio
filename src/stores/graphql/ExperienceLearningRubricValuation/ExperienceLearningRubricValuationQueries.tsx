@@ -9,6 +9,7 @@ export const QUERY_GET_ALL_EXPERIENCE_LEARNING_RUBRIC_VALUATION = gql`
           id                                      
           active  
           assessment
+          observations
           studentId
           student {
             id

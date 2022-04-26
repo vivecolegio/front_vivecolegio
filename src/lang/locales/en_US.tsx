@@ -187,6 +187,7 @@ const enMessages = {
   'menu.rubricCriteria': 'Rubric valuation criteria',  
   'menu.questionCategoryTestOnline': 'Question Category Test Online',  
   'menu.questionTestOnline': 'Questions Test Online',  
+  'menu.questionsBank': 'Questions Bank', 
   'list.activate': 'Active',
   'list.inactivate': 'Inactive',
   'forms.inputRequired': 'Field Required',

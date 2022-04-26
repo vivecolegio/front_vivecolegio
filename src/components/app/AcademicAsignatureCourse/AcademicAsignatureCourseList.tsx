@@ -133,7 +133,7 @@ const AcademicAsignatureCourseList = (props: any) => {
         break;
       case 'goToChildrenLearning':
         goToChildren(
-          `/learning?gradeGeneralId=${item?.course?.academicGrade?.generalAcademicGradeId}&gradeId=${item?.course?.academicGradeId}&gradeName=${item?.course?.academicGrade?.name}&asignatureId=${item.academicAsignatureId}&asignatureGeneralId=${item.academicAsignature?.generalAcademicAsignatureId}&asignatureName=${item.academicAsignature?.name}`,
+          `/learning?gradeGeneralId=${item?.course?.academicGrade?.generalAcademicGradeId}&gradeId=${item?.course?.academicGradeId}&asignatureId=${item.academicAsignatureId}&asignatureGeneralId=${item.academicAsignature?.generalAcademicAsignatureId}&academicAsignatureCourseId=${item?.id}`,
         );
         break;
       default:

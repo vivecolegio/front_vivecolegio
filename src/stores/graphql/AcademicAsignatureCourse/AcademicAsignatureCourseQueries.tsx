@@ -17,7 +17,7 @@ export const QUERY_GET_ALL_ACADEMIC_ASIGNATURE_COURSE = gql`
           }
           course {
             id
-            name
+            name           
             academicGradeId
             academicGrade {
               name
@@ -58,6 +58,9 @@ export const QUERY_GET_ACADEMIC_ASIGNATURE_COURSE = gql`
       course {
         id
         name
+        academicDay {
+          name
+        }
         academicGradeId
         academicGrade {
           name

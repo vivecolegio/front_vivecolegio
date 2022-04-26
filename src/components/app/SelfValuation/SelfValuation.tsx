@@ -11,6 +11,7 @@ import * as performanceLevelActions from '../../../stores/actions/Academic/Perfo
 import * as courseActions from '../../../stores/actions/CourseActions';
 import * as experienceLearningSelfAssessmentValuationActions from '../../../stores/actions/ExperienceLearningSelfAssessmentValuationActions';
 import { Colxx } from '../../common/CustomBootstrap';
+import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
 import { Loader } from '../../common/Loader';
 import ThumbnailImage from '../Aplications/AplicationsComponents/ThumbnailImage';
 
@@ -26,12 +27,8 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
   const currentUrl = location.pathname;
 
   let [params] = useSearchParams();
-  const courseId = params.get('courseId');
   const learningId = params.get('learningId');
-  const learningName = params.get('learningName');
-  const asignatureName = params.get('asignatureName');
-  const gradeName = params.get('gradeName');
-  const courseName = params.get('courseName');
+  const academicAsignatureCourseId = params.get('academicAsignatureCourseId');
   const [loading, setLoading] = useState(true);
   const [currentMenu, setCurrentMenu] = useState({
     createAction: false,
@@ -166,34 +163,7 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
       </div>
       <hr/>
       <div className="d-flex justify-content-between align-items-center">
-        <div className="mt-4">
-          <div className="d-flex flex-row">
-            <span className="mb-0 text-muted mr-4 border-b-info">
-              <span>Asignatura:</span> <h2 className="text-info font-bold">{asignatureName}</h2>
-            </span>
-            <span className="mb-0 text-muted mr-4 border-b-green">
-              Grado: <h2 className="text-green font-bold">{gradeName}</h2>
-            </span>
-            <span className="mb-0 text-muted border-b-orange">
-              Curso: <h2 className="text-orange font-bold">{courseName}</h2>
-            </span>
-          </div>
-          <div className="d-flex flex-row mt-4">
-            <span className="mb-0 mr-4">
-              <span className="text-muted">Experiencia de aprendizaje:</span>{' '}
-              <h4 className="font-bold text-blue">{learningName}</h4>
-            </span>
-          </div>
-          <p
-            className="text-muted mt-2 d-flex align-items-center cursor-pointer"
-            onClick={() => {
-              return goTo();
-            }}
-          >
-            <i className="simple-icon-arrow-left-circle mr-2"></i>
-            Regresar a experiencias de aprendizaje
-          </p>
-        </div>
+      <HeaderInfoAcademic asignature grade course modality experienceLearnig goTitle="Regresar a experiencias de aprendizaje" experienceLearnigId={learningId} academicAsignatureCourseId={academicAsignatureCourseId}/>        
         <div className="mt-4 w-60">
           <table className="table table-striped table-bordered">
             <tbody>

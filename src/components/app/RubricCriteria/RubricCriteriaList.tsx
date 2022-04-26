@@ -7,6 +7,7 @@ import { createNotification } from '../../../helpers/Notification';
 import * as academicPeriodActions from '../../../stores/actions/AcademicPeriodActions';
 import * as experienceLearningRubricCriteriaActions from '../../../stores/actions/ExperienceLearningRubricCriteriaActions';
 import DataList from '../../common/Data/DataList';
+import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
 import ExperienceLearningRubricCriteriaCreateEdit from './RubricCriteriaCreateEdit';
 
 const ExperienceLearningRubricCriteriaList = (props: any) => {
@@ -18,12 +19,8 @@ const ExperienceLearningRubricCriteriaList = (props: any) => {
   let navigate = useNavigate();
 
   let [params] = useSearchParams();
-  const courseId = params.get('courseId');
+  const academicAsignatureCourseId = params.get('academicAsignatureCourseId');
   const learningId = params.get('learningId');
-  const learningName = params.get('learningName');
-  const asignatureName = params.get('asignatureName');
-  const gradeName = params.get('gradeName');
-  const courseName = params.get('courseName');
 
   const [data, setData] = useState(null);
   useEffect(() => {
@@ -214,35 +211,7 @@ const ExperienceLearningRubricCriteriaList = (props: any) => {
               <>
                 <div className="d-flex justify-content-between mt-4 align-items-center">
                   <div className="d-flex justify-content-between align-items-center">
-                    <div className="mt-4">
-                      <div className="d-flex flex-row">
-                        <span className="mb-0 text-muted mr-4 border-b-info">
-                          <span>Asignatura:</span>{' '}
-                          <h2 className="text-info font-bold">{asignatureName}</h2>
-                        </span>
-                        <span className="mb-0 text-muted mr-4 border-b-green">
-                          Grado: <h2 className="text-green font-bold">{gradeName}</h2>
-                        </span>
-                        <span className="mb-0 text-muted border-b-orange">
-                          Curso: <h2 className="text-orange font-bold">{courseName}</h2>
-                        </span>
-                      </div>
-                      <div className="d-flex flex-row mt-4">
-                        <span className="mb-0 mr-4">
-                          <span className="text-muted">Experiencia de aprendizaje:</span>{' '}
-                          <h4 className="font-bold text-blue">{learningName}</h4>
-                        </span>
-                      </div>
-                      <p
-                        className="text-muted mt-2 d-flex align-items-center cursor-pointer"
-                        onClick={() => {
-                          return goTo();
-                        }}
-                      >
-                        <i className="simple-icon-arrow-left-circle mr-2"></i>
-                        Regresar a experiencias de aprendizaje
-                      </p>
-                    </div>                   
+                  <HeaderInfoAcademic asignature grade course experienceLearnig goTitle="Regresar a experiencias de aprendizaje" experienceLearnigId={learningId} academicAsignatureCourseId={academicAsignatureCourseId}/>                           
                   </div>  
                   <div className='d-flex text-right flex-column'>
                     <span>Peso total:</span>{' '}

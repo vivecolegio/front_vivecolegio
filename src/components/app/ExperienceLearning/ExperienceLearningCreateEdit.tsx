@@ -1,7 +1,7 @@
 /* eslint-disable arrow-body-style */
 import { DevTool } from '@hookform/devtools';
 import React, { useEffect, useState } from 'react';
-import ReactDatePicker from 'react-datepicker';
+import ReactDatePicker  from 'react-datepicker';
 import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
@@ -26,17 +26,15 @@ const ExperienceLearningCreateEdit = (props: any) => {
   const [date, setDate] = useState(null);
   const [academicPeriod, setAcademicPeriod] = useState(null);
   const [experienceType, setExperienceType] = useState(null);
+  const [openTestDate, setOpenTestDate] = useState(null);
+  const [closeTestDate, setCloseTestDate] = useState(null);
   let [checksEvidencesLearning, setChecksEvidencesLearning] = useState([]);
   let [checksEvidencesLearningSelected, setChecksEvidencesLearningSelected] = useState([]);
   const [criteriaPerformances, setCriteriaPerformances] = useState([]);
   const [performanceLevels, setPerformanceLevels] = useState(null);
-  const [experienceTypes, setExperienceTypes] = useState([
-    { label: 'Coevaluación', key: 'COEVALUATION' },
-    { label: 'Autoevaluación', key: 'SELFAPPRAISAL' },
-    { label: 'Valoración tradicional', key: 'TRADITIONALVALUATION' },
-    { label: 'Rúbrica de valoración', key: 'VALUATIONRUBRIC' },
-    { label: 'Prueba en Línea', key: 'ONLINETEST' },
-  ]);
+  const [navigationMethod, setNavigationMethod] = useState(null);
+  const [navigationMethodList, setNavigationMethodList] = useState(null);
+  const [experienceTypes, setExperienceTypes] = useState([]);
 
   let [params] = useSearchParams();
   const academicAsignatureCourseId = params.get('academicAsignatureCourseId');
@@ -95,7 +93,6 @@ const ExperienceLearningCreateEdit = (props: any) => {
             };
           }),
         );
-        console.log(array);
         checksEvidencesLearning = [...array];
         setChecksEvidencesLearning(checksEvidencesLearning);
       }
@@ -110,14 +107,20 @@ const ExperienceLearningCreateEdit = (props: any) => {
         );
       }
       if (props?.data?.experienceType !== undefined && props?.data?.experienceType != null) {
-        setExperienceType(
-          experienceTypes.find((c: any) => {
-            return c.key === props?.data?.experienceType;
-          }),
-        );
+        setExperienceType({
+          key: props?.data?.experienceType,
+          label: props?.data?.experienceType,
+          value: props?.data?.experienceType,
+        });
       }
       if (props?.data?.dateDelivery !== undefined && props?.data?.dateDelivery != null) {
         setDate(new Date(props?.data?.dateDelivery));
+      }
+      if (props?.data?.openTestDate !== undefined && props?.data?.openTestDate != null) {
+        setOpenTestDate(new Date(props?.data?.openTestDate));
+      }
+      if (props?.data?.closeTestDate !== undefined && props?.data?.closeTestDate != null) {
+        setCloseTestDate(new Date(props?.data?.closeTestDate));
       }
       if (
         props?.data?.experienceLearningPerformanceLevel !== undefined &&
@@ -132,6 +135,16 @@ const ExperienceLearningCreateEdit = (props: any) => {
           }),
         );
       }
+      if (
+        props?.data?.navigationMethod !== undefined &&
+        props?.data?.navigationMethod != null
+      ) {
+        setNavigationMethod({
+          key: props?.data?.navigationMethod,
+          label: props?.data?.navigationMethod,
+          value: props?.data?.navigationMethod,
+        });
+      }
     }
     setLoading(false);
   }, [props?.data]);
@@ -140,6 +153,8 @@ const ExperienceLearningCreateEdit = (props: any) => {
     reset();
     setCampus(null);
     setLearnings(null);
+    setCloseTestDate(null);
+    setOpenTestDate(null);
     setChecksEvidencesLearning([]);
     setChecksEvidencesLearningSelected([]);
     setAcademicPeriod(null);
@@ -182,9 +197,24 @@ const ExperienceLearningCreateEdit = (props: any) => {
 
   const getDropdowns = async () => {
     props
+      .getNavigationMethodTestOnline()
+      .then((data: any) => {
+         setNavigationMethodList( 
+           data.map((c: any) => {
+          return { label: c.name, value: c.name, key: c.name };
+        }))
+      });
+    props
+      .getExperienceType()
+      .then((data: any) => {
+         setExperienceTypes( 
+           data.map((c: any) => {
+          return { label: c.name, value: c.name, key: c.name };
+        }))
+      });
+    props
       .getDropdownsExperienceLearning(props?.loginReducer?.schoolId, asignatureId, gradeId)
       .then((data: any) => {
-        console.log(data, 'DROPS');
         setCampusList(
           data.dataCampus.edges.map((c: any) => {
             return { label: c.node.name, value: c.node.id, key: c.node.id };
@@ -248,6 +278,10 @@ const ExperienceLearningCreateEdit = (props: any) => {
       props?.data?.id || props?.data?.onlineDelivery === getValues('onlineDelivery ')
         ? props?.data?.onlineDelivery
         : getValues('onlineDelivery'),
+     shuffleQuestions:
+      props?.data?.id || props?.data?.shuffleQuestions === getValues('shuffleQuestions ')
+        ? props?.data?.shuffleQuestions
+        : getValues('shuffleQuestions'),
   };
 
   const { ref: titleRef, ...titleRest } = register('title', {
@@ -355,6 +389,68 @@ const ExperienceLearningCreateEdit = (props: any) => {
                   }}
                 />
               </div>
+              {
+                experienceType?.key === 'ONLINETEST' ? 
+                <>
+                  <div className="form-group">
+                <Label>
+                  Fecha de apertura
+                </Label>
+                <ReactDatePicker
+                  {...register('openTestDate', { required: true })}
+                  selected={openTestDate}
+                  onChange={(dateOp: any) => {
+                    setValue('openTestDate', dateOp as Date);
+                    setOpenTestDate(dateOp as Date);
+                  }}
+                />
+              </div>
+              <div className="form-group">
+                <Label>
+                  Fecha de cierre
+                </Label>
+                <ReactDatePicker
+                  {...register('closeTestDate', { required: true })}
+                  selected={closeTestDate}
+                  onChange={(dateCl: any) => {
+                    setValue('closeTestDate', dateCl as Date);
+                    setCloseTestDate(dateCl as Date);
+                  }}
+                />
+              </div>
+              <div className="form-group d-flex align-items-center">
+                <Input
+                    className="itemCheck mb-0 mr-2"
+                    type="checkbox"
+                    id={`check_shuffleQuestions`}
+                    defaultChecked={data.shuffleQuestions}
+                    onChange={() => {
+                      setValue('shuffleQuestions', !data.shuffleQuestions);
+                    }}
+                    label=""
+                  />
+                  <span>Preguntas aleatorias</span>
+                </div>
+                <div className="form-group">
+                <Label>
+                  Método de navegación
+                </Label>
+                <Select
+                  placeholder={<IntlMessages id="forms.select" />}
+                  {...register('navigationMethod', { required: true })}
+                  className="react-select"
+                  classNamePrefix="react-select"
+                  options={navigationMethodList}
+                  value={navigationMethod}
+                  onChange={(selectedOption) => {
+                    setValue('navigationMethod', selectedOption?.key);
+                    setNavigationMethod(selectedOption);
+                  }}
+                />
+              </div>
+                </>
+                : ''
+              }
               <div className="form-group">
                 <Label>
                   <IntlMessages id="menu.evaluativeComponent" />

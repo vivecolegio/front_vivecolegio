@@ -106,6 +106,10 @@ export const QUERY_GET_EXPERIENCE_LEARNING = gql`
       dateDelivery
       criteria
       onlineDelivery
+      closeTestDate
+      openTestDate
+      shuffleQuestions
+      navigationMethod
       experienceLearningPerformanceLevel {
         criteria
         performanceLevelId
@@ -224,6 +228,28 @@ export const QUERY_GET_DROPDOWNS_EXPERIENCE_LEARNING = gql`
           weight
         }
       }
-    }
+    }    
   }
+`;
+
+export const QUERY_GET_ALL_NAVIGATION_METHOD_QUESTION_TEST_ONLINE = gql`
+    query getAllNavigationMethodTestOnline {
+      __type(name: "NavigationMethodTestOnline") {
+        name
+        enumValues {
+          name
+        }
+      }
+    }
+`;
+
+export const QUERY_GET_ALL_EXPERIENCE_TYPE = gql`
+    query getAllExperienceType {
+      __type(name: "ExperienceType") {
+        name
+        enumValues {
+          name
+        }
+      }
+    }
 `;

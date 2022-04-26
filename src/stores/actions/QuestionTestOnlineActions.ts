@@ -1,7 +1,7 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
 import { MUTATION_CHANGE_ACTIVE_QUESTION_TEST_ONLINE, MUTATION_CREATE_QUESTION_TEST_ONLINE, MUTATION_DELETE_QUESTION_TEST_ONLINE, MUTATION_UPDATE_QUESTION_TEST_ONLINE } from '../graphql/QuestionTestOnline/QuestionTestOnlineMutations';
-import { QUERY_GET_ALL_QUESTION_TEST_ONLINE, QUERY_GET_QUESTION_TEST_ONLINE, QUERY_GET_DROPDOWNS_QUESTION_TEST_ONLINE } from '../graphql/QuestionTestOnline/QuestionTestOnlineQueries';
+import { QUERY_GET_ALL_QUESTION_TEST_ONLINE, QUERY_GET_QUESTION_TEST_ONLINE, QUERY_GET_DROPDOWNS_QUESTION_TEST_ONLINE, QUERY_GET_ALL_QUESTION_TYPES } from '../graphql/QuestionTestOnline/QuestionTestOnlineQueries';
 
 
 export const getListAllQuestionTestOnline = (campusId: string) => {
@@ -17,6 +17,25 @@ export const getListAllQuestionTestOnline = (campusId: string) => {
         })
         .then((result: any) => {
           listData = result.data.data.edges;
+        });
+      return listData;
+    } catch (error) {
+      createNotification('error', 'error', '');
+      return error;
+    }
+  };
+};
+
+export const getListAllQuestionTypes = () => {
+  return async (dispatch: any) => {
+    try {
+      let listData = {};
+      await client
+        .query({
+          query: QUERY_GET_ALL_QUESTION_TYPES,
+        })
+        .then((result: any) => {
+          listData = result.data.__type.enumValues;
         });
       return listData;
     } catch (error) {

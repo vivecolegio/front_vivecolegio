@@ -6,6 +6,7 @@ import { COLUMN_LIST } from '../../../constants/ExperienceLearning/experienceLea
 import { createNotification } from '../../../helpers/Notification';
 import * as experienceLearningActions from '../../../stores/actions/ExperienceLearningActions';
 import DataList from '../../common/Data/DataList';
+import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
 import ExperienceLearningCreateEdit from './ExperienceLearningCreateEdit';
 
 const ExperienceLearningList = (props: any) => {
@@ -27,8 +28,6 @@ const ExperienceLearningList = (props: any) => {
 
   let [params] = useSearchParams();
   const academicAsignatureCourseId = params.get('academicAsignatureCourseId');
-  const asignatureName = params.get('asignatureName');
-  const gradeName = params.get('gradeName');
 
   const [data, setData] = useState(null);
   useEffect(() => {
@@ -143,30 +142,30 @@ const ExperienceLearningList = (props: any) => {
     switch (btn?.action) {
       case 'TRADITIONALVALUATION':
         goToChildren(
-          `/traditionalValuation?courseId=${item?.academicAsignatureCourse?.courseId}&learningId=${item?.id}&learningName=${item?.title}&asignatureName=${item?.academicAsignatureCourse?.academicAsignature?.name}&courseName=${item?.academicAsignatureCourse?.course?.name}&gradeName=${item?.academicAsignatureCourse?.course?.academicGrade?.name}`,
+          `/traditionalValuation?learningId=${item?.id}&academicAsignatureCourseId=${item?.academicAsignatureCourseId}`,
         );
         break;
       case 'SELFAPPRAISAL':
         goToChildren(
-          `/selfValuation?courseId=${item?.academicAsignatureCourse?.courseId}&learningId=${item?.id}&learningName=${item?.title}&asignatureName=${item?.academicAsignatureCourse?.academicAsignature?.name}&courseName=${item?.academicAsignatureCourse?.course?.name}&gradeName=${item?.academicAsignatureCourse?.course?.academicGrade?.name}`,
+          `/selfValuation?learningId=${item?.id}&academicAsignatureCourseId=${item?.academicAsignatureCourseId}`,
         );
         break;
       case 'VALUATIONRUBRIC':
         if(btn.type === 'CRITERIA'){          
           goToChildren(
-            `/rubricCriteria?courseId=${item?.academicAsignatureCourse?.courseId}&learningId=${item?.id}&learningName=${item?.title}&asignatureName=${item?.academicAsignatureCourse?.academicAsignature?.name}&courseName=${item?.academicAsignatureCourse?.course?.name}&gradeName=${item?.academicAsignatureCourse?.course?.academicGrade?.name}`,
+            `/rubricCriteria?learningId=${item?.id}&academicAsignatureCourseId=${item?.academicAsignatureCourseId}`,
           );
         } else {
           goToChildren(
-            `/rubricValuation?courseId=${item?.academicAsignatureCourse?.courseId}&learningId=${item?.id}&learningName=${item?.title}&asignatureName=${item?.academicAsignatureCourse?.academicAsignature?.name}&courseName=${item?.academicAsignatureCourse?.course?.name}&gradeName=${item?.academicAsignatureCourse?.course?.academicGrade?.name}`,
+            `/rubricValuation?learningId=${item?.id}&academicAsignatureCourseId=${item?.academicAsignatureCourseId}`,
           );
         }
         break;
       case 'COEVALUATION':
         goToChildren(
           role !== 'ESTUDIANTE' ? 
-          `/coEvaluation?courseId=${item?.academicAsignatureCourse?.courseId}&learningId=${item?.id}&learningName=${item?.title}&asignatureName=${item?.academicAsignatureCourse?.academicAsignature?.name}&courseName=${item?.academicAsignatureCourse?.course?.name}&gradeName=${item?.academicAsignatureCourse?.course?.academicGrade?.name}`
-          :  `/coEvaluationStudents?courseId=${item?.academicAsignatureCourse?.courseId}&learningId=${item?.id}&learningName=${item?.title}&asignatureName=${item?.academicAsignatureCourse?.academicAsignature?.name}&courseName=${item?.academicAsignatureCourse?.course?.name}&gradeName=${item?.academicAsignatureCourse?.course?.academicGrade?.name}`,
+          `/coEvaluation?courseId=${item?.academicAsignatureCourse?.courseId}&learningId=${item?.id}&academicAsignatureCourseId=${item?.academicAsignatureCourseId}`
+          :  `/coEvaluationStudents?courseId=${item?.academicAsignatureCourse?.courseId}&learningId=${item?.id}&academicAsignatureCourseId=${item?.academicAsignatureCourseId}`,
         ); 
         break;
       default:
@@ -242,26 +241,7 @@ const ExperienceLearningList = (props: any) => {
             header={
               <>
                 <div className="d-flex justify-content-between mt-4 align-items-center">
-                <div className="mt-4">
-                  <div className="d-flex flex-row">
-                    <span className="mb-0 text-muted mr-4 border-b-info">
-                      <span>Asignatura:</span>{' '}
-                      <h2 className="text-info font-bold">{asignatureName}</h2>
-                    </span>
-                    <span className="mb-0 text-muted border-b-green">
-                      Grado: <h2 className="text-green font-bold">{gradeName}</h2>
-                    </span>
-                  </div>
-                  <p
-                    className="text-muted mt-2 d-flex align-items-center cursor-pointer"
-                    onClick={() => {
-                      return goTo('/myClasses');
-                    }}
-                  >
-                    <i className="simple-icon-arrow-left-circle mr-2"></i>
-                    Regresar a mis clases
-                  </p>
-                </div>
+                <HeaderInfoAcademic asignature grade goTitle="Regresar a mis clases" academicAsignatureCourseId={academicAsignatureCourseId}/>        
                   <div>
                     {academicPeriods
                       ? academicPeriods.map((item: any) => {

@@ -6,7 +6,7 @@ import { createNotification } from '../../../helpers/Notification';
 import * as academicIndicatorActions from '../../../stores/actions/AcademicAsignatureCourseActions';
 import DataList from '../../common/Data/DataList';
 
-const AcademicAsignatureCourseList = (props: any) => {
+const QuestionsBankTestOnline = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
   const [columns, setColumns] = useState(COLUMN_LIST);
   const [modalOpen, setModalOpen] = useState(false);
@@ -120,14 +120,19 @@ const AcademicAsignatureCourseList = (props: any) => {
 
   const additionalFunction = async (item: any, btn: any) => {
     switch (btn?.action) {
-      case 'goToChildrenExperience':
+      case 'goToChildrenStandard':
         goToChildren(
-          `/experienceLearning?gradeId=${item?.course?.academicGradeId}&asignatureId=${item.academicAsignatureId}&academicAsignatureCourseId=${item?.id}`,
+          `/standardAcademic?gradeId=${item?.course?.academicGradeId}&asignatureId=${item.academicAsignatureId}&academicAsignatureCourseId=${item?.id}`,
         );
         break;
-      case 'goToChildrenValuations':
+      case 'goToChildrenDBA':
         goToChildren(
-          `/spreadsheet?gradeId=${item?.course?.academicGradeId}&gradeName=${item?.course?.academicGrade?.name}&courseName=${item?.course?.name}&courseId=${item?.course?.id}&academicAsignatureCourseId=${item?.id}&asignatureId=${item.academicAsignatureId}&asignatureName=${item.academicAsignature?.name}&academicAsignatureCourseId=${item?.id}`,
+          `/dba?gradeId=${item?.course?.academicGrade?.generalAcademicGradeId}&asignatureId=${item.academicAsignature?.generalAcademicAsignatureId}&academicAsignatureCourseId=${item?.id}`,
+        );
+        break;
+      case 'goToChildrenLearning':
+        goToChildren(
+          `/learning?gradeGeneralId=${item?.course?.academicGrade?.generalAcademicGradeId}&gradeId=${item?.course?.academicGradeId}&asignatureId=${item.academicAsignatureId}&asignatureGeneralId=${item.academicAsignature?.generalAcademicAsignatureId}&academicAsignatureCourseId=${item?.id}`,
         );
         break;
       default:
@@ -159,28 +164,21 @@ const AcademicAsignatureCourseList = (props: any) => {
             childrenButtons={[
               {
                 id: 0,
-                label: 'Experiencias de aprendizaje',
+                label: 'Categorías',
                 color: 'secondary',
-                icon: 'iconsminds-blackboard',
-                action: 'goToChildrenExperience',
+                icon: 'iconsminds-bookmark',
+                action: '',
               },
               {
                 id: 1,
-                label: 'Plan de nivelación',
+                label: 'Preguntas',
                 color: 'info',
-                icon: 'iconsminds-handshake',
-                action: 'goToChildren',
-              },
-              {
-                id: 2,
-                label: 'Valoraciones',
-                color: 'warning',
-                icon: 'iconsminds-letter-open',
-                action: 'goToChildrenValuations',
-              },
+                icon: 'iconsminds-speach-bubble-asking',
+                action: '',
+              },            
             ]}
             withChildren={true}
-          />
+          />          
         </>
       ) : (
         <></>
@@ -194,4 +192,4 @@ const mapStateToProps = ({ loginReducer }: any) => {
   return { loginReducer };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AcademicAsignatureCourseList);
+export default connect(mapStateToProps, mapDispatchToProps)(QuestionsBankTestOnline);

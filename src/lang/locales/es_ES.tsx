@@ -186,6 +186,7 @@ const esMessages = {
   'menu.rubricCriteria': 'Criterios de rúbrica', 
   'menu.questionCategoryTestOnline': 'Categorías de preguntas - test online', 
   'menu.questionTestOnline': 'Preguntas - test online', 
+  'menu.questionsBank': 'Banco de preguntas', 
   'forms.inputRequired': 'Campo Requerido',
   'forms.cancel': 'Cancelar',
   'forms.auditInformation': 'Información Auditoria',

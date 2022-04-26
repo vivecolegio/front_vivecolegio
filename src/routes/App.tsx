@@ -51,6 +51,7 @@ import MunicipalityList from '../components/app/Municipality/MunicipalityList';
 import MyClasessList from '../components/app/MyClasses/MyClasessList';
 import Profile from '../components/app/Profile/Profile';
 import QuestionCategoryTestOnlineList from '../components/app/QuestionCategoryTestOnline/QuestionCategoryTestOnlineList';
+import QuestionsBankTestOnline from '../components/app/QuestionsBankTestOnline/QuestionsBankTestOnline';
 import QuestionTestOnlineList from '../components/app/QuestionTestOnline/QuestionTestOnlineList';
 import RoleList from '../components/app/Role/RoleList';
 import RubricCriteriaList from '../components/app/RubricCriteria/RubricCriteriaList';
@@ -190,6 +191,7 @@ const App = (props: any) => {
                     <Route path="/spreadsheet" element={ <Spreadsheet/> } />
                     <Route path="/questionCategoryTestOnline" element={ <QuestionCategoryTestOnlineList/> } />
                     <Route path="/questionTestOnline" element={ <QuestionTestOnlineList/> } />
+                    <Route path="/questionsBank" element={ <QuestionsBankTestOnline/> } />
                     {/* ACADEMIC */} 
                     {/* APPLICATIONS */} 
                     <Route path="/chat" element={ <ChatApp/> } />

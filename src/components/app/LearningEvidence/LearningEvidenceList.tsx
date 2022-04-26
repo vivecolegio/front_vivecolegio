@@ -6,6 +6,7 @@ import { COLUMN_LIST } from '../../../constants/LearningEvidence/learningEvidenc
 import { createNotification } from '../../../helpers/Notification';
 import * as learningEvidenceActions from '../../../stores/actions/LearningEvidenceActions';
 import DataList from '../../common/Data/DataList';
+import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
 import LearningEvidenceCreateEdit from './LearningEvidenceCreateEdit';
 
 const LearningEvidenceList = (props: any) => {
@@ -17,9 +18,7 @@ const LearningEvidenceList = (props: any) => {
 
   let [params] = useSearchParams();
   const  learningId  = params.get('learningId');
-  const  learningName  = params.get('learningName');
-  const  asignatureName  = params.get('asignatureName');
-  const  gradeName = params.get('gradeName');
+  const  academicAsignatureCourseId  = params.get('academicAsignatureCourseId');
 
   const [data, setData] = useState(null);
   useEffect(() => {
@@ -125,24 +124,7 @@ const LearningEvidenceList = (props: any) => {
             changeActiveDataAll={changeActiveDataAll}
             header={
               <>
-                <div className='mt-4'>
-                <div className="d-flex flex-row">
-                  <span className="mb-0 text-muted mr-4 border-b-info">
-                      <span>Asignatura:</span>{' '}
-                      <h2 className="text-info font-bold">{asignatureName}</h2>
-                    </span>
-                    <span className="mb-0 text-muted mr-4 border-b-green">
-                      Grado: <h2 className="text-green font-bold">{gradeName}</h2>
-                    </span>
-                    <span className="mb-0 text-muted border-b-blue w-50">
-                      Aprendizaje: <p className="text-blue font-bold">{learningName}</p>
-                    </span>
-                </div>
-                  <p className='text-muted mt-2 d-flex align-items-center cursor-pointer' onClick={() => {return goTo()}}>
-                    <i className='simple-icon-arrow-left-circle mr-2'></i>
-                    Regresar a aprendizajes
-                  </p>
-                </div>
+                <HeaderInfoAcademic asignature grade learning goTitle="Regresar a aprendizajes" learningId={learningId} academicAsignatureCourseId={academicAsignatureCourseId}/>        
               </>
             }
           />

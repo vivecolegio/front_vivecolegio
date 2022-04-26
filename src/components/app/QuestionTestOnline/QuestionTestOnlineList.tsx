@@ -110,6 +110,16 @@ const QuestionTestOnlineList = (props: any) => {
             changeActiveData={changeActiveData}
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
+            childrenButtons={[
+              {
+                id: 0,
+                label: 'Ver simulación',
+                color: 'info',
+                icon: 'iconsminds-preview',
+                action: '',
+              },             
+            ]}
+            withChildren={true}
           />
           <QuestionTestOnlineCreateEdit
             data={data}
