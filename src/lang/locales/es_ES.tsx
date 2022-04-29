@@ -187,6 +187,8 @@ const esMessages = {
   'menu.questionCategoryTestOnline': 'Categorías de preguntas - test online', 
   'menu.questionTestOnline': 'Preguntas - test online', 
   'menu.questionsBank': 'Banco de preguntas', 
+  'menu.classroomPlan': 'Plan de aula', 
+  'menu.classroomPlanDetail': 'Plan de aula', 
   'forms.inputRequired': 'Campo Requerido',
   'forms.cancel': 'Cancelar',
   'forms.auditInformation': 'Información Auditoria',

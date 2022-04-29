@@ -22,6 +22,8 @@ import Survey from '../components/app/Aplications/Survey/Survey';
 import SurveyDetail from '../components/app/Aplications/Survey/SurveyDetail';
 import { default as AcademicIndicatorList, default as BasicLearningDutiesList } from '../components/app/BasicLearningDuties/BasicLearningDutiesList';
 import CampusList from '../components/app/Campus/CampusList';
+import ClassroomPlan from '../components/app/ClassroomPlan/ClassroomPlan';
+import ClassroomPlanDetail from '../components/app/ClassroomPlan/ClassroomPlanDetail';
 import CoEvaluation from '../components/app/CoEvaluation/CoEvaluation';
 import CoEvaluationStudents from '../components/app/CoEvaluationStudents/CoEvaluationStudents';
 import ComponentEvaluativeList from '../components/app/ComponentEvaluative/ComponentEvaluativeList';
@@ -192,6 +194,8 @@ const App = (props: any) => {
                     <Route path="/questionCategoryTestOnline" element={ <QuestionCategoryTestOnlineList/> } />
                     <Route path="/questionTestOnline" element={ <QuestionTestOnlineList/> } />
                     <Route path="/questionsBank" element={ <QuestionsBankTestOnline/> } />
+                    <Route path="/classroomPlan" element={ <ClassroomPlan/> } />
+                    <Route path="/classroomPlanDetail" element={ <ClassroomPlanDetail/> } />
                     {/* ACADEMIC */} 
                     {/* APPLICATIONS */} 
                     <Route path="/chat" element={ <ChatApp/> } />

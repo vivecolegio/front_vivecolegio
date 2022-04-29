@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
-import * as academicIndicatorActions from '../../../stores/actions/AcademicAsignatureCourseActions';
+import * as academicAsignatureCourseActions from '../../../stores/actions/AcademicAsignatureCourseActions';
 import * as studentActions from '../../../stores/actions/StudentActions';
 import * as learningActions from '../../../stores/actions/LearningActions';
 import * as experienceLearningActions from '../../../stores/actions/ExperienceLearningActions';
@@ -50,12 +50,12 @@ const HeaderInfoAcademic = (props: any) => {
           <div className="d-flex flex-row">
             {asignature ? 
             <span className="mb-0 text-muted mr-4 border-b-info">
-              <span>Asignatura:</span> <h2 className="text-info font-bold">{data?.academicAsignature?.name}</h2>
+              <span>Área:</span> <h2 className="text-info font-bold">{data?.academicAsignature?.name}</h2>
             </span>
             : ''}
             {asignatureGeneral ? 
             <span className="mb-0 text-muted mr-4 border-b-info">
-              <span>Asignatura:</span> <h2 className="text-info font-bold">{data?.academicAsignature?.generalAcademicAsignature?.name}</h2>
+              <span>Área:</span> <h2 className="text-info font-bold">{data?.academicAsignature?.generalAcademicAsignature?.name}</h2>
             </span>
             : ''}
             {cicle ? 
@@ -70,7 +70,7 @@ const HeaderInfoAcademic = (props: any) => {
             : ''}
             { course ? 
             <span className="mb-0 text-muted mr-4 border-b-orange">
-              Curso: <h2 className="text-orange font-bold">{data?.course?.name}</h2>
+              Grupo: <h2 className="text-orange font-bold">{data?.course?.name}</h2>
             </span>
             : ''}
             { modality ? 
@@ -117,7 +117,7 @@ const HeaderInfoAcademic = (props: any) => {
   );
 };
 
-const mapDispatchToProps = { ...academicIndicatorActions, ...studentActions, ...experienceLearningActions, ...learningActions };
+const mapDispatchToProps = { ...academicAsignatureCourseActions, ...studentActions, ...experienceLearningActions, ...learningActions };
 
 const mapStateToProps = ({ loginReducer }: any) => {
   return { loginReducer };

@@ -474,6 +474,10 @@ body.background {
   border-bottom: 1px solid #48a9f8;
 }
 
+.border-l-blue{
+  border-left: 1px solid #48a9f8;
+}
+
 .border-b-orange{
   border-bottom: 1px solid #ff6746;
 }
@@ -484,4 +488,9 @@ body.background {
 
 .bg-warning-light{
   background: #f5ffb6;
+}
+
+.table-cell-info {
+  background: #f3f3f3 !important;
+  font-weight: bold;
 }

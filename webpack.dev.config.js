@@ -9,14 +9,14 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'js/[id].js',
-    publicPath: 'http://localhost/',
+    publicPath: 'http://localhost:3000/',
     chunkFilename: 'js/[id].[chunkhash].js',
   },
   devServer: {
     // publicPath: '/',
     // contentBase: path.resolve(__dirname, 'dist'),
     open: true,
-    port: 80,
+    port: 3000,
     // hotOnly: true,
   },
   optimization: {
