@@ -71,7 +71,7 @@ const ExperienceLearningRubricCriteriaCreateEdit = (props: any) => {
       .then((data: any) => {
         setExperienceLearning(data?.dataExperienceLearning);
         setEvidencesLearning(
-          data?.dataExperienceLearning?.evidenciceLearnings.map((c: any) => {
+          data?.dataExperienceLearning?.evidenceLearnings.map((c: any) => {
             return { label: c?.statement, value: c?.id, key: c?.id };
           }),
         );

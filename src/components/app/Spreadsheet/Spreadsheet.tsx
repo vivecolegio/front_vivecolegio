@@ -84,6 +84,7 @@ const SpreadsheetList = (props: any) => {
       let obj: any = [];
       let nts: any = [];
       let avrgs: any = [];
+      let avrgsFinal: any = [];
       let levels: any = [];
 
       await props
@@ -106,7 +107,19 @@ const SpreadsheetList = (props: any) => {
             props
               .getAllAcademicAsignatureCoursePeriodValuation(periodId, academicAsignatureCourseId)
               .then(async (notesFinal: any) => {
-                setAveragesFinal(notesFinal.data);
+                avrgsFinal = avrgsFinal.concat(notesFinal.data.edges.map((l: any) => {
+                  const perf = levels?.find((p: any) => {
+                    return (
+                      l?.node.assessment &&
+                      l?.node?.assessment <= p.node.topScore &&
+                      l?.node?.assessment >= p.node.minimumScore
+                    );
+                  });
+                  l.node.performance = perf?.node?.name;
+                  return l;
+                }));
+
+                setAveragesFinal(avrgsFinal);
               });
           });
         setAcademicPeriods(listData.dataAcademicPeriods.edges);
@@ -454,12 +467,12 @@ const SpreadsheetList = (props: any) => {
                             );
                           })}
                           <td className="text-center vertical-middle">                            
-                            {averages.find((n: any) => item?.id === n?.node?.studentId)?.node
-                              ?.assessment || '--'}
+                            {averagesFinal.find((n: any) => item?.id === n?.node?.studentId)?.node
+                              ?.assessment || ''} 
                           </td>
                           <td className="text-center vertical-middle">
                             <Badge color="primary" className="font-0-8rem">
-                              {averages.find(
+                              {averagesFinal.find(
                                 (c: any) => c?.node?.studentId === item?.id,
                               )?.node?.performance || '--'}
                             </Badge>
