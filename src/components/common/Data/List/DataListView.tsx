@@ -41,6 +41,23 @@ const DataListView = ({
                 );
               })}
               <p className={"mb-0 flex-gap text-muted text-small"} style={{ 'width':columns[columns.length - 1].width }}>
+                {withChildren === true ? (
+                  (filterChildren ? childrenButtons.filter((c:any)=>{return (c.action === item[filterChildren])}) : childrenButtons).map((button:any) => {
+                    return<> 
+                    <Button
+                      key={button.id}
+                      color={button.color}
+                      size="xs"
+                      onClick={() => {
+                         return additionalFunction(item, button);
+                      }}>
+                      <i className={button.icon + ' font-1rem mr-2'} />
+                      {button.label}
+                    </Button> {' '}</>
+                  })
+                ) : (
+                  ''
+                )}
                 { currentMenu.updateAction ? 
                 <Button
                   color="blue"
@@ -75,23 +92,7 @@ const DataListView = ({
                   <i className={item.active ? 'simple-icon-close font-1rem mr-2' : 'simple-icon-check font-1rem mr-2'} />
                   {item.active ? <IntlMessages id="pages.inactivate" /> : <IntlMessages id="pages.activate" />}
                 </Button> : '' }{' '}          
-                {withChildren === true ? (
-                  (filterChildren ? childrenButtons.filter((c:any)=>{return (c.action === item[filterChildren])}) : childrenButtons).map((button:any) => {
-                    return<> 
-                    <Button
-                      key={button.id}
-                      color={button.color}
-                      size="xs"
-                      onClick={() => {
-                         return additionalFunction(item, button);
-                      }}>
-                      <i className={button.icon + ' font-1rem mr-2'} />
-                      {button.label}
-                    </Button> {' '}</>
-                  })
-                ) : (
-                  ''
-                )}
+                
               </p>
             </div>
             <div className="custom-control custom-checkbox pl-1 align-self-center pr-4">
