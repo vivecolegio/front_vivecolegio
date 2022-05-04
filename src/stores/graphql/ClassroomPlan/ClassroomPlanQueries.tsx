@@ -24,6 +24,13 @@ export const QUERY_GET_CLASSROOM_PLAN = gql`
       version
       startDate
       endDate
+      campus {
+        school {
+          pedagogicalModel
+          educationalModel
+          curricularComponent
+        }
+      }
       createdAt
       updatedAt
       createdByUser {

@@ -13,6 +13,7 @@ import { Colxx } from '../../common/CustomBootstrap';
 import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
 import EditorHTML from '../../common/EditorHTML';
 import ReactDatePicker from 'react-datepicker';
+import moment from 'moment';
 
 
 const ClassroomPlanDetail = (props: any) => {
@@ -38,9 +39,8 @@ const ClassroomPlanDetail = (props: any) => {
     if(id) {
       getData(id);
     } else {
-      props.saveNewClassroomPlan({academicAsignatureCourseId: academicAsignatureCourseId, campusId: props?.loginReducer?.campusId}).then((ncp: any) => {
-        getData(ncp);
-        console.log(ncp)
+      props.saveNewClassroomPlan({academicAsignatureCourseId: academicAsignatureCourseId, campusId: props?.loginReducer?.campusId}).then((ncp: any) => {        
+        getData(ncp);        
       });
     }
     props.getListAllAcademicPeriodOrder(props?.loginReducer?.schoolId).then((listData: any) => {
@@ -59,7 +59,16 @@ const ClassroomPlanDetail = (props: any) => {
 
   const getData = async (idCp:string) => {
     props.dataClassroomPlan(idCp).then((cp: any) => {
-      setClassroomPlan(cp);
+      console.log(cp)
+      setClassroomPlan(cp?.data);
+    });
+  };
+
+  const saveNewClassroomPlan = async (data:any) => {
+    props.updateClassroomPlan(data, classroomPlan?.id).then((resp: any) => {
+      console.log(resp)
+      setShowInputDates(false);
+      getData(classroomPlan?.id);
     });
   };
 
@@ -137,27 +146,37 @@ const ClassroomPlanDetail = (props: any) => {
               <i onClick={() => setShowInputDates(!showInputDates)} className={'simple-icon-pencil text-green ml-2'} />
               <div className='p-3'>
                 { !showInputDates ?
+                <>
                 <h3 className="card-text text-info font-weight-bold mb-0 mt-2">
-                   {classroomPlan?.startDate} - {classroomPlan?.endDate}
+                   {moment(classroomPlan?.startDate).format('YYYY-MM-DD')} - {moment(classroomPlan?.endDate).format('YYYY-MM-DD')}
                 </h3>
+                   <p className="text-center font-weight-semibold mb-0">Fecha de inicio y fin</p>
+                   </>
                 : <>
-                  <div className='d-flex flex-column'>
-                      <ReactDatePicker
-                      selected={startDate}
-                      onChange={(date) => {
-                        setStartDate(date as Date);
-                      }}
-                    />
-                    <ReactDatePicker
-                      selected={endDate}
-                      onChange={(date) => {                        
-                        setEndDate(date as Date);
-                      }}
-                    />
+                  <div className=''>
+                  <ReactDatePicker
+                            selected={startDate}
+                            selectsRange
+                            startDate={startDate}
+                            endDate={endDate}
+                            onChange={(dates) => {
+                              const [start, end] = dates;
+                              setStartDate(start);
+                              setEndDate(end);
+                            }}
+                          />
+                      <Button color="green" onClick={(dates) => {
+                              let obj = {
+                                startDate: startDate, 
+                                endDate: endDate 
+                                };
+                              saveNewClassroomPlan(obj);
+                            }} className='btn-xs ml-2 mt-2'>
+                        Guardar
+                      </Button>
                   </div>
                 </>
                 }
-                <p className="text-center font-weight-semibold mb-0">Fecha de inicio y fin</p>
               </div>
             </CardBody>
           </Card>
@@ -165,9 +184,9 @@ const ClassroomPlanDetail = (props: any) => {
         <Colxx lg="12" xl="12" className="mb-4 rounded">
           <Card>
             <CardBody className="p-2 pl-4">             
-              <p className="font-weight-semibold mb-1 mt-1">Enfoque y/o modelo pedagógico institucional:</p>           
-              <p className="font-weight-semibold mb-1">Modelo educativo:</p>           
-              <p className="font-weight-semibold mb-1">Componente curricular:</p>           
+              <p className="font-weight-semibold mb-1 mt-1">Enfoque y/o modelo pedagógico institucional: {classroomPlan?.campus?.school?.pedagogicalModel}</p>           
+              <p className="font-weight-semibold mb-1">Modelo educativo: {classroomPlan?.campus?.school?.educationalModel}</p>           
+              <p className="font-weight-semibold mb-1">Componente curricular: {classroomPlan?.campus?.school?.curricularComponent}</p>           
             </CardBody>
           </Card>
         </Colxx>     

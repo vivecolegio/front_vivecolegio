@@ -1,3 +1,4 @@
+import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
@@ -27,11 +28,8 @@ const ClassroomPlanList = (props: any) => {
       .then((listData: any) => {
         setDataTable(
           listData.map((c: any) => {
-            c.node.course_format = c.node.course ? c.node.course.name : '';
-            c.node.grade_format = c?.node?.course?.academicGrade?.name;
-            c.node.asignature_format = c.node.academicAsignature
-              ? c.node.academicAsignature.name
-              : '';
+            c.node.startDate = c.node.startDate ? moment(c?.node?.startDate).format('YYYY-MM-DD') : '';
+            c.node.endDate = c.node.endDate ? moment(c?.node?.endDate).format('YYYY-MM-DD') : '';
             return c;
           }),
         );
@@ -44,11 +42,8 @@ const ClassroomPlanList = (props: any) => {
       .then((listData: any) => {
         setDataTable(
           listData.map((c: any) => {
-            c.node.course_format = c.node.course ? c.node.course.name : '';
-            c.node.grade_format = c?.node?.course?.academicGrade?.name;
-            c.node.asignature_format = c.node.academicAsignature
-              ? c.node.academicAsignature.name
-              : '';
+            c.node.startDate = c.node.startDate ? moment(c?.node?.startDate).format('YYYY-MM-DD') : '';
+            c.node.endDate = c.node.endDate ? moment(c?.node?.endDate).format('YYYY-MM-DD') : '';
             return c;
           }),
         );
