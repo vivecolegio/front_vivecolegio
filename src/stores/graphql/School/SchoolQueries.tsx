@@ -23,6 +23,9 @@ export const QUERY_GET_SCHOOL = gql`
       id
       name
       daneCode
+      pedagogicalModel
+      educationalModel
+      curricularComponent
       version
       createdAt
       updatedAt

@@ -190,6 +190,7 @@ const enMessages = {
   'menu.questionsBank': 'Questions Bank', 
   'menu.classroomPlan': 'Classroom Plan', 
   'menu.classroomPlanDetail': 'Classroom Plan', 
+  'menu.listClassroomPlans': 'Classroom Plans', 
   'list.activate': 'Active',
   'list.inactivate': 'Inactive',
   'forms.inputRequired': 'Field Required',

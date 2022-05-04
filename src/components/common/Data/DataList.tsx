@@ -54,6 +54,7 @@ const DataList = (props: any) => {
     roleMenus.map((c:any) => {   
       return submenus = submenus.concat(c.menuItemsLogin);      
     });
+    console.log(submenus)
     let cm = submenus.find((c:any)=>{return (currentUrl.includes(c.module.url))});
     if(cm && cm.readAction){
       setCurrentMenu(cm);
@@ -61,6 +62,7 @@ const DataList = (props: any) => {
       history(`/home`);
       createNotification('warning', 'notPermissions', '');
     } 
+    console.log(cm)
   }, [selectedPageSize, selectedOrderOption]);
 
   useEffect(() => {

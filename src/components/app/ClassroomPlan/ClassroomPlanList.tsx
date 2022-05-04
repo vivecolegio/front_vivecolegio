@@ -1,22 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
-import { COLUMN_LIST } from '../../../constants/AcademicAsignatureCourse/AcademicAsignatureCourseConstants';
+import { useSearchParams } from 'react-router-dom';
+import { Button } from 'reactstrap';
+import { COLUMN_LIST } from '../../../constants/ClassroomPlan/ClassroomPlanConstants';
 import { createNotification } from '../../../helpers/Notification';
-import * as academicIndicatorActions from '../../../stores/actions/AcademicAsignatureCourseActions';
+import * as classroomPlanActions from '../../../stores/actions/ClassroomPlanActions';
 import DataList from '../../common/Data/DataList';
+import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
 
-const ClassroomPlan = (props: any) => {
+const ClassroomPlanList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
   const [columns, setColumns] = useState(COLUMN_LIST);
   const [modalOpen, setModalOpen] = useState(false);
 
   let navigate = useNavigate();
 
+  let [params] = useSearchParams();
+  const academicAsignatureCourseId = params.get('academicAsignatureCourseId');
+  const courseId = params.get('courseId');
+
   const [data, setData] = useState(null);
   useEffect(() => {
     props
-      .getListAllAcademicAsignatureCourse(props?.loginReducer?.campusId)
+      .getListAllClassroomPlan(academicAsignatureCourseId)
       .then((listData: any) => {
         setDataTable(
           listData.map((c: any) => {
@@ -33,7 +40,7 @@ const ClassroomPlan = (props: any) => {
 
   const getDataTable = async () => {
     props
-      .getListAllAcademicAsignatureCourse(props?.loginReducer?.campusId)
+      .getListAllClassroomPlan(academicAsignatureCourseId)
       .then((listData: any) => {
         setDataTable(
           listData.map((c: any) => {
@@ -56,14 +63,14 @@ const ClassroomPlan = (props: any) => {
   const onSubmit = async (dataForm: any) => {
     console.log(dataForm);
     if (data === null) {
-      await props.saveNewAcademicAsignatureCourse(dataForm).then((id: any) => {
+      await props.saveNewClassroomPlan(dataForm).then((id: any) => {
         if (id !== undefined) {
           setModalOpen(false);
           refreshDataTable();
         }
       });
     } else {
-      await props.updateAcademicAsignatureCourse(dataForm, data.id).then((id: any) => {
+      await props.updateClassroomPlan(dataForm, data.id).then((id: any) => {
         if (id !== undefined) {
           setModalOpen(false);
           setData(null);
@@ -74,20 +81,20 @@ const ClassroomPlan = (props: any) => {
   };
 
   const viewEditData = async (id: any) => {
-    await props.dataAcademicAsignatureCourse(id).then((formData: any) => {
+    await props.dataClassroomPlan(id).then((formData: any) => {
       setData(formData.data);
       setModalOpen(true);
     });
   };
 
   const changeActiveData = async (active: any, id: any) => {
-    await props.changeActiveAcademicAsignatureCourse(active, id, true).then((formData: any) => {
+    await props.changeActiveClassroomPlan(active, id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
 
   const deleteData = async (id: any) => {
-    await props.deleteAcademicAsignatureCourse(id, true).then((formData: any) => {
+    await props.deleteClassroomPlan(id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
@@ -122,7 +129,7 @@ const ClassroomPlan = (props: any) => {
     switch (btn?.action) {
       case 'goToChildren':
         goToChildren(
-          `/listClassroomPlans?academicAsignatureCourseId=${item?.id}&courseId=${item?.course?.id}`,
+          `/classroomPlanDetail?id=${item?.id}&academicAsignatureCourseId=${academicAsignatureCourseId}&courseId=${courseId}`,
         );
         break;      
       default:
@@ -154,13 +161,24 @@ const ClassroomPlan = (props: any) => {
             childrenButtons={[
               {
                 id: 0,
-                label: 'Plan de aula',
+                label: 'Ver plan',
                 color: 'info',
                 icon: 'iconsminds-library',
                 action: 'goToChildren',
               },              
             ]}
-            withChildren={true}
+            withChildren={true}    
+            header={
+              <>
+              <div className='d-flex align-items-center justify-content-between'>
+                <HeaderInfoAcademic asignature grade course modality goTitle="Regresar" academicAsignatureCourseId={academicAsignatureCourseId} />
+                <Button color="primary"  onClick={() => {return goToChildren( `/classroomPlanDetail?academicAsignatureCourseId=${academicAsignatureCourseId}&courseId=${courseId}`)}}>
+                  <i className='iconsminds-add-file mr-2'></i>
+                  Crear plan de aula
+                </Button>
+                </div>
+              </>
+            }      
           />          
         </>
       ) : (
@@ -169,10 +187,10 @@ const ClassroomPlan = (props: any) => {
     </>
   );
 };
-const mapDispatchToProps = { ...academicIndicatorActions };
+const mapDispatchToProps = { ...classroomPlanActions };
 
 const mapStateToProps = ({ loginReducer }: any) => {
   return { loginReducer };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ClassroomPlan);
+export default connect(mapStateToProps, mapDispatchToProps)(ClassroomPlanList);

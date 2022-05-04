@@ -5,32 +5,44 @@ import { useSearchParams } from 'react-router-dom';
 import { Button, Card, CardBody, Collapse, Row } from 'reactstrap';
 import { COLUMN_LIST } from '../../../constants/AcademicAsignatureCourse/AcademicAsignatureCourseConstants';
 import { createNotification } from '../../../helpers/Notification';
+import * as classroomPlanActions from '../../../stores/actions/ClassroomPlanActions';
 import * as academicAsignatureCourseActions from '../../../stores/actions/AcademicAsignatureCourseActions';
 import * as academicPeriodActions from '../../../stores/actions/AcademicPeriodActions';
 import * as courseActions from '../../../stores/actions/CourseActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
 import EditorHTML from '../../common/EditorHTML';
+import ReactDatePicker from 'react-datepicker';
 
 
 const ClassroomPlanDetail = (props: any) => {
-  const [dataTable, setDataTable] = useState(null);
-  const [columns, setColumns] = useState(COLUMN_LIST);
-  const [modalOpen, setModalOpen] = useState(false);
   const [academicPeriods, setAcademicPeriods] = useState(null);
   const [currentAcademicPeriod, setCurrentAcademicPeriod] = useState(null);
   const [cantStudents, setCantStudents] = useState(null);
   const [academicAsignatureCourse, setAcademicAsignatureCourse] = useState(null);
+  const [classroomPlan, setClassroomPlan] = useState(null);
   const [showingIndex, setShowIndex] = useState(0);
+  const [showInputDates, setShowInputDates] = useState(false);
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
 
   let navigate = useNavigate();
 
   let [params] = useSearchParams();
   const academicAsignatureCourseId = params.get('academicAsignatureCourseId');
   const courseId = params.get('courseId');
+  const id = params.get('id');
 
   const [data, setData] = useState(null);
   useEffect(() => {
+    if(id) {
+      getData(id);
+    } else {
+      props.saveNewClassroomPlan({academicAsignatureCourseId: academicAsignatureCourseId, campusId: props?.loginReducer?.campusId}).then((ncp: any) => {
+        getData(ncp);
+        console.log(ncp)
+      });
+    }
     props.getListAllAcademicPeriodOrder(props?.loginReducer?.schoolId).then((listData: any) => {
       setAcademicPeriods(listData.dataAcademicPeriods.edges);
     });
@@ -45,103 +57,10 @@ const ClassroomPlanDetail = (props: any) => {
     });
   }, []);
 
-  const getDataTable = async () => {
-    props
-      .getListAllAcademicAsignatureCourse(props?.loginReducer?.campusId)
-      .then((listData: any) => {
-        setDataTable(
-          listData.map((c: any) => {
-            c.node.course_format = c.node.course ? c.node.course.name : '';
-            c.node.grade_format = c?.node?.course?.academicGrade?.name;
-            c.node.asignature_format = c.node.academicAsignature
-              ? c.node.academicAsignature.name
-              : '';
-            return c;
-          }),
-        );
-      });
-  };
-
-  const refreshDataTable = async () => {
-    setDataTable(null);
-    await getDataTable();
-  };
-
-  const onSubmit = async (dataForm: any) => {
-    console.log(dataForm);
-    if (data === null) {
-      await props.saveNewAcademicAsignatureCourse(dataForm).then((id: any) => {
-        if (id !== undefined) {
-          setModalOpen(false);
-          refreshDataTable();
-        }
-      });
-    } else {
-      await props.updateAcademicAsignatureCourse(dataForm, data.id).then((id: any) => {
-        if (id !== undefined) {
-          setModalOpen(false);
-          setData(null);
-          refreshDataTable();
-        }
-      });
-    }
-  };
-
-  const viewEditData = async (id: any) => {
-    await props.dataAcademicAsignatureCourse(id).then((formData: any) => {
-      setData(formData.data);
-      setModalOpen(true);
+  const getData = async (idCp:string) => {
+    props.dataClassroomPlan(idCp).then((cp: any) => {
+      setClassroomPlan(cp);
     });
-  };
-
-  const changeActiveData = async (active: any, id: any) => {
-    await props.changeActiveAcademicAsignatureCourse(active, id, true).then((formData: any) => {
-      refreshDataTable();
-    });
-  };
-
-  const deleteData = async (id: any) => {
-    await props.deleteAcademicAsignatureCourse(id, true).then((formData: any) => {
-      refreshDataTable();
-    });
-  };
-
-  const deleteAll = async (items: any) => {
-    items.map(async (item: any) => {
-      await props.deleteUser(item.id, false).then(
-        () => { },
-        () => {
-          createNotification('error', 'error', '');
-        },
-      );
-    });
-    refreshDataTable();
-    createNotification('success', 'success', '');
-  };
-
-  const changeActiveDataAll = async (items: any) => {
-    items.map(async (item: any) => {
-      await props.changeActiveUser(!item.active, item.id, false).then(
-        () => { },
-        () => {
-          createNotification('error', 'error', '');
-        },
-      );
-    });
-    refreshDataTable();
-    createNotification('success', 'success', '');
-  };
-
-  const additionalFunction = async (item: any, btn: any) => {
-    switch (btn?.action) {
-      case 'goToChildren':
-        goToChildren(
-          `/standardAcademic?gradeId=${item?.course?.academicGradeId}&asignatureId=${item.academicAsignatureId}&academicAsignatureCourseId=${item?.id}`,
-        );
-        break;
-      default:
-        break;
-    }
   };
 
   const goToChildren = async (url: string) => {
@@ -215,10 +134,29 @@ const ClassroomPlanDetail = (props: any) => {
           <Card>
             <CardBody className="text-center p-3 d-flex align-items-center justify-content-around">
               <i className={'iconsminds-calendar-4 lead'} />
-              <div>
+              <i onClick={() => setShowInputDates(!showInputDates)} className={'simple-icon-pencil text-green ml-2'} />
+              <div className='p-3'>
+                { !showInputDates ?
                 <h3 className="card-text text-info font-weight-bold mb-0 mt-2">
-                  28/04/2022 - 01/05/2022
+                   {classroomPlan?.startDate} - {classroomPlan?.endDate}
                 </h3>
+                : <>
+                  <div className='d-flex flex-column'>
+                      <ReactDatePicker
+                      selected={startDate}
+                      onChange={(date) => {
+                        setStartDate(date as Date);
+                      }}
+                    />
+                    <ReactDatePicker
+                      selected={endDate}
+                      onChange={(date) => {                        
+                        setEndDate(date as Date);
+                      }}
+                    />
+                  </div>
+                </>
+                }
                 <p className="text-center font-weight-semibold mb-0">Fecha de inicio y fin</p>
               </div>
             </CardBody>
@@ -320,16 +258,40 @@ const ClassroomPlanDetail = (props: any) => {
             onClick={() => setShowIndex(2)}
             aria-expanded={showingIndex === 2}
           >
-            Ruta Metodológica para el aprendizaje            
+            Ruta Metodológica para el aprendizaje  
+            <Button color="green" className='btn-xs ml-2'>
+              Nuevo momento
+            </Button>          
           </Button>
         </div>
         <Collapse isOpen={showingIndex === 2}>
           <div className="card-body accordion-content pt-0">
             <table className='table table-bordered'>
               <tr>
-                <td className='table-cell-info' colSpan={3}>Exploración (Saberes Previos-indagación)</td>
-                <td className='table-cell-info' colSpan={4}>Estructuración (Conceptualización y Práctica)</td>
-                <td className='table-cell-info' colSpan={3}>Transferencia (aplicación-Valoración)</td>
+                <td className='table-cell-info' colSpan={3}>
+                <div className='d-flex justify-content-between align-items-center'>
+                    <span>Exploración (Saberes Previos-indagación)</span>
+                    <Button color="danger" className='btn-xs ml-2 d-flex align-items-center'>
+                      <i className='simple-icon-trash'></i>
+                    </Button> 
+                  </div>
+                </td>
+                <td className='table-cell-info' colSpan={4}>
+                  <div className='d-flex justify-content-between align-items-center'>
+                    <span>Estructuración (Conceptualización y Práctica)</span>
+                    <Button color="danger" className='btn-xs ml-2 d-flex align-items-center'>
+                      <i className='simple-icon-trash'></i>
+                    </Button>
+                  </div>
+                </td>
+                <td className='table-cell-info' colSpan={3}>
+                  <div className='d-flex justify-content-between align-items-center'>
+                    <span>Transferencia (aplicación-Valoración)</span>
+                    <Button color="danger" className='btn-xs ml-2 d-flex align-items-center'>
+                      <i className='simple-icon-trash'></i>
+                    </Button>
+                    </div>
+                </td>
               </tr>
               <tr>
                 <td colSpan={3}></td>
@@ -409,7 +371,7 @@ const ClassroomPlanDetail = (props: any) => {
     </>
   );
 };
-const mapDispatchToProps = { ...academicAsignatureCourseActions, ...academicPeriodActions, ...courseActions };
+const mapDispatchToProps = { ...classroomPlanActions, ...academicPeriodActions, ...courseActions, ...academicAsignatureCourseActions };
 
 const mapStateToProps = ({ loginReducer }: any) => {
   return { loginReducer };

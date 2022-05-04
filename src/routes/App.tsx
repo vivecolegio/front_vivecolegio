@@ -24,6 +24,7 @@ import { default as AcademicIndicatorList, default as BasicLearningDutiesList } 
 import CampusList from '../components/app/Campus/CampusList';
 import ClassroomPlan from '../components/app/ClassroomPlan/ClassroomPlan';
 import ClassroomPlanDetail from '../components/app/ClassroomPlan/ClassroomPlanDetail';
+import ClassroomPlanList from '../components/app/ClassroomPlan/ClassroomPlanList';
 import CoEvaluation from '../components/app/CoEvaluation/CoEvaluation';
 import CoEvaluationStudents from '../components/app/CoEvaluationStudents/CoEvaluationStudents';
 import ComponentEvaluativeList from '../components/app/ComponentEvaluative/ComponentEvaluativeList';
@@ -195,6 +196,7 @@ const App = (props: any) => {
                     <Route path="/questionTestOnline" element={ <QuestionTestOnlineList/> } />
                     <Route path="/questionsBank" element={ <QuestionsBankTestOnline/> } />
                     <Route path="/classroomPlan" element={ <ClassroomPlan/> } />
+                    <Route path="/listClassroomPlans" element={ <ClassroomPlanList/> } />
                     <Route path="/classroomPlanDetail" element={ <ClassroomPlanDetail/> } />
                     {/* ACADEMIC */} 
                     {/* APPLICATIONS */} 

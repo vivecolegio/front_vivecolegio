@@ -189,6 +189,7 @@ const esMessages = {
   'menu.questionsBank': 'Banco de preguntas', 
   'menu.classroomPlan': 'Plan de aula', 
   'menu.classroomPlanDetail': 'Plan de aula', 
+  'menu.listClassroomPlans': 'Planes de aula', 
   'forms.inputRequired': 'Campo Requerido',
   'forms.cancel': 'Cancelar',
   'forms.auditInformation': 'Información Auditoria',

@@ -32,6 +32,18 @@ const SchoolCreateEdit = (props: any) => {
     required: true,
     value: props?.data?.id ? props?.data?.name : '',
   });
+  const { ref: pedagogicalModelRef, ...pedagogicalModelRest } = register('pedagogicalModel', {
+    required: true,
+    value: props?.data?.id ? props?.data?.pedagogicalModel : '',
+  });
+  const { ref: educationalModelRef, ...educationalModelRest } = register('educationalModel', {
+    required: true,
+    value: props?.data?.id ? props?.data?.educationalModel : '',
+  });
+  const { ref: curricularComponentRef, ...curricularComponentRest } = register('curricularComponent', {
+    required: true,
+    value: props?.data?.id ? props?.data?.curricularComponent : '',
+  });
   const { ref: daneCodeRef, ...daneCodeRest } = register('daneCode', {
     required: true,
     value: props?.data?.id ? props?.data?.daneCode : '',
@@ -73,6 +85,24 @@ const SchoolCreateEdit = (props: any) => {
                   <IntlMessages id="forms.name" />
                 </Label>
                 <Input {...nameRest} innerRef={nameRef} className="form-control" />
+              </div>
+              <div className="form-group">
+                <Label>
+                  Modelo pedagógico
+                </Label>
+                <Input {...pedagogicalModelRest} innerRef={pedagogicalModelRef} className="form-control" />
+              </div>
+              <div className="form-group">
+                <Label>
+                  Modelo educativo
+                </Label>
+                <Input {...educationalModelRest} innerRef={educationalModelRef} className="form-control" />
+              </div>
+              <div className="form-group">
+                <Label>
+                  Componente curricular
+                </Label>
+                <Input {...curricularComponentRest} innerRef={curricularComponentRef} className="form-control" />
               </div>
               <div className="form-group">
                 <Label>
