@@ -71,8 +71,8 @@ export const QUERY_GET_DROPDOWNS_EXPERIENCE_LEARNING_RUBRIC_CRITERIA = gql`
   query getDropdownsExperienceLearningRubricCriteria($id: String!, $schoolId: String!) {
     dataExperienceLearning: getExperienceLearning(id: $id) {
       id
-      evidenciceLearningsId
-      evidenciceLearnings {
+      evidenceLearningsId
+      evidenceLearnings {
         id
         statement
       }

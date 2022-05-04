@@ -29,8 +29,8 @@ export const QUERY_GET_ALL_EXPERIENCE_LEARNING = gql`
           academicPeriod {
             name
           }
-          evidenciceLearningsId
-          evidenciceLearnings {
+          evidenceLearningsId
+          evidenceLearnings {
             id
             statement
           }
@@ -79,7 +79,7 @@ export const QUERY_GET_ALL_EXPERIENCE_LEARNING_ASIGNATURE_COURSE = gql`
       academicPeriod {
         name
       }
-      evidenciceLearningsId
+      evidenceLearningsId
       academicAsignatureCourse {
         courseId
         course {
@@ -134,8 +134,8 @@ export const QUERY_GET_EXPERIENCE_LEARNING = gql`
           statement
         }
       }
-      evidenciceLearningsId
-      evidenciceLearnings {
+      evidenceLearningsId
+      evidenceLearnings {
         id
         statement
       }

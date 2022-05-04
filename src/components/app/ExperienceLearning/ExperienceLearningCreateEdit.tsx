@@ -82,7 +82,7 @@ const ExperienceLearningCreateEdit = (props: any) => {
           props?.data?.learnigs.map((c: any) => {
             array = array.concat(c.evidenceLearnings.map((e:any)=>
             {
-              e.checked = props?.data?.evidenciceLearnings.find((x:any)=>(x?.id === e?.id)) ? true : false;
+              e.checked = props?.data?.evidenceLearnings.find((x:any)=>(x?.id === e?.id)) ? true : false;
               return e;
             }));
             return {
@@ -97,11 +97,11 @@ const ExperienceLearningCreateEdit = (props: any) => {
         setChecksEvidencesLearning(checksEvidencesLearning);
       }
       if (
-        props?.data?.evidenciceLearnings !== undefined &&
-        props?.data?.evidenciceLearnings != null
+        props?.data?.evidenceLearnings !== undefined &&
+        props?.data?.evidenceLearnings != null
       ) {
         setChecksEvidencesLearningSelected(
-          props?.data?.evidenciceLearnings.map((c: any) => {
+          props?.data?.evidenceLearnings.map((c: any) => {
             return c?.id;
           }),
         );
@@ -308,9 +308,9 @@ const ExperienceLearningCreateEdit = (props: any) => {
     required: true,
     value: props?.data?.id ? props?.data?.experienceType : '',
   });
-  register('evidenciceLearningsId', {
+  register('evidenceLearningsId', {
     required: true,
-    value: props?.data?.id ? props?.data?.evidenciceLearningsId : '',
+    value: props?.data?.id ? props?.data?.evidenceLearningsId : '',
   });
   register('learningsId', {
     required: true,
@@ -563,7 +563,7 @@ const ExperienceLearningCreateEdit = (props: any) => {
                                   ...checksEvidencesLearningSelected,
                                 ];
                                 setChecksEvidencesLearningSelected(checksEvidencesLearningSelected);
-                                setValue('evidenciceLearningsId', checksEvidencesLearningSelected);
+                                setValue('evidenceLearningsId', checksEvidencesLearningSelected);
                                 console.log(checksEvidencesLearningSelected);
                               }}
                               label=""
