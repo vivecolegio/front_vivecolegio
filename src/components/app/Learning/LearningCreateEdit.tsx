@@ -191,7 +191,7 @@ const LearningCreateEdit = (props: any) => {
             <ModalBody>
               <div className="form-group">
                 <Label>
-                  <IntlMessages id="menu.statement" />
+                  <IntlMessages id="menu.learning" />
                 </Label>
                 <Input type='textarea' rows="2" {...statementRest} innerRef={statementRef} className="form-control" />
               </div>             

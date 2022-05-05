@@ -159,7 +159,7 @@ const AcademicAsignatureCourseList = (props: any) => {
             childrenButtons={[
               {
                 id: 0,
-                label: 'Experiencias de aprendizaje',
+                label: 'Actividades de valoracion',
                 color: 'secondary',
                 icon: 'iconsminds-blackboard',
                 action: 'goToChildrenExperience',

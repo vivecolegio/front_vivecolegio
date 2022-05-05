@@ -368,7 +368,7 @@ const ExperienceLearningCreateEdit = (props: any) => {
             <ModalBody>
               <div className="form-group">
                 <Label>
-                  <IntlMessages id="forms.title" />
+                  <IntlMessages id="forms.name" />
                 </Label>
                 <Input {...titleRest} innerRef={titleRef} className="form-control" />
               </div>

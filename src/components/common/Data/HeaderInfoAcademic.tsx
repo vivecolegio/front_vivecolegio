@@ -50,7 +50,7 @@ const HeaderInfoAcademic = (props: any) => {
           <div className="d-flex flex-row">
             {asignature ? 
             <span className="mb-0 text-muted mr-4 border-b-info">
-              <span>Área:</span> <h2 className="text-info font-bold">{data?.academicAsignature?.name}</h2>
+              <span>Área/Asignatura:</span> <h2 className="text-info font-bold">{data?.academicAsignature?.name}</h2>
             </span>
             : ''}
             {asignatureGeneral ? 
@@ -60,7 +60,7 @@ const HeaderInfoAcademic = (props: any) => {
             : ''}
             {cicle ? 
             <span className="mb-0 text-muted border-b-green">
-                      Ciclo académico: <h2 className="text-green font-bold">{data?.course?.academicGrade?.generalAcademicCycle?.name}</h2>
+                      Grupo de Grados: <h2 className="text-green font-bold">{data?.course?.academicGrade?.generalAcademicCycle?.name}</h2>
                     </span>
                     : ''}
             {grade ? 
