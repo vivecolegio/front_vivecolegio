@@ -4,9 +4,9 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import 'react-quill/dist/quill.bubble.css';
 
-const EditorHTML = () => {
+const EditorHTML = (props: any) => {
 
-  const [textQuillStandart, setTextQuillStandart] = useState('');
+  const [textQuillStandart, setTextQuillStandart] = useState(props?.value);
 
   const quillModules = {
     toolbar: [
@@ -40,7 +40,10 @@ const EditorHTML = () => {
     <ReactQuill
       theme="snow"
       value={textQuillStandart}
-      onChange={(val: any) => setTextQuillStandart(val)}
+      onChange={(val: any) => {
+        setTextQuillStandart(val);
+        props.setValueText(val);
+      }}
       modules={quillModules}
       formats={quillFormats}
     />

@@ -185,7 +185,8 @@ export const deleteClassroomPlan = (id: any, showToast: boolean) => {
   };
 };
 
-export const getDropdownsClassroomPlan = (schoolId:string, campusId: string) => {
+export const getDropdownsClassroomPlan = (schoolId:string, academicAsignatureId: string, academicGradeId: string, academicPeriodsId:string, generalAcademicAsignatureId: string, generalAcademicGradeId: string, learningsId: any) => {
+  console.log(learningsId, 'IDSSSS')
   return async (dispatch: any) => {
     try {
       let listData = {};
@@ -194,7 +195,12 @@ export const getDropdownsClassroomPlan = (schoolId:string, campusId: string) => 
           query: QUERY_GET_DROPDOWNS_CLASSROOM_PLAN,
           variables:{
             schoolId,
-            campusId,
+            academicAsignatureId,
+            academicGradeId,
+            academicPeriodsId,
+            generalAcademicAsignatureId,
+            generalAcademicGradeId,
+            learningsId
           },
         })
         .then((result: any) => {

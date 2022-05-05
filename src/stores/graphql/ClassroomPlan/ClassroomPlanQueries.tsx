@@ -24,6 +24,38 @@ export const QUERY_GET_CLASSROOM_PLAN = gql`
       version
       startDate
       endDate
+      classroomPlanMethodologicalRoutes {
+        name
+        description
+      }
+      classroomPlanPerformanceAppraisalStrategies {
+        evaluativeComponentId
+        evaluativeComponent {
+          name
+          id
+        }
+        description
+      }
+      learningsId
+      learnigs {
+        id
+        statement
+      }
+      academicStandardsId
+      academicStandards{
+        id
+        standard
+      }
+      generalBasicLearningRightsId
+      generalBasicLearningRights {
+        id
+        dba
+      }
+      academicPeriodId
+      academicPeriod {
+        startDate
+        endDate
+      }
       campus {
         school {
           pedagogicalModel
@@ -44,16 +76,8 @@ export const QUERY_GET_CLASSROOM_PLAN = gql`
 `;
 
 export const QUERY_GET_DROPDOWNS_CLASSROOM_PLAN = gql`
-  query getDropdownsAcademicArea($schoolId: String!, $campusId: String!) {
-    dataCampus: getAllCampus(allData: false, orderCreated: false, schoolId: $schoolId) {
-      edges {
-        node {
-          id
-          name
-        }
-      }
-    }
-    dataAsignatures: getAllAcademicAsignature(
+  query getDropdownsClassroomPlan($schoolId: String!, $academicAsignatureId: String!, $academicGradeId: String!, $academicPeriodsId: [String!], $generalAcademicAsignatureId: String, $generalAcademicGradeId: String, $learningsId : [String!]) {
+    dataEvaluativeComponent: getAllEvaluativeComponent(
       allData: false
       orderCreated: false
       schoolId: $schoolId
@@ -65,28 +89,54 @@ export const QUERY_GET_DROPDOWNS_CLASSROOM_PLAN = gql`
         }
       }
     }
-    dataGrades: getAllAcademicGrade(allData: false, orderCreated: false, schoolId: $schoolId) {
+    dataLearnings: getAllLearning(orderCreated: true, allData: true,schoolId: $schoolId, academicAsignatureId: $academicAsignatureId, academicGradeId: $academicGradeId, academicPeriodsId: $academicPeriodsId) {
       edges {
         node {
           id
-          name
+          statement
         }
       }
     }
-    dataTeachers: getAllTeacher(
+    dataAcademicPeriods: getAllAcademicPeriod(
       allData: false
       orderCreated: false
-      campusId: [$campusId]
-      schoolId: [$schoolId]
+      schoolId: $schoolId
+      orderCustom: true
     ) {
       edges {
         node {
           id
-          user {
-            id
-            name
-            lastName
-          }
+          name
+          startDate
+          endDate
+        }
+      }
+    }
+    dataDBAS: getAllGeneralBasicLearningRight(
+      orderCreated: true, allData: false, generalAcademicAsignatureId: $generalAcademicAsignatureId, generalAcademicGradeId: $generalAcademicGradeId
+    ) {
+      edges {
+        node {
+          id
+          dba
+        }
+      }
+    }
+    dataStandards: getAllAcademicStandard(
+      orderCreated: true, allData: false, schoolId: $schoolId,academicAsignatureId: $academicAsignatureId, academicGradeId: $academicGradeId
+    ) {
+      edges {
+        node {
+          id
+          standard
+        }
+      }
+    }
+    dataEvidencesLearning: getAllEvidenceLearningLearnigs(learningsId: $learningsId) {
+      edges {
+        node {
+          id
+          statement
         }
       }
     }
