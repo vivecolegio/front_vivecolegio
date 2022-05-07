@@ -1,3 +1,4 @@
+import { getValue } from '@testing-library/user-event/dist/types/utils';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import ReactDatePicker from 'react-datepicker';
@@ -26,17 +27,21 @@ const ClassroomPlanDetail = (props: any) => {
   const [learningsList, setLearningsList] = useState(null);
   const [learnings, setLearnings] = useState([]);
   const [evidencesLearning, setEvidencesLearning] = useState([]);
+  const [evidencesLearningList, setEvidencesLearningList] = useState([]);
   const [dbasList, setDbasList] = useState(null);
   const [dbas, setDbas] = useState([]);
   const [standardsList, setStandardsList] = useState(null);
   const [standards, setStandards] = useState([]);
   const [classroomPlanMethodologicalRoutes, setClassroomPlanMethodologicalRoutes] = useState([]);
   const [classroomPlanPerformanceAppraisalStrategies, setClassroomPlanPerformanceAppraisalStrategies] = useState([]);
+  const [classroomPlanExpectedPerformance, setClassroomPlanExpectedPerformance] = useState([]);
   const [showingIndex, setShowIndex] = useState(0);
   const [showInputDates, setShowInputDates] = useState(false);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [modalSelect, setModalSelect] = useState(false);
+  const [modalEvidences, setModalEvidences] = useState(false);
+  const [currentEvaluativeComponent, setCurrentEvaluativeComponent] = useState(false);
 
   let navigate = useNavigate();
 
@@ -85,6 +90,7 @@ const ClassroomPlanDetail = (props: any) => {
       }));
       await setClassroomPlanMethodologicalRoutes(cp?.data?.classroomPlanMethodologicalRoutes || []);
       await setClassroomPlanPerformanceAppraisalStrategies(cp?.data?.classroomPlanPerformanceAppraisalStrategies || []);
+      await setClassroomPlanExpectedPerformance(cp?.data?.classroomPlanExpectedPerformances || []);
       await props.dataAcademicAsignatureCourse(academicAsignatureCourseId).then((resp: any) => {
         setAcademicAsignatureCourse(resp?.data);
         props.getDropdownsClassroomPlan(
@@ -106,9 +112,11 @@ const ClassroomPlanDetail = (props: any) => {
             setStandardsList(response.dataStandards.edges.map((c: any) => {
               return { label: c?.node?.standard, value: c?.node?.id, key: c?.node?.id };
             }));
+            setEvidencesLearningList(response.dataEvidencesLearning.edges.map((c: any) => {
+              return { label: c?.node?.statement, value: c?.node?.id, key: c?.node?.id };
+            }));
             setEvaluativeComponents(response.dataEvaluativeComponent.edges);
             setAcademicPeriods(response.dataAcademicPeriods.edges);
-            setEvidencesLearning(response.dataEvidencesLearning.edges);
           });
       });
     });
@@ -320,10 +328,7 @@ const ClassroomPlanDetail = (props: any) => {
                 onClick={() => setShowIndex(1)}
                 aria-expanded={showingIndex === 1}
               >
-                Desempeños esperados
-                <Button color="green" className='btn-xs ml-2'>
-                  Registrar
-                </Button>
+                Desempeños esperados                
               </Button>
             </div>
             <Collapse isOpen={showingIndex === 1}>
@@ -333,7 +338,17 @@ const ClassroomPlanDetail = (props: any) => {
                     {
                       evaluativeComponents?.map((c: any) => {
                         return <>
-                          <td className='table-cell-info' colSpan={3}>{c?.node?.name}</td>
+                            <td className='table-cell-info' colSpan={3}>
+                          <div className='d-flex justify-content-between align-items-center'>
+                            <span>{c?.node?.name}</span>
+                            <Button color="green" onClick={() => {
+                              setModalEvidences(true);
+                              setCurrentEvaluativeComponent(c?.node?.id)
+                            }} className='btn-xs ml-2'>
+                              <i className='simple-icon-check'></i>
+                            </Button>
+                          </div>
+                          </td>
                         </>
                       })
                     }
@@ -343,7 +358,13 @@ const ClassroomPlanDetail = (props: any) => {
                       evaluativeComponents?.map((c: any) => {
                         return <>
                           <td colSpan={3}>
-
+                            <ul>
+                              {classroomPlanExpectedPerformance.map((d:any)=>{
+                                return <>
+                                  <li>{d?.evidenceLearnings?.statement}</li>
+                                </>
+                              })}
+                            </ul>
                           </td>
                         </>
                       })
@@ -559,6 +580,60 @@ const ClassroomPlanDetail = (props: any) => {
           </Card>
         </Colxx>
 
+        <Modal
+          isOpen={modalEvidences}
+          toggle={() => setModalEvidences(!modalEvidences)}
+        >
+          <ModalHeader>Seleccionar</ModalHeader>
+          <ModalBody>
+            <div className="form-group">
+              <p className="font-weight-semibold mb-3">Evidencias de aprendizaje</p>
+              <Select
+                placeholder="Seleccionar"
+                isMulti
+                className="react-select"
+                classNamePrefix="react-select"
+                options={evidencesLearningList}
+                value={evidencesLearning}
+                onChange={(selectedOption: any) => {
+                  setEvidencesLearning(selectedOption);
+                }}
+              />
+            </div>           
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              color="secondary"
+              onClick={() => setModalEvidences(false)}>
+              Cancelar
+            </Button>{' '}
+            <Button
+              color="green"
+              onClick={() => {
+                let evidences = evidencesLearning.map((c: any) => { return c.key });                
+                if(classroomPlanExpectedPerformance.find((x:any)=>(x.evaluativeComponentId === currentEvaluativeComponent))){
+
+                } else {
+                  classroomPlanExpectedPerformance.push(
+                    {
+                        evaluativeComponentId: currentEvaluativeComponent,
+                        evidenceLearningsId: evidences
+                      }
+                  )
+                  setClassroomPlanExpectedPerformance(classroomPlanExpectedPerformance)
+                }
+                let obj = {
+                  classroomPlanExpectedPerformances: classroomPlanExpectedPerformance
+                }
+                updateClassroomPlan(obj);
+                setModalEvidences(false);
+                getData(classroomPlan?.id);
+                reset();
+              }}>
+              Guardar
+            </Button>
+          </ModalFooter>
+        </Modal>
         <Modal
           isOpen={modalSelect}
           toggle={() => setModalSelect(!modalSelect)}

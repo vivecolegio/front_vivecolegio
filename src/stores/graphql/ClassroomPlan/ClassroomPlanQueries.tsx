@@ -24,6 +24,18 @@ export const QUERY_GET_CLASSROOM_PLAN = gql`
       version
       startDate
       endDate
+      classroomPlanExpectedPerformances {
+        evaluativeComponentId
+        evaluativeComponent {
+          name
+          id
+        }
+        evidenceLearningsId
+        evidenceLearnings {
+          id
+          statement
+        }
+      }
       classroomPlanMethodologicalRoutes {
         name
         description
