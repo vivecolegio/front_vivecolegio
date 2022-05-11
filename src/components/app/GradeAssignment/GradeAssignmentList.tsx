@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { COLUMN_LIST } from '../../../constants/GradeAssignment/GradeAssignmentConstants';
+import { COLUMN_LIST } from '../../../constants/GradeAssignment/gradeAssignmentConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as academicIndicatorActions from '../../../stores/actions/GradeAssignmentActions';
 import DataList from '../../common/Data/DataList';

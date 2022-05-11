@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { COLUMN_LIST } from '../../../constants/Municipality/municipalityConstants';
+import { COLUMN_LIST } from '../../../constants/Municipality/MunicipalityConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as municipalityActions from '../../../stores/actions/MunicipalityActions';
 import DataList from '../../common/Data/DataList';

@@ -123,7 +123,9 @@
     "sonar-scanner": "sonar-scanner",
     "run:dev": "webpack-cli serve --mode development --config ./webpack.dev.config.js",
     "run:prod": "webpack-cli serve --mode production --config ./webpack.prod.config.js",
-    "build:prod": "webpack --config ./webpack.prod.config.js --mode production"
+    "build:prod": "webpack --config ./webpack.prod.config.js --mode production",
+    "build:docker" : "docker build -t lidertecnologicovivecolegios/frontendvivecolegios .",
+    "push:docker" : "docker push lidertecnologicovivecolegios/frontendvivecolegios"
   },
   "eslintConfig": {
     "extends": [

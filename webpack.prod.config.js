@@ -15,7 +15,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'js/[id].js',
-    publicPath: 'http://vivecolegios.vhmsoluciones.com/',
+    publicPath: 'auto',
     chunkFilename: 'js/[id].[chunkhash].js',
   },
   optimization: {
