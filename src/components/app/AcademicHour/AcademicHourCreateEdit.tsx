@@ -117,7 +117,7 @@ const AcademicHourCreateEdit = (props: any) => {
 
   return (
     <>
-      <DevTool control={methods.control} placement="top-left" />
+      {/* <DevTool control={methods.control} placement="top-left" /> */}
       {loading ? (
         <>
           <Colxx sm={12} className="d-flex justify-content-center">

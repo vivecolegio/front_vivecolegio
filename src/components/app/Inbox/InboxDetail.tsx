@@ -63,6 +63,7 @@ const Inbox = (props: any) => {
               onClick={() => {
                 return setModalOpen(!modalOpen);
               }}
+              disabled={true}
             >
               <IntlMessages id="pages.newMessage" />
             </Button>

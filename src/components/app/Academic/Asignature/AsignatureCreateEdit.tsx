@@ -188,7 +188,7 @@ const AsignatureCreateEdit = (props: any) => {
                   }}
                 />
               </div>
-              <div className="form-group">
+              {/* <div className="form-group">
                 <Label>
                   <IntlMessages id="menu.asignature" />
                 </Label>
@@ -204,7 +204,7 @@ const AsignatureCreateEdit = (props: any) => {
                     setGeneralAcademicAsignature(selectedOption);
                   }}
                 />
-              </div>
+              </div> */}
 
               {!props?.loginReducer?.schoolId ? (
                 <div className="form-group">

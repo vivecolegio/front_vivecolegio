@@ -70,8 +70,8 @@ const esMessages = {
 
   /* 05.Esquemas */
   'pages.add-new': 'AGREGAR NUEVO',
-  'pages.add-new-modal-title': 'Agregar ítem nuevo',
-  'pages.add-edit-modal-title': 'Editar ítem',
+  'pages.add-new-modal-title': 'Agregar nuevo registro',
+  'pages.add-edit-modal-title': 'Editar registro',
   'pages.display-options': 'Opciones de Pantalla',
   'pages.orderby': 'Ordenar por : ',
   'pages.sortby': 'Organizar : ',
@@ -80,7 +80,7 @@ const esMessages = {
   'pages.description': 'Descripción',
   'pages.status': 'Estado',
   'pages.cancel': 'Cancelar',
-  'pages.submit': 'Enviar',
+  'pages.submit': 'Guardar',
   'pages.delete': 'Eliminar',
   'pages.detail': 'Detalles',
   'pages.activate': 'Activar',

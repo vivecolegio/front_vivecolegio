@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom';
 import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
 import NavImg2 from '../../../../assets/img/logos/gobernacion.png';
 import NavImg1 from '../../../../assets/img/logos/ufps.png';
-import ProfileImg from '../../../../assets/img/profiles/l-1.jpg';
+import ProfileImg from '../../../../assets/img/profiles/empty.png';
 import {
   isDarkSwitchActive,
   localeOptions,
@@ -217,7 +217,7 @@ const TopNav = (props: any) => {
               <i className="simple-icon-magnifier" />
             </span>
           </div> */}
-          <div className="d-inline-block">
+          {/* <div className="d-inline-block">
             <UncontrolledDropdown className="ml-2">
               <DropdownToggle caret color="light" size="sm" className="language-button">
                 <span className="name">{props.translateReducer.locale.toUpperCase()}</span>
@@ -237,7 +237,7 @@ const TopNav = (props: any) => {
                 })}
               </DropdownMenu>
             </UncontrolledDropdown>
-          </div>
+          </div> */}
           <div className="navbar-logo m-0 ml-4 position-relative d-none d-none d-lg-inline-block">
             <span className="logo d-none d-sm-block" />
             <span className="logo-mobile d-block d-sm-none" />
@@ -282,21 +282,21 @@ const TopNav = (props: any) => {
                 </span>
               </DropdownToggle>
               <DropdownMenu className="mt-3" end>
-                <NavLink to="/profile">
+                {/* <NavLink to="/profile">
                   <DropdownItem>
                     <IntlMessages id="layouts.profile" />
                   </DropdownItem>
-                </NavLink>                
+                </NavLink>                 */}
                 <NavLink to="/messages">
                   <DropdownItem>
                     <IntlMessages id="layouts.messages" />
                   </DropdownItem>
                 </NavLink>                
-                <NavLink to="/chat">
+                {/* <NavLink to="/chat">
                   <DropdownItem>
                     <IntlMessages id="layouts.chat" />
                   </DropdownItem>
-                </NavLink>                                           
+                </NavLink>                                            */}
                 <DropdownItem divider />
                 <DropdownItem
                   onClick={() => {
