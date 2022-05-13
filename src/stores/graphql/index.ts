@@ -14,12 +14,16 @@ const httpLink2 = createUploadLink({
 
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem('token');
-  return {
+  return token ? {
     headers: {
       ...headers,
-      authorization: token ? `Bearer ${token}` : null,
+      authorization: `Bearer ${token}` ,
     },
-  };
+  } :{
+    headers: {
+      ...headers,
+    },
+  } ;
 });
 
 export const client = new ApolloClient({
