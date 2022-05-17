@@ -42,8 +42,6 @@ const SpecialityCreateEdit = (props: any) => {
           value: props?.data?.school?.id,
         });
       }
-    } else {
-      methods.reset();
     }
     setLoading(false);
   }, [props?.data]);
