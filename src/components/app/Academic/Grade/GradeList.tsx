@@ -20,8 +20,7 @@ const GradeList = (props: any) => {
       setDataTable(
         listData.map((c: any) => {
           c.node.cycle_format = c.node.generalAcademicCycle ? c.node.generalAcademicCycle.name : '';
-          c.node.speciality_format = c.node.specialty ? c.node.specialty.name : '';
-          c.node.school_format = c.node.school ? c.node.school.name : '';
+          c.node.speciality_format = c.node.specialty ? c.node.specialty.name : '';          
           c.node.education_level_format = c.node.educationLevel ? c.node.educationLevel.name : '';
           return c;
         }),
@@ -34,8 +33,7 @@ const GradeList = (props: any) => {
       setDataTable(
         listData.map((c: any) => {
           c.node.cycle_format = c.node.generalAcademicCycle ? c.node.generalAcademicCycle.name : '';
-          c.node.speciality_format = c.node.specialty ? c.node.specialty.name : '';
-          c.node.school_format = c.node.school ? c.node.school.name : '';
+          c.node.speciality_format = c.node.specialty ? c.node.specialty.name : '';          
           c.node.education_level_format = c.node.educationLevel ? c.node.educationLevel.name : '';
           return c;
         }),
@@ -89,16 +87,19 @@ const GradeList = (props: any) => {
 
   const additionalFunction = async (item: any, btn: any) => {
     switch (btn?.action) {
-      case 'goToChildren':
-        goToChildren(item.id);
+      case 'goToChildrenCourse':
+        goToChildren(`/course?academicGradeId=${item?.id}`);
+        break;
+      case 'goToChildrenGradeAssignment':
+        goToChildren(`/gradeAssignment?academicGradeId=${item.id}`);
         break;
       default:
         break;
     }
   };
 
-  const goToChildren = async (id: any) => {
-    navigate(`/course?id=${id}`);
+  const goToChildren = async (url: any) => {
+    navigate(url);
   };
 
   const deleteAll = async (items: any) => {
@@ -150,7 +151,14 @@ const GradeList = (props: any) => {
                 label: 'Cursos',
                 color: 'secondary',
                 icon: 'simple-icon-link',
-                action: 'goToChildren',
+                action: 'goToChildrenCourse',
+              },
+              {
+                id: 1,
+                label: 'Asignatura de grado',
+                color: 'info',
+                icon: 'simple-icon-link',
+                action: 'goToChildrenGradeAssignment',
               },
             ]}
             withChildren={true}

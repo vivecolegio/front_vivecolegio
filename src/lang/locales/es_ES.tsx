@@ -67,6 +67,7 @@ const esMessages = {
   'message.error':'Ha ocurrido un error en el proceso.',
   'message.notPermissions':'No cuentas con permisos para acceder al módulo, por favor contacte al administrador.',
   'message.guardiansFound':'Acudientes encontrados, por favor seleccione uno.',
+  'message.errorSesion':'Error al inciar sesión, por favor intente de nuevo.',
 
   /* 05.Esquemas */
   'pages.add-new': 'AGREGAR NUEVO',

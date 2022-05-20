@@ -67,6 +67,7 @@ const enMessages = {
   'message.error':'An error has occurred in the process.',
   'message.notPermissions':"You don't have permissions to access the module, please contact the administrator.",
   'message.guardiansFound':'Found guardians, please select one.',
+  'message.errorSesion':'Login failed, please try again.',
 
 
   /* 05.Pages */

@@ -13,18 +13,17 @@ const CourseList = (props: any) => {
   const [modalOpen, setModalOpen] = useState(false);
 
   let [params] = useSearchParams();
+  const academicGradeId = params.get('academicGradeId');
 
   const [data, setData] = useState(null);
   useEffect(() => {
-    const  academicGradeId  = params.get('id');
-    props.getListAllCourse(props?.loginReducer?.campusId, academicGradeId ? academicGradeId : '').then((listData: any) => {
+    props.getListAllCourse(props?.loginReducer?.campusId, academicGradeId ? academicGradeId : '', props?.loginReducer?.schoolId).then((listData: any) => {
       setDataTable(listData);
     });
   }, []);
 
   const getDataTable = async () => {
-    const  academicGradeId  = params.get('id');;
-    props.getListAllCourse(props?.loginReducer?.campusId, academicGradeId ? academicGradeId : '').then((listData: any) => {
+    props.getListAllCourse(props?.loginReducer?.campusId, academicGradeId ? academicGradeId : '', props?.loginReducer?.schoolId).then((listData: any) => {
       setDataTable(listData);
     });
   };

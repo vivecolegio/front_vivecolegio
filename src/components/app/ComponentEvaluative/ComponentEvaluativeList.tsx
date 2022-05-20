@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { COLUMN_LIST } from '../../../constants/Asignature/asignatureConstants';
+import { COLUMN_LIST } from '../../../constants/ComponentEvaluative/componentEvaluativeConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as componentEvaluativeActions from '../../../stores/actions/ComponentEvaluativeActions';
 import DataList from '../../common/Data/DataList';

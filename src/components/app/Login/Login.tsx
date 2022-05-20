@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
@@ -14,8 +14,10 @@ import NavImg2 from '../../../assets/img/logos/gobernacion.png';
 import IntlMessages from '../../../helpers/IntlMessages';
 import * as loginActions from '../../../stores/actions/LoginActions';
 import { Colxx } from '../../common/CustomBootstrap';
+import { Loader } from '../../common/Loader';
 
 const Login = (props: any) => {
+  const [loading, setLoading] = useState(true);
   const {
     register,
     handleSubmit,
@@ -26,26 +28,31 @@ const Login = (props: any) => {
   let navigate = useNavigate();
 
   useEffect(() => {
+    setLoading(false);
     if (props.loginReducer?.userId?.length > 0) {
       navigate('/home');
       // props.history.push('/home');
     } else {
-      console.log('entro por aca');
-      console.log(props);
       props.resetApp();
     }
   }, [props.loginReducer?.userId]);
 
   const onSubmit = (e: any) => {
-    console.log('entro a submit');
+    setLoading(true);
     e.preventDefault();
-    console.log(props);
     // trigger().then(() => {
     //   if (errors?.email === undefined && errors?.password === undefined) {
     props.login({
       username: getValues('username'),
       password: getValues('password'),
-    });
+    }).then(
+      () => {
+        setLoading(false);
+      },
+      () => {
+        setLoading(false);
+      },
+    );;
     //   }
     // });
   };
@@ -60,7 +67,7 @@ const Login = (props: any) => {
   });
 
   return (
-    <>
+    <>   
       <div className="fixed-background" />
       <main>        
         <div className="container">
@@ -112,6 +119,9 @@ const Login = (props: any) => {
                         <i className='text-info simple-icon-info mr-2 font-bold'></i>
                         <IntlMessages id="user.forgot-password-question" />
                       </NavLink> */}
+                       {loading ? 
+                        <Loader size={50}/>
+                        : ''}
                       <Button
                         color="primary"
                         className={`mb-5 mt-5 btn-login btn-shadow btn-multiple-state ${

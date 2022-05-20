@@ -34,12 +34,12 @@ export const login = (user: any) => {
               },
             });
           }else{
-            createNotification('error', 'Error al inciar sesión, por favor intente de nuevo', '');
+            createNotification('error', 'errorSesion', '');
           }
         });
       return data != null;
     } catch (error) {
-      createNotification('error', 'Error al inciar sesión, por favor intente de nuevo', '');
+      createNotification('error', 'errorSesion', '');
       return error;
     }
   };

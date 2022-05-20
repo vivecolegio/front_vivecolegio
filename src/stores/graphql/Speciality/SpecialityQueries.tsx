@@ -8,7 +8,10 @@ export const QUERY_GET_ALL_SPECIALITY = gql`
         node {
           id
           name  
-          code       
+          code    
+          modality {
+            name
+          }   
           active          
         }
       }

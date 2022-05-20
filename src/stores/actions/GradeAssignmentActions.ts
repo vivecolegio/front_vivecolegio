@@ -4,7 +4,7 @@ import { MUTATION_CHANGE_ACTIVE_GRADE_ASSIGNMENT, MUTATION_CREATE_GRADE_ASSIGNME
 import { QUERY_GET_ALL_GRADE_ASSIGNMENT, QUERY_GET_DROPDOWNS_GRADE_ASSIGNMENT, QUERY_GET_GRADE_ASSIGNMENT } from '../graphql/GradeAssignment/GradeAssignmentQueries';
 
 
-export const getListAllGradeAssignment = (schoolId:string) => {
+export const getListAllGradeAssignment = (schoolId:string, academicGradeId: string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
@@ -12,7 +12,8 @@ export const getListAllGradeAssignment = (schoolId:string) => {
         .query({
           query: QUERY_GET_ALL_GRADE_ASSIGNMENT,
           variables:{
-            schoolId
+            schoolId,
+            academicGradeId,
           }
         })
         .then((result: any) => {

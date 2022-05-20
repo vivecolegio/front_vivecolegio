@@ -10,6 +10,7 @@ import * as AcademicIndicatorActions from '../../../stores/actions/CourseActions
 import { Colxx } from '../../common/CustomBootstrap';
 import AddNewModal from '../../common/Data/AddNewModal';
 import CreateEditAuditInformation from '../../common/Data/CreateEditAuditInformation';
+import { useSearchParams } from 'react-router-dom';
 
 const CourseCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
@@ -17,7 +18,8 @@ const CourseCreateEdit = (props: any) => {
   const [grade, setGrade] = useState(null);
   const [campus, setCampus] = useState(null);
 
-  let params = useParams();
+  let [params] = useSearchParams();
+  const academicGradeId = params.get('academicGradeId');
 
   const methods = useForm({
     mode: 'onChange',
@@ -58,7 +60,6 @@ const CourseCreateEdit = (props: any) => {
         value: props?.loginReducer?.campusId,
       });
     }
-    const { academicGradeId } = params;
     if(academicGradeId){
       register('academicGradeId', {
         required: true,

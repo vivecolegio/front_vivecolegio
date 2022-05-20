@@ -38,6 +38,7 @@ const ListPageHeading = ({
   withChildren,
   header,
   createActionDisabled,
+  showOptionsTypeView
 }: any) => {
   const [dropdownSplitOpen, setDropdownSplitOpen] = useState(false);
   const [displayOptionsIsOpen, setDisplayOptionsIsOpen] = useState(false);
@@ -52,66 +53,65 @@ const ListPageHeading = ({
           </h1> */}
 
           <div className="text-zero top-right-button-container">
-            {currentMenu.createAction && !createActionDisabled ? 
-            <Button
-              color="primary"
-              size="lg"
-              className="top-right-button"
-              onClick={() => {
-                return toggleModal();
-              }}
-            >
-              <IntlMessages id="pages.add-new" />
-            </Button>
-            : ''}
+            {currentMenu.createAction && !createActionDisabled ?
+              <Button
+                color="primary"
+                size="lg"
+                className="top-right-button"
+                onClick={() => {
+                  return toggleModal();
+                }}
+              >
+                <IntlMessages id="pages.add-new" />
+              </Button>
+              : ''}
             {'  '}
-            { currentMenu.deleteAction || currentMenu.activateAction || currentMenu.inactiveAction ? 
+            {currentMenu.deleteAction || currentMenu.activateAction || currentMenu.inactiveAction ?
               <>
-            <ButtonDropdown
-              isOpen={dropdownSplitOpen}              
-              toggle={() => {
-                return setDropdownSplitOpen(!dropdownSplitOpen);
-              }}
-            >
-              <div className="btn btn-primary btn-lg pl-4 pr-0 check-button check-all">
-                <Input
-                  className="custom-checkbox custom-control checkAll mb-0 mr-2 d-inline-block"
-                  type="checkbox"
-                  id="checkAll"
-                  checked={selectedItemsLength >= itemsLength}
-                  onChange={() => {
-                    return handleChangeSelectAll(true);
+                <ButtonDropdown
+                  isOpen={dropdownSplitOpen}
+                  toggle={() => {
+                    return setDropdownSplitOpen(!dropdownSplitOpen);
                   }}
-                  label={
-                    <span
-                      className={`custom-control-label ${
-                        selectedItemsLength > 0 && selectedItemsLength < itemsLength
-                          ? 'indeterminate'
-                          : ''
-                      }`}
+                >
+                  <div className="btn btn-primary btn-lg pl-4 pr-0 check-button check-all">
+                    <Input
+                      className="custom-checkbox custom-control checkAll mb-0 mr-2 d-inline-block"
+                      type="checkbox"
+                      id="checkAll"
+                      checked={selectedItemsLength >= itemsLength}
+                      onChange={() => {
+                        return handleChangeSelectAll(true);
+                      }}
+                      label={
+                        <span
+                          className={`custom-control-label ${selectedItemsLength > 0 && selectedItemsLength < itemsLength
+                              ? 'indeterminate'
+                              : ''
+                            }`}
+                        />
+                      }
                     />
-                  }
-                />
-              </div>             
-              <DropdownToggle caret color="primary" className="dropdown-toggle-split btn-lg" />
-              <DropdownMenu end>
-                {currentMenu.deleteAction ? 
-                <DropdownItem 
-                onClick={() => {
-                    return deleteAll();
-                  }}>
-                  <IntlMessages id="pages.delete" />
-                </DropdownItem>  : '' }
-                {currentMenu.activateAction || currentMenu.inactiveAction ? 
-                <DropdownItem 
-                onClick={() => {
-                    return changeActiveDataAll();
-                  }}>
-                  <IntlMessages id="pages.activateInactivate" />
-                </DropdownItem> : ''}
-              </DropdownMenu>             
-            </ButtonDropdown>
-            </>
+                  </div>
+                  <DropdownToggle caret color="primary" className="dropdown-toggle-split btn-lg" />
+                  <DropdownMenu end>
+                    {currentMenu.deleteAction ?
+                      <DropdownItem
+                        onClick={() => {
+                          return deleteAll();
+                        }}>
+                        <IntlMessages id="pages.delete" />
+                      </DropdownItem> : ''}
+                    {currentMenu.activateAction || currentMenu.inactiveAction ?
+                      <DropdownItem
+                        onClick={() => {
+                          return changeActiveDataAll();
+                        }}>
+                        <IntlMessages id="pages.activateInactivate" />
+                      </DropdownItem> : ''}
+                  </DropdownMenu>
+                </ButtonDropdown>
+              </>
               : ''}
           </div>
           <BreadcrumbContainer match={match} heading={match.replace("/", "")} />
@@ -129,34 +129,38 @@ const ListPageHeading = ({
             <i className="simple-icon-arrow-down align-middle" />
           </Button>
           <Collapse isOpen={displayOptionsIsOpen} className="d-md-block" id="displayOptions">
-            <span className="mr-3 d-inline-block float-md-left">
-              <a
-                className={`mr-2 view-icon ${displayMode === 'list' ? 'active' : ''}`}
-                onClick={() => {
-                  return changeDisplayMode('list');
-                }}
-              >
-                <DataListIcon />
-              </a>
-              <a
-                className={`mr-2 view-icon ${displayMode === 'thumblist' ? 'active' : ''}`}
-                onClick={() => {
-                  return changeDisplayMode('thumblist');
-                }}
-              >
-                <ThumbListIcon />
-              </a>
-              <a                              
-                className={`mr-2 view-icon ${displayMode === 'imagelist' ? 'active' : ''}`}
-                onClick={() => {
-                  return changeDisplayMode('imagelist');
-                }}
-              >
-                <ImageListIcon />
-              </a>
-            </span>
+            {showOptionsTypeView ?
+              <>
+                <span className="mr-3 d-inline-block float-md-left">
+                  <a
+                    className={`mr-2 view-icon ${displayMode === 'list' ? 'active' : ''}`}
+                    onClick={() => {
+                      return changeDisplayMode('list');
+                    }}
+                  >
+                    <DataListIcon />
+                  </a>
+                  <a
+                    className={`mr-2 view-icon ${displayMode === 'thumblist' ? 'active' : ''}`}
+                    onClick={() => {
+                      return changeDisplayMode('thumblist');
+                    }}
+                  >
+                    <ThumbListIcon />
+                  </a>
+                  <a
+                    className={`mr-2 view-icon ${displayMode === 'imagelist' ? 'active' : ''}`}
+                    onClick={() => {
+                      return changeDisplayMode('imagelist');
+                    }}
+                  >
+                    <ImageListIcon />
+                  </a>
+                </span>
+              </>
+              : ''}
 
-            <div className="d-block d-md-inline-block pt-1">             
+            <div className="d-block d-md-inline-block pt-1">
               <div className="search-sm d-inline-block float-md-left mr-1 mb-1 align-top">
                 <input
                   type="text"
@@ -195,27 +199,27 @@ const ListPageHeading = ({
         </div>
         {header}
         {displayMode === 'list' ?
-        <>
-        <Separator className="pt-2 mb-2" />
-        <Card>
-          <div className="pl-2 d-flex flex-grow-1 min-width-zero">
-            <div className="p-3 card-body align-self-center d-flex flex-colum flex-lg-row justify-content-between min-width-zero align-items-lg-center">
-              {columns?.filter((c:any)=>{return (c.label)}).map((item: any) => {
-                return (
-                  <p key={item.label} 
-                  className="mb-1 text-muted text-small" style={{ 'width':item.width }}
-                  >
-                    <IntlMessages id={item.label}/>
-                  </p>
-                );
-              })}
-              <p style={{ 'width':columns[columns.length - 1].width }} className={"mb-1 text-muted text-small text-center"}><IntlMessages id="pages.actions"/></p>
-            </div>
-          </div>
-        </Card>
-        <Separator className="pt-2 mb-3" />
-        </>
-        : ''}
+          <>
+            <Separator className="pt-2 mb-2" />
+            <Card>
+              <div className="pl-2 d-flex flex-grow-1 min-width-zero">
+                <div className="p-3 card-body align-self-center d-flex flex-colum flex-lg-row justify-content-between min-width-zero align-items-lg-center">
+                  {columns?.filter((c: any) => { return (c.label) }).map((item: any) => {
+                    return (
+                      <p key={item.label}
+                        className="mb-1 text-muted text-small" style={{ 'width': item.width }}
+                      >
+                        <IntlMessages id={item.label} />
+                      </p>
+                    );
+                  })}
+                  <p style={{ 'width': columns[columns.length - 1].width }} className={"mb-1 text-muted text-small text-center"}><IntlMessages id="pages.actions" /></p>
+                </div>
+              </div>
+            </Card>
+            <Separator className="pt-2 mb-3" />
+          </>
+          : ''}
       </Colxx>
     </Row>
   );

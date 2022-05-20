@@ -4,7 +4,7 @@ import { MUTATION_CHANGE_ACTIVE_COURSE, MUTATION_CREATE_COURSE, MUTATION_DELETE_
 import { QUERY_GET_ALL_COURSE, QUERY_GET_COURSE, QUERY_GET_DROPDOWNS_COURSE } from '../graphql/Course/CourseQueries';
 
 
-export const getListAllCourse = (campusId:string, academicGradeId: string) => {
+export const getListAllCourse = (campusId:string, academicGradeId: string, schoolId: string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
@@ -14,6 +14,7 @@ export const getListAllCourse = (campusId:string, academicGradeId: string) => {
           variables:{
             campusId,
             academicGradeId,
+            schoolId,
           },
         })
         .then((result: any) => {

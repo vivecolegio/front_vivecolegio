@@ -8,6 +8,7 @@ export const QUERY_GET_ALL_AREA = gql`
         node {
           id
           name
+          abbreviation
           active
         }
       }

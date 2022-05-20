@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
 import { COLUMN_LIST } from '../../../constants/GradeAssignment/gradeAssignmentConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as academicIndicatorActions from '../../../stores/actions/GradeAssignmentActions';
@@ -11,9 +12,12 @@ const GradeAssignmentList = (props: any) => {
   const [columns, setColumns] = useState(COLUMN_LIST);
   const [modalOpen, setModalOpen] = useState(false);
 
+  let [params] = useSearchParams();
+  const academicGradeId = params.get('academicGradeId');
+
   const [data, setData] = useState(null);
   useEffect(() => {
-    props.getListAllGradeAssignment(props?.loginReducer?.schoolId).then((listData: any) => {
+    props.getListAllGradeAssignment(props?.loginReducer?.schoolId, academicGradeId).then((listData: any) => {
       setDataTable(
         listData.map((c: any) => {
           c.node.grade_format = c.node.academicGrade ? c.node.academicGrade.name : '';
@@ -27,7 +31,7 @@ const GradeAssignmentList = (props: any) => {
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllGradeAssignment(props?.loginReducer?.schoolId).then((listData: any) => {
+    props.getListAllGradeAssignment(props?.loginReducer?.schoolId, academicGradeId).then((listData: any) => {
       setDataTable(
         listData.map((c: any) => {
           c.node.grade_format = c.node.academicGrade ? c.node.academicGrade.name : '';
