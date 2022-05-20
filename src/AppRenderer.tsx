@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -10,7 +10,18 @@ import configureStore from './stores/configureStore';
 
 const { store, persistor } = configureStore();
 
+import { useClearCache } from 'react-clear-cache';
+
 const Main = () => {
+  
+  const { isLatestVersion, emptyCacheStorage } = useClearCache();
+
+  useEffect(() => {
+    if(!isLatestVersion ){
+      emptyCacheStorage();
+    }
+  }, []);
+
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>

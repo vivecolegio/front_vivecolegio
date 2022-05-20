@@ -1,4 +1,5 @@
 export const COLUMN_LIST = [
-  { column: 'abbreviation', label: 'forms.abbreviation',  width:'50%' },
+  { column: 'name', label: 'forms.name',  width:'30%' },
+  { column: 'abbreviation', label: 'forms.abbreviation',  width:'20%' },
   { width:'40%' }, 
 ];
