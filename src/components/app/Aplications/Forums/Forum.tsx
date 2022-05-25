@@ -47,7 +47,7 @@ const ForumApp = (props: any) => {
   useEffect(() => {
     const  id  = params.get('id');
     props.dataForum(id).then((res: any) => {
-      console.log(res)
+      //console.log(res)
       setData(res.data);
       getComments();
     });
@@ -56,7 +56,7 @@ const ForumApp = (props: any) => {
   const getComments = async () => {
     const  id  = params.get('id');
     props.dataForumInteraction(id).then((res: any) => {
-      console.log(res?.data?.edges, 'comentarios')
+      //console.log(res?.data?.edges, 'comentarios')
       setComments(res?.data?.edges);
     });
   };

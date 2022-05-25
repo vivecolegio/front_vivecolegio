@@ -22,52 +22,59 @@ const DataList = (props: any) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [displayMode, setDisplayMode] = useState('list');
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedPageSize, setSelectedPageSize] = useState(8);
+  const [selectedPageSize, setSelectedPageSize] = useState(5);
   const [selectedOrderOption, setSelectedOrderOption] = useState(props?.columns[0]);
   const [orderOptions, setOrderOptions] = useState(props?.columns);
   const [columns, setColumns] = useState(props?.columns);
   const [totalItemCount, setTotalItemCount] = useState(0);
   const [totalPage, setTotalPage] = useState(1);
   const [search, setSearch] = useState('');
+  const [sortColumn, setSortColumn] = useState('');
+  const [sortOrderColumn, setSortOrderColumn] = useState(true);
   const [selectedItems, setSelectedItems] = useState([]);
   const [items, setItems] = useState([]);
+  const [itemsDefault, setItemsDefault] = useState([]);
   const [lastChecked, setLastChecked] = useState(null);
   const [currentMenu, setCurrentMenu] = useState({
-    createAction : false,
-    deleteAction : false,
-    updateAction : false,
-    readAction : false,
-    fullAccess : false,
-    activateAction : false,
-    inactiveAction : false,
+    createAction: false,
+    deleteAction: false,
+    updateAction: false,
+    readAction: false,
+    fullAccess: false,
+    activateAction: false,
+    inactiveAction: false,
   });
 
   const location = useLocation();
   const { pathname } = useLocation();
   const history = useNavigate();
   const currentUrl = location.pathname;
-  
+
+  useEffect(() => {
+    setItemsDefault(props?.data);
+  }, props?.data)
+
   useEffect(() => {
     setCurrentPage(1);
     let { roleMenus } = props.loginReducer;
     let submenus: any = [];
-    roleMenus.map((c:any) => {   
-      return submenus = submenus.concat(c.menuItemsLogin);      
+    roleMenus.map((c: any) => {
+      return submenus = submenus.concat(c.menuItemsLogin);
     });
-    console.log(submenus)
-    let cm = submenus.find((c:any)=>{return (currentUrl.includes(c.module.url))});
-    if(cm && cm.readAction){
+    //console.log(submenus)
+    let cm = submenus.find((c: any) => { return (currentUrl.includes(c.module.url)) });
+    if (cm && cm.readAction) {
       setCurrentMenu(cm);
     } else {
       history(`/home`);
       createNotification('warning', 'notPermissions', '');
-    } 
-    console.log(cm)
+    }
+    //console.log(cm)
   }, [selectedPageSize, selectedOrderOption]);
 
   useEffect(() => {
     if (props?.data != null) {
-      setTotalPage(Math.ceil(props?.data?.length/selectedPageSize));
+      setTotalPage(Math.ceil(props?.data?.length / selectedPageSize));
       // setItems(
       //   props?.data?.map((x: any) => {
       //     return { ...x, img: x.img.replace('img/', 'img/products/') };
@@ -79,7 +86,7 @@ const DataList = (props: any) => {
       setTotalItemCount(props?.data?.length);
       setIsLoaded(true);
     }
-  }, [selectedPageSize, currentPage, selectedOrderOption, search]);
+  }, [selectedPageSize, currentPage, selectedOrderOption]);
 
   const onCheckItem = (event: any, item: any) => {
     if (
@@ -93,7 +100,7 @@ const DataList = (props: any) => {
     }
 
     let selectedList = [...selectedItems];
-    if (selectedItems.find((c:any)=>{return (c.id === item.id)})) {
+    if (selectedItems.find((c: any) => { return (c.id === item.id) })) {
       selectedList = selectedList.filter((x) => {
         return x.id !== item.id;
       });
@@ -136,12 +143,12 @@ const DataList = (props: any) => {
   };
 
   const onContextMenuClick = (e: any, data: any) => {
-    console.log('onContextMenuClick - selected items', selectedItems);
-    console.log('onContextMenuClick - action : ', data.action);
+    //console.log('onContextMenuClick - selected items', selectedItems);
+    //console.log('onContextMenuClick - action : ', data.action);
   };
 
   const onContextMenu = (e: any, data: any) => {
-    console.log(data);
+    //console.log(data);
     const clickedProductId = data.data;
     if (!selectedItems.includes(clickedProductId)) {
       setSelectedItems([clickedProductId]);
@@ -161,8 +168,7 @@ const DataList = (props: any) => {
 
   const matches = (dato: any, term: any) => {
     let array = Object.entries(dato.node);
-    console.log(array.find(c=>{return (c.toString().toLocaleLowerCase().includes(term))}));
-    return array.find(c=>{return (c.toString().toLocaleLowerCase().includes(term))});
+    return array.find(c => { return (c[0] != "id" && c[0] != "__typename" && c[1]?.toString()?.toLocaleLowerCase()?.includes(term)) });
   };
 
   const startIndex = (currentPage - 1) * selectedPageSize;
@@ -182,7 +188,7 @@ const DataList = (props: any) => {
           handleChangeSelectAll={handleChangeSelectAll}
           changeOrderBy={(column: any) => {
             setSelectedOrderOption(
-              orderOptions.find((x:any) => {
+              orderOptions.find((x: any) => {
                 return x.column === column;
               }),
             );
@@ -198,11 +204,8 @@ const DataList = (props: any) => {
           selectedItemsLength={selectedItems ? selectedItems.length : 0}
           itemsLength={items ? items.length : 0}
           currentMenu={currentMenu}
-          onSearchKey={(e:any) => {  
-            if (e.key === 'Enter') {
-              setSearch(e.target.value.toLowerCase());     
-              setItems(items.filter(dato => {return matches(dato, search)})); 
-            }                                                            
+          onSearchKey={(e: any) => {
+            setItems(itemsDefault.filter(dato => { return matches(dato, e) }));
           }}
           orderOptions={orderOptions}
           pageSizes={pageSizes}
@@ -212,11 +215,31 @@ const DataList = (props: any) => {
           columns={columns}
           deleteAll={() => {
             return props?.deleteAll(selectedItems);
-          }}       
+          }}
           changeActiveDataAll={() => {
             return props?.changeActiveDataAll(selectedItems);
           }}
           withChildren={props?.withChildren}
+          onSort={(e: any) => {
+            let sortOrderColumnAux = sortOrderColumn;
+            if(e.column === sortColumn){
+              sortOrderColumnAux = !sortOrderColumnAux;
+              setSortOrderColumn(sortOrderColumnAux);
+            }else{
+              setSortColumn(e.column);
+              sortOrderColumnAux = true;
+              setSortOrderColumn(sortOrderColumnAux);
+            }
+            setItems(items.sort((a, b) => {
+                    const fieldA = a['node'][e.column].toString().toUpperCase();
+                    const fieldB = b['node'][e.column].toString().toUpperCase();
+                    return sortOrderColumnAux
+                      ? fieldA.localeCompare(fieldB)
+                      : fieldB.localeCompare(fieldA);
+                  }));
+          }}
+          sortColumn={sortColumn}
+          sortOrderColumn={sortOrderColumn}
         />
         <ListPageListing
           items={items}
@@ -234,7 +257,7 @@ const DataList = (props: any) => {
           deleteData={props?.deleteData}
           withChildren={props?.withChildren}
           filterChildren={props?.filterChildren}
-          childrenButtons={props?.childrenButtons}    
+          childrenButtons={props?.childrenButtons}
           currentMenu={currentMenu}
           additionalFunction={props?.additionalFunction}
         />

@@ -77,7 +77,7 @@ const ExperienceLearningRubricCriteriaCreateEdit = (props: any) => {
         );
         setPerformanceLevels(
           data?.dataPerformanceLevels?.edges.map((c: any) => {
-            console.log(c.node);
+            //console.log(c.node);
             return {
               label: `${c?.node?.name}: ${c?.node?.minimumScore} - ${c?.node?.topScore}`,
               name: c?.node?.name,
@@ -90,9 +90,9 @@ const ExperienceLearningRubricCriteriaCreateEdit = (props: any) => {
   };
 
   const setCriteriaPerformance = async (e: any, id: any) => {
-    console.log(id)
+    //console.log(id)
     let ind = criteriaPerformances.findIndex((c: any) => (c.performanceLevelId === id));
-    console.log(ind)
+    //console.log(ind)
     if (ind !== -1) {
       criteriaPerformances.splice(ind,1);
     } 

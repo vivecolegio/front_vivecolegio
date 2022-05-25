@@ -13,12 +13,13 @@ const getUrl = (path:any, sub:any, index:any) => {
   return path.split(sub)[0] + sub;
 };
 
-const BreadcrumbContainer = ({ heading, match }:any) => {
+const BreadcrumbContainer = ({ heading, match , currentMenu }:any) => {
+  //console.log(currentMenu)
   return (
     <>
       {heading && (
         <h1>
-          <IntlMessages id={`menu.${heading}`} />
+            <i className={currentMenu.icon} />{' '} <IntlMessages id={`menu.${heading}`} />
         </h1>
       )}
       {/* <BreadcrumbItems match={match} /> */}

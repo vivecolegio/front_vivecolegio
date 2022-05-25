@@ -12,7 +12,7 @@ import {
 const getSurveyDetailRequest = async () => {
   // eslint-disable-next-line no-return-await
   return await new Promise((success) => {
-    console.log(surveyDetailData)
+    //console.log(surveyDetailData)
     setTimeout(() => {
       success(surveyDetailData.data);
     }, 1000);

@@ -50,7 +50,7 @@ const ExperienceLearningList = (props: any) => {
         idAcademicPeriod ? idAcademicPeriod : undefined,
       )
       .then((listData: any) => {
-        console.log(listData)
+        //console.log(listData)
         setDataTable(listData);
       });
   };

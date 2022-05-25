@@ -14,7 +14,7 @@ const QuestionTestOnlineList = (props: any) => {
   const [data, setData] = useState(null);
   useEffect(() => {
     props.getListAllQuestionTestOnline(props?.loginReducer?.campusId).then((listData: any) => {
-      console.log(listData)
+      //console.log(listData)
       setDataTable(listData);
     });
   }, []);

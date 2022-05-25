@@ -1,8 +1,18 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState } from 'react';
 import { injectIntl } from 'react-intl';
-import { Button, ButtonDropdown, Card, Collapse, Input, DropdownItem, DropdownMenu, DropdownToggle, Row, UncontrolledDropdown } from 'reactstrap';
-
+import {
+  Button,
+  ButtonDropdown,
+  Card,
+  Collapse,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  Input,
+  Row,
+  UncontrolledDropdown,
+} from 'reactstrap';
 import IntlMessages from '../../../helpers/IntlMessages';
 import { Colxx, Separator } from '../CustomBootstrap';
 import BreadcrumbContainer from '../navs/Breadcrumb';
@@ -38,7 +48,10 @@ const ListPageHeading = ({
   withChildren,
   header,
   createActionDisabled,
-  showOptionsTypeView
+  showOptionsTypeView,
+  onSort,
+  sortColumn,
+  sortOrderColumn
 }: any) => {
   const [dropdownSplitOpen, setDropdownSplitOpen] = useState(false);
   const [displayOptionsIsOpen, setDisplayOptionsIsOpen] = useState(false);
@@ -53,7 +66,7 @@ const ListPageHeading = ({
           </h1> */}
 
           <div className="text-zero top-right-button-container">
-            {currentMenu.createAction && !createActionDisabled ?
+            {currentMenu.createAction && !createActionDisabled ? (
               <Button
                 color="primary"
                 size="lg"
@@ -64,9 +77,13 @@ const ListPageHeading = ({
               >
                 <IntlMessages id="pages.add-new" />
               </Button>
-              : ''}
+            ) : (
+              ''
+            )}
             {'  '}
-            {currentMenu.deleteAction || currentMenu.activateAction || currentMenu.inactiveAction ?
+            {currentMenu.deleteAction ||
+            currentMenu.activateAction ||
+            currentMenu.inactiveAction ? (
               <>
                 <ButtonDropdown
                   isOpen={dropdownSplitOpen}
@@ -85,36 +102,47 @@ const ListPageHeading = ({
                       }}
                       label={
                         <span
-                          className={`custom-control-label ${selectedItemsLength > 0 && selectedItemsLength < itemsLength
+                          className={`custom-control-label ${
+                            selectedItemsLength > 0 && selectedItemsLength < itemsLength
                               ? 'indeterminate'
                               : ''
-                            }`}
+                          }`}
                         />
                       }
                     />
                   </div>
                   <DropdownToggle caret color="primary" className="dropdown-toggle-split btn-lg" />
                   <DropdownMenu end>
-                    {currentMenu.deleteAction ?
+                    {currentMenu.deleteAction ? (
                       <DropdownItem
                         onClick={() => {
                           return deleteAll();
-                        }}>
+                        }}
+                      >
                         <IntlMessages id="pages.delete" />
-                      </DropdownItem> : ''}
-                    {currentMenu.activateAction || currentMenu.inactiveAction ?
+                      </DropdownItem>
+                    ) : (
+                      ''
+                    )}
+                    {currentMenu.activateAction || currentMenu.inactiveAction ? (
                       <DropdownItem
                         onClick={() => {
                           return changeActiveDataAll();
-                        }}>
+                        }}
+                      >
                         <IntlMessages id="pages.activateInactivate" />
-                      </DropdownItem> : ''}
+                      </DropdownItem>
+                    ) : (
+                      ''
+                    )}
                   </DropdownMenu>
                 </ButtonDropdown>
               </>
-              : ''}
+            ) : (
+              ''
+            )}
           </div>
-          <BreadcrumbContainer match={match} heading={match.replace("/", "")} />
+          <BreadcrumbContainer currentMenu={currentMenu} match={match} heading={match.replace('/', '')} />
         </div>
 
         <div className="mb-2">
@@ -129,7 +157,7 @@ const ListPageHeading = ({
             <i className="simple-icon-arrow-down align-middle" />
           </Button>
           <Collapse isOpen={displayOptionsIsOpen} className="d-md-block" id="displayOptions">
-            {showOptionsTypeView ?
+            {showOptionsTypeView ? (
               <>
                 <span className="mr-3 d-inline-block float-md-left">
                   <a
@@ -158,7 +186,9 @@ const ListPageHeading = ({
                   </a>
                 </span>
               </>
-              : ''}
+            ) : (
+              ''
+            )}
 
             <div className="d-block d-md-inline-block pt-1">
               <div className="search-sm d-inline-block float-md-left mr-1 mb-1 align-top">
@@ -167,8 +197,8 @@ const ListPageHeading = ({
                   name="keyword"
                   id="search"
                   placeholder={messages['menu.search']}
-                  onKeyPress={(e) => {
-                    return onSearchKey(e);
+                  onChange={(e: any) => {
+                    return onSearchKey(e.target?.value);
                   }}
                 />
               </div>
@@ -198,28 +228,48 @@ const ListPageHeading = ({
           </Collapse>
         </div>
         {header}
-        {displayMode === 'list' ?
+        {displayMode === 'list' ? (
           <>
             <Separator className="pt-2 mb-2" />
             <Card>
               <div className="pl-2 d-flex flex-grow-1 min-width-zero">
                 <div className="p-3 card-body align-self-center d-flex flex-colum flex-lg-row justify-content-between min-width-zero align-items-lg-center">
-                  {columns?.filter((c: any) => { return (c.label) }).map((item: any) => {
-                    return (
-                      <p key={item.label}
-                        className="mb-1 text-muted text-small" style={{ 'width': item.width }}
-                      >
-                        <IntlMessages id={item.label} />
-                      </p>
-                    );
-                  })}
-                  <p style={{ 'width': columns[columns.length - 1].width }} className={"mb-1 text-muted text-small text-center"}><IntlMessages id="pages.actions" /></p>
+                  {columns
+                    ?.filter((c: any) => {
+                      return c.label;
+                    })
+                    .map((item: any) => {
+                      return (
+                        <p
+                          key={item.label}
+                          className="mb-1 text-muted text-small"
+                          style={{ width: item.width }}
+                        >
+                          <i
+                            className={`glyph-icon text-one cursor-pointer ${ sortColumn === item?.column ?  sortOrderColumn ? 'iconsminds-up-1' : 'iconsminds-down-1' : 'iconsminds-down-1' }`}
+                            onClick={(e: any) => {
+                              //console.log(sortColumn)
+                              return onSort(item);
+                            }}
+                          />
+                          <IntlMessages id={item.label} />
+                        </p>
+                      );
+                    })}
+                  <p
+                    style={{ width: columns[columns.length - 1].width }}
+                    className={'mb-1 text-muted text-small text-center'}
+                  >
+                    <IntlMessages id="pages.actions" />
+                  </p>
                 </div>
               </div>
             </Card>
             <Separator className="pt-2 mb-3" />
           </>
-          : ''}
+        ) : (
+          ''
+        )}
       </Colxx>
     </Row>
   );

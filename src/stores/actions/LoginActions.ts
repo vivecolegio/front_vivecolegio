@@ -83,7 +83,7 @@ export const me = (id: any) => {
         })
         .then((result: any) => {
           data = result.data;
-          console.log(data.me.roleMenus)
+          //console.log(data.me.roleMenus)
           if(data !=null){
             dispatch({
               type: ME,

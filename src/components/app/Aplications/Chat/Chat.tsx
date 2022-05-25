@@ -21,7 +21,7 @@ const ChatApp = (
   useEffect(() => {
     document.body.classList.add('no-footer');
     const currentUserId = 0;
-    console.log(props.getContacts());
+    //console.log(props.getContacts());
     props.getContacts();
     props.getConversations(currentUserId);
 
@@ -39,7 +39,7 @@ const ChatApp = (
   };
 
   useEffect(() => {
-    console.log(props);
+    //console.log(props);
     if (
       props.chatReducer.loadingConversations &&
       props.chatReducer.loadingContacts &&

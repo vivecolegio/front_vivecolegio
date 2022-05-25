@@ -32,7 +32,7 @@ const loadContactsAsync = async () => {
   const contacts = contactsData.data;
   const currentUser = contacts[0];
   // eslint-disable-next-line no-return-await
-  console.log(contacts, 'CONTACTOS')
+  //console.log(contacts, 'CONTACTOS')
   return await new Promise((success) => {
     setTimeout(() => {
       success({ contacts, currentUser });
@@ -56,7 +56,7 @@ function* loadConversations(userId: any): any {
 const loadConversationsAsync = async ({ payload }: any) => {
   let conversations = conversationsData.data;
   conversations = conversations.filter((x: { users: string | any[]; }) => x.users.includes(payload));
-  console.log(conversations);
+  //console.log(conversations);
   const selectedUser = conversations[0].users.find((x: any) => x !== payload);
   // eslint-disable-next-line no-return-await
   return await new Promise((success) => {

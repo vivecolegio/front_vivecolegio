@@ -34,7 +34,7 @@ const TopnavNotifications = (props: any) => {
   }, []);
 
   const markAsRead = async (item: any) => {
-    console.log(item)
+    //console.log(item)
     props.updateNotification({ dateRead: new Date() }, item).then((listData: any) => {
       props.getListSomeNotification(props?.loginReducer?.userId).then((listData: any) => {
         setNotifications(listData.filter((x:any)=>(!x?.node?.dateRead)).map((c:any)=>{return c.node}));

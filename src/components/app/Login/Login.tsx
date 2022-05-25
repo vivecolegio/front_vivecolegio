@@ -7,7 +7,6 @@ import { Alert, Button, Card, CardTitle, Form, FormGroup, Input, Label, Row } fr
 import LogoImg from '../../../assets/img/logos/LOGO.png';
 import LogoImg2 from '../../../assets/img/logos/LOGO2.png';
 import LoginImg1 from '../../../assets/img/logos/login1.jpg';
-import FooterImg1 from '../../../assets/img/logos/mintic.png';
 import FooterImg2 from '../../../assets/img/logos/minciencias.png';
 import NavImg1 from '../../../assets/img/logos/ufps.png';
 import NavImg2 from '../../../assets/img/logos/gobernacion.png';
@@ -180,11 +179,10 @@ const Login = (props: any) => {
       </main>
       <Row className='d-none d-sm-none d-sm-block d-md-none d-lg-block'>
           <Colxx xxs="12" md="12" className="footer-login">
-              <Colxx className="col-sm-8 col-md-8 d-flex justify-content-around">
-                    <img className='p-3' alt="LOGO" src={FooterImg1} />
+              <Colxx className="col-sm-8 col-md-8 d-flex justify-content-around" style={{height: "80px"}}>
                     <img className='p-3' alt="LOGO" src={FooterImg2} />           
-                    <img className='p-3' alt="LOGO" src={NavImg1} />           
                     <img className='p-3' alt="LOGO" src={NavImg2} />           
+                    <img className='p-3' alt="LOGO" src={NavImg1} />    
               </Colxx>
             </Colxx>
           </Row>      

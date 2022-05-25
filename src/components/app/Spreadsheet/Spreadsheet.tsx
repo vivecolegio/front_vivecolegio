@@ -95,7 +95,7 @@ const SpreadsheetList = (props: any) => {
         });
      
       await props.getListAllAcademicPeriodOrder(props?.loginReducer?.schoolId).then((listData: any) => {
-        console.log(listData, 'DATAAAAAAA')
+        //console.log(listData, 'DATAAAAAAA')
         props
           .generateAcademicAsignatureCoursePeriodValuationStudents(
             props?.loginReducer?.schoolId,

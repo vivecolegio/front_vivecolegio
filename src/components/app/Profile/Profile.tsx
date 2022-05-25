@@ -24,7 +24,7 @@ const Profile = (props: any) => {
   const getUser = async () => {
     props.dataUser(props?.loginReducer?.userId).then((resp: any) => {
       setUser(resp.data);
-      console.log(resp);
+      //console.log(resp);
     });
   };
 

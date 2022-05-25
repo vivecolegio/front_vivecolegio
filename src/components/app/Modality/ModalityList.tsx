@@ -30,7 +30,7 @@ const ModalityList = (props: any) => {
   };
 
   const onSubmit = async (dataForm: any) => {
-    console.log(dataForm);
+    //console.log(dataForm);
     if (data === null) {
       await props.saveNewModality(dataForm).then((id: any) => {
         if (id !== undefined) {

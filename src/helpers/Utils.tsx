@@ -44,7 +44,7 @@ export const getDirection = () => {
       }
     }
   } catch (error) {
-    console.log('>>>>: src/helpers/Utils.js : getDirection -> error', error);
+    //console.log('>>>>: src/helpers/Utils.js : getDirection -> error', error);
     direction = defaultDirection;
   }
   return {
@@ -60,7 +60,7 @@ export const setDirection = (localValue: string) => {
   try {
     localStorage.setItem('direction', direction);
   } catch (error) {
-    console.log('>>>>: src/helpers/Utils.js : setDirection -> error', error);
+    //console.log('>>>>: src/helpers/Utils.js : setDirection -> error', error);
   }
 };
 
@@ -71,7 +71,7 @@ export const getCurrentColor = () => {
       currentColor = localStorage.getItem(themeColorStorageKey);
     }
   } catch (error) {
-    console.log('>>>>: src/helpers/Utils.js : getCurrentColor -> error', error);
+    //console.log('>>>>: src/helpers/Utils.js : getCurrentColor -> error', error);
     currentColor = defaultColor;
   }
   return currentColor;
@@ -81,7 +81,7 @@ export const setCurrentColor = (color: string) => {
   try {
     localStorage.setItem(themeColorStorageKey, color);
   } catch (error) {
-    console.log('>>>>: src/helpers/Utils.js : setCurrentColor -> error', error);
+    //console.log('>>>>: src/helpers/Utils.js : setCurrentColor -> error', error);
   }
 };
 
@@ -92,10 +92,7 @@ export const getCurrentRadius = () => {
       currentRadius = localStorage.getItem(themeRadiusStorageKey);
     }
   } catch (error) {
-    console.log(
-      '>>>>: src/helpers/Utils.js : getCurrentRadius -> error',
-      error,
-    );
+    //console.log('>>>>: src/helpers/Utils.js : getCurrentRadius -> error', error,);
     currentRadius = 'rounded';
   }
   return currentRadius;
@@ -104,10 +101,7 @@ export const setCurrentRadius = (radius: string) => {
   try {
     localStorage.setItem(themeRadiusStorageKey, radius);
   } catch (error) {
-    console.log(
-      '>>>>: src/helpers/Utils.js : setCurrentRadius -> error',
-      error,
-    );
+    //console.log('>>>>: src/helpers/Utils.js : setCurrentRadius -> error',error,);
   }
 };
 
@@ -122,10 +116,7 @@ export const getCurrentLanguage = () => {
         ? localStorage.getItem('currentLanguage')
         : defaultLocale;
   } catch (error) {
-    console.log(
-      '>>>>: src/helpers/Utils.js : getCurrentLanguage -> error',
-      error,
-    );
+    //console.log( '>>>>: src/helpers/Utils.js : getCurrentLanguage -> error',error, );
     language = defaultLocale;
   }
   return language;
@@ -134,10 +125,7 @@ export const setCurrentLanguage = (locale: string) => {
   try {
     localStorage.setItem('currentLanguage', locale);
   } catch (error) {
-    console.log(
-      '>>>>: src/helpers/Utils.js : setCurrentLanguage -> error',
-      error,
-    );
+    //console.log( '>>>>: src/helpers/Utils.js : setCurrentLanguage -> error',error, );
   }
 };
 
@@ -149,7 +137,7 @@ export const getCurrentUser = () => {
         ? JSON.parse(localStorage.getItem('gogo_current_user'))
         : null;
   } catch (error) {
-    console.log('>>>>: src/helpers/Utils.js  : getCurrentUser -> error', error);
+    //console.log('>>>>: src/helpers/Utils.js  : getCurrentUser -> error', error);
     user = null;
   }
   return user;
@@ -163,7 +151,7 @@ export const setCurrentUser = (user: any) => {
       localStorage.removeItem('gogo_current_user');
     }
   } catch (error) {
-    console.log('>>>>: src/helpers/Utils.js : setCurrentUser -> error', error);
+    //console.log('>>>>: src/helpers/Utils.js : setCurrentUser -> error', error);
   }
 };
 

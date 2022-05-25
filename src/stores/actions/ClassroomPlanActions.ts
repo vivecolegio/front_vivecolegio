@@ -186,7 +186,7 @@ export const deleteClassroomPlan = (id: any, showToast: boolean) => {
 };
 
 export const getDropdownsClassroomPlan = (schoolId:string, academicAsignatureId: string, academicGradeId: string, academicPeriodsId:string, generalAcademicAsignatureId: string, generalAcademicGradeId: string, learningsId: any) => {
-  console.log(learningsId, 'IDSSSS')
+  //console.log(learningsId, 'IDSSSS')
   return async (dispatch: any) => {
     try {
       let listData = {};

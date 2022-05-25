@@ -6,15 +6,15 @@ import ThumbnailImage from '../AplicationsComponents/ThumbnailImage';
 
 const UserCardBasic = (props: any) => {
   
- 
-
-  useEffect(() => {console.log(props.itemSelected)}, [props.itemSelected]);
+  useEffect(() => {
+    //console.log(props.itemSelected)
+  }, [props.itemSelected]);
 
   return (
     <Card className="d-flex flex-row mb-4 w-340" onClick={() => {
-      console.log(props)       
+      //console.log(props)       
         props.setItem(props.data.key);     
-        console.log(props.data.key)       
+        //console.log(props.data.key)       
     }}>
       <span className="d-flex">
         {/* <ThumbnailImage rounded small src={data.thumb} alt="profile" className="m-4" /> */}

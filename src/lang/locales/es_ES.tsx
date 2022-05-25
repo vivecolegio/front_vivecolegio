@@ -88,7 +88,7 @@ const esMessages = {
   'pages.activateInactivate': 'Activar / Inactivar',
   'pages.inactivate': 'Inactivar',
   'pages.another-action': 'Otra accion',
-  'pages.actions': 'ACCIONES',
+  'pages.actions': 'Acciones',
   'pages.header': 'Encabezado',
   'pages.details': 'DETALLES',
   'pages.orders': 'PEDIDOS',

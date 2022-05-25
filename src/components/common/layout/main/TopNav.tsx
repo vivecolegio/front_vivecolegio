@@ -3,8 +3,6 @@ import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { NavLink } from 'react-router-dom';
 import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
-import NavImg2 from '../../../../assets/img/logos/gobernacion.png';
-import NavImg1 from '../../../../assets/img/logos/ufps.png';
 import ProfileImg from '../../../../assets/img/profiles/empty.png';
 import {
   isDarkSwitchActive,
@@ -248,8 +246,6 @@ const TopNav = (props: any) => {
           </a>          */}
         </div>
         <div className="navbar-right">      
-            <img className="mr-3" alt="LOGO" src={NavImg1} />
-             <img className="mr-3" alt="LOGO" src={NavImg2} />
           {isDarkSwitchActive && <TopnavDarkSwitch />}
           <div className="header-icons d-inline-block align-middle">
             {/* <TopnavEasyAccess/> */}

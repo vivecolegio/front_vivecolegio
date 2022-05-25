@@ -69,7 +69,7 @@ const ExperienceLearningCoEvaluationList = (props: any) => {
           props
             .getListAllExperienceLearningCoEvaluationValuation(learningId)
             .then(async (listDataValuation: any) => {
-              console.log(listDataValuation);
+              //console.log(listDataValuation);
               let valuationsArr: any = [];
               await props
                 .getListAllPerformanceLevel(props?.loginReducer?.schoolId)
@@ -88,11 +88,11 @@ const ExperienceLearningCoEvaluationList = (props: any) => {
                     return l;
                   });
                 });
-              console.log(valuationsArr);
+              //console.log(valuationsArr);
               setValuationsAssessment(valuationsArr);
             });
           props.getListAllExperienceLearningCoEvaluation(learningId).then(async (listData: any) => {
-            console.log(listData);
+            //console.log(listData);
             let valuationsArr: any = [];
             // get performance levels
             await props

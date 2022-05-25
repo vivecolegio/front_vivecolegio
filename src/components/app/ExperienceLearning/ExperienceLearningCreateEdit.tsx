@@ -178,9 +178,9 @@ const ExperienceLearningCreateEdit = (props: any) => {
   };
 
   const setCriteriaPerformance = async (e: any, id: any) => {
-    console.log(id);
+    //console.log(id);
     let ind = criteriaPerformances.findIndex((c: any) => c.performanceLevelId === id);
-    console.log(ind);
+    //console.log(ind);
     if (ind !== -1) {
       criteriaPerformances.splice(ind, 1);
     }
@@ -564,7 +564,7 @@ const ExperienceLearningCreateEdit = (props: any) => {
                                 ];
                                 setChecksEvidencesLearningSelected(checksEvidencesLearningSelected);
                                 setValue('evidenceLearningsId', checksEvidencesLearningSelected);
-                                console.log(checksEvidencesLearningSelected);
+                                //console.log(checksEvidencesLearningSelected);
                               }}
                               label=""
                             />

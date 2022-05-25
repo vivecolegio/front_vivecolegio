@@ -31,7 +31,7 @@ const GeneralAsignatureList = (props: any) => {
   };
 
   const onSubmit = async (dataForm: any) => {
-    console.log(dataForm);
+    //console.log(dataForm);
     if (data === null) {
       await props.saveNewAsignature(dataForm).then((id: any) => {
         if (id !== undefined) {

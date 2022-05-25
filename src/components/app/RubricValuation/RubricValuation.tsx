@@ -62,7 +62,7 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
           learningId,
         )
         .then(async (listData: any) => {
-          console.log(listData);
+          //console.log(listData);
           let valuationsArr: any = [];
           // get performance levels
           await props
@@ -78,7 +78,7 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
                     l?.node?.assessment >= c.node.minimumScore
                   );
                 });
-                console.log(perf)
+                //console.log(perf)
                 l.node.performance = perf?.node?.name;
                 l.node.code = l.node.student.code;
                 return l.node;

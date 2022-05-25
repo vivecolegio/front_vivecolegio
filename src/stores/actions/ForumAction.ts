@@ -17,7 +17,7 @@ export const getListAllForum = (schoolId:string) => {
         })
         .then((result: any) => {          
           listData = result.data.data.edges;
-          console.log(listData)
+          //console.log(listData)
         });
       return listData;
     } catch (error) {

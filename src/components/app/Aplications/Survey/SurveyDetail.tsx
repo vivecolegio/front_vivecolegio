@@ -36,7 +36,7 @@ const SurveyDetailApp = (props: any) => {
 
   useEffect(() => {
     document.body.classList.add('right-menu');
-    console.log(props)
+    //console.log(props)
     props.getSurveyDetail();
 
     return () => {
