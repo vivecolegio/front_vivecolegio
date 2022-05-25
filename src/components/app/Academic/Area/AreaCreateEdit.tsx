@@ -109,7 +109,7 @@ const AreaCreateEdit = (props: any) => {
       {loading ? (
         <>
           <Colxx sm={12} className="d-flex justify-content-center">
-            <Loader/>
+            <Loader />
           </Colxx>
         </>
       ) : (
@@ -142,7 +142,7 @@ const AreaCreateEdit = (props: any) => {
               <div className="form-group">
                 <Label>
                   <IntlMessages id="menu.area" /> {' - '}
-                  <IntlMessages id="menu.general" />
+                  <IntlMessages id="menu.national" />
                 </Label>
                 <Select
                   placeholder={<IntlMessages id="forms.select" />}

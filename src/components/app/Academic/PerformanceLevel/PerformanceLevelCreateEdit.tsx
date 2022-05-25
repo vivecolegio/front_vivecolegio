@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import {Loader} from '../../../common/Loader';
+import { Loader } from '../../../common/Loader';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
@@ -112,7 +112,7 @@ const AreaCreateEdit = (props: any) => {
       {loading ? (
         <>
           <Colxx sm={12} className="d-flex justify-content-center">
-            <Loader/>
+            <Loader />
           </Colxx>
         </>
       ) : (
@@ -152,7 +152,7 @@ const AreaCreateEdit = (props: any) => {
                 <Label>
                   <IntlMessages id="menu.performanceLevel" />
                   {' - '}
-                  <IntlMessages id="menu.general" />
+                  <IntlMessages id="menu.national" />
                 </Label>
                 <Select
                   placeholder={<IntlMessages id="forms.select" />}

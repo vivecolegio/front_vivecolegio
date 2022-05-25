@@ -160,7 +160,7 @@ const GradeCreateEdit = (props: any) => {
       {loading ? (
         <>
           <Colxx sm={12} className="d-flex justify-content-center">
-            <Loader/>
+            <Loader />
           </Colxx>
         </>
       ) : (
@@ -238,6 +238,8 @@ const GradeCreateEdit = (props: any) => {
               <div className="form-group">
                 <Label>
                   <IntlMessages id="menu.grade" />
+                  {' - '}
+                  <IntlMessages id="menu.national" />
                 </Label>
                 <Select
                   placeholder={<IntlMessages id="forms.select" />}
