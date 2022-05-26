@@ -98,8 +98,8 @@ export const updateAsignature = (data: any, id: any) => {
         ...data,
       };
       let dataUpdate = null;
-      model.maxWeight = model.weight && !isNaN(model.maxWeight) ? parseFloat(model.maxWeight) : 0;
-      model.minWeight = model.weight && !isNaN(model.minWeight) ? parseFloat(model.minWeight) : 0;
+      model.maxWeight = model.maxWeight && !isNaN(model.maxWeight) ? parseFloat(model.maxWeight) : 0;
+      model.minWeight = model.minWeight && !isNaN(model.minWeight) ? parseFloat(model.minWeight) : 0;
       await client
         .mutate({
           mutation: MUTATION_UPDATE_ASIGNATURE,

@@ -27,3 +27,9 @@ export const MUTATION_DELETE_USER = gql`
     delete: deleteUser(id: $id)
   }
 `;
+
+export const MUTATION_UPDATE_PROFILE_PHOTO_USER = gql`
+  mutation userProfileUploadImage($id: String!, $file: Upload) {
+    update: userProfileUploadImage(id: $id, file: $file)
+  }
+`;

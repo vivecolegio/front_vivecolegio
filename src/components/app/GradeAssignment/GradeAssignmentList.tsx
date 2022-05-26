@@ -5,6 +5,7 @@ import { COLUMN_LIST } from '../../../constants/GradeAssignment/gradeAssignmentC
 import { createNotification } from '../../../helpers/Notification';
 import * as academicIndicatorActions from '../../../stores/actions/GradeAssignmentActions';
 import DataList from '../../common/Data/DataList';
+import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
 import GradeAssignmentCreateEdit from './GradeAssignmentCreateEdit';
 
 const GradeAssignmentList = (props: any) => {
@@ -91,7 +92,7 @@ const GradeAssignmentList = (props: any) => {
   const deleteAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.deleteUser(item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -104,7 +105,7 @@ const GradeAssignmentList = (props: any) => {
   const changeActiveDataAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.changeActiveUser(!item.active, item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -119,6 +120,7 @@ const GradeAssignmentList = (props: any) => {
       {' '}
       {dataTable !== null ? (
         <>
+          <HeaderInfoAcademic goTitle="Regresar a grados" />
           <DataList
             data={dataTable}
             columns={columns}

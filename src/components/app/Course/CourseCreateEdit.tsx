@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import {Loader} from '../../common/Loader';
+import { Loader } from '../../common/Loader';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router';
 import Select from 'react-select';
@@ -31,14 +31,14 @@ const CourseCreateEdit = (props: any) => {
   useEffect(() => {
     cleanForm();
     getDropdowns();
-    if (props?.data?.id) {    
+    if (props?.data?.id) {
       if (props?.data?.campus !== undefined && props?.data?.campus != null) {
         setCampus({
           key: props?.data?.campus?.id,
           label: props?.data?.campus?.name,
           value: props?.data?.campus?.id,
         });
-      } 
+      }
       if (props?.data?.academicGrade !== undefined && props?.data?.academicGrade != null) {
         setGrade({
           key: props?.data?.academicGrade?.id,
@@ -60,7 +60,7 @@ const CourseCreateEdit = (props: any) => {
         value: props?.loginReducer?.campusId,
       });
     }
-    if(academicGradeId){
+    if (academicGradeId) {
       register('academicGradeId', {
         required: true,
         value: academicGradeId,
@@ -74,7 +74,7 @@ const CourseCreateEdit = (props: any) => {
         data.dataCampus.edges.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };
         }),
-      );       
+      );
     });
   };
 
@@ -108,7 +108,7 @@ const CourseCreateEdit = (props: any) => {
       {loading ? (
         <>
           <Colxx sm={12} className="d-flex justify-content-center">
-            <Loader/>
+            <Loader />
           </Colxx>
         </>
       ) : (
@@ -137,11 +137,11 @@ const CourseCreateEdit = (props: any) => {
                   <IntlMessages id="forms.sorting" />
                 </Label>
                 <Input {...orderRest} innerRef={orderRef} className="form-control" />
-              </div>                                 
+              </div>
               {!props?.loginReducer?.campusId ? (
                 <div className="form-group">
                   <Label>
-                    <IntlMessages id="menu.school" />
+                    <IntlMessages id="menu.campus" />
                   </Label>
                   <Select
                     placeholder={<IntlMessages id="forms.select" />}

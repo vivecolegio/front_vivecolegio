@@ -1,10 +1,10 @@
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import {Loader} from '../../common/Loader';
+import { Loader } from '../../common/Loader';
 import { connect } from 'react-redux';
 import { Badge, Card, CardBody, Input, InputGroup } from 'reactstrap';
 import BannerImg from '../../../assets/img/logos/banner.png';
-import ProfileImg from '../../../assets/img/profiles/l-1.jpg';
+import ProfileImg from '../../../assets/img/profiles/empty.png';
 import IntlMessages from '../../../helpers/IntlMessages';
 import * as userActions from '../../../stores/actions/UserActions';
 import { Colxx } from '../../common/CustomBootstrap';
@@ -28,12 +28,19 @@ const Profile = (props: any) => {
     });
   };
 
+  const uploadFileImage = async (file: any) => {
+    props.updateProfilePhotoUser(file, props?.loginReducer?.userId).then((resp: any) => {
+      console.log(resp);
+    });
+    console.log(file)
+  };
+
   return (
     <>
       {loading ? (
         <>
           <Colxx sm={12} className="d-flex justify-content-center">
-            <Loader/>
+            <Loader />
           </Colxx>
         </>
       ) : (
@@ -49,8 +56,8 @@ const Profile = (props: any) => {
           </Colxx>
           <Colxx xxs="12" lg="5" xl="5" className="col-left m-auto">
             <SingleLightbox
-              thumb={ProfileImg}
-              large={ProfileImg}
+              thumb={user?.profilePhoto || ProfileImg}
+              large={user?.profilePhoto || ProfileImg}
               className="img-thumbnail card-img social-profile-img"
             />
             <Card>
@@ -71,6 +78,7 @@ const Profile = (props: any) => {
                     type="file"
                     id="exampleCustomFileBrowser2"
                     name="customFile"
+                    onChange={(e) => uploadFileImage(e.target.files[0])}
                   />
                 </InputGroup>
                 <hr />

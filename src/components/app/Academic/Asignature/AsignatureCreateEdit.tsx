@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
 import Select from 'react-select';
 import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
 import IntlMessages from '../../../../helpers/IntlMessages';
@@ -23,6 +24,9 @@ const AsignatureCreateEdit = (props: any) => {
     mode: 'onChange',
     reValidateMode: 'onChange',
   });
+
+  let [params] = useSearchParams();
+  const areaId = params.get('id');
 
   const { handleSubmit, control, register, reset, setValue, getValues } = methods;
 
@@ -65,6 +69,13 @@ const AsignatureCreateEdit = (props: any) => {
       register('schoolId', {
         required: true,
         value: props?.loginReducer?.schoolId,
+      });
+    }
+    if (areaId) {
+      // set value when register is new and sesion contains value
+      register('academicAreaId', {
+        required: true,
+        value: areaId,
       });
     }
   };
@@ -123,7 +134,7 @@ const AsignatureCreateEdit = (props: any) => {
       {loading ? (
         <>
           <Colxx sm={12} className="d-flex justify-content-center">
-            <Loader/>
+            <Loader />
           </Colxx>
         </>
       ) : (
@@ -171,41 +182,6 @@ const AsignatureCreateEdit = (props: any) => {
                 </Label>
                 <Input {...minWeightRest} innerRef={minWeightRef} className="form-control" />
               </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="menu.area" />
-                </Label>
-                <Select
-                  placeholder={<IntlMessages id="forms.select" />}
-                  {...register('academicAreaId', { required: true })}
-                  className="react-select"
-                  classNamePrefix="react-select"
-                  options={areasList}
-                  value={area}
-                  onChange={(selectedOption) => {
-                    setValue('academicAreaId', selectedOption?.key);
-                    setArea(selectedOption);
-                  }}
-                />
-              </div>
-              {/* <div className="form-group">
-                <Label>
-                  <IntlMessages id="menu.asignature" />
-                </Label>
-                <Select
-                  placeholder={<IntlMessages id="forms.select" />}
-                  {...register('generalAcademicAsignatureId', { required: true })}
-                  className="react-select"
-                  classNamePrefix="react-select"
-                  options={generalAcademicAsignaturesList}
-                  value={generalAcademicAsignature}
-                  onChange={(selectedOption) => {
-                    setValue('generalAcademicAsignatureId', selectedOption?.key);
-                    setGeneralAcademicAsignature(selectedOption);
-                  }}
-                />
-              </div> */}
-
               {!props?.loginReducer?.schoolId ? (
                 <div className="form-group">
                   <Label>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import {Loader} from '../../common/Loader';
+import { Loader } from '../../common/Loader';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
@@ -9,6 +9,7 @@ import * as GradeAssignmentActions from '../../../stores/actions/GradeAssignment
 import { Colxx } from '../../common/CustomBootstrap';
 import AddNewModal from '../../common/Data/AddNewModal';
 import CreateEditAuditInformation from '../../common/Data/CreateEditAuditInformation';
+import { useSearchParams } from 'react-router-dom';
 
 const GradeAssignmentCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
@@ -23,6 +24,9 @@ const GradeAssignmentCreateEdit = (props: any) => {
     mode: 'onChange',
     reValidateMode: 'onChange',
   });
+
+  let [params] = useSearchParams();
+  const academicGradeId = params.get('academicGradeId');
 
   const { handleSubmit, control, register, reset, setValue, getValues } = methods;
 
@@ -68,6 +72,13 @@ const GradeAssignmentCreateEdit = (props: any) => {
       register('schoolId', {
         required: true,
         value: props?.loginReducer?.schoolId,
+      });
+    }
+    if (academicGradeId) {
+      // set value when register is new and sesion contains value
+      register('academicGradeId', {
+        required: true,
+        value: academicGradeId,
       });
     }
   };
@@ -122,7 +133,7 @@ const GradeAssignmentCreateEdit = (props: any) => {
       {loading ? (
         <>
           <Colxx sm={12} className="d-flex justify-content-center">
-            <Loader/>
+            <Loader />
           </Colxx>
         </>
       ) : (
@@ -164,23 +175,6 @@ const GradeAssignmentCreateEdit = (props: any) => {
                   onChange={(selectedOption) => {
                     setValue('academicAsignatureId', selectedOption?.key);
                     setAsignature(selectedOption);
-                  }}
-                />
-              </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="menu.grade" />
-                </Label>
-                <Select
-                  placeholder={<IntlMessages id="forms.select" />}
-                  {...register('academicGradeId', { required: true })}
-                  className="react-select"
-                  classNamePrefix="react-select"
-                  options={gradesList}
-                  value={grade}
-                  onChange={(selectedOption) => {
-                    setValue('academicGradeId', selectedOption?.key);
-                    setGrade(selectedOption);
                   }}
                 />
               </div>

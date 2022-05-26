@@ -5,6 +5,7 @@ import { COLUMN_LIST } from '../../../constants/Course/CourseConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as courseActions from '../../../stores/actions/CourseActions';
 import DataList from '../../common/Data/DataList';
+import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
 import CourseCreateEdit from './CourseCreateEdit';
 
 const CourseList = (props: any) => {
@@ -75,7 +76,7 @@ const CourseList = (props: any) => {
   const deleteAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.deleteCourse(item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -88,7 +89,7 @@ const CourseList = (props: any) => {
   const changeActiveDataAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.changeActiveCourse(!item.active, item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -103,6 +104,7 @@ const CourseList = (props: any) => {
       {' '}
       {dataTable !== null ? (
         <>
+          <HeaderInfoAcademic goTitle="Regresar a grados" />
           <DataList
             data={dataTable}
             columns={columns}

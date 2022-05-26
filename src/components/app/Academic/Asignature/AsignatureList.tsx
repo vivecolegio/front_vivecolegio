@@ -5,6 +5,7 @@ import { COLUMN_LIST } from '../../../../constants/Asignature/asignatureConstant
 import { createNotification } from '../../../../helpers/Notification';
 import * as asignatureActions from '../../../../stores/actions/Academic/AsignatureActions';
 import DataList from '../../../common/Data/DataList';
+import HeaderInfoAcademic from '../../../common/Data/HeaderInfoAcademic';
 import AsignatureCreateEdit from './AsignatureCreateEdit';
 
 const AsignatureList = (props: any) => {
@@ -16,14 +17,14 @@ const AsignatureList = (props: any) => {
 
   const [data, setData] = useState(null);
   useEffect(() => {
-    const  areaId  = params.get('id');
+    const areaId = params.get('id');
     props.getListAllAcademicAsignature(props?.loginReducer?.schoolId, areaId ? areaId : '').then((listData: any) => {
       setDataTable(listData);
     });
   }, []);
 
   const getDataTable = async () => {
-    const  areaId  = params.get('id');
+    const areaId = params.get('id');
     props.getListAllAcademicAsignature(props?.loginReducer?.schoolId, areaId ? areaId : '').then((listData: any) => {
       setDataTable(listData);
     });
@@ -76,7 +77,7 @@ const AsignatureList = (props: any) => {
   const deleteAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.deleteAsignature(item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -89,7 +90,7 @@ const AsignatureList = (props: any) => {
   const changeActiveDataAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.changeActiveAsignature(!item.active, item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -104,6 +105,7 @@ const AsignatureList = (props: any) => {
       {' '}
       {dataTable !== null ? (
         <>
+          <HeaderInfoAcademic goTitle="Regresar a áreas" />
           <DataList
             data={dataTable}
             columns={columns}

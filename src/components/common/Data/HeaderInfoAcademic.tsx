@@ -20,20 +20,22 @@ const HeaderInfoAcademic = (props: any) => {
   }, []);
 
   const viewData = async () => {
-    await props.dataAcademicAsignatureCourse(academicAsignatureCourseId).then((resp: any) => {
-      setData(resp?.data)
-    });
-    if(studentId) {
+    if (academicAsignatureCourseId) {
+      await props.dataAcademicAsignatureCourse(academicAsignatureCourseId).then((resp: any) => {
+        setData(resp?.data)
+      });
+    }
+    if (studentId) {
       await props.dataStudent(studentId).then((resp: any) => {
         setStudent(resp?.data);
       });
     }
-    if(experienceLearnigId) {
+    if (experienceLearnigId) {
       await props.dataExperienceLearning(experienceLearnigId).then((resp: any) => {
         setExperienceLearning(resp?.data)
       });
     }
-    if(learningId) {
+    if (learningId) {
       await props.dataLearning(learningId).then((resp: any) => {
         setLearning(resp?.data);
       });
@@ -46,40 +48,40 @@ const HeaderInfoAcademic = (props: any) => {
 
   return (
     <>
-     <div className="mt-4">
-          <div className="d-flex flex-row">
-            {asignature ? 
+      <div className="mt-4">
+        <div className="d-flex flex-row">
+          {asignature ?
             <span className="mb-0 text-muted mr-4 border-b-info">
               <span>Área/Asignatura:</span> <h2 className="text-info font-bold">{data?.academicAsignature?.name}</h2>
             </span>
             : ''}
-            {asignatureGeneral ? 
+          {asignatureGeneral ?
             <span className="mb-0 text-muted mr-4 border-b-info">
               <span>Área:</span> <h2 className="text-info font-bold">{data?.academicAsignature?.generalAcademicAsignature?.name}</h2>
             </span>
             : ''}
-            {cicle ? 
+          {cicle ?
             <span className="mb-0 text-muted border-b-green">
-                      Grupo de Grados: <h2 className="text-green font-bold">{data?.course?.academicGrade?.generalAcademicCycle?.name}</h2>
-                    </span>
-                    : ''}
-            {grade ? 
+              Grupo de Grados: <h2 className="text-green font-bold">{data?.course?.academicGrade?.generalAcademicCycle?.name}</h2>
+            </span>
+            : ''}
+          {grade ?
             <span className="mb-0 text-muted mr-4 border-b-green">
               Grado: <h2 className="text-green font-bold">{data?.course?.academicGrade?.name}</h2>
             </span>
             : ''}
-            { course ? 
+          {course ?
             <span className="mb-0 text-muted mr-4 border-b-orange">
               Grupo: <h2 className="text-orange font-bold">{data?.course?.name}</h2>
             </span>
             : ''}
-            { modality ? 
+          {modality ?
             <span className="mb-0 text-muted border-b-warning">
               Jornada: <h2 className="text-warning font-bold">{data?.course?.academicDay?.name}</h2>
             </span>
             : ''}
-          </div>
-          {experienceLearnig ? 
+        </div>
+        {experienceLearnig ?
           <div className="d-flex flex-row mt-4">
             <span className="mb-0 mr-4">
               <span className="text-muted">Experiencia de aprendizaje:</span>{' '}
@@ -87,7 +89,7 @@ const HeaderInfoAcademic = (props: any) => {
             </span>
           </div>
           : ''}
-          {learning ? 
+        {learning ?
           <div className="d-flex flex-row mt-4">
             <span className="mb-0 mr-4">
               <span className="text-muted">Aprendizaje:</span>{' '}
@@ -95,7 +97,7 @@ const HeaderInfoAcademic = (props: any) => {
             </span>
           </div>
           : ''}
-          {student ? 
+        {student ?
           <div className="d-flex flex-row">
             <span className="mb-0 mr-4">
               <span className="text-muted">Estudiante:</span>{' '}
@@ -103,16 +105,16 @@ const HeaderInfoAcademic = (props: any) => {
             </span>
           </div>
           : ''}
-          <p
-            className="text-muted mt-2 d-flex align-items-center cursor-pointer"
-            onClick={() => {
-              return goTo();
-            }}
-          >
-            <i className="simple-icon-arrow-left-circle mr-2"></i>
-             {goTitle}
-          </p>
-        </div>
+        <p
+          className="text-muted mt-2 d-flex align-items-center cursor-pointer"
+          onClick={() => {
+            return goTo();
+          }}
+        >
+          <i className="simple-icon-arrow-left-circle mr-2"></i>
+          {goTitle}
+        </p>
+      </div>
     </>
   );
 };

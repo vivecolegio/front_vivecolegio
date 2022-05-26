@@ -1,6 +1,6 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
-import { MUTATION_CHANGE_ACTIVE_USER, MUTATION_CREATE_USER, MUTATION_DELETE_USER, MUTATION_UPDATE_USER } from '../graphql/Users/UserMutations';
+import { MUTATION_CHANGE_ACTIVE_USER, MUTATION_CREATE_USER, MUTATION_DELETE_USER, MUTATION_UPDATE_PROFILE_PHOTO_USER, MUTATION_UPDATE_USER } from '../graphql/Users/UserMutations';
 import { QUERY_GET_ALL_USER, QUERY_GET_DROPDOWNS_USER, QUERY_GET_USER } from '../graphql/Users/UserQueries';
 
 export const getListAllUser = () => {
@@ -193,6 +193,33 @@ export const getDropdownsUser = () => {
           listData = result.data;
         });
       return listData;
+    } catch (error) {
+      createNotification('error', 'error', '');
+      return error;
+    }
+  };
+};
+
+export const updateProfilePhotoUser = (file: any, id: any) => {
+  return async (dispatch: any) => {
+    try {
+      let dataUpdate = null;
+      await client
+        .mutate({
+          mutation: MUTATION_UPDATE_PROFILE_PHOTO_USER,
+          variables: { id, file},
+        })
+        .then((dataReponse: any) => {
+          if (dataReponse.errors?.length > 0) {
+            dataReponse.errors.forEach((error: any) => {
+              createNotification('error', 'error', '');
+            });
+          } else {
+            dataUpdate = dataReponse.data.update.id;
+            createNotification('success', 'success', '');
+          }
+        });
+      return dataUpdate as any;
     } catch (error) {
       createNotification('error', 'error', '');
       return error;
