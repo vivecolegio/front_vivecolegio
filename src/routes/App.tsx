@@ -72,6 +72,7 @@ import SubmenuList from '../components/app/Submenu/SubmenuList';
 import TeacherList from '../components/app/Teacher/TeacherList';
 import TraditionalValuation from '../components/app/TraditionalValuation/TraditionalValuation';
 import UserList from '../components/app/User/UserList';
+import ChangePassword from '../components/app/ChangePassword/ChagePassword';
 import ColorSwitcher from '../components/common/ColorSwitcher';
 import Layout from '../components/common/layout/Layout';
 import { NotificationContainer } from '../components/common/Notifications';
@@ -124,89 +125,90 @@ const App = (props: any) => {
           <HashRouter>
             <Layout permissions={permissions}>
               <Routes>
-                <Route path="/" element={<Login/>} />
-                <Route path="/login" element={<Login/>} />
-                <Route path="/home" element={ <Home/> } />
+                <Route path="/" element={<Login />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/home" element={<Home />} />
                 {permissions ? (
-                  <>                  
-                    <Route path="/profile" element={ <Profile/> } />
-                    <Route path="/myScheduleOffice" element={ <OfficeSchedule/> } />
-                    <Route path="/myScheduleShool" element={ <SchoolSchedule/> } />
-                    <Route path="/messages" element={ <InboxDetail/> } />
+                  <>
+                    <Route path="/profile" element={<Profile />} />
+                    <Route path="/changePassword" element={<ChangePassword />} />
+                    <Route path="/myScheduleOffice" element={<OfficeSchedule />} />
+                    <Route path="/myScheduleShool" element={<SchoolSchedule />} />
+                    <Route path="/messages" element={<InboxDetail />} />
                     {/* ADMIN */}
-                    <Route path="/roles" element={ <RoleList/>  }/>
-                    <Route path="/users" element={ <UserList/> } />
-                    <Route path="/modules" element={ <ModuleList/> } />
-                    <Route path="/menus" element={ <MenuList/> } />
-                    <Route path="/submenus" element={ <SubmenuList/>} /> 
-                    <Route path="/genders" element={ <GenderList/> } />
-                    <Route path="/documentTypes" element={ <DocumentTypeList/> } />
-                    <Route path="/municipality" element={ <MunicipalityList/> } />
-                    {/* ADMIN */}     
-                    {/* PERSONAL */}                
-                    <Route path="/schools" element={ <SchoolList/> } />
-                    <Route path="/campus" element={ <CampusList/> } />
-                    <Route path="/students" element={ <StudentsList/> } />
-                    <Route path="/teachers" element={ <TeacherList/> } />
-                    <Route path="/guardians" element={ <GuardianList/> } />
-                    <Route path="/administratorsSchool" element={ <AdministratorSchoolList/> } />
-                    <Route path="/administratorsCampus" element={ <AdministratorCampusList/> } />
-                    <Route path="/coordinatorsCampus" element={ <CoordinatorCampusList/> } />
+                    <Route path="/roles" element={<RoleList />} />
+                    <Route path="/users" element={<UserList />} />
+                    <Route path="/modules" element={<ModuleList />} />
+                    <Route path="/menus" element={<MenuList />} />
+                    <Route path="/submenus" element={<SubmenuList />} />
+                    <Route path="/genders" element={<GenderList />} />
+                    <Route path="/documentTypes" element={<DocumentTypeList />} />
+                    <Route path="/municipality" element={<MunicipalityList />} />
+                    {/* ADMIN */}
                     {/* PERSONAL */}
-                    {/* GENERAL ACADEMIC */}        
-                    <Route path="/general/areas" element={ <GeneralAreaList/> } />
-                    <Route path="/general/asignatures" element={ <GeneralAsignatureList/> } />
-                    <Route path="/general/cycles" element={ <GeneralCycleList/> } />
-                    <Route path="/general/performanceLevel" element={ <GeneralPerformanceLevelList/> } />
-                    <Route path="/general/standardAcademic" element={ <GeneralStandardList/> } />
-                    <Route path="/general/grades" element={ <GeneralGradeList/> } />
-                    {/* GENERAL ACADEMIC */} 
-                    {/* ACADEMIC */}        
-                    <Route path="/areas" element={ <AreaList/> } />
-                    <Route path="/asignatures" element={ <AsignatureList/> } />
-                    <Route path="/performanceLevel" element={ <PerformanceLevelList/> } />
-                    <Route path="/standardAcademic" element={ <StandardList/> } />
-                    <Route path="/grades" element={ <GradeList/> } />
-                    <Route path="/educationLevel" element={ <EducationLevelList/> } />
-                    <Route path="/evaluativeComponent" element={ <ComponentEvaluativeList/> } />
-                    <Route path="/modality" element={ <ModalityList/> } />
-                    <Route path="/schoolYear" element={ <SchoolYearList/> } />
-                    <Route path="/speciality" element={ <SpecialityList/> } />
-                    <Route path="/periodAcademic" element={ <AcademicPeriodList/> } />
-                    <Route path="/indicatorAcademic" element={ <AcademicIndicatorList/> } />
-                    <Route path="/gradeAssignment" element={ <GradeAssignmentList/> } />
-                    <Route path="/academicDay" element={ <AcademicDayList/> } />
-                    <Route path="/academicHour" element={ <AcademicHourList/> } />
-                    <Route path="/course" element={ <CourseList/> } />
-                    <Route path="/academicAsignatureCourse" element={ <AcademicAsignatureCourseList/> } />
-                    <Route path="/dba" element={ <BasicLearningDutiesList/> } />
-                    <Route path="/learning" element={ <LearningList/> } />
-                    <Route path="/evidenceLearning" element={ <LearningEvidenceList/> } />
-                    <Route path="/experienceLearning" element={ <ExperienceLearningList/> } />
-                    <Route path="/myClasses" element={ <MyClasessList/> } />
-                    <Route path="/traditionalValuation" element={ <TraditionalValuation/> } />
-                    <Route path="/selfValuation" element={ <SelfValuation/> } />
-                    <Route path="/rubricCriteria" element={ <RubricCriteriaList/> } />
-                    <Route path="/rubricValuation" element={ <RubricValuation/> } />
-                    <Route path="/rubricCriteriaValuation" element={ <RubricCriteriaValuation/> } />
-                    <Route path="/coEvaluation" element={ <CoEvaluation/> } />
-                    <Route path="/coEvaluationStudents" element={ <CoEvaluationStudents/> } />
-                    <Route path="/spreadsheet" element={ <Spreadsheet/> } />
-                    <Route path="/questionCategoryTestOnline" element={ <QuestionCategoryTestOnlineList/> } />
-                    <Route path="/questionTestOnline" element={ <QuestionTestOnlineList/> } />
-                    <Route path="/questionsBank" element={ <QuestionsBankTestOnline/> } />
-                    <Route path="/classroomPlan" element={ <ClassroomPlan/> } />
-                    <Route path="/listClassroomPlans" element={ <ClassroomPlanList/> } />
-                    <Route path="/classroomPlanDetail" element={ <ClassroomPlanDetail/> } />
-                    {/* ACADEMIC */} 
-                    {/* APPLICATIONS */} 
-                    <Route path="/chat" element={ <ChatApp/> } />
-                    <Route path="/foros" element={ <ForumListApp/> } />
-                    <Route path="/foro-detalle" element={ <ForumApp/> } />
-                    <Route path="/elecciones-personero" element={ <ElectionsApp/> } />
-                    <Route path="/encuestas" element={ <Survey/> } />
-                    <Route path="/encuestas-detalle" element={ <SurveyDetail/> } />
-                    <Route path="/informe-avance-desempeno" element={ <Analytics/> } />
+                    <Route path="/schools" element={<SchoolList />} />
+                    <Route path="/campus" element={<CampusList />} />
+                    <Route path="/students" element={<StudentsList />} />
+                    <Route path="/teachers" element={<TeacherList />} />
+                    <Route path="/guardians" element={<GuardianList />} />
+                    <Route path="/administratorsSchool" element={<AdministratorSchoolList />} />
+                    <Route path="/administratorsCampus" element={<AdministratorCampusList />} />
+                    <Route path="/coordinatorsCampus" element={<CoordinatorCampusList />} />
+                    {/* PERSONAL */}
+                    {/* GENERAL ACADEMIC */}
+                    <Route path="/general/areas" element={<GeneralAreaList />} />
+                    <Route path="/general/asignatures" element={<GeneralAsignatureList />} />
+                    <Route path="/general/cycles" element={<GeneralCycleList />} />
+                    <Route path="/general/performanceLevel" element={<GeneralPerformanceLevelList />} />
+                    <Route path="/general/standardAcademic" element={<GeneralStandardList />} />
+                    <Route path="/general/grades" element={<GeneralGradeList />} />
+                    {/* GENERAL ACADEMIC */}
+                    {/* ACADEMIC */}
+                    <Route path="/areas" element={<AreaList />} />
+                    <Route path="/asignatures" element={<AsignatureList />} />
+                    <Route path="/performanceLevel" element={<PerformanceLevelList />} />
+                    <Route path="/standardAcademic" element={<StandardList />} />
+                    <Route path="/grades" element={<GradeList />} />
+                    <Route path="/educationLevel" element={<EducationLevelList />} />
+                    <Route path="/evaluativeComponent" element={<ComponentEvaluativeList />} />
+                    <Route path="/modality" element={<ModalityList />} />
+                    <Route path="/schoolYear" element={<SchoolYearList />} />
+                    <Route path="/speciality" element={<SpecialityList />} />
+                    <Route path="/periodAcademic" element={<AcademicPeriodList />} />
+                    <Route path="/indicatorAcademic" element={<AcademicIndicatorList />} />
+                    <Route path="/gradeAssignment" element={<GradeAssignmentList />} />
+                    <Route path="/academicDay" element={<AcademicDayList />} />
+                    <Route path="/academicHour" element={<AcademicHourList />} />
+                    <Route path="/course" element={<CourseList />} />
+                    <Route path="/academicAsignatureCourse" element={<AcademicAsignatureCourseList />} />
+                    <Route path="/dba" element={<BasicLearningDutiesList />} />
+                    <Route path="/learning" element={<LearningList />} />
+                    <Route path="/evidenceLearning" element={<LearningEvidenceList />} />
+                    <Route path="/experienceLearning" element={<ExperienceLearningList />} />
+                    <Route path="/myClasses" element={<MyClasessList />} />
+                    <Route path="/traditionalValuation" element={<TraditionalValuation />} />
+                    <Route path="/selfValuation" element={<SelfValuation />} />
+                    <Route path="/rubricCriteria" element={<RubricCriteriaList />} />
+                    <Route path="/rubricValuation" element={<RubricValuation />} />
+                    <Route path="/rubricCriteriaValuation" element={<RubricCriteriaValuation />} />
+                    <Route path="/coEvaluation" element={<CoEvaluation />} />
+                    <Route path="/coEvaluationStudents" element={<CoEvaluationStudents />} />
+                    <Route path="/spreadsheet" element={<Spreadsheet />} />
+                    <Route path="/questionCategoryTestOnline" element={<QuestionCategoryTestOnlineList />} />
+                    <Route path="/questionTestOnline" element={<QuestionTestOnlineList />} />
+                    <Route path="/questionsBank" element={<QuestionsBankTestOnline />} />
+                    <Route path="/classroomPlan" element={<ClassroomPlan />} />
+                    <Route path="/listClassroomPlans" element={<ClassroomPlanList />} />
+                    <Route path="/classroomPlanDetail" element={<ClassroomPlanDetail />} />
+                    {/* ACADEMIC */}
+                    {/* APPLICATIONS */}
+                    <Route path="/chat" element={<ChatApp />} />
+                    <Route path="/foros" element={<ForumListApp />} />
+                    <Route path="/foro-detalle" element={<ForumApp />} />
+                    <Route path="/elecciones-personero" element={<ElectionsApp />} />
+                    <Route path="/encuestas" element={<Survey />} />
+                    <Route path="/encuestas-detalle" element={<SurveyDetail />} />
+                    <Route path="/informe-avance-desempeno" element={<Analytics />} />
 
                   </>
                 ) : (

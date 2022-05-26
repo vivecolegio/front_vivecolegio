@@ -22,6 +22,12 @@ export const MUTATION_CHANGE_ACTIVE_USER = gql`
   }
 `;
 
+export const MUTATION_CHANGE_PASSWORD_USER = gql`
+  mutation changePasswordUser($password: String!, $id: Boolean!) {
+    changePasswordUser: changePasswordUser(password: $password, id: $id)
+  }
+`;
+
 export const MUTATION_DELETE_USER = gql`
   mutation deleteUser($id: String!) {
     delete: deleteUser(id: $id)

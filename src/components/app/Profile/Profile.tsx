@@ -24,15 +24,13 @@ const Profile = (props: any) => {
   const getUser = async () => {
     props.dataUser(props?.loginReducer?.userId).then((resp: any) => {
       setUser(resp.data);
-      //console.log(resp);
     });
   };
 
   const uploadFileImage = async (file: any) => {
     props.updateProfilePhotoUser(file, props?.loginReducer?.userId).then((resp: any) => {
-      console.log(resp);
+      getUser();
     });
-    console.log(file)
   };
 
   return (
@@ -69,7 +67,7 @@ const Profile = (props: any) => {
                     </strong>
                   </p>
                   <p className="text-muted mb-2 font-1rem">{user ? user.email : ''}</p>
-                  <Badge color="outline-info font-0-8rem" pill>
+                  <Badge color="primary font-0-8rem" pill>
                     {user ? user.role.name : ''}
                   </Badge>
                 </div>

@@ -15,6 +15,7 @@ const CourseList = (props: any) => {
 
   let [params] = useSearchParams();
   const academicGradeId = params.get('academicGradeId');
+  const gradeName = params.get('gradeName');
 
   const [data, setData] = useState(null);
   useEffect(() => {
@@ -104,7 +105,7 @@ const CourseList = (props: any) => {
       {' '}
       {dataTable !== null ? (
         <>
-          <HeaderInfoAcademic goTitle="Regresar a grados" />
+          <HeaderInfoAcademic generic={{ title: 'Grado', value: gradeName }} goTitle="Regresar a grados" />
           <DataList
             data={dataTable}
             columns={columns}

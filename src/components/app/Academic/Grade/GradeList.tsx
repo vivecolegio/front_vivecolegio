@@ -20,7 +20,7 @@ const GradeList = (props: any) => {
       setDataTable(
         listData.map((c: any) => {
           c.node.cycle_format = c.node.generalAcademicCycle ? c.node.generalAcademicCycle.name : '';
-          c.node.speciality_format = c.node.specialty ? c.node.specialty.name : '';          
+          c.node.speciality_format = c.node.specialty ? c.node.specialty.name : '';
           c.node.education_level_format = c.node.educationLevel ? c.node.educationLevel.name : '';
           return c;
         }),
@@ -33,7 +33,7 @@ const GradeList = (props: any) => {
       setDataTable(
         listData.map((c: any) => {
           c.node.cycle_format = c.node.generalAcademicCycle ? c.node.generalAcademicCycle.name : '';
-          c.node.speciality_format = c.node.specialty ? c.node.specialty.name : '';          
+          c.node.speciality_format = c.node.specialty ? c.node.specialty.name : '';
           c.node.education_level_format = c.node.educationLevel ? c.node.educationLevel.name : '';
           return c;
         }),
@@ -88,10 +88,10 @@ const GradeList = (props: any) => {
   const additionalFunction = async (item: any, btn: any) => {
     switch (btn?.action) {
       case 'goToChildrenCourse':
-        goToChildren(`/course?academicGradeId=${item?.id}`);
+        goToChildren(`/course?academicGradeId=${item?.id}&gradeName=${item?.name}`);
         break;
       case 'goToChildrenGradeAssignment':
-        goToChildren(`/gradeAssignment?academicGradeId=${item.id}`);
+        goToChildren(`/gradeAssignment?academicGradeId=${item.id}&gradeName=${item?.name}`);
         break;
       default:
         break;
@@ -105,7 +105,7 @@ const GradeList = (props: any) => {
   const deleteAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.deleteGrade(item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -118,7 +118,7 @@ const GradeList = (props: any) => {
   const changeActiveDataAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.changeActiveGrade(!item.active, item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },

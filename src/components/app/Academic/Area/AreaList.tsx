@@ -10,7 +10,7 @@ import AreaCreateEdit from './AreaCreateEdit';
 const AreaList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
   const [columns, setColumns] = useState(COLUMN_LIST);
-  const [modalOpen, setModalOpen] = useState(false);  
+  const [modalOpen, setModalOpen] = useState(false);
 
   let navigate = useNavigate();
 
@@ -73,7 +73,7 @@ const AreaList = (props: any) => {
   const deleteAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.deleteArea(item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -83,24 +83,24 @@ const AreaList = (props: any) => {
     createNotification('success', 'success', '');
   };
 
-  const additionalFunction = async (item: any, btn:any) => {
+  const additionalFunction = async (item: any, btn: any) => {
     switch (btn?.action) {
       case 'goToChildren':
-        goToChildren(item.id);
+        goToChildren(item);
         break;
       default:
         break;
     }
   };
 
-  const goToChildren = async (id: any) => {
-    navigate(`/asignatures?id=${id}`);
+  const goToChildren = async (item: any) => {
+    navigate(`/asignatures?id=${item?.id}&areaName=${item?.name}`);
   };
 
   const changeActiveDataAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.changeActiveArea(!item.active, item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },

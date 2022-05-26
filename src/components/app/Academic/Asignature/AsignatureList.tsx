@@ -14,6 +14,7 @@ const AsignatureList = (props: any) => {
   const [modalOpen, setModalOpen] = useState(false);
 
   let [params] = useSearchParams();
+  const areaName = params.get('areaName');
 
   const [data, setData] = useState(null);
   useEffect(() => {
@@ -105,7 +106,7 @@ const AsignatureList = (props: any) => {
       {' '}
       {dataTable !== null ? (
         <>
-          <HeaderInfoAcademic goTitle="Regresar a áreas" />
+          <HeaderInfoAcademic generic={{ title: 'Área', value: areaName }} goTitle="Regresar a áreas" />
           <DataList
             data={dataTable}
             columns={columns}

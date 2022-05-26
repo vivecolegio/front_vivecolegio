@@ -27,6 +27,22 @@ const authLink = setContext((_, { headers }) => {
   } ;
 });
 
+const authLinkUpload = setContext((_, { headers }) => {
+  const token = localStorage.getItem('token');
+  return token ? {
+    headers: {
+      ...headers,
+      authorization: `Bearer ${token}` ,
+      "Content-Type": "multipart/form-data"
+    },
+  } :{
+    headers: {
+      ...headers,
+      "Content-Type": "multipart/form-data"
+    },
+  } ;
+});
+
 export const client = new ApolloClient({
   link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
@@ -49,7 +65,7 @@ export const client = new ApolloClient({
 
 
 export const clientUpload = new ApolloClient({
-  link: authLink.concat(httpLink2 as any) as any,
+  link: authLinkUpload.concat(httpLink2 as any) as any,
   cache: new InMemoryCache(),
   defaultOptions: {
     mutate: {

@@ -1,6 +1,6 @@
 import { createNotification } from "../../helpers/Notification";
-import { client } from '../graphql';
-import { MUTATION_CHANGE_ACTIVE_USER, MUTATION_CREATE_USER, MUTATION_DELETE_USER, MUTATION_UPDATE_PROFILE_PHOTO_USER, MUTATION_UPDATE_USER } from '../graphql/Users/UserMutations';
+import { client, clientUpload } from '../graphql';
+import { MUTATION_CHANGE_ACTIVE_USER, MUTATION_CHANGE_PASSWORD_USER, MUTATION_CREATE_USER, MUTATION_DELETE_USER, MUTATION_UPDATE_PROFILE_PHOTO_USER, MUTATION_UPDATE_USER } from '../graphql/Users/UserMutations';
 import { QUERY_GET_ALL_USER, QUERY_GET_DROPDOWNS_USER, QUERY_GET_USER } from '../graphql/Users/UserQueries';
 
 export const getListAllUser = () => {
@@ -147,6 +147,33 @@ export const changeActiveUser = (active: any, id: any, showToast: boolean) => {
   };
 };
 
+export const changePasswordUser = (password: any, id: any) => {
+  return async (dispatch: any) => {
+    try {
+      let dataChangeActive = null;
+      await client
+        .mutate({
+          mutation: MUTATION_CHANGE_PASSWORD_USER,
+          variables: { id, password },
+        })
+        .then((dataReponse: any) => {
+          if (dataReponse.errors?.length > 0) {
+            dataReponse.errors.forEach((error: any) => {
+                createNotification('error', 'error', '');
+            });
+          } else {
+            dataChangeActive = dataReponse.data.changeActive;
+            createNotification('success', 'success', '');            
+          }
+        });
+      return dataChangeActive as any;
+    } catch (error) {
+      createNotification('error', 'error', '');      
+      return error;
+    }
+  };
+};
+
 
 export const deleteUser = (id: any, showToast: boolean) => {
   return async (dispatch: any) => {
@@ -204,7 +231,7 @@ export const updateProfilePhotoUser = (file: any, id: any) => {
   return async (dispatch: any) => {
     try {
       let dataUpdate = null;
-      await client
+      await clientUpload
         .mutate({
           mutation: MUTATION_UPDATE_PROFILE_PHOTO_USER,
           variables: { id, file},
@@ -215,7 +242,7 @@ export const updateProfilePhotoUser = (file: any, id: any) => {
               createNotification('error', 'error', '');
             });
           } else {
-            dataUpdate = dataReponse.data.update.id;
+            dataUpdate = dataReponse.data.update;
             createNotification('success', 'success', '');
           }
         });

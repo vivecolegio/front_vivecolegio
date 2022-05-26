@@ -11,7 +11,7 @@ const HeaderInfoAcademic = (props: any) => {
   const [studentData, setStudent] = useState(null);
   const [experienceLearningData, setExperienceLearning] = useState(null);
   const [learningData, setLearning] = useState(null);
-  const { asignature, asignatureGeneral, grade, course, modality, cicle, experienceLearnig, learning, student, academicAsignatureCourseId, experienceLearnigId, learningId, studentId, goTitle } = props;
+  const { generic, asignature, asignatureGeneral, grade, course, modality, cicle, experienceLearnig, learning, student, academicAsignatureCourseId, experienceLearnigId, learningId, studentId, goTitle } = props;
 
   let navigate = useNavigate();
 
@@ -50,6 +50,11 @@ const HeaderInfoAcademic = (props: any) => {
     <>
       <div className="mt-4">
         <div className="d-flex flex-row">
+          {generic ?
+            <span className="mb-0 text-muted mr-4 border-b-info">
+              <span>{generic.title}</span> <h2 className="text-info font-bold">{generic.value}</h2>
+            </span>
+            : ''}
           {asignature ?
             <span className="mb-0 text-muted mr-4 border-b-info">
               <span>Área/Asignatura:</span> <h2 className="text-info font-bold">{data?.academicAsignature?.name}</h2>
