@@ -1,7 +1,7 @@
 /* eslint-disable arrow-body-style */
 import { DevTool } from '@hookform/devtools';
 import React, { useEffect, useState } from 'react';
-import ReactDatePicker  from 'react-datepicker';
+import ReactDatePicker from 'react-datepicker';
 import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
@@ -80,9 +80,8 @@ const ExperienceLearningCreateEdit = (props: any) => {
         let array: any = [];
         setLearnings(
           props?.data?.learnigs.map((c: any) => {
-            array = array.concat(c.evidenceLearnings.map((e:any)=>
-            {
-              e.checked = props?.data?.evidenceLearnings.find((x:any)=>(x?.id === e?.id)) ? true : false;
+            array = array.concat(c.evidenceLearnings.map((e: any) => {
+              e.checked = props?.data?.evidenceLearnings.find((x: any) => (x?.id === e?.id)) ? true : false;
               return e;
             }));
             return {
@@ -199,18 +198,18 @@ const ExperienceLearningCreateEdit = (props: any) => {
     props
       .getNavigationMethodTestOnline()
       .then((data: any) => {
-         setNavigationMethodList( 
-           data.map((c: any) => {
-          return { label: c.name, value: c.name, key: c.name };
-        }))
+        setNavigationMethodList(
+          data.map((c: any) => {
+            return { label: c.name, value: c.name, key: c.name };
+          }))
       });
     props
       .getExperienceType()
       .then((data: any) => {
-         setExperienceTypes( 
-           data.map((c: any) => {
-          return { label: c.name, value: c.name, key: c.name };
-        }))
+        setExperienceTypes(
+          data.map((c: any) => {
+            return { label: c.name, value: c.name, key: c.name };
+          }))
       });
     props
       .getDropdownsExperienceLearning(props?.loginReducer?.schoolId, asignatureId, gradeId)
@@ -278,7 +277,7 @@ const ExperienceLearningCreateEdit = (props: any) => {
       props?.data?.id || props?.data?.onlineDelivery === getValues('onlineDelivery ')
         ? props?.data?.onlineDelivery
         : getValues('onlineDelivery'),
-     shuffleQuestions:
+    shuffleQuestions:
       props?.data?.id || props?.data?.shuffleQuestions === getValues('shuffleQuestions ')
         ? props?.data?.shuffleQuestions
         : getValues('shuffleQuestions'),
@@ -377,6 +376,7 @@ const ExperienceLearningCreateEdit = (props: any) => {
                   <IntlMessages id="forms.experienceType" />
                 </Label>
                 <Select
+                  isClearable
                   placeholder={<IntlMessages id="forms.select" />}
                   {...register('experienceType', { required: true })}
                   className="react-select"
@@ -390,72 +390,74 @@ const ExperienceLearningCreateEdit = (props: any) => {
                 />
               </div>
               {
-                experienceType?.key === 'ONLINETEST' ? 
-                <>
-                  <div className="form-group">
-                <Label>
-                  Fecha de apertura
-                </Label>
-                <ReactDatePicker
-                  {...register('openTestDate', { required: true })}
-                  selected={openTestDate}
-                  onChange={(dateOp: any) => {
-                    setValue('openTestDate', dateOp as Date);
-                    setOpenTestDate(dateOp as Date);
-                  }}
-                />
-              </div>
-              <div className="form-group">
-                <Label>
-                  Fecha de cierre
-                </Label>
-                <ReactDatePicker
-                  {...register('closeTestDate', { required: true })}
-                  selected={closeTestDate}
-                  onChange={(dateCl: any) => {
-                    setValue('closeTestDate', dateCl as Date);
-                    setCloseTestDate(dateCl as Date);
-                  }}
-                />
-              </div>
-              <div className="form-group d-flex align-items-center">
-                <Input
-                    className="itemCheck mb-0 mr-2"
-                    type="checkbox"
-                    id={`check_shuffleQuestions`}
-                    defaultChecked={data.shuffleQuestions}
-                    onChange={() => {
-                      setValue('shuffleQuestions', !data.shuffleQuestions);
-                    }}
-                    label=""
-                  />
-                  <span>Preguntas aleatorias</span>
-                </div>
-                <div className="form-group">
-                <Label>
-                  Método de navegación
-                </Label>
-                <Select
-                  placeholder={<IntlMessages id="forms.select" />}
-                  {...register('navigationMethod', { required: true })}
-                  className="react-select"
-                  classNamePrefix="react-select"
-                  options={navigationMethodList}
-                  value={navigationMethod}
-                  onChange={(selectedOption) => {
-                    setValue('navigationMethod', selectedOption?.key);
-                    setNavigationMethod(selectedOption);
-                  }}
-                />
-              </div>
-                </>
-                : ''
+                experienceType?.key === 'ONLINETEST' ?
+                  <>
+                    <div className="form-group">
+                      <Label>
+                        Fecha de apertura
+                      </Label>
+                      <ReactDatePicker
+                        {...register('openTestDate', { required: true })}
+                        selected={openTestDate}
+                        onChange={(dateOp: any) => {
+                          setValue('openTestDate', dateOp as Date);
+                          setOpenTestDate(dateOp as Date);
+                        }}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <Label>
+                        Fecha de cierre
+                      </Label>
+                      <ReactDatePicker
+                        {...register('closeTestDate', { required: true })}
+                        selected={closeTestDate}
+                        onChange={(dateCl: any) => {
+                          setValue('closeTestDate', dateCl as Date);
+                          setCloseTestDate(dateCl as Date);
+                        }}
+                      />
+                    </div>
+                    <div className="form-group d-flex align-items-center">
+                      <Input
+                        className="itemCheck mb-0 mr-2"
+                        type="checkbox"
+                        id={`check_shuffleQuestions`}
+                        defaultChecked={data.shuffleQuestions}
+                        onChange={() => {
+                          setValue('shuffleQuestions', !data.shuffleQuestions);
+                        }}
+                        label=""
+                      />
+                      <span>Preguntas aleatorias</span>
+                    </div>
+                    <div className="form-group">
+                      <Label>
+                        Método de navegación
+                      </Label>
+                      <Select
+                        isClearable
+                        placeholder={<IntlMessages id="forms.select" />}
+                        {...register('navigationMethod', { required: true })}
+                        className="react-select"
+                        classNamePrefix="react-select"
+                        options={navigationMethodList}
+                        value={navigationMethod}
+                        onChange={(selectedOption) => {
+                          setValue('navigationMethod', selectedOption?.key);
+                          setNavigationMethod(selectedOption);
+                        }}
+                      />
+                    </div>
+                  </>
+                  : ''
               }
               <div className="form-group">
                 <Label>
                   <IntlMessages id="menu.evaluativeComponent" />
                 </Label>
                 <Select
+                  isClearable
                   placeholder={<IntlMessages id="forms.select" />}
                   {...register('evaluativeComponentId', { required: true })}
                   className="react-select"
@@ -473,6 +475,7 @@ const ExperienceLearningCreateEdit = (props: any) => {
                   <IntlMessages id="menu.periodAcademic" />
                 </Label>
                 <Select
+                  isClearable
                   placeholder={<IntlMessages id="forms.select" />}
                   {...register('academicPeriodId', { required: true })}
                   className="react-select"
@@ -519,6 +522,7 @@ const ExperienceLearningCreateEdit = (props: any) => {
                   <IntlMessages id="menu.learnings" />
                 </Label>
                 <Select
+                  isClearable
                   placeholder={<IntlMessages id="forms.select" />}
                   isMulti
                   {...register('learningsId', { required: true })}
@@ -538,41 +542,41 @@ const ExperienceLearningCreateEdit = (props: any) => {
                   }}
                 />
               </div>
-              <div className="form-group">              
-                    {checksEvidencesLearning.map((item: any) => {
-                      return (
-                        <>
-                          <div className="d-flex align-items-center">
-                            <Input
-                              className="itemCheck mb-0"
-                              type="checkbox"
-                              id={`check_hidden`}
-                              defaultChecked={item?.checked}
-                              onChange={() => {
-                                if (
-                                  checksEvidencesLearningSelected.find((x: any) => x === item.id)
-                                ) {
-                                  checksEvidencesLearningSelected =
-                                    checksEvidencesLearningSelected.filter(
-                                      (x: any) => x !== item.id,
-                                    );
-                                } else {
-                                  checksEvidencesLearningSelected.push(item.id);
-                                }
-                                checksEvidencesLearningSelected = [
-                                  ...checksEvidencesLearningSelected,
-                                ];
-                                setChecksEvidencesLearningSelected(checksEvidencesLearningSelected);
-                                setValue('evidenceLearningsId', checksEvidencesLearningSelected);
-                                //console.log(checksEvidencesLearningSelected);
-                              }}
-                              label=""
-                            />
-                            <span className="col-md-11">{item?.statement}</span>
-                          </div>
-                        </>
-                      );
-                    })}
+              <div className="form-group">
+                {checksEvidencesLearning.map((item: any) => {
+                  return (
+                    <>
+                      <div className="d-flex align-items-center">
+                        <Input
+                          className="itemCheck mb-0"
+                          type="checkbox"
+                          id={`check_hidden`}
+                          defaultChecked={item?.checked}
+                          onChange={() => {
+                            if (
+                              checksEvidencesLearningSelected.find((x: any) => x === item.id)
+                            ) {
+                              checksEvidencesLearningSelected =
+                                checksEvidencesLearningSelected.filter(
+                                  (x: any) => x !== item.id,
+                                );
+                            } else {
+                              checksEvidencesLearningSelected.push(item.id);
+                            }
+                            checksEvidencesLearningSelected = [
+                              ...checksEvidencesLearningSelected,
+                            ];
+                            setChecksEvidencesLearningSelected(checksEvidencesLearningSelected);
+                            setValue('evidenceLearningsId', checksEvidencesLearningSelected);
+                            //console.log(checksEvidencesLearningSelected);
+                          }}
+                          label=""
+                        />
+                        <span className="col-md-11">{item?.statement}</span>
+                      </div>
+                    </>
+                  );
+                })}
               </div>
               <div className="form-group">
                 <Label>
@@ -605,38 +609,38 @@ const ExperienceLearningCreateEdit = (props: any) => {
                   {performanceLevels
                     ? props?.data?.id
                       ? criteriaPerformances.map((item: any, index: any) => {
-                          return (
-                            <div key={index} className="form-group">
-                              <span>
-                                {
-                                  performanceLevels.find(
-                                    (p: any) => p.key === item?.performanceLevelId,
-                                  )?.label
-                                }
-                              </span>
-                              <Input
-                                defaultValue={item?.criteria}
-                                onInput={(e) => {
-                                  return setCriteriaPerformance(e, item?.performanceLevelId);
-                                }}
-                                className="form-control"
-                              />
-                            </div>
-                          );
-                        })
+                        return (
+                          <div key={index} className="form-group">
+                            <span>
+                              {
+                                performanceLevels.find(
+                                  (p: any) => p.key === item?.performanceLevelId,
+                                )?.label
+                              }
+                            </span>
+                            <Input
+                              defaultValue={item?.criteria}
+                              onInput={(e) => {
+                                return setCriteriaPerformance(e, item?.performanceLevelId);
+                              }}
+                              className="form-control"
+                            />
+                          </div>
+                        );
+                      })
                       : performanceLevels.map((item: any, index: any) => {
-                          return (
-                            <div key={index} className="form-group">
-                              <span>{item.label}</span>
-                              <Input
-                                onInput={(e) => {
-                                  return setCriteriaPerformance(e, item?.key);
-                                }}
-                                className="form-control"
-                              />
-                            </div>
-                          );
-                        })
+                        return (
+                          <div key={index} className="form-group">
+                            <span>{item.label}</span>
+                            <Input
+                              onInput={(e) => {
+                                return setCriteriaPerformance(e, item?.key);
+                              }}
+                              className="form-control"
+                            />
+                          </div>
+                        );
+                      })
                     : ''}
                 </>
               ) : (
@@ -648,6 +652,7 @@ const ExperienceLearningCreateEdit = (props: any) => {
                     <IntlMessages id="menu.campus" />
                   </Label>
                   <Select
+                    isClearable
                     placeholder={<IntlMessages id="forms.select" />}
                     {...register('campusId', { required: true })}
                     className="react-select"

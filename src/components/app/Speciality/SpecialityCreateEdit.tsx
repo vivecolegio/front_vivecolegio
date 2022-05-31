@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import {Loader} from '../../common/Loader';
+import { Loader } from '../../common/Loader';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
@@ -56,7 +56,7 @@ const SpecialityCreateEdit = (props: any) => {
         required: true,
         value: props?.loginReducer?.schoolId,
       });
-    }   
+    }
   };
 
   const getDropdowns = async () => {
@@ -104,7 +104,7 @@ const SpecialityCreateEdit = (props: any) => {
       {loading ? (
         <>
           <Colxx sm={12} className="d-flex justify-content-center">
-            <Loader/>
+            <Loader />
           </Colxx>
         </>
       ) : (
@@ -139,6 +139,7 @@ const SpecialityCreateEdit = (props: any) => {
                   <IntlMessages id="menu.modality" />
                 </Label>
                 <Select
+                  isClearable
                   placeholder={<IntlMessages id="forms.select" />}
                   {...register('modalityId', { required: true })}
                   className="react-select"
@@ -157,6 +158,7 @@ const SpecialityCreateEdit = (props: any) => {
                     <IntlMessages id="menu.school" />
                   </Label>
                   <Select
+                    isClearable
                     placeholder={<IntlMessages id="forms.select" />}
                     {...register('schoolId', { required: true })}
                     className="react-select"

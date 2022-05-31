@@ -13,7 +13,7 @@ import Select from 'react-select';
 import CustomSelectInput from '../../../../components/common/CustomSelectInput';
 import IntlMessages from '../../../../helpers/IntlMessages';
 
-import * as surveyListActions  from '../../../../stores/actions/Survey/SurveyList/SurveyListActions';
+import * as surveyListActions from '../../../../stores/actions/Survey/SurveyList/SurveyListActions';
 
 const initialState = {
   title: '',
@@ -65,6 +65,7 @@ const AddNewSurveyModal = (props: any) => {
           <IntlMessages id="survey.category" />
         </Label>
         <Select
+          isClearable
           components={{ Input: CustomSelectInput }}
           className="react-select"
           classNamePrefix="react-select"
@@ -79,6 +80,7 @@ const AddNewSurveyModal = (props: any) => {
           <IntlMessages id="survey.label" />
         </Label>
         <Select
+          isClearable
           components={{ Input: CustomSelectInput }}
           className="react-select"
           classNamePrefix="react-select"

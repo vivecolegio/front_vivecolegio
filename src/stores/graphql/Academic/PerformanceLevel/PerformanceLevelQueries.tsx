@@ -24,6 +24,11 @@ export const QUERY_GET_PERFORMANCE_LEVEL = gql`
       id
       name
       topScore
+      type
+      campus {
+        id
+        name
+      }
       minimumScore
       generalPerformanceLevelId
       generalPerformanceLevel {
@@ -49,8 +54,16 @@ export const QUERY_GET_PERFORMANCE_LEVEL = gql`
 `;
 
 export const QUERY_GET_DROPDOWNS_PERFORMANCE_LEVEL = gql`
-  query getDropdownsPerformanceLevel {
+  query getDropdownsPerformanceLevel ($schoolId: String!) {
     dataSchools: getAllSchool(allData: false, orderCreated: false) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+    dataCampus: getAllCampus(allData: false, orderCreated: false, schoolId: $schoolId) {
       edges {
         node {
           id
@@ -67,4 +80,15 @@ export const QUERY_GET_DROPDOWNS_PERFORMANCE_LEVEL = gql`
       }
     }
   }
+`;
+
+export const QUERY_GET_PERFORMANCE_LEVEL_TYPE = gql`
+    query getAllPerformanceLevelType {
+      __type(name: "PerformanceLevelType") {
+        name
+        enumValues {
+          name
+        }
+      }
+    }
 `;

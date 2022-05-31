@@ -189,6 +189,7 @@ const GradeCreateEdit = (props: any) => {
                   <IntlMessages id="menu.cycleAcademic" />
                 </Label>
                 <Select
+                  isClearable
                   placeholder={<IntlMessages id="forms.select" />}
                   {...register('generalAcademicCycleId', { required: true })}
                   className="react-select"
@@ -206,6 +207,7 @@ const GradeCreateEdit = (props: any) => {
                   <IntlMessages id="menu.educationLevel" />
                 </Label>
                 <Select
+                  isClearable
                   placeholder={<IntlMessages id="forms.select" />}
                   {...register('educationLevelId', { required: true })}
                   className="react-select"
@@ -223,6 +225,7 @@ const GradeCreateEdit = (props: any) => {
                   <IntlMessages id="menu.speciality" />
                 </Label>
                 <Select
+                  isClearable
                   placeholder={<IntlMessages id="forms.select" />}
                   {...register('specialtyId', { required: true })}
                   className="react-select"
@@ -242,6 +245,7 @@ const GradeCreateEdit = (props: any) => {
                   <IntlMessages id="menu.national" />
                 </Label>
                 <Select
+                  isClearable
                   placeholder={<IntlMessages id="forms.select" />}
                   {...register('generalAcademicGradeId', { required: true })}
                   className="react-select"
@@ -260,6 +264,7 @@ const GradeCreateEdit = (props: any) => {
                     <IntlMessages id="menu.school" />
                   </Label>
                   <Select
+                    isClearable
                     placeholder={<IntlMessages id="forms.select" />}
                     {...register('schoolId', { required: true })}
                     className="react-select"

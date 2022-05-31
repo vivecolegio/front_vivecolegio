@@ -102,7 +102,7 @@ const GradeAssignmentCreateEdit = (props: any) => {
         data.dataGrades.edges.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };
         }),
-      );     
+      );
       setTeachersList(
         data.dataTeachers.edges.map((c: any) => {
           return { label: `${c.node.user.name} ${c.node.user.lastName}`, value: c.node.id, key: c.node.id };
@@ -155,7 +155,7 @@ const GradeAssignmentCreateEdit = (props: any) => {
       {loading ? (
         <>
           <Colxx sm={12} className="d-flex justify-content-center">
-            <Loader/>
+            <Loader />
           </Colxx>
         </>
       ) : (
@@ -188,6 +188,7 @@ const GradeAssignmentCreateEdit = (props: any) => {
                   <IntlMessages id="menu.asignature" />
                 </Label>
                 <Select
+                  isClearable
                   placeholder={<IntlMessages id="forms.select" />}
                   {...register('academicAsignatureId', { required: true })}
                   className="react-select"
@@ -205,6 +206,7 @@ const GradeAssignmentCreateEdit = (props: any) => {
                   <IntlMessages id="menu.grade" />
                 </Label>
                 <Select
+                  isClearable
                   placeholder={<IntlMessages id="forms.select" />}
                   className="react-select"
                   classNamePrefix="react-select"
@@ -221,6 +223,7 @@ const GradeAssignmentCreateEdit = (props: any) => {
                   <IntlMessages id="menu.course" />
                 </Label>
                 <Select
+                  isClearable
                   placeholder={<IntlMessages id="forms.select" />}
                   {...register('courseId', { required: true })}
                   className="react-select"
@@ -238,6 +241,7 @@ const GradeAssignmentCreateEdit = (props: any) => {
                   <IntlMessages id="menu.teacher" />
                 </Label>
                 <Select
+                  isClearable
                   placeholder={<IntlMessages id="forms.select" />}
                   {...register('teacherId', { required: true })}
                   className="react-select"
@@ -256,6 +260,7 @@ const GradeAssignmentCreateEdit = (props: any) => {
                     <IntlMessages id="menu.campus" />
                   </Label>
                   <Select
+                    isClearable
                     placeholder={<IntlMessages id="forms.select" />}
                     {...register('schoolId', { required: true })}
                     className="react-select"

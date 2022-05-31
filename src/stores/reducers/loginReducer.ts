@@ -7,6 +7,8 @@ const INITIAL_STATE = {
   role: {},
   roleMenus: {},
   name: '',
+  lastName: '',
+  profilePhoto: '',
   campus: '',
   campusId: '',
   school: '',
@@ -23,6 +25,8 @@ export default (state = INITIAL_STATE, action: any) => {
         role: action.payload.role,
         roleMenus: action.payload.roleMenus,
         name: action.payload.name,
+        lastName: action.payload.lastName,
+        profilePhoto: action.payload.profilePhoto,
         campus: action.payload.campus,
         campusId: action.payload.campusId,
         school: action.payload.school,
@@ -31,7 +35,8 @@ export default (state = INITIAL_STATE, action: any) => {
     case ME:
       return {
         ...state,      
-        roleMenus: action.payload.roleMenus,        
+        roleMenus: action.payload.roleMenus,  
+        profilePhoto: action.payload.profilePhoto,      
       };
     case LOGOUT:
       return {
@@ -41,6 +46,8 @@ export default (state = INITIAL_STATE, action: any) => {
         role: {},
         roleMenus : [],
         name: '',
+        lastName: '',
+        profilePhoto: '',
         campus: '',
         campusId: '',
         school: '',

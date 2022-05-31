@@ -15,7 +15,7 @@ const LearningCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
   const [standardsList, setStandardsList] = useState(null);
   const [academicPeriodList, setAcademicPeriodList] = useState(null);
-  const [generalBasicLearningRightList, setGeneralBasicLearningRightList] = useState(null); 
+  const [generalBasicLearningRightList, setGeneralBasicLearningRightList] = useState(null);
   const [generalBasicLearningRight, setGeneralBasicLearningRight] = useState(null);
   const [standard, setStandard] = useState(null);
   const [academicPeriod, setAcademicPeriod] = useState(null);
@@ -23,10 +23,10 @@ const LearningCreateEdit = (props: any) => {
   const [school, setSchool] = useState(null);
 
   let [params] = useSearchParams();
-  const  asignatureId  = params.get('asignatureId');
-  const  asignatureGeneralId  = params.get('asignatureGeneralId');
-  const  gradeId  = params.get('gradeId');
-  const  gradeGeneralId  = params.get('gradeGeneralId');
+  const asignatureId = params.get('asignatureId');
+  const asignatureGeneralId = params.get('asignatureGeneralId');
+  const gradeId = params.get('gradeId');
+  const gradeGeneralId = params.get('gradeGeneralId');
 
   const methods = useForm({
     mode: 'onChange',
@@ -39,7 +39,7 @@ const LearningCreateEdit = (props: any) => {
     cleanForm();
     getDropdowns();
     getDBAS();
-    if (props?.data?.id) {     
+    if (props?.data?.id) {
       if (props?.data?.generalBasicLearningRight !== undefined && props?.data?.generalBasicLearningRight != null) {
         setGeneralBasicLearningRight({
           key: props?.data?.generalBasicLearningRight?.id,
@@ -155,7 +155,7 @@ const LearningCreateEdit = (props: any) => {
   });
   register('academicPeriodsId', {
     required: true,
-    value: props?.data?.id ? props?.data?.academicPeriodsId  : '',
+    value: props?.data?.id ? props?.data?.academicPeriodsId : '',
   });
 
   const auditInfo = {
@@ -171,7 +171,7 @@ const LearningCreateEdit = (props: any) => {
       {loading ? (
         <>
           <Colxx sm={12} className="d-flex justify-content-center">
-            <Loader/>
+            <Loader />
           </Colxx>
         </>
       ) : (
@@ -194,12 +194,13 @@ const LearningCreateEdit = (props: any) => {
                   <IntlMessages id="menu.learning" />
                 </Label>
                 <Input type='textarea' rows="2" {...statementRest} innerRef={statementRef} className="form-control" />
-              </div>             
+              </div>
               <div className="form-group">
                 <Label>
                   <IntlMessages id="menu.dba" />
                 </Label>
                 <Select
+                  isClearable
                   placeholder={<IntlMessages id="forms.select" />}
                   {...register('generalBasicLearningRightId', { required: true })}
                   className="react-select"
@@ -211,12 +212,13 @@ const LearningCreateEdit = (props: any) => {
                     setGeneralBasicLearningRight(selectedOption);
                   }}
                 />
-              </div>  
+              </div>
               <div className="form-group">
                 <Label>
                   <IntlMessages id="forms.standard" />
                 </Label>
                 <Select
+                  isClearable
                   placeholder={<IntlMessages id="forms.select" />}
                   {...register('academicStandardId', { required: true })}
                   className="react-select"
@@ -228,12 +230,13 @@ const LearningCreateEdit = (props: any) => {
                     setStandard(selectedOption);
                   }}
                 />
-              </div>  
+              </div>
               <div className="form-group">
                 <Label>
                   <IntlMessages id="menu.periodAcademic" />
                 </Label>
                 <Select
+                  isClearable
                   placeholder={<IntlMessages id="forms.select" />}
                   isMulti
                   {...register("academicPeriodsId", { required: true })}
@@ -251,13 +254,14 @@ const LearningCreateEdit = (props: any) => {
                     setAcademicPeriod(selectedOption);
                   }}
                 />
-              </div>  
+              </div>
               {!props?.loginReducer?.schoolId ? (
                 <div className="form-group">
                   <Label>
                     <IntlMessages id="menu.school" />
                   </Label>
                   <Select
+                    isClearable
                     placeholder={<IntlMessages id="forms.select" />}
                     {...register('schoolId', { required: true })}
                     className="react-select"
@@ -272,7 +276,7 @@ const LearningCreateEdit = (props: any) => {
                 </div>
               ) : (
                 ''
-              )}  
+              )}
             </ModalBody>
             {props?.data?.id ? (
               <ModalFooter className="p-3">

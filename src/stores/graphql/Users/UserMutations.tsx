@@ -23,7 +23,7 @@ export const MUTATION_CHANGE_ACTIVE_USER = gql`
 `;
 
 export const MUTATION_CHANGE_PASSWORD_USER = gql`
-  mutation changePasswordUser($password: String!, $id: Boolean!) {
+  mutation changePasswordUser($password: String!, $id: String!) {
     changePasswordUser: changePasswordUser(password: $password, id: $id)
   }
 `;

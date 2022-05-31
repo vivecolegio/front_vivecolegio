@@ -118,6 +118,7 @@ const AcademicDayCreateEdit = (props: any) => {
                   <IntlMessages id="forms.workingDay" />
                 </Label>
                 <Select
+                  isClearable
                   placeholder={<IntlMessages id="forms.select" />}
                   {...register('day', { required: true })}
                   className="react-select"
@@ -142,6 +143,7 @@ const AcademicDayCreateEdit = (props: any) => {
                     <IntlMessages id="menu.campus" />
                   </Label>
                   <Select
+                    isClearable
                     placeholder={<IntlMessages id="forms.select" />}
                     {...register('campusId', { required: true })}
                     className="react-select"

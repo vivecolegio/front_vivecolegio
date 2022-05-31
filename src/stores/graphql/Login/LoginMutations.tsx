@@ -5,6 +5,8 @@ export const MUTATION_LOGIN = gql`
     data: login(username: $username, password: $password) {
       jwt
       name
+      lastName
+      profilePhoto
       student {
         id
       }
@@ -49,6 +51,25 @@ export const MUTATION_LOGIN = gql`
 export const QUERY_ME = gql`
   query {
     me {
+      name
+      lastName
+      profilePhoto
+      student {
+        id
+      }
+      userId      
+      schools {
+        id
+        name
+      }
+      campus {
+        id
+        name
+      }
+      role {
+        id
+        name
+      }
       roleMenus {
         id
         name

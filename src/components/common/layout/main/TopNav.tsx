@@ -18,6 +18,7 @@ import MenuIcon from './topNav/MenuIcon';
 import MobileMenuIcon from './topNav/MobileMenuIcon';
 import TopnavDarkSwitch from './topNav/TopnavDarkSwitch';
 import TopnavNotifications from './topNav/TopnavNotifications';
+import { urlImages } from '../../../../stores/graphql/index';
 
 const TopNav = (props: any) => {
   const [topNavState, setTopNavState] = useState({
@@ -245,11 +246,11 @@ const TopNav = (props: any) => {
             <span className="logo-mobile d-block d-sm-none" />
           </a>          */}
         </div>
-        <div className="navbar-right">      
+        <div className="navbar-right">
           {isDarkSwitchActive && <TopnavDarkSwitch />}
           <div className="header-icons d-inline-block align-middle">
             {/* <TopnavEasyAccess/> */}
-            <TopnavNotifications />          
+            <TopnavNotifications />
             <button
               className="header-icon btn btn-empty d-none d-sm-inline-block"
               type="button"
@@ -264,30 +265,44 @@ const TopNav = (props: any) => {
             </button>
           </div>
           <div className="mr-2 border-separator-right align-middle pr-2 d-inline-block">
-            <p className="text-muted text-small mb-1">{props?.loginReducer?.school}</p>
-            {props?.loginReducer?.campus ? (
-              <p className="text-muted text-small mb-0">{props?.loginReducer?.campus}</p>
-            ) : null}
+            <UncontrolledDropdown className="dropdown-menu-right">
+              <DropdownToggle className="p-0" color="empty">
+                <p className="text-muted text-small mb-1">{props?.loginReducer?.school}</p>
+              </DropdownToggle>
+              <DropdownMenu className="mt-3" end>
+                <DropdownItem>otro school</DropdownItem>
+              </DropdownMenu>
+            </UncontrolledDropdown>
+            <UncontrolledDropdown className="dropdown-menu-right">
+              <DropdownToggle className="p-0" color="empty">
+                {props?.loginReducer?.campus ? (
+                  <p className="text-muted text-small mb-0">{props?.loginReducer?.campus}</p>
+                ) : null}
+              </DropdownToggle>
+              <DropdownMenu className="mt-3" end>
+                <DropdownItem>otro campus</DropdownItem>
+              </DropdownMenu>
+            </UncontrolledDropdown>
           </div>
           <div className="user d-inline-block">
             <UncontrolledDropdown className="dropdown-menu-right">
               <DropdownToggle className="p-0" color="empty">
-                <span className="name mr-1 text-primary">{props?.loginReducer?.name}</span>
+                <span className="name mr-1 text-primary">{props?.loginReducer?.name} {props?.loginReducer?.lastName}</span>
                 <span>
-                  <img className="border-yellow" alt="Profile" src={ProfileImg} />
+                  <img className="border-yellow" alt="Profile" src={props?.loginReducer?.profilePhoto ? urlImages + props?.loginReducer?.profilePhoto : ProfileImg} />
                 </span>
               </DropdownToggle>
               <DropdownMenu className="mt-3" end>
-                {/* <NavLink to="/profile">
+                <NavLink to="/profile">
                   <DropdownItem>
                     <IntlMessages id="layouts.profile" />
                   </DropdownItem>
-                </NavLink>                 */}
+                </NavLink>
                 <NavLink to="/messages">
                   <DropdownItem>
                     <IntlMessages id="layouts.messages" />
                   </DropdownItem>
-                </NavLink>                
+                </NavLink>
                 {/* <NavLink to="/chat">
                   <DropdownItem>
                     <IntlMessages id="layouts.chat" />

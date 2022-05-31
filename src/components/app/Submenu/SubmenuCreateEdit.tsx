@@ -225,6 +225,7 @@ const MenuItemCreateEdit = (props: any) => {
                   <IntlMessages id="forms.module" />
                 </Label>
                 <Select
+                  isClearable
                   placeholder={<IntlMessages id="forms.select" />}
                   {...register('moduleId', { required: true })}
                   className="react-select"
@@ -242,6 +243,7 @@ const MenuItemCreateEdit = (props: any) => {
                   <IntlMessages id="forms.menuParent" />
                 </Label>
                 <Select
+                  isClearable
                   placeholder={<IntlMessages id="forms.select" />}
                   {...register('menuId', { required: true })}
                   className="react-select"
@@ -274,6 +276,7 @@ const MenuItemCreateEdit = (props: any) => {
                   <IntlMessages id="menu.roles" />
                 </Label>
                 <Select
+                  isClearable
                   placeholder={<IntlMessages id="forms.select" />}
                   isMulti
                   {...register('rolesId', { required: true })}

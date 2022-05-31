@@ -2,7 +2,7 @@ import { DevTool } from '@hookform/devtools';
 import React, { useEffect, useState } from 'react';
 import ReactDatePicker from 'react-datepicker';
 import { useForm } from 'react-hook-form';
-import {Loader} from '../../common/Loader';
+import { Loader } from '../../common/Loader';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
@@ -215,7 +215,7 @@ const AdministratorCreateEdit = (props: any) => {
       {loading ? (
         <>
           <Colxx sm={12} className="d-flex justify-content-center">
-            <Loader/>
+            <Loader />
           </Colxx>
         </>
       ) : (
@@ -329,6 +329,7 @@ const AdministratorCreateEdit = (props: any) => {
                   <IntlMessages id="forms.role" />
                 </Label>
                 <Select
+                  isClearable
                   placeholder={<IntlMessages id="forms.select" />}
                   className="react-select"
                   classNamePrefix="react-select"
@@ -346,6 +347,7 @@ const AdministratorCreateEdit = (props: any) => {
                   <IntlMessages id="forms.gender" />
                 </Label>
                 <Select
+                  isClearable
                   placeholder={<IntlMessages id="forms.select" />}
                   className="react-select"
                   classNamePrefix="react-select"
@@ -363,6 +365,7 @@ const AdministratorCreateEdit = (props: any) => {
                   <IntlMessages id="forms.documentType" />
                 </Label>
                 <Select
+                  isClearable
                   placeholder={<IntlMessages id="forms.select" />}
                   className="react-select"
                   classNamePrefix="react-select"
@@ -394,6 +397,7 @@ const AdministratorCreateEdit = (props: any) => {
                     <IntlMessages id="menu.school" />
                   </Label>
                   <Select
+                    isClearable
                     placeholder={<IntlMessages id="forms.select" />}
                     {...register('schoolId', { required: true })}
                     className="react-select"
@@ -416,6 +420,7 @@ const AdministratorCreateEdit = (props: any) => {
                     <IntlMessages id="menu.campus" />
                   </Label>
                   <Select
+                    isClearable
                     placeholder={<IntlMessages id="forms.select" />}
                     {...register('campusId', { required: true })}
                     className="react-select"

@@ -145,6 +145,7 @@ const AreaCreateEdit = (props: any) => {
                   <IntlMessages id="menu.national" />
                 </Label>
                 <Select
+                  isClearable
                   placeholder={<IntlMessages id="forms.select" />}
                   {...register('generalAcademicAreaId', { required: true })}
                   className="react-select"
@@ -163,6 +164,7 @@ const AreaCreateEdit = (props: any) => {
                     <IntlMessages id="menu.school" />
                   </Label>
                   <Select
+                    isClearable
                     placeholder={<IntlMessages id="forms.select" />}
                     {...register('schoolId', { required: true })}
                     className="react-select"

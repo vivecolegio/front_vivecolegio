@@ -6,7 +6,7 @@ import { Badge, Button, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader
 import IntlMessages from '../../../helpers/IntlMessages';
 import * as inboxActions from '../../../stores/actions/InboxAction';
 
-const InboxCreate = ( props : any) => {
+const InboxCreate = (props: any) => {
   const [user, setUser] = useState(null);
   const [usersList, setUsersList] = useState(null);
 
@@ -37,11 +37,11 @@ const InboxCreate = ( props : any) => {
   };
 
   const onSubmit = async (dataForm: any) => {
-    props.saveNewInbox(dataForm).then((data: any) => { 
-       props.toggleModal();
-       cleanForm();
-       props.getInboxs();
-     });
+    props.saveNewInbox(dataForm).then((data: any) => {
+      props.toggleModal();
+      cleanForm();
+      props.getInboxs();
+    });
   };
 
   const { ref: titleRef, ...titleRest } = register('title', {
@@ -90,6 +90,7 @@ const InboxCreate = ( props : any) => {
                 </div>
               </Label>
               <Select
+                isClearable
                 placeholder={<IntlMessages id="forms.select" />}
                 {...register('userId', { required: true })}
                 className="react-select"

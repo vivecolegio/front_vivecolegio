@@ -149,7 +149,7 @@ input.form-control[readonly] {
 }
 
 // remove item separator "|" in footer breadcrumb
-footer.page-footer .breadcrumb-item + .breadcrumb-item::before {
+footer.page-footer .breadcrumb-item+.breadcrumb-item::before {
   color: transparent !important;
 }
 
@@ -164,17 +164,21 @@ footer.page-footer .breadcrumb-item + .breadcrumb-item::before {
 .form-check-input:checked[type='checkbox'] {
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3l6-6'/%3e%3c/svg%3e");
 }
+
 .form-check-input:checked {
   background-color: $theme-color-1;
   border-color: $theme-color-1;
 }
+
 .form-check-input[type='checkbox'] {
   border-radius: 0.25em;
 }
+
 .form-check .form-check-input {
   float: left;
   margin-left: -1.5em;
 }
+
 .form-check-input {
   width: 1.2em;
   height: 1.2em;
@@ -205,7 +209,7 @@ footer.page-footer .breadcrumb-item + .breadcrumb-item::before {
   width: 1px;
 }
 
-.input-group-prepend > .btn {
+.input-group-prepend>.btn {
   border-bottom-left-radius: 0;
   border-top-left-radius: 0;
   border-bottom-right-radius: 0;
@@ -219,6 +223,7 @@ footer.page-footer .breadcrumb-item + .breadcrumb-item::before {
 .check-button .custom-control {
   min-height: 1rem;
 }
+
 // .custom-control {
 //   display: block;
 //   min-height: 1.5rem;
@@ -230,6 +235,7 @@ footer.page-footer .breadcrumb-item + .breadcrumb-item::before {
   background-color: transparent !important;
   border-color: #ffffff !important;
 }
+
 .form-check-input.checkAll {
   background-color: transparent !important;
   border-color: #ffffff !important;
@@ -414,6 +420,7 @@ body.background {
   background: #3a3a3a;
   opacity: 0.2;
 }
+
 .line-left {
   position: absolute;
   width: 345px;
@@ -466,31 +473,38 @@ body.background {
   border-bottom: 1px solid #8bc740;
 }
 
-.border-b-info{
+.border-b-info {
   border-bottom: 1px solid #17a2b8;
 }
 
-.border-b-blue{
+.border-b-blue {
   border-bottom: 1px solid #48a9f8;
 }
 
-.border-l-blue{
+.border-l-blue {
   border-left: 1px solid #48a9f8;
 }
 
-.border-b-orange{
+.border-b-orange {
   border-bottom: 1px solid #ff6746;
 }
 
-.border-b-warning{
+.border-b-warning {
   border-bottom: 1px solid #ffc107;
 }
 
-.bg-warning-light{
+.bg-warning-light {
   background: #f5ffb6;
 }
 
 .table-cell-info {
   background: #f3f3f3 !important;
   font-weight: bold;
+}
+
+.navbar .user img {
+  margin-left: 10px;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
 }

@@ -144,6 +144,7 @@ const CourseCreateEdit = (props: any) => {
                     <IntlMessages id="menu.campus" />
                   </Label>
                   <Select
+                    isClearable
                     placeholder={<IntlMessages id="forms.select" />}
                     {...register('campusId', { required: true })}
                     className="react-select"

@@ -1,7 +1,7 @@
 import { createNotification } from "../../../helpers/Notification";
 import { client } from '../../graphql';
 import { MUTATION_CHANGE_ACTIVE_PERFORMANCE_LEVEL, MUTATION_CREATE_PERFORMANCE_LEVEL, MUTATION_DELETE_PERFORMANCE_LEVEL, MUTATION_UPDATE_PERFORMANCE_LEVEL } from '../../graphql/Academic/PerformanceLevel/PerformanceLevelMutations';
-import { QUERY_GET_ALL_PERFORMANCE_LEVEL, QUERY_GET_DROPDOWNS_PERFORMANCE_LEVEL, QUERY_GET_PERFORMANCE_LEVEL } from '../../graphql/Academic/PerformanceLevel/PerformanceLevelQueries';
+import { QUERY_GET_ALL_PERFORMANCE_LEVEL, QUERY_GET_DROPDOWNS_PERFORMANCE_LEVEL, QUERY_GET_PERFORMANCE_LEVEL, QUERY_GET_PERFORMANCE_LEVEL_TYPE } from '../../graphql/Academic/PerformanceLevel/PerformanceLevelQueries';
 
 
 export const getListAllPerformanceLevel = (schoolId:string) => {
@@ -188,16 +188,38 @@ export const deletePerformanceLevel = (id: any, showToast: boolean) => {
   };
 };
 
-export const getDropdownsPerformanceLevel = () => {
+export const getDropdownsPerformanceLevel = (schoolId: string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
       await client
         .query({
           query: QUERY_GET_DROPDOWNS_PERFORMANCE_LEVEL,
+          variables:{
+            schoolId
+          }
         })
         .then((result: any) => {
           listData = result.data;
+        });
+      return listData;
+    } catch (error) {
+      createNotification('error', 'error', '');
+      return error;
+    }
+  };
+};
+
+export const getPerformanceLevelTypes = () => {
+  return async (dispatch: any) => {
+    try {
+      let listData = {};
+      await client
+        .query({
+          query: QUERY_GET_PERFORMANCE_LEVEL_TYPE,
+        })
+        .then((result: any) => {
+          listData = result.data.__type.enumValues;
         });
       return listData;
     } catch (error) {

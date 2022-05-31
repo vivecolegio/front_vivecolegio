@@ -302,7 +302,7 @@ const StudentCreateEdit = (props: any) => {
       {loading ? (
         <>
           <Colxx sm={12} className="d-flex justify-content-center">
-            <Loader/>
+            <Loader />
           </Colxx>
         </>
       ) : (
@@ -461,6 +461,7 @@ const StudentCreateEdit = (props: any) => {
                       <IntlMessages id="forms.role" />
                     </Label>
                     <Select
+                      isClearable
                       placeholder={<IntlMessages id="forms.select" />}
                       className="react-select"
                       classNamePrefix="react-select"
@@ -478,6 +479,7 @@ const StudentCreateEdit = (props: any) => {
                       <IntlMessages id="forms.gender" />
                     </Label>
                     <Select
+                      isClearable
                       placeholder={<IntlMessages id="forms.select" />}
                       className="react-select"
                       classNamePrefix="react-select"
@@ -495,6 +497,7 @@ const StudentCreateEdit = (props: any) => {
                       <IntlMessages id="forms.documentType" />
                     </Label>
                     <Select
+                      isClearable
                       placeholder={<IntlMessages id="forms.select" />}
                       className="react-select"
                       classNamePrefix="react-select"
@@ -525,6 +528,7 @@ const StudentCreateEdit = (props: any) => {
                       <IntlMessages id="forms.grade" />
                     </Label>
                     <Select
+                      isClearable
                       placeholder={<IntlMessages id="forms.select" />}
                       {...register('academicGradeId', { required: true })}
                       className="react-select"
@@ -543,6 +547,7 @@ const StudentCreateEdit = (props: any) => {
                       <IntlMessages id="forms.course" />
                     </Label>
                     <Select
+                      isClearable
                       placeholder={<IntlMessages id="forms.select" />}
                       {...register('courseId', { required: true })}
                       className="react-select"
@@ -561,6 +566,7 @@ const StudentCreateEdit = (props: any) => {
                         <IntlMessages id="menu.school" />
                       </Label>
                       <Select
+                        isClearable
                         placeholder={<IntlMessages id="forms.select" />}
                         {...register('schoolId', { required: true })}
                         className="react-select"
@@ -583,6 +589,7 @@ const StudentCreateEdit = (props: any) => {
                         <IntlMessages id="menu.campus" />
                       </Label>
                       <Select
+                        isClearable
                         placeholder={<IntlMessages id="forms.select" />}
                         {...register('campusId', { required: true })}
                         className="react-select"
@@ -606,6 +613,7 @@ const StudentCreateEdit = (props: any) => {
                       <IntlMessages id="forms.documentType" />
                     </Label>
                     <Select
+                      isClearable
                       placeholder={<IntlMessages id="forms.select" />}
                       className="react-select"
                       classNamePrefix="react-select"
@@ -622,6 +630,7 @@ const StudentCreateEdit = (props: any) => {
                     </Label>
                     <InputGroup className="input-group-prepend">
                       <Select
+                        isClearable
                         placeholder={<IntlMessages id="forms.select" />}
                         className="react-select w-80"
                         classNamePrefix="react-select"

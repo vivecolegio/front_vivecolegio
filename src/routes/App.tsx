@@ -72,7 +72,6 @@ import SubmenuList from '../components/app/Submenu/SubmenuList';
 import TeacherList from '../components/app/Teacher/TeacherList';
 import TraditionalValuation from '../components/app/TraditionalValuation/TraditionalValuation';
 import UserList from '../components/app/User/UserList';
-import ChangePassword from '../components/app/ChangePassword/ChagePassword';
 import ColorSwitcher from '../components/common/ColorSwitcher';
 import Layout from '../components/common/layout/Layout';
 import { NotificationContainer } from '../components/common/Notifications';
@@ -131,7 +130,6 @@ const App = (props: any) => {
                 {permissions ? (
                   <>
                     <Route path="/profile" element={<Profile />} />
-                    <Route path="/changePassword" element={<ChangePassword />} />
                     <Route path="/myScheduleOffice" element={<OfficeSchedule />} />
                     <Route path="/myScheduleShool" element={<SchoolSchedule />} />
                     <Route path="/messages" element={<InboxDetail />} />

@@ -17,6 +17,10 @@ const AreaCreateEdit = (props: any) => {
   const [schoolList, setSchoolList] = useState(null);
   const [generalPerformanceLevel, setGeneralPerformanceLevel] = useState(null);
   const [school, setSchool] = useState(null);
+  const [types, setTypes] = useState([]);
+  const [type, setType] = useState(null);
+  const [campusList, setCampusList] = useState(null);
+  const [campus, setCampus] = useState(null);
 
   const methods = useForm({
     mode: 'onChange',
@@ -46,6 +50,21 @@ const AreaCreateEdit = (props: any) => {
           value: props?.data?.school?.id,
         });
       }
+      if (
+        props?.data?.type !== undefined &&
+        props?.data?.type != null
+      ) {
+        setType({
+          key: props?.data?.type,
+          label: props?.data?.type,
+          value: props?.data?.type,
+        });
+      }
+      if (props?.data?.campus !== undefined && props?.data?.campus != null) {
+        setCampus(props?.data?.campus.map((c: any) => {
+          return { label: c.name, value: c.id, key: c.id };
+        }));
+      }
     }
     setLoading(false);
   }, [props?.data]);
@@ -64,9 +83,19 @@ const AreaCreateEdit = (props: any) => {
   };
 
   const getDropdowns = async () => {
-    props.getDropdownsPerformanceLevel().then((data: any) => {
+    props.getPerformanceLevelTypes().then((data: any) => {
+      setTypes(data.map((c: any) => {
+        return { label: c.name, value: c.name, key: c.name };
+      }))
+    });
+    props.getDropdownsPerformanceLevel(props?.loginReducer?.schoolId).then((data: any) => {
       setSchoolList(
         data.dataSchools.edges.map((c: any) => {
+          return { label: c.node.name, value: c.node.id, key: c.node.id };
+        }),
+      );
+      setCampusList(
+        data.dataCampus.edges.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };
         }),
       );
@@ -138,16 +167,38 @@ const AreaCreateEdit = (props: any) => {
               </div>
               <div className="form-group">
                 <Label>
-                  <IntlMessages id="forms.minimumScore" />
+                  <IntlMessages id="forms.type" />
                 </Label>
-                <Input {...minimumScoreRest} innerRef={minimumScoreRef} className="form-control" />
+                <Select
+                  isClearable
+                  placeholder={<IntlMessages id="forms.select" />}
+                  {...register('type', { required: true })}
+                  className="react-select"
+                  classNamePrefix="react-select"
+                  options={types}
+                  value={type}
+                  onChange={(selectedOption: any) => {
+                    setValue('type', selectedOption?.key);
+                    setType(selectedOption);
+                  }}
+                />
               </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="forms.topScore" />
-                </Label>
-                <Input {...topScoreRest} innerRef={topScoreRef} className="form-control" />
-              </div>
+              {type?.key !== 'QUALITATIVE' ?
+                <>
+                  <div className="form-group">
+                    <Label>
+                      <IntlMessages id="forms.minimumScore" />
+                    </Label>
+                    <Input {...minimumScoreRest} innerRef={minimumScoreRef} className="form-control" />
+                  </div>
+                  <div className="form-group">
+                    <Label>
+                      <IntlMessages id="forms.topScore" />
+                    </Label>
+                    <Input {...topScoreRest} innerRef={topScoreRef} className="form-control" />
+                  </div>
+                </>
+                : ''}
               <div className="form-group">
                 <Label>
                   <IntlMessages id="menu.performanceLevel" />
@@ -155,6 +206,7 @@ const AreaCreateEdit = (props: any) => {
                   <IntlMessages id="menu.national" />
                 </Label>
                 <Select
+                  isClearable
                   placeholder={<IntlMessages id="forms.select" />}
                   {...register('generalPerformanceLevelId', { required: true })}
                   className="react-select"
@@ -167,12 +219,32 @@ const AreaCreateEdit = (props: any) => {
                   }}
                 />
               </div>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="menu.campus" />
+                </Label>
+                <Select
+                  isClearable
+                  placeholder={<IntlMessages id="forms.select" />}
+                  isMulti
+                  {...register('campusId', { required: true })}
+                  className="react-select"
+                  classNamePrefix="react-select"
+                  options={campusList}
+                  value={campus}
+                  onChange={(selectedOption: any) => {
+                    setValue('campusId', selectedOption.map((c: any) => { return c.key }));
+                    setCampus(selectedOption);
+                  }}
+                />
+              </div>
               {!props?.loginReducer?.schoolId ? (
                 <div className="form-group">
                   <Label>
                     <IntlMessages id="menu.school" />
                   </Label>
                   <Select
+                    isClearable
                     placeholder={<IntlMessages id="forms.select" />}
                     {...register('schoolId', { required: true })}
                     className="react-select"

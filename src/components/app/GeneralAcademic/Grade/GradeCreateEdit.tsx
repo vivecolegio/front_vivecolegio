@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import {Loader} from '../../../common/Loader';
+import { Loader } from '../../../common/Loader';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
@@ -77,7 +77,7 @@ const GeneralGradeCreateEdit = (props: any) => {
       {loading ? (
         <>
           <Colxx sm={12} className="d-flex justify-content-center">
-            <Loader/>
+            <Loader />
           </Colxx>
         </>
       ) : (
@@ -106,6 +106,7 @@ const GeneralGradeCreateEdit = (props: any) => {
                   <IntlMessages id="menu.cycleAcademic" />
                 </Label>
                 <Select
+                  isClearable
                   placeholder={<IntlMessages id="forms.select" />}
                   {...register('generalAcademicCycleId', { required: true })}
                   className="react-select"

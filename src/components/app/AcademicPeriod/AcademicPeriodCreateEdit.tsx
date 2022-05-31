@@ -119,7 +119,7 @@ const AcademicPeriodCreateEdit = (props: any) => {
       {loading ? (
         <>
           <Colxx sm={12} className="d-flex justify-content-center">
-            <Loader/>
+            <Loader />
           </Colxx>
         </>
       ) : (
@@ -186,6 +186,7 @@ const AcademicPeriodCreateEdit = (props: any) => {
                   <IntlMessages id="menu.schoolYear" />
                 </Label>
                 <Select
+                  isClearable
                   placeholder={<IntlMessages id="forms.select" />}
                   {...register('schoolYearId', { required: true })}
                   className="react-select"
@@ -204,6 +205,7 @@ const AcademicPeriodCreateEdit = (props: any) => {
                     <IntlMessages id="menu.school" />
                   </Label>
                   <Select
+                    isClearable
                     placeholder={<IntlMessages id="forms.select" />}
                     {...register('schoolId', { required: true })}
                     className="react-select"

@@ -1,7 +1,7 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
 import { MUTATION_CHANGE_ACTIVE_COMPONENT_EVALUATIVE, MUTATION_CREATE_COMPONENT_EVALUATIVE, MUTATION_DELETE_COMPONENT_EVALUATIVE, MUTATION_UPDATE_COMPONENT_EVALUATIVE } from '../graphql/ComponentEvaluative/ComponentEvaluativeMutations';
-import { QUERY_GET_ALL_COMPONENT_EVALUATIVE, QUERY_GET_COMPONENT_EVALUATIVE, QUERY_GET_DROPDOWNS_COMPONENT_EVALUATIVE } from '../graphql/ComponentEvaluative/ComponentEvaluativeQueries';
+import { QUERY_GET_ALL_COMPONENT_EVALUATIVE, QUERY_GET_COMPONENT_EVALUATIVE, QUERY_GET_DROPDOWNS_COMPONENT_EVALUATIVE, QUERY_GET_EVALUATIVE_COMPONENT_TYPE } from '../graphql/ComponentEvaluative/ComponentEvaluativeQueries';
 
 
 export const getListAllComponentEvaluative = (schoolId:string) => {
@@ -186,13 +186,16 @@ export const deleteComponentEvaluative = (id: any, showToast: boolean) => {
   };
 };
 
-export const getDropdownsComponentEvaluative = () => {
+export const getDropdownsComponentEvaluative = (schoolId: string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
       await client
         .query({
           query: QUERY_GET_DROPDOWNS_COMPONENT_EVALUATIVE,
+          variables: {
+            schoolId
+          }
         })
         .then((result: any) => {
           listData = result.data;
@@ -205,3 +208,21 @@ export const getDropdownsComponentEvaluative = () => {
   };
 };
 
+export const getEvaluativeComponentTypes = () => {
+  return async (dispatch: any) => {
+    try {
+      let listData = {};
+      await client
+        .query({
+          query: QUERY_GET_EVALUATIVE_COMPONENT_TYPE,
+        })
+        .then((result: any) => {
+          listData = result.data.__type.enumValues;
+        });
+      return listData;
+    } catch (error) {
+      createNotification('error', 'error', '');
+      return error;
+    }
+  };
+};

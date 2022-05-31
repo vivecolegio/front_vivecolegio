@@ -39,8 +39,8 @@ const SurveyQuestionBuilder = ({
   const [qAnswerType, setQAnswerType] = useState(
     answerType
       ? answerTypes.find((item) => {
-          return item.id === answerType;
-        })
+        return item.id === answerType;
+      })
       : null
   );
   const [qAnswers, setQAnswers] = useState(answers || []);
@@ -71,7 +71,7 @@ const SurveyQuestionBuilder = ({
   const addAnswer = () => {
     let nextId = 0;
     if (qAnswers.length > 0) {
-      const orderedAnswers = qAnswers.slice().sort((a:any, b:any) => {
+      const orderedAnswers = qAnswers.slice().sort((a: any, b: any) => {
         return a.id < b.id;
       });
       nextId = orderedAnswers[0].id + 1;
@@ -133,7 +133,7 @@ const SurveyQuestionBuilder = ({
         );
       default:
         return (
-          <Input type="text" placeholder="" value="" onChange={() => {}} />
+          <Input type="text" placeholder="" value="" onChange={() => { }} />
         );
     }
   };
@@ -169,9 +169,8 @@ const SurveyQuestionBuilder = ({
           <Button
             outline
             color="theme-3"
-            className={`icon-button ml-1 rotate-icon-click ${
-              collapse ? 'rotate' : ''
-            }`}
+            className={`icon-button ml-1 rotate-icon-click ${collapse ? 'rotate' : ''
+              }`}
             onClick={() => setCollapse(!collapse)}
           >
             <i className="simple-icon-arrow-down" />
@@ -214,6 +213,7 @@ const SurveyQuestionBuilder = ({
               <FormGroup>
                 <Label>Tipo de respuesta</Label>
                 <Select
+                  isClearable
                   components={{ Input: CustomSelectInput }}
                   className="react-select"
                   classNamePrefix="react-select"

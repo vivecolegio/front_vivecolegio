@@ -328,7 +328,7 @@ const ClassroomPlanDetail = (props: any) => {
                 onClick={() => setShowIndex(1)}
                 aria-expanded={showingIndex === 1}
               >
-                Desempeños esperados                
+                Desempeños esperados
               </Button>
             </div>
             <Collapse isOpen={showingIndex === 1}>
@@ -338,16 +338,16 @@ const ClassroomPlanDetail = (props: any) => {
                     {
                       evaluativeComponents?.map((c: any) => {
                         return <>
-                            <td className='table-cell-info' colSpan={3}>
-                          <div className='d-flex justify-content-between align-items-center'>
-                            <span>{c?.node?.name}</span>
-                            <Button color="green" onClick={() => {
-                              setModalEvidences(true);
-                              setCurrentEvaluativeComponent(c?.node?.id)
-                            }} className='btn-xs ml-2'>
-                              <i className='simple-icon-check'></i>
-                            </Button>
-                          </div>
+                          <td className='table-cell-info' colSpan={3}>
+                            <div className='d-flex justify-content-between align-items-center'>
+                              <span>{c?.node?.name}</span>
+                              <Button color="green" onClick={() => {
+                                setModalEvidences(true);
+                                setCurrentEvaluativeComponent(c?.node?.id)
+                              }} className='btn-xs ml-2'>
+                                <i className='simple-icon-check'></i>
+                              </Button>
+                            </div>
                           </td>
                         </>
                       })
@@ -359,7 +359,7 @@ const ClassroomPlanDetail = (props: any) => {
                         return <>
                           <td colSpan={3}>
                             <ul>
-                              {classroomPlanExpectedPerformance.map((d:any)=>{
+                              {classroomPlanExpectedPerformance.map((d: any) => {
                                 return <>
                                   <li>{d?.evidenceLearnings?.statement}</li>
                                 </>
@@ -589,6 +589,7 @@ const ClassroomPlanDetail = (props: any) => {
             <div className="form-group">
               <p className="font-weight-semibold mb-3">Evidencias de aprendizaje</p>
               <Select
+                isClearable
                 placeholder="Seleccionar"
                 isMulti
                 className="react-select"
@@ -599,7 +600,7 @@ const ClassroomPlanDetail = (props: any) => {
                   setEvidencesLearning(selectedOption);
                 }}
               />
-            </div>           
+            </div>
           </ModalBody>
           <ModalFooter>
             <Button
@@ -610,15 +611,15 @@ const ClassroomPlanDetail = (props: any) => {
             <Button
               color="green"
               onClick={() => {
-                let evidences = evidencesLearning.map((c: any) => { return c.key });                
-                if(classroomPlanExpectedPerformance.find((x:any)=>(x.evaluativeComponentId === currentEvaluativeComponent))){
+                let evidences = evidencesLearning.map((c: any) => { return c.key });
+                if (classroomPlanExpectedPerformance.find((x: any) => (x.evaluativeComponentId === currentEvaluativeComponent))) {
 
                 } else {
                   classroomPlanExpectedPerformance.push(
                     {
-                        evaluativeComponentId: currentEvaluativeComponent,
-                        evidenceLearningsId: evidences
-                      }
+                      evaluativeComponentId: currentEvaluativeComponent,
+                      evidenceLearningsId: evidences
+                    }
                   )
                   setClassroomPlanExpectedPerformance(classroomPlanExpectedPerformance)
                 }
@@ -643,6 +644,7 @@ const ClassroomPlanDetail = (props: any) => {
             <div className="form-group">
               <p className="font-weight-semibold mb-3">Aprendizajes</p>
               <Select
+                isClearable
                 placeholder="Seleccionar"
                 isMulti
                 className="react-select"
@@ -658,6 +660,7 @@ const ClassroomPlanDetail = (props: any) => {
             <div className="form-group">
               <p className="font-weight-semibold mb-3">DBA's</p>
               <Select
+                isClearable
                 placeholder="Seleccionar"
                 isMulti
                 className="react-select"
@@ -673,6 +676,7 @@ const ClassroomPlanDetail = (props: any) => {
             <div className="form-group">
               <p className="font-weight-semibold mb-3">Estándares</p>
               <Select
+                isClearable
                 placeholder="Seleccionar"
                 isMulti
                 className="react-select"

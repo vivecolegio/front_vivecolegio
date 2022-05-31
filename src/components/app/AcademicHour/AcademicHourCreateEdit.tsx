@@ -121,7 +121,7 @@ const AcademicHourCreateEdit = (props: any) => {
       {loading ? (
         <>
           <Colxx sm={12} className="d-flex justify-content-center">
-            <Loader/>
+            <Loader />
           </Colxx>
         </>
       ) : (
@@ -176,6 +176,7 @@ const AcademicHourCreateEdit = (props: any) => {
                   <IntlMessages id="menu.academicDay" />
                 </Label>
                 <Select
+                  isClearable
                   placeholder={<IntlMessages id="forms.select" />}
                   {...register('academicDayId', { required: true })}
                   className="react-select"
@@ -194,6 +195,7 @@ const AcademicHourCreateEdit = (props: any) => {
                     <IntlMessages id="menu.campus" />
                   </Label>
                   <Select
+                    isClearable
                     placeholder={<IntlMessages id="forms.select" />}
                     {...register('campusId', { required: true })}
                     className="react-select"

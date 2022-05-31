@@ -27,7 +27,7 @@ const GeneralBasicLearningRightCreateEdit = (props: any) => {
   useEffect(() => {
     cleanForm();
     getDropdowns();
-    if (props?.data?.id) {     
+    if (props?.data?.id) {
       if (
         props?.data?.generalAcademicAsignature !== undefined &&
         props?.data?.generalAcademicAsignature != null
@@ -100,7 +100,7 @@ const GeneralBasicLearningRightCreateEdit = (props: any) => {
       {loading ? (
         <>
           <Colxx sm={12} className="d-flex justify-content-center">
-            <Loader/>
+            <Loader />
           </Colxx>
         </>
       ) : (
@@ -135,6 +135,7 @@ const GeneralBasicLearningRightCreateEdit = (props: any) => {
                   <IntlMessages id="menu.asignature" />
                 </Label>
                 <Select
+                  isClearable
                   placeholder={<IntlMessages id="forms.select" />}
                   {...register('generalAcademicAsignatureId', { required: true })}
                   className="react-select"
@@ -152,6 +153,7 @@ const GeneralBasicLearningRightCreateEdit = (props: any) => {
                   <IntlMessages id="menu.grade" />
                 </Label>
                 <Select
+                  isClearable
                   placeholder={<IntlMessages id="forms.select" />}
                   {...register('generalAcademicGradeId', { required: true })}
                   className="react-select"
@@ -163,7 +165,7 @@ const GeneralBasicLearningRightCreateEdit = (props: any) => {
                     setGrade(selectedOption);
                   }}
                 />
-              </div>    
+              </div>
             </ModalBody>
             {props?.data?.id ? (
               <ModalFooter className="p-3">

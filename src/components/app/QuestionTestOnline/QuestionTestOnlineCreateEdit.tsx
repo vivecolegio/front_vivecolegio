@@ -158,6 +158,7 @@ const QuestionCategoryTestOnlineCreateEdit = (props: any) => {
                   <IntlMessages id="menu.category" />
                 </Label>
                 <Select
+                  isClearable
                   placeholder={<IntlMessages id="forms.select" />}
                   {...register('academicPeriodId', { required: true })}
                   className="react-select"
@@ -175,6 +176,7 @@ const QuestionCategoryTestOnlineCreateEdit = (props: any) => {
                   <IntlMessages id="forms.type" />
                 </Label>
                 <Select
+                  isClearable
                   placeholder={<IntlMessages id="forms.select" />}
                   {...register('questionType', { required: true })}
                   className="react-select"

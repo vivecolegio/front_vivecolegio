@@ -154,7 +154,7 @@ const StandardCreateEdit = (props: any) => {
       {loading ? (
         <>
           <Colxx sm={12} className="d-flex justify-content-center">
-            <Loader/>
+            <Loader />
           </Colxx>
         </>
       ) : (
@@ -183,6 +183,7 @@ const StandardCreateEdit = (props: any) => {
                   <IntlMessages id="menu.asignature" />
                 </Label>
                 <Select
+                  isClearable
                   placeholder={<IntlMessages id="forms.select" />}
                   {...register('academicAsignatureId', { required: true })}
                   className="react-select"
@@ -200,6 +201,7 @@ const StandardCreateEdit = (props: any) => {
                   <IntlMessages id="menu.grade" />
                 </Label>
                 <Select
+                  isClearable
                   placeholder={<IntlMessages id="forms.select" />}
                   {...register('academicGradeId', { required: true })}
                   className="react-select"
@@ -219,6 +221,7 @@ const StandardCreateEdit = (props: any) => {
                   <IntlMessages id="menu.general" />
                 </Label>
                 <Select
+                  isClearable
                   placeholder={<IntlMessages id="forms.select" />}
                   {...register('generalAcademicStandardId', { required: true })}
                   className="react-select"
@@ -237,6 +240,7 @@ const StandardCreateEdit = (props: any) => {
                     <IntlMessages id="menu.school" />
                   </Label>
                   <Select
+                    isClearable
                     placeholder={<IntlMessages id="forms.select" />}
                     {...register('schoolId', { required: true })}
                     className="react-select"

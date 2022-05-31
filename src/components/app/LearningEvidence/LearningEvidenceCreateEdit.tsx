@@ -20,7 +20,7 @@ const LearningEvidenceCreateEdit = (props: any) => {
   const [learning, setLearning] = useState(null);
 
   let [params] = useSearchParams();
-  const  learningId  = params.get('learningId');
+  const learningId = params.get('learningId');
 
   const methods = useForm({
     mode: 'onChange',
@@ -63,14 +63,14 @@ const LearningEvidenceCreateEdit = (props: any) => {
       register('schoolId', {
         required: true,
         value: props?.loginReducer?.schoolId,
-      });      
+      });
     }
     if (learningId && !props?.data?.id) {
       // set value when register is new and learning id
       register('learningId', {
         required: true,
         value: learningId,
-      });    
+      });
     }
   };
 
@@ -111,7 +111,7 @@ const LearningEvidenceCreateEdit = (props: any) => {
       {loading ? (
         <>
           <Colxx sm={12} className="d-flex justify-content-center">
-            <Loader/>
+            <Loader />
           </Colxx>
         </>
       ) : (
@@ -141,6 +141,7 @@ const LearningEvidenceCreateEdit = (props: any) => {
                     <IntlMessages id="menu.school" />
                   </Label>
                   <Select
+                    isClearable
                     placeholder={<IntlMessages id="forms.select" />}
                     {...register('schoolId', { required: true })}
                     className="react-select"

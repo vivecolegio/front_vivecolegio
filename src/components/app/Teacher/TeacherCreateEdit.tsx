@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ReactDatePicker from 'react-datepicker';
 import { useForm } from 'react-hook-form';
-import {Loader} from '../../common/Loader';
+import { Loader } from '../../common/Loader';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
@@ -138,7 +138,7 @@ const TeacherCreateEdit = (props: any) => {
     setBirtdate(null);
     setRole(null);
     setGender(null);
-    setDocumentType(null);  
+    setDocumentType(null);
     if (props?.loginReducer?.schoolId && !props?.data?.id) {
       // set value when register is new and sesion contains value
       register('schoolId', {
@@ -204,7 +204,7 @@ const TeacherCreateEdit = (props: any) => {
       {loading ? (
         <>
           <Colxx sm={12} className="d-flex justify-content-center">
-            <Loader/>
+            <Loader />
           </Colxx>
         </>
       ) : (
@@ -318,6 +318,7 @@ const TeacherCreateEdit = (props: any) => {
                   <IntlMessages id="forms.role" />
                 </Label>
                 <Select
+                  isClearable
                   placeholder={<IntlMessages id="forms.select" />}
                   className="react-select"
                   classNamePrefix="react-select"
@@ -335,6 +336,7 @@ const TeacherCreateEdit = (props: any) => {
                   <IntlMessages id="forms.gender" />
                 </Label>
                 <Select
+                  isClearable
                   placeholder={<IntlMessages id="forms.select" />}
                   className="react-select"
                   classNamePrefix="react-select"
@@ -352,6 +354,7 @@ const TeacherCreateEdit = (props: any) => {
                   <IntlMessages id="forms.documentType" />
                 </Label>
                 <Select
+                  isClearable
                   placeholder={<IntlMessages id="forms.select" />}
                   className="react-select"
                   classNamePrefix="react-select"
@@ -383,6 +386,7 @@ const TeacherCreateEdit = (props: any) => {
                     <IntlMessages id="menu.school" />
                   </Label>
                   <Select
+                    isClearable
                     placeholder={<IntlMessages id="forms.select" />}
                     {...register('schoolId', { required: true })}
                     className="react-select"
@@ -402,18 +406,19 @@ const TeacherCreateEdit = (props: any) => {
               <div className="form-group">
                 <Label>
                   <IntlMessages id="menu.campus" />
-                </Label>        
+                </Label>
                 <Select
+                  isClearable
                   placeholder={<IntlMessages id="forms.select" />}
-                  isMulti 
+                  isMulti
                   {...register('campusId', { required: true })}
                   className="react-select"
                   classNamePrefix="react-select"
                   options={campusList}
                   value={campus}
                   onChange={(selectedOption: any) => {
-                    setValue('campusId', selectedOption.map((c:any)=>{return c.key}));
-                    setCampus(selectedOption);                    
+                    setValue('campusId', selectedOption.map((c: any) => { return c.key }));
+                    setCampus(selectedOption);
                   }}
                 />
               </div>

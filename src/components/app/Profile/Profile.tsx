@@ -2,19 +2,26 @@ import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { Loader } from '../../common/Loader';
 import { connect } from 'react-redux';
-import { Badge, Card, CardBody, Input, InputGroup } from 'reactstrap';
+import { Badge, Button, Card, CardBody, FormGroup, Input, InputGroup, Label } from 'reactstrap';
 import BannerImg from '../../../assets/img/logos/banner.png';
 import ProfileImg from '../../../assets/img/profiles/empty.png';
 import IntlMessages from '../../../helpers/IntlMessages';
 import * as userActions from '../../../stores/actions/UserActions';
+import * as loginActions from '../../../stores/actions/LoginActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import SingleLightbox from '../../common/layout/pages/SingleLightbox';
+import { urlImages } from '../../../stores/graphql/index';
+import { useForm } from 'react-hook-form';
 
 const Profile = (props: any) => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
+  const [errors, setErrors] = useState(null);
 
-  // const methods = useFormContext();
+  const {
+    register,
+    getValues,
+  } = useForm();
 
   useEffect(() => {
     getUser();
@@ -30,8 +37,38 @@ const Profile = (props: any) => {
   const uploadFileImage = async (file: any) => {
     props.updateProfilePhotoUser(file, props?.loginReducer?.userId).then((resp: any) => {
       getUser();
+      me();
     });
   };
+
+  const updatePassword = async () => {
+    props.changePasswordUser(getValues().password, props?.loginReducer?.userId).then((resp: any) => {
+      getUser();
+    });
+  };
+
+  const validatePasswordsMatch = async (e: any) => {
+    const { password } = getValues();
+    if (e.target.value === password) {
+      setErrors(null);
+      return;
+    } else {
+      setErrors({ password_repeat: 'Las contraseñas no coinciden', password: 'Las contraseñas no coinciden' })
+    }
+  };
+
+  const me = async () => {
+    await props.me().then((dataResp: any) => { });
+  };
+
+  const { ref: passwordRef, ...passwordRest } = register('password', {
+    required: true,
+    value: props?.data?.id ? props?.data?.password : '',
+  });
+  const { ref: passwordRepeatRef, ...passwordRepeatRest } = register('password_repeat', {
+    required: true,
+    value: props?.data?.id ? props?.data?.password_repeat : '',
+  });
 
   return (
     <>
@@ -52,14 +89,14 @@ const Profile = (props: any) => {
               />
             </Card>
           </Colxx>
-          <Colxx xxs="12" lg="5" xl="5" className="col-left m-auto">
+          <Colxx xxs="12" lg="6" xl="6" className="col-left m-auto">
             <SingleLightbox
-              thumb={user?.profilePhoto || ProfileImg}
-              large={user?.profilePhoto || ProfileImg}
+              thumb={user?.profilePhoto ? urlImages + user?.profilePhoto : ProfileImg}
+              large={user?.profilePhoto ? urlImages + user?.profilePhoto : ProfileImg}
               className="img-thumbnail card-img social-profile-img"
             />
             <Card>
-              <CardBody>
+              <CardBody className='pb-0'>
                 <div className="text-center pt-4 mb-4 mt-4">
                   <p className="pt-2 mb-1 font-1-5rem">
                     <strong>
@@ -113,6 +150,54 @@ const Profile = (props: any) => {
                   </div>
                 </div>
               </CardBody>
+              <CardBody className='text-center pt-0'>
+                <div className="text-center pt-4 mb-4 mt-4">
+                  <p className="pt-2 mb-1 font-1-5rem">
+                    <strong>
+                      Cambiar contraseña
+                    </strong>
+                  </p>
+                </div>
+                <FormGroup className="form-group has-float-label">
+                  <Label>
+                    Contraseña
+                  </Label>
+                  <Input
+                    onInput={(e) => validatePasswordsMatch(e)}
+                    type="password"
+                    {...passwordRest}
+                    innerRef={passwordRef}
+                    className="form-control"
+                  />
+                  {errors?.password && (
+                    <div className="invalid-feedback d-block">{errors?.password}</div>
+                  )}
+                </FormGroup>
+                <FormGroup className="form-group has-float-label">
+                  <Label>
+                    Repetir contraseña
+                  </Label>
+                  <Input
+                    onInput={(e) => validatePasswordsMatch(e)}
+                    type="password"
+                    {...passwordRepeatRest}
+                    innerRef={passwordRepeatRef}
+                    className="form-control"
+                  />
+                  {errors?.password_repeat && (
+                    <div className="invalid-feedback d-block">{errors?.password_repeat}</div>
+                  )}
+                </FormGroup>
+                <Button
+                  color="primary"
+                  className={`mb-5 mt-5 btn-login btn-shadow`}
+                  size="lg"
+                  type="submit"
+                  disabled={errors}
+                  onClick={updatePassword}
+                > Guardar
+                </Button>
+              </CardBody>
             </Card>
           </Colxx>
         </>
@@ -121,7 +206,7 @@ const Profile = (props: any) => {
   );
 };
 
-const mapDispatchToProps = { ...userActions };
+const mapDispatchToProps = { ...userActions, ...loginActions };
 
 const mapStateToProps = ({ loginReducer }: any) => {
   return { loginReducer };

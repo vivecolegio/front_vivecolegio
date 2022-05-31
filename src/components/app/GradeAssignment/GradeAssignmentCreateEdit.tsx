@@ -166,6 +166,7 @@ const GradeAssignmentCreateEdit = (props: any) => {
                   <IntlMessages id="menu.asignature" />
                 </Label>
                 <Select
+                  isClearable
                   placeholder={<IntlMessages id="forms.select" />}
                   {...register('academicAsignatureId', { required: true })}
                   className="react-select"
@@ -184,6 +185,7 @@ const GradeAssignmentCreateEdit = (props: any) => {
                     <IntlMessages id="menu.school" />
                   </Label>
                   <Select
+                    isClearable
                     placeholder={<IntlMessages id="forms.select" />}
                     {...register('schoolId', { required: true })}
                     className="react-select"

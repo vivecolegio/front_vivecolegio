@@ -35,15 +35,15 @@ const ExperienceLearningRubricCriteriaCreateEdit = (props: any) => {
     cleanForm();
     getDropdowns(learningId);
     if (props?.data?.id) {
-      if (props?.data?.experienceLearningRubricCriteriaPerformanceLevel !== undefined && props?.data?.experienceLearningRubricCriteriaPerformanceLevel != null) {      
-        setCriteriaPerformances(props?.data?.experienceLearningRubricCriteriaPerformanceLevel.map((c:any)=>{
+      if (props?.data?.experienceLearningRubricCriteriaPerformanceLevel !== undefined && props?.data?.experienceLearningRubricCriteriaPerformanceLevel != null) {
+        setCriteriaPerformances(props?.data?.experienceLearningRubricCriteriaPerformanceLevel.map((c: any) => {
           return {
             performanceLevelId: c.performanceLevelId,
             criteria: c.criteria,
           }
         }));
       }
-      if (props?.data?.evidenceLearnig !== undefined && props?.data?.evidenceLearnig != null) {      
+      if (props?.data?.evidenceLearnig !== undefined && props?.data?.evidenceLearnig != null) {
         setEvidenceLearning({
           key: props?.data?.evidenceLearnig?.id,
           label: props?.data?.evidenceLearnig?.statement,
@@ -94,13 +94,13 @@ const ExperienceLearningRubricCriteriaCreateEdit = (props: any) => {
     let ind = criteriaPerformances.findIndex((c: any) => (c.performanceLevelId === id));
     //console.log(ind)
     if (ind !== -1) {
-      criteriaPerformances.splice(ind,1);
-    } 
+      criteriaPerformances.splice(ind, 1);
+    }
     criteriaPerformances.push({
       criteria: e?.target?.value,
       performanceLevelId: id,
     });
-    setCriteriaPerformances(criteriaPerformances);  
+    setCriteriaPerformances(criteriaPerformances);
     register('experienceLearningRubricCriteriaPerformanceLevel', {
       required: true,
       value: criteriaPerformances,
@@ -183,6 +183,7 @@ const ExperienceLearningRubricCriteriaCreateEdit = (props: any) => {
                   <IntlMessages id="menu.evidenceLearning" />
                 </Label>
                 <Select
+                  isClearable
                   placeholder={<IntlMessages id="forms.select" />}
                   {...register('evidenceLearningId', { required: true })}
                   className="react-select"
@@ -199,22 +200,22 @@ const ExperienceLearningRubricCriteriaCreateEdit = (props: any) => {
               <hr />
               {performanceLevels
                 ? props?.data?.id ?
-                criteriaPerformances.map((item: any, index: any) => {
-                  return (
-                    <div key={index} className="form-group">
-                      <span>{performanceLevels.find((p: any) =>(p.key === item?.performanceLevelId))?.label}</span>
-                      <Input
-                        defaultValue={item?.criteria}
-                        onInput={(e) => {
-                          return setCriteriaPerformance(e, item?.performanceLevelId);
-                        }}
-                        className="form-control"
-                      />
-                    </div>
-                  );
-                })
-                :
-                performanceLevels.map((item: any, index: any) => {
+                  criteriaPerformances.map((item: any, index: any) => {
+                    return (
+                      <div key={index} className="form-group">
+                        <span>{performanceLevels.find((p: any) => (p.key === item?.performanceLevelId))?.label}</span>
+                        <Input
+                          defaultValue={item?.criteria}
+                          onInput={(e) => {
+                            return setCriteriaPerformance(e, item?.performanceLevelId);
+                          }}
+                          className="form-control"
+                        />
+                      </div>
+                    );
+                  })
+                  :
+                  performanceLevels.map((item: any, index: any) => {
                     return (
                       <div key={index} className="form-group">
                         <span>{item.label}</span>
