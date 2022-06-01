@@ -10,6 +10,7 @@ import * as performanceLevelAction from '../../../../stores/actions/Academic/Per
 import { Colxx } from '../../../common/CustomBootstrap';
 import AddNewModal from '../../../common/Data/AddNewModal';
 import CreateEditAuditInformation from '../../../common/Data/CreateEditAuditInformation';
+import { useIntl } from 'react-intl';
 
 const AreaCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
@@ -21,6 +22,7 @@ const AreaCreateEdit = (props: any) => {
   const [type, setType] = useState(null);
   const [campusList, setCampusList] = useState(null);
   const [campus, setCampus] = useState(null);
+  const intl = useIntl();
 
   const methods = useForm({
     mode: 'onChange',
@@ -56,7 +58,7 @@ const AreaCreateEdit = (props: any) => {
       ) {
         setType({
           key: props?.data?.type,
-          label: props?.data?.type,
+          label: intl.messages["display."+props?.data?.type],
           value: props?.data?.type,
         });
       }
@@ -85,7 +87,7 @@ const AreaCreateEdit = (props: any) => {
   const getDropdowns = async () => {
     props.getPerformanceLevelTypes().then((data: any) => {
       setTypes(data.map((c: any) => {
-        return { label: c.name, value: c.name, key: c.name };
+        return { label: intl.messages["display."+c.name], value: c.name, key: c.name };
       }))
     });
     props.getDropdownsPerformanceLevel(props?.loginReducer?.schoolId).then((data: any) => {

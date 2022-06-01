@@ -16,8 +16,8 @@ const esMessages = {
   'user.login-title': 'Iniciar sesión',
   'user.register': 'Registro',
   'user.forgot-password': 'Se te olvidó tu contraseña',
-  'user.still-user': "Aún no tengo usuario.",
-  'user.request-user': "Solicitar usuario.",
+  'user.still-user': 'Aún no tengo usuario.',
+  'user.request-user': 'Solicitar usuario.',
   'user.email': 'Email',
   'user.password': 'Contraseña',
   'user.forgot-password-question': '¿Contraseña olvidada?',
@@ -65,7 +65,8 @@ const esMessages = {
   'info.info': 'Información',
   'message.success': '¡Proceso exitoso!',
   'message.error': 'Ha ocurrido un error en el proceso.',
-  'message.notPermissions': 'No cuentas con permisos para acceder al módulo, por favor contacte al administrador.',
+  'message.notPermissions':
+    'No cuentas con permisos para acceder al módulo, por favor contacte al administrador.',
   'message.guardiansFound': 'Acudientes encontrados, por favor seleccione uno.',
   'message.errorSesion': 'Error al inciar sesión, por favor intente de nuevo.',
 
@@ -98,7 +99,6 @@ const esMessages = {
   'pages.candidates': 'Candidatos',
   'pages.results': 'Resultados',
 
-
   'chat.messages': 'Mensajes',
   'chat.contacts': 'Contactos',
 
@@ -120,7 +120,6 @@ const esMessages = {
   'icons.symbols': 'Signos y simbolos',
   'icons.text': 'Globos de texto',
   'icons.time': 'Hora',
-
 
   /* New Options  */
   'menu.new': 'Nuevo',
@@ -259,6 +258,14 @@ const esMessages = {
   'forms.date': 'Fecha',
   'forms.criteria': 'Criterio',
   'forms.dateDelivery': 'Fecha de entrega',
+  'forms.category': 'Categoria',
+  'display.QUALITATIVE': 'Cualitativo',
+  'display.QUANTITATIVE': 'Cuantitativo',
+  'display.CAMPUS': 'Sede',
+  'display.SCHOOL': 'Colegio',
+  'display.AREA': 'Area',
+  'display.ASIGNATURE': 'Asignatura',
+  'display.GENERAL': 'General',
 };
 
 export default esMessages;

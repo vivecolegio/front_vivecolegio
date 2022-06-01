@@ -8,9 +8,11 @@ export const QUERY_GET_ALL_PERFORMANCE_LEVEL = gql`
         node {
           id
           name
+          type
           topScore
           minimumScore
           active
+          category
         }
       }
       totalCount

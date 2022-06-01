@@ -34,11 +34,21 @@ const DataListView = ({
           <div className="pl-2 d-flex flex-grow-1 min-width-zero">
             <div className="p-3 card-body align-self-center d-flex flex-column flex-lg-row justify-content-between min-width-zero align-items-lg-center">
               {columns.filter((c:any)=>{return (c.label)}).map((column: any) => {
-                return (
-                  <p key={column.column} style={{ 'width':column.width }} className="mb-1 text-muted text-small">
-                    {item[`${column.column}`]}
-                  </p>
-                );
+                  let classNameProps ="";
+                  if(column?.textCenter) {
+                    classNameProps+= "text-center";
+                  }
+                  if(classNameProps.length >0){
+                    classNameProps+=" ";
+                  }
+                  classNameProps+= column?.badge ? `mb-1 text-small badge badge-${column.color ? column.color : "primary"} badge-pill` :`mb-1 text-muted text-small`
+                  return (
+                    <div key={column.column} style={{ 'width':column.width }} className="mb-1">
+                      <p key={column.column} className={classNameProps}>
+                      { item[`${column.column}`] != null && column.translate ?<IntlMessages id={"display."+item[`${column.column}`]+""} />  : item[`${column.column}`]} 
+                      </p>
+                    </div>
+                  );
               })}
               <p className={"mb-0 flex-gap text-muted text-small"} style={{ 'width':columns[columns.length - 1].width }}>
                 {withChildren === true ? (

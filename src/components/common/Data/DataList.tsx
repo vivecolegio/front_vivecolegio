@@ -153,7 +153,6 @@ const DataList = (props: any) => {
     if (!selectedItems.includes(clickedProductId)) {
       setSelectedItems([clickedProductId]);
     }
-
     return true;
   };
 

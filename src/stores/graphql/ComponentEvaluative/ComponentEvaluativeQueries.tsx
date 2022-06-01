@@ -7,9 +7,10 @@ export const QUERY_GET_ALL_COMPONENT_EVALUATIVE = gql`
         cursor
         node {
           id
-          name  
-          weight       
-          active          
+          name
+          weight
+          active
+          type
         }
       }
       totalCount
@@ -21,9 +22,8 @@ export const QUERY_GET_COMPONENT_EVALUATIVE = gql`
   query getEvaluativeComponent($id: String!) {
     data: getEvaluativeComponent(id: $id) {
       id
-      name      
+      name
       weight
-      default
       type
       academicAreasId
       academicAreas {
@@ -40,7 +40,7 @@ export const QUERY_GET_COMPONENT_EVALUATIVE = gql`
       school {
         id
         name
-      }      
+      }
       createdAt
       updatedAt
       createdByUser {
@@ -54,7 +54,7 @@ export const QUERY_GET_COMPONENT_EVALUATIVE = gql`
 `;
 
 export const QUERY_GET_DROPDOWNS_COMPONENT_EVALUATIVE = gql`
-  query getDropdownsComponentEvaluative ($schoolId: String!) {
+  query getDropdownsComponentEvaluative($schoolId: String!) {
     dataSchools: getAllSchool(allData: false, orderCreated: false) {
       edges {
         node {
@@ -63,7 +63,11 @@ export const QUERY_GET_DROPDOWNS_COMPONENT_EVALUATIVE = gql`
         }
       }
     }
-    dataAsignatures: getAllAcademicAsignature(allData: false, orderCreated: false, schoolId: $schoolId) {
+    dataAsignatures: getAllAcademicAsignature(
+      allData: false
+      orderCreated: false
+      schoolId: $schoolId
+    ) {
       edges {
         node {
           id
@@ -83,12 +87,12 @@ export const QUERY_GET_DROPDOWNS_COMPONENT_EVALUATIVE = gql`
 `;
 
 export const QUERY_GET_EVALUATIVE_COMPONENT_TYPE = gql`
-    query getAllEvaluativeComponentType {
-      __type(name: "EvaluativeComponentType") {
+  query getAllEvaluativeComponentType {
+    __type(name: "EvaluativeComponentType") {
+      name
+      enumValues {
         name
-        enumValues {
-          name
-        }
       }
     }
+  }
 `;

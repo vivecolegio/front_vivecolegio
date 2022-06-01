@@ -78,6 +78,8 @@ import { NotificationContainer } from '../components/common/Notifications';
 import Home from '../components/Home';
 import { isMultiColorActive } from '../constants/defaultValues';
 import AppLocale from '../lang';
+import jwt_decode from "jwt-decode";
+import { useIdleTimer } from 'react-idle-timer';
 
 const App = (props: any) => {
   const { locale } = props.translateReducer;
@@ -100,18 +102,55 @@ const App = (props: any) => {
     const token = localStorage.getItem('token');
     if (props?.loginReducer?.userId?.length > 0 && token != null) {
       setPermissions(true);
-      // const dateExp = props?.loginReducer?.payload?.exp;
-      // const date1 = new Date(dateExp * 1000);
-      // const date = new Date();
-      // let diff = (date1.getTime() - date.getTime()) / 1000;
-      // diff /= 60;
-      // if (diff < 0) {
-      //   handleLogout();
-      // }
+      const now = Math.floor(Date.now() / 1000);
+      const isExpired = jwt_decode(token) as any;
+      if (isExpired?.exp <= now) {
+        handleLogout();
+      }
     } else {
       setPermissions(false);
     }
   }, [emptyCacheStorage, isLatestVersion, props.loginReducer]);
+
+  const handleOnIdle = () => {
+    const token = localStorage.getItem('token');
+    if (token != null && token !== undefined) {
+      const now = Math.floor(Date.now() / 1000);
+      const isExpired = jwt_decode(token) as any;
+      if (isExpired?.exp <= now) {
+        handleLogout();
+      }
+    }
+  };
+
+  const handleOnActive = () => {
+    const token = localStorage.getItem('token');
+    if (token != null && token !== undefined) {
+      const now = Math.floor(Date.now() / 1000);
+      const isExpired = jwt_decode(token) as any;
+      if (isExpired?.exp <= now) {
+        handleLogout();
+      }
+    }
+  };
+
+  const handleOnAction = () => {
+    const token = localStorage.getItem('token');
+    if (token != null && token !== undefined) {
+      const now = Math.floor(Date.now() / 1000);
+      const isExpired = jwt_decode(token) as any;
+      if (isExpired?.exp <= now) {
+        handleLogout();
+      }
+    }
+  };
+
+  const { getRemainingTime, getLastActiveTime } = useIdleTimer({
+    timeout: 5000,
+    onIdle: handleOnIdle,
+    onActive: handleOnActive,
+    onAction: handleOnAction,
+  });
 
   return (
     <div className="h-100">
