@@ -85,11 +85,6 @@ const AreaCreateEdit = (props: any) => {
   };
 
   const getDropdowns = async () => {
-    props.getDays().then((data: any) => {
-      setTypes(data.map((c: any) => {
-        return { label: intl.messages["display." + c.name], value: c.name, key: c.name };
-      }))
-    });
     props.getDropdownsPerformanceLevel(props?.loginReducer?.schoolId).then((data: any) => {
       setSchoolList(
         data.dataSchools.edges.map((c: any) => {

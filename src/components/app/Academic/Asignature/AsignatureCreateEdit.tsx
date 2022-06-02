@@ -191,6 +191,7 @@ const AsignatureCreateEdit = (props: any) => {
                   <IntlMessages id="menu.asignature" />
                 </Label>
                 <Select
+                  isClearable
                   placeholder={<IntlMessages id="forms.select" />}
                   {...register('generalAcademicAsignatureId', { required: true })}
                   className="react-select"
