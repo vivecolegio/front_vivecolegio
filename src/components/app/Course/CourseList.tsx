@@ -23,13 +23,21 @@ const CourseList = (props: any) => {
   const [data, setData] = useState(null);
   useEffect(() => {
     props.getListAllCourse(props?.loginReducer?.campusId, academicGradeId ? academicGradeId : '', props?.loginReducer?.schoolId).then((listData: any) => {
-      setDataTable(listData);
+      setDataTable(listData.map((c: any) => {
+        c.node.teacher_format = c.node.teacher ? c?.node?.teacher?.user?.name + c?.node?.teacher?.user?.lastName : '';
+        c.node.academicDay_format = c.node.academicDay ? c.node.academicDay.name : '';
+        return c;
+      }));
     });
   }, []);
 
   const getDataTable = async () => {
     props.getListAllCourse(props?.loginReducer?.campusId, academicGradeId ? academicGradeId : '', props?.loginReducer?.schoolId).then((listData: any) => {
-      setDataTable(listData);
+      setDataTable(listData.map((c: any) => {
+        c.node.teacher_format = c.node.teacher ? c?.node?.teacher?.user?.name + c?.node?.teacher?.user?.lastName : '';
+        c.node.academicDay_format = c.node.academicDay ? c.node.academicDay.name : '';
+        return c;
+      }));
     });
   };
 

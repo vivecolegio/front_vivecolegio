@@ -102,6 +102,10 @@ const CourseCreateEdit = (props: any) => {
   };
 
   const getTeacherAndDays = async (campusId: string) => {
+    setAcademicDay(null);
+    setValue('teacherId', null);
+    setTeacher(null);
+    setValue('academicDayId', null);
     if (campusId) {
       props.getListAllTeacher(campusId, props?.loginReducer?.schoolId).then((data: any) => {
         setTeachers(
@@ -110,7 +114,7 @@ const CourseCreateEdit = (props: any) => {
           }),
         );
       });
-      props.getListAllAcademicDay(campusId, props?.loginReducer?.schoolId).then((data: any) => {
+      props.getListAllAcademicDay(campusId).then((data: any) => {
         setAcademicDays(
           data.map((c: any) => {
             return { label: c.node.name, value: c.node.id, key: c.node.id };

@@ -8,6 +8,17 @@ export const QUERY_GET_ALL_COURSE = gql`
         node {
           id
           name
+          teacher {
+            user {
+            id
+            name
+            lastName
+            }
+          }
+          academicDay{
+            id
+            name
+          }
           order           
           active          
         }
