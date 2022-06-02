@@ -102,20 +102,22 @@ const CourseCreateEdit = (props: any) => {
   };
 
   const getTeacherAndDays = async (campusId: string) => {
-    props.getListAllTeacher(campusId, props?.loginReducer?.schoolId).then((data: any) => {
-      setTeachers(
-        data.map((c: any) => {
-          return { label: `${c?.node?.user.name} ${c?.node?.user.lastName}`, value: c.node.id, key: c.node.id };
-        }),
-      );
-    });
-    props.getListAllAcademicDay(campusId, props?.loginReducer?.schoolId).then((data: any) => {
-      setAcademicDays(
-        data.map((c: any) => {
-          return { label: c.node.name, value: c.node.id, key: c.node.id };
-        }),
-      );
-    });
+    if (campusId) {
+      props.getListAllTeacher(campusId, props?.loginReducer?.schoolId).then((data: any) => {
+        setTeachers(
+          data.map((c: any) => {
+            return { label: `${c?.node?.user.name} ${c?.node?.user.lastName}`, value: c.node.id, key: c.node.id };
+          }),
+        );
+      });
+      props.getListAllAcademicDay(campusId, props?.loginReducer?.schoolId).then((data: any) => {
+        setAcademicDays(
+          data.map((c: any) => {
+            return { label: c.node.name, value: c.node.id, key: c.node.id };
+          }),
+        );
+      });
+    }
   };
 
   const { ref: nameRef, ...nameRest } = register('name', {
