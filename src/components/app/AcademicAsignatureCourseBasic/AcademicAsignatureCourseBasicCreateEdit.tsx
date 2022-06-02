@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
 import Select from 'react-select';
 import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
 import IntlMessages from '../../../helpers/IntlMessages';
 import * as academicIndicatorActions from '../../../stores/actions/AcademicAsignatureCourseActions';
+import * as courseActions from '../../../stores/actions/CourseActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import AddNewModal from '../../common/Data/AddNewModal';
 import CreateEditAuditInformation from '../../common/Data/CreateEditAuditInformation';
@@ -28,11 +30,18 @@ const AcademicAsignatureCourseBasicCreateEdit = (props: any) => {
     reValidateMode: 'onChange',
   });
 
+  let [params] = useSearchParams();
+  const courseId = params.get('courseId');
+  let campusId: any = null;
+
   const { handleSubmit, control, register, reset, setValue, getValues } = methods;
 
   useEffect(() => {
     cleanForm();
-    getDropdowns();
+    props.dataCourse(courseId).then((data: any) => {
+      campusId = data?.data?.campus?.id;
+      getDropdowns();
+    });
     if (props?.data?.id) {
       if (props?.data?.campus !== undefined && props?.data?.campus != null) {
         setCampus({
@@ -82,11 +91,18 @@ const AcademicAsignatureCourseBasicCreateEdit = (props: any) => {
         value: props?.loginReducer?.campusId,
       });
     }
+    if (courseId) {
+      // set value when register is new and sesion contains value
+      register('courseId', {
+        required: true,
+        value: courseId,
+      });
+    }
   };
 
   const getDropdowns = async () => {
     //console.log(props?.loginReducer?.campusId)
-    props.getDropdownsAcademicAsignatureCourse(props?.loginReducer?.schoolId, props?.loginReducer?.campusId).then((data: any) => {
+    props.getDropdownsAcademicAsignatureCourse(props?.loginReducer?.schoolId, campusId).then((data: any) => {
       //console.log(data);
       setCampusList(
         data.dataCampus.edges.map((c: any) => {
@@ -111,15 +127,6 @@ const AcademicAsignatureCourseBasicCreateEdit = (props: any) => {
     });
   };
 
-  const getCourses = async (academicGradeId: any) => {
-    props.getCoursesOfGrade(academicGradeId, props?.loginReducer?.campusId).then((data: any) => {
-      setCoursesList(
-        data.dataCourses.edges.map((c: any) => {
-          return { label: c.node.name, value: c.node.id, key: c.node.id };
-        }),
-      );
-    });
-  };
 
   const { ref: weightRef, ...weightRest } = register('weight', {
     required: true,
@@ -175,7 +182,7 @@ const AcademicAsignatureCourseBasicCreateEdit = (props: any) => {
             <ModalBody>
               <div className="form-group">
                 <Label>
-                  <IntlMessages id="forms.weight" />
+                  <IntlMessages id="forms.hourlyIntensity" />
                 </Label>
                 <Input
                   {...weightRest}
@@ -198,41 +205,6 @@ const AcademicAsignatureCourseBasicCreateEdit = (props: any) => {
                   onChange={(selectedOption) => {
                     setValue('academicAsignatureId', selectedOption?.key);
                     setAsignature(selectedOption);
-                  }}
-                />
-              </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="menu.grade" />
-                </Label>
-                <Select
-                  isClearable
-                  placeholder={<IntlMessages id="forms.select" />}
-                  className="react-select"
-                  classNamePrefix="react-select"
-                  options={gradesList}
-                  value={grade}
-                  onChange={(selectedOption) => {
-                    setGrade(selectedOption);
-                    getCourses(selectedOption?.key);
-                  }}
-                />
-              </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="menu.course" />
-                </Label>
-                <Select
-                  isClearable
-                  placeholder={<IntlMessages id="forms.select" />}
-                  {...register('courseId', { required: true })}
-                  className="react-select"
-                  classNamePrefix="react-select"
-                  options={coursesList}
-                  value={course}
-                  onChange={(selectedOption) => {
-                    setValue('courseId', selectedOption?.key);
-                    setCourse(selectedOption);
                   }}
                 />
               </div>
@@ -293,6 +265,7 @@ const AcademicAsignatureCourseBasicCreateEdit = (props: any) => {
 
 const mapDispatchToProps = {
   ...academicIndicatorActions,
+  ...courseActions
 };
 
 const mapStateToProps = ({ loginReducer }: any) => {
