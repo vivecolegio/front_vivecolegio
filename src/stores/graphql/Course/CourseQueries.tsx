@@ -8,6 +8,10 @@ export const QUERY_GET_ALL_COURSE = gql`
         node {
           id
           name
+          campus {
+            id
+            name
+          }
           teacher {
             user {
             id

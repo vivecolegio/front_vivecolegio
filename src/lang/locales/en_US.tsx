@@ -151,6 +151,7 @@ const enMessages = {
   'menu.coordinatorsCampus': 'Campus Coordinator',
   'menu.teachers': 'Teachers',
   'menu.teacher': 'Teacher',
+  'menu.teacherTitular': 'Titular',
   'menu.guardians': 'Guardians',
   'menu.institutions': 'Institutions',
   'menu.school': 'School',

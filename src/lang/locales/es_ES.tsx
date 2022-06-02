@@ -147,6 +147,7 @@ const esMessages = {
   'menu.coordinatorsCampus': 'Coordinador Sede',
   'menu.teachers': 'Docentes',
   'menu.teacher': 'Docente',
+  'menu.teacherTitular': 'Titular',
   'menu.guardians': 'Acudientes',
   'menu.institutions': 'Instituciones',
   'menu.school': 'Colegio',

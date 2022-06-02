@@ -26,6 +26,7 @@ const CourseList = (props: any) => {
       setDataTable(listData.map((c: any) => {
         c.node.teacher_format = c.node.teacher ? c?.node?.teacher?.user?.name + c?.node?.teacher?.user?.lastName : '';
         c.node.academicDay_format = c.node.academicDay ? c.node.academicDay.name : '';
+        c.node.campus_format = c.node.campus ? c.node.campus.name : '';
         return c;
       }));
     });
@@ -36,6 +37,7 @@ const CourseList = (props: any) => {
       setDataTable(listData.map((c: any) => {
         c.node.teacher_format = c.node.teacher ? c?.node?.teacher?.user?.name + c?.node?.teacher?.user?.lastName : '';
         c.node.academicDay_format = c.node.academicDay ? c.node.academicDay.name : '';
+        c.node.campus_format = c.node.campus ? c.node.campus.name : '';
         return c;
       }));
     });
