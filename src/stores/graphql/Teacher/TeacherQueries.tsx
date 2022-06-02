@@ -26,6 +26,32 @@ export const QUERY_GET_ALL_TEACHER = gql`
   }
 `;
 
+export const QUERY_GET_ALL_TEACHER_ONLY_SCHOOL = gql`
+  query getAllTeacher($schoolId: String!) {
+    data: getAllTeacher(orderCreated: true, allData: true, schoolId: [$schoolId]) {
+      edges {
+        cursor
+        node {
+          id
+          active         
+          school  {
+            id
+            name
+          }                       
+          user {
+            id
+            name
+            lastName
+            email
+            phone
+          }
+        }
+      }
+      totalCount
+    }
+  }
+`;
+
 export const QUERY_GET_ALL_TEACHER_ACTIVE = gql`
   query getAllTeacher($campusId: String!,$schoolId: String!) {
     data: getAllTeacher(orderCreated: true, allData: false, campusId: [$campusId], schoolId: [$schoolId]) {

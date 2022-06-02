@@ -1,7 +1,7 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
 import { MUTATION_CHANGE_ACTIVE_TEACHER, MUTATION_CREATE_TEACHER, MUTATION_DELETE_TEACHER, MUTATION_UPDATE_TEACHER } from '../graphql/Teacher/TeacherMutations';
-import { QUERY_GET_ALL_TEACHER, QUERY_GET_ALL_TEACHER_ACTIVE, QUERY_GET_DROPDOWNS_TEACHER, QUERY_GET_TEACHER } from '../graphql/Teacher/TeacherQueries';
+import { QUERY_GET_ALL_TEACHER, QUERY_GET_ALL_TEACHER_ACTIVE, QUERY_GET_ALL_TEACHER_ONLY_SCHOOL, QUERY_GET_DROPDOWNS_TEACHER, QUERY_GET_TEACHER } from '../graphql/Teacher/TeacherQueries';
 
 
 export const getListAllTeacher = (campusId:string ,schoolId:string) => {
@@ -11,7 +11,7 @@ export const getListAllTeacher = (campusId:string ,schoolId:string) => {
       let listData = {};
       await client
         .query({
-          query: QUERY_GET_ALL_TEACHER,
+          query: c == null ? QUERY_GET_ALL_TEACHER_ONLY_SCHOOL : QUERY_GET_ALL_TEACHER,
           variables:{
             c,
             schoolId
@@ -27,6 +27,7 @@ export const getListAllTeacher = (campusId:string ,schoolId:string) => {
     }
   };
 };
+
 
 export const getListAllTeacherActives = (campusId:string ,schoolId:string) => {
   return async (dispatch: any) => {
