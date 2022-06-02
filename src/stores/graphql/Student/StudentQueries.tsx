@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
 export const QUERY_GET_ALL_STUDENT = gql`
-  query getAllStudent($campusId: String!,$schoolId: String!) {
+  query getAllStudent($campusId: String,$schoolId: String!) {
     data: getAllStudent(orderCreated: true, allData: true, campusId: $campusId, schoolId: $schoolId) {
       edges {
         cursor
