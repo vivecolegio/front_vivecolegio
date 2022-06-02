@@ -107,14 +107,14 @@ const CourseCreateEdit = (props: any) => {
     setTeacher(null);
     setValue('academicDayId', null);
     if (campusId) {
-      props.getListAllTeacher(campusId, props?.loginReducer?.schoolId).then((data: any) => {
+      props.getListAllTeacherActives(campusId, props?.loginReducer?.schoolId).then((data: any) => {
         setTeachers(
           data.map((c: any) => {
             return { label: `${c?.node?.user.name} ${c?.node?.user.lastName}`, value: c.node.id, key: c.node.id };
           }),
         );
       });
-      props.getListAllAcademicDay(campusId).then((data: any) => {
+      props.getListAllAcademicDayActives(campusId).then((data: any) => {
         setAcademicDays(
           data.map((c: any) => {
             return { label: c.node.name, value: c.node.id, key: c.node.id };

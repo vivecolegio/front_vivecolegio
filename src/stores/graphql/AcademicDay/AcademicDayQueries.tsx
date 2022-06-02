@@ -21,6 +21,27 @@ export const QUERY_GET_ALL_ACADEMIC_DAY = gql`
   }
 `;
 
+export const QUERY_GET_ALL_ACADEMIC_DAY_ACTIVES = gql`
+  query getAllAcademicDay($campusId: String!, $schoolId: String) {
+    data: getAllAcademicDay(orderCreated: true, allData: false, campusId: $campusId, schoolId: $schoolId) {
+      edges {
+        cursor
+        node {
+          id
+          active         
+          day
+          name  
+          campus {
+            id
+            name
+          }     
+        }
+      }
+      totalCount
+    }
+  }
+`;
+
 export const QUERY_GET_ACADEMIC_DAY = gql`
   query getAcademicDay($id: String!) {
     data: getAcademicDay(id: $id) {
