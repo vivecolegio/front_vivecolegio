@@ -79,9 +79,9 @@ const StudentCreateEdit = (props: any) => {
       }
       if (props?.data?.campus !== undefined && props?.data?.campus != null) {
         setCampus({
-          key: props?.data?.campus.id,
-          label: props?.data?.campus.name,
-          value: props?.data?.campus.id,
+          key: props?.data?.campus[0]?.id,
+          label: props?.data?.campus[0]?.name,
+          value: props?.data?.campus[0]?.id,
         });
       }
       if (props?.data?.academicGrade !== undefined && props?.data?.academicGrade != null) {

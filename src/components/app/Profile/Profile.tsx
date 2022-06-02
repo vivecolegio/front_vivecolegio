@@ -116,7 +116,7 @@ const Profile = (props: any) => {
                     onChange={(e) => uploadFileImage(e.target.files[0])}
                   />
                 </InputGroup>
-                <hr />
+                {/* <hr />
                 <div className="row mt-4">
                   <div className="col-md-6 text-right">
                     <p className="text-muted text-small mb-2 d-flex align-items-center justify-content-end">
@@ -148,7 +148,7 @@ const Profile = (props: any) => {
                       {user ? moment(user.birthdate).format('YYYY-MM-DD') : ''}
                     </p>
                   </div>
-                </div>
+                </div> */}
               </CardBody>
               <CardBody className='text-center pt-0'>
                 <div className="text-center pt-4 mb-4 mt-4">
