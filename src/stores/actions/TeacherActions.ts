@@ -5,6 +5,7 @@ import { QUERY_GET_ALL_TEACHER, QUERY_GET_ALL_TEACHER_ACTIVE, QUERY_GET_DROPDOWN
 
 
 export const getListAllTeacher = (campusId:string ,schoolId:string) => {
+  let c = campusId ? campusId : null;
   return async (dispatch: any) => {
     try {
       let listData = {};
@@ -12,7 +13,7 @@ export const getListAllTeacher = (campusId:string ,schoolId:string) => {
         .query({
           query: QUERY_GET_ALL_TEACHER,
           variables:{
-            campusId,
+            c,
             schoolId
           }
         })
