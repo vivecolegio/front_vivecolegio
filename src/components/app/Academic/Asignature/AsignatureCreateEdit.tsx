@@ -48,7 +48,10 @@ const AsignatureCreateEdit = (props: any) => {
           value: props?.data?.school?.id,
         });
       }
-      if (props?.data?.generalAcademicAsignature !== undefined && props?.data?.generalAcademicAsignature != null) {
+      if (
+        props?.data?.generalAcademicAsignature !== undefined &&
+        props?.data?.generalAcademicAsignature != null
+      ) {
         setGeneralAcademicAsignature({
           key: props?.data?.generalAcademicAsignature?.id,
           label: props?.data?.generalAcademicAsignature?.name,
@@ -181,6 +184,23 @@ const AsignatureCreateEdit = (props: any) => {
                   Min. <IntlMessages id="forms.weight" />
                 </Label>
                 <Input {...minWeightRest} innerRef={minWeightRef} className="form-control" />
+              </div>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="menu.asignature" />
+                </Label>
+                <Select
+                  placeholder={<IntlMessages id="forms.select" />}
+                  {...register('generalAcademicAsignatureId', { required: true })}
+                  className="react-select"
+                  classNamePrefix="react-select"
+                  options={generalAcademicAsignaturesList}
+                  value={generalAcademicAsignature}
+                  onChange={(selectedOption) => {
+                    setValue('generalAcademicAsignatureId', selectedOption?.key);
+                    setGeneralAcademicAsignature(selectedOption);
+                  }}
+                />
               </div>
               {!props?.loginReducer?.schoolId ? (
                 <div className="form-group">
