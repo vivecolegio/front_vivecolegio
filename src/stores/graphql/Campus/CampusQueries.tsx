@@ -8,6 +8,8 @@ export const QUERY_GET_ALL_CAMPUS = gql`
         node {
           id
           name
+          consecutive
+          daneCodeCampus
           active          
         }
       }
@@ -22,6 +24,8 @@ export const QUERY_GET_CAMPUS = gql`
       id
       name
       version
+      consecutive
+      daneCodeCampus
       schoolId
       school {
         id 

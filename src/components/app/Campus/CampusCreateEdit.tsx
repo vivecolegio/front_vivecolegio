@@ -63,6 +63,14 @@ const CampusCreateEdit = (props: any) => {
     required: true,
     value: props?.data?.id ? props?.data?.name : '',
   });
+  const { ref: daneCodeCampusRef, ...daneCodeCampusRest } = register('daneCodeCampus', {
+    required: true,
+    value: props?.data?.id ? props?.data?.daneCodeCampus : '',
+  });
+  const { ref: consecutiveRef, ...consecutiveRest } = register('consecutive', {
+    required: true,
+    value: props?.data?.id ? props?.data?.consecutive : '',
+  });
   register('schoolId', {
     required: true,
     value: props?.data?.id ? props?.data?.schoolId : '',
@@ -104,6 +112,18 @@ const CampusCreateEdit = (props: any) => {
                   <IntlMessages id="forms.name" />
                 </Label>
                 <Input {...nameRest} innerRef={nameRef} className="form-control" />
+              </div>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="forms.daneCode" />
+                </Label>
+                <Input {...daneCodeCampusRest} innerRef={daneCodeCampusRef} className="form-control" />
+              </div>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="forms.consecutive" />
+                </Label>
+                <Input {...consecutiveRest} innerRef={consecutiveRef} className="form-control" />
               </div>
               {!props?.loginReducer?.schoolId ? (
                 <div className="form-group">

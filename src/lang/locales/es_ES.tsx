@@ -220,6 +220,7 @@ const esMessages = {
   'forms.type': 'Tipo',
   'forms.subtype': 'Subtipo',
   'forms.daneCode': 'Código DANE',
+  'forms.consecutive': 'Consecutivo',
   'forms.user': 'Usuario',
   'forms.icon': 'Icono',
   'forms.icons': 'Iconos',

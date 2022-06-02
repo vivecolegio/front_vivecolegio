@@ -221,6 +221,7 @@ const enMessages = {
   'forms.type': 'Type',
   'forms.subtype': 'Subtype',
   'forms.daneCode': 'DANE Code',
+  'forms.consecutive': 'Consecutive',
   'forms.user': 'User',
   'forms.icon': 'Icon',
   'forms.icons': 'Icons',
