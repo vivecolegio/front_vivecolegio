@@ -163,7 +163,7 @@ const AcademicHourCreateEdit = (props: any) => {
                   }}
                 />
               </div>
-              {!props?.loginReducer?.campusId ? (
+              {/* {!props?.loginReducer?.campusId ? (
                 <div className="form-group">
                   <Label>
                     <IntlMessages id="menu.campus" />
@@ -184,7 +184,7 @@ const AcademicHourCreateEdit = (props: any) => {
                 </div>
               ) : (
                 ''
-              )}
+              )} */}
             </ModalBody>
             {props?.data?.id ? (
               <ModalFooter className="p-3">

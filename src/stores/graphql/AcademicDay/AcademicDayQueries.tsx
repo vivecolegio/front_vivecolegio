@@ -9,7 +9,11 @@ export const QUERY_GET_ALL_ACADEMIC_DAY = gql`
           id
           active         
           day
-          name       
+          name  
+          campus {
+            id
+            name
+          }     
         }
       }
       totalCount
@@ -52,4 +56,15 @@ export const QUERY_GET_DROPDOWNS_ACADEMIC_DAY = gql`
       }
     }
   }
+`;
+
+export const QUERY_GET_DAYS = gql`
+    query getAllDay {
+      __type(name: "Day") {
+        name
+        enumValues {
+          name
+        }
+      }
+    }
 `;

@@ -58,7 +58,7 @@ const AreaCreateEdit = (props: any) => {
       ) {
         setType({
           key: props?.data?.type,
-          label: intl.messages["display."+props?.data?.type],
+          label: intl.messages["display." + props?.data?.type],
           value: props?.data?.type,
         });
       }
@@ -85,9 +85,9 @@ const AreaCreateEdit = (props: any) => {
   };
 
   const getDropdowns = async () => {
-    props.getPerformanceLevelTypes().then((data: any) => {
+    props.getDays().then((data: any) => {
       setTypes(data.map((c: any) => {
-        return { label: intl.messages["display."+c.name], value: c.name, key: c.name };
+        return { label: intl.messages["display." + c.name], value: c.name, key: c.name };
       }))
     });
     props.getDropdownsPerformanceLevel(props?.loginReducer?.schoolId).then((data: any) => {

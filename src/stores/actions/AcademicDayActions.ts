@@ -1,7 +1,7 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
 import { MUTATION_CHANGE_ACTIVE_ACADEMIC_DAY, MUTATION_CREATE_ACADEMIC_DAY, MUTATION_DELETE_ACADEMIC_DAY, MUTATION_UPDATE_ACADEMIC_DAY } from '../graphql/AcademicDay/AcademicDayMutations';
-import { QUERY_GET_ALL_ACADEMIC_DAY, QUERY_GET_ACADEMIC_DAY, QUERY_GET_DROPDOWNS_ACADEMIC_DAY } from '../graphql/AcademicDay/AcademicDayQueries';
+import { QUERY_GET_ALL_ACADEMIC_DAY, QUERY_GET_ACADEMIC_DAY, QUERY_GET_DROPDOWNS_ACADEMIC_DAY, QUERY_GET_DAYS } from '../graphql/AcademicDay/AcademicDayQueries';
 
 
 export const getListAllAcademicDay = (campusId:string, schoolId: string) => {
@@ -199,6 +199,25 @@ export const getDropdownsAcademicDay = (schoolId:string) => {
         })
         .then((result: any) => {
           listData = result.data;
+        });
+      return listData;
+    } catch (error) {
+      createNotification('error', 'error', '');
+      return error;
+    }
+  };
+};
+
+export const getDays = () => {
+  return async (dispatch: any) => {
+    try {
+      let listData = {};
+      await client
+        .query({
+          query: QUERY_GET_DAYS,
+        })
+        .then((result: any) => {
+          listData = result.data.__type.enumValues;
         });
       return listData;
     } catch (error) {

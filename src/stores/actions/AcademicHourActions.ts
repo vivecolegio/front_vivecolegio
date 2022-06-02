@@ -5,6 +5,7 @@ import { QUERY_GET_ALL_ACADEMIC_HOUR, QUERY_GET_ACADEMIC_HOUR, QUERY_GET_DROPDOW
 
 
 export const getListAllAcademicHour = (campusId:string, academicDayId: string) => {
+  let c = campusId ? campusId : null;
   return async (dispatch: any) => {
     try {
       let listData = {};
@@ -12,7 +13,7 @@ export const getListAllAcademicHour = (campusId:string, academicDayId: string) =
         .query({
           query: QUERY_GET_ALL_ACADEMIC_HOUR,
           variables:{
-            campusId,
+            c,
             academicDayId,
           },
         })

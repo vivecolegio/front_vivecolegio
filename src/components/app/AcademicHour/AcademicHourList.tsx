@@ -27,7 +27,7 @@ const AcademicHourList = (props: any) => {
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllAcademicHour(props?.loginReducer?.campusId, props?.loginReducer?.schoolId, academicDayId).then((listData: any) => {
+    props.getListAllAcademicHour(props?.loginReducer?.campusId, academicDayId).then((listData: any) => {
       setDataTable(listData);
     });
   };

@@ -269,6 +269,13 @@ const esMessages = {
   'display.AREA': 'Area',
   'display.ASIGNATURE': 'Asignatura',
   'display.GENERAL': 'General',
+  'display.MONDAY': 'Lunes',
+  'display.TUESDAY': 'Martes',
+  'display.WEDNESDAY': 'Miércoles',
+  'display.THURSDAY': 'Jueves',
+  'display.FRIDAY': 'Viernes',
+  'display.SATURDAY': 'Sábado',
+  'display.SUNDAY': 'Domingo',
 };
 
 export default esMessages;

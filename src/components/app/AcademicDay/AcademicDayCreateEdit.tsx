@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
@@ -15,15 +16,8 @@ const AcademicDayCreateEdit = (props: any) => {
   const [campusList, setCampusList] = useState(null);
   const [campus, setCampus] = useState(null);
   const [day, setDay] = useState(null);
-  const [days, setDays] = useState([
-    { label: 'LUNES', key: 'MONDAY', value: 'MONDAY' },
-    { label: 'MARTES', key: 'TUESDAY', value: 'TUESDAY' },
-    { label: 'MIERCOLES', key: 'WEDNESDAY', value: 'WEDNESDAY' },
-    { label: 'JUEVES', key: 'THURSDAY', value: 'THURSDAY' },
-    { label: 'VIERNES', key: 'FRIDAY', value: 'FRIDAY' },
-    { label: 'SABADO', key: 'SATURDAY', value: 'SATURDAY' },
-    { label: 'DOMINGO', key: 'SUNDAY', value: 'SUNDAY' },
-  ]);
+  const [days, setDays] = useState([]);
+  const intl = useIntl();
 
   const methods = useForm({
     mode: 'onChange',
@@ -45,7 +39,7 @@ const AcademicDayCreateEdit = (props: any) => {
       }
       if (props?.data?.day !== undefined && props?.data?.day != null) {
         setDay(props?.data?.day.map((c: any) => {
-          return { label: c, value: c, key: c };
+          return { label: intl.messages["display." + c], value: c, key: c };
         }));
       }
     }
@@ -54,6 +48,7 @@ const AcademicDayCreateEdit = (props: any) => {
 
   const cleanForm = async () => {
     reset();
+    setDay(null);
     setCampus(null);
     if (props?.loginReducer?.campusId && !props?.data?.id) {
       // set value when register is new and sesion contains value
@@ -65,6 +60,11 @@ const AcademicDayCreateEdit = (props: any) => {
   };
 
   const getDropdowns = async () => {
+    props.getDays().then((data: any) => {
+      setDays(data.map((c: any) => {
+        return { label: intl.messages["display." + c.name], value: c.name, key: c.name };
+      }))
+    });
     props.getDropdownsAcademicDay(props?.loginReducer?.schoolId).then((data: any) => {
       setCampusList(
         data.dataCampus.edges.map((c: any) => {
