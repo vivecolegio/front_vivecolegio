@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
+import { useSearchParams } from 'react-router-dom';
 import { COLUMN_LIST } from '../../../constants/AcademicAsignatureCourse/AcademicAsignatureCourseConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as academicIndicatorActions from '../../../stores/actions/AcademicAsignatureCourseActions';
 import DataList from '../../common/Data/DataList';
+import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
 import AcademicAsignatureCourseCreateEdit from './AcademicAsignatureCourseBasicCreateEdit';
 
 const AcademicAsignatureCourseBasicList = (props: any) => {
@@ -13,11 +15,14 @@ const AcademicAsignatureCourseBasicList = (props: any) => {
   const [modalOpen, setModalOpen] = useState(false);
 
   let navigate = useNavigate();
+  let [params] = useSearchParams();
+  const courseId = params.get('courseId');
+  const courseName = params.get('courseName');
 
   const [data, setData] = useState(null);
   useEffect(() => {
     props
-      .getListAllAcademicAsignatureCourse(props?.loginReducer?.campusId)
+      .getListAllAcademicAsignatureCourseByCourse(props?.loginReducer?.campusId, courseId)
       .then((listData: any) => {
         setDataTable(
           listData.map((c: any) => {
@@ -34,7 +39,7 @@ const AcademicAsignatureCourseBasicList = (props: any) => {
 
   const getDataTable = async () => {
     props
-      .getListAllAcademicAsignatureCourse(props?.loginReducer?.campusId)
+      .getListAllAcademicAsignatureCourseByCourse(props?.loginReducer?.campusId, courseId)
       .then((listData: any) => {
         setDataTable(
           listData.map((c: any) => {
@@ -150,6 +155,7 @@ const AcademicAsignatureCourseBasicList = (props: any) => {
       {' '}
       {dataTable !== null ? (
         <>
+          <HeaderInfoAcademic generic={{ title: 'Curso', value: courseName }} goTitle="Regresar a cursos" />
           <DataList
             data={dataTable}
             columns={columns}

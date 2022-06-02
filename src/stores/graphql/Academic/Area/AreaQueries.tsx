@@ -11,6 +11,10 @@ export const QUERY_GET_ALL_AREA = gql`
           abbreviation
           active
           generalAcademicAreaId
+          generalAcademicArea {
+            id 
+            name
+          }
         }
       }
       totalCount

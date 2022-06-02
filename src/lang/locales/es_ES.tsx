@@ -276,6 +276,10 @@ const esMessages = {
   'display.FRIDAY': 'Viernes',
   'display.SATURDAY': 'Sábado',
   'display.SUNDAY': 'Domingo',
+  'forms.nationalAsignature': 'Asignatura Nacional',
+  'forms.nationalArea': 'Area Nacional',
+  'forms.minimum': 'Mínimo',
+  'forms.maximum': 'Maximo',
 };
 
 export default esMessages;

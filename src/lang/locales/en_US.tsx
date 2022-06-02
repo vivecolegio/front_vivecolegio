@@ -262,6 +262,10 @@ const enMessages = {
   'forms.date': 'Date',
   'forms.criteria': 'Criteria',
   'forms.dateDelivery': 'Date delivery',
+  'forms.nationalAsignature': 'National Asignature',
+  'forms.nationalArea': 'National Area',
+  'forms.minimum': 'Minimum',
+  'forms.maximum': 'Maximum',
 };
 
 export default enMessages;

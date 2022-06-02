@@ -84,7 +84,8 @@ export const saveNewGradeAssignment = (data: any) => {
         ...data,
       };
       let dataCreate = null;
-      model.hourlyintensity = model.hourlyintensity && !isNaN(model.hourlyintensity) ? parseFloat(model.hourlyintensity) : 0;
+      model.minHourlyIntensity = model.minHourlyIntensity && !isNaN(model.minHourlyIntensity) ? parseFloat(model.minHourlyIntensity) : 0;
+      model.maxHourlyIntensity = model.maxHourlyIntensity && !isNaN(model.maxHourlyIntensity) ? parseFloat(model.maxHourlyIntensity) : 0;
       await client
         .mutate({
           mutation: MUTATION_CREATE_GRADE_ASSIGNMENT,
@@ -120,7 +121,8 @@ export const updateGradeAssignment = (data: any, id: any) => {
         ...data,
       };
       let dataUpdate = null;
-      model.hourlyintensity = model.hourlyintensity && !isNaN(model.hourlyintensity) ? parseFloat(model.hourlyintensity) : 0;
+      model.minHourlyIntensity = model.minHourlyIntensity && !isNaN(model.minHourlyIntensity) ? parseFloat(model.minHourlyIntensity) : 0;
+      model.maxHourlyIntensity = model.maxHourlyIntensity && !isNaN(model.maxHourlyIntensity) ? parseFloat(model.maxHourlyIntensity) : 0;
       await client
         .mutate({
           mutation: MUTATION_UPDATE_GRADE_ASSIGNMENT,

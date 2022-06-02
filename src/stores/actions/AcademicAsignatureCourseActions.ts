@@ -26,6 +26,29 @@ export const getListAllAcademicAsignatureCourse = (campusId:string) => {
   };
 };
 
+export const getListAllAcademicAsignatureCourseByCourse = (campusId:string, courseId: string) => {
+  return async (dispatch: any) => {
+    try {
+      let listData = {};
+      await client
+        .query({
+          query: QUERY_GET_ALL_ACADEMIC_ASIGNATURE_COURSE,
+          variables:{
+            campusId,
+            courseId
+          },
+        })
+        .then((result: any) => {
+          listData = result.data.data.edges;
+        });
+      return listData;
+    } catch (error) {
+      createNotification('error', 'error', '');
+      return error;
+    }
+  };
+};
+
 export const dataAcademicAsignatureCourse = (id: any) => {
   return async (dispatch: any) => {
     try {

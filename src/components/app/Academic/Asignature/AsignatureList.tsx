@@ -20,14 +20,20 @@ const AsignatureList = (props: any) => {
   useEffect(() => {
     const areaId = params.get('id');
     props.getListAllAcademicAsignature(props?.loginReducer?.schoolId, areaId ? areaId : '').then((listData: any) => {
-      setDataTable(listData);
+      setDataTable(listData.map((c: any) => {
+        c.node.generalAsignature_format = c.node.generalAcademicAsignature ? c.node.generalAcademicAsignature.name : '';
+        return c;
+      }));
     });
   }, []);
 
   const getDataTable = async () => {
     const areaId = params.get('id');
     props.getListAllAcademicAsignature(props?.loginReducer?.schoolId, areaId ? areaId : '').then((listData: any) => {
-      setDataTable(listData);
+      setDataTable(listData.map((c: any) => {
+        c.node.generalAsignature_format = c.node.generalAcademicAsignature ? c.node.generalAcademicAsignature.name : '';
+        return c;
+      }));
     });
   };
 

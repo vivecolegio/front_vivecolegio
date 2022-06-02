@@ -188,7 +188,8 @@ const AsignatureCreateEdit = (props: any) => {
               </div>
               <div className="form-group">
                 <Label>
-                  <IntlMessages id="menu.asignature" />
+                  <IntlMessages id="menu.asignature" /> -
+                  <IntlMessages id="menu.national" />
                 </Label>
                 <Select
                   isClearable

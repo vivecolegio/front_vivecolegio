@@ -7,11 +7,14 @@ import * as courseActions from '../../../stores/actions/CourseActions';
 import DataList from '../../common/Data/DataList';
 import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
 import CourseCreateEdit from './CourseCreateEdit';
+import { useNavigate } from 'react-router';
 
 const CourseList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
   const [columns, setColumns] = useState(COLUMN_LIST);
   const [modalOpen, setModalOpen] = useState(false);
+
+  let navigate = useNavigate();
 
   let [params] = useSearchParams();
   const academicGradeId = params.get('academicGradeId');
@@ -100,6 +103,20 @@ const CourseList = (props: any) => {
     createNotification('success', 'success', '');
   };
 
+  const additionalFunction = async (item: any, btn: any) => {
+    switch (btn?.action) {
+      case 'goToChildrenCourseAssignment':
+        goToChildren(`/academicAsignatureCourseBasic?courseId=${item.id}&courseName=${item.name}`);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const goToChildren = async (url: any) => {
+    navigate(url);
+  };
+
   return (
     <>
       {' '}
@@ -117,6 +134,17 @@ const CourseList = (props: any) => {
             changeActiveData={changeActiveData}
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
+            additionalFunction={additionalFunction}
+            childrenButtons={[
+              {
+                id: 0,
+                label: 'Asignación de curso',
+                color: 'secondary',
+                icon: 'simple-icon-link',
+                action: 'goToChildrenCourseAssignment',
+              },
+            ]}
+            withChildren={true}
           />
           <CourseCreateEdit
             data={data}

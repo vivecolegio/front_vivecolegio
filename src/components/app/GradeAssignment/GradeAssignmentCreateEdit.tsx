@@ -103,9 +103,13 @@ const GradeAssignmentCreateEdit = (props: any) => {
     });
   };
 
-  const { ref: hourlyintensityRef, ...hourlyintensityRest } = register('hourlyintensity', {
+  const { ref: minHourlyIntensityRef, ...minHourlyIntensityRest } = register('minHourlyIntensity', {
     required: true,
-    value: props?.data?.id ? props?.data?.hourlyintensity : '',
+    value: props?.data?.id ? props?.data?.minHourlyintensity : '',
+  });
+  const { ref: maxHourlyIntensityRef, ...maxHourlyIntensityRest } = register('maxHourlyIntensity', {
+    required: true,
+    value: props?.data?.id ? props?.data?.maxHourlyintensity : '',
   });
   register('academicAsignatureId', {
     required: true,
@@ -153,11 +157,23 @@ const GradeAssignmentCreateEdit = (props: any) => {
             <ModalBody>
               <div className="form-group">
                 <Label>
-                  <IntlMessages id="forms.hourlyIntensity" />
+                  <IntlMessages id="forms.hourlyIntensity" /> -
+                  <IntlMessages id="forms.minimum" />
                 </Label>
                 <Input
-                  {...hourlyintensityRest}
-                  innerRef={hourlyintensityRef}
+                  {...minHourlyIntensityRest}
+                  innerRef={minHourlyIntensityRef}
+                  className="form-control"
+                />
+              </div>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="forms.hourlyIntensity" /> -
+                  <IntlMessages id="forms.maximum" />
+                </Label>
+                <Input
+                  {...maxHourlyIntensityRest}
+                  innerRef={maxHourlyIntensityRef}
                   className="form-control"
                 />
               </div>

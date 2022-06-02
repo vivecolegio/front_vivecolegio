@@ -7,8 +7,13 @@ export const QUERY_GET_ALL_ASIGNATURE = gql`
         cursor
         node {
           id
-          name         
-          active          
+          name 
+          abbreviation     
+          active 
+          generalAcademicAsignature {
+            id 
+            name
+          }         
         }
       }
       totalCount

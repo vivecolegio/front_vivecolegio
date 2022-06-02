@@ -17,13 +17,19 @@ const AreaList = (props: any) => {
   const [data, setData] = useState(null);
   useEffect(() => {
     props.getListAllAcademicArea(props?.loginReducer?.schoolId).then((listData: any) => {
-      setDataTable(listData);
+      setDataTable(listData.map((c: any) => {
+        c.node.generalArea_format = c.node.generalAcademicArea ? c.node.generalAcademicArea.name : '';
+        return c;
+      }));
     });
   }, []);
 
   const getDataTable = async () => {
     props.getListAllAcademicArea(props?.loginReducer?.schoolId).then((listData: any) => {
-      setDataTable(listData);
+      setDataTable(listData.map((c: any) => {
+        c.node.generalArea_format = c.node.generalAcademicArea ? c.node.generalAcademicArea.name : '';
+        return c;
+      }));
     });
   };
 

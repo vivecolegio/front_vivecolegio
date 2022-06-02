@@ -24,6 +24,19 @@ export const QUERY_GET_COURSE = gql`
       version 
       name
       order  
+      teacherId
+      teacher {
+        user {
+          id
+          name
+          lastName
+        }
+      }
+      academicDayId
+      academicDay {
+        id
+        name
+      }
       studentsId
       students {
         id
