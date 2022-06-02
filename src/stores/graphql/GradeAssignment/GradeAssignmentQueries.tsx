@@ -7,7 +7,8 @@ export const QUERY_GET_ALL_GRADE_ASSIGNMENT = gql`
         cursor
         node {
           id
-          hourlyintensity                            
+          maxHourlyIntensity                            
+          minHourlyIntensity                            
           academicAsignature {
             name
           }           
@@ -29,7 +30,8 @@ export const QUERY_GET_ALL_GRADE_ASSIGNMENT_BY_ASIGNATURE = gql`
         cursor
         node {
           id
-          hourlyintensity                            
+          maxHourlyIntensity                            
+          minHourlyIntensity                            
           academicAsignatureId
           academicAsignature {
             id
@@ -55,7 +57,8 @@ export const QUERY_GET_GRADE_ASSIGNMENT = gql`
     data: getGradeAssignment(id: $id) {
       id   
       version
-      hourlyintensity              
+      maxHourlyIntensity                            
+      minHourlyIntensity            
       academicAsignatureId              
       academicAsignature {
         id 

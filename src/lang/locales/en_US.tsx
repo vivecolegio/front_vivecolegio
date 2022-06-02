@@ -266,6 +266,8 @@ const enMessages = {
   'forms.nationalArea': 'National Area',
   'forms.minimum': 'Minimum',
   'forms.maximum': 'Maximum',
+  'forms.hourlyIntensitymin': 'Minimum hourly intensity',
+  'forms.hourlyIntensitymax': 'Maximum hourly intensity',
 };
 
 export default enMessages;

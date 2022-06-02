@@ -280,6 +280,8 @@ const esMessages = {
   'forms.nationalArea': 'Area Nacional',
   'forms.minimum': 'Mínimo',
   'forms.maximum': 'Maximo',
+  'forms.hourlyIntensitymin': 'Mínima intensidad horaria',
+  'forms.hourlyIntensitymax': 'Máxima intensidad horaria',
 };
 
 export default esMessages;
