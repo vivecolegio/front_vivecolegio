@@ -105,11 +105,11 @@ const GradeAssignmentCreateEdit = (props: any) => {
 
   const { ref: minHourlyIntensityRef, ...minHourlyIntensityRest } = register('minHourlyIntensity', {
     required: true,
-    value: props?.data?.id ? props?.data?.minHourlyintensity : '',
+    value: props?.data?.id ? props?.data?.minHourlyIntensity : '',
   });
   const { ref: maxHourlyIntensityRef, ...maxHourlyIntensityRest } = register('maxHourlyIntensity', {
     required: true,
-    value: props?.data?.id ? props?.data?.maxHourlyintensity : '',
+    value: props?.data?.id ? props?.data?.maxHourlyIntensity : '',
   });
   register('academicAsignatureId', {
     required: true,
