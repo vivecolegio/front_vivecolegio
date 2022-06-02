@@ -27,6 +27,7 @@ const AsignatureCreateEdit = (props: any) => {
 
   let [params] = useSearchParams();
   const areaId = params.get('id');
+  const areaGeneralId = params.get('areaGeneralId');
 
   const { handleSubmit, control, register, reset, setValue, getValues } = methods;
 
@@ -84,7 +85,7 @@ const AsignatureCreateEdit = (props: any) => {
   };
 
   const getDropdowns = async () => {
-    props.getDropdownsAcademicAsignature(props?.loginReducer?.schoolId).then((data: any) => {
+    props.getDropdownsAcademicAsignature(props?.loginReducer?.schoolId, areaGeneralId).then((data: any) => {
       setSchoolList(
         data.dataSchools.edges.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };

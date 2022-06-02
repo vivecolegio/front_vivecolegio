@@ -176,6 +176,7 @@ const enMessages = {
   'menu.courses': 'Courses',
   'menu.assignGuardian': 'Assign Guardian',
   'menu.academicAsignatureCourse': 'Academic Charge',
+  'menu.academicAsignatureCourseBasic': 'Course Assignment',
   'menu.dba': 'General basic learning right',
   'menu.category': 'Category',
   'menu.learning': 'Learning',

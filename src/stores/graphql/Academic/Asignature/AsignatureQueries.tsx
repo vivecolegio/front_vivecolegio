@@ -54,7 +54,7 @@ export const QUERY_GET_ASIGNATURE = gql`
 `;
 
 export const QUERY_GET_DROPDOWNS_ASIGNATURE = gql`
-  query getDropdownsAcademicAsignature($schoolId: String!) {
+  query getDropdownsAcademicAsignature($schoolId: String!, $generalAcademicAreaId: String) {
     dataSchools: getAllSchool(allData: false, orderCreated: false) {
       edges {
         node {
@@ -71,7 +71,7 @@ export const QUERY_GET_DROPDOWNS_ASIGNATURE = gql`
         }
       }
     }
-    dataGeneralAsignatures: getAllGeneralAcademicAsignature(allData: false, orderCreated: false) {
+    dataGeneralAsignatures: getAllGeneralAcademicAsignature(allData: false, orderCreated: false, generalAcademicAreaId: $generalAcademicAreaId) {
       edges {
         node {
           id

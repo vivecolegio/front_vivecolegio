@@ -4,7 +4,7 @@ import { MUTATION_CHANGE_ACTIVE_ACADEMIC_DAY, MUTATION_CREATE_ACADEMIC_DAY, MUTA
 import { QUERY_GET_ALL_ACADEMIC_DAY, QUERY_GET_ACADEMIC_DAY, QUERY_GET_DROPDOWNS_ACADEMIC_DAY } from '../graphql/AcademicDay/AcademicDayQueries';
 
 
-export const getListAllAcademicDay = (campusId:string) => {
+export const getListAllAcademicDay = (campusId:string, schoolId: string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
@@ -13,6 +13,7 @@ export const getListAllAcademicDay = (campusId:string) => {
           query: QUERY_GET_ALL_ACADEMIC_DAY,
           variables:{
             campusId,
+            schoolId
           },
         })
         .then((result: any) => {

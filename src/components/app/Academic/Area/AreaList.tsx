@@ -94,7 +94,7 @@ const AreaList = (props: any) => {
   };
 
   const goToChildren = async (item: any) => {
-    navigate(`/asignatures?id=${item?.id}&areaName=${item?.name}`);
+    navigate(`/asignatures?id=${item?.id}&areaName=${item?.name}&areaGeneralId=${item.generalAcademicAreaId}`);
   };
 
   const changeActiveDataAll = async (items: any) => {

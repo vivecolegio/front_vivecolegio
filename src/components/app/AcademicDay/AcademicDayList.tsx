@@ -16,13 +16,13 @@ const AcademicDayList = (props: any) => {
 
   const [data, setData] = useState(null);
   useEffect(() => {
-    props.getListAllAcademicDay(props?.loginReducer?.campusId).then((listData: any) => {
+    props.getListAllAcademicDay(props?.loginReducer?.campusId, props?.loginReducer?.schoolId).then((listData: any) => {
       setDataTable(listData);
     });
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllAcademicDay(props?.loginReducer?.campusId).then((listData: any) => {
+    props.getListAllAcademicDay(props?.loginReducer?.campusId, props?.loginReducer?.schoolId).then((listData: any) => {
       setDataTable(listData);
     });
   };
@@ -73,7 +73,7 @@ const AcademicDayList = (props: any) => {
   const deleteAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.deleteAcademicDay(item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -86,7 +86,7 @@ const AcademicDayList = (props: any) => {
   const changeActiveDataAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.changeActiveAcademicDay(!item.active, item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -132,7 +132,7 @@ const AcademicDayList = (props: any) => {
                 color: 'secondary',
                 icon: 'iconsminds-time-backup',
                 action: 'goToChildren',
-              },             
+              },
             ]}
             withChildren={true}
           />

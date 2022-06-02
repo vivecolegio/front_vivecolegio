@@ -62,7 +62,7 @@ const DataList = (props: any) => {
       return submenus = submenus.concat(c.menuItemsLogin);
     });
     //console.log(submenus)
-    let cm = submenus.find((c: any) => { return (currentUrl.includes(c.module.url)) });
+    let cm = submenus.find((c: any) => { return (currentUrl === c.module.url) });
     if (cm && cm.readAction) {
       setCurrentMenu(cm);
     } else {
@@ -221,21 +221,21 @@ const DataList = (props: any) => {
           withChildren={props?.withChildren}
           onSort={(e: any) => {
             let sortOrderColumnAux = sortOrderColumn;
-            if(e.column === sortColumn){
+            if (e.column === sortColumn) {
               sortOrderColumnAux = !sortOrderColumnAux;
               setSortOrderColumn(sortOrderColumnAux);
-            }else{
+            } else {
               setSortColumn(e.column);
               sortOrderColumnAux = true;
               setSortOrderColumn(sortOrderColumnAux);
             }
             setItems(items.sort((a, b) => {
-                    const fieldA = a['node'][e.column].toString().toUpperCase();
-                    const fieldB = b['node'][e.column].toString().toUpperCase();
-                    return sortOrderColumnAux
-                      ? fieldA.localeCompare(fieldB)
-                      : fieldB.localeCompare(fieldA);
-                  }));
+              const fieldA = a['node'][e.column].toString().toUpperCase();
+              const fieldB = b['node'][e.column].toString().toUpperCase();
+              return sortOrderColumnAux
+                ? fieldA.localeCompare(fieldB)
+                : fieldB.localeCompare(fieldA);
+            }));
           }}
           sortColumn={sortColumn}
           sortOrderColumn={sortOrderColumn}

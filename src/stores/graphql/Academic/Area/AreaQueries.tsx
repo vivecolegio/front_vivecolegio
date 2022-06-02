@@ -10,6 +10,7 @@ export const QUERY_GET_ALL_AREA = gql`
           name
           abbreviation
           active
+          generalAcademicAreaId
         }
       }
       totalCount

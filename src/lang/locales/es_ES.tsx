@@ -177,6 +177,7 @@ const esMessages = {
   'menu.courses': 'Cursos',
   'menu.assignGuardian': 'Asignar acudiente',
   'menu.academicAsignatureCourse': 'Asignación académica',
+  'menu.academicAsignatureCourseBasic': 'Asignación de curso',
   'menu.dba': 'Deberes básicos de aprendizaje',
   'menu.category': 'Categoría',
   'menu.learning': 'Aprendizaje',

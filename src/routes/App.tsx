@@ -82,6 +82,7 @@ import jwt_decode from "jwt-decode";
 import { useIdleTimer } from 'react-idle-timer';
 import ValuationReferents from '../components/app/ValuationReferents/ValuationReferents';
 import GradeAssignmentReferentsList from '../components/app/GradeAssignmentReferents/GradeAssignmentReferentsList';
+import AcademicAsignatureCourseBasicList from '../components/app/AcademicAsignatureCourseBasic/AcademicAsignatureCourseBasicList';
 
 const App = (props: any) => {
   const { locale } = props.translateReducer;
@@ -220,6 +221,7 @@ const App = (props: any) => {
                     <Route path="/academicHour" element={<AcademicHourList />} />
                     <Route path="/course" element={<CourseList />} />
                     <Route path="/academicAsignatureCourse" element={<AcademicAsignatureCourseList />} />
+                    <Route path="/academicAsignatureCourseBasic" element={<AcademicAsignatureCourseBasicList />} />
                     <Route path="/dba" element={<BasicLearningDutiesList />} />
                     <Route path="/learning" element={<LearningList />} />
                     <Route path="/evidenceLearning" element={<LearningEvidenceList />} />

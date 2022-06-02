@@ -189,7 +189,7 @@ export const deleteAsignature = (id: any, showToast: boolean) => {
   };
 };
 
-export const getDropdownsAcademicAsignature = (schoolId:string) => {
+export const getDropdownsAcademicAsignature = (schoolId:string, generalAcademicAreaId: string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
@@ -198,6 +198,7 @@ export const getDropdownsAcademicAsignature = (schoolId:string) => {
           query: QUERY_GET_DROPDOWNS_ASIGNATURE,
           variables:{
             schoolId,
+            generalAcademicAreaId
           },
         })
         .then((result: any) => {

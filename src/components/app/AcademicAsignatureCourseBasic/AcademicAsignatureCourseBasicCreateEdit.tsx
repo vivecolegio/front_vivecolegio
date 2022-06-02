@@ -10,7 +10,7 @@ import AddNewModal from '../../common/Data/AddNewModal';
 import CreateEditAuditInformation from '../../common/Data/CreateEditAuditInformation';
 import { Loader } from '../../common/Loader';
 
-const AcademicAsignatureCourseCreateEdit = (props: any) => {
+const AcademicAsignatureCourseBasicCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
   const [coursesList, setCoursesList] = useState(null);
   const [asignaturesList, setAsignaturesList] = useState(null);
@@ -299,4 +299,4 @@ const mapStateToProps = ({ loginReducer }: any) => {
   return { loginReducer };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AcademicAsignatureCourseCreateEdit);
+export default connect(mapStateToProps, mapDispatchToProps)(AcademicAsignatureCourseBasicCreateEdit);
