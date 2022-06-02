@@ -53,7 +53,7 @@ export const QUERY_GET_ACADEMIC_HOUR = gql`
 `;
 
 export const QUERY_GET_DROPDOWNS_ACADEMIC_HOUR = gql`
-  query getDropdownsAcademicHour($schoolId: String!, $campusId: String!) {
+  query getDropdownsAcademicHour($schoolId: String!) {
     dataCampus: getAllCampus(allData: false, orderCreated: false, schoolId: $schoolId) {
       edges {
         node {
@@ -61,15 +61,6 @@ export const QUERY_GET_DROPDOWNS_ACADEMIC_HOUR = gql`
           name
         }
       }
-    }
-    dataAcademicDay: getAllAcademicDay(allData: false, orderCreated: false, campusId: $campusId) {
-      edges {
-        node {
-          id
-          name
-          day
-        }
-      }
-    }
+    }    
   }
 `;

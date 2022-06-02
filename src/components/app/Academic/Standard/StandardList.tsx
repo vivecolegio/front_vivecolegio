@@ -20,6 +20,7 @@ const StandardList = (props: any) => {
   const asignatureId = params.get('asignatureId');
   const academicAsignatureCourseId = params.get('academicAsignatureCourseId');
   const gradeId = params.get('gradeId');
+  const gradeAssignment = params.get('gradeAssignment');
 
   const [data, setData] = useState(null);
   useEffect(() => {
@@ -93,7 +94,7 @@ const StandardList = (props: any) => {
   const deleteAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.deleteStandard(item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -106,7 +107,7 @@ const StandardList = (props: any) => {
   const changeActiveDataAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.changeActiveStandard(!item.active, item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -138,7 +139,7 @@ const StandardList = (props: any) => {
             changeActiveDataAll={changeActiveDataAll}
             header={
               <>
-               <HeaderInfoAcademic asignature cicle goTitle="Regresar a carga académica" academicAsignatureCourseId={academicAsignatureCourseId}/>               
+                <HeaderInfoAcademic asignature cicle goTitle={gradeAssignment ? "Regresar a grados" : "Regresar a carga académica"} gradeAssignment={gradeAssignment} academicAsignatureCourseId={academicAsignatureCourseId} />
               </>
             }
           />

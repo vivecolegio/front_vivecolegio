@@ -16,8 +16,8 @@ const AcademicHourList = (props: any) => {
   let navigate = useNavigate();
 
   let [params] = useSearchParams();
-  const  academicDayId  = params.get('academicDayId');
-  const  academicDayName  = params.get('academicDayName');
+  const academicDayId = params.get('academicDayId');
+  const academicDayName = params.get('academicDayName');
 
   const [data, setData] = useState(null);
   useEffect(() => {
@@ -78,7 +78,7 @@ const AcademicHourList = (props: any) => {
   const deleteAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.deleteAcademicHour(item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -91,7 +91,7 @@ const AcademicHourList = (props: any) => {
   const changeActiveDataAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.changeActiveAcademicHour(!item.active, item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -125,11 +125,11 @@ const AcademicHourList = (props: any) => {
               <>
                 <div className='mt-4'>
                   <h2 className='mb-0'>
-                   <span className='text-green font-bold'>{academicDayName}</span>
+                    <span className='text-green font-bold'>{academicDayName}</span>
                   </h2>
-                  <p className='text-muted d-flex align-items-center cursor-pointer' onClick={() => {return goTo('/academicDay')}}>
+                  <p className='text-muted d-flex align-items-center cursor-pointer' onClick={() => { return goTo('/academicDay') }}>
                     <i className='simple-icon-arrow-left-circle mr-2'></i>
-                    Regresar a días académicos
+                    Regresar a jornadas
                   </p>
                 </div>
               </>

@@ -22,6 +22,34 @@ export const QUERY_GET_ALL_GRADE_ASSIGNMENT = gql`
   }
 `;
 
+export const QUERY_GET_ALL_GRADE_ASSIGNMENT_BY_ASIGNATURE = gql`
+  query getAllGradeAssignment($schoolId: String!, $academicAsignatureId: String) {
+    data: getAllGradeAssignment(orderCreated: true, allData: true, schoolId: $schoolId, academicAsignatureId: $academicAsignatureId) {
+      edges {
+        cursor
+        node {
+          id
+          hourlyintensity                            
+          academicAsignatureId
+          academicAsignature {
+            id
+            name
+            generalAcademicAsignatureId
+          }           
+          academicGradeId 
+          academicGrade {             
+            id   
+            name
+            generalAcademicGradeId
+          }                   
+          active          
+        }
+      }
+      totalCount
+    }
+  }
+`;
+
 export const QUERY_GET_GRADE_ASSIGNMENT = gql`
   query getGradeAssignment($id: String!) {
     data: getGradeAssignment(id: $id) {
@@ -32,11 +60,19 @@ export const QUERY_GET_GRADE_ASSIGNMENT = gql`
       academicAsignature {
         id 
         name
+        generalAcademicAsignature {
+           id
+           name
+        }
       }
       academicGradeId              
       academicGrade {
         id 
         name
+        generalAcademicCycle {
+           id
+           name
+        }
       }                  
       schoolId
       school {

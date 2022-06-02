@@ -80,6 +80,8 @@ import { isMultiColorActive } from '../constants/defaultValues';
 import AppLocale from '../lang';
 import jwt_decode from "jwt-decode";
 import { useIdleTimer } from 'react-idle-timer';
+import ValuationReferents from '../components/app/ValuationReferents/ValuationReferents';
+import GradeAssignmentReferentsList from '../components/app/GradeAssignmentReferents/GradeAssignmentReferentsList';
 
 const App = (props: any) => {
   const { locale } = props.translateReducer;
@@ -237,6 +239,8 @@ const App = (props: any) => {
                     <Route path="/classroomPlan" element={<ClassroomPlan />} />
                     <Route path="/listClassroomPlans" element={<ClassroomPlanList />} />
                     <Route path="/classroomPlanDetail" element={<ClassroomPlanDetail />} />
+                    <Route path="/valuationReferents" element={<ValuationReferents />} />
+                    <Route path="/gradeAssignmentReferents" element={<GradeAssignmentReferentsList />} />
                     {/* ACADEMIC */}
                     {/* APPLICATIONS */}
                     <Route path="/chat" element={<ChatApp />} />

@@ -185,7 +185,7 @@ export const deleteAcademicHour = (id: any, showToast: boolean) => {
   };
 };
 
-export const getDropdownsAcademicHour = (schoolId: string, campusId: string) => {
+export const getDropdownsAcademicHour = (schoolId: string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
@@ -194,7 +194,6 @@ export const getDropdownsAcademicHour = (schoolId: string, campusId: string) => 
           query: QUERY_GET_DROPDOWNS_ACADEMIC_HOUR,
           variables:{
             schoolId,
-            campusId,
           },
         })
         .then((result: any) => {

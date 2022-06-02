@@ -30,7 +30,9 @@ export const login = (user: any) => {
                 lastName: data.data.lastName,
                 profilePhoto: data.data.profilePhoto,
                 campus: data.data.campus && data.data.campus[0] ? data.data.campus[0].name : "",
+                campusMulti: data?.data?.campus,
                 school: data.data.schools && data.data.schools[0] ? data.data.schools[0].name : "",
+                schoolMulti: data?.data?.schools,
                 campusId: data.data.campus && data.data.campus[0] ? data.data.campus[0].id : "",
                 schoolId: data.data.schools && data.data.schools[0] ? data.data.schools[0].id : "",
               },
@@ -85,7 +87,6 @@ export const me = (id: any) => {
         })
         .then((result: any) => {
           data = result.data;
-          console.log(data.me.profilePhoto)
           if(data !=null){
             dispatch({
               type: ME,
@@ -99,7 +100,6 @@ export const me = (id: any) => {
                 profilePhoto: data.me.profilePhoto,              
               },
             });  
-            // window.location.reload();
           }      
         });
       return data;

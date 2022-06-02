@@ -18,6 +18,7 @@ export const MUTATION_LOGIN = gql`
       campus {
         id
         name
+        schoolId
       }
       role {
         id

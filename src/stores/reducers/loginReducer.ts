@@ -13,6 +13,8 @@ const INITIAL_STATE = {
   campusId: '',
   school: '',
   schoolId: '',
+  campusMulti: {},
+  schoolMulti: {},
 };
 
 export default (state = INITIAL_STATE, action: any) => {
@@ -28,8 +30,10 @@ export default (state = INITIAL_STATE, action: any) => {
         lastName: action.payload.lastName,
         profilePhoto: action.payload.profilePhoto,
         campus: action.payload.campus,
+        campusMulti: action.payload.campusMulti,
         campusId: action.payload.campusId,
         school: action.payload.school,
+        schoolMulti: action.payload.schoolMulti,
         schoolId: action.payload.schoolId,
       };
     case ME:
@@ -49,8 +53,10 @@ export default (state = INITIAL_STATE, action: any) => {
         lastName: '',
         profilePhoto: '',
         campus: '',
+        campusMulti: [],
         campusId: '',
         school: '',
+        schoolMulti: [],
         schoolId: '',        
       };
     default:

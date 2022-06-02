@@ -53,7 +53,7 @@ const CourseCreateEdit = (props: any) => {
   const cleanForm = async () => {
     reset();
     setGrade(null);
-    if (props?.loginReducer?.schoolId && !props?.data?.id) {
+    if (props?.loginReducer?.campusId && !props?.data?.id) {
       // set value when register is new and sesion contains value
       register('campusId', {
         required: true,

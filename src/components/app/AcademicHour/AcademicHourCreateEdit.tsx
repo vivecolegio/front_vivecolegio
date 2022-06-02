@@ -2,6 +2,7 @@ import { DevTool } from '@hookform/devtools';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
 import Select from 'react-select';
 import TimePicker from 'react-time-picker';
 import { Label, ModalBody, ModalFooter } from 'reactstrap';
@@ -15,11 +16,12 @@ import { Loader } from '../../common/Loader';
 const AcademicHourCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
   const [campusList, setCampusList] = useState(null);
-  const [academicDayList, setAcademicDayList] = useState(null);
   const [campus, setCampus] = useState(null);
-  const [academicDay, setAcademicDay] = useState(null);
   const [startTime, setStartTime] = useState(null);
   const [endTime, setEndTime] = useState(null);
+
+  let [params] = useSearchParams();
+  const academicDayId = params.get('academicDayId');
 
   const methods = useForm({
     mode: 'onChange',
@@ -39,13 +41,6 @@ const AcademicHourCreateEdit = (props: any) => {
           value: props?.data?.campus?.id,
         });
       }
-      if (props?.data?.academicDay !== undefined && props?.data?.academicDay != null) {
-        setAcademicDay({
-          key: props?.data?.academicDay?.id,
-          label: `${props?.data?.academicDay?.day} - ${props?.data?.academicDay?.name}`,
-          value: props?.data?.academicDay?.id,
-        });
-      }
       if (props?.data?.startTime !== undefined && props?.data?.startTime != null) {
         setStartTime(props?.data?.startTime);
       }
@@ -59,7 +54,6 @@ const AcademicHourCreateEdit = (props: any) => {
   const cleanForm = async () => {
     reset();
     setCampus(null);
-    setAcademicDay(null);
     setStartTime(null);
     setEndTime(null);
     if (props?.loginReducer?.campusId && !props?.data?.id) {
@@ -69,6 +63,13 @@ const AcademicHourCreateEdit = (props: any) => {
         value: props?.loginReducer?.campusId,
       });
     }
+    if (academicDayId) {
+      // set value when register is new and sesion contains value
+      register('academicDayId', {
+        required: true,
+        value: academicDayId,
+      });
+    }
   };
 
   const getDropdowns = async () => {
@@ -76,15 +77,6 @@ const AcademicHourCreateEdit = (props: any) => {
       setCampusList(
         data.dataCampus.edges.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };
-        }),
-      );
-      setAcademicDayList(
-        data.dataAcademicDay.edges.map((c: any) => {
-          return {
-            label: `${c.node.day} - ${c.node.name}`,
-            value: c.node.id,
-            key: c.node.id,
-          };
         }),
       );
     });
@@ -168,24 +160,6 @@ const AcademicHourCreateEdit = (props: any) => {
                   onChange={(date) => {
                     setValue('endTime', date as Date);
                     setEndTime(date as Date);
-                  }}
-                />
-              </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="menu.academicDay" />
-                </Label>
-                <Select
-                  isClearable
-                  placeholder={<IntlMessages id="forms.select" />}
-                  {...register('academicDayId', { required: true })}
-                  className="react-select"
-                  classNamePrefix="react-select"
-                  options={academicDayList}
-                  value={academicDay}
-                  onChange={(selectedOption) => {
-                    setValue('academicDayId', selectedOption?.key);
-                    setAcademicDay(selectedOption);
                   }}
                 />
               </div>

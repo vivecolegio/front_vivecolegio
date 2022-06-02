@@ -16,13 +16,13 @@ const AcademicDayCreateEdit = (props: any) => {
   const [campus, setCampus] = useState(null);
   const [day, setDay] = useState(null);
   const [days, setDays] = useState([
-    { label: 'LUNES', key: 'MONDAY' },
-    { label: 'MARTES', key: 'TUESDAY' },
-    { label: 'MIERCOLES', key: 'WEDNESDAY' },
-    { label: 'JUEVES', key: 'THURSDAY' },
-    { label: 'VIERNES', key: 'FRIDAY' },
-    { label: 'SABADO', key: 'SATURDAY' },
-    { label: 'DOMINGO', key: 'SUNDAY' },
+    { label: 'LUNES', key: 'MONDAY', value: 'MONDAY' },
+    { label: 'MARTES', key: 'TUESDAY', value: 'TUESDAY' },
+    { label: 'MIERCOLES', key: 'WEDNESDAY', value: 'WEDNESDAY' },
+    { label: 'JUEVES', key: 'THURSDAY', value: 'THURSDAY' },
+    { label: 'VIERNES', key: 'FRIDAY', value: 'FRIDAY' },
+    { label: 'SABADO', key: 'SATURDAY', value: 'SATURDAY' },
+    { label: 'DOMINGO', key: 'SUNDAY', value: 'SUNDAY' },
   ]);
 
   const methods = useForm({
@@ -42,6 +42,11 @@ const AcademicDayCreateEdit = (props: any) => {
           label: props?.data?.campus?.name,
           value: props?.data?.campus?.id,
         });
+      }
+      if (props?.data?.day !== undefined && props?.data?.day != null) {
+        setDay(props?.data?.day.map((c: any) => {
+          return { label: c, value: c, key: c };
+        }));
       }
     }
     setLoading(false);
@@ -119,6 +124,7 @@ const AcademicDayCreateEdit = (props: any) => {
                 </Label>
                 <Select
                   isClearable
+                  isMulti
                   placeholder={<IntlMessages id="forms.select" />}
                   {...register('day', { required: true })}
                   className="react-select"
@@ -126,7 +132,12 @@ const AcademicDayCreateEdit = (props: any) => {
                   options={days}
                   value={day}
                   onChange={(selectedOption) => {
-                    setValue('day', selectedOption?.key);
+                    setValue(
+                      "day",
+                      selectedOption.map((c: any) => {
+                        return c.key;
+                      }),
+                    );
                     setDay(selectedOption);
                   }}
                 />

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router';
 import * as academicAsignatureCourseActions from '../../../stores/actions/AcademicAsignatureCourseActions';
 import * as studentActions from '../../../stores/actions/StudentActions';
 import * as learningActions from '../../../stores/actions/LearningActions';
+import * as gradeAssignmentActions from '../../../stores/actions/GradeAssignmentActions';
 import * as experienceLearningActions from '../../../stores/actions/ExperienceLearningActions';
 
 const HeaderInfoAcademic = (props: any) => {
@@ -11,7 +12,7 @@ const HeaderInfoAcademic = (props: any) => {
   const [studentData, setStudent] = useState(null);
   const [experienceLearningData, setExperienceLearning] = useState(null);
   const [learningData, setLearning] = useState(null);
-  const { generic, asignature, asignatureGeneral, grade, course, modality, cicle, experienceLearnig, learning, student, academicAsignatureCourseId, experienceLearnigId, learningId, studentId, goTitle } = props;
+  const { generic, asignature, asignatureGeneral, grade, course, modality, cicle, experienceLearnig, learning, student, academicAsignatureCourseId, gradeAssignment, experienceLearnigId, learningId, studentId, goTitle } = props;
 
   let navigate = useNavigate();
 
@@ -23,6 +24,15 @@ const HeaderInfoAcademic = (props: any) => {
     if (academicAsignatureCourseId) {
       await props.dataAcademicAsignatureCourse(academicAsignatureCourseId).then((resp: any) => {
         setData(resp?.data)
+      });
+    }
+    if (gradeAssignment) {
+      await props.dataGradeAssignment(gradeAssignment).then((resp: any) => {
+        let dataUpdatedFormat = resp.data;
+        dataUpdatedFormat.course = {
+          academicGrade: resp.data.academicGrade
+        };
+        setData(dataUpdatedFormat)
       });
     }
     if (studentId) {
@@ -124,7 +134,7 @@ const HeaderInfoAcademic = (props: any) => {
   );
 };
 
-const mapDispatchToProps = { ...academicAsignatureCourseActions, ...studentActions, ...experienceLearningActions, ...learningActions };
+const mapDispatchToProps = { ...academicAsignatureCourseActions, ...studentActions, ...experienceLearningActions, ...learningActions, ...gradeAssignmentActions };
 
 const mapStateToProps = ({ loginReducer }: any) => {
   return { loginReducer };

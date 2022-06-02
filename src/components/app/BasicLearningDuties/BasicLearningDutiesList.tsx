@@ -20,6 +20,7 @@ const GeneralBasicLearningRightList = (props: any) => {
   const asignatureId = params.get('asignatureId');
   const academicAsignatureCourseId = params.get('academicAsignatureCourseId');
   const gradeId = params.get('gradeId');
+  const gradeAssignment = params.get('gradeAssignment');
 
   const [data, setData] = useState(null);
   useEffect(() => {
@@ -97,7 +98,7 @@ const GeneralBasicLearningRightList = (props: any) => {
   const deleteAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.deleteGeneralBasicLearningRight(item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -110,7 +111,7 @@ const GeneralBasicLearningRightList = (props: any) => {
   const changeActiveDataAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.changeActiveGeneralBasicLearningRight(!item.active, item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -142,7 +143,7 @@ const GeneralBasicLearningRightList = (props: any) => {
             changeActiveDataAll={changeActiveDataAll}
             header={
               <>
-              <HeaderInfoAcademic asignatureGeneral grade goTitle="Regresar a carga académica" academicAsignatureCourseId={academicAsignatureCourseId}/>                  
+                <HeaderInfoAcademic asignatureGeneral grade goTitle={gradeAssignment ? "Regresar a grados" : "Regresar a carga académica"} gradeAssignment={gradeAssignment} academicAsignatureCourseId={academicAsignatureCourseId} />
               </>
             }
           />

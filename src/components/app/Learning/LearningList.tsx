@@ -17,9 +17,10 @@ const Learning = (props: any) => {
   const [modalOpen, setModalOpen] = useState(false);
 
   let [params] = useSearchParams();
-  const  asignatureId  = params.get('asignatureId');
-  const  gradeId  = params.get('gradeId');
-  const  academicAsignatureCourseId  = params.get('academicAsignatureCourseId');
+  const asignatureId = params.get('asignatureId');
+  const gradeId = params.get('gradeId');
+  const academicAsignatureCourseId = params.get('academicAsignatureCourseId');
+  const gradeAssignment = params.get('gradeAssignment');
 
   let navigate = useNavigate();
 
@@ -37,12 +38,12 @@ const Learning = (props: any) => {
       );
     });
     props.getDropdownsLearning(props?.loginReducer?.schoolId).then((listData: any) => {
-      setAcademicPeriods(listData.dataAcademicPeriods.edges);  
+      setAcademicPeriods(listData.dataAcademicPeriods.edges);
     });
   }, []);
 
-  const getDataTable = async (idAcademicPeriod:any = []) => {
-    props.getListAllLearning(props?.loginReducer?.schoolId, asignatureId ? asignatureId : '', gradeId ? gradeId : '', idAcademicPeriod.length > 0 ?idAcademicPeriod : undefined ).then((listData: any) => {
+  const getDataTable = async (idAcademicPeriod: any = []) => {
+    props.getListAllLearning(props?.loginReducer?.schoolId, asignatureId ? asignatureId : '', gradeId ? gradeId : '', idAcademicPeriod.length > 0 ? idAcademicPeriod : undefined).then((listData: any) => {
       setDataTable(
         listData.map((c: any) => {
           c.node.grade_format = c.node.academicGrade ? c.node.academicGrade.name : '';
@@ -102,7 +103,7 @@ const Learning = (props: any) => {
   const deleteAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.deleteLearning(item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -115,7 +116,7 @@ const Learning = (props: any) => {
   const changeActiveDataAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.changeActiveLearning(!item.active, item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -134,7 +135,7 @@ const Learning = (props: any) => {
   };
 
   const filterByPeriod = async (item: any) => {
-    if(academicPeriod.find((c:any)=>{return (c === item?.node?.id)})){
+    if (academicPeriod.find((c: any) => { return (c === item?.node?.id) })) {
       academicPeriod = [];
     } else {
       academicPeriod = [item?.node?.id];
@@ -166,23 +167,24 @@ const Learning = (props: any) => {
             deleteAll={deleteAll}
             header={
               <>
-              <div className='d-flex justify-content-between align-items-center mt-4'>
-              <HeaderInfoAcademic asignature grade goTitle="Regresar a carga académica" academicAsignatureCourseId={academicAsignatureCourseId}/>        
-                <div>
-                {academicPeriods ? 
-                   academicPeriods.map((item: any) => {
-                    return (
-                      <>
-                      <button onClick={() => {return filterByPeriod(item);}} key={item?.node?.id} className={`btn ${academicPeriod.find((c:any)=>{return (c === item?.node?.id)}) ? "btn-info" : "btn-outline-info"}`}
-                          type="button"
-                        >
-                          <i className='iconsminds-pen-2'></i>{' '}
-                          {item?.node?.name}
-                      </button>{' '}
-                      </>
-                    )})
-                :''}
-                </div>
+                <div className='d-flex justify-content-between align-items-center mt-4'>
+                  <HeaderInfoAcademic asignature grade goTitle={gradeAssignment ? "Regresar a grados" : "Regresar a carga académica"} gradeAssignment={gradeAssignment} academicAsignatureCourseId={academicAsignatureCourseId} />
+                  <div>
+                    {academicPeriods ?
+                      academicPeriods.map((item: any) => {
+                        return (
+                          <>
+                            <button onClick={() => { return filterByPeriod(item); }} key={item?.node?.id} className={`btn ${academicPeriod.find((c: any) => { return (c === item?.node?.id) }) ? "btn-info" : "btn-outline-info"}`}
+                              type="button"
+                            >
+                              <i className='iconsminds-pen-2'></i>{' '}
+                              {item?.node?.name}
+                            </button>{' '}
+                          </>
+                        )
+                      })
+                      : ''}
+                  </div>
                 </div>
               </>
             }
@@ -195,7 +197,7 @@ const Learning = (props: any) => {
                 color: 'secondary',
                 icon: 'iconsminds-library',
                 action: 'goToChildrenLearning',
-              },             
+              },
             ]}
             withChildren={true}
           />

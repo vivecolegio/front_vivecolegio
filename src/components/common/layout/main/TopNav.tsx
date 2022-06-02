@@ -19,6 +19,8 @@ import MobileMenuIcon from './topNav/MobileMenuIcon';
 import TopnavDarkSwitch from './topNav/TopnavDarkSwitch';
 import TopnavNotifications from './topNav/TopnavNotifications';
 import { urlImages } from '../../../../stores/graphql/index';
+import { LOGIN } from '../../../../stores/reducers/types/loginTypes';
+import { rootReducer } from '../../../../stores/reducers';
 
 const TopNav = (props: any) => {
   const [topNavState, setTopNavState] = useState({
@@ -174,6 +176,17 @@ const TopNav = (props: any) => {
     props.clickOnMobileMenu(containerClassnames);
   };
 
+  const setNewCampus = (campusNew: any) => {
+    props?.store?.dispatch({
+      type: LOGIN,
+      payload: {
+        campus: campusNew,
+        campusId: campusNew.id,
+      },
+    });
+
+  };
+
   return (
     <>
       <nav className="navbar fixed-top">
@@ -270,7 +283,13 @@ const TopNav = (props: any) => {
                 <p className="text-muted text-small mb-1">{props?.loginReducer?.school}</p>
               </DropdownToggle>
               <DropdownMenu className="mt-3" end>
-                <DropdownItem>otro school</DropdownItem>
+                {props?.loginReducer?.schoolMulti?.map((s: any) => {
+                  return <>
+                    {s.id !== props?.loginReducer?.schoolId ?
+                      <DropdownItem>{s?.name}</DropdownItem>
+                      : ''}
+                  </>
+                })}
               </DropdownMenu>
             </UncontrolledDropdown>
             <UncontrolledDropdown className="dropdown-menu-right">
@@ -280,7 +299,16 @@ const TopNav = (props: any) => {
                 ) : null}
               </DropdownToggle>
               <DropdownMenu className="mt-3" end>
-                <DropdownItem>otro campus</DropdownItem>
+                {props?.loginReducer?.campusMulti?.map((c: any) => {
+                  return <>
+                    {c.id !== props?.loginReducer?.campusId ?
+                      <DropdownItem onClick={(e) => {
+                        return setNewCampus(c);
+                      }}
+                      >{c?.name}</DropdownItem>
+                      : ''}
+                  </>
+                })}
               </DropdownMenu>
             </UncontrolledDropdown>
           </div>
