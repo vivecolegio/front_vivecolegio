@@ -27,7 +27,8 @@ export const QUERY_GET_ACADEMIC_HOUR = gql`
     data: getAcademicHour(id: $id) {
       id   
       startTime                        
-      endTime                            
+      endTime   
+      order                         
       campusId     
       campus  {
         id

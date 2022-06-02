@@ -53,7 +53,7 @@ export const dataAcademicHour = (id: any) => {
 export const saveNewAcademicHour = (data: any) => {
   return async (dispatch: any) => {
     try {
-      let model: {};
+      let model: any = {};
       model = {
         ...model,
       };
@@ -62,6 +62,7 @@ export const saveNewAcademicHour = (data: any) => {
         ...data,
       };
       let dataCreate = null;
+      model.order = model.order && !isNaN(model.order) ? parseFloat(model.order) : 0;
       await client
         .mutate({
           mutation: MUTATION_CREATE_ACADEMIC_HOUR,
@@ -88,7 +89,7 @@ export const saveNewAcademicHour = (data: any) => {
 export const updateAcademicHour = (data: any, id: any) => {
   return async (dispatch: any) => {
     try {
-      let model: {};
+      let model: any = {};
       model = {
         ...model,
       };
@@ -97,6 +98,7 @@ export const updateAcademicHour = (data: any, id: any) => {
         ...data,
       };
       let dataUpdate = null;
+      model.order = model.order && !isNaN(model.order) ? parseFloat(model.order) : 0;
       await client
         .mutate({
           mutation: MUTATION_UPDATE_ACADEMIC_HOUR,

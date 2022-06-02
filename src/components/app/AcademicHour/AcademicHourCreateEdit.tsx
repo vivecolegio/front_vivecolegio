@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 import Select from 'react-select';
 import TimePicker from 'react-time-picker';
-import { Label, ModalBody, ModalFooter } from 'reactstrap';
+import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
 import IntlMessages from '../../../helpers/IntlMessages';
 import * as AcademicHourActions from '../../../stores/actions/AcademicHourActions';
 import { Colxx } from '../../common/CustomBootstrap';
@@ -98,6 +98,10 @@ const AcademicHourCreateEdit = (props: any) => {
     required: true,
     value: props?.data?.id ? props?.data?.campusId : '',
   });
+  const { ref: orderRef, ...orderRest } = register('order', {
+    required: true,
+    value: props?.data?.id ? props?.data?.order : '',
+  });
 
   const auditInfo = {
     createdAt: props?.data?.id ? props?.data?.createdAt : null,
@@ -162,6 +166,12 @@ const AcademicHourCreateEdit = (props: any) => {
                     setEndTime(date as Date);
                   }}
                 />
+              </div>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="forms.sorting" />
+                </Label>
+                <Input {...orderRest} innerRef={orderRef} className="form-control" />
               </div>
               {/* {!props?.loginReducer?.campusId ? (
                 <div className="form-group">
