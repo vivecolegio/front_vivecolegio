@@ -1,7 +1,4 @@
-import jwt_decode from 'jwt-decode';
 import React, { Suspense, useEffect, useState } from 'react';
-import { useClearCache } from 'react-clear-cache';
-import { useIdleTimer } from 'react-idle-timer';
 import { IntlProvider } from 'react-intl';
 import { connect } from 'react-redux';
 import { HashRouter, Route, Routes } from 'react-router-dom';
@@ -95,69 +92,14 @@ const App = (props: any) => {
 
   const [permissions, setPermissions] = useState(false);
 
-  const { isLatestVersion, emptyCacheStorage, latestVersion } = useClearCache();
-
-  const handleLogout = async () => {
-    await props.logout();
-    setPermissions(false);
-  };
-
   useEffect(() => {
-    if (!isLatestVersion) {
-      emptyCacheStorage();
-    }
     const token = localStorage.getItem('token');
     if (props?.loginReducer?.userId?.length > 0 && token != null) {
       setPermissions(true);
-      const now = Math.floor(Date.now() / 1000);
-      const isExpired = jwt_decode(token) as any;
-      if (isExpired?.exp <= now) {
-        handleLogout();
-      }
     } else {
       setPermissions(false);
     }
-  }, [emptyCacheStorage, isLatestVersion, props.loginReducer]);
-
-  const handleOnIdle = () => {
-    const token = localStorage.getItem('token');
-    if (token != null && token !== undefined) {
-      const now = Math.floor(Date.now() / 1000);
-      const isExpired = jwt_decode(token) as any;
-      if (isExpired?.exp <= now) {
-        handleLogout();
-      }
-    }
-  };
-
-  const handleOnActive = () => {
-    const token = localStorage.getItem('token');
-    if (token != null && token !== undefined) {
-      const now = Math.floor(Date.now() / 1000);
-      const isExpired = jwt_decode(token) as any;
-      if (isExpired?.exp <= now) {
-        handleLogout();
-      }
-    }
-  };
-
-  const handleOnAction = () => {
-    const token = localStorage.getItem('token');
-    if (token != null && token !== undefined) {
-      const now = Math.floor(Date.now() / 1000);
-      const isExpired = jwt_decode(token) as any;
-      if (isExpired?.exp <= now) {
-        handleLogout();
-      }
-    }
-  };
-
-  const { getRemainingTime, getLastActiveTime } = useIdleTimer({
-    timeout: 5000,
-    onIdle: handleOnIdle,
-    onActive: handleOnActive,
-    onAction: handleOnAction,
-  });
+  }, [props.loginReducer]);
 
   return (
     <div className="h-100">
@@ -165,14 +107,13 @@ const App = (props: any) => {
         <>
           <NotificationContainer />
           {isMultiColorActive && <ColorSwitcher />}
-          {latestVersion}
           <Suspense fallback={<div className="loading" />} />
           <HashRouter>
             <Layout permissions={permissions}>
               <Routes>
                 <Route path="/" element={<Login />} />
                 <Route path="/login" element={<Login />} />
-                <Route path="/home" element={<Home />} />
+                <Route path="/home" element={permissions ? <Home /> : <Login />} />
                 {permissions ? (
                   <>
                     <Route path="/profile" element={<Profile />} />
@@ -273,7 +214,7 @@ const App = (props: any) => {
                     <Route path="/informe-avance-desempeno" element={<Analytics />} />
                   </>
                 ) : (
-                  <></>
+                  <Route path="*" element={<Login />} />
                 )}
               </Routes>
             </Layout>

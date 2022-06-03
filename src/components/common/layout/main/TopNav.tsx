@@ -4,23 +4,18 @@ import { useNavigate } from 'react-router';
 import { NavLink } from 'react-router-dom';
 import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
 import ProfileImg from '../../../../assets/img/profiles/empty.png';
-import {
-  isDarkSwitchActive,
-  localeOptions,
-  menuHiddenBreakpoint
-} from '../../../../constants/defaultValues';
+import { isDarkSwitchActive, menuHiddenBreakpoint } from '../../../../constants/defaultValues';
 import IntlMessages from '../../../../helpers/IntlMessages';
 import { getDirection, setDirection } from '../../../../helpers/Utils';
 import * as LoginActions from '../../../../stores/actions/LoginActions';
 import * as MenuActions from '../../../../stores/actions/MenuActions';
 import * as LocaleActions from '../../../../stores/actions/TranslateActions';
+import { urlImages } from '../../../../stores/graphql/index';
+import { LOGIN } from '../../../../stores/reducers/types/loginTypes';
 import MenuIcon from './topNav/MenuIcon';
 import MobileMenuIcon from './topNav/MobileMenuIcon';
 import TopnavDarkSwitch from './topNav/TopnavDarkSwitch';
 import TopnavNotifications from './topNav/TopnavNotifications';
-import { urlImages } from '../../../../stores/graphql/index';
-import { LOGIN } from '../../../../stores/reducers/types/loginTypes';
-import { rootReducer } from '../../../../stores/reducers';
 
 const TopNav = (props: any) => {
   const [topNavState, setTopNavState] = useState({
@@ -184,7 +179,6 @@ const TopNav = (props: any) => {
         campusId: campusNew.id,
       },
     });
-
   };
 
   return (
@@ -284,11 +278,15 @@ const TopNav = (props: any) => {
               </DropdownToggle>
               <DropdownMenu className="mt-3" end>
                 {props?.loginReducer?.schoolMulti?.map((s: any) => {
-                  return <>
-                    {s.id !== props?.loginReducer?.schoolId ?
-                      <DropdownItem>{s?.name}</DropdownItem>
-                      : ''}
-                  </>
+                  return (
+                    <>
+                      {s.id !== props?.loginReducer?.schoolId ? (
+                        <DropdownItem>{s?.name}</DropdownItem>
+                      ) : (
+                        ''
+                      )}
+                    </>
+                  );
                 })}
               </DropdownMenu>
             </UncontrolledDropdown>
@@ -300,14 +298,21 @@ const TopNav = (props: any) => {
               </DropdownToggle>
               <DropdownMenu className="mt-3" end>
                 {props?.loginReducer?.campusMulti?.map((c: any) => {
-                  return <>
-                    {c.id !== props?.loginReducer?.campusId ?
-                      <DropdownItem onClick={(e) => {
-                        return setNewCampus(c);
-                      }}
-                      >{c?.name}</DropdownItem>
-                      : ''}
-                  </>
+                  return (
+                    <>
+                      {c.id !== props?.loginReducer?.campusId ? (
+                        <DropdownItem
+                          onClick={(e) => {
+                            return setNewCampus(c);
+                          }}
+                        >
+                          {c?.name}
+                        </DropdownItem>
+                      ) : (
+                        ''
+                      )}
+                    </>
+                  );
                 })}
               </DropdownMenu>
             </UncontrolledDropdown>
@@ -315,9 +320,19 @@ const TopNav = (props: any) => {
           <div className="user d-inline-block">
             <UncontrolledDropdown className="dropdown-menu-right">
               <DropdownToggle className="p-0" color="empty">
-                <span className="name mr-1 text-primary">{props?.loginReducer?.name} {props?.loginReducer?.lastName}</span>
+                <span className="name mr-1 text-primary">
+                  {props?.loginReducer?.name} {props?.loginReducer?.lastName}
+                </span>
                 <span>
-                  <img className="border-yellow" alt="Profile" src={props?.loginReducer?.profilePhoto ? urlImages + props?.loginReducer?.profilePhoto : ProfileImg} />
+                  <img
+                    className="border-yellow"
+                    alt="Profile"
+                    src={
+                      props?.loginReducer?.profilePhoto
+                        ? urlImages + props?.loginReducer?.profilePhoto
+                        : ProfileImg
+                    }
+                  />
                 </span>
               </DropdownToggle>
               <DropdownMenu className="mt-3" end>
