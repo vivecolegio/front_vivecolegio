@@ -239,14 +239,14 @@ const ComponentEvaluativeCreateEdit = (props: any) => {
                             isClearable
                             placeholder={<IntlMessages id="forms.select" />}
                             isMulti
-                            {...register('academicAsignaturesId ', { required: true })}
+                            {...register('academicAsignaturesId', { required: true })}
                             className="react-select"
                             classNamePrefix="react-select"
                             options={academicAsignaturesList}
                             value={academicAsignatures}
                             onChange={(selectedOption: any) => {
                               setValue(
-                                'academicAsignaturesId ',
+                                'academicAsignaturesId',
                                 selectedOption.map((c: any) => {
                                   return c.key;
                                 }),

@@ -1,5 +1,7 @@
+import jwt_decode from 'jwt-decode';
 import React, { Suspense, useEffect, useState } from 'react';
 import { useClearCache } from 'react-clear-cache';
+import { useIdleTimer } from 'react-idle-timer';
 import { IntlProvider } from 'react-intl';
 import { connect } from 'react-redux';
 import { HashRouter, Route, Routes } from 'react-router-dom';
@@ -9,6 +11,7 @@ import GradeList from '../components/app/Academic/Grade/GradeList';
 import PerformanceLevelList from '../components/app/Academic/PerformanceLevel/PerformanceLevelList';
 import StandardList from '../components/app/Academic/Standard/StandardList';
 import AcademicAsignatureCourseList from '../components/app/AcademicAsignatureCourse/AcademicAsignatureCourseList';
+import AcademicAsignatureCourseBasicList from '../components/app/AcademicAsignatureCourseBasic/AcademicAsignatureCourseBasicList';
 import AcademicDayList from '../components/app/AcademicDay/AcademicDayList';
 import AcademicHourList from '../components/app/AcademicHour/AcademicHourList';
 import AcademicPeriodList from '../components/app/AcademicPeriod/AcademicPeriodList';
@@ -20,7 +23,10 @@ import ForumApp from '../components/app/Aplications/Forums/Forum';
 import ForumListApp from '../components/app/Aplications/Forums/ForumList';
 import Survey from '../components/app/Aplications/Survey/Survey';
 import SurveyDetail from '../components/app/Aplications/Survey/SurveyDetail';
-import { default as AcademicIndicatorList, default as BasicLearningDutiesList } from '../components/app/BasicLearningDuties/BasicLearningDutiesList';
+import {
+  default as AcademicIndicatorList,
+  default as BasicLearningDutiesList,
+} from '../components/app/BasicLearningDuties/BasicLearningDutiesList';
 import CampusList from '../components/app/Campus/CampusList';
 import ClassroomPlan from '../components/app/ClassroomPlan/ClassroomPlan';
 import ClassroomPlanDetail from '../components/app/ClassroomPlan/ClassroomPlanDetail';
@@ -42,6 +48,7 @@ import GeneralGradeList from '../components/app/GeneralAcademic/Grade/GradeList'
 import GeneralPerformanceLevelList from '../components/app/GeneralAcademic/PerformanceLevel/PerformanceLevelList';
 import GeneralStandardList from '../components/app/GeneralAcademic/Standard/StandardList';
 import GradeAssignmentList from '../components/app/GradeAssignment/GradeAssignmentList';
+import GradeAssignmentReferentsList from '../components/app/GradeAssignmentReferents/GradeAssignmentReferentsList';
 import GuardianList from '../components/app/Guardian/GuardianList';
 import InboxDetail from '../components/app/Inbox/InboxDetail';
 import LearningList from '../components/app/Learning/LearningList';
@@ -72,17 +79,14 @@ import SubmenuList from '../components/app/Submenu/SubmenuList';
 import TeacherList from '../components/app/Teacher/TeacherList';
 import TraditionalValuation from '../components/app/TraditionalValuation/TraditionalValuation';
 import UserList from '../components/app/User/UserList';
+import ValuationReferents from '../components/app/ValuationReferents/ValuationReferents';
 import ColorSwitcher from '../components/common/ColorSwitcher';
 import Layout from '../components/common/layout/Layout';
 import { NotificationContainer } from '../components/common/Notifications';
 import Home from '../components/Home';
 import { isMultiColorActive } from '../constants/defaultValues';
 import AppLocale from '../lang';
-import jwt_decode from "jwt-decode";
-import { useIdleTimer } from 'react-idle-timer';
-import ValuationReferents from '../components/app/ValuationReferents/ValuationReferents';
-import GradeAssignmentReferentsList from '../components/app/GradeAssignmentReferents/GradeAssignmentReferentsList';
-import AcademicAsignatureCourseBasicList from '../components/app/AcademicAsignatureCourseBasic/AcademicAsignatureCourseBasicList';
+import * as LoginActions from '../stores/actions/LoginActions';
 
 const App = (props: any) => {
   const { locale } = props.translateReducer;
@@ -199,7 +203,10 @@ const App = (props: any) => {
                     <Route path="/general/areas" element={<GeneralAreaList />} />
                     <Route path="/general/asignatures" element={<GeneralAsignatureList />} />
                     <Route path="/general/cycles" element={<GeneralCycleList />} />
-                    <Route path="/general/performanceLevel" element={<GeneralPerformanceLevelList />} />
+                    <Route
+                      path="/general/performanceLevel"
+                      element={<GeneralPerformanceLevelList />}
+                    />
                     <Route path="/general/standardAcademic" element={<GeneralStandardList />} />
                     <Route path="/general/grades" element={<GeneralGradeList />} />
                     {/* GENERAL ACADEMIC */}
@@ -220,8 +227,14 @@ const App = (props: any) => {
                     <Route path="/academicDay" element={<AcademicDayList />} />
                     <Route path="/academicHour" element={<AcademicHourList />} />
                     <Route path="/course" element={<CourseList />} />
-                    <Route path="/academicAsignatureCourse" element={<AcademicAsignatureCourseList />} />
-                    <Route path="/academicAsignatureCourseBasic" element={<AcademicAsignatureCourseBasicList />} />
+                    <Route
+                      path="/academicAsignatureCourse"
+                      element={<AcademicAsignatureCourseList />}
+                    />
+                    <Route
+                      path="/academicAsignatureCourseBasic"
+                      element={<AcademicAsignatureCourseBasicList />}
+                    />
                     <Route path="/dba" element={<BasicLearningDutiesList />} />
                     <Route path="/learning" element={<LearningList />} />
                     <Route path="/evidenceLearning" element={<LearningEvidenceList />} />
@@ -235,14 +248,20 @@ const App = (props: any) => {
                     <Route path="/coEvaluation" element={<CoEvaluation />} />
                     <Route path="/coEvaluationStudents" element={<CoEvaluationStudents />} />
                     <Route path="/spreadsheet" element={<Spreadsheet />} />
-                    <Route path="/questionCategoryTestOnline" element={<QuestionCategoryTestOnlineList />} />
+                    <Route
+                      path="/questionCategoryTestOnline"
+                      element={<QuestionCategoryTestOnlineList />}
+                    />
                     <Route path="/questionTestOnline" element={<QuestionTestOnlineList />} />
                     <Route path="/questionsBank" element={<QuestionsBankTestOnline />} />
                     <Route path="/classroomPlan" element={<ClassroomPlan />} />
                     <Route path="/listClassroomPlans" element={<ClassroomPlanList />} />
                     <Route path="/classroomPlanDetail" element={<ClassroomPlanDetail />} />
                     <Route path="/valuationReferents" element={<ValuationReferents />} />
-                    <Route path="/gradeAssignmentReferents" element={<GradeAssignmentReferentsList />} />
+                    <Route
+                      path="/gradeAssignmentReferents"
+                      element={<GradeAssignmentReferentsList />}
+                    />
                     {/* ACADEMIC */}
                     {/* APPLICATIONS */}
                     <Route path="/chat" element={<ChatApp />} />
@@ -252,7 +271,6 @@ const App = (props: any) => {
                     <Route path="/encuestas" element={<Survey />} />
                     <Route path="/encuestas-detalle" element={<SurveyDetail />} />
                     <Route path="/informe-avance-desempeno" element={<Analytics />} />
-
                   </>
                 ) : (
                   <></>
@@ -266,7 +284,7 @@ const App = (props: any) => {
   );
 };
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = { ...LoginActions };
 
 const mapStateToProps = ({ loginReducer, translateReducer }: any) => {
   return { loginReducer, translateReducer };
