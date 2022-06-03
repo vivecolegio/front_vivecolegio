@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Loader } from '../../common/Loader';
 import { connect } from 'react-redux';
-import { useParams } from 'react-router';
+import { useSearchParams } from 'react-router-dom';
 import Select from 'react-select';
 import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
 import IntlMessages from '../../../helpers/IntlMessages';
+import * as academicDayActions from '../../../stores/actions/AcademicDayActions';
 import * as academicIndicatorActions from '../../../stores/actions/CourseActions';
 import * as teacherActions from '../../../stores/actions/TeacherActions';
-import * as academicDayActions from '../../../stores/actions/AcademicDayActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import AddNewModal from '../../common/Data/AddNewModal';
 import CreateEditAuditInformation from '../../common/Data/CreateEditAuditInformation';
-import { useSearchParams } from 'react-router-dom';
+import { Loader } from '../../common/Loader';
 
 const CourseCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
@@ -44,6 +43,7 @@ const CourseCreateEdit = (props: any) => {
           label: props?.data?.campus?.name,
           value: props?.data?.campus?.id,
         });
+        getTeacherAndDays(props?.data?.campus?.id);
       }
       if (props?.data?.academicGrade !== undefined && props?.data?.academicGrade != null) {
         setGrade({
@@ -110,7 +110,11 @@ const CourseCreateEdit = (props: any) => {
       props.getListAllTeacherActives(campusId, props?.loginReducer?.schoolId).then((data: any) => {
         setTeachers(
           data.map((c: any) => {
-            return { label: `${c?.node?.user.name} ${c?.node?.user.lastName}`, value: c.node.id, key: c.node.id };
+            return {
+              label: `${c?.node?.user.name} ${c?.node?.user.lastName}`,
+              value: c.node.id,
+              key: c.node.id,
+            };
           }),
         );
       });
@@ -121,6 +125,9 @@ const CourseCreateEdit = (props: any) => {
           }),
         );
       });
+    } else {
+      setTeachers([]);
+      setAcademicDays([]);
     }
   };
 
@@ -208,9 +215,7 @@ const CourseCreateEdit = (props: any) => {
                 ''
               )}
               <div className="form-group">
-                <Label>
-                  Titular
-                </Label>
+                <Label>Titular</Label>
                 <Select
                   isClearable
                   placeholder={<IntlMessages id="forms.select" />}
@@ -223,6 +228,7 @@ const CourseCreateEdit = (props: any) => {
                     setValue('teacherId', selectedOption?.key);
                     setTeacher(selectedOption);
                   }}
+                  isDisabled={teachers?.length === 0}
                 />
               </div>
               <div className="form-group">
@@ -241,6 +247,7 @@ const CourseCreateEdit = (props: any) => {
                     setValue('academicDayId', selectedOption?.key);
                     setAcademicDay(selectedOption);
                   }}
+                  isDisabled={academicDays?.length === 0}
                 />
               </div>
             </ModalBody>
@@ -258,7 +265,11 @@ const CourseCreateEdit = (props: any) => {
   );
 };
 
-const mapDispatchToProps = { ...academicIndicatorActions, ...teacherActions, ...academicDayActions };
+const mapDispatchToProps = {
+  ...academicIndicatorActions,
+  ...teacherActions,
+  ...academicDayActions,
+};
 
 const mapStateToProps = ({ loginReducer }: any) => {
   return { loginReducer };
