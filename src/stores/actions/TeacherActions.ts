@@ -28,6 +28,28 @@ export const getListAllTeacher = (campusId:string ,schoolId:string) => {
   };
 };
 
+export const getListAllTeacherOnlySchool = (schoolId:string) => {
+  return async (dispatch: any) => {
+    try {
+      let listData = {};
+      await client
+        .query({
+          query: QUERY_GET_ALL_TEACHER_ONLY_SCHOOL,
+          variables:{
+            schoolId
+          }
+        })
+        .then((result: any) => {
+          listData = result.data.data.edges;
+        });
+      return listData;
+    } catch (error) {
+      createNotification('error', 'error', '');
+      return error;
+    }
+  };
+};
+
 
 export const getListAllTeacherActives = (campusId:string ,schoolId:string) => {
   return async (dispatch: any) => {

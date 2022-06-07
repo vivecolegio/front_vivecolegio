@@ -16,31 +16,59 @@ const TeacherList = (props: any) => {
 
   const [data, setData] = useState(null);
   useEffect(() => {
-    props.getListAllTeacher(props?.loginReducer?.campusId, props?.loginReducer?.schoolId).then((listData: any) => {
-      setDataTable(
-        listData.map((c: any) => {
-          c.node.name = c.node.user ? c.node.user.name : '';
-          c.node.lastName = c.node.user ? c.node.user.lastName : '';
-          c.node.phone = c.node.user ? c.node.user.phone : '';
-          c.node.email = c.node.user ? c.node.user.email : '';
-          return c;
-        }),
-      );
-    });
+    if (props?.loginReducer?.campusId) {
+      props.getListAllTeacher(props?.loginReducer?.campusId, props?.loginReducer?.schoolId).then((listData: any) => {
+        setDataTable(
+          listData.map((c: any) => {
+            c.node.name = c.node.user ? c.node.user.name : '';
+            c.node.lastName = c.node.user ? c.node.user.lastName : '';
+            c.node.phone = c.node.user ? c.node.user.phone : '';
+            c.node.email = c.node.user ? c.node.user.email : '';
+            return c;
+          }),
+        );
+      });
+    } else {
+      props.getListAllTeacherOnlySchool(props?.loginReducer?.schoolId).then((listData: any) => {
+        setDataTable(
+          listData.map((c: any) => {
+            c.node.name = c.node.user ? c.node.user.name : '';
+            c.node.lastName = c.node.user ? c.node.user.lastName : '';
+            c.node.phone = c.node.user ? c.node.user.phone : '';
+            c.node.email = c.node.user ? c.node.user.email : '';
+            return c;
+          }),
+        );
+      });
+    }
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllTeacher(props?.loginReducer?.campusId, props?.loginReducer?.schoolId).then((listData: any) => {
-      setDataTable(
-        listData.map((c: any) => {
-          c.node.name = c.node.user ? c.node.user.name : '';
-          c.node.lastName = c.node.user ? c.node.user.lastName : '';
-          c.node.phone = c.node.user ? c.node.user.phone : '';
-          c.node.email = c.node.user ? c.node.user.email : '';
-          return c;
-        }),
-      );
-    });
+    if (props?.loginReducer?.campusId) {
+      props.getListAllTeacher(props?.loginReducer?.campusId, props?.loginReducer?.schoolId).then((listData: any) => {
+        setDataTable(
+          listData.map((c: any) => {
+            c.node.name = c.node.user ? c.node.user.name : '';
+            c.node.lastName = c.node.user ? c.node.user.lastName : '';
+            c.node.phone = c.node.user ? c.node.user.phone : '';
+            c.node.email = c.node.user ? c.node.user.email : '';
+            return c;
+          }),
+        );
+      });
+    } else {
+      props.getListAllTeacherOnlySchool(props?.loginReducer?.schoolId).then((listData: any) => {
+        setDataTable(
+          listData.map((c: any) => {
+            c.node.name = c.node.user ? c.node.user.name : '';
+            c.node.lastName = c.node.user ? c.node.user.lastName : '';
+            c.node.phone = c.node.user ? c.node.user.phone : '';
+            c.node.email = c.node.user ? c.node.user.email : '';
+            return c;
+          }),
+        );
+      });
+    }
   };
 
   const refreshDataTable = async () => {
