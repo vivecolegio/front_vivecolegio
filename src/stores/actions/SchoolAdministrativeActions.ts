@@ -1,19 +1,20 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
-import { MUTATION_CHANGE_ACTIVE_GRADE_ASSIGNMENT, MUTATION_CREATE_GRADE_ASSIGNMENT, MUTATION_DELETE_GRADE_ASSIGNMENT, MUTATION_UPDATE_GRADE_ASSIGNMENT } from '../graphql/GradeAssignment/GradeAssignmentMutations';
-import { QUERY_GET_ALL_GRADE_ASSIGNMENT, QUERY_GET_ALL_GRADE_ASSIGNMENT_BY_ASIGNATURE, QUERY_GET_DROPDOWNS_GRADE_ASSIGNMENT, QUERY_GET_GRADE_ASSIGNMENT } from '../graphql/GradeAssignment/GradeAssignmentQueries';
+import { MUTATION_CHANGE_ACTIVE_SCHOOL_ADMINISTRATIVE, MUTATION_CREATE_SCHOOL_ADMINISTRATIVE, MUTATION_DELETE_SCHOOL_ADMINISTRATIVE, MUTATION_UPDATE_SCHOOL_ADMINISTRATIVE } from "../graphql/SchoolAdministrative/SchoolAdministrativeMutations";
+import { QUERY_GET_ALL_SCHOOL_ADMINISTRATIVE_ACTIVE, QUERY_GET_DROPDOWNS_SCHOOL_ADMINISTRATIVE, QUERY_GET_SCHOOL_ADMINISTRATIVE } from "../graphql/SchoolAdministrative/SchoolAdministrativeQueries";
 
 
-export const getListAllGradeAssignment = (schoolId:string, academicGradeId: string) => {
+
+
+export const getListAllSchoolAdministrative = (schoolId:string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
       await client
         .query({
-          query: QUERY_GET_ALL_GRADE_ASSIGNMENT,
+          query: QUERY_GET_ALL_SCHOOL_ADMINISTRATIVE_ACTIVE,
           variables:{
-            schoolId,
-            academicGradeId,
+            schoolId
           }
         })
         .then((result: any) => {
@@ -27,16 +28,17 @@ export const getListAllGradeAssignment = (schoolId:string, academicGradeId: stri
   };
 };
 
-export const getListAllGradeAssignmentByAsignature = (schoolId:string, academicAsignatureId: string) => {
+
+export const getListAllSchoolAdministrativeActives = (campusId:string ,schoolId:string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
       await client
         .query({
-          query: QUERY_GET_ALL_GRADE_ASSIGNMENT_BY_ASIGNATURE,
+          query: QUERY_GET_ALL_SCHOOL_ADMINISTRATIVE_ACTIVE,
           variables:{
-            schoolId,
-            academicAsignatureId ,
+            campusId,
+            schoolId
           }
         })
         .then((result: any) => {
@@ -50,13 +52,13 @@ export const getListAllGradeAssignmentByAsignature = (schoolId:string, academicA
   };
 };
 
-export const dataGradeAssignment = (id: any) => {
+export const dataSchoolAdministrative = (id: any) => {
   return async (dispatch: any) => {
     try {
       let data = {};
       await client
         .query({
-          query: QUERY_GET_GRADE_ASSIGNMENT,
+          query: QUERY_GET_SCHOOL_ADMINISTRATIVE,
           variables: {
             id,
           },
@@ -72,10 +74,10 @@ export const dataGradeAssignment = (id: any) => {
   };
 };
 
-export const saveNewGradeAssignment = (data: any) => {
+export const saveNewSchoolAdministrative = (data: any) => {
   return async (dispatch: any) => {
     try {
-      let model: any = {};
+      let model: {};
       model = {
         ...model,
       };
@@ -84,11 +86,9 @@ export const saveNewGradeAssignment = (data: any) => {
         ...data,
       };
       let dataCreate = null;
-      model.minHourlyIntensity = model.minHourlyIntensity && !isNaN(model.minHourlyIntensity) ? parseFloat(model.minHourlyIntensity) : 0;
-      model.maxHourlyIntensity = model.maxHourlyIntensity && !isNaN(model.maxHourlyIntensity) ? parseFloat(model.maxHourlyIntensity) : 0;
       await client
         .mutate({
-          mutation: MUTATION_CREATE_GRADE_ASSIGNMENT,
+          mutation: MUTATION_CREATE_SCHOOL_ADMINISTRATIVE,
           variables: { input: model },
         })
         .then((dataResponse: any) => {
@@ -109,10 +109,10 @@ export const saveNewGradeAssignment = (data: any) => {
   };
 };
 
-export const updateGradeAssignment = (data: any, id: any) => {
+export const updateSchoolAdministrative = (data: any, id: any) => {
   return async (dispatch: any) => {
     try {
-      let model: any = {};
+      let model: {};
       model = {
         ...model,
       };
@@ -121,11 +121,9 @@ export const updateGradeAssignment = (data: any, id: any) => {
         ...data,
       };
       let dataUpdate = null;
-      model.minHourlyIntensity = model.minHourlyIntensity && !isNaN(model.minHourlyIntensity) ? parseFloat(model.minHourlyIntensity) : 0;
-      model.maxHourlyIntensity = model.maxHourlyIntensity && !isNaN(model.maxHourlyIntensity) ? parseFloat(model.maxHourlyIntensity) : 0;
       await client
         .mutate({
-          mutation: MUTATION_UPDATE_GRADE_ASSIGNMENT,
+          mutation: MUTATION_UPDATE_SCHOOL_ADMINISTRATIVE,
           variables: { id, input: model },
         })
         .then((dataReponse: any) => {
@@ -146,13 +144,13 @@ export const updateGradeAssignment = (data: any, id: any) => {
   };
 };
 
-export const changeActiveGradeAssignment = (active: any, id: any, showToast: boolean) => {
+export const changeActiveSchoolAdministrative = (active: any, id: any, showToast: boolean) => {
   return async (dispatch: any) => {
     try {
       let dataChangeActive = null;
       await client
         .mutate({
-          mutation: MUTATION_CHANGE_ACTIVE_GRADE_ASSIGNMENT,
+          mutation: MUTATION_CHANGE_ACTIVE_SCHOOL_ADMINISTRATIVE,
           variables: { id, active },
         })
         .then((dataReponse: any) => {
@@ -179,13 +177,13 @@ export const changeActiveGradeAssignment = (active: any, id: any, showToast: boo
   };
 };
 
-export const deleteGradeAssignment = (id: any, showToast: boolean) => {
+export const deleteSchoolAdministrative = (id: any, showToast: boolean) => {
   return async (dispatch: any) => {
     try {
       let dataDelete = null;
       await client
         .mutate({
-          mutation: MUTATION_DELETE_GRADE_ASSIGNMENT,
+          mutation: MUTATION_DELETE_SCHOOL_ADMINISTRATIVE,
           variables: { id },
         })
         .then((dataReponse: any) => {
@@ -212,16 +210,16 @@ export const deleteGradeAssignment = (id: any, showToast: boolean) => {
   };
 };
 
-export const getDropdownsGradeAssignment = (schoolId:string, academicGradeId:string) => {
+export const getDropdownsSchoolAdministrative = (type: string, schoolId:string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
       await client
         .query({
-          query: QUERY_GET_DROPDOWNS_GRADE_ASSIGNMENT,
+          query: QUERY_GET_DROPDOWNS_SCHOOL_ADMINISTRATIVE,
           variables:{
-            schoolId,
-            academicGradeId
+            type,
+            schoolId
           }
         })
         .then((result: any) => {

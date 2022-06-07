@@ -210,7 +210,7 @@ export const deleteAcademicAsignatureCourse = (id: any, showToast: boolean) => {
   };
 };
 
-export const getDropdownsAcademicAsignatureCourse = (schoolId:string, campusId: string) => {
+export const getDropdownsAcademicAsignatureCourse = (schoolId:string, campusId: string, courseId: string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
@@ -220,6 +220,7 @@ export const getDropdownsAcademicAsignatureCourse = (schoolId:string, campusId: 
           variables:{
             schoolId,
             campusId,
+            courseId
           },
         })
         .then((result: any) => {

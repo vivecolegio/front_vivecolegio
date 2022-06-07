@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import {Loader} from '../../common/Loader';
+import { Loader } from '../../common/Loader';
 import { connect } from 'react-redux';
 import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
 import IntlMessages from '../../../helpers/IntlMessages';
@@ -37,17 +37,17 @@ const RoleCreateEdit = (props: any) => {
   const data = {
     isSchoolAdministrator:
       props?.data?.id ||
-      props?.data?.isSchoolAdministrator === methods.getValues('isSchoolAdministrator')
+        props?.data?.isSchoolAdministrator === methods.getValues('isSchoolAdministrator')
         ? props?.data?.isSchoolAdministrator
         : methods.getValues('isSchoolAdministrator'),
     isCampusAdministrator:
       props?.data?.id ||
-      props?.data?.isCampusAdministrator === methods.getValues('isCampusAdministrator')
+        props?.data?.isCampusAdministrator === methods.getValues('isCampusAdministrator')
         ? props?.data?.isCampusAdministrator
         : methods.getValues('isCampusAdministrator'),
     isCampusCoordinator:
       props?.data?.id ||
-      props?.data?.isCampusCoordinator === methods.getValues('isCampusCoordinator')
+        props?.data?.isCampusCoordinator === methods.getValues('isCampusCoordinator')
         ? props?.data?.isCampusCoordinator
         : methods.getValues('isCampusCoordinator'),
     isStudent:
@@ -58,6 +58,10 @@ const RoleCreateEdit = (props: any) => {
       props?.data?.id || props?.data?.isTeacher === methods.getValues('isTeacher')
         ? props?.data?.isTeacher
         : methods.getValues('isTeacher'),
+    isSchoolAdministrative:
+      props?.data?.id || props?.data?.isSchoolAdministrative === methods.getValues('isSchoolAdministrative')
+        ? props?.data?.isSchoolAdministrative
+        : methods.getValues('isSchoolAdministrative'),
     isGuardian:
       props?.data?.id || props?.data?.isGuardian === methods.getValues('isGuardian')
         ? props?.data?.isGuardian
@@ -77,7 +81,7 @@ const RoleCreateEdit = (props: any) => {
       {loading ? (
         <>
           <Colxx sm={12} className="d-flex justify-content-center">
-            <Loader/>
+            <Loader />
           </Colxx>
         </>
       ) : (
@@ -170,6 +174,19 @@ const RoleCreateEdit = (props: any) => {
                   label=""
                 />
                 {<IntlMessages id="menu.teachers" />}
+              </div>
+              <div className="form-group d-flex align-items-center">
+                <Input
+                  className="itemCheck m-0 mr-2"
+                  type="checkbox"
+                  id={`check_isSchoolAdministrative`}
+                  defaultChecked={data.isSchoolAdministrative}
+                  onChange={() => {
+                    setValue('isSchoolAdministrative', !data.isSchoolAdministrative);
+                  }}
+                  label=""
+                />
+                {<IntlMessages id="menu.schoolAdministratives" />}
               </div>
               <div className="form-group d-flex align-items-center">
                 <Input

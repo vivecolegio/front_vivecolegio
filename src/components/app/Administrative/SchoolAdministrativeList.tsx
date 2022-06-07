@@ -1,0 +1,156 @@
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import { COLUMN_LIST } from '../../../constants/SchoolAdministrative/schoolAdministrativecConstants';
+import { createNotification } from '../../../helpers/Notification';
+import * as schoolAdministrativeActions from '../../../stores/actions/SchoolAdministrativeActions';
+import AddNewModal from '../../common/Data/AddNewModal';
+import DataList from '../../common/Data/DataList';
+import SchoolAdministrativeCreateEdit from './SchoolAdministrativeCreateEdit';
+
+const SchoolAdministrativeList = (props: any) => {
+  const [dataTable, setDataTable] = useState(null);
+  const [columns, setColumns] = useState(COLUMN_LIST);
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const [data, setData] = useState(null);
+  useEffect(() => {
+    props.getListAllSchoolAdministrative(props?.loginReducer?.schoolId).then((listData: any) => {
+      setDataTable(
+        listData.map((c: any) => {
+          c.node.name = c.node.user ? c.node.user.name : '';
+          c.node.lastName = c.node.user ? c.node.user.lastName : '';
+          c.node.phone = c.node.user ? c.node.user.phone : '';
+          c.node.email = c.node.user ? c.node.user.email : '';
+          return c;
+        }),
+      );
+    });
+  }, []);
+
+  const getDataTable = async () => {
+    props.getListAllSchoolAdministrative(props?.loginReducer?.schoolId).then((listData: any) => {
+      setDataTable(
+        listData.map((c: any) => {
+          c.node.name = c.node.user ? c.node.user.name : '';
+          c.node.lastName = c.node.user ? c.node.user.lastName : '';
+          c.node.phone = c.node.user ? c.node.user.phone : '';
+          c.node.email = c.node.user ? c.node.user.email : '';
+          return c;
+        }),
+      );
+    });
+  };
+
+  const refreshDataTable = async () => {
+    setDataTable(null);
+    await getDataTable();
+  };
+
+  const onSubmit = async (dataForm: any) => {
+    if (data === null) {
+      await props.saveNewSchoolAdministrative(dataForm).then((id: any) => {
+        if (id !== undefined) {
+          setModalOpen(false);
+          refreshDataTable();
+        }
+      });
+    } else {
+      delete dataForm.newUser.id;
+      delete dataForm.newUser.role;
+      delete dataForm.newUser.gender;
+      delete dataForm.newUser.documentType;
+      await props.updateSchoolAdministrative(dataForm, data.id).then((id: any) => {
+        if (id !== undefined) {
+          setModalOpen(false);
+          setData(null);
+          refreshDataTable();
+        }
+      });
+    }
+  };
+
+  const viewEditData = async (id: any) => {
+    await props.dataSchoolAdministrative(id).then((formData: any) => {
+      setData(formData.data);
+      setModalOpen(true);
+    });
+  };
+
+  const changeActiveData = async (active: any, id: any) => {
+    await props.changeActiveSchoolAdministrative(active, id, true).then((formData: any) => {
+      refreshDataTable();
+    });
+  };
+
+  const deleteData = async (id: any) => {
+    await props.deleteSchoolAdministrative(id, true).then((formData: any) => {
+      refreshDataTable();
+    });
+  };
+
+  const deleteAll = async (items: any) => {
+    items.map(async (item: any) => {
+      await props.deleteSchoolAdministrative(item.id, false).then(
+        () => { },
+        () => {
+          createNotification('error', 'error', '');
+        },
+      );
+    });
+    refreshDataTable();
+    createNotification('success', 'success', '');
+  };
+
+  const changeActiveDataAll = async (items: any) => {
+    items.map(async (item: any) => {
+      await props.changeActiveSchoolAdministrative(!item.active, item.id, false).then(
+        () => { },
+        () => {
+          createNotification('error', 'error', '');
+        },
+      );
+    });
+    refreshDataTable();
+    createNotification('success', 'success', '');
+  };
+
+  return (
+    <>
+      {' '}
+      {dataTable !== null ? (
+        <>
+          <DataList
+            data={dataTable}
+            columns={columns}
+            match={props?.match}
+            modalOpen={modalOpen}
+            setModalOpen={setModalOpen}
+            viewEditData={viewEditData}
+            deleteData={deleteData}
+            changeActiveData={changeActiveData}
+            deleteAll={deleteAll}
+            changeActiveDataAll={changeActiveDataAll}
+          />
+          <SchoolAdministrativeCreateEdit
+            data={data}
+            modalOpen={modalOpen}
+            toggleModal={() => {
+              setData(null);
+              return setModalOpen(!modalOpen);
+            }}
+            onSubmit={onSubmit}
+          />
+        </>
+      ) : (
+        <></>
+      )}
+    </>
+  );
+};
+const mapDispatchToProps = { ...schoolAdministrativeActions };
+
+const mapStateToProps = ({ loginReducer }: any) => {
+  return { loginReducer };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SchoolAdministrativeList);

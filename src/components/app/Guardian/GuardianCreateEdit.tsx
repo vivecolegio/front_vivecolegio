@@ -183,6 +183,10 @@ const GuardianCreateEdit = (props: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };
         }),
       );
+      let roles = data.dataRoles.edges;
+      if (roles?.length == 1) {
+        setRole({ label: roles[0].node.name, value: roles[0].node.id, key: roles[0].node.id });
+      }
     });
   };
 
@@ -297,32 +301,6 @@ const GuardianCreateEdit = (props: any) => {
               </div>
               <div className="form-group">
                 <Label>
-                  <IntlMessages id="forms.user" />
-                </Label>
-                <Input
-                  name="username"
-                  defaultValue={newUser.username}
-                  onChange={(data) => {
-                    setValue('newUser', { ...newUser });
-                    setNewUser({ ...newUser, ...{ username: data.target.value } });
-                  }}
-                />
-              </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="user.password" />
-                </Label>
-                <Input
-                  name="password"
-                  defaultValue={newUser.password}
-                  onChange={(data) => {
-                    setValue('newUser', { ...newUser });
-                    setNewUser({ ...newUser, ...{ password: data.target.value } });
-                  }}
-                />
-              </div>
-              <div className="form-group">
-                <Label>
                   <IntlMessages id="forms.role" />
                 </Label>
                 <Select
@@ -332,6 +310,7 @@ const GuardianCreateEdit = (props: any) => {
                   classNamePrefix="react-select"
                   options={rolesList}
                   value={role}
+                  isDisabled={rolesList?.length <= 1}
                   onChange={(selectedOption) => {
                     newUser.roleId = selectedOption?.key;
                     setValue('newUser', { ...newUser });

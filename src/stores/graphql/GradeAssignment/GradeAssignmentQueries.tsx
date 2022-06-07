@@ -95,7 +95,7 @@ export const QUERY_GET_GRADE_ASSIGNMENT = gql`
 `;
 
 export const QUERY_GET_DROPDOWNS_GRADE_ASSIGNMENT = gql`
-  query getDropdownsAcademicArea($schoolId: String!) {
+  query getDropdownsAcademicArea($schoolId: String!, $academicGradeId: String!) {
     dataSchools: getAllSchool(allData: false, orderCreated: false) {
       edges {
         node {
@@ -104,7 +104,7 @@ export const QUERY_GET_DROPDOWNS_GRADE_ASSIGNMENT = gql`
         }
       }
     }
-    dataAsignatures: getAllAcademicAsignature(allData: false, orderCreated: false, schoolId: $schoolId) {
+    dataAsignatures: getAllAcademicAsignatureNotAssignedInAcademicGrade(schoolId: $schoolId, academicGradeId: $academicGradeId) {
       edges {
         node {
           id

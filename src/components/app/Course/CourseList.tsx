@@ -118,6 +118,9 @@ const CourseList = (props: any) => {
       case 'goToChildrenCourseAssignment':
         goToChildren(`/academicAsignatureCourseBasic?courseId=${item.id}&courseName=${item.name}`);
         break;
+      case 'goToChildrenStudents':
+        goToChildren(`/studentCourse?courseId=${item.id}&courseName=${item.name}&gradeName=${gradeName}&gradeId=${academicGradeId}`);
+        break;
       default:
         break;
     }
@@ -152,6 +155,13 @@ const CourseList = (props: any) => {
                 color: 'secondary',
                 icon: 'simple-icon-link',
                 action: 'goToChildrenCourseAssignment',
+              },
+              {
+                id: 0,
+                label: 'Estudiantes',
+                color: 'info',
+                icon: 'iconsminds-student-male-female',
+                action: 'goToChildrenStudents',
               },
             ]}
             withChildren={true}

@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
-export const QUERY_GET_ALL_TEACHER = gql`
-  query getAllTeacher($campusId: String!,$schoolId: String!) {
-    data: getAllTeacher(orderCreated: true, allData: true, campusId: [$campusId], schoolId: [$schoolId]) {
+export const QUERY_GET_ALL_SCHOOL_ADMINISTRATIVE = gql`
+  query getAllSchoolAdministrative($campusId: String!,$schoolId: String!) {
+    data: getAllSchoolAdministrative(orderCreated: true, allData: true, campusId: [$campusId], schoolId: [$schoolId]) {
       edges {
         cursor
         node {
@@ -26,9 +26,9 @@ export const QUERY_GET_ALL_TEACHER = gql`
   }
 `;
 
-export const QUERY_GET_ALL_TEACHER_ONLY_SCHOOL = gql`
-  query getAllTeacher($schoolId: String!) {
-    data: getAllTeacher(orderCreated: true, allData: true, schoolId: [$schoolId]) {
+export const QUERY_GET_ALL_SCHOOL_ADMINISTRATIVE_ONLY_SCHOOL = gql`
+  query getAllSchoolAdministrative($schoolId: String!) {
+    data: getAllSchoolAdministrative(orderCreated: true, allData: true, schoolId: [$schoolId]) {
       edges {
         cursor
         node {
@@ -52,9 +52,9 @@ export const QUERY_GET_ALL_TEACHER_ONLY_SCHOOL = gql`
   }
 `;
 
-export const QUERY_GET_ALL_TEACHER_ACTIVE = gql`
-  query getAllTeacher($campusId: String!,$schoolId: String!) {
-    data: getAllTeacher(orderCreated: true, allData: false, campusId: [$campusId], schoolId: [$schoolId]) {
+export const QUERY_GET_ALL_SCHOOL_ADMINISTRATIVE_ACTIVE = gql`
+  query getAllSchoolAdministrative($schoolId: String!) {
+    data: getAllSchoolAdministrative(orderCreated: true, allData: false, schoolId: $schoolId) {
       edges {
         cursor
         node {
@@ -78,9 +78,9 @@ export const QUERY_GET_ALL_TEACHER_ACTIVE = gql`
   }
 `;
 
-export const QUERY_GET_TEACHER = gql`
-  query getTeacher($id: String!) {
-    data: getTeacher(id: $id) {
+export const QUERY_GET_SCHOOL_ADMINISTRATIVE = gql`
+  query getSchoolAdministrative($id: String!) {
+    data: getSchoolAdministrative(id: $id) {
       id
       schoolId     
       school  {
@@ -132,8 +132,8 @@ export const QUERY_GET_TEACHER = gql`
   }
 `;
 
-export const QUERY_GET_DROPDOWNS_TEACHER = gql`
-  query getDropdownsTeacher ($type : String!, $schoolId: String!) {
+export const QUERY_GET_DROPDOWNS_SCHOOL_ADMINISTRATIVE = gql`
+  query getDropdownsSchoolAdministrative ($type : String!, $schoolId: String!) {
     dataSchools: getAllSchool(allData: false, orderCreated: false) {
       edges {
         node {

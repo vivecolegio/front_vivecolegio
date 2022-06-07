@@ -1,7 +1,7 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
 import { MUTATION_ASSOCIATE_GUARDIAN, MUTATION_CHANGE_ACTIVE_STUDENT, MUTATION_CREATE_STUDENT, MUTATION_DELETE_STUDENT, MUTATION_UPDATE_STUDENT } from '../graphql/Student/StudentMutations';
-import { QUERY_GET_ALL_STUDENT, QUERY_GET_COURSES_OF_GRADES, QUERY_GET_DROPDOWNS_STUDENT, QUERY_GET_GUARDIANS_BY_CRITERIA, QUERY_GET_STUDENT } from '../graphql/Student/StudentQueries';
+import { QUERY_GET_ALL_STUDENT, QUERY_GET_ALL_STUDENT_WITHOUT_COURSE, QUERY_GET_COURSES_OF_GRADES, QUERY_GET_DROPDOWNS_STUDENT, QUERY_GET_GUARDIANS_BY_CRITERIA, QUERY_GET_STUDENT } from '../graphql/Student/StudentQueries';
 
 
 export const getListAllStudent = (campusId:string ,schoolId:string) => {
@@ -15,6 +15,30 @@ export const getListAllStudent = (campusId:string ,schoolId:string) => {
           variables:{
             c,
             schoolId,
+          },
+        })
+        .then((result: any) => {
+          listData = result.data.data.edges;
+        });
+      return listData;
+    } catch (error) {
+      createNotification('error', 'error', '');
+      return error;
+    }
+  };
+};
+
+export const getListAllStudentWithoutCourse = (campusId: string, academicGradeId:string ,schoolId:string) => {
+  return async (dispatch: any) => {
+    try {
+      let listData = {};
+      await client
+        .query({
+          query: QUERY_GET_ALL_STUDENT_WITHOUT_COURSE,
+          variables:{
+            academicGradeId,
+            schoolId,
+            campusId
           },
         })
         .then((result: any) => {

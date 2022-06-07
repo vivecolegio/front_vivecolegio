@@ -1,7 +1,9 @@
 export const COLUMN_LIST = [
-  { column: 'name', label: 'forms.name', width: '20%' },
-  { column: 'lastName', label: 'forms.lastname', width: '20%' },
-  { column: 'phone', label: 'forms.phone', width: '20%' },
-  { column: 'email', label: 'forms.email', width: '35%' }, 
-  { width:'50%' },
+  // { column: 'code', label: 'forms.code', width: '20%' },
+  { column: 'name', label: 'forms.name', width: '35%' },
+  { column: 'lastName', label: 'forms.lastname', width: '35%' },
+  { column: 'documentType_format', label: 'forms.documentType', width: '40%' },
+  { column: 'documentNumber', label: 'forms.documentNumber', width: '40%' },
+  { column: 'gender_format', label: 'forms.gender', width: '35%' },
+  { width: '50%' },
 ];

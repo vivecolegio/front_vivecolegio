@@ -12,6 +12,7 @@ import AcademicAsignatureCourseBasicList from '../components/app/AcademicAsignat
 import AcademicDayList from '../components/app/AcademicDay/AcademicDayList';
 import AcademicHourList from '../components/app/AcademicHour/AcademicHourList';
 import AcademicPeriodList from '../components/app/AcademicPeriod/AcademicPeriodList';
+import SchoolAdministrativeList from '../components/app/Administrative/SchoolAdministrativeList';
 import AdministratorCampusList from '../components/app/AdministratorsCampus/AdministratorCampusList';
 import AdministratorSchoolList from '../components/app/AdministratorsSchool/AdministratorSchoolList';
 import ChatApp from '../components/app/Aplications/Chat/Chat';
@@ -72,6 +73,7 @@ import SelfValuation from '../components/app/SelfValuation/SelfValuation';
 import SpecialityList from '../components/app/Speciality/SpecialityList';
 import Spreadsheet from '../components/app/Spreadsheet/Spreadsheet';
 import StudentsList from '../components/app/Students/StudentsList';
+import StudentsCourseList from '../components/app/StudentsCourse/StudentsCourseList';
 import SubmenuList from '../components/app/Submenu/SubmenuList';
 import TeacherList from '../components/app/Teacher/TeacherList';
 import TraditionalValuation from '../components/app/TraditionalValuation/TraditionalValuation';
@@ -134,7 +136,9 @@ const App = (props: any) => {
                     <Route path="/schools" element={<SchoolList />} />
                     <Route path="/campus" element={<CampusList />} />
                     <Route path="/students" element={<StudentsList />} />
+                    <Route path="/studentCourse" element={<StudentsCourseList />} />
                     <Route path="/teachers" element={<TeacherList />} />
+                    <Route path="/schoolAdministratives" element={<SchoolAdministrativeList />} />
                     <Route path="/guardians" element={<GuardianList />} />
                     <Route path="/administratorsSchool" element={<AdministratorSchoolList />} />
                     <Route path="/administratorsCampus" element={<AdministratorCampusList />} />

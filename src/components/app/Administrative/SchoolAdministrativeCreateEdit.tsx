@@ -1,4 +1,3 @@
-import { DevTool } from '@hookform/devtools';
 import React, { useEffect, useState } from 'react';
 import ReactDatePicker from 'react-datepicker';
 import { useForm } from 'react-hook-form';
@@ -8,15 +7,17 @@ import Select from 'react-select';
 import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
 import { loaderColor, loaderIcon } from '../../../constants/defaultValues';
 import IntlMessages from '../../../helpers/IntlMessages';
-import * as AdministratorActions from '../../../stores/actions/AdministratorSchoolActions';
+import * as schoolAdministrativeActions from '../../../stores/actions/SchoolAdministrativeActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import AddNewModal from '../../common/Data/AddNewModal';
 import CreateEditAuditInformation from '../../common/Data/CreateEditAuditInformation';
 
-const AdministratorSchoolCreateEdit = (props: any) => {
+const SchoolAdministrativeCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
   const [schoolsList, setSchoolsList] = useState(null);
+  const [campusList, setCampusList] = useState(null);
   const [school, setSchool] = useState(null);
+  const [campus, setCampus] = useState(null);
   const [rolesList, setRolesList] = useState(null);
   const [documentTypesList, setDocumentTypesList] = useState(null);
   const [gendersList, setGendersList] = useState(null);
@@ -46,7 +47,7 @@ const AdministratorSchoolCreateEdit = (props: any) => {
 
   useEffect(() => {
     cleanForm();
-    getDropdowns();
+    getDropdowns(props?.loginReducer?.schoolId);
     if (props?.data?.id) {
       if (props?.data?.school !== undefined && props?.data?.school != null) {
         setSchool({
@@ -54,6 +55,11 @@ const AdministratorSchoolCreateEdit = (props: any) => {
           label: props?.data?.school?.name,
           value: props?.data?.school?.id,
         });
+      }
+      if (props?.data?.campus !== undefined && props?.data?.campus != null) {
+        setCampus(props?.data?.campus.map((c: any) => {
+          return { label: c.name, value: c.id, key: c.id };
+        }));
       }
       if (props?.data?.user !== undefined && props?.data?.user != null) {
         setNewUser({
@@ -116,6 +122,7 @@ const AdministratorSchoolCreateEdit = (props: any) => {
   const cleanForm = async () => {
     reset();
     setSchool(null);
+    setCampus(null);
     setNewUser({
       name: null,
       lastName: null,
@@ -136,15 +143,20 @@ const AdministratorSchoolCreateEdit = (props: any) => {
       // set value when register is new and sesion contains value
       register('schoolId', {
         required: true,
-        value: props?.loginReducer?.schoolId,
+        value: [props?.loginReducer?.schoolId],
       });
     }
   };
 
-  const getDropdowns = async () => {
-    props.getDropdownsAdministratorSchool('SchoolAdministrator').then((data: any) => {
+  const getDropdowns = async (schoolId: any) => {
+    props.getDropdownsSchoolAdministrative('SchoolAdministrative', schoolId).then((data: any) => {
       setSchoolsList(
         data.dataSchools.edges.map((c: any) => {
+          return { label: c.node.name, value: c.node.id, key: c.node.id };
+        }),
+      );
+      setCampusList(
+        data.dataCampus.edges.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };
         }),
       );
@@ -189,7 +201,6 @@ const AdministratorSchoolCreateEdit = (props: any) => {
 
   return (
     <>
-      {/* <DevTool control={methods.control} placement="top-left" /> */}
       {loading ? (
         <>
           <Colxx sm={12} className="d-flex justify-content-center">
@@ -285,9 +296,9 @@ const AdministratorSchoolCreateEdit = (props: any) => {
                   placeholder={<IntlMessages id="forms.select" />}
                   className="react-select"
                   classNamePrefix="react-select"
-                  isDisabled={rolesList?.length <= 1}
                   options={rolesList}
                   value={role}
+                  isDisabled={rolesList?.length <= 1}
                   onChange={(selectedOption) => {
                     newUser.roleId = selectedOption?.key;
                     setValue('newUser', { ...newUser });
@@ -357,9 +368,10 @@ const AdministratorSchoolCreateEdit = (props: any) => {
                     classNamePrefix="react-select"
                     options={schoolsList}
                     value={school}
-                    onChange={(selectedOption: any) => {
-                      setValue('schoolId', [selectedOption?.key]);
+                    onChange={(selectedOption) => {
+                      setValue('schoolId', selectedOption?.key);
                       setSchool(selectedOption);
+                      getDropdowns(selectedOption?.key);
                     }}
                   />
                 </div>
@@ -382,11 +394,11 @@ const AdministratorSchoolCreateEdit = (props: any) => {
 };
 
 const mapDispatchToProps = {
-  ...AdministratorActions,
+  ...schoolAdministrativeActions,
 };
 
 const mapStateToProps = ({ loginReducer }: any) => {
   return { loginReducer };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AdministratorSchoolCreateEdit);
+export default connect(mapStateToProps, mapDispatchToProps)(SchoolAdministrativeCreateEdit);

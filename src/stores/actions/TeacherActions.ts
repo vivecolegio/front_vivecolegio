@@ -11,9 +11,9 @@ export const getListAllTeacher = (campusId:string ,schoolId:string) => {
       let listData = {};
       await client
         .query({
-          query: c == null ? QUERY_GET_ALL_TEACHER_ONLY_SCHOOL : QUERY_GET_ALL_TEACHER,
+          query: QUERY_GET_ALL_TEACHER,
           variables:{
-            c,
+            campusId,
             schoolId
           }
         })

@@ -23,7 +23,7 @@ const AcademicAsignatureCourseBasicCreateEdit = (props: any) => {
   const [course, setCourse] = useState(null);
   const [teacher, setTeacher] = useState(null);
   const [asignature, setAsignature] = useState(null);
-  const [grade, setGrade] = useState(null);
+  const [hourIntensity, setHourIntensity] = useState(null);
 
   const methods = useForm({
     mode: 'onChange',
@@ -43,6 +43,7 @@ const AcademicAsignatureCourseBasicCreateEdit = (props: any) => {
       getDropdowns();
     });
     if (props?.data?.id) {
+      setHourIntensity(props?.data?.weight);
       if (props?.data?.campus !== undefined && props?.data?.campus != null) {
         setCampus({
           key: props?.data?.campus?.id,
@@ -58,6 +59,8 @@ const AcademicAsignatureCourseBasicCreateEdit = (props: any) => {
           key: props?.data?.academicAsignature?.id,
           label: props?.data?.academicAsignature?.name,
           value: props?.data?.academicAsignature?.id,
+          maxHourlyIntensity: props?.data?.gradeAssignment?.maxHourlyIntensity,
+          minHourlyIntensity: props?.data?.gradeAssignment?.minHourlyIntensity
         });
       }
       if (props?.data?.course !== undefined && props?.data?.course != null) {
@@ -83,6 +86,7 @@ const AcademicAsignatureCourseBasicCreateEdit = (props: any) => {
     setCourse(null);
     setAsignature(null);
     setCampus(null);
+    setHourIntensity(null);
     setTeacher(null);
     if (props?.loginReducer?.campusId && !props?.data?.id) {
       // set value when register is new and sesion contains value
@@ -102,7 +106,7 @@ const AcademicAsignatureCourseBasicCreateEdit = (props: any) => {
 
   const getDropdowns = async () => {
     //console.log(props?.loginReducer?.campusId)
-    props.getDropdownsAcademicAsignatureCourse(props?.loginReducer?.schoolId, campusId).then((data: any) => {
+    props.getDropdownsAcademicAsignatureCourse(props?.loginReducer?.schoolId, campusId, courseId).then((data: any) => {
       //console.log(data);
       setCampusList(
         data.dataCampus.edges.map((c: any) => {
@@ -111,7 +115,7 @@ const AcademicAsignatureCourseBasicCreateEdit = (props: any) => {
       );
       setAsignaturesList(
         data.dataAsignatures.edges.map((c: any) => {
-          return { label: c.node.name, value: c.node.id, key: c.node.id };
+          return { label: c?.node?.academicAsignature?.name, value: c?.node?.academicAsignature?.id, key: c?.node?.academicAsignature?.id, key2: c?.node?.id, maxHourlyIntensity: c?.node?.maxHourlyIntensity, minHourlyIntensity: c?.node?.minHourlyIntensity };
         }),
       );
       setGradesList(
@@ -182,16 +186,6 @@ const AcademicAsignatureCourseBasicCreateEdit = (props: any) => {
             <ModalBody>
               <div className="form-group">
                 <Label>
-                  <IntlMessages id="forms.hourlyIntensity" />
-                </Label>
-                <Input
-                  {...weightRest}
-                  innerRef={weightRef}
-                  className="form-control"
-                />
-              </div>
-              <div className="form-group">
-                <Label>
                   <IntlMessages id="menu.asignature" />
                 </Label>
                 <Select
@@ -203,10 +197,35 @@ const AcademicAsignatureCourseBasicCreateEdit = (props: any) => {
                   options={asignaturesList}
                   value={asignature}
                   onChange={(selectedOption) => {
+                    setValue('gradeAssignmentId', selectedOption?.key2);
                     setValue('academicAsignatureId', selectedOption?.key);
+                    setValue('weight', selectedOption?.minHourlyIntensity);
+                    setHourIntensity(selectedOption?.minHourlyIntensity);
                     setAsignature(selectedOption);
                   }}
                 />
+              </div>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="forms.hourlyIntensity" />
+                </Label>
+                <Input
+                  type='range'
+                  disabled={!asignature}
+                  min={asignature?.minHourlyIntensity}
+                  max={asignature?.maxHourlyIntensity}
+                  {...weightRest}
+                  innerRef={weightRef}
+                  className="form-control"
+                  onChange={(e) => {
+                    setHourIntensity(e.target.value);
+                  }}
+                />
+                <div className='d-flex justify-content-between'>
+                  <span>{asignature?.minHourlyIntensity}</span>
+                  <span className='font-bold'>Valor: {hourIntensity}</span>
+                  <span>{asignature?.maxHourlyIntensity}</span>
+                </div>
               </div>
               <div className="form-group">
                 <Label>

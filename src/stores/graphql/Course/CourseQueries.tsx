@@ -60,6 +60,15 @@ export const QUERY_GET_COURSE = gql`
           id
           name
           lastName
+          email
+          phone
+          gender {
+            name
+          }
+          documentNumber
+          documentType {
+            name
+          }
         }        
       }          
       academicGradeId              

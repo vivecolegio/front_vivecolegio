@@ -47,6 +47,11 @@ export const QUERY_GET_ACADEMIC_ASIGNATURE_COURSE = gql`
       id
       weight
       version
+      gradeAssignmentId
+      gradeAssignment {
+        minHourlyIntensity
+        maxHourlyIntensity
+      }
       academicAsignatureId
       academicAsignature {
         name
@@ -103,7 +108,7 @@ export const QUERY_GET_ACADEMIC_ASIGNATURE_COURSE = gql`
 `;
 
 export const QUERY_GET_DROPDOWNS_ACADEMIC_ASIGNATURE_COURSE = gql`
-  query getDropdownsAcademicArea($schoolId: String!, $campusId: String!) {
+  query getDropdownsAcademicArea($schoolId: String!, $campusId: String!, $courseId: String!) {
     dataCampus: getAllCampus(allData: false, orderCreated: false, schoolId: $schoolId) {
       edges {
         node {
@@ -112,15 +117,24 @@ export const QUERY_GET_DROPDOWNS_ACADEMIC_ASIGNATURE_COURSE = gql`
         }
       }
     }
-    dataAsignatures: getAllAcademicAsignature(
-      allData: false
-      orderCreated: false
-      schoolId: $schoolId
+    dataAsignatures: getAllGradeAssignmentNotAssignedInCourse(
+      courseId: $courseId
     ) {
       edges {
         node {
           id
-          name
+          academicGradeId
+          academicGrade {
+            name
+            id
+          }
+          academicAsignatureId
+          academicAsignature {
+            name
+            id
+          }
+          maxHourlyIntensity
+          minHourlyIntensity
         }
       }
     }
