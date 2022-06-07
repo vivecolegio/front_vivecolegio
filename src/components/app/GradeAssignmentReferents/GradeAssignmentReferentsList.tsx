@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router';
 import * as gradeAssignmentActions from '../../../stores/actions/GradeAssignmentActions';
 import DataList from '../../common/Data/DataList';
 import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
+import { Colxx } from '../../common/CustomBootstrap';
+import { Loader } from '../../common/Loader';
 
 const GradeAssignmentReferentsList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
@@ -97,7 +99,11 @@ const GradeAssignmentReferentsList = (props: any) => {
           />
         </>
       ) : (
-        <></>
+        <>
+          <Colxx sm={12} className="d-flex justify-content-center">
+            <Loader />
+          </Colxx>
+        </>
       )}
     </>
   );

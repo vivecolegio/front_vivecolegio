@@ -5,8 +5,10 @@ import { useSearchParams } from 'react-router-dom';
 import { COLUMN_LIST } from '../../../constants/AcademicAsignatureCourse/AcademicAsignatureCourseConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as academicIndicatorActions from '../../../stores/actions/AcademicAsignatureCourseActions';
+import { Colxx } from '../../common/CustomBootstrap';
 import DataList from '../../common/Data/DataList';
 import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
+import { Loader } from '../../common/Loader';
 import AcademicAsignatureCourseCreateEdit from './AcademicAsignatureCourseBasicCreateEdit';
 
 const AcademicAsignatureCourseBasicList = (props: any) => {
@@ -179,7 +181,11 @@ const AcademicAsignatureCourseBasicList = (props: any) => {
           />
         </>
       ) : (
-        <></>
+        <>
+          <Colxx sm={12} className="d-flex justify-content-center">
+            <Loader />
+          </Colxx>
+        </>
       )}
     </>
   );

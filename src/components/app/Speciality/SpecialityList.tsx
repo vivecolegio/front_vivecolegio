@@ -3,7 +3,9 @@ import { connect } from 'react-redux';
 import { COLUMN_LIST } from '../../../constants/Speciality/SpecialityConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as specialityActions from '../../../stores/actions/SpecialityActions';
+import { Colxx } from '../../common/CustomBootstrap';
 import DataList from '../../common/Data/DataList';
+import { Loader } from '../../common/Loader';
 import SpecialityCreateEdit from './SpecialityCreateEdit';
 
 const SpecialityList = (props: any) => {
@@ -81,7 +83,7 @@ const SpecialityList = (props: any) => {
   const deleteAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.deleteSpeciality(item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -94,7 +96,7 @@ const SpecialityList = (props: any) => {
   const changeActiveDataAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.changeActiveSpeciality(!item.active, item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -132,7 +134,11 @@ const SpecialityList = (props: any) => {
           />
         </>
       ) : (
-        <></>
+        <>
+          <Colxx sm={12} className="d-flex justify-content-center">
+            <Loader />
+          </Colxx>
+        </>
       )}
     </>
   );

@@ -3,7 +3,9 @@ import { connect } from 'react-redux';
 import { COLUMN_LIST } from '../../../../constants/GeneralStandard/standardConstants';
 import { createNotification } from '../../../../helpers/Notification';
 import * as standardActions from '../../../../stores/actions/GeneralAcademic/StandardActions';
+import { Colxx } from '../../../common/CustomBootstrap';
 import DataList from '../../../common/Data/DataList';
+import { Loader } from '../../../common/Loader';
 import StandardCreateEdit from './StandardCreateEdit';
 
 const GeneralStandardList = (props: any) => {
@@ -71,7 +73,7 @@ const GeneralStandardList = (props: any) => {
   const deleteAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.deleteStandard(item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -84,7 +86,7 @@ const GeneralStandardList = (props: any) => {
   const changeActiveDataAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.changeActiveStandard(!item.active, item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -122,7 +124,11 @@ const GeneralStandardList = (props: any) => {
           />
         </>
       ) : (
-        <></>
+        <>
+          <Colxx sm={12} className="d-flex justify-content-center">
+            <Loader />
+          </Colxx>
+        </>
       )}
     </>
   );

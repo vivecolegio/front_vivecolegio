@@ -3,7 +3,9 @@ import { connect } from 'react-redux';
 import { COLUMN_LIST } from '../../../constants/EducationLevel/EducationLevelConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as educationLevelActions from '../../../stores/actions/EducationLevelActions';
+import { Colxx } from '../../common/CustomBootstrap';
 import DataList from '../../common/Data/DataList';
+import { Loader } from '../../common/Loader';
 import EdicationLevelCreateEdit from './EducationLevelCreateEdit';
 
 const EducationLevelList = (props: any) => {
@@ -70,7 +72,7 @@ const EducationLevelList = (props: any) => {
   const deleteAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.deleteEducationLevel(item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -83,7 +85,7 @@ const EducationLevelList = (props: any) => {
   const changeActiveDataAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.changeActiveEducationLevel(!item.active, item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -121,7 +123,11 @@ const EducationLevelList = (props: any) => {
           />
         </>
       ) : (
-        <></>
+        <>
+          <Colxx sm={12} className="d-flex justify-content-center">
+            <Loader />
+          </Colxx>
+        </>
       )}
     </>
   );

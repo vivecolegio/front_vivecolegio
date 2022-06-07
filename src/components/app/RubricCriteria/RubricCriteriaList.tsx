@@ -6,8 +6,10 @@ import { COLUMN_LIST } from '../../../constants/ExperienceLearningRubricCriteria
 import { createNotification } from '../../../helpers/Notification';
 import * as academicPeriodActions from '../../../stores/actions/AcademicPeriodActions';
 import * as experienceLearningRubricCriteriaActions from '../../../stores/actions/ExperienceLearningRubricCriteriaActions';
+import { Colxx } from '../../common/CustomBootstrap';
 import DataList from '../../common/Data/DataList';
 import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
+import { Loader } from '../../common/Loader';
 import ExperienceLearningRubricCriteriaCreateEdit from './RubricCriteriaCreateEdit';
 
 const ExperienceLearningRubricCriteriaList = (props: any) => {
@@ -27,7 +29,7 @@ const ExperienceLearningRubricCriteriaList = (props: any) => {
     props.getListAllExperienceLearningRubricCriteria(learningId).then((listData: any) => {
       setDataTable(listData);
       let count = 0;
-      listData?.map((d:any)=>{
+      listData?.map((d: any) => {
         count += d?.node?.weight;
       })
       setTotal(count);
@@ -89,7 +91,7 @@ const ExperienceLearningRubricCriteriaList = (props: any) => {
   const deleteAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.deleteExperienceLearningRubricCriteria(item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -102,7 +104,7 @@ const ExperienceLearningRubricCriteriaList = (props: any) => {
   const changeActiveDataAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.changeActiveExperienceLearningRubricCriteria(!item.active, item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -122,7 +124,7 @@ const ExperienceLearningRubricCriteriaList = (props: any) => {
 
   const getCantTotal = async (dataList: any[]) => {
     let count = 0;
-    dataList?.map((d:any)=>{
+    dataList?.map((d: any) => {
       count += d?.node?.weight;
     })
     setTotal(count);
@@ -167,7 +169,7 @@ const ExperienceLearningRubricCriteriaList = (props: any) => {
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
             additionalFunction={additionalFunction}
-            createActionDisabled={total >=100 ? true : false}
+            createActionDisabled={total >= 100 ? true : false}
             childrenButtons={[
               {
                 id: 0,
@@ -211,12 +213,12 @@ const ExperienceLearningRubricCriteriaList = (props: any) => {
               <>
                 <div className="d-flex justify-content-between mt-4 align-items-center">
                   <div className="d-flex justify-content-between align-items-center">
-                  <HeaderInfoAcademic asignature grade course experienceLearnig goTitle="Regresar a experiencias de aprendizaje" experienceLearnigId={learningId} academicAsignatureCourseId={academicAsignatureCourseId}/>                           
-                  </div>  
+                    <HeaderInfoAcademic asignature grade course experienceLearnig goTitle="Regresar a experiencias de aprendizaje" experienceLearnigId={learningId} academicAsignatureCourseId={academicAsignatureCourseId} />
+                  </div>
                   <div className='d-flex text-right flex-column'>
                     <span>Peso total:</span>{' '}
-                    <h1 className="text-info font-bold">{total}</h1>                      
-                  </div>              
+                    <h1 className="text-info font-bold">{total}</h1>
+                  </div>
                 </div>
               </>
             }
@@ -232,7 +234,11 @@ const ExperienceLearningRubricCriteriaList = (props: any) => {
           />
         </>
       ) : (
-        <></>
+        <>
+          <Colxx sm={12} className="d-flex justify-content-center">
+            <Loader />
+          </Colxx>
+        </>
       )}
     </>
   );

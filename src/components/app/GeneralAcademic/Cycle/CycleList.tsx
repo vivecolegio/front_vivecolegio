@@ -3,8 +3,10 @@ import { connect } from 'react-redux';
 import { COLUMN_LIST } from '../../../../constants/Cycle/cycleConstants';
 import { createNotification } from '../../../../helpers/Notification';
 import * as cycleActions from '../../../../stores/actions/GeneralAcademic/CycleActions';
+import { Colxx } from '../../../common/CustomBootstrap';
 import AddNewModal from '../../../common/Data/AddNewModal';
 import DataList from '../../../common/Data/DataList';
+import { Loader } from '../../../common/Loader';
 import CycleCreateEdit from './CycleCreateEdit';
 
 const GeneralCycleList = (props: any) => {
@@ -71,7 +73,7 @@ const GeneralCycleList = (props: any) => {
   const deleteAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.deleteCycle(item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -84,7 +86,7 @@ const GeneralCycleList = (props: any) => {
   const changeActiveDataAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.changeActiveCycle(!item.active, item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -122,7 +124,11 @@ const GeneralCycleList = (props: any) => {
           />
         </>
       ) : (
-        <></>
+        <>
+          <Colxx sm={12} className="d-flex justify-content-center">
+            <Loader />
+          </Colxx>
+        </>
       )}
     </>
   );

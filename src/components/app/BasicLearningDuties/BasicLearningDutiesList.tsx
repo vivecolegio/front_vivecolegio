@@ -5,8 +5,10 @@ import { useSearchParams } from 'react-router-dom';
 import { COLUMN_LIST } from '../../../constants/BasicLearningDuties/BasicLearningDutiesConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as generalBasicLearningRightActions from '../../../stores/actions/BasicLearningDutiesActions';
+import { Colxx } from '../../common/CustomBootstrap';
 import DataList from '../../common/Data/DataList';
 import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
+import { Loader } from '../../common/Loader';
 import GeneralBasicLearningRightCreateEdit from './BasicLearningDutiesCreateEdit';
 
 const GeneralBasicLearningRightList = (props: any) => {
@@ -158,7 +160,11 @@ const GeneralBasicLearningRightList = (props: any) => {
           />
         </>
       ) : (
-        <></>
+        <>
+          <Colxx sm={12} className="d-flex justify-content-center">
+            <Loader />
+          </Colxx>
+        </>
       )}
     </>
   );

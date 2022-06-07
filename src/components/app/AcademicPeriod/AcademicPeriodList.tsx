@@ -4,7 +4,9 @@ import { connect } from 'react-redux';
 import { COLUMN_LIST } from '../../../constants/AcademicPeriod/AcademicPeriodConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as academicIndicatorActions from '../../../stores/actions/AcademicPeriodActions';
+import { Colxx } from '../../common/CustomBootstrap';
 import DataList from '../../common/Data/DataList';
+import { Loader } from '../../common/Loader';
 import AcademicPeriodCreateEdit from './AcademicPeriodCreateEdit';
 
 const AcademicPeriodList = (props: any) => {
@@ -86,7 +88,7 @@ const AcademicPeriodList = (props: any) => {
   const deleteAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.deleteUser(item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -99,7 +101,7 @@ const AcademicPeriodList = (props: any) => {
   const changeActiveDataAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.changeActiveUser(!item.active, item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -137,7 +139,11 @@ const AcademicPeriodList = (props: any) => {
           />
         </>
       ) : (
-        <></>
+        <>
+          <Colxx sm={12} className="d-flex justify-content-center">
+            <Loader />
+          </Colxx>
+        </>
       )}
     </>
   );

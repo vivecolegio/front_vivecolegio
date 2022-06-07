@@ -5,7 +5,9 @@ import { COLUMN_LIST } from '../../../constants/Menu/menuConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as loginActions from '../../../stores/actions/LoginActions';
 import * as menuActions from '../../../stores/actions/MenuModelActions';
+import { Colxx } from '../../common/CustomBootstrap';
 import DataList from '../../common/Data/DataList';
+import { Loader } from '../../common/Loader';
 import MenuCreateEdit from './MenuCreateEdit';
 
 const MenuList = (props: any) => {
@@ -74,13 +76,13 @@ const MenuList = (props: any) => {
   };
 
   const additionalFunction = async (item: any, btn: any) => {
-     switch (btn?.action) {
-       case 'goToChildren':
-         goToChildren(item.id);
-         break;     
-       default:
-         break;
-     }
+    switch (btn?.action) {
+      case 'goToChildren':
+        goToChildren(item.id);
+        break;
+      default:
+        break;
+    }
   };
 
   const goToChildren = async (id: any) => {
@@ -96,7 +98,7 @@ const MenuList = (props: any) => {
   const deleteAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.deleteMenu(item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -109,7 +111,7 @@ const MenuList = (props: any) => {
   const changeActiveDataAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.changeActiveMenu(!item.active, item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -130,7 +132,7 @@ const MenuList = (props: any) => {
             match={props?.match}
             modalOpen={modalOpen}
             setModalOpen={setModalOpen}
-            viewEditData={viewEditData}            
+            viewEditData={viewEditData}
             deleteData={deleteData}
             changeActiveData={changeActiveData}
             deleteAll={deleteAll}
@@ -138,8 +140,8 @@ const MenuList = (props: any) => {
             changeActiveDataAll={changeActiveDataAll}
             childrenButtons={
               [
-              { id: 0, label:"Submenus", color:"secondary", icon:"simple-icon-link", action: "goToChildren" },              
-             ]
+                { id: 0, label: "Submenus", color: "secondary", icon: "simple-icon-link", action: "goToChildren" },
+              ]
             }
             withChildren={true}
           />
@@ -147,8 +149,8 @@ const MenuList = (props: any) => {
             isLg={true}
             data={data}
             modalOpen={modalOpen}
-            toggleModal={() => {   
-              setData(null);    
+            toggleModal={() => {
+              setData(null);
               return setModalOpen(!modalOpen);
             }}
             onSubmit={onSubmit}
@@ -156,7 +158,11 @@ const MenuList = (props: any) => {
           </MenuCreateEdit>
         </>
       ) : (
-        <></>
+        <>
+          <Colxx sm={12} className="d-flex justify-content-center">
+            <Loader />
+          </Colxx>
+        </>
       )}
     </>
   );

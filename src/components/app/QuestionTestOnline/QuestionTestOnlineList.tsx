@@ -3,7 +3,9 @@ import { connect } from 'react-redux';
 import { COLUMN_LIST } from '../../../constants/QuestionTestOnline/questionTestOnlineConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as QuestionTestOnlineActions from '../../../stores/actions/QuestionTestOnlineActions';
+import { Colxx } from '../../common/CustomBootstrap';
 import DataList from '../../common/Data/DataList';
+import { Loader } from '../../common/Loader';
 import QuestionTestOnlineCreateEdit from './QuestionTestOnlineCreateEdit';
 
 const QuestionTestOnlineList = (props: any) => {
@@ -71,7 +73,7 @@ const QuestionTestOnlineList = (props: any) => {
   const deleteAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.deleteQuestionTestOnline(item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -84,7 +86,7 @@ const QuestionTestOnlineList = (props: any) => {
   const changeActiveDataAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.changeActiveQuestionTestOnline(!item.active, item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -117,7 +119,7 @@ const QuestionTestOnlineList = (props: any) => {
                 color: 'info',
                 icon: 'iconsminds-preview',
                 action: '',
-              },             
+              },
             ]}
             withChildren={true}
           />
@@ -132,7 +134,11 @@ const QuestionTestOnlineList = (props: any) => {
           />
         </>
       ) : (
-        <></>
+        <>
+          <Colxx sm={12} className="d-flex justify-content-center">
+            <Loader />
+          </Colxx>
+        </>
       )}
     </>
   );

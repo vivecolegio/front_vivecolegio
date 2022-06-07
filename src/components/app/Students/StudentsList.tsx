@@ -1,9 +1,11 @@
 /* eslint-disable no-await-in-loop */
+import { Loader } from '../../common/Loader';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { COLUMN_LIST } from '../../../constants/Student/studentConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as studentActions from '../../../stores/actions/StudentActions';
+import { Colxx } from '../../common/CustomBootstrap';
 import DataList from '../../common/Data/DataList';
 import StudentCreateEdit from './StudentsCreateEdit';
 
@@ -16,26 +18,26 @@ const StudentList = (props: any) => {
   const [data, setData] = useState(null);
   useEffect(() => {
     props.getListAllStudent(props?.loginReducer?.campusId, props?.loginReducer?.schoolId).then((listData: any) => {
-      setDataTable(listData.map((c:any)=>{
-        c.node.name = c.node.user ? c.node.user.name : ''; 
-        c.node.lastName = c.node.user ? c.node.user.lastName : ''; 
-        c.node.phone = c.node.user ? c.node.user.phone : ''; 
-        c.node.email = c.node.user ? c.node.user.email : '';       
+      setDataTable(listData.map((c: any) => {
+        c.node.name = c.node.user ? c.node.user.name : '';
+        c.node.lastName = c.node.user ? c.node.user.lastName : '';
+        c.node.phone = c.node.user ? c.node.user.phone : '';
+        c.node.email = c.node.user ? c.node.user.email : '';
         return c;
       }));
     });
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllStudent(props?.loginReducer?.campusId, props?.loginReducer?.schoolId).then((listData: any) => {     
-      setDataTable(listData.map((c:any)=>{
-        c.node.name = c.node.user ? c.node.user.name : ''; 
-        c.node.lastName = c.node.user ? c.node.user.lastName : ''; 
-        c.node.phone = c.node.user ? c.node.user.phone : ''; 
-        c.node.email = c.node.user ? c.node.user.email : '';             
+    props.getListAllStudent(props?.loginReducer?.campusId, props?.loginReducer?.schoolId).then((listData: any) => {
+      setDataTable(listData.map((c: any) => {
+        c.node.name = c.node.user ? c.node.user.name : '';
+        c.node.lastName = c.node.user ? c.node.user.lastName : '';
+        c.node.phone = c.node.user ? c.node.user.phone : '';
+        c.node.email = c.node.user ? c.node.user.email : '';
         return c;
       }));
-    });    
+    });
   };
 
   const refreshDataTable = async () => {
@@ -87,18 +89,18 @@ const StudentList = (props: any) => {
   };
 
   const deleteAll = async (items: any) => {
-    items.map(async (item:any)=>{
-      await props.deleteStudent(item.id, false).then(() => {},() =>{ createNotification('error', 'error', '');});
+    items.map(async (item: any) => {
+      await props.deleteStudent(item.id, false).then(() => { }, () => { createNotification('error', 'error', ''); });
     });
-    refreshDataTable(); 
+    refreshDataTable();
     createNotification('success', 'success', '');
   };
 
   const changeActiveDataAll = async (items: any) => {
-    items.map(async (item:any)=>{
-      await props.changeActiveStudent(!item.active, item.id, false).then(() => {},() =>{ createNotification('error', 'error', '');});
+    items.map(async (item: any) => {
+      await props.changeActiveStudent(!item.active, item.id, false).then(() => { }, () => { createNotification('error', 'error', ''); });
     });
-    refreshDataTable(); 
+    refreshDataTable();
     createNotification('success', 'success', '');
   };
 
@@ -118,7 +120,7 @@ const StudentList = (props: any) => {
             deleteData={deleteData}
             changeActiveData={changeActiveData}
             deleteAll={deleteAll}
-            changeActiveDataAll={changeActiveDataAll} 
+            changeActiveDataAll={changeActiveDataAll}
           />
           <StudentCreateEdit
             data={data}
@@ -131,7 +133,11 @@ const StudentList = (props: any) => {
           />
         </>
       ) : (
-        <></>
+        <>
+          <Colxx sm={12} className="d-flex justify-content-center">
+            <Loader />
+          </Colxx>
+        </>
       )}
     </>
   );

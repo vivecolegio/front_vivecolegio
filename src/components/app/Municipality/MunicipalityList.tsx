@@ -3,7 +3,9 @@ import { connect } from 'react-redux';
 import { COLUMN_LIST } from '../../../constants/Municipality/MunicipalityConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as municipalityActions from '../../../stores/actions/MunicipalityActions';
+import { Colxx } from '../../common/CustomBootstrap';
 import DataList from '../../common/Data/DataList';
+import { Loader } from '../../common/Loader';
 import MunicipalityCreateEdit from './MunicipalityCreateEdit';
 
 const MunicipalityList = (props: any) => {
@@ -70,7 +72,7 @@ const MunicipalityList = (props: any) => {
   const deleteAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.deleteMunicipality(item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -83,7 +85,7 @@ const MunicipalityList = (props: any) => {
   const changeActiveDataAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.changeActiveMunicipality(!item.active, item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -121,7 +123,11 @@ const MunicipalityList = (props: any) => {
           />
         </>
       ) : (
-        <></>
+        <>
+          <Colxx sm={12} className="d-flex justify-content-center">
+            <Loader />
+          </Colxx>
+        </>
       )}
     </>
   );

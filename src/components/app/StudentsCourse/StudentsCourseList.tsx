@@ -6,8 +6,10 @@ import { Button } from 'reactstrap';
 import { COLUMN_LIST } from '../../../constants/Student/studentConstants';
 import * as courseActions from '../../../stores/actions/CourseActions';
 import * as studentActions from '../../../stores/actions/StudentActions';
+import { Colxx } from '../../common/CustomBootstrap';
 import DataList from '../../common/Data/DataList';
 import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
+import { Loader } from '../../common/Loader';
 import StudentAddCourse from './StudentAddCourse';
 
 
@@ -126,7 +128,11 @@ const StudentCourseList = (props: any) => {
           />
         </>
       ) : (
-        <></>
+        <>
+          <Colxx sm={12} className="d-flex justify-content-center">
+            <Loader />
+          </Colxx>
+        </>
       )}
     </>
   );

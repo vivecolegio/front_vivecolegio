@@ -4,7 +4,9 @@ import { useNavigate } from 'react-router';
 import { COLUMN_LIST } from '../../../constants/AcademicAsignatureCourse/AcademicAsignatureCourseConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as academicIndicatorActions from '../../../stores/actions/AcademicAsignatureCourseActions';
+import { Colxx } from '../../common/CustomBootstrap';
 import DataList from '../../common/Data/DataList';
+import { Loader } from '../../common/Loader';
 
 const ClassroomPlan = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
@@ -95,7 +97,7 @@ const ClassroomPlan = (props: any) => {
   const deleteAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.deleteUser(item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -108,7 +110,7 @@ const ClassroomPlan = (props: any) => {
   const changeActiveDataAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.changeActiveUser(!item.active, item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -124,7 +126,7 @@ const ClassroomPlan = (props: any) => {
         goToChildren(
           `/listClassroomPlans?academicAsignatureCourseId=${item?.id}&courseId=${item?.course?.id}`,
         );
-        break;      
+        break;
       default:
         break;
     }
@@ -158,13 +160,17 @@ const ClassroomPlan = (props: any) => {
                 color: 'info',
                 icon: 'iconsminds-library',
                 action: 'goToChildren',
-              },              
+              },
             ]}
             withChildren={true}
-          />          
+          />
         </>
       ) : (
-        <></>
+        <>
+          <Colxx sm={12} className="d-flex justify-content-center">
+            <Loader />
+          </Colxx>
+        </>
       )}
     </>
   );

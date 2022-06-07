@@ -5,7 +5,9 @@ import { useSearchParams } from 'react-router-dom';
 import { COLUMN_LIST } from '../../../constants/AcademicHour/academicHourConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as academicHourActions from '../../../stores/actions/AcademicHourActions';
+import { Colxx } from '../../common/CustomBootstrap';
 import DataList from '../../common/Data/DataList';
+import { Loader } from '../../common/Loader';
 import AcademicHourCreateEdit from './AcademicHourCreateEdit';
 
 const AcademicHourList = (props: any) => {
@@ -146,7 +148,11 @@ const AcademicHourList = (props: any) => {
           />
         </>
       ) : (
-        <></>
+        <>
+          <Colxx sm={12} className="d-flex justify-content-center">
+            <Loader />
+          </Colxx>
+        </>
       )}
     </>
   );

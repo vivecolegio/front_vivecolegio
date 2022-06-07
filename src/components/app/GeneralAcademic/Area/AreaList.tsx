@@ -3,8 +3,10 @@ import { connect } from 'react-redux';
 import { COLUMN_LIST } from '../../../../constants/Area/areaConstants';
 import { createNotification } from '../../../../helpers/Notification';
 import * as areaActions from '../../../../stores/actions/GeneralAcademic/AreaActions';
+import { Colxx } from '../../../common/CustomBootstrap';
 import AddNewModal from '../../../common/Data/AddNewModal';
 import DataList from '../../../common/Data/DataList';
+import { Loader } from '../../../common/Loader';
 import AreaCreateEdit from './AreaCreateEdit';
 
 const GeneralAreaList = (props: any) => {
@@ -71,7 +73,7 @@ const GeneralAreaList = (props: any) => {
   const deleteAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.deleteArea(item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -84,7 +86,7 @@ const GeneralAreaList = (props: any) => {
   const changeActiveDataAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.changeActiveArea(!item.active, item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -122,7 +124,11 @@ const GeneralAreaList = (props: any) => {
           />
         </>
       ) : (
-        <></>
+        <>
+          <Colxx sm={12} className="d-flex justify-content-center">
+            <Loader />
+          </Colxx>
+        </>
       )}
     </>
   );

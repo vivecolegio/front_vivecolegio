@@ -8,6 +8,8 @@ import DataList from '../../common/Data/DataList';
 import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
 import CourseCreateEdit from './CourseCreateEdit';
 import { useNavigate } from 'react-router';
+import { Colxx } from '../../common/CustomBootstrap';
+import { Loader } from '../../common/Loader';
 
 const CourseList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
@@ -177,7 +179,11 @@ const CourseList = (props: any) => {
           />
         </>
       ) : (
-        <></>
+        <>
+          <Colxx sm={12} className="d-flex justify-content-center">
+            <Loader />
+          </Colxx>
+        </>
       )}
     </>
   );

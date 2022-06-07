@@ -5,8 +5,10 @@ import { connect } from 'react-redux';
 import { COLUMN_LIST } from '../../../constants/Gender/genderConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as genderActions from '../../../stores/actions/GenderActions';
+import { Colxx } from '../../common/CustomBootstrap';
 import AddNewModal from '../../common/Data/AddNewModal';
 import DataList from '../../common/Data/DataList';
+import { Loader } from '../../common/Loader';
 import GenderCreateEdit from './GenderCreateEdit';
 
 const GenderList = (props: any) => {
@@ -71,18 +73,18 @@ const GenderList = (props: any) => {
   };
 
   const deleteAll = async (items: any) => {
-    for(const item of items){
-       await props.deleteGender(item.id, false).then(() => {},() =>{ createNotification('error', 'error', '');});
-    };   
-    refreshDataTable(); 
+    for (const item of items) {
+      await props.deleteGender(item.id, false).then(() => { }, () => { createNotification('error', 'error', ''); });
+    };
+    refreshDataTable();
     createNotification('success', 'success', '');
   };
 
   const changeActiveDataAll = async (items: any) => {
-    for(const item of items){
-      await props.changeActiveGender(!item.active, item.id, false).then(() => {},() =>{ createNotification('error', 'error', '');});
-    };   
-    refreshDataTable(); 
+    for (const item of items) {
+      await props.changeActiveGender(!item.active, item.id, false).then(() => { }, () => { createNotification('error', 'error', ''); });
+    };
+    refreshDataTable();
     createNotification('success', 'success', '');
   };
 
@@ -100,7 +102,7 @@ const GenderList = (props: any) => {
             viewEditData={viewEditData}
             deleteData={deleteData}
             deleteAll={deleteAll}
-            changeActiveDataAll={changeActiveDataAll} 
+            changeActiveDataAll={changeActiveDataAll}
             changeActiveData={changeActiveData}
           />
           <GenderCreateEdit
@@ -114,7 +116,11 @@ const GenderList = (props: any) => {
           />
         </>
       ) : (
-        <></>
+        <>
+          <Colxx sm={12} className="d-flex justify-content-center">
+            <Loader />
+          </Colxx>
+        </>
       )}
     </>
   );

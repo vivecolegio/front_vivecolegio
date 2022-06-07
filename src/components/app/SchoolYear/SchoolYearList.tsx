@@ -4,7 +4,9 @@ import { connect } from 'react-redux';
 import { COLUMN_LIST } from '../../../constants/SchoolYear/schoolYearConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as schoolYearActions from '../../../stores/actions/SchoolYearActions';
+import { Colxx } from '../../common/CustomBootstrap';
 import DataList from '../../common/Data/DataList';
+import { Loader } from '../../common/Loader';
 import SchoolYearCreateEdit from './SchoolYearCreateEdit';
 
 const SchoolYearList = (props: any) => {
@@ -83,7 +85,7 @@ const SchoolYearList = (props: any) => {
   const deleteAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.deleteSchoolYear(item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -96,7 +98,7 @@ const SchoolYearList = (props: any) => {
   const changeActiveDataAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.changeActiveSchoolYear(!item.active, item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -134,7 +136,11 @@ const SchoolYearList = (props: any) => {
           />
         </>
       ) : (
-        <></>
+        <>
+          <Colxx sm={12} className="d-flex justify-content-center">
+            <Loader />
+          </Colxx>
+        </>
       )}
     </>
   );

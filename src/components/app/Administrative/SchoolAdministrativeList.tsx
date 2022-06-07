@@ -3,8 +3,10 @@ import { connect } from 'react-redux';
 import { COLUMN_LIST } from '../../../constants/SchoolAdministrative/schoolAdministrativecConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as schoolAdministrativeActions from '../../../stores/actions/SchoolAdministrativeActions';
+import { Colxx } from '../../common/CustomBootstrap';
 import AddNewModal from '../../common/Data/AddNewModal';
 import DataList from '../../common/Data/DataList';
+import { Loader } from '../../common/Loader';
 import SchoolAdministrativeCreateEdit from './SchoolAdministrativeCreateEdit';
 
 const SchoolAdministrativeList = (props: any) => {
@@ -142,7 +144,11 @@ const SchoolAdministrativeList = (props: any) => {
           />
         </>
       ) : (
-        <></>
+        <>
+          <Colxx sm={12} className="d-flex justify-content-center">
+            <Loader />
+          </Colxx>
+        </>
       )}
     </>
   );

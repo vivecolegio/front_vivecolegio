@@ -6,6 +6,8 @@ import AddNewModal from '../../common/Data/AddNewModal';
 import DataList from '../../common/Data/DataList';
 import UserCreateEdit from './UserCreateEdit';
 import { createNotification } from "../../../helpers/Notification";
+import { Colxx } from '../../common/CustomBootstrap';
+import { Loader } from '../../common/Loader';
 
 const UserList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
@@ -77,18 +79,18 @@ const UserList = (props: any) => {
   };
 
   const deleteAll = async (items: any) => {
-    items.map(async (item:any)=>{
-      await props.deleteUser(item.id, false).then(() => {},() =>{ createNotification('error', 'error', '');});
+    items.map(async (item: any) => {
+      await props.deleteUser(item.id, false).then(() => { }, () => { createNotification('error', 'error', ''); });
     });
-    refreshDataTable(); 
+    refreshDataTable();
     createNotification('success', 'success', '');
   };
 
   const changeActiveDataAll = async (items: any) => {
-    items.map(async (item:any)=>{
-      await props.changeActiveUser(!item.active, item.id, false).then(() => {},() =>{ createNotification('error', 'error', '');});
+    items.map(async (item: any) => {
+      await props.changeActiveUser(!item.active, item.id, false).then(() => { }, () => { createNotification('error', 'error', ''); });
     });
-    refreshDataTable(); 
+    refreshDataTable();
     createNotification('success', 'success', '');
   };
 
@@ -108,7 +110,7 @@ const UserList = (props: any) => {
             deleteData={deleteData}
             changeActiveData={changeActiveData}
             deleteAll={deleteAll}
-            changeActiveDataAll={changeActiveDataAll}         
+            changeActiveDataAll={changeActiveDataAll}
           />
           <UserCreateEdit
             data={data}
@@ -121,7 +123,11 @@ const UserList = (props: any) => {
           />
         </>
       ) : (
-        <></>
+        <>
+          <Colxx sm={12} className="d-flex justify-content-center">
+            <Loader />
+          </Colxx>
+        </>
       )}
     </>
   );

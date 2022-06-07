@@ -4,7 +4,9 @@ import { useNavigate } from 'react-router';
 import { COLUMN_LIST } from '../../../../constants/Area/areaConstants';
 import { createNotification } from '../../../../helpers/Notification';
 import * as areaActions from '../../../../stores/actions/Academic/AreaActions';
+import { Colxx } from '../../../common/CustomBootstrap';
 import DataList from '../../../common/Data/DataList';
+import { Loader } from '../../../common/Loader';
 import AreaCreateEdit from './AreaCreateEdit';
 
 const AreaList = (props: any) => {
@@ -155,7 +157,11 @@ const AreaList = (props: any) => {
           />
         </>
       ) : (
-        <></>
+        <>
+          <Colxx sm={12} className="d-flex justify-content-center">
+            <Loader />
+          </Colxx>
+        </>
       )}
     </>
   );

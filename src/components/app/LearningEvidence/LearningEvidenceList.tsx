@@ -5,20 +5,22 @@ import { useSearchParams } from 'react-router-dom';
 import { COLUMN_LIST } from '../../../constants/LearningEvidence/learningEvidenceConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as learningEvidenceActions from '../../../stores/actions/LearningEvidenceActions';
+import { Colxx } from '../../common/CustomBootstrap';
 import DataList from '../../common/Data/DataList';
 import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
+import { Loader } from '../../common/Loader';
 import LearningEvidenceCreateEdit from './LearningEvidenceCreateEdit';
 
 const LearningEvidenceList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
   const [columns, setColumns] = useState(COLUMN_LIST);
-  const [modalOpen, setModalOpen] = useState(false);  
+  const [modalOpen, setModalOpen] = useState(false);
 
   let navigate = useNavigate();
 
   let [params] = useSearchParams();
-  const  learningId  = params.get('learningId');
-  const  academicAsignatureCourseId  = params.get('academicAsignatureCourseId');
+  const learningId = params.get('learningId');
+  const academicAsignatureCourseId = params.get('academicAsignatureCourseId');
 
   const [data, setData] = useState(null);
   useEffect(() => {
@@ -79,7 +81,7 @@ const LearningEvidenceList = (props: any) => {
   const deleteAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.deleteLearningEvidence(item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -92,7 +94,7 @@ const LearningEvidenceList = (props: any) => {
   const changeActiveDataAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.changeActiveLearningEvidence(!item.active, item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -110,7 +112,7 @@ const LearningEvidenceList = (props: any) => {
     <>
       {' '}
       {dataTable !== null ? (
-        <>        
+        <>
           <DataList
             data={dataTable}
             columns={columns}
@@ -124,7 +126,7 @@ const LearningEvidenceList = (props: any) => {
             changeActiveDataAll={changeActiveDataAll}
             header={
               <>
-                <HeaderInfoAcademic asignature grade learning goTitle="Regresar a aprendizajes" learningId={learningId} academicAsignatureCourseId={academicAsignatureCourseId}/>        
+                <HeaderInfoAcademic asignature grade learning goTitle="Regresar a aprendizajes" learningId={learningId} academicAsignatureCourseId={academicAsignatureCourseId} />
               </>
             }
           />
@@ -139,7 +141,11 @@ const LearningEvidenceList = (props: any) => {
           />
         </>
       ) : (
-        <></>
+        <>
+          <Colxx sm={12} className="d-flex justify-content-center">
+            <Loader />
+          </Colxx>
+        </>
       )}
     </>
   );

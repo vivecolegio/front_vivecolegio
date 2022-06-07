@@ -4,8 +4,10 @@ import { useNavigate } from 'react-router';
 import { COLUMN_LIST } from '../../../constants/QuestionCategoryTestOnline/questionCategoryTestOnlineConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as questionCategoryTestOnlineActions from '../../../stores/actions/QuestionCategoryTestOnlineActions';
+import { Colxx } from '../../common/CustomBootstrap';
 import AddNewModal from '../../common/Data/AddNewModal';
 import DataList from '../../common/Data/DataList';
+import { Loader } from '../../common/Loader';
 import QuestionCategoryTestOnlineCreateEdit from './QuestionCategoryTestOnlineCreateEdit';
 
 const QuestionCategoryTestOnlineList = (props: any) => {
@@ -74,7 +76,7 @@ const QuestionCategoryTestOnlineList = (props: any) => {
   const deleteAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.deleteQuestionCategoryTestOnline(item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -87,7 +89,7 @@ const QuestionCategoryTestOnlineList = (props: any) => {
   const changeActiveDataAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.changeActiveQuestionCategoryTestOnline(!item.active, item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -103,7 +105,7 @@ const QuestionCategoryTestOnlineList = (props: any) => {
         goToChildren(
           `/questionTestOnline`,
         );
-        break;   
+        break;
       default:
         break;
     }
@@ -152,7 +154,11 @@ const QuestionCategoryTestOnlineList = (props: any) => {
           />
         </>
       ) : (
-        <></>
+        <>
+          <Colxx sm={12} className="d-flex justify-content-center">
+            <Loader />
+          </Colxx>
+        </>
       )}
     </>
   );

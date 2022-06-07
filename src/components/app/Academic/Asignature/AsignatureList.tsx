@@ -4,8 +4,10 @@ import { useSearchParams } from 'react-router-dom';
 import { COLUMN_LIST } from '../../../../constants/Asignature/asignatureConstants';
 import { createNotification } from '../../../../helpers/Notification';
 import * as asignatureActions from '../../../../stores/actions/Academic/AsignatureActions';
+import { Colxx } from '../../../common/CustomBootstrap';
 import DataList from '../../../common/Data/DataList';
 import HeaderInfoAcademic from '../../../common/Data/HeaderInfoAcademic';
+import { Loader } from '../../../common/Loader';
 import AsignatureCreateEdit from './AsignatureCreateEdit';
 
 const AsignatureList = (props: any) => {
@@ -137,7 +139,11 @@ const AsignatureList = (props: any) => {
           </AsignatureCreateEdit>
         </>
       ) : (
-        <></>
+        <>
+          <Colxx sm={12} className="d-flex justify-content-center">
+            <Loader />
+          </Colxx>
+        </>
       )}
     </>
   );

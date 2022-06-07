@@ -5,7 +5,9 @@ import { COLUMN_LIST } from '../../../constants/Menu/menuConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as loginActions from '../../../stores/actions/LoginActions';
 import * as menuItemActions from '../../../stores/actions/MenuItemActions';
+import { Colxx } from '../../common/CustomBootstrap';
 import DataList from '../../common/Data/DataList';
+import { Loader } from '../../common/Loader';
 import MenuItemCreateEdit from './SubmenuCreateEdit';
 
 
@@ -18,14 +20,14 @@ const MenuItemList = (props: any) => {
 
   const [data, setData] = useState(null);
   useEffect(() => {
-    const  idMenu  = params.get('id');   
-      props.getListAllMenuItem(idMenu ? idMenu : '').then((listData: any) => {
-        setDataTable(listData);
-      });
+    const idMenu = params.get('id');
+    props.getListAllMenuItem(idMenu ? idMenu : '').then((listData: any) => {
+      setDataTable(listData);
+    });
   }, []);
 
   const getDataTable = async () => {
-    const  idMenu  = params.get('id');
+    const idMenu = params.get('id');
     props.getListAllMenuItem(idMenu ? idMenu : '').then((listData: any) => {
       setDataTable(listData);
     });
@@ -36,7 +38,7 @@ const MenuItemList = (props: any) => {
     await getDataTable();
   };
 
-  const onSubmit = async (dataForm: any) => {   
+  const onSubmit = async (dataForm: any) => {
     if (data === null) {
       await props.saveNewMenuItem(dataForm).then((id: any) => {
         if (id !== undefined) {
@@ -85,7 +87,7 @@ const MenuItemList = (props: any) => {
   const deleteAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.deleteMenuItem(item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -98,7 +100,7 @@ const MenuItemList = (props: any) => {
   const changeActiveDataAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.changeActiveMenuItem(!item.active, item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -129,15 +131,19 @@ const MenuItemList = (props: any) => {
             data={data}
             isLg={true}
             modalOpen={modalOpen}
-            toggleModal={() => { 
-              setData(null);      
+            toggleModal={() => {
+              setData(null);
               return setModalOpen(!modalOpen);
             }}
             onSubmit={onSubmit}
           />
         </>
       ) : (
-        <></>
+        <>
+          <Colxx sm={12} className="d-flex justify-content-center">
+            <Loader />
+          </Colxx>
+        </>
       )}
     </>
   );

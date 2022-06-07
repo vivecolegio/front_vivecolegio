@@ -3,7 +3,9 @@ import { connect } from 'react-redux';
 import { COLUMN_LIST } from '../../../../constants/PerformanceLevel/performanceLevelConstants';
 import { createNotification } from '../../../../helpers/Notification';
 import * as performanceLevelActions from '../../../../stores/actions/Academic/PerformanceLevelActions';
+import { Colxx } from '../../../common/CustomBootstrap';
 import DataList from '../../../common/Data/DataList';
+import { Loader } from '../../../common/Loader';
 import PerformanceLevelCreateEdit from './PerformanceLevelCreateEdit';
 
 const PerformanceLevelList = (props: any) => {
@@ -70,7 +72,7 @@ const PerformanceLevelList = (props: any) => {
   const deleteAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.deletePerformanceLevel(item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -83,7 +85,7 @@ const PerformanceLevelList = (props: any) => {
   const changeActiveDataAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.changeActivePerformanceLevel(!item.active, item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -121,7 +123,11 @@ const PerformanceLevelList = (props: any) => {
           />
         </>
       ) : (
-        <></>
+        <>
+          <Colxx sm={12} className="d-flex justify-content-center">
+            <Loader />
+          </Colxx>
+        </>
       )}
     </>
   );

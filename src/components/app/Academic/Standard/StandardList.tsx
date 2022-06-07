@@ -5,8 +5,10 @@ import { useSearchParams } from 'react-router-dom';
 import { COLUMN_LIST } from '../../../../constants/Standard/standardConstants';
 import { createNotification } from '../../../../helpers/Notification';
 import * as standardActions from '../../../../stores/actions/Academic/StandardActions';
+import { Colxx } from '../../../common/CustomBootstrap';
 import DataList from '../../../common/Data/DataList';
 import HeaderInfoAcademic from '../../../common/Data/HeaderInfoAcademic';
+import { Loader } from '../../../common/Loader';
 import StandardCreateEdit from './StandardCreateEdit';
 
 const StandardList = (props: any) => {
@@ -154,7 +156,11 @@ const StandardList = (props: any) => {
           />
         </>
       ) : (
-        <></>
+        <>
+          <Colxx sm={12} className="d-flex justify-content-center">
+            <Loader />
+          </Colxx>
+        </>
       )}
     </>
   );

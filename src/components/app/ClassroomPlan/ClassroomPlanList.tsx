@@ -7,8 +7,10 @@ import { Button } from 'reactstrap';
 import { COLUMN_LIST } from '../../../constants/ClassroomPlan/ClassroomPlanConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as classroomPlanActions from '../../../stores/actions/ClassroomPlanActions';
+import { Colxx } from '../../common/CustomBootstrap';
 import DataList from '../../common/Data/DataList';
 import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
+import { Loader } from '../../common/Loader';
 
 const ClassroomPlanList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
@@ -97,7 +99,7 @@ const ClassroomPlanList = (props: any) => {
   const deleteAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.deleteUser(item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -110,7 +112,7 @@ const ClassroomPlanList = (props: any) => {
   const changeActiveDataAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.changeActiveUser(!item.active, item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -126,7 +128,7 @@ const ClassroomPlanList = (props: any) => {
         goToChildren(
           `/classroomPlanDetail?id=${item?.id}&academicAsignatureCourseId=${academicAsignatureCourseId}&courseId=${courseId}`,
         );
-        break;      
+        break;
       default:
         break;
     }
@@ -160,24 +162,28 @@ const ClassroomPlanList = (props: any) => {
                 color: 'info',
                 icon: 'iconsminds-library',
                 action: 'goToChildren',
-              },              
+              },
             ]}
-            withChildren={true}    
+            withChildren={true}
             header={
               <>
-              <div className='d-flex align-items-center justify-content-between'>
-                <HeaderInfoAcademic asignature grade course modality goTitle="Regresar" academicAsignatureCourseId={academicAsignatureCourseId} />
-                <Button color="primary"  onClick={() => {return goToChildren( `/classroomPlanDetail?academicAsignatureCourseId=${academicAsignatureCourseId}&courseId=${courseId}`)}}>
-                  <i className='iconsminds-add-file mr-2'></i>
-                  Crear plan de aula
-                </Button>
+                <div className='d-flex align-items-center justify-content-between'>
+                  <HeaderInfoAcademic asignature grade course modality goTitle="Regresar" academicAsignatureCourseId={academicAsignatureCourseId} />
+                  <Button color="primary" onClick={() => { return goToChildren(`/classroomPlanDetail?academicAsignatureCourseId=${academicAsignatureCourseId}&courseId=${courseId}`) }}>
+                    <i className='iconsminds-add-file mr-2'></i>
+                    Crear plan de aula
+                  </Button>
                 </div>
               </>
-            }      
-          />          
+            }
+          />
         </>
       ) : (
-        <></>
+        <>
+          <Colxx sm={12} className="d-flex justify-content-center">
+            <Loader />
+          </Colxx>
+        </>
       )}
     </>
   );

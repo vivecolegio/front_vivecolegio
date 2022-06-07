@@ -4,7 +4,9 @@ import { useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
 import { COLUMN_LIST } from '../../../constants/Asignature/asignatureConstants';
 import * as asignatureActions from '../../../stores/actions/Academic/AsignatureActions';
+import { Colxx } from '../../common/CustomBootstrap';
 import DataList from '../../common/Data/DataList';
+import { Loader } from '../../common/Loader';
 
 const ValuationReferents = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
@@ -64,7 +66,11 @@ const ValuationReferents = (props: any) => {
           />
         </>
       ) : (
-        <></>
+        <>
+          <Colxx sm={12} className="d-flex justify-content-center">
+            <Loader />
+          </Colxx>
+        </>
       )}
     </>
   );

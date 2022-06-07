@@ -4,7 +4,9 @@ import { useNavigate } from 'react-router';
 import { COLUMN_LIST } from '../../../constants/AcademicDay/academicDayConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as academicDayActions from '../../../stores/actions/AcademicDayActions';
+import { Colxx } from '../../common/CustomBootstrap';
 import DataList from '../../common/Data/DataList';
+import { Loader } from '../../common/Loader';
 import AcademicDayCreateEdit from './AcademicDayCreateEdit';
 
 const AcademicDayList = (props: any) => {
@@ -153,7 +155,11 @@ const AcademicDayList = (props: any) => {
           />
         </>
       ) : (
-        <></>
+        <>
+          <Colxx sm={12} className="d-flex justify-content-center">
+            <Loader />
+          </Colxx>
+        </>
       )}
     </>
   );

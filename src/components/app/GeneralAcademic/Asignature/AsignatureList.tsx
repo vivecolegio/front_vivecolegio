@@ -3,8 +3,10 @@ import { connect } from 'react-redux';
 import { COLUMN_LIST } from '../../../../constants/Asignature/asignatureConstants';
 import { createNotification } from '../../../../helpers/Notification';
 import * as asignatureActions from '../../../../stores/actions/GeneralAcademic/AsignatureActions';
+import { Colxx } from '../../../common/CustomBootstrap';
 import AddNewModal from '../../../common/Data/AddNewModal';
 import DataList from '../../../common/Data/DataList';
+import { Loader } from '../../../common/Loader';
 import AsignatureCreateEdit from './AsignatureCreateEdit';
 
 const GeneralAsignatureList = (props: any) => {
@@ -72,7 +74,7 @@ const GeneralAsignatureList = (props: any) => {
   const deleteAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.deleteAsignature(item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -85,7 +87,7 @@ const GeneralAsignatureList = (props: any) => {
   const changeActiveDataAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.changeActiveAsignature(!item.active, item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -123,7 +125,11 @@ const GeneralAsignatureList = (props: any) => {
           />
         </>
       ) : (
-        <></>
+        <>
+          <Colxx sm={12} className="d-flex justify-content-center">
+            <Loader />
+          </Colxx>
+        </>
       )}
     </>
   );

@@ -8,6 +8,8 @@ import * as learningActions from '../../../stores/actions/LearningActions';
 import DataList from '../../common/Data/DataList';
 import LearningCreateEdit from './LearningCreateEdit';
 import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
+import { Colxx } from '../../common/CustomBootstrap';
+import { Loader } from '../../common/Loader';
 
 const Learning = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
@@ -212,7 +214,11 @@ const Learning = (props: any) => {
           />
         </>
       ) : (
-        <></>
+        <>
+          <Colxx sm={12} className="d-flex justify-content-center">
+            <Loader />
+          </Colxx>
+        </>
       )}
     </>
   );

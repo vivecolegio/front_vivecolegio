@@ -4,7 +4,9 @@ import { useNavigate } from 'react-router';
 import { COLUMN_LIST } from '../../../../constants/AcademicGrade/AcademicGradeConstants';
 import { createNotification } from '../../../../helpers/Notification';
 import * as gradeActions from '../../../../stores/actions/Academic/GradeActions';
+import { Colxx } from '../../../common/CustomBootstrap';
 import DataList from '../../../common/Data/DataList';
+import { Loader } from '../../../common/Loader';
 import GradeCreateEdit from './GradeCreateEdit';
 
 const GradeList = (props: any) => {
@@ -174,7 +176,11 @@ const GradeList = (props: any) => {
           />
         </>
       ) : (
-        <></>
+        <>
+          <Colxx sm={12} className="d-flex justify-content-center">
+            <Loader />
+          </Colxx>
+        </>
       )}
     </>
   );

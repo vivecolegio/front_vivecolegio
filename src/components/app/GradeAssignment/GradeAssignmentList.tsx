@@ -4,8 +4,10 @@ import { useSearchParams } from 'react-router-dom';
 import { COLUMN_LIST } from '../../../constants/GradeAssignment/gradeAssignmentConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as academicIndicatorActions from '../../../stores/actions/GradeAssignmentActions';
+import { Colxx } from '../../common/CustomBootstrap';
 import DataList from '../../common/Data/DataList';
 import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
+import { Loader } from '../../common/Loader';
 import GradeAssignmentCreateEdit from './GradeAssignmentCreateEdit';
 
 const GradeAssignmentList = (props: any) => {
@@ -145,7 +147,11 @@ const GradeAssignmentList = (props: any) => {
           />
         </>
       ) : (
-        <></>
+        <>
+          <Colxx sm={12} className="d-flex justify-content-center">
+            <Loader />
+          </Colxx>
+        </>
       )}
     </>
   );
