@@ -21,8 +21,9 @@ const StudentList = (props: any) => {
       setDataTable(listData.map((c: any) => {
         c.node.name = c.node.user ? c.node.user.name : '';
         c.node.lastName = c.node.user ? c.node.user.lastName : '';
-        c.node.phone = c.node.user ? c.node.user.phone : '';
-        c.node.email = c.node.user ? c.node.user.email : '';
+        c.node.documentType_format = c?.node?.user ? c?.node?.user?.documentType?.name : '';
+        c.node.documentNumber = c?.node?.user ? c?.node?.user?.documentNumber : '';
+        c.node.gender_format = c?.node?.user ? c?.node?.user?.gender?.name : '';
         return c;
       }));
     });
@@ -33,8 +34,9 @@ const StudentList = (props: any) => {
       setDataTable(listData.map((c: any) => {
         c.node.name = c.node.user ? c.node.user.name : '';
         c.node.lastName = c.node.user ? c.node.user.lastName : '';
-        c.node.phone = c.node.user ? c.node.user.phone : '';
-        c.node.email = c.node.user ? c.node.user.email : '';
+        c.node.documentType_format = c?.node?.user ? c?.node?.user?.documentType?.name : '';
+        c.node.documentNumber = c?.node?.user ? c?.node?.user?.documentNumber : '';
+        c.node.gender_format = c?.node?.user ? c?.node?.user?.gender?.name : '';
         return c;
       }));
     });

@@ -23,6 +23,15 @@ export const QUERY_GET_ALL_STUDENT = gql`
             lastName
             phone
             email
+            documentNumber       
+            gender {
+              id
+              name
+            }
+            documentType {
+              id
+              name
+            }  
           }
         }
       }
