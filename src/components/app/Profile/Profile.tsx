@@ -21,11 +21,13 @@ const Profile = (props: any) => {
   const {
     register,
     getValues,
+    formState,
   } = useForm();
 
   useEffect(() => {
     getUser();
     setLoading(false);
+    console.log(formState)
   }, [props?.data]);
 
   const getUser = async () => {
@@ -47,13 +49,16 @@ const Profile = (props: any) => {
     });
   };
 
-  const validatePasswordsMatch = async (e: any) => {
-    const { password } = getValues();
-    if (e.target.value === password) {
+  const validatePasswordsMatch = async (e: any, compare: any, type: string) => {
+    if (e.target.value !== compare) {
+      setErrors({ password_repeat: 'Las contraseñas no coinciden', password: 'Las contraseñas no coinciden' })
+    } else if (e.target.value.length == 0 || e.target.value.length < 7 && type == "password") {
+      setErrors({ password: 'La contraseña debe tener minimo 7 caractéres' });
+    } else if (e.target.value.length == 0 || e.target.value.length < 7 && type != "password") {
+      setErrors({ password_repeat: 'La contraseña debe tener minimo 7 caractéres' });
+    } else {
       setErrors(null);
       return;
-    } else {
-      setErrors({ password_repeat: 'Las contraseñas no coinciden', password: 'Las contraseñas no coinciden' })
     }
   };
 
@@ -116,6 +121,7 @@ const Profile = (props: any) => {
                     onChange={(e) => uploadFileImage(e.target.files[0])}
                   />
                 </InputGroup>
+                <small>*La foto de perfil se cargará automaticamente una vez sea seleccionada*</small>
                 {/* <hr />
                 <div className="row mt-4">
                   <div className="col-md-6 text-right">
@@ -163,7 +169,7 @@ const Profile = (props: any) => {
                     Contraseña
                   </Label>
                   <Input
-                    onInput={(e) => validatePasswordsMatch(e)}
+                    onInput={(e) => validatePasswordsMatch(e, getValues('password_repeat'), 'password')}
                     type="password"
                     {...passwordRest}
                     innerRef={passwordRef}
@@ -178,7 +184,7 @@ const Profile = (props: any) => {
                     Repetir contraseña
                   </Label>
                   <Input
-                    onInput={(e) => validatePasswordsMatch(e)}
+                    onInput={(e) => validatePasswordsMatch(e, getValues('password'), 'password_repeat')}
                     type="password"
                     {...passwordRepeatRest}
                     innerRef={passwordRepeatRef}
@@ -193,7 +199,7 @@ const Profile = (props: any) => {
                   className={`mb-5 mt-5 btn-login btn-shadow`}
                   size="lg"
                   type="submit"
-                  disabled={errors}
+                  disabled={errors || !getValues('password') || !getValues('password_repeat')}
                   onClick={updatePassword}
                 > Guardar
                 </Button>
