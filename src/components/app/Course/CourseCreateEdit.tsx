@@ -103,9 +103,7 @@ const CourseCreateEdit = (props: any) => {
 
   const getTeacherAndDays = async (campusId: string) => {
     setAcademicDay(null);
-    setValue('teacherId', null);
     setTeacher(null);
-    setValue('academicDayId', null);
     if (campusId) {
       props.getListAllTeacherActives(campusId, props?.loginReducer?.schoolId).then((data: any) => {
         setTeachers(
@@ -146,6 +144,14 @@ const CourseCreateEdit = (props: any) => {
   register('campusId', {
     required: true,
     value: props?.data?.id ? props?.data?.campusId : '',
+  });
+  register('teacherId', {
+    required: true,
+    value: props?.data?.id ? props?.data?.teacherId : '',
+  });
+  register('academicDayId', {
+    required: true,
+    value: props?.data?.id ? props?.data?.academicDayId : '',
   });
 
   const auditInfo = {
@@ -228,7 +234,7 @@ const CourseCreateEdit = (props: any) => {
                     setValue('teacherId', selectedOption?.key);
                     setTeacher(selectedOption);
                   }}
-                  isDisabled={teachers?.length === 0}
+                  isDisabled={teachers?.length === 0 || teachers === null}
                 />
               </div>
               <div className="form-group">
@@ -247,7 +253,7 @@ const CourseCreateEdit = (props: any) => {
                     setValue('academicDayId', selectedOption?.key);
                     setAcademicDay(selectedOption);
                   }}
-                  isDisabled={academicDays?.length === 0}
+                  isDisabled={academicDays?.length === 0 || academicDays === null}
                 />
               </div>
             </ModalBody>
