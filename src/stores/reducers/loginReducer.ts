@@ -4,6 +4,7 @@ import { LOGOUT, LOGIN, ME } from './types/loginTypes';
 const INITIAL_STATE = {
   userId: '',
   entityId: '',
+  teacherId: '',
   role: {},
   roleMenus: {},
   name: '',
@@ -24,6 +25,7 @@ export default (state = INITIAL_STATE, action: any) => {
         ...state,
         userId: action.payload.userId,
         entityId: action.payload.entityId,
+        teacherId: action.payload.teacherId,
         role: action.payload.role,
         roleMenus: action.payload.roleMenus,
         name: action.payload.name,
@@ -47,6 +49,7 @@ export default (state = INITIAL_STATE, action: any) => {
         ...state,
         userId: '',
         entityId: '',
+        teacherId: '',
         role: {},
         roleMenus : [],
         name: '',

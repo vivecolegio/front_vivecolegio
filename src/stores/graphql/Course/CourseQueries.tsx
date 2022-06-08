@@ -30,6 +30,42 @@ export const QUERY_GET_ALL_COURSE = gql`
       totalCount
     }
   }
+
+`;
+export const QUERY_GET_ALL_COURSE_TEACHER = gql`
+  query getAllCourseTeacher($teacherId: String!) {
+    data: getAllCourseTeacher(teacherId: $teacherId,) {
+      edges {
+        cursor
+        node {
+          id
+          name
+          campus {
+            id
+            name
+          }
+          teacher {
+            user {
+            id
+            name
+            lastName
+            }
+          }
+          academicGrade {
+            id
+            name
+          }
+          academicDay{
+            id
+            name
+          }
+          order           
+          active          
+        }
+      }
+      totalCount
+    }
+  }
 `;
 
 export const QUERY_GET_COURSE = gql`

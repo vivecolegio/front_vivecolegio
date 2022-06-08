@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router';
 import { createNotification } from '../../../helpers/Notification';
 import useMousetrap from '../../../hooks/use-mousetrap';
+import { Loader } from '../Loader';
 import ListPageHeading from './ListPageHeading';
 import ListPageListing from './ListPageListing';
 
@@ -173,96 +174,92 @@ const DataList = (props: any) => {
   const startIndex = (currentPage - 1) * selectedPageSize;
   const endIndex = currentPage * selectedPageSize;
 
-  return !isLoaded ? (
-    <div className="loading" />
-  ) : (
-    <>
-      <div className="disable-text-selection">
-        <ListPageHeading
-          items={items}
-          header={props?.header}
-          heading="menu.data-list"
-          displayMode={displayMode}
-          changeDisplayMode={setDisplayMode}
-          handleChangeSelectAll={handleChangeSelectAll}
-          changeOrderBy={(column: any) => {
-            setSelectedOrderOption(
-              orderOptions.find((x: any) => {
-                return x.column === column;
-              }),
-            );
-          }}
-          changePageSize={setSelectedPageSize}
-          selectedPageSize={selectedPageSize}
-          createActionDisabled={props?.createActionDisabled}
-          totalItemCount={totalItemCount}
-          selectedOrderOption={selectedOrderOption}
-          match={pathname}
-          startIndex={startIndex}
-          endIndex={endIndex}
-          selectedItemsLength={selectedItems ? selectedItems.length : 0}
-          itemsLength={items ? items.length : 0}
-          currentMenu={currentMenu}
-          onSearchKey={(e: any) => {
-            setItems(itemsDefault.filter(dato => { return matches(dato, e) }));
-          }}
-          orderOptions={orderOptions}
-          pageSizes={pageSizes}
-          toggleModal={() => {
-            return props?.setModalOpen(!props?.modalOpen);
-          }}
-          columns={columns}
-          deleteAll={() => {
-            return props?.deleteAll(selectedItems);
-          }}
-          changeActiveDataAll={() => {
-            return props?.changeActiveDataAll(selectedItems);
-          }}
-          withChildren={props?.withChildren}
-          onSort={(e: any) => {
-            let sortOrderColumnAux = sortOrderColumn;
-            if (e.column === sortColumn) {
-              sortOrderColumnAux = !sortOrderColumnAux;
-              setSortOrderColumn(sortOrderColumnAux);
-            } else {
-              setSortColumn(e.column);
-              sortOrderColumnAux = true;
-              setSortOrderColumn(sortOrderColumnAux);
-            }
-            setItems(items.sort((a, b) => {
-              const fieldA = a['node'][e.column].toString().toUpperCase();
-              const fieldB = b['node'][e.column].toString().toUpperCase();
-              return sortOrderColumnAux
-                ? fieldA.localeCompare(fieldB)
-                : fieldB.localeCompare(fieldA);
-            }));
-          }}
-          sortColumn={sortColumn}
-          sortOrderColumn={sortOrderColumn}
-        />
-        <ListPageListing
-          items={items}
-          displayMode={displayMode}
-          selectedItems={selectedItems}
-          onCheckItem={onCheckItem}
-          currentPage={currentPage}
-          totalPage={totalPage}
-          onContextMenuClick={onContextMenuClick}
-          onContextMenu={onContextMenu}
-          onChangePage={setCurrentPage}
-          columns={columns}
-          viewEditData={props?.viewEditData}
-          changeActiveData={props?.changeActiveData}
-          deleteData={props?.deleteData}
-          withChildren={props?.withChildren}
-          filterChildren={props?.filterChildren}
-          childrenButtons={props?.childrenButtons}
-          currentMenu={currentMenu}
-          additionalFunction={props?.additionalFunction}
-        />
-      </div>
-    </>
-  );
+  return <>
+    <div className="disable-text-selection">
+      <ListPageHeading
+        items={items}
+        header={props?.header}
+        heading="menu.data-list"
+        displayMode={displayMode}
+        changeDisplayMode={setDisplayMode}
+        handleChangeSelectAll={handleChangeSelectAll}
+        changeOrderBy={(column: any) => {
+          setSelectedOrderOption(
+            orderOptions.find((x: any) => {
+              return x.column === column;
+            }),
+          );
+        }}
+        changePageSize={setSelectedPageSize}
+        selectedPageSize={selectedPageSize}
+        createActionDisabled={props?.createActionDisabled}
+        totalItemCount={totalItemCount}
+        selectedOrderOption={selectedOrderOption}
+        match={pathname}
+        startIndex={startIndex}
+        endIndex={endIndex}
+        selectedItemsLength={selectedItems ? selectedItems.length : 0}
+        itemsLength={items ? items.length : 0}
+        currentMenu={currentMenu}
+        onSearchKey={(e: any) => {
+          setItems(itemsDefault.filter(dato => { return matches(dato, e) }));
+        }}
+        orderOptions={orderOptions}
+        pageSizes={pageSizes}
+        toggleModal={() => {
+          return props?.setModalOpen(!props?.modalOpen);
+        }}
+        columns={columns}
+        deleteAll={() => {
+          return props?.deleteAll(selectedItems);
+        }}
+        changeActiveDataAll={() => {
+          return props?.changeActiveDataAll(selectedItems);
+        }}
+        withChildren={props?.withChildren}
+        onSort={(e: any) => {
+          let sortOrderColumnAux = sortOrderColumn;
+          if (e.column === sortColumn) {
+            sortOrderColumnAux = !sortOrderColumnAux;
+            setSortOrderColumn(sortOrderColumnAux);
+          } else {
+            setSortColumn(e.column);
+            sortOrderColumnAux = true;
+            setSortOrderColumn(sortOrderColumnAux);
+          }
+          setItems(items.sort((a, b) => {
+            const fieldA = a['node'][e.column].toString().toUpperCase();
+            const fieldB = b['node'][e.column].toString().toUpperCase();
+            return sortOrderColumnAux
+              ? fieldA.localeCompare(fieldB)
+              : fieldB.localeCompare(fieldA);
+          }));
+        }}
+        sortColumn={sortColumn}
+        sortOrderColumn={sortOrderColumn}
+      />
+      <ListPageListing
+        items={items}
+        displayMode={displayMode}
+        selectedItems={selectedItems}
+        onCheckItem={onCheckItem}
+        currentPage={currentPage}
+        totalPage={totalPage}
+        onContextMenuClick={onContextMenuClick}
+        onContextMenu={onContextMenu}
+        onChangePage={setCurrentPage}
+        columns={columns}
+        viewEditData={props?.viewEditData}
+        changeActiveData={props?.changeActiveData}
+        deleteData={props?.deleteData}
+        withChildren={props?.withChildren}
+        filterChildren={props?.filterChildren}
+        childrenButtons={props?.childrenButtons}
+        currentMenu={currentMenu}
+        additionalFunction={props?.additionalFunction}
+      />
+    </div>
+  </>
 };
 
 const mapStateToProps = ({ loginReducer }: any) => {

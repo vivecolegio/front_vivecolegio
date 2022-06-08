@@ -111,7 +111,7 @@ const StudentAddCourse = (props: any) => {
             <ModalBody>
               <div className="form-group">
                 <Label>
-                  <IntlMessages id="menu.campus" />
+                  <IntlMessages id="menu.students" />
                 </Label>
                 <Select
                   isClearable

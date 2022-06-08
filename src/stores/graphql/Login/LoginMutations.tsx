@@ -10,6 +10,9 @@ export const MUTATION_LOGIN = gql`
       student {
         id
       }
+      teacher {
+        id
+      }
       userId      
       schools {
         id
@@ -56,6 +59,9 @@ export const QUERY_ME = gql`
       lastName
       profilePhoto
       student {
+        id
+      }
+      teacher {
         id
       }
       userId      

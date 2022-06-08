@@ -1,7 +1,7 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
 import { MUTATION_CHANGE_ACTIVE_COURSE, MUTATION_CREATE_COURSE, MUTATION_DELETE_COURSE, MUTATION_UPDATE_COURSE } from '../graphql/Course/CourseMutations';
-import { QUERY_GET_ALL_COURSE, QUERY_GET_COURSE, QUERY_GET_DROPDOWNS_COURSE } from '../graphql/Course/CourseQueries';
+import { QUERY_GET_ALL_COURSE, QUERY_GET_ALL_COURSE_TEACHER, QUERY_GET_COURSE, QUERY_GET_DROPDOWNS_COURSE } from '../graphql/Course/CourseQueries';
 
 
 export const getListAllCourse = (campusId:string, academicGradeId: string, schoolId: string) => {
@@ -15,6 +15,28 @@ export const getListAllCourse = (campusId:string, academicGradeId: string, schoo
             campusId,
             academicGradeId,
             schoolId,
+          },
+        })
+        .then((result: any) => {
+          listData = result.data.data.edges;
+        });
+      return listData;
+    } catch (error) {
+      createNotification('error', 'error', '');
+      return error;
+    }
+  };
+};
+
+export const getListAllCourseTeacher = (teacherId: string) => {
+  return async (dispatch: any) => {
+    try {
+      let listData = {};
+      await client
+        .query({
+          query: QUERY_GET_ALL_COURSE_TEACHER,
+          variables:{
+            teacherId
           },
         })
         .then((result: any) => {

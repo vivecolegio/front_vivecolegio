@@ -198,6 +198,7 @@ const enMessages = {
   'menu.listClassroomPlans': 'Classroom Plans',
   'menu.valuationReferents': 'Valuation Referents',
   'menu.gradeAssignmentReferents': 'Grades - Valuation Referents',
+  'menu.myCourse': 'My Courses',
   'list.activate': 'Active',
   'list.inactivate': 'Inactive',
   'forms.inputRequired': 'Field Required',

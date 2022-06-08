@@ -34,6 +34,7 @@ import CoEvaluationStudents from '../components/app/CoEvaluationStudents/CoEvalu
 import ComponentEvaluativeList from '../components/app/ComponentEvaluative/ComponentEvaluativeList';
 import CoordinatorCampusList from '../components/app/CoordinatorCampus/CoordinatorCampusList';
 import CourseList from '../components/app/Course/CourseList';
+import CoursesTeacherList from '../components/app/CoursesTeacher/CoursesTeacherList';
 import Analytics from '../components/app/Dashboards/Analytics';
 import DocumentTypeList from '../components/app/DocumentType/DocumentTypeList';
 import EducationLevelList from '../components/app/EducationLevel/EducationLevelList';
@@ -172,6 +173,7 @@ const App = (props: any) => {
                     <Route path="/academicDay" element={<AcademicDayList />} />
                     <Route path="/academicHour" element={<AcademicHourList />} />
                     <Route path="/course" element={<CourseList />} />
+                    <Route path="/myCourse" element={<CoursesTeacherList />} />
                     <Route
                       path="/academicAsignatureCourse"
                       element={<AcademicAsignatureCourseList />}

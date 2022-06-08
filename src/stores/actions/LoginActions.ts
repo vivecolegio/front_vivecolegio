@@ -24,6 +24,7 @@ export const login = (user: any) => {
               payload: {
                 userId: data.data.userId,
                 entityId: data?.data?.student?.id,
+                teacherId: data?.data?.teacher?.id,
                 role: data.data.role,
                 roleMenus: data.data.roleMenus,
                 name: data.data.name,
@@ -93,6 +94,7 @@ export const me = (id: any) => {
               payload: {
                 userId: data.me.userId,
                 entityId: data?.me?.student?.id,
+                teacherId: data?.me?.teacher?.id,
                 role: data.me.role,
                 roleMenus: data.me.roleMenus,
                 name: data.me.name,

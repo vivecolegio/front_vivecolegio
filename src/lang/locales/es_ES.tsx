@@ -199,6 +199,7 @@ const esMessages = {
   'menu.listClassroomPlans': 'Planes de aula',
   'menu.valuationReferents': 'Referentes de valoración',
   'menu.gradeAssignmentReferents': 'Grados - Referentes de valoración',
+  'menu.myCourse': 'Mis Cursos',
   'forms.inputRequired': 'Campo Requerido',
   'forms.cancel': 'Cancelar',
   'forms.auditInformation': 'Información Auditoria',
