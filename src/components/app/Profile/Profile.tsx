@@ -157,7 +157,7 @@ const Profile = (props: any) => {
                 </div> */}
               </CardBody>
               <CardBody className='text-center pt-0'>
-                <div className="text-center pt-4 mb-4 mt-4">
+                <div className="text-center pt-4 mb-4 mt-3">
                   <p className="pt-2 mb-1 font-1-5rem">
                     <strong>
                       Cambiar contraseña
