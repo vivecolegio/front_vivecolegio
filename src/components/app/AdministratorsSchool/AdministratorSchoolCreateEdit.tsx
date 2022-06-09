@@ -219,7 +219,7 @@ const AdministratorSchoolCreateEdit = (props: any) => {
                   name="name"
                   defaultValue={newUser.name}
                   onChange={(data) => {
-                    setValue('newUser', { ...newUser });
+                    setValue('newUser', { ...newUser, ...{ name: data.target.value } });
                     setNewUser({ ...newUser, ...{ name: data.target.value } });
                   }}
                 />
@@ -232,7 +232,7 @@ const AdministratorSchoolCreateEdit = (props: any) => {
                   name="lastName"
                   defaultValue={newUser.lastName}
                   onChange={(data) => {
-                    setValue('newUser', { ...newUser });
+                    setValue('newUser', { ...newUser, ...{ lastName: data.target.value } });
                     setNewUser({ ...newUser, ...{ lastName: data.target.value } });
                   }}
                 />
@@ -245,7 +245,7 @@ const AdministratorSchoolCreateEdit = (props: any) => {
                   name="phone"
                   defaultValue={newUser.phone}
                   onChange={(data) => {
-                    setValue('newUser', { ...newUser });
+                    setValue('newUser', { ...newUser, ...{ phone: data.target.value } });
                     setNewUser({ ...newUser, ...{ phone: data.target.value } });
                   }}
                 />
@@ -258,7 +258,7 @@ const AdministratorSchoolCreateEdit = (props: any) => {
                   name="email"
                   defaultValue={newUser.email}
                   onChange={(data) => {
-                    setValue('newUser', { ...newUser });
+                    setValue('newUser', { ...newUser, ...{ email: data.target.value } });
                     setNewUser({ ...newUser, ...{ email: data.target.value } });
                   }}
                 />
@@ -270,7 +270,7 @@ const AdministratorSchoolCreateEdit = (props: any) => {
                 <ReactDatePicker
                   selected={birtdate}
                   onChange={(date) => {
-                    setValue('newUser', { ...newUser });
+                    setValue('newUser', { ...newUser, ...{ birthdate: date as Date } });
                     setNewUser({ ...newUser, ...{ birthdate: date as Date } });
                     setBirtdate(date as Date);
                   }}
@@ -339,7 +339,7 @@ const AdministratorSchoolCreateEdit = (props: any) => {
                   name="documentNumber"
                   defaultValue={newUser.documentNumber}
                   onChange={(data) => {
-                    setValue('newUser', { ...newUser });
+                    setValue('newUser', { ...newUser, ...{ documentNumber: data.target.value } });
                     setNewUser({ ...newUser, ...{ documentNumber: data.target.value } });
                   }}
                 />
