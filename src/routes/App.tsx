@@ -104,8 +104,6 @@ const App = (props: any) => {
     }
   }, [props.loginReducer]);
 
-  console.log(props);
-
   return (
     <div className="h-100">
       <IntlProvider locale={currentAppLocale.locale} messages={currentAppLocale.messages}>
