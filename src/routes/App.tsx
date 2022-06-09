@@ -52,7 +52,7 @@ import GuardianList from '../components/app/Guardian/GuardianList';
 import InboxDetail from '../components/app/Inbox/InboxDetail';
 import LearningList from '../components/app/Learning/LearningList';
 import LearningEvidenceList from '../components/app/LearningEvidence/LearningEvidenceList';
-import Login from '../components/app/Login/Login';
+
 import MenuList from '../components/app/Menu/MenuList';
 import ModalityList from '../components/app/Modality/ModalityList';
 import ModuleList from '../components/app/Module/ModuleList';
@@ -88,7 +88,13 @@ import AppLocale from '../lang';
 import * as LoginActions from '../stores/actions/LoginActions';
 
 const SchoolYearList = React.lazy(() => {
-  return import(/* webpackChunkName: "home" */ '../components/app/SchoolYear/SchoolYearList');
+  return import(
+    /* webpackChunkName: "SchoolYearList" */ '../components/app/SchoolYear/SchoolYearList'
+  );
+});
+
+const Login = React.lazy(() => {
+  return import(/* webpackChunkName: "Login" */ '../components/app/Login/Login');
 });
 
 const App = (props: any) => {

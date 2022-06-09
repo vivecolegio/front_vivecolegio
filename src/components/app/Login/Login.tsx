@@ -30,7 +30,7 @@ const Login = (props: any) => {
     console.log(props);
     setLoading(false);
     if (props.loginReducer.userId?.length > 0) {
-      //navigate('/home');
+      navigate('/home');
       // props.history.push('/home');
     } else {
       props.resetApp();
