@@ -7,6 +7,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const TersetJSPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -81,6 +82,7 @@ module.exports = {
       chunkFilename: 'css/[id].[chunkhash].css',
     }),
     new HtmlWebpackPlugin({
+      favicon:  path.resolve(__dirname, 'public/favicon.ico'),
       template: path.resolve(__dirname, 'public/index.html'),
       minify: {
         collapseWhitespace: true,
@@ -90,6 +92,11 @@ module.exports = {
         removeStyleLinkTypeAttributes: true,
         useShortDoctype: true,
       },
+    }),
+    new CopyPlugin({
+      patterns: [
+        { from: path.resolve(__dirname, 'public/meta.json'), to: path.resolve(__dirname, 'dist')}
+      ]
     }),
     // new AddAssetHtmlPlugin({
     //   filepath: path.resolve(__dirname, 'dist/js/*.dll.js'),
