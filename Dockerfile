@@ -6,7 +6,7 @@ COPY . .
 RUN yarn install
 RUN yarn run prebuild
 RUN yarn run build:prod
-RUN yarn prune --production
+RUN npm prune --production
 
 # production environment
 FROM nginx:stable
