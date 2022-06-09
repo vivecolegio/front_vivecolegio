@@ -1,5 +1,5 @@
 import jwt_decode from 'jwt-decode';
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useClearCache } from 'react-clear-cache';
 import { useIdleTimer } from 'react-idle-timer';
 import { connect } from 'react-redux';
@@ -20,10 +20,18 @@ const Layout = (props: any) => {
 
   let navigate = useNavigate();
 
-  useEffect(() => {
+  const initData = useCallback(async () => {
     if (!isLatestVersion) {
-      emptyCacheStorage();
+      console.log('borrando cache');
+      await emptyCacheStorage();
     }
+  }, [isLatestVersion]);
+
+  useEffect(() => {
+    initData();
+  }, [initData]);
+
+  useEffect(() => {
     const token = localStorage.getItem('token');
     if (props?.loginReducer?.userId?.length > 0 && token != null) {
       const now = Math.floor(Date.now() / 1000);
@@ -32,7 +40,7 @@ const Layout = (props: any) => {
         handleLogout();
       }
     }
-  }, [emptyCacheStorage, isLatestVersion, props.loginReducer]);
+  }, [props.loginReducer]);
 
   const handleLogout = async () => {
     await props.logout({}).then(navigate('/login'));

@@ -3,13 +3,13 @@ import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { NavLink } from 'react-router-dom';
-import { Alert, Button, Card, CardTitle, Form, FormGroup, Input, Label, Row } from 'reactstrap';
+import { Alert, Button, Card, Form, FormGroup, Input, Label, Row } from 'reactstrap';
+import NavImg2 from '../../../assets/img/logos/gobernacion.png';
+import LoginImg1 from '../../../assets/img/logos/login1.jpg';
 import LogoImg from '../../../assets/img/logos/LOGO.png';
 import LogoImg2 from '../../../assets/img/logos/LOGO2.png';
-import LoginImg1 from '../../../assets/img/logos/login1.jpg';
 import FooterImg2 from '../../../assets/img/logos/minciencias.png';
 import NavImg1 from '../../../assets/img/logos/ufps.png';
-import NavImg2 from '../../../assets/img/logos/gobernacion.png';
 import IntlMessages from '../../../helpers/IntlMessages';
 import * as loginActions from '../../../stores/actions/LoginActions';
 import { Colxx } from '../../common/CustomBootstrap';
@@ -27,31 +27,34 @@ const Login = (props: any) => {
   let navigate = useNavigate();
 
   useEffect(() => {
+    console.log(props);
     setLoading(false);
-    if (props.loginReducer?.userId?.length > 0) {
-      navigate('/home');
+    if (props.loginReducer.userId?.length > 0) {
+      //navigate('/home');
       // props.history.push('/home');
     } else {
       props.resetApp();
     }
-  }, [props.loginReducer?.userId]);
+  }, [props.loginReducer.userId]);
 
   const onSubmit = (e: any) => {
     setLoading(true);
     e.preventDefault();
     // trigger().then(() => {
     //   if (errors?.email === undefined && errors?.password === undefined) {
-    props.login({
-      username: getValues('username'),
-      password: getValues('password'),
-    }).then(
-      () => {
-        setLoading(false);
-      },
-      () => {
-        setLoading(false);
-      },
-    );;
+    props
+      .login({
+        username: getValues('username'),
+        password: getValues('password'),
+      })
+      .then(
+        () => {
+          setLoading(false);
+        },
+        () => {
+          setLoading(false);
+        },
+      );
     //   }
     // });
   };
@@ -66,12 +69,16 @@ const Login = (props: any) => {
   });
 
   return (
-    <>   
+    <>
       <div className="fixed-background" />
-      <main>        
+      <main>
         <div className="container">
           <Row className="h-100">
-            <Colxx xxs="3" md="3" className="mx-auto mt-10 text-center d-none d-sm-none d-sm-block d-md-none d-lg-block">
+            <Colxx
+              xxs="3"
+              md="3"
+              className="mx-auto mt-10 text-center d-none d-sm-none d-sm-block d-md-none d-lg-block"
+            >
               <img src={LogoImg} className="width-logo" />
             </Colxx>
             <Colxx xxs="12" sm="12" md="3" lg="3" className="mx-auto mt-5 center-flex">
@@ -79,8 +86,8 @@ const Login = (props: any) => {
                 <div className="form-side pt-4 pb-2 text-center">
                   <NavLink to="/" className="white mt-3">
                     {/* <span className="logo-single" /> */}
-                    <img src={LogoImg2}  />
-                  </NavLink>                  
+                    <img src={LogoImg2} />
+                  </NavLink>
                   {props.errors?.length > 0 && (
                     <Alert color="danger" className="rounded">
                       <IntlMessages id="alert.danger-text" />
@@ -118,9 +125,7 @@ const Login = (props: any) => {
                         <i className='text-info simple-icon-info mr-2 font-bold'></i>
                         <IntlMessages id="user.forgot-password-question" />
                       </NavLink> */}
-                       {loading ? 
-                        <Loader size={50}/>
-                        : ''}
+                      {loading ? <Loader size={50} /> : ''}
                       <Button
                         color="primary"
                         className={`mb-5 mt-5 btn-login btn-shadow btn-multiple-state ${
@@ -149,22 +154,29 @@ const Login = (props: any) => {
                     </div>
                   </Form>
                 </div>
-                <div className='divisor'>
-
-                </div>
+                <div className="divisor"></div>
               </Card>
             </Colxx>
-            <Colxx xxs="5" md="5" className="mx-auto my-auto text-center top-negative d-none d-sm-none d-sm-block d-md-none d-lg-block">
+            <Colxx
+              xxs="5"
+              md="5"
+              className="mx-auto my-auto text-center top-negative d-none d-sm-none d-sm-block d-md-none d-lg-block"
+            >
               <div className="circular-square">
-               <img src={LoginImg1}  />
-              </div>              
-              <div className='text-white font-italic mt-3 w-90 mx-auto'>
-              <h1>La educación genera confianza. La
-                confianza genera esperanza. La esperanza
-                genera paz.<span className='font-1rem ml-1'>(Confucio)</span></h1>
-              </div>              
+                <img src={LoginImg1} />
+              </div>
+              <div className="text-white font-italic mt-3 w-90 mx-auto">
+                <h1>
+                  La educación genera confianza. La confianza genera esperanza. La esperanza genera
+                  paz.<span className="font-1rem ml-1">(Confucio)</span>
+                </h1>
+              </div>
             </Colxx>
-            <Colxx xxs="1" md="1" className="mx-auto my-auto text-center top-negative d-none d-sm-none d-sm-block d-md-none d-lg-block">
+            <Colxx
+              xxs="1"
+              md="1"
+              className="mx-auto my-auto text-center top-negative d-none d-sm-none d-sm-block d-md-none d-lg-block"
+            >
               {/* <div className="circular-square">
                <img src={LoginImg1}  />
               </div>              
@@ -173,19 +185,22 @@ const Login = (props: any) => {
                 confianza genera esperanza. La esperanza
                 genera paz.<span className='font-1rem ml-1'>(Confucio)</span></h1>
               </div>               */}
-            </Colxx>         
-          </Row>         
-        </div>      
-      </main>
-      <Row className='d-none d-sm-none d-sm-block d-md-none d-lg-block'>
-          <Colxx xxs="12" md="12" className="footer-login">
-              <Colxx className="col-sm-8 col-md-8 d-flex justify-content-around" style={{height: "80px"}}>
-                    <img className='p-3' alt="LOGO" src={FooterImg2} />           
-                    <img className='p-3' alt="LOGO" src={NavImg2} />           
-                    <img className='p-3' alt="LOGO" src={NavImg1} />    
-              </Colxx>
             </Colxx>
-          </Row>      
+          </Row>
+        </div>
+      </main>
+      <Row className="d-none d-sm-none d-sm-block d-md-none d-lg-block">
+        <Colxx xxs="12" md="12" className="footer-login">
+          <Colxx
+            className="col-sm-8 col-md-8 d-flex justify-content-around"
+            style={{ height: '80px' }}
+          >
+            <img className="p-3" alt="LOGO" src={FooterImg2} />
+            <img className="p-3" alt="LOGO" src={NavImg2} />
+            <img className="p-3" alt="LOGO" src={NavImg1} />
+          </Colxx>
+        </Colxx>
+      </Row>
     </>
   );
 };

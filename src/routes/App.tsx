@@ -1,7 +1,7 @@
 import React, { Suspense, useLayoutEffect, useState } from 'react';
 import { IntlProvider } from 'react-intl';
 import { connect } from 'react-redux';
-import { HashRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import AreaList from '../components/app/Academic/Area/AreaList';
 import AsignatureList from '../components/app/Academic/Asignature/AsignatureList';
 import GradeList from '../components/app/Academic/Grade/GradeList';
@@ -69,7 +69,6 @@ import RubricValuation from '../components/app/RubricValuation/RubricValuation';
 import OfficeSchedule from '../components/app/Schedule/OfficeSchedule';
 import SchoolSchedule from '../components/app/Schedule/SchoolSchedule';
 import SchoolList from '../components/app/School/SchoolList';
-import SchoolYearList from '../components/app/SchoolYear/SchoolYearList';
 import SelfValuation from '../components/app/SelfValuation/SelfValuation';
 import SpecialityList from '../components/app/Speciality/SpecialityList';
 import Spreadsheet from '../components/app/Spreadsheet/Spreadsheet';
@@ -87,6 +86,10 @@ import Home from '../components/Home';
 import { isMultiColorActive } from '../constants/defaultValues';
 import AppLocale from '../lang';
 import * as LoginActions from '../stores/actions/LoginActions';
+
+const SchoolYearList = React.lazy(() => {
+  return import(/* webpackChunkName: "home" */ '../components/app/SchoolYear/SchoolYearList');
+});
 
 const App = (props: any) => {
   const { locale } = props.translateReducer;
@@ -109,13 +112,14 @@ const App = (props: any) => {
       <IntlProvider locale={currentAppLocale.locale} messages={currentAppLocale.messages}>
         <NotificationContainer />
         {isMultiColorActive && <ColorSwitcher />}
-        <HashRouter>
+        <BrowserRouter>
           <Layout permissions={permissions}>
             <Suspense fallback={<div className="loading" />}>
               <Routes>
                 <Route path="/" element={<Login />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/home" element={permissions ? <Home /> : <Login />} />
+
                 {permissions ? (
                   <>
                     <Route path="/profile" element={<Profile />} />
@@ -221,10 +225,11 @@ const App = (props: any) => {
                 ) : (
                   <Route path="*" element={<Login />} />
                 )}
+                <Route element={<Home />} />
               </Routes>
             </Suspense>
           </Layout>
-        </HashRouter>
+        </BrowserRouter>
       </IntlProvider>
     </div>
   );
