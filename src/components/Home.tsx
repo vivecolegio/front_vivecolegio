@@ -1,7 +1,13 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 const Home = () => {
   return <></>;
 };
+const mapDispatchToProps = {};
 
-export default Home;
+const mapStateToProps = () => {
+  return {};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

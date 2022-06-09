@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from 'react';
+import React, { Suspense, useLayoutEffect, useState } from 'react';
 import { IntlProvider } from 'react-intl';
 import { connect } from 'react-redux';
 import { HashRouter, Route, Routes } from 'react-router-dom';
@@ -95,7 +95,7 @@ const App = (props: any) => {
 
   const [permissions, setPermissions] = useState(false);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const token = localStorage.getItem('token');
     if (props?.loginReducer?.userId?.length > 0 && token != null) {
       setPermissions(true);
@@ -104,15 +104,16 @@ const App = (props: any) => {
     }
   }, [props.loginReducer]);
 
+  console.log(props);
+
   return (
     <div className="h-100">
       <IntlProvider locale={currentAppLocale.locale} messages={currentAppLocale.messages}>
-        <>
-          <NotificationContainer />
-          {isMultiColorActive && <ColorSwitcher />}
-          <Suspense fallback={<div className="loading" />} />
-          <HashRouter>
-            <Layout permissions={permissions}>
+        <NotificationContainer />
+        {isMultiColorActive && <ColorSwitcher />}
+        <HashRouter>
+          <Layout permissions={permissions}>
+            <Suspense fallback={<div className="loading" />}>
               <Routes>
                 <Route path="/" element={<Login />} />
                 <Route path="/login" element={<Login />} />
@@ -223,9 +224,9 @@ const App = (props: any) => {
                   <Route path="*" element={<Login />} />
                 )}
               </Routes>
-            </Layout>
-          </HashRouter>
-        </>
+            </Suspense>
+          </Layout>
+        </HashRouter>
       </IntlProvider>
     </div>
   );
