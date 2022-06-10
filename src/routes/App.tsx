@@ -2,10 +2,6 @@ import React, { Suspense, useLayoutEffect, useState } from 'react';
 import { IntlProvider } from 'react-intl';
 import { connect } from 'react-redux';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import {
-  default as AcademicIndicatorList,
-  default as BasicLearningDutiesList,
-} from '../components/app/BasicLearningDuties/BasicLearningDutiesList';
 import ColorSwitcher from '../components/common/ColorSwitcher';
 import Layout from '../components/common/layout/Layout';
 import { NotificationContainer } from '../components/common/Notifications';
@@ -413,6 +409,12 @@ const ValuationReferents = React.lazy(() => {
   );
 });
 
+const BasicLearningDutiesList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "BasicLearningDutiesList" */ '../components/app/BasicLearningDuties/BasicLearningDutiesList'
+  );
+});
+
 const App = (props: any) => {
   const { locale } = props.translateReducer;
 
@@ -494,7 +496,7 @@ const App = (props: any) => {
                     <Route path="/schoolYear" element={<SchoolYearList />} />
                     <Route path="/speciality" element={<SpecialityList />} />
                     <Route path="/periodAcademic" element={<AcademicPeriodList />} />
-                    <Route path="/indicatorAcademic" element={<AcademicIndicatorList />} />
+                    {/* <Route path="/indicatorAcademic" element={<AcademicIndicatorList />} /> */}
                     <Route path="/gradeAssignment" element={<GradeAssignmentList />} />
                     <Route path="/academicDay" element={<AcademicDayList />} />
                     <Route path="/academicHour" element={<AcademicHourList />} />
