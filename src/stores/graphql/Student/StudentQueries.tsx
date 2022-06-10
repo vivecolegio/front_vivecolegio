@@ -71,6 +71,37 @@ export const QUERY_GET_ALL_STUDENT_WITHOUT_COURSE = gql`
   }
 `;
 
+export const QUERY_GET_ALL_STUDENT_OF_GRADE = gql`
+  query getAllStudentAcademicGrade($campusId: String!, $academicGradeId: String!,$schoolId: String!) {
+    data: getAllStudentAcademicGrade(campusId: $campusId, academicGradeId: $academicGradeId, schoolId: $schoolId) {
+      edges {
+        cursor
+        node {
+          id
+          code
+          active         
+          school  {
+            id
+            name
+          }       
+          campus {
+            id
+            name
+          }        
+          user {
+            id
+            name
+            lastName
+            phone
+            email
+          }
+        }
+      }
+      totalCount
+    }
+  }
+`;
+
 export const QUERY_GET_STUDENT = gql`
   query getStudent($id: String!) {
     data: getStudent(id: $id) {

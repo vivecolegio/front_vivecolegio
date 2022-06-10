@@ -463,6 +463,7 @@ const App = (props: any) => {
                     <Route path="/campus" element={<CampusList />} />
                     <Route path="/students" element={<StudentsList />} />
                     <Route path="/studentCourse" element={<StudentsCourseList />} />
+                    <Route path="/studentGrade" element={<StudentsCourseList />} />
                     <Route path="/teachers" element={<TeacherList />} />
                     <Route path="/schoolAdministratives" element={<SchoolAdministrativeList />} />
                     <Route path="/guardians" element={<GuardianList />} />

@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { COLUMN_LIST } from '../../../constants/Teacher/teacherConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as teacherActions from '../../../stores/actions/TeacherActions';
+import * as userActions from '../../../stores/actions/UserActions';
 import { Colxx } from '../../common/CustomBootstrap';
-import AddNewModal from '../../common/Data/AddNewModal';
 import DataList from '../../common/Data/DataList';
 import { Loader } from '../../common/Loader';
 import TeacherCreateEdit from './TeacherCreateEdit';
@@ -144,6 +144,22 @@ const TeacherList = (props: any) => {
     createNotification('success', 'success', '');
   };
 
+  const resetPassword = async (item: any) => {
+    await props.resetPasswordUser(item?.user?.id).then(() => {
+      refreshDataTable();
+    });
+  };
+
+  const additionalFunction = async (item: any, btn: any) => {
+    switch (btn?.action) {
+      case 'goToChildrenResetPass':
+        resetPassword(item);
+        break;
+      default:
+        break;
+    }
+  };
+
   return (
     <>
       {' '}
@@ -160,6 +176,17 @@ const TeacherList = (props: any) => {
             changeActiveData={changeActiveData}
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
+            additionalFunction={additionalFunction}
+            childrenButtons={[
+              {
+                id: 0,
+                label: 'Resetear contraseña',
+                color: 'warning',
+                icon: 'iconsminds-unlock-2',
+                action: 'goToChildrenResetPass',
+              },
+            ]}
+            withChildren={true}
           />
           <TeacherCreateEdit
             data={data}
@@ -181,7 +208,7 @@ const TeacherList = (props: any) => {
     </>
   );
 };
-const mapDispatchToProps = { ...teacherActions };
+const mapDispatchToProps = { ...teacherActions, ...userActions };
 
 const mapStateToProps = ({ loginReducer }: any) => {
   return { loginReducer };

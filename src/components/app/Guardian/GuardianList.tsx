@@ -4,7 +4,7 @@ import { COLUMN_LIST } from '../../../constants/Guardian/guardianConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as guardianActions from '../../../stores/actions/GuardianActions';
 import { Colxx } from '../../common/CustomBootstrap';
-import AddNewModal from '../../common/Data/AddNewModal';
+import * as userActions from '../../../stores/actions/UserActions';
 import DataList from '../../common/Data/DataList';
 import { Loader } from '../../common/Loader';
 import GuardianCreateEdit from './GuardianCreateEdit';
@@ -116,6 +116,22 @@ const GuardianList = (props: any) => {
     createNotification('success', 'success', '');
   };
 
+  const resetPassword = async (item: any) => {
+    await props.resetPasswordUser(item?.user?.id).then(() => {
+      refreshDataTable();
+    });
+  };
+
+  const additionalFunction = async (item: any, btn: any) => {
+    switch (btn?.action) {
+      case 'goToChildrenResetPass':
+        resetPassword(item);
+        break;
+      default:
+        break;
+    }
+  };
+
   return (
     <>
       {' '}
@@ -132,6 +148,17 @@ const GuardianList = (props: any) => {
             changeActiveData={changeActiveData}
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
+            additionalFunction={additionalFunction}
+            childrenButtons={[
+              {
+                id: 0,
+                label: 'Resetear contraseña',
+                color: 'warning',
+                icon: 'iconsminds-unlock-2',
+                action: 'goToChildrenResetPass',
+              },
+            ]}
+            withChildren={true}
           />
           <GuardianCreateEdit
             data={data}
@@ -153,7 +180,7 @@ const GuardianList = (props: any) => {
     </>
   );
 };
-const mapDispatchToProps = { ...guardianActions };
+const mapDispatchToProps = { ...guardianActions, ...userActions };
 
 const mapStateToProps = ({ loginReducer }: any) => {
   return { loginReducer };

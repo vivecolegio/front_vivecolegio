@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { COLUMN_LIST } from '../../../constants/AdministratorSchool/administratorSchoolConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as administratorCampusActions from '../../../stores/actions/AdministratorCampusActions';
+import * as userActions from '../../../stores/actions/UserActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import DataList from '../../common/Data/DataList';
 import { Loader } from '../../common/Loader';
@@ -115,6 +116,22 @@ const AdministratorList = (props: any) => {
     createNotification('success', 'success', '');
   };
 
+  const resetPassword = async (item: any) => {
+    await props.resetPasswordUser(item?.user?.id).then(() => {
+      refreshDataTable();
+    });
+  };
+
+  const additionalFunction = async (item: any, btn: any) => {
+    switch (btn?.action) {
+      case 'goToChildrenResetPass':
+        resetPassword(item);
+        break;
+      default:
+        break;
+    }
+  };
+
   return (
     <>
       {' '}
@@ -131,6 +148,17 @@ const AdministratorList = (props: any) => {
             changeActiveData={changeActiveData}
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
+            additionalFunction={additionalFunction}
+            childrenButtons={[
+              {
+                id: 0,
+                label: 'Resetear contraseña',
+                color: 'warning',
+                icon: 'iconsminds-unlock-2',
+                action: 'goToChildrenResetPass',
+              },
+            ]}
+            withChildren={true}
           />
           <AdministratorCreateEdit
             data={data}
@@ -152,7 +180,7 @@ const AdministratorList = (props: any) => {
     </>
   );
 };
-const mapDispatchToProps = { ...administratorCampusActions };
+const mapDispatchToProps = { ...administratorCampusActions, ...userActions };
 
 const mapStateToProps = ({ loginReducer }: any) => {
   return { loginReducer };

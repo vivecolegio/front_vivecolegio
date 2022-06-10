@@ -152,6 +152,7 @@ const enMessages = {
   'menu.teachers': 'Teachers',
   'menu.schoolAdministratives': 'School Administratives',
   'menu.studentCourse': 'Students of course',
+  'menu.studentGrade': 'Students of grade',
   'menu.teacher': 'Teacher',
   'menu.teacherTitular': 'Titular',
   'menu.guardians': 'Guardians',

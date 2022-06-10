@@ -23,39 +23,78 @@ const StudentCourseList = (props: any) => {
   const courseName = params.get('courseName');
   const gradeName = params.get('gradeName');
   const courseId = params.get('courseId');
+  const gradeId = params.get('gradeId');
+  const fromGrade = params.get('fromGrade');
 
 
   useEffect(() => {
-    props.dataCourse(courseId).then((listData: any) => {
-      setData(listData);
-      setDataTable(listData?.data?.students?.map((c: any) => {
-        c.node = {};
-        c.node.code = c?.code;
-        c.node.id = c?.id;
-        c.node.name = c?.user ? c?.user?.name : '';
-        c.node.lastName = c?.user ? c?.user?.lastName : '';
-        c.node.documentType_format = c?.user ? c?.user?.documentType?.name : '';
-        c.node.documentNumber = c?.user ? c?.user?.documentNumber : '';
-        c.node.gender_format = c?.user ? c?.user?.gender?.name : '';
-        return c;
-      }));
-    });
+    if (courseId) {
+      props.dataCourse(courseId).then((listData: any) => {
+        setData(listData);
+        setDataTable(listData?.data?.students?.map((c: any) => {
+          c.node = {};
+          c.node.code = c?.code;
+          c.node.id = c?.id;
+          c.node.name = c?.user ? c?.user?.name : '';
+          c.node.lastName = c?.user ? c?.user?.lastName : '';
+          c.node.documentType_format = c?.user ? c?.user?.documentType?.name : '';
+          c.node.documentNumber = c?.user ? c?.user?.documentNumber : '';
+          c.node.gender_format = c?.user ? c?.user?.gender?.name : '';
+          return c;
+        }));
+      });
+    }
+    if (fromGrade) {
+      props.getListAllStudentAcademicGrade(props?.loginReducer?.schoolId, gradeId, props?.loginReducer?.schoolId).then((listData: any) => {
+        setData(listData);
+        setDataTable(listData?.data?.students?.map((c: any) => {
+          c.node = {};
+          c.node.code = c?.code;
+          c.node.id = c?.id;
+          c.node.name = c?.user ? c?.user?.name : '';
+          c.node.lastName = c?.user ? c?.user?.lastName : '';
+          c.node.documentType_format = c?.user ? c?.user?.documentType?.name : '';
+          c.node.documentNumber = c?.user ? c?.user?.documentNumber : '';
+          c.node.gender_format = c?.user ? c?.user?.gender?.name : '';
+          return c;
+        }));
+      });
+    }
   }, []);
 
   const getDataTable = async () => {
-    props.dataCourse(courseId).then((listData: any) => {
-      setData(listData);
-      setDataTable(listData?.data?.students?.map((c: any) => {
-        c.node = {};
-        c.node.code = c?.code;
-        c.node.id = c?.id;
-        c.node.name = c?.user ? c?.user?.name : '';
-        c.node.lastName = c?.user ? c?.user?.lastName : '';
-        c.node.phone = c?.user ? c?.user?.phone : '';
-        c.node.email = c?.user ? c?.user?.email : '';
-        return c;
-      }));
-    });
+    if (courseId) {
+      props.dataCourse(courseId).then((listData: any) => {
+        setData(listData);
+        setDataTable(listData?.data?.students?.map((c: any) => {
+          c.node = {};
+          c.node.code = c?.code;
+          c.node.id = c?.id;
+          c.node.name = c?.user ? c?.user?.name : '';
+          c.node.lastName = c?.user ? c?.user?.lastName : '';
+          c.node.documentType_format = c?.user ? c?.user?.documentType?.name : '';
+          c.node.documentNumber = c?.user ? c?.user?.documentNumber : '';
+          c.node.gender_format = c?.user ? c?.user?.gender?.name : '';
+          return c;
+        }));
+      });
+    }
+    if (fromGrade) {
+      props.getListAllStudentAcademicGrade(props?.loginReducer?.schoolId, gradeId, props?.loginReducer?.schoolId).then((listData: any) => {
+        setData(listData);
+        setDataTable(listData?.data?.students?.map((c: any) => {
+          c.node = {};
+          c.node.code = c?.code;
+          c.node.id = c?.id;
+          c.node.name = c?.user ? c?.user?.name : '';
+          c.node.lastName = c?.user ? c?.user?.lastName : '';
+          c.node.documentType_format = c?.user ? c?.user?.documentType?.name : '';
+          c.node.documentNumber = c?.user ? c?.user?.documentNumber : '';
+          c.node.gender_format = c?.user ? c?.user?.gender?.name : '';
+          return c;
+        }));
+      });
+    }
   };
 
   const refreshDataTable = async () => {
@@ -89,15 +128,20 @@ const StudentCourseList = (props: any) => {
       {dataTable !== null ? (
         <>
           <div className='d-flex justify-content-between align-items-center'>
-            <HeaderInfoAcademic generic={{ title: 'Grado / Curso', value: gradeName + ' / ' + courseName }} goTitle="Regresar a cursos" />
-            <Button
-              onClick={() => {
-                return setModalOpen(!modalOpen);
-              }}
-              color="green">
-              <i className='iconsminds-add font-1rem mr-2' />
-              Vincular Estudiante
-            </Button>
+            {fromGrade ?
+              <HeaderInfoAcademic generic={{ title: 'Grado', value: gradeName }} goTitle="Regresar a grados" />
+              :
+              <HeaderInfoAcademic generic={{ title: 'Grado / Curso', value: gradeName + ' / ' + courseName }} goTitle="Regresar a cursos" />
+            }
+            {!fromGrade ?
+              <Button
+                onClick={() => {
+                  return setModalOpen(!modalOpen);
+                }}
+                color="green">
+                <i className='iconsminds-add font-1rem mr-2' />
+                Vincular Estudiante
+              </Button> : ''}
           </div>
           <DataList
             data={dataTable}
@@ -115,17 +159,18 @@ const StudentCourseList = (props: any) => {
                 action: 'goToChildrenRemove',
               },
             ]}
-            withChildren={true}
+            withChildren={fromGrade ? false : true}
           />
-          <StudentAddCourse
-            data={data}
-            modalOpen={modalOpen}
-            toggleModal={() => {
-              return setModalOpen(!modalOpen);
-            }}
-            refreshDataTable={refreshDataTable}
-            onSubmit={onSubmit}
-          />
+          {!fromGrade ?
+            <StudentAddCourse
+              data={data}
+              modalOpen={modalOpen}
+              toggleModal={() => {
+                return setModalOpen(!modalOpen);
+              }}
+              refreshDataTable={refreshDataTable}
+              onSubmit={onSubmit}
+            /> : ''}
         </>
       ) : (
         <>

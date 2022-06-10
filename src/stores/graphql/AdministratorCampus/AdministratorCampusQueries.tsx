@@ -15,6 +15,8 @@ export const QUERY_GET_ALL_ADMINISTRATOR_CAMPUS = gql`
           user {
             id
             name
+            username
+            documentNumber
             lastName
             email
             phone

@@ -3,6 +3,7 @@ import { Loader } from '../../common/Loader';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { COLUMN_LIST } from '../../../constants/Student/studentConstants';
+import * as userActions from '../../../stores/actions/UserActions';
 import { createNotification } from '../../../helpers/Notification';
 import * as studentActions from '../../../stores/actions/StudentActions';
 import { Colxx } from '../../common/CustomBootstrap';
@@ -106,6 +107,22 @@ const StudentList = (props: any) => {
     createNotification('success', 'success', '');
   };
 
+  const resetPassword = async (item: any) => {
+    await props.resetPasswordUser(item?.user?.id).then(() => {
+      refreshDataTable();
+    });
+  };
+
+  const additionalFunction = async (item: any, btn: any) => {
+    switch (btn?.action) {
+      case 'goToChildrenResetPass':
+        resetPassword(item);
+        break;
+      default:
+        break;
+    }
+  };
+
 
   return (
     <>
@@ -123,6 +140,17 @@ const StudentList = (props: any) => {
             changeActiveData={changeActiveData}
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
+            additionalFunction={additionalFunction}
+            childrenButtons={[
+              {
+                id: 0,
+                label: 'Resetear contraseña',
+                color: 'warning',
+                icon: 'iconsminds-unlock-2',
+                action: 'goToChildrenResetPass',
+              },
+            ]}
+            withChildren={true}
           />
           <StudentCreateEdit
             data={data}
@@ -144,7 +172,7 @@ const StudentList = (props: any) => {
     </>
   );
 };
-const mapDispatchToProps = { ...studentActions };
+const mapDispatchToProps = { ...studentActions, ...userActions };
 
 const mapStateToProps = ({ loginReducer }: any) => {
   return { loginReducer };

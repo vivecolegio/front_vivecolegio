@@ -159,7 +159,7 @@ const CourseList = (props: any) => {
                 action: 'goToChildrenCourseAssignment',
               },
               {
-                id: 0,
+                id: 1,
                 label: 'Estudiantes',
                 color: 'info',
                 icon: 'iconsminds-student-male-female',

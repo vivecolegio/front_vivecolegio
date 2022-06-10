@@ -39,3 +39,9 @@ export const MUTATION_UPDATE_PROFILE_PHOTO_USER = gql`
     update: userProfileUploadImage(id: $id, file: $file)
   }
 `;
+
+export const MUTATION_RESET_PASSWORD_USER = gql`
+  mutation resetPasswordUser($id: String!) {
+    update: resetPasswordUser(id: $id)
+  }
+`;

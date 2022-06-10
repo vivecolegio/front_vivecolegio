@@ -148,6 +148,7 @@ const esMessages = {
   'menu.teachers': 'Docentes',
   'menu.schoolAdministratives': 'Administrativos',
   'menu.studentCourse': 'Estudiantes del curso',
+  'menu.studentGrade': 'Estudiantes del grado',
   'menu.teacher': 'Docente',
   'menu.teacherTitular': 'Titular',
   'menu.guardians': 'Acudientes',
