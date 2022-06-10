@@ -2,87 +2,13 @@ import React, { Suspense, useLayoutEffect, useState } from 'react';
 import { IntlProvider } from 'react-intl';
 import { connect } from 'react-redux';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import AreaList from '../components/app/Academic/Area/AreaList';
-import AsignatureList from '../components/app/Academic/Asignature/AsignatureList';
-import GradeList from '../components/app/Academic/Grade/GradeList';
-import PerformanceLevelList from '../components/app/Academic/PerformanceLevel/PerformanceLevelList';
-import StandardList from '../components/app/Academic/Standard/StandardList';
-import AcademicAsignatureCourseList from '../components/app/AcademicAsignatureCourse/AcademicAsignatureCourseList';
-import AcademicAsignatureCourseBasicList from '../components/app/AcademicAsignatureCourseBasic/AcademicAsignatureCourseBasicList';
-import AcademicDayList from '../components/app/AcademicDay/AcademicDayList';
-import AcademicHourList from '../components/app/AcademicHour/AcademicHourList';
-import AcademicPeriodList from '../components/app/AcademicPeriod/AcademicPeriodList';
-import SchoolAdministrativeList from '../components/app/Administrative/SchoolAdministrativeList';
-import AdministratorCampusList from '../components/app/AdministratorsCampus/AdministratorCampusList';
-import AdministratorSchoolList from '../components/app/AdministratorsSchool/AdministratorSchoolList';
-import ChatApp from '../components/app/Aplications/Chat/Chat';
-import ElectionsApp from '../components/app/Aplications/Elections/Elections';
-import ForumApp from '../components/app/Aplications/Forums/Forum';
-import ForumListApp from '../components/app/Aplications/Forums/ForumList';
-import Survey from '../components/app/Aplications/Survey/Survey';
-import SurveyDetail from '../components/app/Aplications/Survey/SurveyDetail';
 import {
   default as AcademicIndicatorList,
   default as BasicLearningDutiesList,
 } from '../components/app/BasicLearningDuties/BasicLearningDutiesList';
-import CampusList from '../components/app/Campus/CampusList';
-import ClassroomPlan from '../components/app/ClassroomPlan/ClassroomPlan';
-import ClassroomPlanDetail from '../components/app/ClassroomPlan/ClassroomPlanDetail';
-import ClassroomPlanList from '../components/app/ClassroomPlan/ClassroomPlanList';
-import CoEvaluation from '../components/app/CoEvaluation/CoEvaluation';
-import CoEvaluationStudents from '../components/app/CoEvaluationStudents/CoEvaluationStudents';
-import ComponentEvaluativeList from '../components/app/ComponentEvaluative/ComponentEvaluativeList';
-import CoordinatorCampusList from '../components/app/CoordinatorCampus/CoordinatorCampusList';
-import CourseList from '../components/app/Course/CourseList';
-import CoursesTeacherList from '../components/app/CoursesTeacher/CoursesTeacherList';
-import Analytics from '../components/app/Dashboards/Analytics';
-import DocumentTypeList from '../components/app/DocumentType/DocumentTypeList';
-import EducationLevelList from '../components/app/EducationLevel/EducationLevelList';
-import ExperienceLearningList from '../components/app/ExperienceLearning/ExperienceLearningList';
-import GenderList from '../components/app/Gender/GenderList';
-import GeneralAreaList from '../components/app/GeneralAcademic/Area/AreaList';
-import GeneralAsignatureList from '../components/app/GeneralAcademic/Asignature/AsignatureList';
-import GeneralCycleList from '../components/app/GeneralAcademic/Cycle/CycleList';
-import GeneralGradeList from '../components/app/GeneralAcademic/Grade/GradeList';
-import GeneralPerformanceLevelList from '../components/app/GeneralAcademic/PerformanceLevel/PerformanceLevelList';
-import GeneralStandardList from '../components/app/GeneralAcademic/Standard/StandardList';
-import GradeAssignmentList from '../components/app/GradeAssignment/GradeAssignmentList';
-import GradeAssignmentReferentsList from '../components/app/GradeAssignmentReferents/GradeAssignmentReferentsList';
-import GuardianList from '../components/app/Guardian/GuardianList';
-import InboxDetail from '../components/app/Inbox/InboxDetail';
-import LearningList from '../components/app/Learning/LearningList';
-import LearningEvidenceList from '../components/app/LearningEvidence/LearningEvidenceList';
-
-import MenuList from '../components/app/Menu/MenuList';
-import ModalityList from '../components/app/Modality/ModalityList';
-import ModuleList from '../components/app/Module/ModuleList';
-import MunicipalityList from '../components/app/Municipality/MunicipalityList';
-import MyClasessList from '../components/app/MyClasses/MyClasessList';
-import Profile from '../components/app/Profile/Profile';
-import QuestionCategoryTestOnlineList from '../components/app/QuestionCategoryTestOnline/QuestionCategoryTestOnlineList';
-import QuestionsBankTestOnline from '../components/app/QuestionsBankTestOnline/QuestionsBankTestOnline';
-import QuestionTestOnlineList from '../components/app/QuestionTestOnline/QuestionTestOnlineList';
-import RoleList from '../components/app/Role/RoleList';
-import RubricCriteriaList from '../components/app/RubricCriteria/RubricCriteriaList';
-import RubricCriteriaValuation from '../components/app/RubricCriteriaValuation/RubricCriteriaValuation';
-import RubricValuation from '../components/app/RubricValuation/RubricValuation';
-import OfficeSchedule from '../components/app/Schedule/OfficeSchedule';
-import SchoolSchedule from '../components/app/Schedule/SchoolSchedule';
-import SchoolList from '../components/app/School/SchoolList';
-import SelfValuation from '../components/app/SelfValuation/SelfValuation';
-import SpecialityList from '../components/app/Speciality/SpecialityList';
-import Spreadsheet from '../components/app/Spreadsheet/Spreadsheet';
-import StudentsList from '../components/app/Students/StudentsList';
-import StudentsCourseList from '../components/app/StudentsCourse/StudentsCourseList';
-import SubmenuList from '../components/app/Submenu/SubmenuList';
-import TeacherList from '../components/app/Teacher/TeacherList';
-import TraditionalValuation from '../components/app/TraditionalValuation/TraditionalValuation';
-import UserList from '../components/app/User/UserList';
-import ValuationReferents from '../components/app/ValuationReferents/ValuationReferents';
 import ColorSwitcher from '../components/common/ColorSwitcher';
 import Layout from '../components/common/layout/Layout';
 import { NotificationContainer } from '../components/common/Notifications';
-import Home from '../components/Home';
 import { isMultiColorActive } from '../constants/defaultValues';
 import AppLocale from '../lang';
 import * as LoginActions from '../stores/actions/LoginActions';
@@ -95,6 +21,396 @@ const SchoolYearList = React.lazy(() => {
 
 const Login = React.lazy(() => {
   return import(/* webpackChunkName: "Login" */ '../components/app/Login/Login');
+});
+
+const Home = React.lazy(() => {
+  return import(/* webpackChunkName: "Home" */ '../components/Home');
+});
+
+const Profile = React.lazy(() => {
+  return import(/* webpackChunkName: "Profile" */ '../components/app/Profile/Profile');
+});
+
+const MenuList = React.lazy(() => {
+  return import(/* webpackChunkName: "MenuList" */ '../components/app/Menu/MenuList');
+});
+
+const ModalityList = React.lazy(() => {
+  return import(/* webpackChunkName: "ModalityList" */ '../components/app/Modality/ModalityList');
+});
+
+const ModuleList = React.lazy(() => {
+  return import(/* webpackChunkName: "ModuleList" */ '../components/app/Module/ModuleList');
+});
+
+const MunicipalityList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "MunicipalityList" */ '../components/app/Municipality/MunicipalityList'
+  );
+});
+
+const MyClasessList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "MyClasessList" */ '../components/app/MyClasses/MyClasessList'
+  );
+});
+
+const AreaList = React.lazy(() => {
+  return import(/* webpackChunkName: "AreaList" */ '../components/app/Academic/Area/AreaList');
+});
+
+const AsignatureList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "AsignatureList" */ '../components/app/Academic/Asignature/AsignatureList'
+  );
+});
+
+const GradeList = React.lazy(() => {
+  return import(/* webpackChunkName: "GradeList" */ '../components/app/Academic/Grade/GradeList');
+});
+
+const PerformanceLevelList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "PerformanceLevelList" */ '../components/app/Academic/PerformanceLevel/PerformanceLevelList'
+  );
+});
+
+const StandardList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "StandardList" */ '../components/app/Academic/Standard/StandardList'
+  );
+});
+
+const AcademicAsignatureCourseList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "AcademicAsignatureCourseList" */ '../components/app/AcademicAsignatureCourse/AcademicAsignatureCourseList'
+  );
+});
+
+const AcademicAsignatureCourseBasicList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "AcademicAsignatureCourseBasicList" */ '../components/app/AcademicAsignatureCourseBasic/AcademicAsignatureCourseBasicList'
+  );
+});
+
+const AcademicDayList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "AcademicDayList" */ '../components/app/AcademicDay/AcademicDayList'
+  );
+});
+
+const AcademicHourList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "AcademicHourList" */ '../components/app/AcademicHour/AcademicHourList'
+  );
+});
+
+const AcademicPeriodList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "AcademicPeriodList" */ '../components/app/AcademicPeriod/AcademicPeriodList'
+  );
+});
+
+const SchoolAdministrativeList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "SchoolAdministrativeList" */ '../components/app/Administrative/SchoolAdministrativeList'
+  );
+});
+
+const AdministratorCampusList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "AdministratorCampusList" */ '../components/app/AdministratorsCampus/AdministratorCampusList'
+  );
+});
+
+const AdministratorSchoolList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "AdministratorSchoolList" */ '../components/app/AdministratorsSchool/AdministratorSchoolList'
+  );
+});
+
+const ChatApp = React.lazy(() => {
+  return import(/* webpackChunkName: "ChatApp" */ '../components/app/Aplications/Chat/Chat');
+});
+
+const ElectionsApp = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "ElectionsApp" */ '../components/app/Aplications/Elections/Elections'
+  );
+});
+
+const ForumApp = React.lazy(() => {
+  return import(/* webpackChunkName: "ForumApp" */ '../components/app/Aplications/Forums/Forum');
+});
+
+const ForumListApp = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "ForumListApp" */ '../components/app/Aplications/Forums/ForumList'
+  );
+});
+
+const Survey = React.lazy(() => {
+  return import(/* webpackChunkName: "Survey" */ '../components/app/Aplications/Survey/Survey');
+});
+
+const SurveyDetail = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "SurveyDetail" */ '../components/app/Aplications/Survey/SurveyDetail'
+  );
+});
+
+const CampusList = React.lazy(() => {
+  return import(/* webpackChunkName: "CampusList" */ '../components/app/Campus/CampusList');
+});
+
+const ClassroomPlan = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "ClassroomPlan" */ '../components/app/ClassroomPlan/ClassroomPlan'
+  );
+});
+
+const ClassroomPlanDetail = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "ClassroomPlanDetail" */ '../components/app/ClassroomPlan/ClassroomPlanDetail'
+  );
+});
+
+const ClassroomPlanList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "ClassroomPlanList" */ '../components/app/ClassroomPlan/ClassroomPlanList'
+  );
+});
+
+const CoEvaluation = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "CoEvaluation" */ '../components/app/CoEvaluation/CoEvaluation'
+  );
+});
+
+const CoEvaluationStudents = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "CoEvaluationStudents" */ '../components/app/CoEvaluationStudents/CoEvaluationStudents'
+  );
+});
+
+const ComponentEvaluativeList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "ComponentEvaluativeList" */ '../components/app/ComponentEvaluative/ComponentEvaluativeList'
+  );
+});
+
+const CoordinatorCampusList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "CoordinatorCampusList" */ '../components/app/CoordinatorCampus/CoordinatorCampusList'
+  );
+});
+
+const CourseList = React.lazy(() => {
+  return import(/* webpackChunkName: "CourseList" */ '../components/app/Course/CourseList');
+});
+
+const CoursesTeacherList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "CoursesTeacherList" */ '../components/app/CoursesTeacher/CoursesTeacherList'
+  );
+});
+
+const Analytics = React.lazy(() => {
+  return import(/* webpackChunkName: "Analytics" */ '../components/app/Dashboards/Analytics');
+});
+
+const DocumentTypeList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "DocumentTypeList" */ '../components/app/DocumentType/DocumentTypeList'
+  );
+});
+
+const EducationLevelList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "EducationLevelList" */ '../components/app/EducationLevel/EducationLevelList'
+  );
+});
+
+const ExperienceLearningList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "ExperienceLearningList" */ '../components/app/ExperienceLearning/ExperienceLearningList'
+  );
+});
+
+const GenderList = React.lazy(() => {
+  return import(/* webpackChunkName: "GenderList" */ '../components/app/Gender/GenderList');
+});
+
+const GeneralAreaList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "GeneralAreaList" */ '../components/app/GeneralAcademic/Area/AreaList'
+  );
+});
+
+const GeneralAsignatureList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "GeneralAsignatureList" */ '../components/app/GeneralAcademic/Asignature/AsignatureList'
+  );
+});
+
+const GeneralCycleList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "GeneralCycleList" */ '../components/app/GeneralAcademic/Cycle/CycleList'
+  );
+});
+
+const GeneralGradeList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "GeneralGradeList" */ '../components/app/GeneralAcademic/Grade/GradeList'
+  );
+});
+
+const GeneralPerformanceLevelList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "GeneralPerformanceLevelList" */ '../components/app/GeneralAcademic/PerformanceLevel/PerformanceLevelList'
+  );
+});
+
+const GeneralStandardList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "GeneralStandardList" */ '../components/app/GeneralAcademic/Standard/StandardList'
+  );
+});
+
+const GradeAssignmentList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "GradeAssignmentList" */ '../components/app/GradeAssignment/GradeAssignmentList'
+  );
+});
+
+const GradeAssignmentReferentsList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "GradeAssignmentReferentsList" */ '../components/app/GradeAssignmentReferents/GradeAssignmentReferentsList'
+  );
+});
+
+const GuardianList = React.lazy(() => {
+  return import(/* webpackChunkName: "GuardianList" */ '../components/app/Guardian/GuardianList');
+});
+
+const InboxDetail = React.lazy(() => {
+  return import(/* webpackChunkName: "InboxDetail" */ '../components/app/Inbox/InboxDetail');
+});
+
+const LearningList = React.lazy(() => {
+  return import(/* webpackChunkName: "LearningList" */ '../components/app/Learning/LearningList');
+});
+
+const LearningEvidenceList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "LearningEvidenceList" */ '../components/app/LearningEvidence/LearningEvidenceList'
+  );
+});
+
+const QuestionCategoryTestOnlineList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "QuestionCategoryTestOnlineList" */ '../components/app/QuestionCategoryTestOnline/QuestionCategoryTestOnlineList'
+  );
+});
+
+const QuestionsBankTestOnline = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "QuestionsBankTestOnline" */ '../components/app/QuestionsBankTestOnline/QuestionsBankTestOnline'
+  );
+});
+
+const QuestionTestOnlineList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "QuestionTestOnlineList" */ '../components/app/QuestionTestOnline/QuestionTestOnlineList'
+  );
+});
+
+const RoleList = React.lazy(() => {
+  return import(/* webpackChunkName: "RoleList" */ '../components/app/Role/RoleList');
+});
+
+const RubricCriteriaList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "RubricCriteriaList" */ '../components/app/RubricCriteria/RubricCriteriaList'
+  );
+});
+
+const RubricCriteriaValuation = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "RubricCriteriaValuation" */ '../components/app/RubricCriteriaValuation/RubricCriteriaValuation'
+  );
+});
+
+const RubricValuation = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "RubricValuation" */ '../components/app/RubricValuation/RubricValuation'
+  );
+});
+
+const OfficeSchedule = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "OfficeSchedule" */ '../components/app/Schedule/OfficeSchedule'
+  );
+});
+
+const SchoolSchedule = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "SchoolSchedule" */ '../components/app/Schedule/SchoolSchedule'
+  );
+});
+
+const SchoolList = React.lazy(() => {
+  return import(/* webpackChunkName: "SchoolList" */ '../components/app/School/SchoolList');
+});
+
+const SelfValuation = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "SelfValuation" */ '../components/app/SelfValuation/SelfValuation'
+  );
+});
+
+const SpecialityList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "SpecialityList" */ '../components/app/Speciality/SpecialityList'
+  );
+});
+
+const Spreadsheet = React.lazy(() => {
+  return import(/* webpackChunkName: "Spreadsheet" */ '../components/app/Spreadsheet/Spreadsheet');
+});
+
+const StudentsList = React.lazy(() => {
+  return import(/* webpackChunkName: "StudentsList" */ '../components/app/Students/StudentsList');
+});
+
+const StudentsCourseList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "StudentsCourseList" */ '../components/app/StudentsCourse/StudentsCourseList'
+  );
+});
+
+const SubmenuList = React.lazy(() => {
+  return import(/* webpackChunkName: "SubmenuList" */ '../components/app/Submenu/SubmenuList');
+});
+
+const TeacherList = React.lazy(() => {
+  return import(/* webpackChunkName: "TeacherList" */ '../components/app/Teacher/TeacherList');
+});
+
+const TraditionalValuation = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "TraditionalValuation" */ '../components/app/TraditionalValuation/TraditionalValuation'
+  );
+});
+
+const UserList = React.lazy(() => {
+  return import(/* webpackChunkName: "UserList" */ '../components/app/User/UserList');
+});
+
+const ValuationReferents = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "ValuationReferents" */ '../components/app/ValuationReferents/ValuationReferents'
+  );
 });
 
 const App = (props: any) => {
