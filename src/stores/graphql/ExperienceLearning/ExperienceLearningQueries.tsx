@@ -20,8 +20,8 @@ export const QUERY_GET_ALL_EXPERIENCE_LEARNING = gql`
           active
           title
           experienceType
-          evaluativeComponentId
-          evaluativeComponent {
+          evaluativeComponentsId
+          evaluativeComponents {
             id
             name
           }
@@ -69,11 +69,11 @@ export const QUERY_GET_ALL_EXPERIENCE_LEARNING_ASIGNATURE_COURSE = gql`
       active
       title
       experienceType
-      evaluativeComponentId
-      evaluativeComponent {
+      evaluativeComponentsId
+      evaluativeComponents {
         id
         name
-        weight
+        weigth
       }
       academicPeriodId
       academicPeriod {
@@ -114,11 +114,11 @@ export const QUERY_GET_EXPERIENCE_LEARNING = gql`
         criteria
         performanceLevelId
       }
-      evaluativeComponentId
-      evaluativeComponent {
-        name
-        weight
+      evaluativeComponentsId
+      evaluativeComponents {
         id
+        name
+        weigth
       }
       academicPeriodId
       academicPeriod {
