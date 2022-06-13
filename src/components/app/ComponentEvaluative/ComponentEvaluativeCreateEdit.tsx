@@ -194,6 +194,10 @@ const ComponentEvaluativeCreateEdit = (props: any) => {
                     onChange={(selectedOption: any) => {
                       setValue('type', selectedOption?.key);
                       setType(selectedOption);
+                      setValue('academicAreasId', null);
+                      setAcademicAreas(null);
+                      setValue('academicAsignaturesId', null);
+                      setAcademicAsignatures(null);
                     }}
                   />
                 </div>
