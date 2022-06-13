@@ -1,8 +1,8 @@
 /* eslint-disable arrow-body-style */
-import { DevTool } from '@hookform/devtools';
 import React, { useEffect, useState } from 'react';
 import ReactDatePicker from 'react-datepicker';
 import { useForm } from 'react-hook-form';
+import { useIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 import Select from 'react-select';
@@ -35,11 +35,11 @@ const ExperienceLearningCreateEdit = (props: any) => {
   const [navigationMethod, setNavigationMethod] = useState(null);
   const [navigationMethodList, setNavigationMethodList] = useState(null);
   const [experienceTypes, setExperienceTypes] = useState([]);
-
   let [params] = useSearchParams();
   const academicAsignatureCourseId = params.get('academicAsignatureCourseId');
   const asignatureId = params.get('asignatureId');
   const gradeId = params.get('gradeId');
+  const intl = useIntl();
 
   const methods = useForm({
     mode: 'onChange',
@@ -70,18 +70,24 @@ const ExperienceLearningCreateEdit = (props: any) => {
         props?.data?.evaluativeComponents !== undefined &&
         props?.data?.evaluativeComponents != null
       ) {
-        setEvaluativeComponent(props?.data?.evaluativeComponents.map((c: any) => {
-          return { label: `${c?.name} (${c?.weight}%)`, value: c?.id, key: c?.id };
-        }));
+        setEvaluativeComponent(
+          props?.data?.evaluativeComponents.map((c: any) => {
+            return { label: `${c?.name} (${c?.weight}%)`, value: c?.id, key: c?.id };
+          }),
+        );
       }
       if (props?.data?.learnigs !== undefined && props?.data?.learnigs != null) {
         let array: any = [];
         setLearnings(
           props?.data?.learnigs.map((c: any) => {
-            array = array.concat(c.evidenceLearnings.map((e: any) => {
-              e.checked = props?.data?.evidenceLearnings.find((x: any) => (x?.id === e?.id)) ? true : false;
-              return e;
-            }));
+            array = array.concat(
+              c.evidenceLearnings.map((e: any) => {
+                e.checked = props?.data?.evidenceLearnings.find((x: any) => x?.id === e?.id)
+                  ? true
+                  : false;
+                return e;
+              }),
+            );
             return {
               label: c.statement,
               value: c.id,
@@ -93,10 +99,7 @@ const ExperienceLearningCreateEdit = (props: any) => {
         checksEvidencesLearning = [...array];
         setChecksEvidencesLearning(checksEvidencesLearning);
       }
-      if (
-        props?.data?.evidenceLearnings !== undefined &&
-        props?.data?.evidenceLearnings != null
-      ) {
+      if (props?.data?.evidenceLearnings !== undefined && props?.data?.evidenceLearnings != null) {
         setChecksEvidencesLearningSelected(
           props?.data?.evidenceLearnings.map((c: any) => {
             return c?.id;
@@ -106,7 +109,7 @@ const ExperienceLearningCreateEdit = (props: any) => {
       if (props?.data?.experienceType !== undefined && props?.data?.experienceType != null) {
         setExperienceType({
           key: props?.data?.experienceType,
-          label: props?.data?.experienceType,
+          label: intl.messages['display.' + props?.data?.experienceType],
           value: props?.data?.experienceType,
         });
       }
@@ -132,13 +135,10 @@ const ExperienceLearningCreateEdit = (props: any) => {
           }),
         );
       }
-      if (
-        props?.data?.navigationMethod !== undefined &&
-        props?.data?.navigationMethod != null
-      ) {
+      if (props?.data?.navigationMethod !== undefined && props?.data?.navigationMethod != null) {
         setNavigationMethod({
           key: props?.data?.navigationMethod,
-          label: props?.data?.navigationMethod,
+          label: intl.messages['display.' + props?.data?.navigationMethod],
           value: props?.data?.navigationMethod,
         });
       }
@@ -193,22 +193,20 @@ const ExperienceLearningCreateEdit = (props: any) => {
   };
 
   const getDropdowns = async () => {
-    props
-      .getNavigationMethodTestOnline()
-      .then((data: any) => {
-        setNavigationMethodList(
-          data.map((c: any) => {
-            return { label: c.name, value: c.name, key: c.name };
-          }))
-      });
-    props
-      .getExperienceType()
-      .then((data: any) => {
-        setExperienceTypes(
-          data.map((c: any) => {
-            return { label: c.name, value: c.name, key: c.name };
-          }))
-      });
+    props.getNavigationMethodTestOnline().then((data: any) => {
+      setNavigationMethodList(
+        data.map((c: any) => {
+          return { label: intl.messages['display.' + c.name], value: c.name, key: c.name };
+        }),
+      );
+    });
+    props.getExperienceType().then((data: any) => {
+      setExperienceTypes(
+        data.map((c: any) => {
+          return { label: intl.messages['display.' + c.name], value: c.name, key: c.name };
+        }),
+      );
+    });
     props
       .getDropdownsExperienceLearning(props?.loginReducer?.schoolId, asignatureId, gradeId)
       .then((data: any) => {
@@ -362,7 +360,7 @@ const ExperienceLearningCreateEdit = (props: any) => {
             control={control}
             handleSubmit={handleSubmit}
           >
-            <ModalBody className='row'>
+            <ModalBody className="row">
               <div className="form-group col-md-6">
                 <Label>
                   <IntlMessages id="forms.name" />
@@ -387,69 +385,63 @@ const ExperienceLearningCreateEdit = (props: any) => {
                   }}
                 />
               </div>
-              {
-                experienceType?.key === 'ONLINETEST' ?
-                  <>
-                    <div className="form-group col-md-6">
-                      <Label>
-                        Fecha de apertura
-                      </Label>
-                      <ReactDatePicker
-                        {...register('openTestDate', { required: true })}
-                        selected={openTestDate}
-                        onChange={(dateOp: any) => {
-                          setValue('openTestDate', dateOp as Date);
-                          setOpenTestDate(dateOp as Date);
-                        }}
-                      />
-                    </div>
-                    <div className="form-group col-md-6">
-                      <Label>
-                        Fecha de cierre
-                      </Label>
-                      <ReactDatePicker
-                        {...register('closeTestDate', { required: true })}
-                        selected={closeTestDate}
-                        onChange={(dateCl: any) => {
-                          setValue('closeTestDate', dateCl as Date);
-                          setCloseTestDate(dateCl as Date);
-                        }}
-                      />
-                    </div>
-                    <div className="form-group col-md-6 d-flex align-items-center">
-                      <Input
-                        className="itemCheck mb-0 mr-2"
-                        type="checkbox"
-                        id={`check_shuffleQuestions`}
-                        defaultChecked={data.shuffleQuestions}
-                        onChange={() => {
-                          setValue('shuffleQuestions', !data.shuffleQuestions);
-                        }}
-                        label=""
-                      />
-                      <span>Preguntas aleatorias</span>
-                    </div>
-                    <div className="form-group col-md-6">
-                      <Label>
-                        Método de navegación
-                      </Label>
-                      <Select
-                        isClearable
-                        placeholder={<IntlMessages id="forms.select" />}
-                        {...register('navigationMethod', { required: true })}
-                        className="react-select"
-                        classNamePrefix="react-select"
-                        options={navigationMethodList}
-                        value={navigationMethod}
-                        onChange={(selectedOption) => {
-                          setValue('navigationMethod', selectedOption?.key);
-                          setNavigationMethod(selectedOption);
-                        }}
-                      />
-                    </div>
-                  </>
-                  : ''
-              }
+              {experienceType?.key === 'ONLINETEST' ? (
+                <>
+                  <div className="form-group col-md-6">
+                    <Label>Fecha de apertura</Label>
+                    <ReactDatePicker
+                      {...register('openTestDate', { required: true })}
+                      selected={openTestDate}
+                      onChange={(dateOp: any) => {
+                        setValue('openTestDate', dateOp as Date);
+                        setOpenTestDate(dateOp as Date);
+                      }}
+                    />
+                  </div>
+                  <div className="form-group col-md-6">
+                    <Label>Fecha de cierre</Label>
+                    <ReactDatePicker
+                      {...register('closeTestDate', { required: true })}
+                      selected={closeTestDate}
+                      onChange={(dateCl: any) => {
+                        setValue('closeTestDate', dateCl as Date);
+                        setCloseTestDate(dateCl as Date);
+                      }}
+                    />
+                  </div>
+                  <div className="form-group col-md-6 d-flex align-items-center">
+                    <Input
+                      className="itemCheck mb-0 mr-2"
+                      type="checkbox"
+                      id={`check_shuffleQuestions`}
+                      defaultChecked={data.shuffleQuestions}
+                      onChange={() => {
+                        setValue('shuffleQuestions', !data.shuffleQuestions);
+                      }}
+                      label=""
+                    />
+                    <span>Preguntas aleatorias</span>
+                  </div>
+                  <div className="form-group col-md-6">
+                    <Label>Método de navegación</Label>
+                    <Select
+                      isClearable
+                      placeholder={<IntlMessages id="forms.select" />}
+                      {...register('navigationMethod', { required: true })}
+                      className="react-select"
+                      classNamePrefix="react-select"
+                      options={navigationMethodList}
+                      value={navigationMethod}
+                      onChange={(selectedOption) => {
+                        setValue('navigationMethod', selectedOption?.key);
+                        setNavigationMethod(selectedOption);
+                      }}
+                    />
+                  </div>
+                </>
+              ) : (
+                ''
+              )}
               <div className="form-group col-md-6">
                 <Label>
                   <IntlMessages id="menu.evaluativeComponent" />
@@ -464,7 +456,12 @@ const ExperienceLearningCreateEdit = (props: any) => {
                   options={evaluativeComponentList}
                   value={evaluativeComponent}
                   onChange={(selectedOption) => {
-                    setValue('evaluativeComponentsId', selectedOption.map((c: any) => { return c.key }));
+                    setValue(
+                      'evaluativeComponentsId',
+                      selectedOption.map((c: any) => {
+                        return c.key;
+                      }),
+                    );
                     setEvaluativeComponent(selectedOption);
                   }}
                 />
@@ -552,19 +549,13 @@ const ExperienceLearningCreateEdit = (props: any) => {
                           id={`check_hidden`}
                           defaultChecked={item?.checked}
                           onChange={() => {
-                            if (
-                              checksEvidencesLearningSelected.find((x: any) => x === item.id)
-                            ) {
+                            if (checksEvidencesLearningSelected.find((x: any) => x === item.id)) {
                               checksEvidencesLearningSelected =
-                                checksEvidencesLearningSelected.filter(
-                                  (x: any) => x !== item.id,
-                                );
+                                checksEvidencesLearningSelected.filter((x: any) => x !== item.id);
                             } else {
                               checksEvidencesLearningSelected.push(item.id);
                             }
-                            checksEvidencesLearningSelected = [
-                              ...checksEvidencesLearningSelected,
-                            ];
+                            checksEvidencesLearningSelected = [...checksEvidencesLearningSelected];
                             setChecksEvidencesLearningSelected(checksEvidencesLearningSelected);
                             setValue('evidenceLearningsId', checksEvidencesLearningSelected);
                             //console.log(checksEvidencesLearningSelected);
@@ -608,38 +599,38 @@ const ExperienceLearningCreateEdit = (props: any) => {
                   {performanceLevels
                     ? props?.data?.id
                       ? criteriaPerformances.map((item: any, index: any) => {
-                        return (
-                          <div key={index} className="form-group col-md-12">
-                            <span>
-                              {
-                                performanceLevels.find(
-                                  (p: any) => p.key === item?.performanceLevelId,
-                                )?.label
-                              }
-                            </span>
-                            <Input
-                              defaultValue={item?.criteria}
-                              onInput={(e) => {
-                                return setCriteriaPerformance(e, item?.performanceLevelId);
-                              }}
-                              className="form-control"
-                            />
-                          </div>
-                        );
-                      })
+                          return (
+                            <div key={index} className="form-group col-md-12">
+                              <span>
+                                {
+                                  performanceLevels.find(
+                                    (p: any) => p.key === item?.performanceLevelId,
+                                  )?.label
+                                }
+                              </span>
+                              <Input
+                                defaultValue={item?.criteria}
+                                onInput={(e) => {
+                                  return setCriteriaPerformance(e, item?.performanceLevelId);
+                                }}
+                                className="form-control"
+                              />
+                            </div>
+                          );
+                        })
                       : performanceLevels.map((item: any, index: any) => {
-                        return (
-                          <div key={index} className="form-group col-md-12">
-                            <span>{item.label}</span>
-                            <Input
-                              onInput={(e) => {
-                                return setCriteriaPerformance(e, item?.key);
-                              }}
-                              className="form-control"
-                            />
-                          </div>
-                        );
-                      })
+                          return (
+                            <div key={index} className="form-group col-md-12">
+                              <span>{item.label}</span>
+                              <Input
+                                onInput={(e) => {
+                                  return setCriteriaPerformance(e, item?.key);
+                                }}
+                                className="form-control"
+                              />
+                            </div>
+                          );
+                        })
                     : ''}
                 </>
               ) : (
