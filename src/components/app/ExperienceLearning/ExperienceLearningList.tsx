@@ -33,16 +33,20 @@ const ExperienceLearningList = (props: any) => {
 
   const [data, setData] = useState(null);
   useEffect(() => {
-    console.log(props?.loginReducer?.schoolYear, 'SCHOOOL')
     setRole(props?.loginReducer?.role?.name);
     props
       .getListAllExperienceLearning(props?.loginReducer?.campusId, academicAsignatureCourseId)
       .then((listData: any) => {
         setDataTable(listData);
       });
-    props.getAcademicPeriodsExperienceLearning(props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear).then((listData: any) => {
-      setAcademicPeriods(listData);
-    });
+    props
+      .getAcademicPeriodsExperienceLearning(
+        props?.loginReducer?.schoolId,
+        props?.loginReducer?.schoolYear,
+      )
+      .then((listData: any) => {
+        setAcademicPeriods(listData);
+      });
   }, []);
 
   const getDataTable = async (idAcademicPeriod: any = null) => {
@@ -104,7 +108,7 @@ const ExperienceLearningList = (props: any) => {
   const deleteAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.deleteExperienceLearning(item.id, false).then(
-        () => { },
+        () => {},
         () => {
           createNotification('error', 'error', '');
         },
@@ -117,7 +121,7 @@ const ExperienceLearningList = (props: any) => {
   const changeActiveDataAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.changeActiveExperienceLearning(!item.active, item.id, false).then(
-        () => { },
+        () => {},
         () => {
           createNotification('error', 'error', '');
         },
@@ -166,8 +170,8 @@ const ExperienceLearningList = (props: any) => {
         break;
       case 'COEVALUATION':
         goToChildren(
-          role !== 'ESTUDIANTE' ?
-            `/coEvaluation?courseId=${item?.academicAsignatureCourse?.courseId}&learningId=${item?.id}&academicAsignatureCourseId=${item?.academicAsignatureCourseId}`
+          role !== 'ESTUDIANTE'
+            ? `/coEvaluation?courseId=${item?.academicAsignatureCourse?.courseId}&learningId=${item?.id}&academicAsignatureCourseId=${item?.academicAsignatureCourseId}`
             : `/coEvaluationStudents?courseId=${item?.academicAsignatureCourse?.courseId}&learningId=${item?.id}&academicAsignatureCourseId=${item?.academicAsignatureCourseId}`,
         );
         break;
@@ -244,28 +248,34 @@ const ExperienceLearningList = (props: any) => {
             header={
               <>
                 <div className="d-flex justify-content-between mt-4 align-items-center">
-                  <HeaderInfoAcademic asignature grade goTitle="Regresar a mis clases" academicAsignatureCourseId={academicAsignatureCourseId} />
+                  <HeaderInfoAcademic
+                    asignature
+                    grade
+                    goTitle="Regresar a mis clases"
+                    academicAsignatureCourseId={academicAsignatureCourseId}
+                  />
                   <div>
                     {academicPeriods
                       ? academicPeriods?.map((item: any) => {
-                        return (
-                          <>
-                            <button
-                              onClick={() => {
-                                return filterByPeriod(item);
-                              }}
-                              key={item?.node?.id}
-                              className={`btn ${academicPeriod?.node?.id === item?.node?.id
-                                ? 'btn-info'
-                                : 'btn-outline-info'
+                          return (
+                            <>
+                              <button
+                                onClick={() => {
+                                  return filterByPeriod(item);
+                                }}
+                                key={item?.node?.id}
+                                className={`btn ${
+                                  academicPeriod?.node?.id === item?.node?.id
+                                    ? 'btn-info'
+                                    : 'btn-outline-info'
                                 }`}
-                              type="button"
-                            >
-                              <i className="iconsminds-pen-2"></i> {item?.node?.name}
-                            </button>{' '}
-                          </>
-                        );
-                      })
+                                type="button"
+                              >
+                                <i className="iconsminds-pen-2"></i> {item?.node?.name}
+                              </button>{' '}
+                            </>
+                          );
+                        })
                       : ''}
                   </div>
                 </div>

@@ -208,7 +208,13 @@ const ExperienceLearningCreateEdit = (props: any) => {
       );
     });
     props
-      .getDropdownsExperienceLearning(props?.loginReducer?.schoolId, asignatureId, gradeId, props?.loginReducer?.schoolYear, academicAsignatureCourseId)
+      .getDropdownsExperienceLearning(
+        props?.loginReducer?.schoolId,
+        asignatureId,
+        gradeId,
+        props?.loginReducer?.schoolYear,
+        academicAsignatureCourseId,
+      )
       .then((data: any) => {
         setCampusList(
           data.dataCampus.edges.map((c: any) => {
@@ -305,11 +311,11 @@ const ExperienceLearningCreateEdit = (props: any) => {
   });
   register('evidenceLearningsId', {
     required: true,
-    value: props?.data?.id ? props?.data?.evidenceLearningsId : '',
+    value: props?.data?.id ? props?.data?.evidenceLearningsId : [],
   });
   register('learningsId', {
     required: true,
-    value: props?.data?.id ? props?.data?.learningsId : '',
+    value: props?.data?.id ? props?.data?.learningsId : [],
   });
   register('campusId', {
     required: true,
@@ -321,7 +327,7 @@ const ExperienceLearningCreateEdit = (props: any) => {
   });
   register('evaluativeComponentsId', {
     required: true,
-    value: props?.data?.id ? props?.data?.evaluativeComponentsId : '',
+    value: props?.data?.id ? props?.data?.evaluativeComponentsId : [],
   });
   register('experienceLearningPerformanceLevel', {
     required: true,
@@ -558,7 +564,6 @@ const ExperienceLearningCreateEdit = (props: any) => {
                             checksEvidencesLearningSelected = [...checksEvidencesLearningSelected];
                             setChecksEvidencesLearningSelected(checksEvidencesLearningSelected);
                             setValue('evidenceLearningsId', checksEvidencesLearningSelected);
-                            //console.log(checksEvidencesLearningSelected);
                           }}
                           label=""
                         />
@@ -599,38 +604,38 @@ const ExperienceLearningCreateEdit = (props: any) => {
                   {performanceLevels
                     ? props?.data?.id
                       ? criteriaPerformances.map((item: any, index: any) => {
-                        return (
-                          <div key={index} className="form-group col-md-12">
-                            <span>
-                              {
-                                performanceLevels.find(
-                                  (p: any) => p.key === item?.performanceLevelId,
-                                )?.label
-                              }
-                            </span>
-                            <Input
-                              defaultValue={item?.criteria}
-                              onInput={(e) => {
-                                return setCriteriaPerformance(e, item?.performanceLevelId);
-                              }}
-                              className="form-control"
-                            />
-                          </div>
-                        );
-                      })
+                          return (
+                            <div key={index} className="form-group col-md-12">
+                              <span>
+                                {
+                                  performanceLevels.find(
+                                    (p: any) => p.key === item?.performanceLevelId,
+                                  )?.label
+                                }
+                              </span>
+                              <Input
+                                defaultValue={item?.criteria}
+                                onInput={(e) => {
+                                  return setCriteriaPerformance(e, item?.performanceLevelId);
+                                }}
+                                className="form-control"
+                              />
+                            </div>
+                          );
+                        })
                       : performanceLevels.map((item: any, index: any) => {
-                        return (
-                          <div key={index} className="form-group col-md-12">
-                            <span>{item.label}</span>
-                            <Input
-                              onInput={(e) => {
-                                return setCriteriaPerformance(e, item?.key);
-                              }}
-                              className="form-control"
-                            />
-                          </div>
-                        );
-                      })
+                          return (
+                            <div key={index} className="form-group col-md-12">
+                              <span>{item.label}</span>
+                              <Input
+                                onInput={(e) => {
+                                  return setCriteriaPerformance(e, item?.key);
+                                }}
+                                className="form-control"
+                              />
+                            </div>
+                          );
+                        })
                     : ''}
                 </>
               ) : (
