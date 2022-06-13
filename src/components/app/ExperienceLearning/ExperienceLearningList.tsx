@@ -33,14 +33,15 @@ const ExperienceLearningList = (props: any) => {
 
   const [data, setData] = useState(null);
   useEffect(() => {
+    console.log(props?.loginReducer?.schoolYear, 'SCHOOOL')
     setRole(props?.loginReducer?.role?.name);
     props
       .getListAllExperienceLearning(props?.loginReducer?.campusId, academicAsignatureCourseId)
       .then((listData: any) => {
         setDataTable(listData);
       });
-    props.getDropdownsExperienceLearning(props?.loginReducer?.schoolId).then((listData: any) => {
-      setAcademicPeriods(listData.dataAcademicPeriods.edges);
+    props.getAcademicPeriodsExperienceLearning(props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear).then((listData: any) => {
+      setAcademicPeriods(listData);
     });
   }, []);
 
@@ -246,7 +247,7 @@ const ExperienceLearningList = (props: any) => {
                   <HeaderInfoAcademic asignature grade goTitle="Regresar a mis clases" academicAsignatureCourseId={academicAsignatureCourseId} />
                   <div>
                     {academicPeriods
-                      ? academicPeriods.map((item: any) => {
+                      ? academicPeriods?.map((item: any) => {
                         return (
                           <>
                             <button
@@ -255,8 +256,8 @@ const ExperienceLearningList = (props: any) => {
                               }}
                               key={item?.node?.id}
                               className={`btn ${academicPeriod?.node?.id === item?.node?.id
-                                  ? 'btn-info'
-                                  : 'btn-outline-info'
+                                ? 'btn-info'
+                                : 'btn-outline-info'
                                 }`}
                               type="button"
                             >

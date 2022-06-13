@@ -153,11 +153,30 @@ export const QUERY_GET_EXPERIENCE_LEARNING = gql`
   }
 `;
 
+export const QUERY_GET_ACADEMIC_PERIODS_EXPERIENCE_LEARNING = gql`
+  query getAcademicPeriodSchoolYear(
+    $schoolId: String!  
+    $schoolYearId: String!) {
+    data: getAcademicPeriodSchoolYear(schoolId: $schoolId,schoolYearId: $schoolYearId ) {
+      edges {
+        node {
+          id
+          name
+          startDate
+          endDate
+        }
+      }
+    }
+  }
+`;
+
 export const QUERY_GET_DROPDOWNS_EXPERIENCE_LEARNING = gql`
   query getDropdownsExperienceLearning(
     $schoolId: String!
     $academicAsignatureId: String
     $academicGradeId: String
+    $schoolYearId: String!
+    $academicAsignatureCourseId: String!
   ) {
     dataCampus: getAllCampus(allData: false, orderCreated: false, schoolId: $schoolId) {
       edges {
@@ -185,11 +204,9 @@ export const QUERY_GET_DROPDOWNS_EXPERIENCE_LEARNING = gql`
         }
       }
     }
-    dataAcademicPeriods: getAllAcademicPeriod(
-      allData: false
-      orderCreated: false
+    dataAcademicPeriods: getAcademicPeriodSchoolYear(
       schoolId: $schoolId
-      orderCustom: true
+      schoolYearId: $schoolYearId
     ) {
       edges {
         node {
@@ -200,10 +217,8 @@ export const QUERY_GET_DROPDOWNS_EXPERIENCE_LEARNING = gql`
         }
       }
     }
-    dataPerformanceLevels: getAllPerformanceLevel(
-      orderCreated: true
-      allData: true
-      schoolId: $schoolId
+    dataPerformanceLevels: getAllPerformanceLevelAcademicAsignatureCourse(
+      academicAsignatureCourseId : $academicAsignatureCourseId 
     ) {
       edges {
         cursor
@@ -215,10 +230,8 @@ export const QUERY_GET_DROPDOWNS_EXPERIENCE_LEARNING = gql`
         }
       }
     }
-    dataEvaluativeComponents: getAllEvaluativeComponent(
-      orderCreated: true
-      allData: true
-      schoolId: $schoolId
+    dataEvaluativeComponents: getAllEvaluativeComponentAcademicAsignatureCourse(
+      academicAsignatureCourseId : $academicAsignatureCourseId 
     ) {
       edges {
         cursor

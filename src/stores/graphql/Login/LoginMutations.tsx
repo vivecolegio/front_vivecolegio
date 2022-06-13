@@ -7,6 +7,10 @@ export const MUTATION_LOGIN = gql`
       name
       lastName
       profilePhoto
+      schoolYear {
+        id
+        schoolYear
+      }
       student {
         id
       }

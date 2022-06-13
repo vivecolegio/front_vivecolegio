@@ -1,7 +1,7 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
 import { MUTATION_CHANGE_ACTIVE_EXPERIENCE_LEARNING, MUTATION_CREATE_EXPERIENCE_LEARNING, MUTATION_DELETE_EXPERIENCE_LEARNING, MUTATION_UPDATE_EXPERIENCE_LEARNING } from '../graphql/ExperienceLearning/ExperienceLearningMutations';
-import { QUERY_GET_ALL_EXPERIENCE_LEARNING, QUERY_GET_EXPERIENCE_LEARNING, QUERY_GET_DROPDOWNS_EXPERIENCE_LEARNING, QUERY_GET_ALL_EXPERIENCE_LEARNING_ASIGNATURE_COURSE, QUERY_GET_ALL_NAVIGATION_METHOD_QUESTION_TEST_ONLINE, QUERY_GET_ALL_EXPERIENCE_TYPE } from '../graphql/ExperienceLearning/ExperienceLearningQueries';
+import { QUERY_GET_ALL_EXPERIENCE_LEARNING, QUERY_GET_EXPERIENCE_LEARNING, QUERY_GET_DROPDOWNS_EXPERIENCE_LEARNING, QUERY_GET_ALL_EXPERIENCE_LEARNING_ASIGNATURE_COURSE, QUERY_GET_ALL_NAVIGATION_METHOD_QUESTION_TEST_ONLINE, QUERY_GET_ALL_EXPERIENCE_TYPE, QUERY_GET_ACADEMIC_PERIODS_EXPERIENCE_LEARNING } from '../graphql/ExperienceLearning/ExperienceLearningQueries';
 
 
 export const getListAllExperienceLearning = (campusId:string, academicAsignatureCourseId : string, academicPeriodId: string) => {
@@ -210,7 +210,7 @@ export const deleteExperienceLearning = (id: any, showToast: boolean) => {
   };
 };
 
-export const getDropdownsExperienceLearning = (schoolId: string, academicAsignatureId: string, academicGradeId: string) => {
+export const getDropdownsExperienceLearning = (schoolId: string, academicAsignatureId: string, academicGradeId: string, schoolYearId: string, academicAsignatureCourseId: string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
@@ -221,10 +221,35 @@ export const getDropdownsExperienceLearning = (schoolId: string, academicAsignat
             schoolId,
             academicAsignatureId,
             academicGradeId,
+            schoolYearId,
+            academicAsignatureCourseId
           },
         })
         .then((result: any) => {
           listData = result.data;
+        });
+      return listData;
+    } catch (error) {
+      createNotification('error', 'error', '');
+      return error;
+    }
+  };
+};
+
+export const getAcademicPeriodsExperienceLearning = (schoolId: string, schoolYearId: string) => {
+  return async (dispatch: any) => {
+    try {
+      let listData = {};
+      await client
+        .query({
+          query: QUERY_GET_ACADEMIC_PERIODS_EXPERIENCE_LEARNING,
+          variables:{
+            schoolId,
+            schoolYearId
+          },
+        })
+        .then((result: any) => {
+          listData = result.data.data.edges;
         });
       return listData;
     } catch (error) {
