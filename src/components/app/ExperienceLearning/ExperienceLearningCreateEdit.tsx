@@ -364,14 +364,14 @@ const ExperienceLearningCreateEdit = (props: any) => {
             control={control}
             handleSubmit={handleSubmit}
           >
-            <ModalBody>
-              <div className="form-group">
+            <ModalBody className='row'>
+              <div className="form-group col-md-6">
                 <Label>
                   <IntlMessages id="forms.name" />
                 </Label>
                 <Input {...titleRest} innerRef={titleRef} className="form-control" />
               </div>
-              <div className="form-group">
+              <div className="form-group col-md-6">
                 <Label>
                   <IntlMessages id="forms.experienceType" />
                 </Label>
@@ -392,7 +392,7 @@ const ExperienceLearningCreateEdit = (props: any) => {
               {
                 experienceType?.key === 'ONLINETEST' ?
                   <>
-                    <div className="form-group">
+                    <div className="form-group col-md-6">
                       <Label>
                         Fecha de apertura
                       </Label>
@@ -405,7 +405,7 @@ const ExperienceLearningCreateEdit = (props: any) => {
                         }}
                       />
                     </div>
-                    <div className="form-group">
+                    <div className="form-group col-md-6">
                       <Label>
                         Fecha de cierre
                       </Label>
@@ -418,7 +418,7 @@ const ExperienceLearningCreateEdit = (props: any) => {
                         }}
                       />
                     </div>
-                    <div className="form-group d-flex align-items-center">
+                    <div className="form-group col-md-6 d-flex align-items-center">
                       <Input
                         className="itemCheck mb-0 mr-2"
                         type="checkbox"
@@ -431,7 +431,7 @@ const ExperienceLearningCreateEdit = (props: any) => {
                       />
                       <span>Preguntas aleatorias</span>
                     </div>
-                    <div className="form-group">
+                    <div className="form-group col-md-6">
                       <Label>
                         Método de navegación
                       </Label>
@@ -452,7 +452,7 @@ const ExperienceLearningCreateEdit = (props: any) => {
                   </>
                   : ''
               }
-              <div className="form-group">
+              <div className="form-group col-md-6">
                 <Label>
                   <IntlMessages id="menu.evaluativeComponent" />
                 </Label>
@@ -470,7 +470,7 @@ const ExperienceLearningCreateEdit = (props: any) => {
                   }}
                 />
               </div>
-              <div className="form-group">
+              <div className="form-group col-md-6">
                 <Label>
                   <IntlMessages id="menu.periodAcademic" />
                 </Label>
@@ -488,7 +488,7 @@ const ExperienceLearningCreateEdit = (props: any) => {
                   }}
                 />
               </div>
-              <div className="form-group">
+              <div className="form-group col-md-6">
                 <Label>
                   <IntlMessages id="forms.dateDelivery" />
                 </Label>
@@ -504,10 +504,9 @@ const ExperienceLearningCreateEdit = (props: any) => {
                   }}
                 />
               </div>
-              <div className="form-group">
-                <Label className="mr-2">Entrega online</Label>
+              <div className="form-group col-md-6 d-flex align-items-center">
                 <Input
-                  className="itemCheck mb-0"
+                  className="itemCheck mb-0 mr-2"
                   type="checkbox"
                   id={`check_hidden`}
                   defaultChecked={data.onlineDelivery}
@@ -516,8 +515,9 @@ const ExperienceLearningCreateEdit = (props: any) => {
                   }}
                   label=""
                 />
+                <span>Entrega online</span>
               </div>
-              <div className="form-group">
+              <div className="form-group col-md-12">
                 <Label>
                   <IntlMessages id="menu.learnings" />
                 </Label>
@@ -542,7 +542,7 @@ const ExperienceLearningCreateEdit = (props: any) => {
                   }}
                 />
               </div>
-              <div className="form-group">
+              <div className="form-group col-md-12">
                 {checksEvidencesLearning.map((item: any) => {
                   return (
                     <>
@@ -578,7 +578,7 @@ const ExperienceLearningCreateEdit = (props: any) => {
                   );
                 })}
               </div>
-              <div className="form-group">
+              <div className="form-group col-md-12">
                 <Label>
                   <IntlMessages id="forms.description" />
                 </Label>
@@ -592,7 +592,7 @@ const ExperienceLearningCreateEdit = (props: any) => {
               </div>
               {experienceType?.key === 'COEVALUATION' || experienceType?.key === 'SELFAPPRAISAL' ? (
                 <>
-                  <div className="form-group">
+                  <div className="form-group col-md-12">
                     <Label>
                       <IntlMessages id="forms.criteria" />
                     </Label>
@@ -604,13 +604,13 @@ const ExperienceLearningCreateEdit = (props: any) => {
                       className="form-control"
                     />
                   </div>
-                  <p className="mt-5 font-bold">Criterios por nivel de desempeño</p>
+                  <p className="mt-2 font-bold col-md-12">Criterios por nivel de desempeño</p>
                   <hr />
                   {performanceLevels
                     ? props?.data?.id
                       ? criteriaPerformances.map((item: any, index: any) => {
                         return (
-                          <div key={index} className="form-group">
+                          <div key={index} className="form-group col-md-12">
                             <span>
                               {
                                 performanceLevels.find(
@@ -630,7 +630,7 @@ const ExperienceLearningCreateEdit = (props: any) => {
                       })
                       : performanceLevels.map((item: any, index: any) => {
                         return (
-                          <div key={index} className="form-group">
+                          <div key={index} className="form-group col-md-12">
                             <span>{item.label}</span>
                             <Input
                               onInput={(e) => {
