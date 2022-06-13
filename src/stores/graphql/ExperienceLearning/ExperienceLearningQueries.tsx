@@ -73,7 +73,7 @@ export const QUERY_GET_ALL_EXPERIENCE_LEARNING_ASIGNATURE_COURSE = gql`
       evaluativeComponents {
         id
         name
-        weigth
+        weight
       }
       academicPeriodId
       academicPeriod {
@@ -118,7 +118,7 @@ export const QUERY_GET_EXPERIENCE_LEARNING = gql`
       evaluativeComponents {
         id
         name
-        weigth
+        weight
       }
       academicPeriodId
       academicPeriod {

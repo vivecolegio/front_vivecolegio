@@ -67,14 +67,12 @@ const ExperienceLearningCreateEdit = (props: any) => {
         });
       }
       if (
-        props?.data?.evaluativeComponent !== undefined &&
-        props?.data?.evaluativeComponent != null
+        props?.data?.evaluativeComponents !== undefined &&
+        props?.data?.evaluativeComponents != null
       ) {
-        setEvaluativeComponent({
-          key: props?.data?.evaluativeComponent?.id,
-          label: `${props?.data?.evaluativeComponent?.name} (${props?.data?.evaluativeComponent?.weight}%)`,
-          value: props?.data?.evaluativeComponent?.id,
-        });
+        setEvaluativeComponent(props?.data?.evaluativeComponents.map((c: any) => {
+          return { label: `${c?.name} (${c?.weight}%)`, value: c?.id, key: c?.id };
+        }));
       }
       if (props?.data?.learnigs !== undefined && props?.data?.learnigs != null) {
         let array: any = [];
@@ -323,9 +321,9 @@ const ExperienceLearningCreateEdit = (props: any) => {
     required: true,
     value: props?.data?.id ? props?.data?.academicPeriodId : '',
   });
-  register('evaluativeComponentId', {
+  register('evaluativeComponentsId', {
     required: true,
-    value: props?.data?.id ? props?.data?.evaluativeComponentId : '',
+    value: props?.data?.id ? props?.data?.evaluativeComponentsId : '',
   });
   register('experienceLearningPerformanceLevel', {
     required: true,
@@ -458,14 +456,15 @@ const ExperienceLearningCreateEdit = (props: any) => {
                 </Label>
                 <Select
                   isClearable
+                  isMulti
                   placeholder={<IntlMessages id="forms.select" />}
-                  {...register('evaluativeComponentId', { required: true })}
+                  {...register('evaluativeComponentsId', { required: true })}
                   className="react-select"
                   classNamePrefix="react-select"
                   options={evaluativeComponentList}
                   value={evaluativeComponent}
                   onChange={(selectedOption) => {
-                    setValue('evaluativeComponentId', selectedOption?.key);
+                    setValue('evaluativeComponentsId', selectedOption.map((c: any) => { return c.key }));
                     setEvaluativeComponent(selectedOption);
                   }}
                 />
