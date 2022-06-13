@@ -41,6 +41,47 @@ export const QUERY_GET_ALL_ACADEMIC_ASIGNATURE_COURSE = gql`
   }
 `;
 
+export const QUERY_GET_ALL_ACADEMIC_ASIGNATURE_COURSE_TEACHER = gql`
+  query getAllAcademicAsignatureCourseTeacher($teacherId: String!) {
+    data: getAllAcademicAsignatureCourseTeacher(teacherId: $teacherId) {
+      edges {
+        cursor
+        node {
+          id
+          academicAsignatureId
+          academicAsignature {
+            name
+            generalAcademicAsignatureId
+            generalAcademicAsignature {
+              name
+            }
+          }
+          course {
+            id
+            name           
+            academicGradeId
+            academicGrade {
+              name
+              generalAcademicCycle {
+                name
+              }
+              generalAcademicGradeId
+              generalAcademicGrade {
+                name
+                generalAcademicCycle {
+                  name
+                }
+              }
+            }
+          }
+          active
+        }
+      }
+      totalCount
+    }
+  }
+`;
+
 export const QUERY_GET_ACADEMIC_ASIGNATURE_COURSE = gql`
   query getAcademicAsignatureCourse($id: String!) {
     data: getAcademicAsignatureCourse(id: $id) {

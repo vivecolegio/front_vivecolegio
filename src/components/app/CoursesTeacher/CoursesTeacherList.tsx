@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
-import { COLUMN_LIST } from '../../../constants/Course/CourseConstants';
+import { COLUMN_LIST } from '../../../constants/CourseTeacher/CourseTeacherConstants';
 import * as courseActions from '../../../stores/actions/CourseActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import DataList from '../../common/Data/DataList';
@@ -19,7 +19,7 @@ const CoursesTeacherList = (props: any) => {
   useEffect(() => {
     props.getListAllCourseTeacher(props?.loginReducer?.teacherId,).then((listData: any) => {
       setDataTable(listData.map((c: any) => {
-        c.node.teacher_format = c.node.teacher ? c?.node?.teacher?.user?.name + c?.node?.teacher?.user?.lastName : '';
+        c.node.grade_format = c.node.academicGrade ? c?.node?.academicGrade?.name : '';
         c.node.academicDay_format = c.node.academicDay ? c.node.academicDay.name : '';
         c.node.campus_format = c.node.campus ? c.node.campus.name : '';
         return c;
@@ -30,7 +30,7 @@ const CoursesTeacherList = (props: any) => {
   const getDataTable = async () => {
     props.getListAllCourseTeacher(props?.loginReducer?.teacherId,).then((listData: any) => {
       setDataTable(listData.map((c: any) => {
-        c.node.teacher_format = c.node.teacher ? c?.node?.teacher?.user?.name + c?.node?.teacher?.user?.lastName : '';
+        c.node.grade_format = c.node.academicGrade ? c?.node?.academicGrade?.name : '';
         c.node.academicDay_format = c.node.academicDay ? c.node.academicDay.name : '';
         c.node.campus_format = c.node.campus ? c.node.campus.name : '';
         return c;

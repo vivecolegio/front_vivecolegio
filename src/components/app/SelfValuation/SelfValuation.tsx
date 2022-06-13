@@ -48,7 +48,7 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
       return (submenus = submenus.concat(c.menuItemsLogin));
     });
     let cm = submenus.find((c: any) => {
-      return currentUrl.includes(c.module.url);
+      return currentUrl.includes(c?.module?.url);
     });
     if (cm && cm.readAction) {
       setCurrentMenu(cm);
@@ -138,21 +138,21 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
     navigate(-1);
   };
 
-  const saveNote = async (event:any, item:any) => {
+  const saveNote = async (event: any, item: any) => {
     if (event.key === 'Enter') {
       let obj = {
         assessment: event.target.value,
       };
-      await props.updateExperienceLearningSelfAssessmentValuation(obj, item.id,true).then();
+      await props.updateExperienceLearningSelfAssessmentValuation(obj, item.id, true).then();
     }
   };
 
-  const saveObservations = async (event:any, item:any) => {
+  const saveObservations = async (event: any, item: any) => {
     if (event.key === 'Enter') {
       let obj = {
         assessment: event.target.value,
       };
-      await props.updateExperienceLearningSelfAssessmentValuation(obj, item.id,true).then();
+      await props.updateExperienceLearningSelfAssessmentValuation(obj, item.id, true).then();
     }
   };
 
@@ -161,9 +161,9 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
       <div className="mt-4 d-flex justify-content-center align-items-center">
         <h1 className="font-bold">Autoevaluación</h1>
       </div>
-      <hr/>
+      <hr />
       <div className="d-flex justify-content-between align-items-center">
-      <HeaderInfoAcademic asignature grade course modality experienceLearnig goTitle="Regresar a experiencias de aprendizaje" experienceLearnigId={learningId} academicAsignatureCourseId={academicAsignatureCourseId}/>        
+        <HeaderInfoAcademic asignature grade course modality experienceLearnig goTitle="Regresar a experiencias de aprendizaje" experienceLearnigId={learningId} academicAsignatureCourseId={academicAsignatureCourseId} />
         <div className="mt-4 w-60">
           <table className="table table-striped table-bordered">
             <tbody>
@@ -195,7 +195,7 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
                 },
               )}
             </tbody>
-          </table>         
+          </table>
         </div>
       </div>
 
@@ -250,8 +250,8 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
                                   {getInitialsName(
                                     item?.student?.user
                                       ? item?.student?.user?.name +
-                                          ' ' +
-                                          item?.student?.user?.lastName
+                                      ' ' +
+                                      item?.student?.user?.lastName
                                       : 'N N',
                                   )}
                                 </span>

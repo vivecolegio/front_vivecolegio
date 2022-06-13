@@ -23,6 +23,9 @@ export const QUERY_GET_ALL_COURSE = gql`
             id
             name
           }
+          academicGrade {
+            name
+          }
           order           
           active          
         }

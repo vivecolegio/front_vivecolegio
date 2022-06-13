@@ -28,7 +28,7 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
   let [params] = useSearchParams();
   const learningId = params.get('learningId');
   const academicAsignatureCourseId = params.get('academicAsignatureCourseId');
-  
+
   const [loading, setLoading] = useState(true);
   const [currentMenu, setCurrentMenu] = useState({
     createAction: false,
@@ -48,7 +48,7 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
       return (submenus = submenus.concat(c.menuItemsLogin));
     });
     let cm = submenus.find((c: any) => {
-      return currentUrl.includes(c.module.url);
+      return currentUrl.includes(c?.module?.url);
     });
     if (cm && cm.readAction) {
       setCurrentMenu(cm);
@@ -102,9 +102,9 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
       <div className="mt-4 d-flex justify-content-center align-items-center">
         <h1 className="font-bold">Rúbrica de valoración</h1>
       </div>
-      <hr/>
+      <hr />
       <div className="d-flex justify-content-between align-items-center">
-      <HeaderInfoAcademic asignature grade course experienceLearnig goTitle="Regresar a experiencias de aprendizaje" experienceLearnigId={learningId} academicAsignatureCourseId={academicAsignatureCourseId}/>                               
+        <HeaderInfoAcademic asignature grade course experienceLearnig goTitle="Regresar a experiencias de aprendizaje" experienceLearnigId={learningId} academicAsignatureCourseId={academicAsignatureCourseId} />
       </div>
       {loading ? (
         <>
@@ -158,8 +158,8 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
                                   {getInitialsName(
                                     item?.student?.user
                                       ? item?.student?.user?.name +
-                                          ' ' +
-                                          item?.student?.user?.lastName
+                                      ' ' +
+                                      item?.student?.user?.lastName
                                       : 'N N',
                                   )}
                                 </span>
@@ -169,11 +169,11 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
                               </span>
                             </div>
                           </td>
-                          <td className="text-center vertical-middle">                            
-                              <span>{item?.assessment}</span>                            
+                          <td className="text-center vertical-middle">
+                            <span>{item?.assessment}</span>
                           </td>
-                          <td className="text-center vertical-middle">                           
-                              <span>{item?.observations}</span>
+                          <td className="text-center vertical-middle">
+                            <span>{item?.observations}</span>
                           </td>
                           <td className="text-center vertical-middle">
                             <Badge color="primary" className="font-0-8rem">
@@ -181,14 +181,14 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
                             </Badge>
                           </td>
                           <td className="text-center vertical-middle">
-                          <button className="btn btn-orange mb-3 btn-xs" type="button"
-                          onClick={() => {
-                            goToChildren(
-                              `/rubricCriteriaValuation?rubricValuationId=${item?.id}&studentId=${item?.student?.id}&learningId=${learningId}&academicAsignatureCourseId=${academicAsignatureCourseId}`,
-                            )
-                          }}>
-                            Valorar criterios
-                          </button>
+                            <button className="btn btn-orange mb-3 btn-xs" type="button"
+                              onClick={() => {
+                                goToChildren(
+                                  `/rubricCriteriaValuation?rubricValuationId=${item?.id}&studentId=${item?.student?.id}&learningId=${learningId}&academicAsignatureCourseId=${academicAsignatureCourseId}`,
+                                )
+                              }}>
+                              Valorar criterios
+                            </button>
                           </td>
                         </tr>
                       </>

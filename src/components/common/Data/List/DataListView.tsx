@@ -33,76 +33,79 @@ const DataListView = ({
         >
           <div className="pl-2 d-flex flex-grow-1 min-width-zero">
             <div className="p-3 card-body align-self-center d-flex flex-column flex-lg-row justify-content-between min-width-zero align-items-lg-center">
-              {columns.filter((c:any)=>{return (c.label)}).map((column: any) => {
-                  let classNameProps ="";
-                  if(column?.textCenter) {
-                    classNameProps+= "text-center";
-                  }
-                  if(classNameProps.length >0){
-                    classNameProps+=" ";
-                  }
-                  classNameProps+= column?.badge ? `mb-1 text-small badge badge-${column.color ? column.color : "primary"} badge-pill` :`mb-1 text-muted text-small`
-                  return (
-                    <div key={column.column} style={{ 'width':column.width }} className="mb-1">
-                      <p key={column.column} className={classNameProps}>
-                      { item[`${column.column}`] != null && column.translate ?<IntlMessages id={"display."+item[`${column.column}`]+""} />  : item[`${column.column}`]} 
-                      </p>
-                    </div>
-                  );
+              {columns.filter((c: any) => { return (c.label) }).map((column: any) => {
+                let classNameProps = "";
+                if (column?.textCenter) {
+                  classNameProps += "text-center";
+                }
+                if (classNameProps.length > 0) {
+                  classNameProps += " ";
+                }
+                classNameProps += column?.badge ? `mb-1 text-small badge badge-${column.color ? column.color : "primary"} badge-pill` : `mb-1 text-muted text-small`
+                return (
+                  <div key={column.column} style={{ 'width': column.width }} className="mb-1">
+                    <p key={column.column} className={classNameProps}>
+                      {item[`${column.column}`] != null && column.translate ? <IntlMessages id={"display." + item[`${column.column}`] + ""} /> : item[`${column.column}`]}
+                    </p>
+                  </div>
+                );
               })}
-              <p className={"mb-0 flex-gap text-muted text-small"} style={{ 'width':columns[columns.length - 1].width }}>
+              <p className={"mb-0 flex-gap text-muted text-small"} style={{ 'width': columns[columns.length - 1].width }}>
                 {withChildren === true ? (
-                  (filterChildren ? childrenButtons.filter((c:any)=>{return (c.action === item[filterChildren])}) : childrenButtons).map((button:any) => {
-                    return<> 
-                    <Button
-                      key={button.id}
-                      color={button.color}
-                      size="xs"
-                      onClick={() => {
-                         return additionalFunction(item, button);
-                      }}>
-                      <i className={button.icon + ' font-1rem mr-2'} />
-                      {button.label}
-                    </Button> {' '}</>
+                  (filterChildren ? childrenButtons.filter((c: any) => { return (c.action === item[filterChildren]) }) : childrenButtons).map((button: any) => {
+                    return <>
+                      {!button.hide ?
+                        <Button
+                          key={button.id}
+                          color={button.color}
+                          size="xs"
+                          onClick={() => {
+                            return additionalFunction(item, button);
+                          }}>
+                          <i className={button.icon + ' font-1rem mr-2'} />
+                          {button.label}
+                        </Button> : ''}
+                      {' '}
+                    </>
                   })
                 ) : (
                   ''
                 )}
-                { currentMenu.updateAction ? 
-                <Button
-                  color="blue"
-                  size="xs"
-                  onClick={() => {
-                    return viewEditData(item.id);
-                  }}
-                >
-                  <i className="simple-icon-eye font-1rem mr-2" />
-                  <IntlMessages id="pages.detail" />
-                </Button> : ''}
+                {currentMenu.updateAction ?
+                  <Button
+                    color="blue"
+                    size="xs"
+                    onClick={() => {
+                      return viewEditData(item.id);
+                    }}
+                  >
+                    <i className="simple-icon-eye font-1rem mr-2" />
+                    <IntlMessages id="pages.detail" />
+                  </Button> : ''}
                 {' '}
-                { currentMenu.deleteAction ? 
-                <Button
-                  color="orange"
-                  size="xs"
-                  onClick={() => {
-                    return deleteData(item.id);
-                  }}
-                >
-                  <i className="simple-icon-trash font-1rem mr-2" />
-                  <IntlMessages id="pages.delete" />
-                </Button> : '' }{' '}
-                {currentMenu.inactiveAction ? 
-                <Button
-                  color={item.active ? 'danger' : 'green'}
-                  size="xs"
-                  onClick={() => {
-                    return changeActiveData(!item.active, item.id);
-                  }}
-                >
-                  <i className={item.active ? 'simple-icon-close font-1rem mr-2' : 'simple-icon-check font-1rem mr-2'} />
-                  {item.active ? <IntlMessages id="pages.inactivate" /> : <IntlMessages id="pages.activate" />}
-                </Button> : '' }{' '}          
-                
+                {currentMenu.deleteAction ?
+                  <Button
+                    color="orange"
+                    size="xs"
+                    onClick={() => {
+                      return deleteData(item.id);
+                    }}
+                  >
+                    <i className="simple-icon-trash font-1rem mr-2" />
+                    <IntlMessages id="pages.delete" />
+                  </Button> : ''}{' '}
+                {currentMenu.inactiveAction ?
+                  <Button
+                    color={item.active ? 'danger' : 'green'}
+                    size="xs"
+                    onClick={() => {
+                      return changeActiveData(!item.active, item.id);
+                    }}
+                  >
+                    <i className={item.active ? 'simple-icon-close font-1rem mr-2' : 'simple-icon-check font-1rem mr-2'} />
+                    {item.active ? <IntlMessages id="pages.inactivate" /> : <IntlMessages id="pages.activate" />}
+                  </Button> : ''}{' '}
+
               </p>
             </div>
             <div className="custom-control custom-checkbox pl-1 align-self-center pr-4">
@@ -111,7 +114,7 @@ const DataListView = ({
                 type="checkbox"
                 id={`check_${item.id}`}
                 checked={isSelect}
-                onChange={() => {}}
+                onChange={() => { }}
                 label=""
               />
             </div>
@@ -122,6 +125,6 @@ const DataListView = ({
   );
 };
 
-export default React.memo(DataListView); 
+export default React.memo(DataListView);
 
 

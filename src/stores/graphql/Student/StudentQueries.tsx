@@ -94,6 +94,15 @@ export const QUERY_GET_ALL_STUDENT_OF_GRADE = gql`
             lastName
             phone
             email
+            documentNumber       
+            gender {
+              id
+              name
+            }
+            documentType {
+              id
+              name
+            }  
           }
         }
       }

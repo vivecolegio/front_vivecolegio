@@ -188,7 +188,7 @@ const esMessages = {
   'menu.statement': 'Enunciado',
   'menu.evidenceLearning': 'Evidencia de aprendizaje',
   'menu.experienceLearning': 'Actividad de valoración',
-  'menu.myClasses': 'Mis Clases',
+  'menu.myClasses': 'Asignación Académica',
   'menu.learnings': 'Aprendizajes',
   'menu.rubricValuation': 'Rúbrica de valoración',
   'menu.rubricCriteria': 'Criterios de rúbrica',

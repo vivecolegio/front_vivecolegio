@@ -63,7 +63,7 @@ const DataList = (props: any) => {
       return submenus = submenus.concat(c.menuItemsLogin);
     });
     //console.log(submenus)
-    let cm = submenus.find((c: any) => { return (currentUrl === c.module.url) });
+    let cm = submenus.find((c: any) => { return (currentUrl === c?.module?.url) });
     if (cm && cm.readAction) {
       setCurrentMenu(cm);
     } else {

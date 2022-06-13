@@ -51,7 +51,7 @@ const ExperienceLearningCoEvaluationList = (props: any) => {
       return (submenus = submenus.concat(c.menuItemsLogin));
     });
     let cm = submenus.find((c: any) => {
-      return currentUrl.includes(c.module.url);
+      return currentUrl.includes(c?.module?.url);
     });
     if (cm && cm.readAction) {
       setCurrentMenu(cm);
@@ -128,24 +128,24 @@ const ExperienceLearningCoEvaluationList = (props: any) => {
       <div className="mt-4 d-flex justify-content-center align-items-center">
         <h1 className="font-bold">Coevaluación</h1>
       </div>
-      <hr/>
+      <hr />
       <div className="d-flex justify-content-between align-items-center">
-      <HeaderInfoAcademic asignature grade course modality experienceLearnig goTitle="Regresar a experiencias de aprendizaje" academicAsignatureCourseId={academicAsignatureCourseId}/>        
+        <HeaderInfoAcademic asignature grade course modality experienceLearnig goTitle="Regresar a experiencias de aprendizaje" academicAsignatureCourseId={academicAsignatureCourseId} />
         <div className="mt-4 w-60">
           <table className="table table-striped table-bordered">
             <tbody>
               <tr>
                 <td className='w-20' rowSpan={valuations[0]?.experienceLearning?.experienceLearningPerformanceLevel?.length + 1}>
-                <strong>Criterio:</strong> {valuations[0]?.experienceLearning?.criteria}
+                  <strong>Criterio:</strong> {valuations[0]?.experienceLearning?.criteria}
                 </td>
               </tr>
               {
-                valuations[0]?.experienceLearning?.experienceLearningPerformanceLevel.map((e:any)=>{
+                valuations[0]?.experienceLearning?.experienceLearningPerformanceLevel.map((e: any) => {
                   return <>
-                  <tr>
-                    <td><strong>Nivel de desempeño:</strong> {`${e?.performanceLevel?.name}: ${e?.performanceLevel?.minimumScore} - ${e?.performanceLevel?.topScore}`}</td>
-                    <td><strong>Criterio:</strong> {e?.criteria}</td>
-                  </tr>
+                    <tr>
+                      <td><strong>Nivel de desempeño:</strong> {`${e?.performanceLevel?.name}: ${e?.performanceLevel?.minimumScore} - ${e?.performanceLevel?.topScore}`}</td>
+                      <td><strong>Criterio:</strong> {e?.criteria}</td>
+                    </tr>
                   </>
                 })
               }
@@ -218,16 +218,16 @@ const ExperienceLearningCoEvaluationList = (props: any) => {
                               <>
                                 <td className="text-center vertical-middle">
                                   <span id="tooltip_observation">
-                                  {valuations.find(
-                                    (c: any) =>
-                                      c?.studentId === item?.id && c?.coEvaluatorId === item2?.id,
-                                  )?.assessment || '--'}</span>
+                                    {valuations.find(
+                                      (c: any) =>
+                                        c?.studentId === item?.id && c?.coEvaluatorId === item2?.id,
+                                    )?.assessment || '--'}</span>
                                   {/* {
                                       !valuations.find(
                                         (c: any) =>
                                           c?.studentId === item?.id && c?.coEvaluatorId === item2?.id,
-                                      )?.observations ?  */}                                   
-                                    {/* : '' */}
+                                      )?.observations ?  */}
+                                  {/* : '' */}
                                   {/* } */}
                                 </td>
                               </>

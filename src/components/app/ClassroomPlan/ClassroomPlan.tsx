@@ -17,37 +17,71 @@ const ClassroomPlan = (props: any) => {
 
   const [data, setData] = useState(null);
   useEffect(() => {
-    props
-      .getListAllAcademicAsignatureCourse(props?.loginReducer?.campusId)
-      .then((listData: any) => {
-        setDataTable(
-          listData.map((c: any) => {
-            c.node.course_format = c.node.course ? c.node.course.name : '';
-            c.node.grade_format = c?.node?.course?.academicGrade?.name;
-            c.node.asignature_format = c.node.academicAsignature
-              ? c.node.academicAsignature.name
-              : '';
-            return c;
-          }),
-        );
-      });
+    if (props?.loginReducer?.teacherId) {
+      props
+        .getListAllAcademicAsignatureCourseTeacher(props?.loginReducer?.teacherId)
+        .then((listData: any) => {
+          setDataTable(
+            listData.map((c: any) => {
+              c.node.course_format = c.node.course ? c.node.course.name : '';
+              c.node.grade_format = c?.node?.course?.academicGrade?.name;
+              c.node.asignature_format = c.node.academicAsignature
+                ? c.node.academicAsignature.name
+                : '';
+              return c;
+            }),
+          );
+        });
+    } else {
+      props
+        .getListAllAcademicAsignatureCourse(props?.loginReducer?.campusId)
+        .then((listData: any) => {
+          setDataTable(
+            listData.map((c: any) => {
+              c.node.course_format = c.node.course ? c.node.course.name : '';
+              c.node.grade_format = c?.node?.course?.academicGrade?.name;
+              c.node.asignature_format = c.node.academicAsignature
+                ? c.node.academicAsignature.name
+                : '';
+              return c;
+            }),
+          );
+        });
+    }
   }, []);
 
   const getDataTable = async () => {
-    props
-      .getListAllAcademicAsignatureCourse(props?.loginReducer?.campusId)
-      .then((listData: any) => {
-        setDataTable(
-          listData.map((c: any) => {
-            c.node.course_format = c.node.course ? c.node.course.name : '';
-            c.node.grade_format = c?.node?.course?.academicGrade?.name;
-            c.node.asignature_format = c.node.academicAsignature
-              ? c.node.academicAsignature.name
-              : '';
-            return c;
-          }),
-        );
-      });
+    if (props?.loginReducer?.teacherId) {
+      props
+        .getListAllAcademicAsignatureCourseTeacher(props?.loginReducer?.teacherId)
+        .then((listData: any) => {
+          setDataTable(
+            listData.map((c: any) => {
+              c.node.course_format = c.node.course ? c.node.course.name : '';
+              c.node.grade_format = c?.node?.course?.academicGrade?.name;
+              c.node.asignature_format = c.node.academicAsignature
+                ? c.node.academicAsignature.name
+                : '';
+              return c;
+            }),
+          );
+        });
+    } else {
+      props
+        .getListAllAcademicAsignatureCourse(props?.loginReducer?.campusId)
+        .then((listData: any) => {
+          setDataTable(
+            listData.map((c: any) => {
+              c.node.course_format = c.node.course ? c.node.course.name : '';
+              c.node.grade_format = c?.node?.course?.academicGrade?.name;
+              c.node.asignature_format = c.node.academicAsignature
+                ? c.node.academicAsignature.name
+                : '';
+              return c;
+            }),
+          );
+        });
+    }
   };
 
   const refreshDataTable = async () => {

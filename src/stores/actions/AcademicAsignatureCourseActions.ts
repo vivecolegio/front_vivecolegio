@@ -1,7 +1,7 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
 import { MUTATION_CHANGE_ACTIVE_ACADEMIC_ASIGNATURE_COURSE, MUTATION_CREATE_ACADEMIC_ASIGNATURE_COURSE, MUTATION_DELETE_ACADEMIC_ASIGNATURE_COURSE, MUTATION_UPDATE_ACADEMIC_ASIGNATURE_COURSE } from '../graphql/AcademicAsignatureCourse/AcademicAsignatureCourseMutations';
-import { QUERY_GET_ACADEMIC_ASIGNATURE_COURSE, QUERY_GET_ALL_ACADEMIC_ASIGNATURE_COURSE, QUERY_GET_COURSES_OF_GRADES, QUERY_GET_DROPDOWNS_ACADEMIC_ASIGNATURE_COURSE } from '../graphql/AcademicAsignatureCourse/AcademicAsignatureCourseQueries';
+import { QUERY_GET_ACADEMIC_ASIGNATURE_COURSE, QUERY_GET_ALL_ACADEMIC_ASIGNATURE_COURSE, QUERY_GET_ALL_ACADEMIC_ASIGNATURE_COURSE_TEACHER, QUERY_GET_COURSES_OF_GRADES, QUERY_GET_DROPDOWNS_ACADEMIC_ASIGNATURE_COURSE } from '../graphql/AcademicAsignatureCourse/AcademicAsignatureCourseQueries';
 
 
 export const getListAllAcademicAsignatureCourse = (campusId:string) => {
@@ -13,6 +13,28 @@ export const getListAllAcademicAsignatureCourse = (campusId:string) => {
           query: QUERY_GET_ALL_ACADEMIC_ASIGNATURE_COURSE,
           variables:{
             campusId,
+          },
+        })
+        .then((result: any) => {
+          listData = result.data.data.edges;
+        });
+      return listData;
+    } catch (error) {
+      createNotification('error', 'error', '');
+      return error;
+    }
+  };
+};
+
+export const getListAllAcademicAsignatureCourseTeacher = (teacherId:string) => {
+  return async (dispatch: any) => {
+    try {
+      let listData = {};
+      await client
+        .query({
+          query: QUERY_GET_ALL_ACADEMIC_ASIGNATURE_COURSE_TEACHER,
+          variables:{
+            teacherId,
           },
         })
         .then((result: any) => {

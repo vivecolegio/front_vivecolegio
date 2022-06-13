@@ -18,7 +18,7 @@ const AcademicAsignatureCourseList = (props: any) => {
   const [data, setData] = useState(null);
   useEffect(() => {
     props
-      .getListAllAcademicAsignatureCourse(props?.loginReducer?.campusId)
+      .getListAllAcademicAsignatureCourseTeacher(props?.loginReducer?.teacherId)
       .then((listData: any) => {
         setDataTable(
           listData.map((c: any) => {
@@ -35,7 +35,7 @@ const AcademicAsignatureCourseList = (props: any) => {
 
   const getDataTable = async () => {
     props
-      .getListAllAcademicAsignatureCourse(props?.loginReducer?.campusId)
+      .getListAllAcademicAsignatureCourseTeacher(props?.loginReducer?.teacherId)
       .then((listData: any) => {
         setDataTable(
           listData.map((c: any) => {

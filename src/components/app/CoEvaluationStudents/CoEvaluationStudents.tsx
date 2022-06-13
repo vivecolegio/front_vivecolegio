@@ -51,7 +51,7 @@ const ExperienceLearningCoEvaluationStudentsList = (props: any) => {
       return (submenus = submenus.concat(c.menuItemsLogin));
     });
     let cm = submenus.find((c: any) => {
-      return currentUrl.includes(c.module.url);
+      return currentUrl.includes(c?.module?.url);
     });
     if (cm && cm.readAction) {
       setCurrentMenu(cm);
@@ -137,7 +137,7 @@ const ExperienceLearningCoEvaluationStudentsList = (props: any) => {
       let obj = {
         assessment: event.target.value,
       };
-      props.updateExperienceLearningCoEvaluation(obj, note?.id, true).then((resp: any) => {});
+      props.updateExperienceLearningCoEvaluation(obj, note?.id, true).then((resp: any) => { });
     }
   };
 
@@ -146,7 +146,7 @@ const ExperienceLearningCoEvaluationStudentsList = (props: any) => {
       let obj2 = {
         observations: event.target.value,
       };
-      props.updateExperienceLearningCoEvaluation(obj2, note?.id, true).then((resp: any) => {});
+      props.updateExperienceLearningCoEvaluation(obj2, note?.id, true).then((resp: any) => { });
     }
   };
 
@@ -161,7 +161,7 @@ const ExperienceLearningCoEvaluationStudentsList = (props: any) => {
       </div>
       <hr />
       <div className="d-flex justify-content-between align-items-center">
-      <HeaderInfoAcademic asignature grade course modality experienceLearnig goTitle="Regresar a experiencias de aprendizaje" experienceLearnigId={learningId} academicAsignatureCourseId={academicAsignatureCourseId}/> 
+        <HeaderInfoAcademic asignature grade course modality experienceLearnig goTitle="Regresar a experiencias de aprendizaje" experienceLearnigId={learningId} academicAsignatureCourseId={academicAsignatureCourseId} />
         <div className="mt-4 w-60">
           <table className="table table-striped table-bordered">
             <tbody>
@@ -262,7 +262,7 @@ const ExperienceLearningCoEvaluationStudentsList = (props: any) => {
                                 return getPerformanceLevel(e, note);
                               }}
                               onKeyPress={(event: any) => {
-                                return saveNote(event,note);
+                                return saveNote(event, note);
                               }}
                               defaultValue={note?.assessment}
                               className="form-control"
@@ -274,7 +274,7 @@ const ExperienceLearningCoEvaluationStudentsList = (props: any) => {
                               type="textarea"
                               rows="2"
                               onKeyPress={(event: any) => {
-                                return saveObservations(event,note);
+                                return saveObservations(event, note);
                               }}
                               defaultValue={note?.observations}
                               className="form-control"

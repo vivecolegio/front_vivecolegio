@@ -22,18 +22,6 @@ const StudentAddCourse = (props: any) => {
   const [searchValue, setSearchValue] = useState('');
   const [studentsList, setStudentsList] = useState([]);
   const [students, setStudents] = useState(null);
-  const [newUser, setNewUser] = useState({
-    name: null,
-    lastName: null,
-    phone: null,
-    email: null,
-    documentNumber: null,
-    password: null,
-    username: null,
-    genderId: null,
-    documentTypeId: null,
-    roleId: null,
-  });
 
   const methods = useForm({
     mode: 'onChange',

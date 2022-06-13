@@ -63,7 +63,7 @@ const SpreadsheetList = (props: any) => {
       return (submenus = submenus.concat(c.menuItemsLogin));
     });
     let cm = submenus.find((c: any) => {
-      return currentUrl.includes(c.module.url);
+      return currentUrl.includes(c?.module?.url);
     });
     if (cm && cm.readAction) {
       setCurrentMenu(cm);
@@ -88,12 +88,12 @@ const SpreadsheetList = (props: any) => {
       let levels: any = [];
 
       await props
-      .getListAllPerformanceLevel(props?.loginReducer?.schoolId)
-      .then((dataLevels: any) => {
-        setPerformanceLevels(dataLevels);
-          levels = dataLevels;        
+        .getListAllPerformanceLevel(props?.loginReducer?.schoolId)
+        .then((dataLevels: any) => {
+          setPerformanceLevels(dataLevels);
+          levels = dataLevels;
         });
-     
+
       await props.getListAllAcademicPeriodOrder(props?.loginReducer?.schoolId).then((listData: any) => {
         //console.log(listData, 'DATAAAAAAA')
         props
@@ -134,7 +134,7 @@ const SpreadsheetList = (props: any) => {
                   periodId,
                   academicAsignatureCourseId,
                 )
-                .then((resp: any) => {});
+                .then((resp: any) => { });
               props
                 .getAllExperienceLearningAverageValuation(
                   c?.node?.id,
@@ -203,7 +203,7 @@ const SpreadsheetList = (props: any) => {
               currentAcademicPeriod?.id,
               academicAsignatureCourseId,
             )
-            .then((resp: any) => {});
+            .then((resp: any) => { });
           props
             .getAllExperienceLearningAverageValuation(
               c?.node?.id,
@@ -263,33 +263,32 @@ const SpreadsheetList = (props: any) => {
       </div>
       <hr />
       <div className="d-flex justify-content-between align-items-center">
-      <HeaderInfoAcademic asignature grade course modality goTitle="Regresar a mis clases" academicAsignatureCourseId={academicAsignatureCourseId}/> 
+        <HeaderInfoAcademic asignature grade course modality goTitle="Regresar a mis clases" academicAsignatureCourseId={academicAsignatureCourseId} />
         <div>
           <div>
-          {academicPeriods
-                        ? academicPeriods.map((item: any) => {
-                            return (
-                              <>
-                                <button
-                                  // onClick={() => {
-                                  //   return filterByPeriod(item);
-                                  // }}
-                                  key={item?.node?.id}
-                                  className={`btn ${
-                                    currentAcademicPeriod === item?.node?.id
-                                      ? 'btn-info'
-                                      : 'btn-outline-info'
-                                  }`}
-                                  type="button"
-                                >
-                                  <i className="iconsminds-pen-2"></i> {item?.node?.name}
-                                </button>{'  '}
-                              </>
-                            );
-                          })
-                        : ''}
+            {academicPeriods
+              ? academicPeriods.map((item: any) => {
+                return (
+                  <>
+                    <button
+                      // onClick={() => {
+                      //   return filterByPeriod(item);
+                      // }}
+                      key={item?.node?.id}
+                      className={`btn ${currentAcademicPeriod === item?.node?.id
+                          ? 'btn-info'
+                          : 'btn-outline-info'
+                        }`}
+                      type="button"
+                    >
+                      <i className="iconsminds-pen-2"></i> {item?.node?.name}
+                    </button>{'  '}
+                  </>
+                );
+              })
+              : ''}
           </div>
-          <div className='d-flex mt-3 justify-content-end'> 
+          <div className='d-flex mt-3 justify-content-end'>
             <button
               className="btn btn-green mr-2"
               type="button"
@@ -453,7 +452,7 @@ const SpreadsheetList = (props: any) => {
                                         averages.find(
                                           (n: any) =>
                                             item2?.evaluativeComponentId ===
-                                              n?.node?.evaluativeComponentId &&
+                                            n?.node?.evaluativeComponentId &&
                                             item?.id === n?.node?.studentId,
                                         )?.node?.average
                                       }
@@ -466,9 +465,9 @@ const SpreadsheetList = (props: any) => {
                               </>
                             );
                           })}
-                          <td className="text-center vertical-middle">                            
+                          <td className="text-center vertical-middle">
                             {averagesFinal.find((n: any) => item?.id === n?.node?.studentId)?.node
-                              ?.assessment || ''} 
+                              ?.assessment || ''}
                           </td>
                           <td className="text-center vertical-middle">
                             <Badge color="primary" className="font-0-8rem">

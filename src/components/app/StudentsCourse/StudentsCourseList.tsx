@@ -18,6 +18,7 @@ const StudentCourseList = (props: any) => {
   const [columns, setColumns] = useState(COLUMN_LIST);
   const [modalOpen, setModalOpen] = useState(false);
   const [data, setData] = useState(null);
+  const [currentMenu, setCurrentMenu] = useState(null);
 
   let [params] = useSearchParams();
   const courseName = params.get('courseName');
@@ -28,10 +29,18 @@ const StudentCourseList = (props: any) => {
 
 
   useEffect(() => {
-    if (courseId) {
-      props.dataCourse(courseId).then((listData: any) => {
-        setData(listData);
-        setDataTable(listData?.data?.students?.map((c: any) => {
+
+    let { roleMenus } = props.loginReducer;
+    let submenus: any = [];
+    roleMenus.map((c: any) => {
+      return submenus = submenus.concat(c.menuItemsLogin);
+    });
+    setCurrentMenu(submenus.find((c: any) => { return (c?.module?.url == 'student_link_course_permit') }));
+
+    if (courseId && !fromGrade) {
+      props.dataCourse(courseId).then((resp: any) => {
+        setData(resp);
+        setDataTable(resp?.data?.students?.map((c: any) => {
           c.node = {};
           c.node.code = c?.code;
           c.node.id = c?.id;
@@ -45,17 +54,14 @@ const StudentCourseList = (props: any) => {
       });
     }
     if (fromGrade) {
-      props.getListAllStudentAcademicGrade(props?.loginReducer?.schoolId, gradeId, props?.loginReducer?.schoolId).then((listData: any) => {
-        setData(listData);
-        setDataTable(listData?.data?.students?.map((c: any) => {
-          c.node = {};
-          c.node.code = c?.code;
-          c.node.id = c?.id;
-          c.node.name = c?.user ? c?.user?.name : '';
-          c.node.lastName = c?.user ? c?.user?.lastName : '';
-          c.node.documentType_format = c?.user ? c?.user?.documentType?.name : '';
-          c.node.documentNumber = c?.user ? c?.user?.documentNumber : '';
-          c.node.gender_format = c?.user ? c?.user?.gender?.name : '';
+      props.getListAllStudentAcademicGrade(props?.loginReducer?.campusId, gradeId, props?.loginReducer?.schoolId).then((response: any) => {
+        setData(response);
+        setDataTable(response?.map((c: any) => {
+          c.node.name = c?.node?.user ? c?.node?.user?.name : '';
+          c.node.lastName = c?.node?.user ? c?.node?.user?.lastName : '';
+          c.node.documentNumber = c?.node?.user ? c?.node?.user?.documentNumber : '';
+          c.node.documentType_format = c?.node?.user ? c?.node?.user?.documentType?.name : '';
+          c.node.gender_format = c?.node?.user ? c?.node?.user?.gender?.name : '';
           return c;
         }));
       });
@@ -63,7 +69,7 @@ const StudentCourseList = (props: any) => {
   }, []);
 
   const getDataTable = async () => {
-    if (courseId) {
+    if (courseId && !fromGrade) {
       props.dataCourse(courseId).then((listData: any) => {
         setData(listData);
         setDataTable(listData?.data?.students?.map((c: any) => {
@@ -73,24 +79,20 @@ const StudentCourseList = (props: any) => {
           c.node.name = c?.user ? c?.user?.name : '';
           c.node.lastName = c?.user ? c?.user?.lastName : '';
           c.node.documentType_format = c?.user ? c?.user?.documentType?.name : '';
-          c.node.documentNumber = c?.user ? c?.user?.documentNumber : '';
           c.node.gender_format = c?.user ? c?.user?.gender?.name : '';
           return c;
         }));
       });
     }
     if (fromGrade) {
-      props.getListAllStudentAcademicGrade(props?.loginReducer?.schoolId, gradeId, props?.loginReducer?.schoolId).then((listData: any) => {
+      props.getListAllStudentAcademicGrade(props?.loginReducer?.campusId, gradeId, props?.loginReducer?.schoolId).then((listData: any) => {
         setData(listData);
-        setDataTable(listData?.data?.students?.map((c: any) => {
-          c.node = {};
-          c.node.code = c?.code;
-          c.node.id = c?.id;
-          c.node.name = c?.user ? c?.user?.name : '';
-          c.node.lastName = c?.user ? c?.user?.lastName : '';
-          c.node.documentType_format = c?.user ? c?.user?.documentType?.name : '';
-          c.node.documentNumber = c?.user ? c?.user?.documentNumber : '';
-          c.node.gender_format = c?.user ? c?.user?.gender?.name : '';
+        setDataTable(listData?.map((c: any) => {
+          c.node.name = c?.node?.user ? c?.node?.user?.name : '';
+          c.node.lastName = c?.node?.user ? c?.node?.user?.lastName : '';
+          c.node.documentNumber = c?.node?.user ? c?.node?.user?.documentNumber : '';
+          c.node.documentType_format = c?.node?.user ? c?.node?.user?.documentType?.name : '';
+          c.node.gender_format = c?.node?.user ? c?.node?.user?.gender?.name : '';
           return c;
         }));
       });
@@ -133,7 +135,7 @@ const StudentCourseList = (props: any) => {
               :
               <HeaderInfoAcademic generic={{ title: 'Grado / Curso', value: gradeName + ' / ' + courseName }} goTitle="Regresar a cursos" />
             }
-            {!fromGrade ?
+            {!fromGrade && currentMenu?.readAction ?
               <Button
                 onClick={() => {
                   return setModalOpen(!modalOpen);
@@ -157,11 +159,12 @@ const StudentCourseList = (props: any) => {
                 color: 'danger',
                 icon: 'iconsminds-close',
                 action: 'goToChildrenRemove',
+                hide: !fromGrade && currentMenu?.readAction ? false : true
               },
             ]}
             withChildren={fromGrade ? false : true}
           />
-          {!fromGrade ?
+          {!fromGrade && currentMenu?.readAction ?
             <StudentAddCourse
               data={data}
               modalOpen={modalOpen}

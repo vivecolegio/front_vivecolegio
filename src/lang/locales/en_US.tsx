@@ -187,7 +187,7 @@ const enMessages = {
   'menu.statement': 'Statement',
   'menu.evidenceLearning': 'Evidence Learning',
   'menu.experienceLearning': 'Experience Learning',
-  'menu.myClasses': 'My Classes',
+  'menu.myClasses': 'Academic Assignment',
   'menu.learnings': 'Learnings',
   'menu.rubricValuation': 'Rubric valuation',
   'menu.rubricCriteria': 'Rubric valuation criteria',
