@@ -2,10 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
-import Select from 'react-select';
 import { Badge, Input } from 'reactstrap';
 import { compare, comparePerformanceLevelsTopScore } from '../../../helpers/DataTransformations';
-import IntlMessages from '../../../helpers/IntlMessages';
 import { createNotification } from '../../../helpers/Notification';
 import { getInitialsName } from '../../../helpers/Utils';
 import * as performanceLevelActions from '../../../stores/actions/Academic/PerformanceLevelActions';
@@ -15,7 +13,6 @@ import { Colxx } from '../../common/CustomBootstrap';
 import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
 import { Loader } from '../../common/Loader';
 import ThumbnailImage from '../Aplications/AplicationsComponents/ThumbnailImage';
-
 
 const ExperienceLearningTraditionalValuationList = (props: any) => {
   const [students, setStudents] = useState(null);
@@ -45,13 +42,15 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
             .getListAllPerformanceLevelAsignatureCourse(academicAsignatureCourseId)
             .then((levels: any) => {
               setPerformanceLevels(levels);
-              let levelsOrderDesc = levels.sort(comparePerformanceLevelsTopScore)
+              let levelsOrderDesc = levels.sort(comparePerformanceLevelsTopScore);
               setMax(levelsOrderDesc[levelsOrderDesc.length - 1]?.node?.topScore);
               setMin(levelsOrderDesc[0]?.node?.minimumScore);
 
-              setPerformanceLevelsList(levels.map((c: any) => {
-                return { label: c.node.name, value: c.node.id, key: c.node.id };
-              }));
+              setPerformanceLevelsList(
+                levels.map((c: any) => {
+                  return { label: c.node.name, value: c.node.id, key: c.node.id };
+                }),
+              );
               // set valuations list and get the performance level for each one
               valuationsArr = [];
               for (const l of listData) {
@@ -65,7 +64,7 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
                 l.node.performance = perf;
                 l.node.code = l.node.student.code;
                 return valuationsArr.push(l.node);
-              };
+              }
             });
           setValuations(valuationsArr.sort(compare));
         });
@@ -134,24 +133,44 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
       </div>
       <hr />
       <div className="d-flex justify-content-between align-items-center">
-        <HeaderInfoAcademic asignature grade course modality experienceLearnig goTitle="Regresar a experiencias de aprendizaje" experienceLearnigId={learningId} academicAsignatureCourseId={academicAsignatureCourseId} />
-        <div className="mt-4 w-50">
+        <HeaderInfoAcademic
+          asignature
+          grade
+          course
+          modality
+          experienceLearnig
+          goTitle="Regresar a experiencias de aprendizaje"
+          experienceLearnigId={learningId}
+          academicAsignatureCourseId={academicAsignatureCourseId}
+        />
+        <div className="mt-4 w-25">
           <table className="table table-striped table-bordered">
             <tbody>
-              {
-                performanceLevels?.map((e: any) => {
-                  return <>
-                    <tr>
-                      <td><strong>Nivel de desempeño:</strong> {`${e?.node?.name}: ${e?.node?.minimumScore} - ${e?.node?.topScore}`}</td>
-                    </tr>
-                  </>
-                })
-              }
+              <tr>
+                <td>
+                  <strong>Nivel de desempeño</strong>
+                </td>
+                <td>
+                  <strong>Minimo</strong>
+                </td>
+                <td>
+                  <strong>Maximo</strong>
+                </td>
+              </tr>
+              {performanceLevels?.map((e: any) => {
+                return (
+                  <tr>
+                    <td> {`${e?.node?.name}`}</td>
+                    <td> {`${e?.node?.minimumScore}`} </td>
+                    <td> {`${e?.node?.topScore}`} </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
       </div>
-      <div className='d-flex justify-content-end mb-3'>
+      <div className="d-flex justify-content-end mb-3">
         <button className="btn btn-blue" type="button" onClick={save}>
           Guardar valoración
         </button>
@@ -203,8 +222,8 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
                                   {getInitialsName(
                                     item?.student?.user
                                       ? item?.student?.user?.name +
-                                      ' ' +
-                                      item?.student?.user?.lastName
+                                          ' ' +
+                                          item?.student?.user?.lastName
                                       : 'N N',
                                   )}
                                 </span>
