@@ -113,7 +113,6 @@ const ExperienceLearningRubricCriteriaValuationList = (props: any) => {
     }
   };
 
-
   return (
     <>
       <div className="mt-4 d-flex justify-content-center align-items-center">

@@ -72,7 +72,7 @@ const ExperienceLearningCoEvaluationStudentsList = (props: any) => {
               //console.log(listDataValuation);
               let valuationsArr: any = [];
               await props
-                .getListAllPerformanceLevel(props?.loginReducer?.schoolId)
+                .getListAllPerformanceLevelAsignatureCourse(academicAsignatureCourseId)
                 .then((levels: any) => {
                   setPerformanceLevels(levels);
                   // set valuations list and get the performance level for each one
@@ -120,11 +120,12 @@ const ExperienceLearningCoEvaluationStudentsList = (props: any) => {
   }, []);
 
   const getPerformanceLevel = async (e: any, valuation: any) => {
+    console.log(valuation)
     const perf = performanceLevels?.find((c: any) => {
       return e.target.value <= c.node.topScore && e.target.value >= c.node.minimumScore;
     });
     const elementIndex = valuations.findIndex((obj) => {
-      return obj.id === valuation.id;
+      return obj.id === valuation?.id;
     });
     valuations[elementIndex].performance = perf?.node?.name;
     valuations[elementIndex].assessment = e.target.value;

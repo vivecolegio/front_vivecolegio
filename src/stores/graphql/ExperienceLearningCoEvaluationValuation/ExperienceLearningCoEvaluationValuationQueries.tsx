@@ -8,7 +8,20 @@ export const QUERY_GET_ALL_EXPERIENCE_LEARNING_CO_EVALUATION_VALUATION = gql`
         node {
           id                                      
           active  
-          assessment          
+          assessment 
+          experienceLearning {
+            id
+            criteria
+            experienceLearningPerformanceLevel {
+              criteria
+              performanceLevelId
+              performanceLevel {
+                name
+                minimumScore
+                topScore
+              }
+            }
+          }         
           studentId
           student {
             id

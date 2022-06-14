@@ -18,3 +18,13 @@ export function compare(a: any, b: any) {
   }
   return 0;
 }
+
+export function comparePerformanceLevelsTopScore(a: any, b: any) {
+  if (a?.node?.topScore < b?.node?.topScore) {
+    return -1;
+  }
+  if (a?.node?.topScore > b?.node?.topScore) {
+    return 1;
+  }
+  return 0;
+}
