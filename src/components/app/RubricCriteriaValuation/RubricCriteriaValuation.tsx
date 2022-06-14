@@ -104,6 +104,7 @@ const ExperienceLearningRubricCriteriaValuationList = (props: any) => {
   };
 
   const saveNote = async (event: any, item: any) => {
+    console.log(event)
     if (event.key === 'Enter') {
       let obj = {
         assessment: event.target.value,
@@ -214,13 +215,12 @@ const ExperienceLearningRubricCriteriaValuationList = (props: any) => {
                             {currentMenu?.updateAction ? (
                               <Input
                                 type="number"
-                                onInput={(e: any) => {
-                                  if (e.target.value < min || e.target.value > max) {
-                                    e.target.value = null;
-                                    return;
-                                  } else {
-                                    return saveNote(e, item);
-                                  }
+                                onKeyDown={(e: any) => {
+                                  // if (e.target.value < min || e.target.value > max) {
+                                  //   e.target.value = null;
+                                  //   return;
+                                  // }
+                                  return saveNote(e, item);
                                 }}
                                 {...item?.assessment}
                                 defaultValue={item?.assessment}
