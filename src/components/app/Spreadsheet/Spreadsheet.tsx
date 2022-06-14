@@ -274,9 +274,10 @@ const SpreadsheetList = (props: any) => {
                 return (
                   <>
                     <button
-                      // onClick={() => {
-                      //   return filterByPeriod(item);
-                      // }}
+                      onClick={() => {
+                        setCurrentAcademicPeriod(item?.node?.id);
+                        return getSpreadsheet(item?.node?.id);
+                      }}
                       key={item?.node?.id}
                       className={`btn ${currentAcademicPeriod === item?.node?.id
                         ? 'btn-info'
