@@ -200,13 +200,13 @@ const AcademicAsignatureCourseList = (props: any) => {
                 icon: 'iconsminds-blackboard',
                 action: 'goToChildrenExperience',
               },
-              {
-                id: 1,
-                label: 'Plan de nivelación',
-                color: 'info',
-                icon: 'iconsminds-handshake',
-                action: 'goToChildren',
-              },
+              // {
+              //   id: 1,
+              //   label: 'Plan de nivelación',
+              //   color: 'info',
+              //   icon: 'iconsminds-handshake',
+              //   action: 'goToChildren',
+              // },
               {
                 id: 2,
                 label: 'Valoraciones',
