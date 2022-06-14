@@ -1,7 +1,7 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
 import { MUTATION_CHANGE_ACTIVE_LEARNING, MUTATION_CREATE_LEARNING, MUTATION_DELETE_LEARNING, MUTATION_UPDATE_LEARNING } from '../graphql/Learning/LearningMutations';
-import { QUERY_GET_ALL_LEARNING, QUERY_GET_LEARNING, QUERY_GET_DROPDOWNS_LEARNING, QUERY_GET_GENERAL_BASIC_LEARNING_RIGHT } from '../graphql/Learning/LearningQueries';
+import { QUERY_GET_ALL_LEARNING, QUERY_GET_LEARNING, QUERY_GET_DROPDOWNS_LEARNING, QUERY_GET_GENERAL_BASIC_LEARNING_RIGHT, QUERY_GET_ACADEMIC_PERIODS_LEARNING } from '../graphql/Learning/LearningQueries';
 
 
 export const getListAllLearning = (schoolId: string, academicAsignatureId: string, academicGradeId: string, academicPeriodsId:string) => {
@@ -182,6 +182,29 @@ export const deleteLearning = (id: any, showToast: boolean) => {
       if (showToast) {
         createNotification('error', 'error', '');
       }
+      return error;
+    }
+  };
+};
+
+export const getAcademicPeriodsLearning = (schoolId: string, schoolYearId: string) => {
+  return async (dispatch: any) => {
+    try {
+      let listData = {};
+      await client
+        .query({
+          query: QUERY_GET_ACADEMIC_PERIODS_LEARNING,
+          variables:{
+            schoolId,
+            schoolYearId
+          },
+        })
+        .then((result: any) => {
+          listData = result.data.data.edges;
+        });
+      return listData;
+    } catch (error) {
+      createNotification('error', 'error', '');
       return error;
     }
   };

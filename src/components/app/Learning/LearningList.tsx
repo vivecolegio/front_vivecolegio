@@ -39,9 +39,14 @@ const Learning = (props: any) => {
         }),
       );
     });
-    props.getDropdownsLearning(props?.loginReducer?.schoolId).then((listData: any) => {
-      setAcademicPeriods(listData.dataAcademicPeriods.edges);
-    });
+    props
+      .getAcademicPeriodsLearning(
+        props?.loginReducer?.schoolId,
+        props?.loginReducer?.schoolYear,
+      )
+      .then((listData: any) => {
+        setAcademicPeriods(listData);
+      });
   }, []);
 
   const getDataTable = async (idAcademicPeriod: any = []) => {
