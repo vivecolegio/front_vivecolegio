@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
 import { Input } from 'reactstrap';
+import { comparePerformanceLevelsTopScore } from '../../../helpers/DataTransformations';
 import { createNotification } from '../../../helpers/Notification';
 import * as performanceLevelActions from '../../../stores/actions/Academic/PerformanceLevelActions';
 import * as experienceLearningRubricCriteriaValuationActions from '../../../stores/actions/ExperienceLearningRubricCriteriaValuationActions';
@@ -16,6 +17,8 @@ const ExperienceLearningRubricCriteriaValuationList = (props: any) => {
   const [rubricValuation, setRubricValuation] = useState(null);
   const [valuations, setValuations] = useState([]);
   const [total, setTotal] = useState(0);
+  const [min, setMin] = useState(null);
+  const [max, setMax] = useState(null);
 
   let navigate = useNavigate();
   const location = useLocation();
@@ -68,6 +71,13 @@ const ExperienceLearningRubricCriteriaValuationList = (props: any) => {
           count += d?.node?.experienceLearningRubricCriteria?.weight;
         })
         setTotal(count);
+      });
+    props
+      .getListAllPerformanceLevelAsignatureCourse(academicAsignatureCourseId)
+      .then((levels: any) => {
+        let levelsOrderDesc = levels.sort(comparePerformanceLevelsTopScore)
+        setMax(levelsOrderDesc[levelsOrderDesc.length - 1]?.node?.topScore);
+        setMin(levelsOrderDesc[0]?.node?.minimumScore);
       });
     setLoading(false);
   }, []);
@@ -204,8 +214,13 @@ const ExperienceLearningRubricCriteriaValuationList = (props: any) => {
                             {currentMenu?.updateAction ? (
                               <Input
                                 type="number"
-                                onKeyPress={(event: any) => {
-                                  return saveNote(event, item);
+                                onInput={(e: any) => {
+                                  if (e.target.value < min || e.target.value > max) {
+                                    e.target.value = null;
+                                    return;
+                                  } else {
+                                    return saveNote(e, item);
+                                  }
                                 }}
                                 {...item?.assessment}
                                 defaultValue={item?.assessment}
