@@ -113,6 +113,11 @@ export const QUERY_GET_EXPERIENCE_LEARNING = gql`
       experienceLearningPerformanceLevel {
         criteria
         performanceLevelId
+        performanceLevel {
+          name
+          minimumScore
+          topScore
+        }
       }
       evaluativeComponentsId
       evaluativeComponents {

@@ -11,6 +11,7 @@ import * as performanceLevelActions from '../../../stores/actions/Academic/Perfo
 import * as courseActions from '../../../stores/actions/CourseActions';
 import * as experienceLearningCoEvaluationActions from '../../../stores/actions/ExperienceLearningCoEvaluationActions';
 import * as experienceLearningCoEvaluationValuationActions from '../../../stores/actions/ExperienceLearningCoEvaluationValuationActions';
+import * as experienceLearningActions from '../../../stores/actions/ExperienceLearningActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
 import { Loader } from '../../common/Loader';
@@ -21,7 +22,7 @@ const ExperienceLearningCoEvaluationList = (props: any) => {
   const [performanceLevels, setPerformanceLevels] = useState(null);
   const [valuations, setValuations] = useState([]);
   const [valuationsAssessment, setValuationsAssessment] = useState([]);
-  const [tooltipOpen, setTooltipOpen] = useState(false);
+  const [experienceLearnig, setExperienceLearning] = useState(null);
 
   let navigate = useNavigate();
   const location = useLocation();
@@ -59,6 +60,9 @@ const ExperienceLearningCoEvaluationList = (props: any) => {
       history(`/home`);
       createNotification('warning', 'notPermissions', '');
     }
+    props.dataExperienceLearning(learningId).then((resp: any) => {
+      setExperienceLearning(resp?.data)
+    });
     props.dataCourse(courseId).then((course: any) => {
       setStudents(course?.data?.students.sort(compare));
     });
@@ -135,12 +139,12 @@ const ExperienceLearningCoEvaluationList = (props: any) => {
           <table className="table table-striped table-bordered">
             <tbody>
               <tr>
-                <td className='w-20' rowSpan={valuations[0]?.experienceLearning?.experienceLearningPerformanceLevel?.length + 1}>
-                  <strong>Criterio:</strong> {valuations[0]?.experienceLearning?.criteria}
+                <td className='w-20' rowSpan={experienceLearnig?.experienceLearningPerformanceLevel?.length + 1}>
+                  <strong>Criterio:</strong> {experienceLearnig?.criteria}
                 </td>
               </tr>
               {
-                valuations[0]?.experienceLearning?.experienceLearningPerformanceLevel.map((e: any) => {
+                experienceLearnig?.experienceLearningPerformanceLevel.map((e: any) => {
                   return <>
                     <tr>
                       <td><strong>Nivel de desempeño:</strong> {`${e?.performanceLevel?.name}: ${e?.performanceLevel?.minimumScore} - ${e?.performanceLevel?.topScore}`}</td>
@@ -264,6 +268,7 @@ const mapDispatchToProps = {
   ...performanceLevelActions,
   ...experienceLearningCoEvaluationActions,
   ...experienceLearningCoEvaluationValuationActions,
+  ...experienceLearningActions
 };
 
 const mapStateToProps = ({ loginReducer }: any) => {
