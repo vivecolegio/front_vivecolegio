@@ -111,7 +111,9 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
     for (const item of valuations) {
       let obj = {
         assessment: item?.assessment,
+        performanceLevelId: item?.performance?.node?.id,
       };
+      console.log(obj);
       await props.updateExperienceLearningTraditionalValuation(obj, item.id).then(
         () => {
           setLoading(false);
@@ -200,7 +202,6 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
                 </thead>
                 <tbody>
                   {valuations.map((item: any, index: any) => {
-                    console.log(item);
                     return (
                       <>
                         <tr key={index}>
@@ -241,10 +242,8 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
                               onInput={(e: any) => {
                                 if (e.target.value < min || e.target.value > max) {
                                   e.target.value = null;
-                                  return;
-                                } else {
-                                  return getPerformanceLevel(e, item);
                                 }
+                                return getPerformanceLevel(e, item);
                               }}
                               {...item?.assessment}
                               defaultValue={item?.assessment}
