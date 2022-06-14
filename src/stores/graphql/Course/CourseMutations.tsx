@@ -28,3 +28,9 @@ export const MUTATION_DELETE_COURSE = gql`
     delete: deleteCourse(id: $id)
   }
 `;
+
+export const MUTATION_GENERATE_CODES = gql`
+  mutation updateCodeStudentsCourse($id: String!) {
+    update: updateCodeStudentsCourse(id: $id)
+  }
+`;

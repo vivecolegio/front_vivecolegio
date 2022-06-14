@@ -182,6 +182,7 @@ const SpreadsheetList = (props: any) => {
           }
         });
       setTimeout(() => {
+        console.log(obj)
         setValuations(obj);
         setNotes(nts);
         setLoading(false);
@@ -292,7 +293,7 @@ const SpreadsheetList = (props: any) => {
               })
               : ''}
           </div>
-          <div className='d-flex mt-3 justify-content-end'>
+          {/* <div className='d-flex mt-3 justify-content-end'>
             <button
               className="btn btn-green mr-2"
               type="button"
@@ -305,7 +306,7 @@ const SpreadsheetList = (props: any) => {
             <button className="btn btn-orange" type="button">
               <i className="iconsminds-delete-file"></i> Cerrar periodo
             </button>
-          </div>
+          </div> */}
         </div>
       </div>
 

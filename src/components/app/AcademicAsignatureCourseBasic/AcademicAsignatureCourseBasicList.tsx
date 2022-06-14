@@ -15,6 +15,7 @@ const AcademicAsignatureCourseBasicList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
   const [columns, setColumns] = useState(COLUMN_LIST);
   const [modalOpen, setModalOpen] = useState(false);
+  const [currentMenu, setCurrentMenu] = useState(null);
 
   let navigate = useNavigate();
   let [params] = useSearchParams();
@@ -23,6 +24,13 @@ const AcademicAsignatureCourseBasicList = (props: any) => {
 
   const [data, setData] = useState(null);
   useEffect(() => {
+    let { roleMenus } = props.loginReducer;
+    let submenus: any = [];
+    roleMenus.map((c: any) => {
+      return submenus = submenus.concat(c.menuItemsLogin);
+    });
+    setCurrentMenu(submenus.find((c: any) => { return (c?.module?.url == 'see_valuations_asignature_course_permit') }));
+
     props
       .getListAllAcademicAsignatureCourseByCourse(props?.loginReducer?.campusId, courseId)
       .then((listData: any) => {
@@ -143,10 +151,16 @@ const AcademicAsignatureCourseBasicList = (props: any) => {
           `/learning?gradeGeneralId=${item?.course?.academicGrade?.generalAcademicGradeId}&gradeId=${item?.course?.academicGradeId}&asignatureId=${item.academicAsignatureId}&asignatureGeneralId=${item.academicAsignature?.generalAcademicAsignatureId}&academicAsignatureCourseId=${item?.id}`,
         );
         break;
+      case 'goToChildrenSpredsheet':
+        goToChildren(
+          `/spreadsheet?gradeId=${item?.course?.academicGradeId}&gradeName=${item?.course?.academicGrade?.name}&courseName=${item?.course?.name}&courseId=${item?.course?.id}&academicAsignatureCourseId=${item?.id}&asignatureId=${item.academicAsignatureId}&asignatureName=${item.academicAsignature?.name}`,
+        );
+        break;
       default:
         break;
     }
   };
+
 
   const goToChildren = async (url: string) => {
     navigate(url);
@@ -169,6 +183,18 @@ const AcademicAsignatureCourseBasicList = (props: any) => {
             changeActiveData={changeActiveData}
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
+            additionalFunction={additionalFunction}
+            childrenButtons={[
+              {
+                id: 0,
+                label: 'Planillas',
+                color: 'info',
+                icon: 'iconsminds-library',
+                action: 'goToChildrenSpredsheet',
+                hide: currentMenu?.readAction ? false : true
+              },
+            ]}
+            withChildren={true}
           />
           <AcademicAsignatureCourseCreateEdit
             data={data}

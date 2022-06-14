@@ -44,9 +44,20 @@ const CoursesTeacherList = (props: any) => {
       case 'goToChildrenStudents':
         goToChildren(`/studentCourse?courseId=${item.id}&courseName=${item.name}&gradeName=${item?.academicGrade?.name}&gradeId=${item?.academicGrade?.id}`);
         break;
+      case 'goToChildrenCodes':
+        generateCodesStudents(item?.id);
+        break;
+      case 'goToChildrenAsignatureCourse':
+        goToChildren(`/academicAsignatureCourseBasic?courseId=${item.id}&courseName=${item.name}`);
+        break;
       default:
         break;
     }
+  };
+
+  const generateCodesStudents = async (id: any) => {
+    props.generateCodesStudentsCourse(id).then((listData: any) => {
+    });
   };
 
   const goToChildren = async (url: any) => {
@@ -68,10 +79,24 @@ const CoursesTeacherList = (props: any) => {
             childrenButtons={[
               {
                 id: 0,
+                label: 'Generar códigos',
+                color: 'warning',
+                icon: 'iconsminds-tag',
+                action: 'goToChildrenCodes',
+              },
+              {
+                id: 1,
                 label: 'Estudiantes',
                 color: 'info',
                 icon: 'iconsminds-student-male-female',
                 action: 'goToChildrenStudents',
+              },
+              {
+                id: 2,
+                label: 'Asignaturas',
+                color: 'primary',
+                icon: 'iconsminds-blackboard',
+                action: 'goToChildrenAsignatureCourse',
               },
             ]}
             withChildren={true}
