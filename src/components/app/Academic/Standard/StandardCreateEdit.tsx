@@ -200,12 +200,6 @@ const StandardCreateEdit = (props: any) => {
             <ModalBody>
               <div className="form-group">
                 <Label>
-                  <IntlMessages id="forms.standard" />
-                </Label>
-                <Input type='textarea' rows="6" {...standardRest} innerRef={standardRef} className="form-control" />
-              </div>
-              <div className="form-group">
-                <Label>
                   <IntlMessages id="forms.standard" /> {' - '}
                   <IntlMessages id="menu.general" />
                 </Label>
@@ -220,8 +214,15 @@ const StandardCreateEdit = (props: any) => {
                   onChange={(selectedOption) => {
                     setValue('generalAcademicStandardId', selectedOption?.key);
                     setStandard(selectedOption);
+                    setValue('standard', selectedOption?.label);
                   }}
                 />
+              </div>
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="forms.standard" />
+                </Label>
+                <Input type='textarea' rows="6" {...standardRest} innerRef={standardRef} className="form-control" />
               </div>
               {!props?.loginReducer?.schoolId ? (
                 <div className="form-group">
