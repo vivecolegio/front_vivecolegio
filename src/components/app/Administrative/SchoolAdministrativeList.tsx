@@ -13,9 +13,17 @@ const SchoolAdministrativeList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
   const [columns, setColumns] = useState(COLUMN_LIST);
   const [modalOpen, setModalOpen] = useState(false);
+  const [currentMenu, setCurrentMenu] = useState(null);
 
   const [data, setData] = useState(null);
   useEffect(() => {
+    let { roleMenus } = props.loginReducer;
+    let submenus: any = [];
+    roleMenus.map((c: any) => {
+      return submenus = submenus.concat(c.menuItemsLogin);
+    });
+    setCurrentMenu(submenus.find((c: any) => { return (c?.module?.url == 'reset_password_permit') }));
+
     props.getListAllSchoolAdministrative(props?.loginReducer?.schoolId).then((listData: any) => {
       setDataTable(
         listData.map((c: any) => {
@@ -156,6 +164,7 @@ const SchoolAdministrativeList = (props: any) => {
                 color: 'warning',
                 icon: 'iconsminds-unlock-2',
                 action: 'goToChildrenResetPass',
+                hide: currentMenu?.readAction ? false : true
               },
             ]}
             withChildren={true}
