@@ -23,6 +23,8 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
   const [performanceLevelsList, setPerformanceLevelsList] = useState(null);
   const [performanceSelected, setPerformanceSelected] = useState({});
   const [valuations, setValuations] = useState([]);
+  const [min, setMin] = useState(null);
+  const [max, setMax] = useState(null);
 
   let navigate = useNavigate();
 
@@ -30,8 +32,6 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
   const academicAsignatureCourseId = params.get('academicAsignatureCourseId');
   const learningId = params.get('learningId');
   const [loading, setLoading] = useState(true);
-  const [min, setMin] = useState(null);
-  const [max, setMax] = useState(null);
 
   const [data, setData] = useState(null);
   useEffect(() => {
@@ -53,8 +53,7 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
                 return { label: c.node.name, value: c.node.id, key: c.node.id };
               }));
               // set valuations list and get the performance level for each one
-              valuationsArr = [];
-              for (const l of listData) {
+              valuationsArr = listData.map((l: any) => {
                 const perf = levels?.find((c: any) => {
                   return (
                     l?.node.assessment &&
@@ -64,8 +63,8 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
                 });
                 l.node.performance = perf;
                 l.node.code = l.node.student.code;
-                return valuationsArr.push(l.node);
-              };
+                return l.node;
+              });
             });
           setValuations(valuationsArr.sort(compare));
         });
@@ -182,6 +181,7 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
                 </thead>
                 <tbody>
                   {valuations.map((item: any, index: any) => {
+                    console.log(item);
                     return (
                       <>
                         <tr key={index}>

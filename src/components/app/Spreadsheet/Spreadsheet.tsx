@@ -93,91 +93,94 @@ const SpreadsheetList = (props: any) => {
           setPerformanceLevels(dataLevels);
           levels = dataLevels;
         });
-
-      await props.getListAllAcademicPeriodOrder(props?.loginReducer?.schoolId).then((listData: any) => {
-        //console.log(listData, 'DATAAAAAAA')
-        props
-          .generateAcademicAsignatureCoursePeriodValuationStudents(
-            props?.loginReducer?.schoolId,
-            periodId,
-            academicAsignatureCourseId,
-          )
-          .then((resp: any) => {
-            // get averages final
+      await props.getAcademicPeriodsExperienceLearning(props?.loginReducer?.schoolId,
+        props?.loginReducer?.schoolYear).then((listData: any) => {
+          setAcademicPeriods(listData);
+          if (periodId) {
             props
-              .getAllAcademicAsignatureCoursePeriodValuation(periodId, academicAsignatureCourseId)
-              .then(async (notesFinal: any) => {
-                avrgsFinal = avrgsFinal.concat(notesFinal.data.edges.map((l: any) => {
-                  const perf = levels?.find((p: any) => {
-                    return (
-                      l?.node.assessment &&
-                      l?.node?.assessment <= p.node.topScore &&
-                      l?.node?.assessment >= p.node.minimumScore
-                    );
-                  });
-                  l.node.performance = perf?.node?.name;
-                  return l;
-                }));
+              .generateAcademicAsignatureCoursePeriodValuationStudents(
+                props?.loginReducer?.schoolId,
+                periodId,
+                academicAsignatureCourseId,
+              )
+              .then((resp: any) => {
+                // get averages final
+                props
+                  .getAllAcademicAsignatureCoursePeriodValuation(periodId, academicAsignatureCourseId)
+                  .then(async (notesFinal: any) => {
+                    avrgsFinal = avrgsFinal.concat(notesFinal.data.edges.map((l: any) => {
+                      const perf = levels?.find((p: any) => {
+                        return (
+                          l?.node.assessment &&
+                          l?.node?.assessment <= p.node.topScore &&
+                          l?.node?.assessment >= p.node.minimumScore
+                        );
+                      });
+                      l.node.performance = perf?.node?.name;
+                      return l;
+                    }));
 
-                setAveragesFinal(avrgsFinal);
-              });
-          });
-        setAcademicPeriods(listData.dataAcademicPeriods.edges);
-        props
-          .getListAllComponentEvaluative(props?.loginReducer?.schoolId)
-          .then(async (dataComponents: any) => {
-            dataComponents.map(async (c: any) => {
-              // get averages for each evaluative component
-              props
-                .generateExperienceLearningAverageValuationStudents(
-                  c?.node?.id,
-                  periodId,
-                  academicAsignatureCourseId,
-                )
-                .then((resp: any) => { });
-              props
-                .getAllExperienceLearningAverageValuation(
-                  c?.node?.id,
-                  periodId,
-                  academicAsignatureCourseId,
-                )
-                .then((resp: any) => {
-                  avrgs = avrgs.concat(resp.data.edges.map((l: any) => {
-                    const perf = levels?.find((p: any) => {
-                      return (
-                        l?.node.assessment &&
-                        l?.node?.assessment <= p.node.topScore &&
-                        l?.node?.assessment >= p.node.minimumScore
-                      );
-                    });
-                    l.node.performance = perf?.node?.name;
-                    return l;
-                  }));
-                  setAverages(avrgs);
-                });
-              props
-                .getAllExperienceLearningAcademicAsignatureCourse(
-                  academicAsignatureCourseId,
-                  periodId,
-                  c?.node?.id,
-                )
-                .then((response: any) => {
-                  response.data.map((exp: any) => {
-                    props.getValuationStudents(exp?.id).then((resp: any) => {
-                      nts = nts.concat(resp.data);
-                    });
+                    setAveragesFinal(avrgsFinal);
                   });
-                  if (response.data.length > 0) {
-                    obj.push({
-                      experiences: response.data,
-                      name: `${c?.node?.name} (${c?.node?.weight}%)`,
-                      evaluativeComponentId: c?.node?.id,
+              });
+            props
+              .getListAllComponentEvaluative(props?.loginReducer?.schoolId)
+              .then(async (dataComponents: any) => {
+                dataComponents.map(async (c: any) => {
+                  // get averages for each evaluative component
+                  props
+                    .generateExperienceLearningAverageValuationStudents(
+                      c?.node?.id,
+                      periodId,
+                      academicAsignatureCourseId,
+                    )
+                    .then((resp: any) => { });
+                  props
+                    .getAllExperienceLearningAverageValuation(
+                      c?.node?.id,
+                      periodId,
+                      academicAsignatureCourseId,
+                    )
+                    .then((resp: any) => {
+                      avrgs = avrgs.concat(resp.data.edges.map((l: any) => {
+                        const perf = levels?.find((p: any) => {
+                          return (
+                            l?.node.assessment &&
+                            l?.node?.assessment <= p.node.topScore &&
+                            l?.node?.assessment >= p.node.minimumScore
+                          );
+                        });
+                        l.node.performance = perf?.node?.name;
+                        return l;
+                      }));
+                      setAverages(avrgs);
                     });
-                  }
+                  props
+                    .getAllExperienceLearningAcademicAsignatureCourse(
+                      academicAsignatureCourseId,
+                      periodId,
+                      c?.node?.id,
+                    )
+                    .then((response: any) => {
+                      response.data.map((exp: any) => {
+                        props.getValuationStudents(exp?.id).then((resp: any) => {
+                          nts = nts.concat(resp.data);
+                        });
+                      });
+                      if (response.data.length > 0) {
+                        obj.push({
+                          experiences: response.data,
+                          name: `${c?.node?.name} (${c?.node?.weight}%)`,
+                          evaluativeComponentId: c?.node?.id,
+                        });
+                      }
+                    });
                 });
-            });
-          });
-      });
+              });
+          } else {
+            setLoading(false);
+          }
+        });
       setTimeout(() => {
         setValuations(obj);
         setNotes(nts);
@@ -276,8 +279,8 @@ const SpreadsheetList = (props: any) => {
                       // }}
                       key={item?.node?.id}
                       className={`btn ${currentAcademicPeriod === item?.node?.id
-                          ? 'btn-info'
-                          : 'btn-outline-info'
+                        ? 'btn-info'
+                        : 'btn-outline-info'
                         }`}
                       type="button"
                     >
