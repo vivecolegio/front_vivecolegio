@@ -503,7 +503,7 @@ const App = (props: any) => {
                     <Route path="/course" element={<CourseList />} />
                     <Route path="/myCourse" element={<CoursesTeacherList />} />
                     <Route
-                      path="/academicAsignatureCourse"
+                      path="/valuationReferentsTeacher"
                       element={<AcademicAsignatureCourseList />}
                     />
                     <Route

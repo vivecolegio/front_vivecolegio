@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
 import Select from 'react-select';
 import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
 import IntlMessages from '../../../../helpers/IntlMessages';
 import * as standardActions from '../../../../stores/actions/Academic/StandardActions';
 import * as standardGeneralActions from '../../../../stores/actions/GeneralAcademic/StandardActions';
+import * as gradeActions from '../../../../stores/actions/Academic/GradeActions';
+import * as asignatureActions from '../../../../stores/actions/Academic/AsignatureActions';
 import { Colxx } from '../../../common/CustomBootstrap';
 import AddNewModal from '../../../common/Data/AddNewModal';
 import CreateEditAuditInformation from '../../../common/Data/CreateEditAuditInformation';
@@ -26,6 +29,10 @@ const StandardCreateEdit = (props: any) => {
     mode: 'onChange',
     reValidateMode: 'onChange',
   });
+
+  let [params] = useSearchParams();
+  const asignatureId = params.get('asignatureId');
+  const gradeId = params.get('gradeId');
 
   const { handleSubmit, control, register, reset, setValue, getValues } = methods;
 
@@ -71,6 +78,11 @@ const StandardCreateEdit = (props: any) => {
         });
       }
     }
+    props.dataGrade(gradeId).then((resp: any) => {
+      props.dataAsignature(asignatureId).then((resp2: any) => {
+        getStandards(resp?.data?.generalAcademicCycleId, resp2?.data?.generalAcademicAsignatureId);
+      });
+    });
     setLoading(false);
   }, [props?.data]);
 
@@ -85,6 +97,20 @@ const StandardCreateEdit = (props: any) => {
       register('schoolId', {
         required: true,
         value: props?.loginReducer?.schoolId,
+      });
+    }
+    if (gradeId) {
+      // set value when register is new and sesion contains value
+      register('academicGradeId', {
+        required: true,
+        value: gradeId,
+      });
+    }
+    if (asignatureId) {
+      // set value when register is new and sesion contains value
+      register('academicAsignatureId', {
+        required: true,
+        value: asignatureId,
       });
     }
   };
@@ -180,43 +206,6 @@ const StandardCreateEdit = (props: any) => {
               </div>
               <div className="form-group">
                 <Label>
-                  <IntlMessages id="menu.asignature" />
-                </Label>
-                <Select
-                  isClearable
-                  placeholder={<IntlMessages id="forms.select" />}
-                  {...register('academicAsignatureId', { required: true })}
-                  className="react-select"
-                  classNamePrefix="react-select"
-                  options={asignaturesList}
-                  value={asignature}
-                  onChange={(selectedOption) => {
-                    setValue('academicAsignatureId', selectedOption?.key);
-                    setAsignature(selectedOption);
-                  }}
-                />
-              </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="menu.grade" />
-                </Label>
-                <Select
-                  isClearable
-                  placeholder={<IntlMessages id="forms.select" />}
-                  {...register('academicGradeId', { required: true })}
-                  className="react-select"
-                  classNamePrefix="react-select"
-                  options={gradesList}
-                  value={cycle}
-                  onChange={(selectedOption) => {
-                    setValue('academicGradeId', selectedOption?.key);
-                    setCycle(selectedOption);
-                    getStandards(selectedOption?.idGeneralAcademicCycle, asignature?.idGeneralAcademicAsignature);
-                  }}
-                />
-              </div>
-              <div className="form-group">
-                <Label>
                   <IntlMessages id="forms.standard" /> {' - '}
                   <IntlMessages id="menu.general" />
                 </Label>
@@ -271,7 +260,7 @@ const StandardCreateEdit = (props: any) => {
   );
 };
 
-const mapDispatchToProps = { ...standardActions, ...standardGeneralActions };
+const mapDispatchToProps = { ...standardActions, ...standardGeneralActions, ...gradeActions, ...asignatureActions };
 
 const mapStateToProps = ({ loginReducer }: any) => {
   return { loginReducer };
