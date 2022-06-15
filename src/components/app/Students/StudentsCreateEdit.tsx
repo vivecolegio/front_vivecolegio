@@ -239,13 +239,15 @@ const StudentCreateEdit = (props: any) => {
   };
 
   const getCourses = async (academicGradeId: any) => {
-    props.getCoursesOfGrade(academicGradeId, props?.loginReducer?.campusId).then((data: any) => {
-      setCourseList(
-        data.dataCourses.edges.map((c: any) => {
-          return { label: c.node.name, value: c.node.id, key: c.node.id };
-        }),
-      );
-    });
+    if (academicGradeId) {
+      props.getCoursesOfGrade(academicGradeId, props?.loginReducer?.campusId, props?.loginReducer?.schoolId).then((data: any) => {
+        setCourseList(
+          data.dataCourses.edges.map((c: any) => {
+            return { label: c.node.name, value: c.node.id, key: c.node.id };
+          }),
+        );
+      });
+    }
   };
 
   const { ref: codeRef, ...codeRest } = register('code', {

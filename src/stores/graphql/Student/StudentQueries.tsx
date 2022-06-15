@@ -230,8 +230,8 @@ export const QUERY_GET_DROPDOWNS_STUDENT = gql`
 `;
 
 export const QUERY_GET_COURSES_OF_GRADES = gql`
-  query getCoursesOfGrade ($academicGradeId: String!, $campusId: String!) {    
-    dataCourses: getAllCourse(allData: false, orderCreated: false, academicGradeId: $academicGradeId, campusId: $campusId) {
+  query getCoursesOfGrade ($academicGradeId: String!, $campusId: String!, $schoolId: String!) {    
+    dataCourses: getAllCourse(allData: false, orderCreated: false, academicGradeId: $academicGradeId, campusId: $campusId, schoolId: $schoolId) {
       edges {
         node {
           id

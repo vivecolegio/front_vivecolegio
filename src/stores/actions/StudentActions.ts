@@ -259,7 +259,7 @@ export const getDropdownsStudent = (type: string, schoolId:string) => {
   };
 };
 
-export const getCoursesOfGrade = (academicGradeId:string, campusId: string) => {
+export const getCoursesOfGrade = (academicGradeId:string, campusId: string, schoolId: string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
@@ -268,7 +268,8 @@ export const getCoursesOfGrade = (academicGradeId:string, campusId: string) => {
           query: QUERY_GET_COURSES_OF_GRADES,
           variables:{
             academicGradeId,
-            campusId
+            campusId,
+            schoolId
           }
         })
         .then((result: any) => {
