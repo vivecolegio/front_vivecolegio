@@ -119,7 +119,7 @@ const SpreadsheetList = (props: any) => {
                       l.node.performance = perf?.node?.name;
                       return l;
                     }));
-
+                    console.log(avrgsFinal, 'FINAL')
                     setAveragesFinal(avrgsFinal);
                   });
               });

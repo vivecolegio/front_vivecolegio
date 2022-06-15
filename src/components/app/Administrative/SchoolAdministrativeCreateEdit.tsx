@@ -178,6 +178,7 @@ const SchoolAdministrativeCreateEdit = (props: any) => {
       let roles = data.dataRoles.edges;
       if (roles?.length == 1) {
         setRole({ label: roles[0].node.name, value: roles[0].node.id, key: roles[0].node.id });
+        setValue('newUser', { ...newUser, ...{ roleId: roles[0]?.node?.id } });
       }
     });
   };
