@@ -119,12 +119,11 @@ const SpreadsheetList = (props: any) => {
                       l.node.performance = perf?.node?.name;
                       return l;
                     }));
-                    console.log(avrgsFinal, 'FINAL')
                     setAveragesFinal(avrgsFinal);
                   });
               });
             props
-              .getListAllComponentEvaluative(props?.loginReducer?.schoolId)
+              .getListAllComponentEvaluativeAcademicAsignatureCourse(academicAsignatureCourseId)
               .then(async (dataComponents: any) => {
                 dataComponents.map(async (c: any) => {
                   // get averages for each evaluative component
@@ -167,13 +166,14 @@ const SpreadsheetList = (props: any) => {
                           nts = nts.concat(resp.data);
                         });
                       });
-                      if (response.data.length > 0) {
-                        obj.push({
-                          experiences: response.data,
-                          name: `${c?.node?.name} (${c?.node?.weight}%)`,
-                          evaluativeComponentId: c?.node?.id,
-                        });
-                      }
+                      console.log(response, 'RESPONSE')
+
+                      obj.push({
+                        experiences: response.data,
+                        name: `${c?.node?.name} (${c?.node?.weight}%)`,
+                        evaluativeComponentId: c?.node?.id,
+                      });
+
                     });
                 });
               });
@@ -182,7 +182,6 @@ const SpreadsheetList = (props: any) => {
           }
         });
       setTimeout(() => {
-        console.log(obj)
         setValuations(obj);
         setNotes(nts);
         setLoading(false);
@@ -267,7 +266,7 @@ const SpreadsheetList = (props: any) => {
       </div>
       <hr />
       <div className="d-flex justify-content-between align-items-center">
-        <HeaderInfoAcademic asignature grade course modality goTitle="Regresar a mis clases" academicAsignatureCourseId={academicAsignatureCourseId} />
+        <HeaderInfoAcademic asignature grade course modality goTitle="Regresar a asignación académica" academicAsignatureCourseId={academicAsignatureCourseId} />
         <div>
           <div>
             {academicPeriods
@@ -356,29 +355,34 @@ const SpreadsheetList = (props: any) => {
                     {valuations.map((item: any, index: any) => {
                       return (
                         <>
-                          {item.experiences.map((e: any, indexe: any) => {
-                            return (
-                              <>
-                                {/* <th className="text-center vertical-middle">{e?.title}</th> */}
-                                <th className="text-center vertical-middle">
-                                  <TooltipItem
-                                    key={`tooltip_${indexe}`}
-                                    target={
-                                      <i
-                                        className="iconsminds-idea-2 text-warning font-20"
-                                        id={`tooltip_${indexe}`}
-                                      ></i>
-                                    }
-                                    item={{
-                                      placement: 'left',
-                                      body: e?.title,
-                                    }}
-                                    id={indexe}
-                                  />
-                                </th>
-                              </>
-                            );
-                          })}
+                          {item.experiences.length > 0 ?
+                            <>
+                              {
+                                item.experiences.map((e: any, indexe: any) => {
+                                  return (
+                                    <>
+                                      {/* <th className="text-center vertical-middle">{e?.title}</th> */}
+                                      <th className="text-center vertical-middle">
+                                        <TooltipItem
+                                          key={`tooltip_${indexe}`}
+                                          target={
+                                            <i
+                                              className="iconsminds-idea-2 text-warning font-20"
+                                              id={`tooltip_${indexe}`}
+                                            ></i>
+                                          }
+                                          item={{
+                                            placement: 'left',
+                                            body: e?.title,
+                                          }}
+                                          id={indexe}
+                                        />
+                                      </th>
+                                    </>
+                                  );
+                                })
+                              }</>
+                            : <th></th>}
                           {item?.experiences?.length > 1 ? (
                             <th className="text-center vertical-middle">Prom.</th>
                           ) : (
@@ -424,31 +428,34 @@ const SpreadsheetList = (props: any) => {
                           {valuations.map((item2: any, index2: any) => {
                             return (
                               <>
-                                {item2.experiences.map((e: any) => {
-                                  let note = notes.find(
-                                    (n: any) =>
-                                      n?.experienceLearningId === e?.id &&
-                                      item?.id === n?.studentId,
-                                  );
-                                  return (
-                                    <>
-                                      <th className="text-center vertical-middle">
-                                        {
-                                          <>
-                                            <Input
-                                              onKeyPress={(event: any) => {
-                                                return saveNote(event, note, e, item);
-                                              }}
-                                              defaultValue={note?.assessment}
-                                              disabled={isFormEnabled}
-                                              className="form-control"
-                                            />
-                                          </>
-                                        }
-                                      </th>
-                                    </>
-                                  );
-                                })}
+                                {item2.experiences.length > 0 ?
+                                  <>
+                                    {item2.experiences.map((e: any) => {
+                                      let note = notes.find(
+                                        (n: any) =>
+                                          n?.experienceLearningId === e?.id &&
+                                          item?.id === n?.studentId,
+                                      );
+                                      return (
+                                        <>
+                                          <th className="text-center vertical-middle">
+                                            {
+                                              <>
+                                                <Input
+                                                  onKeyPress={(event: any) => {
+                                                    return saveNote(event, note, e, item);
+                                                  }}
+                                                  defaultValue={note?.assessment}
+                                                  disabled={isFormEnabled}
+                                                  className="form-control"
+                                                />
+                                              </>
+                                            }
+                                          </th>
+                                        </>
+                                      );
+                                    })} </> : <th></th>}
+
                                 {item2?.experiences?.length > 1 ? (
                                   <th className="text-center vertical-middle">
                                     <Input

@@ -108,7 +108,7 @@ const ExperienceLearningList = (props: any) => {
   const deleteAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.deleteExperienceLearning(item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -121,7 +121,7 @@ const ExperienceLearningList = (props: any) => {
   const changeActiveDataAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.changeActiveExperienceLearning(!item.active, item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -251,31 +251,30 @@ const ExperienceLearningList = (props: any) => {
                   <HeaderInfoAcademic
                     asignature
                     grade
-                    goTitle="Regresar a mis clases"
+                    goTitle="Regresar a asignación académica"
                     academicAsignatureCourseId={academicAsignatureCourseId}
                   />
                   <div>
                     {academicPeriods
                       ? academicPeriods?.map((item: any) => {
-                          return (
-                            <>
-                              <button
-                                onClick={() => {
-                                  return filterByPeriod(item);
-                                }}
-                                key={item?.node?.id}
-                                className={`btn ${
-                                  academicPeriod?.node?.id === item?.node?.id
-                                    ? 'btn-info'
-                                    : 'btn-outline-info'
+                        return (
+                          <>
+                            <button
+                              onClick={() => {
+                                return filterByPeriod(item);
+                              }}
+                              key={item?.node?.id}
+                              className={`btn ${academicPeriod?.node?.id === item?.node?.id
+                                  ? 'btn-info'
+                                  : 'btn-outline-info'
                                 }`}
-                                type="button"
-                              >
-                                <i className="iconsminds-pen-2"></i> {item?.node?.name}
-                              </button>{' '}
-                            </>
-                          );
-                        })
+                              type="button"
+                            >
+                              <i className="iconsminds-pen-2"></i> {item?.node?.name}
+                            </button>{' '}
+                          </>
+                        );
+                      })
                       : ''}
                   </div>
                 </div>

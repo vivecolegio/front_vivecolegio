@@ -18,6 +18,24 @@ export const QUERY_GET_ALL_COMPONENT_EVALUATIVE = gql`
   }
 `;
 
+export const QUERY_GET_ALL_COMPONENT_EVALUATIVE_ACADEMIC_ASIGNATURE_COURSE = gql`
+  query getAllEvaluativeComponentAcademicAsignatureCourse($academicAsignatureCourseId: String!) {
+    data: getAllEvaluativeComponentAcademicAsignatureCourse(
+      academicAsignatureCourseId : $academicAsignatureCourseId 
+    ) {
+      edges {
+        cursor
+        node {
+          id
+          name
+          weight
+          type
+        }
+      }
+    } 
+  }
+`;
+
 export const QUERY_GET_COMPONENT_EVALUATIVE = gql`
   query getEvaluativeComponent($id: String!) {
     data: getEvaluativeComponent(id: $id) {
