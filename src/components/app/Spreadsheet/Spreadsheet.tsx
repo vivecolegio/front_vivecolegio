@@ -466,7 +466,7 @@ const SpreadsheetList = (props: any) => {
                                             item2?.evaluativeComponentId ===
                                             n?.node?.evaluativeComponentId &&
                                             item?.id === n?.node?.studentId,
-                                        )?.node?.average
+                                        )?.node?.average?.toFixed(2)
                                       }
                                       className="form-control"
                                     />
@@ -479,7 +479,7 @@ const SpreadsheetList = (props: any) => {
                           })}
                           <td className="text-center vertical-middle">
                             {averagesFinal.find((n: any) => item?.id === n?.node?.studentId)?.node
-                              ?.assessment || ''}
+                              ?.assessment?.toFixed(2) || ''}
                           </td>
                           <td className="text-center vertical-middle">
                             <Badge color="primary" className="font-0-8rem">
