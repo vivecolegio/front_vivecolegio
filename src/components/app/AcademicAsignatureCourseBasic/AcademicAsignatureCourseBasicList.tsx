@@ -15,7 +15,8 @@ const AcademicAsignatureCourseBasicList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
   const [columns, setColumns] = useState(COLUMN_LIST);
   const [modalOpen, setModalOpen] = useState(false);
-  const [currentMenu, setCurrentMenu] = useState(null);
+  const [currentMenuPermissionSpreadsheet, setCurrentMenuPermissionSpreadsheet] = useState(null);
+  const [currentMenuPermissionExperienceLearning, setCurrentMenuPermissionExperienceLearning] = useState(null);
 
   let navigate = useNavigate();
   let [params] = useSearchParams();
@@ -29,7 +30,8 @@ const AcademicAsignatureCourseBasicList = (props: any) => {
     roleMenus.map((c: any) => {
       return submenus = submenus.concat(c.menuItemsLogin);
     });
-    setCurrentMenu(submenus.find((c: any) => { return (c?.module?.url == 'see_valuations_asignature_course_permit') }));
+    setCurrentMenuPermissionSpreadsheet(submenus.find((c: any) => { return (c?.module?.url == 'see_valuations_asignature_course_permit') }));
+    setCurrentMenuPermissionExperienceLearning(submenus.find((c: any) => { return (c?.module?.url == 'see_experience_learnig_asignature_course_permit') }));
 
     props
       .getListAllAcademicAsignatureCourseByCourse(props?.loginReducer?.campusId, courseId)
@@ -156,6 +158,11 @@ const AcademicAsignatureCourseBasicList = (props: any) => {
           `/spreadsheet?gradeId=${item?.course?.academicGradeId}&gradeName=${item?.course?.academicGrade?.name}&courseName=${item?.course?.name}&courseId=${item?.course?.id}&academicAsignatureCourseId=${item?.id}&asignatureId=${item.academicAsignatureId}&asignatureName=${item.academicAsignature?.name}`,
         );
         break;
+      case 'goToChildrenExperienceLearning':
+        goToChildren(
+          `/experienceLearning?gradeId=${item?.course?.academicGradeId}&asignatureId=${item.academicAsignatureId}&academicAsignatureCourseId=${item?.id}`,
+        );
+        break;
       default:
         break;
     }
@@ -191,7 +198,15 @@ const AcademicAsignatureCourseBasicList = (props: any) => {
                 color: 'info',
                 icon: 'iconsminds-library',
                 action: 'goToChildrenSpredsheet',
-                hide: currentMenu?.readAction ? false : true
+                hide: currentMenuPermissionSpreadsheet?.readAction ? false : true
+              },
+              {
+                id: 1,
+                label: 'Actividades de valoracion',
+                color: 'secondary',
+                icon: 'iconsminds-blackboard',
+                action: 'goToChildrenExperienceLearning',
+                hide: currentMenuPermissionExperienceLearning?.readAction ? false : true
               },
             ]}
             withChildren={true}
