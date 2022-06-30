@@ -8,7 +8,12 @@ export const QUERY_GET_ALL_EXPERIENCE_LEARNING_TRADITIONAL_VALUATION = gql`
         node {
           id                                      
           active  
-          assessment
+          assessment  
+          performanceLevel {
+            name
+            id
+            type
+          }    
           studentId
           student {
             id
@@ -17,6 +22,7 @@ export const QUERY_GET_ALL_EXPERIENCE_LEARNING_TRADITIONAL_VALUATION = gql`
               id
               name
               lastName
+              profilePhoto
             }
           }        
         }

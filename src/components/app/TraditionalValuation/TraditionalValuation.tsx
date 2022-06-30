@@ -2,13 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
-import { Badge, Input } from 'reactstrap';
+import Select from 'react-select';
+import { Badge, Button, Input } from 'reactstrap';
 import { compare, comparePerformanceLevelsTopScore } from '../../../helpers/DataTransformations';
+import IntlMessages from '../../../helpers/IntlMessages';
 import { createNotification } from '../../../helpers/Notification';
 import { getInitialsName } from '../../../helpers/Utils';
 import * as performanceLevelActions from '../../../stores/actions/Academic/PerformanceLevelActions';
 import * as courseActions from '../../../stores/actions/CourseActions';
 import * as experienceLearningTraditionalValuationlActions from '../../../stores/actions/ExperienceLearningTraditionalValuationActions';
+import { urlImages } from '../../../stores/graphql';
 import { Colxx } from '../../common/CustomBootstrap';
 import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
 import { Loader } from '../../common/Loader';
@@ -18,7 +21,8 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
   const [students, setStudents] = useState(null);
   const [performanceLevels, setPerformanceLevels] = useState(null);
   const [performanceLevelsList, setPerformanceLevelsList] = useState(null);
-  const [performanceSelected, setPerformanceSelected] = useState({});
+  const [performanceSelected, setPerformanceSelected] = useState(null);
+  const [assesstmentSelected, setAssesstmentSelected] = useState(null);
   const [valuations, setValuations] = useState([]);
   const [min, setMin] = useState(null);
   const [max, setMax] = useState(null);
@@ -72,7 +76,7 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
   }, []);
 
   const refreshDataTable = async () => {
-    setValuations(null);
+    setValuations([]);
     props
       .getListAllExperienceLearningTraditionalValuation(learningId)
       .then(async (listData: any) => {
@@ -106,26 +110,71 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
     navigate(-1);
   };
 
-  const save = async () => {
-    setLoading(true);
-    for (const item of valuations) {
+  const save = async (event: any, item: any, performanceId: string) => {
+    if (event.key === 'Enter') {
+      setLoading(true);
       let obj = {
         assessment: item?.assessment,
-        performanceLevelId: item?.performance?.node?.id,
+        performanceLevelId: performanceId,
       };
-      console.log(obj);
       await props.updateExperienceLearningTraditionalValuation(obj, item.id).then(
         () => {
           setLoading(false);
+          refreshDataTable();
+          createNotification('success', 'success', '');
         },
         () => {
           createNotification('error', 'error', '');
         },
       );
     }
-    refreshDataTable();
-    createNotification('success', 'success', '');
   };
+
+  const saveBlur = async (item: any, performanceId: string) => {
+    setLoading(true);
+    let obj = {
+      assessment: item?.assessment,
+      performanceLevelId: performanceId,
+    };
+    await props.updateExperienceLearningTraditionalValuation(obj, item.id).then(
+      () => {
+        setLoading(false);
+        createNotification('success', 'success', '');
+        refreshDataTable();
+      },
+      () => {
+        createNotification('error', 'error', '');
+      },
+    );
+  };
+
+  const setAll = async () => {
+    setLoading(true);
+    let perf;
+    if (assesstmentSelected) {
+      perf = performanceLevels?.find((c: any) => {
+        return assesstmentSelected <= c.node.topScore && assesstmentSelected >= c.node.minimumScore;
+      });
+    }
+    let obj = {
+      assessment: assesstmentSelected || 0,
+      performanceLevelId: performanceSelected ? performanceSelected?.value : perf?.node?.id
+    };
+    for (const item of valuations) {
+      await props.updateExperienceLearningTraditionalValuation(obj, item.id).then(
+        () => {
+        },
+        () => {
+          createNotification('error', 'error', '');
+        },
+      );
+    }
+    setLoading(false);
+    createNotification('success', 'success', '');
+    refreshDataTable();
+    setAssesstmentSelected(null);
+    setPerformanceSelected(null);
+  }
 
   return (
     <>
@@ -144,7 +193,7 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
           experienceLearnigId={learningId}
           academicAsignatureCourseId={academicAsignatureCourseId}
         />
-        <div className="mt-4 w-25">
+        <div className="mt-4 w-30">
           <table className="table table-striped table-bordered">
             <tbody>
               <tr>
@@ -171,10 +220,40 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
           </table>
         </div>
       </div>
-      <div className="d-flex justify-content-end mb-3">
-        <button className="btn btn-blue" type="button" onClick={save}>
-          Guardar valoración
-        </button>
+      <div className="d-flex justify-content-start align-items-center mb-3 w-30">
+        {
+          valuations[0]?.performanceLevel?.type == 'QUANTITATIVE' ?
+            <Input
+              type="number"
+              placeholder='Nota...'
+              className="form-control w-30"
+              onInput={(e: any) => {
+                if (e.target.value < min || e.target.value > max) {
+                  e.target.value = null;
+                }
+                setAssesstmentSelected(e.target.value);
+              }}
+            />
+            :
+            <Select
+              isClearable
+              placeholder='Nota...'
+              className="react-select"
+              classNamePrefix="react-select"
+              options={performanceLevelsList}
+              onChange={(selectedOption: any) => {
+                setPerformanceSelected(selectedOption);
+              }}
+            />}
+        <Button
+          className="ml-2 btn-outline-info"
+          size="xs"
+          onClick={() => {
+            setAll();
+          }}
+        >
+          Aplicar a todos
+        </Button>
       </div>
 
       {loading ? (
@@ -193,11 +272,11 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
                     <th className="text-center">Código</th>
                     <th className="text-center">Estudiante</th>
                     <th className="text-center">Valoración</th>
-                    {/* {
-                      valuations[0]?.performance?.node?.type == 'QUANTITATIVE' ? */}
-                    <th className="text-center">Nivel de desempeño</th>
-                    {/* : ''
-                    } */}
+                    {
+                      valuations[0]?.performanceLevel?.type == 'QUALITATIVE' ?
+                        ''
+                        : <th className="text-center">Nivel de desempeño</th>
+                    }
                   </tr>
                 </thead>
                 <tbody>
@@ -209,68 +288,74 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
                             <span className="font-bold">{item?.student?.code}</span>
                           </td>
                           <td className="text-center">
-                            <div className="d-flex align-items-center justify-content-center">
-                              {item?.student?.user?.urlPhoto ? (
+                            <div className="d-flex align-items-center justify-content-start">
+                              {item?.student?.user?.profilePhoto ? (
                                 <ThumbnailImage
                                   rounded
-                                  small
-                                  src={item?.student?.user?.urlPhoto}
+                                  src={urlImages + item?.student?.user?.profilePhoto}
                                   alt="profile"
-                                  className="mr-4"
+                                  className="xsmall mr-3"
                                 />
                               ) : (
-                                <span className="img-thumbnail xl-avatar-initials border-0 span-initials rounded-circle mr-3 list-thumbnail align-self-center xsmall">
+                                <span className="img-thumbnail md-avatar-initials border-0 span-initials rounded-circle mr-3 list-thumbnail align-self-center xsmall">
                                   {getInitialsName(
                                     item?.student?.user
-                                      ? item?.student?.user?.name +
-                                          ' ' +
-                                          item?.student?.user?.lastName
+                                      ? item?.student?.user?.lastName +
+                                      ' ' +
+                                      item?.student?.user?.name
                                       : 'N N',
                                   )}
                                 </span>
                               )}
                               <span>
-                                {item?.student?.user?.name} {item?.student?.user?.lastName}
+                                {item?.student?.user?.lastName} {item?.student?.user?.name}
                               </span>
                             </div>
                           </td>
                           <td className="text-center vertical-middle">
-                            {/* {
-                              item?.performance?.node?.type == 'QUANTITATIVE' ? */}
-                            <Input
-                              type="number"
-                              onInput={(e: any) => {
-                                if (e.target.value < min || e.target.value > max) {
-                                  e.target.value = null;
-                                }
-                                return getPerformanceLevel(e, item);
-                              }}
-                              {...item?.assessment}
-                              defaultValue={item?.assessment}
-                              className="form-control"
-                            />
-                            {/* :
+                            {
+                              valuations[0]?.performanceLevel?.type == 'QUALITATIVE' ?
                                 <Select
                                   isClearable
                                   placeholder={<IntlMessages id="forms.select" />}
                                   className="react-select"
                                   classNamePrefix="react-select"
                                   options={performanceLevelsList}
-                                  value={{ label: item?.performance?.node?.name, key: item?.performance?.node?.id, value: item?.performance?.node?.id }}
-                                  onChange={(selectedOption) => {
-                                    item.performance = selectedOption;
+                                  value={{ label: item?.performanceLevel?.name, key: item?.performanceLevel?.id, value: item?.performanceLevel?.id }}
+                                  onChange={(selectedOption: any) => {
+                                    item.assessment = 0;
+                                    saveBlur(item, selectedOption?.value);
                                   }}
-                                />} */}
+                                /> :
+                                <Input
+                                  type="number"
+                                  onKeyPress={(event: any) => {
+                                    return save(event, item, item?.performance?.node?.id);
+                                  }}
+                                  onBlur={(event: any) => {
+                                    return saveBlur(item, item?.performance?.node?.id);
+                                  }}
+                                  onInput={(e: any) => {
+                                    if (e.target.value < min || e.target.value > max) {
+                                      e.target.value = null;
+                                    }
+                                    return getPerformanceLevel(e, item);
+                                  }}
+                                  {...item?.assessment}
+                                  defaultValue={item?.assessment}
+                                  className={item?.assessment ? 'border-green form-control' : 'form-control'}
+                                />
+                            }
                           </td>
-                          {/* {
-                            item?.performance?.node?.type == 'QUANTITATIVE' ? */}
-                          <td className="text-center vertical-middle">
-                            <Badge color="primary" className="font-0-8rem">
-                              {item?.performance?.node?.name}
-                            </Badge>
-                          </td>
-                          {/* : ''
-                          } */}
+                          {
+                            valuations[0]?.performanceLevel?.type == 'QUALITATIVE' ?
+                              '' :
+                              <td className="text-center vertical-middle">
+                                <Badge color="primary" className="font-0-8rem">
+                                  {item?.performance?.node?.name}
+                                </Badge>
+                              </td>
+                          }
                         </tr>
                       </>
                     );

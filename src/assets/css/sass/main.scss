@@ -96,6 +96,10 @@ input.form-control[readonly] {
   color: #8bc740;
 }
 
+.border-green {
+  border: 1px solid #8bc740;
+}
+
 .btn-orange {
   border-color: #ff6746 !important;
   background-color: #ff6746 !important;
@@ -507,4 +511,8 @@ body.background {
   border-radius: 50%;
   width: 40px;
   height: 40px;
+}
+
+.list-thumbnail.xsmall {
+  width: 40px !important;
 }
