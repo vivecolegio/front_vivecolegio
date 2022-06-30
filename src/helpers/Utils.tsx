@@ -110,9 +110,9 @@ export const getCurrentLanguage = () => {
   try {
     language =
       localStorage.getItem('currentLanguage') &&
-      localeOptions.filter(
-        (x) => {return x.id === localStorage.getItem('currentLanguage')},
-      ).length > 0
+        localeOptions.filter(
+          (x) => { return x.id === localStorage.getItem('currentLanguage') },
+        ).length > 0
         ? localStorage.getItem('currentLanguage')
         : defaultLocale;
   } catch (error) {
@@ -156,12 +156,10 @@ export const setCurrentUser = (user: any) => {
 };
 
 export const getInitialsName = (names: any) => {
-  // let names = name.split(' ') + "*";
-  // names += analista.apellidos.split(' ')[0];
   let cad = names.split(' ');
   let initials = cad[0].substring(0, 1).toUpperCase();
   if (names.length > 1) {
-    initials += cad[cad.length - 1].substring(0, 1).toUpperCase();
+    initials += cad[cad.length - 2].substring(0, 1).toUpperCase();
   }
   return initials;
 };
