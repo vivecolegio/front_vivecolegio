@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import CountUp from 'react-countup';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
 import Select from 'react-select';
-import { Badge, Button, Input } from 'reactstrap';
+import { Badge, Button, Input, Progress } from 'reactstrap';
 import { compare, comparePerformanceLevelsTopScore } from '../../../helpers/DataTransformations';
 import IntlMessages from '../../../helpers/IntlMessages';
 import { createNotification } from '../../../helpers/Notification';
@@ -24,8 +25,11 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
   const [performanceSelected, setPerformanceSelected] = useState(null);
   const [assesstmentSelected, setAssesstmentSelected] = useState(null);
   const [valuations, setValuations] = useState([]);
+  const [valuationsBase, setValuationsBase] = useState([]);
   const [min, setMin] = useState(null);
   const [max, setMax] = useState(null);
+  const [average, setAverage] = useState(null);
+  const [progress, setProgress] = useState(0);
 
   let navigate = useNavigate();
 
@@ -40,8 +44,6 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
       props
         .getListAllExperienceLearningTraditionalValuation(learningId)
         .then(async (listData: any) => {
-          let valuationsArr: any = [];
-          // get performance levels
           await props
             .getListAllPerformanceLevelAsignatureCourse(academicAsignatureCourseId)
             .then((levels: any) => {
@@ -55,7 +57,18 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
                 }),
               );
             });
-          setValuations(listData.sort(compare));
+          let progress = 0;
+          let average = 0;
+          listData.forEach((element: any) => {
+            if (element?.node?.assessment) {
+              progress++;
+              average += element?.node?.assessment;
+            }
+          });
+          setProgress(progress);
+          setAverage(average / listData.length);
+          setValuations([...listData.sort(compare)]);
+          setValuationsBase(JSON.parse(JSON.stringify(listData)));
         });
     });
     setLoading(false);
@@ -63,17 +76,33 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
 
   const refreshDataTable = async () => {
     //setValuations([]);
-    props
+    await props
       .getListAllExperienceLearningTraditionalValuation(learningId)
-      .then(async (listData: any) => {
-        setValuations(listData);
+      .then((listData: any) => {
+        let progress = 0;
+        let average = 0;
+        listData.forEach((element: any) => {
+          if (element?.node?.assessment) {
+            progress++;
+            average += element?.node?.assessment;
+          }
+        });
+        setProgress(progress);
+        setAverage(average / listData.length);
+        setValuations([...listData.sort(compare)]);
+        setValuationsBase(JSON.parse(JSON.stringify(listData)))
       });
   };
 
   const getPerformanceLevel = async (e: any, valuation: any) => {
-    const perf = performanceLevels?.find((c: any) => {
-      return e.target.value <= c.node.topScore && e.target.value >= c.node.minimumScore;
+    let perf = performanceLevels?.find((c: any) => {
+      return e.target.value < c.node.topScore && e.target.value >= c.node.minimumScore;
     });
+    if (perf === undefined) {
+      perf = performanceLevels?.find((c: any) => {
+        return e.target.value <= c.node.topScore && e.target.value > c.node.minimumScore;
+      });
+    }
     const elementIndex = valuations.findIndex((obj) => {
       return obj.node.id === valuation.node.id;
     });
@@ -87,16 +116,14 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
     setValuations(arr);
   };
 
-  const saveBlur = async (item: any, performanceId: string) => {
-    const elementIndex = valuations.findIndex((obj) => {
+  const saveBlur = async (item: any) => {
+    const elementIndex = valuationsBase.findIndex((obj) => {
       return obj.node.id === item.node.id;
     });
-    console.log(valuations[elementIndex].node.assessment)
-    console.log(item?.node?.assessment)
-    if (valuations[elementIndex].node.assessment !== item?.node?.assessment) {
+    if (valuationsBase[elementIndex].node.assessment !== item?.node?.assessment) {
       let obj = {
         assessment: item?.node?.assessment,
-        performanceLevelId: performanceId,
+        performanceLevelId: item?.node?.performanceLevel?.id
       };
       await props.updateExperienceLearningTraditionalValuation(obj, item.node.id).then(
         () => {
@@ -111,6 +138,7 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
   };
 
   const setAll = async () => {
+    setLoading(true);
     let perf;
     if (assesstmentSelected) {
       perf = performanceLevels?.find((c: any) => {
@@ -122,7 +150,7 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
       performanceLevelId: performanceSelected ? performanceSelected?.value : perf?.node?.id
     };
     for (const item of valuations) {
-      await props.updateExperienceLearningTraditionalValuation(obj, item.id).then(
+      await props.updateExperienceLearningTraditionalValuation(obj, item.node.id).then(
         () => {
         },
         () => {
@@ -131,9 +159,11 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
       );
     }
     createNotification('success', 'success', '');
+    setValuations([])
     refreshDataTable();
     setAssesstmentSelected(null);
     setPerformanceSelected(null);
+    setLoading(false);
   }
 
   return (
@@ -142,7 +172,7 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
         <h1 className="font-bold">Valoración tradicional</h1>
       </div>
       <hr />
-      <div className="d-flex justify-content-between align-items-center">
+      <div className="d-flex justify-content-between align-items-center mb-2">
         <HeaderInfoAcademic
           asignature
           grade
@@ -153,8 +183,8 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
           experienceLearnigId={learningId}
           academicAsignatureCourseId={academicAsignatureCourseId}
         />
-        <div className="mt-4 w-30">
-          <table className="table table-striped table-bordered">
+        <div className="w-30">
+          <table className="table table-striped mb-0">
             <tbody>
               <tr>
                 <td>
@@ -180,41 +210,67 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
           </table>
         </div>
       </div>
-      <div className="d-flex justify-content-start align-items-center mb-3 w-30">
-        {
-          valuations[0]?.node?.performanceLevel?.type == 'QUANTITATIVE' ?
-            <Input
-              type="number"
-              placeholder='Nota...'
-              className="form-control w-30"
-              onInput={(e: any) => {
-                if (e.target.value < min || e.target.value > max) {
-                  e.target.value = null;
-                }
-                setAssesstmentSelected(e.target.value);
-              }}
-              step="0.1"
-            />
-            :
-            <Select
-              isClearable
-              placeholder='Nota...'
-              className="react-select"
-              classNamePrefix="react-select"
-              options={performanceLevelsList}
-              onChange={(selectedOption: any) => {
-                setPerformanceSelected(selectedOption);
-              }}
-            />}
-        <Button
-          className="ml-2 btn-outline-info"
-          size="xs"
-          onClick={() => {
-            setAll();
-          }}
-        >
-          Aplicar a todos
-        </Button>
+      <div className="d-flex justify-content-start align-items-center" >
+        <div className="d-flex justify-content-start align-items-center mb-3 w-30">
+          {
+            valuations[0]?.node?.performanceLevel?.type == 'QUANTITATIVE' ?
+              <Input
+                type="number"
+                placeholder='Nota...'
+                className="form-control w-30"
+                onInput={(e: any) => {
+                  if (e.target.value < min || e.target.value > max) {
+                    e.target.value = null;
+                  }
+                  setAssesstmentSelected(e.target.value);
+                }}
+                step="0.1"
+              />
+              :
+              <Select
+                isClearable
+                placeholder='Nota...'
+                className="react-select"
+                classNamePrefix="react-select"
+                options={performanceLevelsList}
+                onChange={(selectedOption: any) => {
+                  setPerformanceSelected(selectedOption);
+                }}
+              />}
+          <Button
+            className="ml-2 btn-outline-info"
+            size="xs"
+            onClick={() => {
+              setAll();
+            }}
+          >
+            Aplicar a todos
+          </Button>
+
+        </div>
+        <div className="d-flex justify-content-center align-items-center mb-3 w-40">
+          <div className="text-center mr-1">
+            Valoración Promedio:
+          </div>
+          <CountUp
+            start={0}
+            preserveValue={true}
+            end={valuations?.length > 0 ? average : 0}
+            decimals={1}
+            decimal={","}
+          />
+
+        </div>
+        <div className="d-flex justify-content-start align-items-center mb-3 w-30">
+          <div className="text-center mr-1">
+            Progreso de Valoración:
+          </div>
+          <Progress
+            bar
+            color="primary"
+            value={valuations?.length > 0 ? ((progress / valuations?.length) * 100) : 0}
+          > ({progress}/{valuations?.length}) {valuations?.length > 0 ? ((progress / valuations?.length) * 100) : 0}%</Progress>
+        </div>
       </div>
 
       {loading ? (
@@ -225,108 +281,105 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
         </>
       ) : (
         <>
-          {/* {valuations !== null ? ( */}
-          <>
-            <table className="table table-bordered">
-              <thead>
-                <tr>
-                  <th className="text-center">Código</th>
-                  <th className="text-center">Estudiante</th>
-                  <th className="text-center">Valoración</th>
-                  {
-                    valuations[0]?.performanceLevel?.type == 'QUALITATIVE' ?
-                      ''
-                      : <th className="text-center">Nivel de desempeño</th>
-                  }
-                </tr>
-              </thead>
-              <tbody>
-                {valuations.map((item: any, index: any) => {
-                  return (
-                    <>
-                      <tr key={index}>
-                        <td className="text-center vertical-middle">
-                          <span className="font-bold">{item?.node?.student?.code}</span>
-                        </td>
-                        <td className="text-center">
-                          <div className="d-flex align-items-center justify-content-start">
-                            {item?.node?.student?.user?.profilePhoto ? (
-                              <ThumbnailImage
-                                rounded
-                                src={urlImages + item?.node?.student?.user?.profilePhoto}
-                                alt="profile"
-                                className="xsmall mr-3"
-                              />
-                            ) : (
-                              <span className="img-thumbnail md-avatar-initials border-0 span-initials rounded-circle mr-3 list-thumbnail align-self-center xsmall">
-                                {getInitialsName(
-                                  item?.node?.student?.user
-                                    ? item?.node?.student?.user?.lastName +
-                                    ' ' +
-                                    item?.node?.student?.user?.name
-                                    : 'N N',
-                                )}
+          {valuations !== null ? (
+            <>
+              <table className="table table-bordered">
+                <thead>
+                  <tr>
+                    <th className="text-center">Código</th>
+                    <th className="text-center">Estudiante</th>
+                    <th className="text-center">Valoración</th>
+                    {
+                      valuations[0]?.performanceLevel?.type == 'QUALITATIVE' ?
+                        ''
+                        : <th className="text-center">Nivel de desempeño</th>
+                    }
+                  </tr>
+                </thead>
+                <tbody>
+                  {valuations.map((item: any, index: any) => {
+                    return (
+                      <>
+                        <tr key={index}>
+                          <td className="text-center vertical-middle">
+                            <span className="font-bold">{item?.node?.student?.code}</span>
+                          </td>
+                          <td className="text-center">
+                            <div className="d-flex align-items-center justify-content-start">
+                              {item?.node?.student?.user?.profilePhoto ? (
+                                <ThumbnailImage
+                                  rounded
+                                  src={urlImages + item?.node?.student?.user?.profilePhoto}
+                                  alt="profile"
+                                  className="xsmall mr-3"
+                                />
+                              ) : (
+                                <span className="img-thumbnail md-avatar-initials border-0 span-initials rounded-circle mr-3 list-thumbnail align-self-center xsmall">
+                                  {getInitialsName(
+                                    item?.node?.student?.user
+                                      ? item?.node?.student?.user?.lastName +
+                                      ' ' +
+                                      item?.node?.student?.user?.name
+                                      : 'N N',
+                                  )}
+                                </span>
+                              )}
+                              <span>
+                                {item?.node?.student?.user?.lastName} {item?.node?.student?.user?.name}
                               </span>
-                            )}
-                            <span>
-                              {item?.node?.student?.user?.lastName} {item?.node?.student?.user?.name}
-                            </span>
-                          </div>
-                        </td>
-                        <td className="text-center vertical-middle">
+                            </div>
+                          </td>
+                          <td className="text-center vertical-middle">
+                            {
+                              valuations[0]?.performanceLevel?.type == 'QUALITATIVE' ?
+                                <Select
+                                  isClearable
+                                  placeholder={<IntlMessages id="forms.select" />}
+                                  className="react-select"
+                                  classNamePrefix="react-select"
+                                  options={performanceLevelsList}
+                                  value={{ label: item?.performanceLevel?.name, key: item?.performanceLevel?.id, value: item?.performanceLevel?.id }}
+                                  onChange={(selectedOption: any) => {
+                                    item.assessment = 0;
+                                    saveBlur(item);
+                                  }}
+                                /> :
+                                <Input
+                                  type="number"
+                                  onBlur={(event: any) => {
+                                    return saveBlur(item);
+                                  }}
+                                  onInput={(e: any) => {
+                                    if (e.target.value < min || e.target.value > max) {
+                                      e.target.value = null;
+                                    }
+                                    return getPerformanceLevel(e, item);
+                                  }}
+                                  {...item?.node?.assessment}
+                                  defaultValue={item?.node?.assessment}
+                                  className={item?.node?.assessment ? 'border-green form-control' : 'form-control'}
+                                />
+                            }
+                          </td>
                           {
                             valuations[0]?.performanceLevel?.type == 'QUALITATIVE' ?
-                              <Select
-                                isClearable
-                                placeholder={<IntlMessages id="forms.select" />}
-                                className="react-select"
-                                classNamePrefix="react-select"
-                                options={performanceLevelsList}
-                                value={{ label: item?.performanceLevel?.name, key: item?.performanceLevel?.id, value: item?.performanceLevel?.id }}
-                                onChange={(selectedOption: any) => {
-                                  item.assessment = 0;
-                                  saveBlur(item, selectedOption?.value);
-                                }}
-                              /> :
-                              <Input
-                                type="number"
-                                // onKeyPress={(event: any) => {
-                                //   return save(event, item, item?.performance?.node?.id);
-                                // }}
-                                onBlur={(event: any) => {
-                                  return saveBlur(item, item?.node?.performanceLevel?.id);
-                                }}
-                                onInput={(e: any) => {
-                                  if (e.target.value < min || e.target.value > max) {
-                                    e.target.value = null;
-                                  }
-                                  return getPerformanceLevel(e, item);
-                                }}
-                                {...item?.assessment}
-                                defaultValue={item?.node?.assessment}
-                                className={item?.node?.assessment ? 'border-green form-control' : 'form-control'}
-                              />
+                              '' :
+                              <td className="text-center vertical-middle">
+                                <Badge color="primary" className="font-0-8rem">
+                                  {item?.node?.performanceLevel?.name}
+                                </Badge>
+                              </td>
                           }
-                        </td>
-                        {
-                          valuations[0]?.performanceLevel?.type == 'QUALITATIVE' ?
-                            '' :
-                            <td className="text-center vertical-middle">
-                              <Badge color="primary" className="font-0-8rem">
-                                {item?.node?.performanceLevel?.name}
-                              </Badge>
-                            </td>
-                        }
-                      </tr>
-                    </>
-                  );
-                })}
-              </tbody>
-            </table>
-          </>
-          {/* // ) : (
-          //   <></>
-          // )} */}
+                        </tr>
+                      </>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </>
+          ) : (
+            <></>
+          )}
         </>
       )}
     </>
