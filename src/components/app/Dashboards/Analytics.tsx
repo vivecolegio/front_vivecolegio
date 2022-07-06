@@ -5,21 +5,18 @@ import { Colxx, Separator } from '../../common/CustomBootstrap';
 import ProfileStatuses from './DashboardComponents/ProfileStatuses';
 import SortableStaticticsRow from './DashboardComponents/SortableStaticticsRow';
 import SmallLineCharts from './DashboardComponents/SmallLineCharts';
-import SalesChartCard from './DashboardComponents/SalesChartCard';
 import ProductCategoriesDoughnut from './DashboardComponents/ProductCategoriesDoughnut';
 import WebsiteVisitsChartCard from './DashboardComponents/WebsiteVisitsChartCard';
 import ConversionRatesChartCard from './DashboardComponents/ConversionRatesChartCard';
-import OrderStockRadarChart from './DashboardComponents/OrderStockRadarChart';
-import ProductCategoriesPolarArea from './DashboardComponents/ProductCategoriesPolarArea';
 
 const DashboardAnalytics = ({ intl, match }: any) => {
   const { messages } = intl;
   return (
     <>
       <Row>
-        <Colxx xxs="12">   
-          <p className='lead font-bold mb-0'>Informe</p> 
-          <p>Informe de <strong>avance y desempeño</strong></p>    
+        <Colxx xxs="12">
+          <p className='lead font-bold mb-0'>Informe</p>
+          <p>Informe de <strong>avance y desempeño</strong></p>
           <Separator className="mb-5" />
         </Colxx>
       </Row>

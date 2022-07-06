@@ -16,7 +16,7 @@ import {
 import IntlMessages from '../../../../helpers/IntlMessages';
 import { Colxx } from '../../../common/CustomBootstrap';
 import UserCardBasic from '../AplicationsComponents/UserCardBasic';
-import DoughnutChart from '../../Charts/Doughnut';
+// import DoughnutChart from '../../Charts/Doughnut';
 import ProfileImg from '../../../../assets/img/profiles/l-1.jpg';
 import ProfileImgEmpty from '../../../../assets/img/profiles/empty.png';
 import { ThemeColors } from '../../../../helpers/ThemeColors';
@@ -28,11 +28,11 @@ const ElectionsApp = (props: any) => {
 
   let navigate = useNavigate();
 
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
 
   const setItemHandle = (key: any) => {
     setItemSelected(key);
-}
+  }
 
   const dataPeople = [
     {
@@ -91,10 +91,10 @@ const ElectionsApp = (props: any) => {
 
   return (
     <>
-     <Row>
+      <Row>
         <Colxx xxs="12">
           <h1 className='font-bold'>Elecciones-personero 2022 </h1>
-         
+
 
           <Nav tabs className="separator-tabs ml-0 mb-5">
             <NavItem>
@@ -103,7 +103,7 @@ const ElectionsApp = (props: any) => {
                   active: activeTab === 'people',
                   'nav-link': true,
                 })}
-                onClick={() => {return setActiveTab('people')}}
+                onClick={() => { return setActiveTab('people') }}
                 to="#"
               >
                 <IntlMessages id="pages.candidates" />
@@ -115,15 +115,15 @@ const ElectionsApp = (props: any) => {
                   active: activeTab === 'results',
                   'nav-link': true,
                 })}
-                onClick={() => {return setActiveTab('results')}}
+                onClick={() => { return setActiveTab('results') }}
                 to="#"
               >
                 <IntlMessages id="pages.results" />
               </NavLink>
-            </NavItem>       
+            </NavItem>
           </Nav>
 
-          <TabContent activeTab={activeTab}>        
+          <TabContent activeTab={activeTab}>
             <TabPane tabId="people">
               <Row>
                 {dataPeople.map((itemData: any) => {
@@ -142,16 +142,16 @@ const ElectionsApp = (props: any) => {
             </TabPane>
             <TabPane tabId="results">
               <Row>
-              <Card className="h-100 w-100">
-                <CardBody>
-                  <CardTitle>
-                    <IntlMessages id="pages.results" />
-                  </CardTitle>
-                  <div className="dashboard-donut-chart">
-                    <DoughnutChart shadow data={doughnutChartData} />
-                  </div>
-                </CardBody>
-              </Card>
+                <Card className="h-100 w-100">
+                  <CardBody>
+                    <CardTitle>
+                      <IntlMessages id="pages.results" />
+                    </CardTitle>
+                    <div className="dashboard-donut-chart">
+                      {/* <DoughnutChart shadow data={doughnutChartData} /> */}
+                    </div>
+                  </CardBody>
+                </Card>
               </Row>
             </TabPane>
           </TabContent>
@@ -162,7 +162,7 @@ const ElectionsApp = (props: any) => {
 };
 const mapDispatchToProps = {};
 
-const mapStateToProps = ({}: any) => {
+const mapStateToProps = ({ }: any) => {
   return {};
 };
 

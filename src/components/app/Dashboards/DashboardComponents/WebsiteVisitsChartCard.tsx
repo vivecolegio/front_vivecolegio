@@ -9,7 +9,7 @@ import {
 } from 'reactstrap';
 
 import IntlMessages from '../../../../helpers/IntlMessages';
-import { AreaChart } from '../../Charts/index';
+// import { AreaChart } from '../../Charts/index';
 
 import { areaChartData } from '../../../../stores/data/charts';
 
@@ -38,7 +38,7 @@ const WebsiteVisitsChartCard = ({ className = '', controls = true }) => {
                   Opcion 1
                 </DropdownItem>
                 <DropdownItem>
-                Opcion 1
+                  Opcion 1
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
@@ -47,7 +47,7 @@ const WebsiteVisitsChartCard = ({ className = '', controls = true }) => {
       </CardBody>
 
       <div className="chart card-body pt-0">
-        <AreaChart shadow data={areaChartData} />
+        {/* <AreaChart shadow data={areaChartData} /> */}
       </div>
     </Card>
   );

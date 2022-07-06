@@ -2,7 +2,7 @@ import React from 'react';
 import { Row, Card, CardBody } from 'reactstrap';
 
 import { Colxx } from '../../../../components/common/CustomBootstrap';
-import { SmallLineChart } from '../../Charts/index';
+// import { SmallLineChart } from '../../Charts/index';
 
 import {
   smallChartData1,
@@ -17,28 +17,28 @@ const SmallLineCharts = ({ itemClass = 'dashboard-small-chart' }) => {
       <Colxx xxs="6" className="mb-4">
         <Card className={`${itemClass} rounded-card`}>
           <CardBody>
-            <SmallLineChart data={smallChartData1} />
+            {/* <SmallLineChart data={smallChartData1} /> */}
           </CardBody>
         </Card>
       </Colxx>
       <Colxx xxs="6" className="mb-4">
         <Card className={itemClass}>
           <CardBody>
-            <SmallLineChart data={smallChartData2} />
+            {/* <SmallLineChart data={smallChartData2} /> */}
           </CardBody>
         </Card>
       </Colxx>
       <Colxx xxs="6" className="mb-4">
         <Card className={itemClass}>
           <CardBody>
-            <SmallLineChart data={smallChartData3} />
+            {/* <SmallLineChart data={smallChartData3} /> */}
           </CardBody>
         </Card>
       </Colxx>
       <Colxx xxs="6" className="mb-4">
         <Card className={itemClass}>
           <CardBody>
-            <SmallLineChart data={smallChartData4} />
+            {/* <SmallLineChart data={smallChartData4} /> */}
           </CardBody>
         </Card>
       </Colxx>

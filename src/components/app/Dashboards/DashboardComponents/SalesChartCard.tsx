@@ -10,7 +10,7 @@ import {
 } from 'reactstrap';
 
 import IntlMessages from '../../../../helpers/IntlMessages';
-import { LineChart } from '../../Charts/index';
+// import { LineChart } from '../../Charts/index';
 
 import { lineChartData } from '../../../../stores/data/charts';
 
@@ -40,7 +40,7 @@ const SalesChartCard = () => {
           <IntlMessages id="dashboards.sales" />
         </CardTitle>
         <div className="dashboard-line-chart">
-          <LineChart shadow data={lineChartData} />
+          {/* <LineChart shadow data={lineChartData} /> */}
         </div>
       </CardBody>
     </Card>

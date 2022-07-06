@@ -413,16 +413,16 @@ const SpreadsheetList = (props: any) => {
                               ) : (
                                 <span className="img-thumbnail md-avatar-initials border-0 span-initials rounded-circle mr-3 list-thumbnail align-self-center xsmall">
                                   {getInitialsName(
-                                    item?.student?.user
-                                      ? item?.student?.user?.lastName +
+                                    item?.user
+                                      ? item?.user?.lastName +
                                       ' ' +
-                                      item?.student?.user?.name
+                                      item?.user?.name
                                       : 'N N',
                                   )}
                                 </span>
                               )}
                               <span>
-                                {item?.student?.user?.lastName} {item?.student?.user?.name}
+                                {item?.user?.lastName} {item?.user?.name}
                               </span>
                             </div>
                           </td>
