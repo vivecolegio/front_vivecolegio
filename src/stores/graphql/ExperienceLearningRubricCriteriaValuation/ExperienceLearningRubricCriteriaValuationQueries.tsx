@@ -9,6 +9,11 @@ export const QUERY_GET_ALL_EXPERIENCE_RUBRIC_CRITERIA_VALUATION = gql`
           id                                      
           active  
           assessment
+          performanceLevel {
+            name
+            id
+            type
+          } 
           experienceLearningRubricCriteriaId
           experienceLearningRubricCriteria {
             evidenceLearnig {

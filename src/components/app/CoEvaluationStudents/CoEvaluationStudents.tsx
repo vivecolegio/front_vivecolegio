@@ -232,26 +232,28 @@ const ExperienceLearningCoEvaluationStudentsList = (props: any) => {
                             <span className="font-bold">{item?.code}</span>
                           </td>
                           <td className="text-center">
-                            <div className="d-flex align-items-center justify-content-center">
+                            <div className="d-flex align-items-center justify-content-start">
                               {item?.user?.urlPhoto ? (
                                 <ThumbnailImage
                                   rounded
                                   small
                                   src={item?.user?.urlPhoto}
                                   alt="profile"
-                                  className="mr-4"
+                                  className="xsmall mr-3"
                                 />
                               ) : (
-                                <span className="img-thumbnail xl-avatar-initials border-0 span-initials rounded-circle mr-3 list-thumbnail align-self-center xsmall">
+                                <span className="img-thumbnail md-avatar-initials border-0 span-initials rounded-circle mr-3 list-thumbnail align-self-center xsmall">
                                   {getInitialsName(
                                     item?.user
-                                      ? item?.user?.name + ' ' + item?.user?.lastName
+                                      ? item?.user?.lastName +
+                                      ' ' +
+                                      item?.user?.name
                                       : 'N N',
                                   )}
                                 </span>
                               )}
                               <span>
-                                {item?.user?.name} {item?.user?.lastName}
+                                {item?.user?.lastName} {item?.user?.name}
                               </span>
                             </div>
                           </td>

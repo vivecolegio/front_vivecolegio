@@ -112,14 +112,12 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
 
   const save = async (event: any, item: any, performanceId: string) => {
     if (event.key === 'Enter') {
-      setLoading(true);
       let obj = {
         assessment: item?.assessment,
         performanceLevelId: performanceId,
       };
       await props.updateExperienceLearningTraditionalValuation(obj, item.id).then(
         () => {
-          setLoading(false);
           refreshDataTable();
           createNotification('success', 'success', '');
         },
@@ -131,14 +129,12 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
   };
 
   const saveBlur = async (item: any, performanceId: string) => {
-    setLoading(true);
     let obj = {
       assessment: item?.assessment,
       performanceLevelId: performanceId,
     };
     await props.updateExperienceLearningTraditionalValuation(obj, item.id).then(
       () => {
-        setLoading(false);
         createNotification('success', 'success', '');
         refreshDataTable();
       },
@@ -149,7 +145,6 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
   };
 
   const setAll = async () => {
-    setLoading(true);
     let perf;
     if (assesstmentSelected) {
       perf = performanceLevels?.find((c: any) => {
@@ -169,7 +164,6 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
         },
       );
     }
-    setLoading(false);
     createNotification('success', 'success', '');
     refreshDataTable();
     setAssesstmentSelected(null);
