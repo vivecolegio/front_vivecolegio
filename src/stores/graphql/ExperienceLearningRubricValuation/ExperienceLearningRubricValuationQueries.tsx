@@ -8,7 +8,11 @@ export const QUERY_GET_ALL_EXPERIENCE_LEARNING_RUBRIC_VALUATION = gql`
         node {
           id                                      
           active  
-          assessment        
+          assessment    
+          performanceLevel {
+            id
+            name
+          }    
           observations
           studentId
           student {
@@ -18,6 +22,7 @@ export const QUERY_GET_ALL_EXPERIENCE_LEARNING_RUBRIC_VALUATION = gql`
               id
               name
               lastName
+              profilePhoto
             }
           }        
         }

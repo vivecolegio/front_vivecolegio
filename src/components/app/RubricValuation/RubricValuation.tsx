@@ -10,6 +10,7 @@ import { getInitialsName } from '../../../helpers/Utils';
 import * as performanceLevelActions from '../../../stores/actions/Academic/PerformanceLevelActions';
 import * as courseActions from '../../../stores/actions/CourseActions';
 import * as experienceLearningRubricValuationActions from '../../../stores/actions/ExperienceLearningRubricValuationActions';
+import { urlImages } from '../../../stores/graphql';
 import { Colxx } from '../../common/CustomBootstrap';
 import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
 import { Loader } from '../../common/Loader';
@@ -71,15 +72,6 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
               setPerformanceLevels(levels);
               // set valuations list and get the performance level for each one
               valuationsArr = listData.map((l: any) => {
-                const perf = levels?.find((c: any) => {
-                  return (
-                    l?.node.assessment &&
-                    l?.node?.assessment <= c.node.topScore &&
-                    l?.node?.assessment >= c.node.minimumScore
-                  );
-                });
-                //console.log(perf)
-                l.node.performance = perf?.node?.name;
                 l.node.code = l.node.student.code;
                 return l.node;
               });
@@ -145,10 +137,10 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
                           </td>
                           <td className="text-center vertical-middle">
                             <div className="d-flex align-items-center justify-content-start">
-                              {item?.student?.user?.urlPhoto ? (
+                              {item?.student?.user?.profilePhoto ? (
                                 <ThumbnailImage
                                   rounded
-                                  src={item?.student?.user?.urlPhoto}
+                                  src={urlImages + item?.node?.student?.user?.profilePhoto}
                                   alt="profile"
                                   className="xsmall mr-3"
                                 />
@@ -176,7 +168,7 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
                           </td>
                           <td className="text-center vertical-middle">
                             <Badge color="primary" className="font-0-8rem">
-                              {item?.performance}
+                              {item?.performanceLevel?.name}
                             </Badge>
                           </td>
                           <td className="text-center vertical-middle">

@@ -9,6 +9,10 @@ export const QUERY_GET_ALL_EXPERIENCE_LEARNING_SELF_ASSESSMENT_VALUATION = gql`
           id                                      
           active  
           assessment
+          performanceLevel {
+            id
+            name
+          }
           observations
           experienceLearning {
             id
@@ -31,6 +35,7 @@ export const QUERY_GET_ALL_EXPERIENCE_LEARNING_SELF_ASSESSMENT_VALUATION = gql`
               id
               name
               lastName
+              profilePhoto
             }
           }        
         }

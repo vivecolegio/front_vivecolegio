@@ -268,7 +268,7 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
             bar
             color="primary"
             value={valuations?.length > 0 ? ((progress / valuations?.length) * 100) : 0}
-          > ({progress}/{valuations?.length}) {valuations?.length > 0 ? ((progress / valuations?.length) * 100) : 0}%</Progress>
+          > ({progress}/{valuations?.length}) {valuations?.length > 0 ? ((progress / valuations?.length) * 100).toFixed(2) : 0}%</Progress>
         </div>
       </div>
 

@@ -3,13 +3,17 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
-import { Badge, Input } from 'reactstrap';
-import { compare } from '../../../helpers/DataTransformations';
+import Select from 'react-select';
+import CountUp from 'react-countup';
+import { Badge, Input, Progress } from 'reactstrap';
+import { compare, comparePerformanceLevelsTopScore } from '../../../helpers/DataTransformations';
+import IntlMessages from '../../../helpers/IntlMessages';
 import { createNotification } from '../../../helpers/Notification';
 import { getInitialsName } from '../../../helpers/Utils';
 import * as performanceLevelActions from '../../../stores/actions/Academic/PerformanceLevelActions';
 import * as courseActions from '../../../stores/actions/CourseActions';
 import * as experienceLearningSelfAssessmentValuationActions from '../../../stores/actions/ExperienceLearningSelfAssessmentValuationActions';
+import { urlImages } from '../../../stores/graphql';
 import { Colxx } from '../../common/CustomBootstrap';
 import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
 import { Loader } from '../../common/Loader';
@@ -20,6 +24,12 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
   const [performanceLevels, setPerformanceLevels] = useState(null);
   const [valuations, setValuations] = useState([]);
   const [criteriaPerformances, setCriteriaPerformances] = useState([]);
+  const [min, setMin] = useState(null);
+  const [max, setMax] = useState(null);
+  const [valuationsBase, setValuationsBase] = useState([]);
+  const [average, setAverage] = useState(null);
+  const [progress, setProgress] = useState(0);
+  const [performanceLevelsList, setPerformanceLevelsList] = useState(null);
 
   let navigate = useNavigate();
   const location = useLocation();
@@ -63,29 +73,32 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
           cm?.createAction ? props?.loginReducer?.entityId : undefined,
         )
         .then(async (listData: any) => {
-          //console.log(listData);
-          let valuationsArr: any = [];
           // get performance levels
           await props
-            .getListAllPerformanceLevel(props?.loginReducer?.schoolId)
+            .getListAllPerformanceLevelAsignatureCourse(academicAsignatureCourseId)
             .then((levels: any) => {
               setPerformanceLevels(levels);
-              // set valuations list and get the performance level for each one
-              valuationsArr = listData.map((l: any) => {
-                const perf = levels?.find((c: any) => {
-                  return (
-                    l?.node.assessment &&
-                    l?.node?.assessment <= c.node.topScore &&
-                    l?.node?.assessment >= c.node.minimumScore
-                  );
-                });
-                //console.log(perf)
-                l.node.performance = perf?.node?.name;
-                l.node.code = l.node.student.code;
-                return l.node;
-              });
+              let levelsOrderDesc = levels.sort(comparePerformanceLevelsTopScore);
+              setMax(levelsOrderDesc[levelsOrderDesc.length - 1]?.node?.topScore);
+              setMin(levelsOrderDesc[0]?.node?.minimumScore);
+              setPerformanceLevelsList(
+                levels.map((c: any) => {
+                  return { label: c.node.name, value: c.node.id, key: c.node.id };
+                }),
+              );
             });
-          setValuations(valuationsArr.sort(compare));
+          let progress = 0;
+          let average = 0;
+          listData.forEach((element: any) => {
+            if (element?.node?.assessment) {
+              progress++;
+              average += element?.node?.assessment;
+            }
+          });
+          setProgress(progress);
+          setAverage(average / listData.length);
+          setValuations([...listData.sort(compare)]);
+          setValuationsBase(JSON.parse(JSON.stringify(listData)));
         });
     });
     setLoading(false);
@@ -99,37 +112,39 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
         currentMenu?.createAction ? props?.loginReducer?.entityId : undefined,
       )
       .then(async (listData: any) => {
-        let valuationsArr = listData.map((l: any) => {
-          const perf = performanceLevels?.find((c: any) => {
-            return (
-              l?.node?.assessment <= c.node.topScore && l?.node?.assessment >= c.node.minimumScore
-            );
-          });
-          l.node.performance = perf?.node?.name;
-          return l.node;
+        let progress = 0;
+        let average = 0;
+        listData.forEach((element: any) => {
+          if (element?.node?.assessment) {
+            progress++;
+            average += element?.node?.assessment;
+          }
         });
-        setValuations(valuationsArr);
+        setProgress(progress);
+        setAverage(average / listData.length);
+        setValuations([...listData.sort(compare)]);
+        setValuationsBase(JSON.parse(JSON.stringify(listData)));
       });
   };
 
   const getPerformanceLevel = async (e: any, valuation: any) => {
-    const perf = performanceLevels?.find((c: any) => {
-      return e.target.value <= c.node.topScore && e.target.value >= c.node.minimumScore;
+    let perf = performanceLevels?.find((c: any) => {
+      return e.target.value < c.node.topScore && e.target.value >= c.node.minimumScore;
     });
+    if (perf === undefined) {
+      perf = performanceLevels?.find((c: any) => {
+        return e.target.value <= c.node.topScore && e.target.value > c.node.minimumScore;
+      });
+    }
     const elementIndex = valuations.findIndex((obj) => {
-      return obj.id === valuation.id;
+      return obj.node.id === valuation.node.id;
     });
-    valuations[elementIndex].performance = perf?.node?.name;
-    valuations[elementIndex].assessment = e.target.value;
-    const arr = Object.assign([], valuations);
-    setValuations(arr);
-  };
-
-  const setObservation = async (e: any, valuation: any) => {
-    const elementIndex = valuations.findIndex((obj) => {
-      return obj.id === valuation.id;
-    });
-    valuations[elementIndex].observations = e.target.value;
+    if (perf) {
+      valuations[elementIndex].node.performanceLevel = perf.node;
+    } else {
+      valuations[elementIndex].node.performanceLevel = null;
+    }
+    valuations[elementIndex].node.assessment = e.target.value;
     const arr = Object.assign([], valuations);
     setValuations(arr);
   };
@@ -138,21 +153,47 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
     navigate(-1);
   };
 
-  const saveNote = async (event: any, item: any) => {
-    if (event.key === 'Enter') {
+  const saveBlur = async (item: any) => {
+    const elementIndex = valuationsBase.findIndex((obj) => {
+      return obj.node.id === item.node.id;
+    });
+    if (valuationsBase[elementIndex].node.assessment != item?.node?.assessment) {
       let obj = {
-        assessment: event.target.value,
+        assessment: item?.node?.assessment,
+        observations: item?.node?.observations,
+        performanceLevelId: item?.node?.performanceLevel?.id
       };
-      await props.updateExperienceLearningSelfAssessmentValuation(obj, item.id, true).then();
+      await props.updateExperienceLearningSelfAssessmentValuation(obj, item.node.id).then(
+        () => {
+          createNotification('success', 'success', '');
+          refreshDataTable();
+        },
+        () => {
+          createNotification('error', 'error', '');
+        },
+      );
     }
   };
 
-  const saveObservations = async (event: any, item: any) => {
-    if (event.key === 'Enter') {
+  const saveBlurObservations = async (item: any) => {
+    const elementIndex = valuationsBase.findIndex((obj) => {
+      return obj.node.id === item.node.id;
+    });
+    if (valuationsBase[elementIndex].node.observations != item?.node?.observations) {
       let obj = {
-        assessment: event.target.value,
+        assessment: item?.node?.assessment,
+        observations: item?.node?.observations,
+        performanceLevelId: item?.node?.performanceLevel?.id
       };
-      await props.updateExperienceLearningSelfAssessmentValuation(obj, item.id, true).then();
+      await props.updateExperienceLearningSelfAssessmentValuation(obj, item.node.id).then(
+        () => {
+          createNotification('success', 'success', '');
+          refreshDataTable();
+        },
+        () => {
+          createNotification('error', 'error', '');
+        },
+      );
     }
   };
 
@@ -162,42 +203,61 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
         <h1 className="font-bold">Autoevaluación</h1>
       </div>
       <hr />
-      <div className="d-flex justify-content-between align-items-center">
+      <div className="d-flex justify-content-between align-items-center mb-2">
         <HeaderInfoAcademic asignature grade course modality experienceLearnig goTitle="Regresar a experiencias de aprendizaje" experienceLearnigId={learningId} academicAsignatureCourseId={academicAsignatureCourseId} />
-        <div className="mt-4 w-60">
-          <table className="table table-striped table-bordered">
+        <div className="w-30">
+          <table className="table table-striped mb-0">
             <tbody>
               <tr>
-                <td
-                  className="w-20"
-                  rowSpan={
-                    valuations[0]?.experienceLearning?.experienceLearningPerformanceLevel?.length +
-                    1
-                  }
-                >
-                  <strong>Criterio:</strong> {valuations[0]?.experienceLearning?.criteria}
+                <td>
+                  <strong>Nivel de desempeño</strong>
+                </td>
+                <td>
+                  <strong>Minimo</strong>
+                </td>
+                <td>
+                  <strong>Maximo</strong>
                 </td>
               </tr>
-              {valuations[0]?.experienceLearning?.experienceLearningPerformanceLevel.map(
-                (e: any) => {
-                  return (
-                    <>
-                      <tr>
-                        <td>
-                          <strong>Nivel de desempeño:</strong> {`${e?.performanceLevel?.name}: ${e?.performanceLevel?.minimumScore} - ${e?.performanceLevel?.topScore}`}
-                        </td>
-                        <td>
-                          <strong>Criterio:</strong> {e?.criteria}
-                        </td>
-                      </tr>
-                    </>
-                  );
-                },
-              )}
+              {performanceLevels?.map((e: any) => {
+                return (
+                  <tr>
+                    <td> {`${e?.node?.name}`}</td>
+                    <td> {`${e?.node?.minimumScore}`} </td>
+                    <td> {`${e?.node?.topScore}`} </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
       </div>
+      {!currentMenu?.updateAction ?
+        <div className="d-flex justify-content-between align-items-center" >
+          <div className="d-flex justify-content-center align-items-center mb-3 w-40">
+            <div className="text-center mr-1">
+              Valoración Promedio:
+            </div>
+            <CountUp
+              start={0}
+              preserveValue={true}
+              end={valuations?.length > 0 ? average : 0}
+              decimals={1}
+              decimal={","}
+            />
+
+          </div>
+          <div className="d-flex justify-content-start align-items-center mb-3 w-30">
+            <div className="text-center mr-1">
+              Progreso de Valoración:
+            </div>
+            <Progress
+              bar
+              color="primary"
+              value={valuations?.length > 0 ? ((progress / valuations?.length) * 100) : 0}
+            > ({progress}/{valuations?.length}) {valuations?.length > 0 ? ((progress / valuations?.length) * 100).toFixed(2) : 0}%</Progress>
+          </div>
+        </div> : ''}
 
       {loading ? (
         <>
@@ -233,49 +293,69 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
                       <>
                         <tr key={index}>
                           <td className="text-center vertical-middle">
-                            <span className="font-bold">{item?.student?.code}</span>
+                            <span className="font-bold">{item?.node?.student?.code}</span>
                           </td>
                           <td className="text-center vertical-middle">
                             <div className="d-flex align-items-center justify-content-start">
-                              {item?.student?.user?.urlPhoto ? (
+                              {item?.node?.student?.user?.profilePhoto ? (
                                 <ThumbnailImage
                                   rounded
-                                  src={item?.student?.user?.urlPhoto}
+                                  src={urlImages + item?.node?.student?.user?.profilePhoto}
                                   alt="profile"
                                   className="xsmall mr-3"
                                 />
                               ) : (
                                 <span className="img-thumbnail md-avatar-initials border-0 span-initials rounded-circle mr-3 list-thumbnail align-self-center xsmall">
                                   {getInitialsName(
-                                    item?.student?.user
-                                      ? item?.student?.user?.lastName +
+                                    item?.node?.student
+                                      ? item?.node?.student?.user?.lastName +
                                       ' ' +
-                                      item?.student?.user?.name
+                                      item?.node?.student?.user?.name
                                       : 'N N',
                                   )}
                                 </span>
                               )}
                               <span>
-                                {item?.student?.user?.lastName} {item?.student?.user?.name}
+                                {item?.node?.student?.user?.lastName} {item?.node?.student?.user?.name}
                               </span>
                             </div>
                           </td>
                           <td className="text-center vertical-middle">
                             {currentMenu?.updateAction ? (
-                              <Input
-                                type="number"
-                                onInput={(e) => {
-                                  return getPerformanceLevel(e, item);
-                                }}
-                                onKeyPress={(event: any) => {
-                                  return saveNote(event, item);
-                                }}
-                                {...item?.assessment}
-                                defaultValue={item?.assessment}
-                                className="form-control"
-                              />
+                              <>
+                                {
+                                  valuations[0]?.performanceLevel?.type == 'QUALITATIVE' ?
+                                    <Select
+                                      isClearable
+                                      placeholder={<IntlMessages id="forms.select" />}
+                                      className="react-select"
+                                      classNamePrefix="react-select"
+                                      options={performanceLevelsList}
+                                      value={{ label: item?.performanceLevel?.name, key: item?.performanceLevel?.id, value: item?.performanceLevel?.id }}
+                                      onChange={(selectedOption: any) => {
+                                        item.assessment = 0;
+                                        saveBlur(item);
+                                      }}
+                                    /> :
+                                    <Input
+                                      type="number"
+                                      onBlur={(event: any) => {
+                                        return saveBlur(item);
+                                      }}
+                                      onInput={(e: any) => {
+                                        if (e.target.value < min || e.target.value > max) {
+                                          e.target.value = null;
+                                        }
+                                        return getPerformanceLevel(e, item);
+                                      }}
+                                      {...item?.node?.assessment}
+                                      defaultValue={item?.node?.assessment}
+                                      className={item?.node?.assessment ? 'border-green form-control' : 'form-control'}
+                                    />
+                                }
+                              </>
                             ) : (
-                              <span>{item?.assessment}</span>
+                              <span>{item?.node?.assessment}</span>
                             )}
                           </td>
                           <td className="text-center vertical-middle">
@@ -283,20 +363,23 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
                               <Input
                                 type="textarea"
                                 rows="2"
-                                onKeyPress={(event: any) => {
-                                  return saveObservations(event, item);
+                                onBlur={(event: any) => {
+                                  return saveBlurObservations(item);
                                 }}
-                                {...item?.observations}
-                                defaultValue={item?.observations}
-                                className="form-control"
+                                onInput={(e: any) => {
+                                  item.node.observations = e.target.value;
+                                }}
+                                {...item?.node?.observations}
+                                defaultValue={item?.node?.observations}
+                                className={item?.node?.observations ? 'border-green form-control' : 'form-control'}
                               />
                             ) : (
-                              <span>{item?.observations}</span>
+                              <span>{item?.node?.observations}</span>
                             )}
                           </td>
                           <td className="text-center vertical-middle">
                             <Badge color="primary" className="font-0-8rem">
-                              {item?.performance}
+                              {item?.node?.performanceLevel?.name}
                             </Badge>
                           </td>
                         </tr>
