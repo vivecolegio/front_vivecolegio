@@ -3,9 +3,10 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
-import { Input } from 'reactstrap';
+import { Button, Input, Progress } from 'reactstrap';
 import Select from 'react-select';
-import { comparePerformanceLevelsTopScore } from '../../../helpers/DataTransformations';
+import CountUp from 'react-countup';
+import { compare, comparePerformanceLevelsTopScore } from '../../../helpers/DataTransformations';
 import { createNotification } from '../../../helpers/Notification';
 import * as performanceLevelActions from '../../../stores/actions/Academic/PerformanceLevelActions';
 import * as experienceLearningRubricCriteriaValuationActions from '../../../stores/actions/ExperienceLearningRubricCriteriaValuationActions';
@@ -19,9 +20,15 @@ const ExperienceLearningRubricCriteriaValuationList = (props: any) => {
   const [rubricValuation, setRubricValuation] = useState(null);
   const [valuations, setValuations] = useState([]);
   const [performanceLevelsList, setPerformanceLevelsList] = useState(null);
+  const [performanceLevels, setPerformanceLevels] = useState(null);
   const [total, setTotal] = useState(0);
   const [min, setMin] = useState(null);
   const [max, setMax] = useState(null);
+  const [valuationsBase, setValuationsBase] = useState([]);
+  const [average, setAverage] = useState(null);
+  const [progress, setProgress] = useState(0);
+  const [performanceSelected, setPerformanceSelected] = useState(null);
+  const [assesstmentSelected, setAssesstmentSelected] = useState(null);
 
   let navigate = useNavigate();
   const location = useLocation();
@@ -65,19 +72,33 @@ const ExperienceLearningRubricCriteriaValuationList = (props: any) => {
       .then(async (dataRubricValuation: any) => {
         setRubricValuation(dataRubricValuation.data);
       });
+
     props
       .getListAllExperienceLearningRubricCriteriaValuation(learningId, studentId)
       .then(async (listData: any) => {
-        setValuations(listData.map((c: any) => { return c?.node }));
         let count = 0;
         listData?.map((d: any) => {
           count += d?.node?.experienceLearningRubricCriteria?.weight;
         })
         setTotal(count);
+        let progress = 0;
+        let average = 0;
+        listData.forEach((element: any) => {
+          if (element?.node?.assessment) {
+            progress++;
+            average += element?.node?.assessment;
+          }
+        });
+        setProgress(progress);
+        setAverage(average / listData.length);
+        setValuations([...listData.map((c: any) => { return c?.node }).sort(compare)]);
+        setValuationsBase(JSON.parse(JSON.stringify(listData)));
       });
+
     props
       .getListAllPerformanceLevelAsignatureCourse(academicAsignatureCourseId)
       .then((levels: any) => {
+        setPerformanceLevels(levels);
         setPerformanceLevelsList(
           levels.map((c: any) => {
             return { label: c.node.name, value: c.node.id, key: c.node.id };
@@ -91,14 +112,24 @@ const ExperienceLearningRubricCriteriaValuationList = (props: any) => {
   }, []);
 
   const refreshDataTable = async () => {
-    setValuations(null);
-    props
+    await props
       .getListAllExperienceLearningRubricCriteriaValuation(
         learningId,
         studentId,
       )
       .then(async (listData: any) => {
-        setValuations(listData.map((c: any) => { return c?.node }));
+        let progress = 0;
+        let average = 0;
+        listData.forEach((element: any) => {
+          if (element?.node?.assessment) {
+            progress++;
+            average += element?.node?.assessment;
+          }
+        });
+        setProgress(progress);
+        setAverage(average / listData.length);
+        setValuations([...listData.map((c: any) => { return c?.node }).sort(compare)]);
+        setValuationsBase(JSON.parse(JSON.stringify(listData)));
         props
           .dataExperienceLearningRubricValuation(rubricValuationId)
           .then(async (dataRubricValuation: any) => {
@@ -111,43 +142,86 @@ const ExperienceLearningRubricCriteriaValuationList = (props: any) => {
     navigate(-1);
   };
 
-  const saveNote = async (event: any, item: any, performanceId: string) => {
-    if (event.key === 'Enter') {
+  const saveBlur = async (item: any) => {
+    console.log(item)
+    const elementIndex = valuationsBase.findIndex((obj) => {
+      return obj?.node?.id === item.id;
+    });
+    if (valuationsBase[elementIndex]?.node?.assessment !== item?.assessment) {
       let obj = {
-        assessment: event.target.value,
-        performanceLevelId: performanceId,
+        assessment: item?.assessment,
+        performanceLevelId: item?.performanceLevel?.id
       };
-      await props.updateExperienceLearningRubricCriteriaValuation(obj, item.id, true).then();
-      await props.updateExperienceLearningRubricValuationFromCriteria(rubricValuationId, false).then();
-      await refreshDataTable();
+      await props.updateExperienceLearningRubricCriteriaValuation(obj, item.id).then(
+        async () => {
+          await props.updateExperienceLearningRubricValuationFromCriteria(rubricValuationId, false).then();
+          createNotification('success', 'success', '');
+          refreshDataTable();
+        },
+        () => {
+          createNotification('error', 'error', '');
+        },
+      );
     }
   };
 
-  const saveBlur = async (event: any, item: any, performanceId: string) => {
-    let obj = {
-      assessment: event.target.value,
-      performanceLevelId: performanceId,
-    };
-    console.log(obj)
-    await props.updateExperienceLearningRubricCriteriaValuation(obj, item.id).then(
-      async () => {
-        await props.updateExperienceLearningRubricValuationFromCriteria(rubricValuationId, false).then();
-        createNotification('success', 'success', '');
-        refreshDataTable();
-      },
-      () => {
-        createNotification('error', 'error', '');
-      },
-    );
+  const getPerformanceLevel = async (e: any, valuation: any) => {
+    let perf = performanceLevels?.find((c: any) => {
+      return e.target.value < c.node.topScore && e.target.value >= c.node.minimumScore;
+    });
+    if (perf === undefined) {
+      perf = performanceLevels?.find((c: any) => {
+        return e.target.value <= c.node.topScore && e.target.value > c.node.minimumScore;
+      });
+    }
+    const elementIndex = valuations.findIndex((obj) => {
+      return obj.id === valuation.id;
+    });
+    if (perf) {
+      valuations[elementIndex].performanceLevel = perf.node;
+    } else {
+      valuations[elementIndex].performanceLevel = null;
+    }
+    valuations[elementIndex].assessment = e.target.value;
+    const arr = Object.assign([], valuations);
+    setValuations(arr);
   };
+
+  const setAll = async () => {
+    setLoading(true);
+    let perf;
+    if (assesstmentSelected) {
+      perf = performanceLevels?.find((c: any) => {
+        return assesstmentSelected <= c.node.topScore && assesstmentSelected >= c.node.minimumScore;
+      });
+    }
+    let obj = {
+      assessment: assesstmentSelected || 0,
+      performanceLevelId: performanceSelected ? performanceSelected?.value : perf?.node?.id
+    };
+    for (const item of valuations) {
+      await props.updateExperienceLearningRubricCriteriaValuation(obj, item.id).then(
+        async () => {
+          await props.updateExperienceLearningRubricValuationFromCriteria(rubricValuationId, false).then();
+        },
+        () => {
+          createNotification('error', 'error', '');
+        },
+      );
+    }
+    createNotification('success', 'success', '');
+    setValuations([])
+    refreshDataTable();
+    setAssesstmentSelected(null);
+    setPerformanceSelected(null);
+    setLoading(false);
+  }
 
   const saveObservationRubricValuation = async (event: any, item: any) => {
-    if (event.key === 'Enter') {
-      let obj = {
-        observations: event.target.value,
-      };
-      await props.updateExperienceLearningRubricValuation(obj, rubricValuationId, true).then();
-    }
+    let obj = {
+      observations: event.target.value,
+    };
+    await props.updateExperienceLearningRubricValuation(obj, rubricValuationId, true).then();
   };
 
   return (
@@ -161,10 +235,10 @@ const ExperienceLearningRubricCriteriaValuationList = (props: any) => {
         <div className='mt-4'>
           <div className="d-flex flex-row justify-content-end">
             <span className="mb-0 text-muted mr-4">
-              Nota: <h2 className="text-muted font-bold">{rubricValuation?.assessment}</h2>
+              Nota: <h2 className="text-muted font-bold">{rubricValuation?.assessment?.toFixed(1)}</h2>
             </span>
             <span className="mb-0 text-muted">
-              Observación:  <Input type='textarea' onKeyPress={(event: any) => {
+              Observación:  <Input type='textarea' onBlur={(event: any) => {
                 return saveObservationRubricValuation(event, rubricValuation);
               }} defaultValue={rubricValuation?.observations} rows="2" className="form-control" />
             </span>
@@ -172,6 +246,67 @@ const ExperienceLearningRubricCriteriaValuationList = (props: any) => {
           <div className="d-flex flex-row mt-2">
             <p className='font-bold text-danger'>{total < 100 ? 'Los criterios no cumplen con el peso de 100%' : ''}</p>
           </div>
+        </div>
+      </div>
+      <div className="d-flex justify-content-start align-items-center" >
+        <div className="d-flex justify-content-start align-items-center mb-3 w-30">
+          {
+            valuations[0]?.performanceLevel?.type == 'QUANTITATIVE' ?
+              <Input
+                type="number"
+                placeholder='Nota...'
+                className="form-control w-30"
+                onInput={(e: any) => {
+                  if (e.target.value < min || e.target.value > max) {
+                    e.target.value = null;
+                  }
+                  setAssesstmentSelected(e.target.value);
+                }}
+                step="0.1"
+              />
+              :
+              <Select
+                isClearable
+                placeholder='Nota...'
+                className="react-select"
+                classNamePrefix="react-select"
+                options={performanceLevelsList}
+                onChange={(selectedOption: any) => {
+                  setPerformanceSelected(selectedOption);
+                }}
+              />}
+          <Button
+            className="ml-2 btn-outline-info"
+            size="xs"
+            onClick={() => {
+              setAll();
+            }}
+          >
+            Aplicar a todos
+          </Button>
+        </div>
+        <div className="d-flex justify-content-center align-items-center mb-3 w-40">
+          <div className="text-center mr-1">
+            Valoración Promedio:
+          </div>
+          <CountUp
+            start={0}
+            preserveValue={true}
+            end={valuations?.length > 0 ? average : 0}
+            decimals={1}
+            decimal={","}
+          />
+
+        </div>
+        <div className="d-flex justify-content-start align-items-center mb-3 w-30">
+          <div className="text-center mr-1">
+            Progreso de Valoración:
+          </div>
+          <Progress
+            bar
+            color="primary"
+            value={valuations?.length > 0 ? ((progress / valuations?.length) * 100) : 0}
+          > ({progress}/{valuations?.length}) {valuations?.length > 0 ? ((progress / valuations?.length) * 100) : 0}%</Progress>
         </div>
       </div>
 
@@ -240,31 +375,36 @@ const ExperienceLearningRubricCriteriaValuationList = (props: any) => {
                           <td className="text-center vertical-middle">
                             {currentMenu?.updateAction ? (
                               <>
-                                {valuations[0]?.performanceLevel?.type == 'QUALITATIVE' ?
-                                  <Select
-                                    isClearable
-                                    placeholder={<IntlMessages id="forms.select" />}
-                                    className="react-select"
-                                    classNamePrefix="react-select"
-                                    options={performanceLevelsList}
-                                    value={{ label: item?.performanceLevel?.name, key: item?.performanceLevel?.id, value: item?.performanceLevel?.id }}
-                                    onChange={(selectedOption: any) => {
-                                      item.assessment = 0;
-                                      saveBlur({}, item, selectedOption?.value);
-                                    }}
-                                  /> :
-                                  <Input
-                                    type="number"
-                                    onKeyPress={(event: any) => {
-                                      return saveNote(event, item, item?.performance?.node?.id);
-                                    }}
-                                    onBlur={(event: any) => {
-                                      return saveBlur(event, item, item?.performance?.node?.id);
-                                    }}
-                                    {...item?.assessment}
-                                    defaultValue={item?.assessment}
-                                    className="form-control"
-                                  />}
+                                {
+                                  valuations[0]?.performanceLevel?.type == 'QUALITATIVE' ?
+                                    <Select
+                                      isClearable
+                                      placeholder={<IntlMessages id="forms.select" />}
+                                      className="react-select"
+                                      classNamePrefix="react-select"
+                                      options={performanceLevelsList}
+                                      value={{ label: item?.performanceLevel?.name, key: item?.performanceLevel?.id, value: item?.performanceLevel?.id }}
+                                      onChange={(selectedOption: any) => {
+                                        item.assessment = 0;
+                                        saveBlur(item);
+                                      }}
+                                    /> :
+                                    <Input
+                                      type="number"
+                                      onBlur={(event: any) => {
+                                        return saveBlur(item);
+                                      }}
+                                      onInput={(e: any) => {
+                                        if (e.target.value < min || e.target.value > max) {
+                                          e.target.value = null;
+                                        }
+                                        getPerformanceLevel(e, item);
+                                      }}
+                                      {...item?.assessment}
+                                      defaultValue={item?.assessment}
+                                      className={item?.assessment ? 'border-green form-control' : 'form-control'}
+                                    />
+                                }
                               </>) : (
                               <span>{item?.assessment}</span>
                             )}

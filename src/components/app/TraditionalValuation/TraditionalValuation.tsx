@@ -75,7 +75,6 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
   }, []);
 
   const refreshDataTable = async () => {
-    //setValuations([]);
     await props
       .getListAllExperienceLearningTraditionalValuation(learningId)
       .then((listData: any) => {
