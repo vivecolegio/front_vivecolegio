@@ -3,8 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
-import { Badge, Tooltip } from 'reactstrap';
-import { compare } from '../../../helpers/DataTransformations';
+import { Badge, Progress, Tooltip } from 'reactstrap';
+import CountUp from 'react-countup';
+import { compare, comparePerformanceLevelsTopScore } from '../../../helpers/DataTransformations';
 import { createNotification } from '../../../helpers/Notification';
 import { getInitialsName } from '../../../helpers/Utils';
 import * as performanceLevelActions from '../../../stores/actions/Academic/PerformanceLevelActions';
@@ -23,6 +24,12 @@ const ExperienceLearningCoEvaluationList = (props: any) => {
   const [valuations, setValuations] = useState([]);
   const [valuationsAssessment, setValuationsAssessment] = useState([]);
   const [experienceLearnig, setExperienceLearning] = useState(null);
+  const [min, setMin] = useState(null);
+  const [max, setMax] = useState(null);
+  const [valuationsBase, setValuationsBase] = useState([]);
+  const [average, setAverage] = useState(null);
+  const [progress, setProgress] = useState(0);
+  const [performanceLevelsList, setPerformanceLevelsList] = useState(null);
 
   let navigate = useNavigate();
   const location = useLocation();
@@ -63,60 +70,51 @@ const ExperienceLearningCoEvaluationList = (props: any) => {
     props.dataExperienceLearning(learningId).then((resp: any) => {
       setExperienceLearning(resp?.data)
     });
-    props.dataCourse(courseId).then((course: any) => {
-      setStudents(course?.data?.students.sort(compare));
-    });
+    // props.dataCourse(courseId).then((course: any) => {
+
+    // });
     props.generateExperienceLearningCoEvaluation(learningId).then((response: any) => {
       props
         .generateExperienceLearningCoEvaluationValuation(learningId)
         .then((responseValuation: any) => {
+          // OBTIENE EL TOTAL DE LA VALORACIÓN FINAL
           props
             .getListAllExperienceLearningCoEvaluationValuation(learningId)
             .then(async (listDataValuation: any) => {
-              //console.log(listDataValuation);
-              let valuationsArr: any = [];
+              console.log(listDataValuation)
+              setStudents(listDataValuation.map((e: any) => {
+                return e?.node?.student
+              })?.sort(compare));
               await props
-                .getListAllPerformanceLevel(props?.loginReducer?.schoolId)
+                .getListAllPerformanceLevelAsignatureCourse(academicAsignatureCourseId)
                 .then((levels: any) => {
                   setPerformanceLevels(levels);
-                  // set valuations list and get the performance level for each one
-                  valuationsArr = listDataValuation.map((l: any) => {
-                    const perf = levels?.find((c: any) => {
-                      return (
-                        l?.node.assessment &&
-                        l?.node?.assessment <= c.node.topScore &&
-                        l?.node?.assessment >= c.node.minimumScore
-                      );
-                    });
-                    l.node.performance = perf?.node?.name;
-                    return l;
-                  });
+                  let levelsOrderDesc = levels.sort(comparePerformanceLevelsTopScore);
+                  setMax(levelsOrderDesc[levelsOrderDesc.length - 1]?.node?.topScore);
+                  setMin(levelsOrderDesc[0]?.node?.minimumScore);
+                  setPerformanceLevelsList(
+                    levels.map((c: any) => {
+                      return { label: c.node.name, value: c.node.id, key: c.node.id };
+                    }),
+                  );
                 });
-              //console.log(valuationsArr);
-              setValuationsAssessment(valuationsArr);
+              setValuationsAssessment(listDataValuation);
             });
+          // OBTIENE CADA UNA DE LAS VALORACIONES
           props.getListAllExperienceLearningCoEvaluation(learningId).then(async (listData: any) => {
-            //console.log(listData);
-            let valuationsArr: any = [];
-            // get performance levels
-            await props
-              .getListAllPerformanceLevel(props?.loginReducer?.schoolId)
-              .then((levels: any) => {
-                setPerformanceLevels(levels);
-                // set valuations list and get the performance level for each one
-                valuationsArr = listData.map((l: any) => {
-                  const perf = levels?.find((c: any) => {
-                    return (
-                      l?.node.assessment &&
-                      l?.node?.assessment <= c.node.topScore &&
-                      l?.node?.assessment >= c.node.minimumScore
-                    );
-                  });
-                  l.node.performance = perf?.node?.name;
-                  return l.node;
-                });
-              });
-            setValuations(valuationsArr);
+            let progress = 0;
+            let average = 0;
+            listData.forEach((element: any) => {
+              if (element?.node?.assessment) {
+                progress++;
+                average += element?.node?.assessment;
+              }
+            });
+            setProgress(progress);
+            setAverage(average / listData.length);
+            setValuations([...listData.sort(compare)]);
+            console.log(listData)
+            setValuationsBase(JSON.parse(JSON.stringify(listData)));
           });
         });
     });
@@ -133,28 +131,58 @@ const ExperienceLearningCoEvaluationList = (props: any) => {
         <h1 className="font-bold">Coevaluación</h1>
       </div>
       <hr />
-      <div className="d-flex justify-content-between align-items-center">
+      <div className="d-flex justify-content-between align-items-center mb-2">
         <HeaderInfoAcademic asignature grade course modality experienceLearnig goTitle="Regresar a experiencias de aprendizaje" academicAsignatureCourseId={academicAsignatureCourseId} />
-        <div className="mt-4 w-60">
-          <table className="table table-striped table-bordered">
+        <div className="w-30">
+          <table className="table table-striped mb-0">
             <tbody>
               <tr>
-                <td className='w-20' rowSpan={experienceLearnig?.experienceLearningPerformanceLevel?.length + 1}>
-                  <strong>Criterio:</strong> {experienceLearnig?.criteria}
+                <td>
+                  <strong>Nivel de desempeño</strong>
+                </td>
+                <td>
+                  <strong>Minimo</strong>
+                </td>
+                <td>
+                  <strong>Maximo</strong>
                 </td>
               </tr>
-              {
-                experienceLearnig?.experienceLearningPerformanceLevel.map((e: any) => {
-                  return <>
-                    <tr>
-                      <td><strong>Nivel de desempeño:</strong> {`${e?.performanceLevel?.name}: ${e?.performanceLevel?.minimumScore} - ${e?.performanceLevel?.topScore}`}</td>
-                      <td><strong>Criterio:</strong> {e?.criteria}</td>
-                    </tr>
-                  </>
-                })
-              }
+              {performanceLevels?.map((e: any) => {
+                return (
+                  <tr>
+                    <td> {`${e?.node?.name}`}</td>
+                    <td> {`${e?.node?.minimumScore}`} </td>
+                    <td> {`${e?.node?.topScore}`} </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
+        </div>
+      </div>
+      <div className="d-flex justify-content-between align-items-center" >
+        <div className="d-flex justify-content-center align-items-center mb-3 w-40">
+          <div className="text-center mr-1">
+            Valoración Promedio:
+          </div>
+          <CountUp
+            start={0}
+            preserveValue={true}
+            end={valuations?.length > 0 ? average : 0}
+            decimals={1}
+            decimal={","}
+          />
+
+        </div>
+        <div className="d-flex justify-content-start align-items-center mb-3 w-30">
+          <div className="text-center mr-1">
+            Progreso de Valoración:
+          </div>
+          <Progress
+            bar
+            color="primary"
+            value={valuations?.length > 0 ? ((progress / valuations?.length) * 100) : 0}
+          > ({progress}/{valuations?.length}) {valuations?.length > 0 ? ((progress / valuations?.length) * 100).toFixed(2) : 0}%</Progress>
         </div>
       </div>
 
@@ -187,6 +215,7 @@ const ExperienceLearningCoEvaluationList = (props: any) => {
                 </thead>
                 <tbody>
                   {students.map((item: any, index: any) => {
+                    console.log(item);
                     return (
                       <>
                         <tr key={index}>
@@ -225,8 +254,8 @@ const ExperienceLearningCoEvaluationList = (props: any) => {
                                   <span id="tooltip_observation">
                                     {valuations.find(
                                       (c: any) =>
-                                        c?.studentId === item?.id && c?.coEvaluatorId === item2?.id,
-                                    )?.assessment || '--'}</span>
+                                        c?.node?.studentId === item?.id && c?.node?.coEvaluatorId === item2?.id,
+                                    )?.node?.assessment || '--'}</span>
                                   {/* {
                                       !valuations.find(
                                         (c: any) =>
@@ -246,7 +275,7 @@ const ExperienceLearningCoEvaluationList = (props: any) => {
                             <Badge color="primary" className="font-0-8rem">
                               {valuationsAssessment.find(
                                 (c: any) => c?.node?.studentId === item?.id,
-                              )?.node?.performance || '--'}
+                              )?.node?.performanceLevel?.name || '--'}
                             </Badge>
                           </td>
                         </tr>
