@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
-import { Badge, Input } from 'reactstrap';
-import { compare } from '../../../helpers/DataTransformations';
+import { Badge, Input, Progress } from 'reactstrap';
+import { calculateDaysTwoDate, compare } from '../../../helpers/DataTransformations';
 import { createNotification } from '../../../helpers/Notification';
 import { getInitialsName } from '../../../helpers/Utils';
 import * as academicPeriodActions from '../../../stores/actions/AcademicPeriodActions';
@@ -21,6 +21,7 @@ import { Loader } from '../../common/Loader';
 import TooltipItem from '../../common/TooltipItem';
 import ThumbnailImage from '../Aplications/AplicationsComponents/ThumbnailImage';
 import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
+import moment from 'moment';
 
 const SpreadsheetList = (props: any) => {
   const [students, setStudents] = useState(null);
@@ -42,6 +43,7 @@ const SpreadsheetList = (props: any) => {
   let [notes, setNotes] = useState([]);
   let [averages, setAverages] = useState([]);
   let [averagesFinal, setAveragesFinal] = useState([]);
+  const [dateProgress, setDateProgress] = useState({ startDate: null, endDate: null, totalDays: 0, countDays: 0 })
 
   let navigate = useNavigate();
   const location = useLocation();
@@ -73,6 +75,17 @@ const SpreadsheetList = (props: any) => {
     }
     props.dataCurrentAcademicPeriod(props?.loginReducer?.schoolId).then(async (period: any) => {
       await setCurrentAcademicPeriod(period);
+      if (period) {
+        const today = new Date();
+        const startDate = new Date(period.startDate);
+        const endDate = new Date(period?.endDate);
+        const totalDays = calculateDaysTwoDate(startDate, endDate);
+        let countDays = totalDays;
+        if (today < endDate) {
+          countDays = calculateDaysTwoDate(new Date(), endDate);
+        }
+        setDateProgress({ startDate, endDate, totalDays, countDays })
+      }
       getSpreadsheet(period?.id);
     });
   }, []);
@@ -268,7 +281,7 @@ const SpreadsheetList = (props: any) => {
       <div className="d-flex justify-content-between align-items-center">
         <HeaderInfoAcademic asignature grade course modality goTitle="Regresar a asignación académica" academicAsignatureCourseId={academicAsignatureCourseId} />
         <div>
-          <div>
+          <div className="d-flex justify-content-start align-items-center" >
             {academicPeriods
               ? academicPeriods.map((item: any) => {
                 return (
@@ -276,6 +289,15 @@ const SpreadsheetList = (props: any) => {
                     <button
                       onClick={() => {
                         setCurrentAcademicPeriod(item?.node?.id);
+                        const today = new Date();
+                        const startDate = new Date(item?.node?.startDate);
+                        const endDate = new Date(item?.node?.endDate);
+                        const totalDays = calculateDaysTwoDate(startDate, endDate);
+                        let countDays = totalDays;
+                        if (today < endDate) {
+                          countDays = calculateDaysTwoDate(new Date(), endDate);
+                        }
+                        setDateProgress({ startDate, endDate, totalDays, countDays })
                         return getSpreadsheet(item?.node?.id);
                       }}
                       key={item?.node?.id}
@@ -292,6 +314,30 @@ const SpreadsheetList = (props: any) => {
               })
               : ''}
           </div>
+          {dateProgress.startDate != null ?
+            <>
+              <div className="d-flex justify-content-start align-items-center mt-2 w-100">
+                <div className="text-center">
+                  Progreso: {' '}
+                </div>
+                <Progress
+                  className="ml-2"
+                  bar
+                  color="primary"
+                  value={dateProgress.countDays > 0 ? ((dateProgress.countDays / dateProgress.totalDays) * 100) : 0}
+                > ({dateProgress.countDays}/{dateProgress.totalDays}) {dateProgress.countDays > 0 ? ((dateProgress.countDays / dateProgress.totalDays) * 100).toFixed(0) : 0}%</Progress>
+              </div>
+              <div className="d-flex justify-content-start align-items-center mt-2 w-100">
+                <div className="text-center w-50">
+                  Fecha Inicio: {' ' + moment(dateProgress.startDate).format("YYYY-MM-DD")}
+                </div>
+                <div className="text-center w-50">
+                  Fecha Fin: {' ' + moment(dateProgress.endDate).format("YYYY-MM-DD")}
+                </div>
+              </div>
+            </>
+            : ""}
+
           {/* <div className='d-flex mt-3 justify-content-end'>
             <button
               className="btn btn-green mr-2"

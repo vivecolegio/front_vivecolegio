@@ -1,8 +1,11 @@
+import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
+import { Progress } from 'reactstrap';
 import { COLUMN_LIST } from '../../../constants/ExperienceLearning/experienceLearningConstants';
+import { calculateDaysTwoDate } from '../../../helpers/DataTransformations';
 import { createNotification } from '../../../helpers/Notification';
 import * as experienceLearningActions from '../../../stores/actions/ExperienceLearningActions';
 import { Colxx } from '../../common/CustomBootstrap';
@@ -18,13 +21,7 @@ const ExperienceLearningList = (props: any) => {
   const [academicPeriods, setAcademicPeriods] = useState(null);
   const [academicPeriod, setAcademicPeriod] = useState(null);
   const [role, setRole] = useState(null);
-  const [experienceTypes, setExperienceTypes] = useState([
-    { label: 'Coevaluación', key: 'COEVALUATION' },
-    { label: 'Autoevaluación', key: 'SELFAPPRAISAL' },
-    { label: 'Valoración tradicional', key: 'TRADITIONALVALUATION' },
-    { label: 'Rúbrica de valoración', key: 'VALUATIONRUBRIC' },
-    { label: 'Prueba en Línea', key: 'ONLINETEST' },
-  ]);
+  const [dateProgress, setDateProgress] = useState({ startDate: null, endDate: null, totalDays: 0, countDays: 0 })
 
   let navigate = useNavigate();
 
@@ -34,11 +31,13 @@ const ExperienceLearningList = (props: any) => {
   const [data, setData] = useState(null);
   useEffect(() => {
     setRole(props?.loginReducer?.role?.name);
-    props
-      .getListAllExperienceLearning(props?.loginReducer?.campusId, academicAsignatureCourseId)
-      .then((listData: any) => {
-        setDataTable(listData);
-      });
+    // props
+    //   .getListAllExperienceLearning(props?.loginReducer?.campusId, academicAsignatureCourseId)
+    //   .then((listData: any) => {
+    //     setDataTable(listData.map((c: any) => {
+    //       c.node.academicPeriod_format = c?.node?.academicPeriod ? c?.node?.academicPeriod?.name : '';
+    //       return c;
+    //     }));
     props
       .getAcademicPeriodsExperienceLearning(
         props?.loginReducer?.schoolId,
@@ -46,7 +45,21 @@ const ExperienceLearningList = (props: any) => {
       )
       .then((listData: any) => {
         setAcademicPeriods(listData);
+        const date = new Date();
+        let filter = false;
+        listData.forEach((academicPeriod: any) => {
+          const endDate = new Date(academicPeriod.node.endDate)
+          const startDate = new Date(academicPeriod.node.startDate)
+          if (date <= endDate && date >= startDate) {
+            filterByPeriod(academicPeriod);
+            filter = true;
+          }
+        });
+        if (!filter) {
+          filterByPeriod(null)
+        }
       });
+    // })
   }, []);
 
   const getDataTable = async (idAcademicPeriod: any = null) => {
@@ -57,8 +70,10 @@ const ExperienceLearningList = (props: any) => {
         idAcademicPeriod ? idAcademicPeriod : undefined,
       )
       .then((listData: any) => {
-        //console.log(listData)
-        setDataTable(listData);
+        setDataTable(listData.map((c: any) => {
+          c.node.academicPeriod_format = c?.node?.academicPeriod ? c?.node?.academicPeriod?.name : '';
+          return c;
+        }))
       });
   };
 
@@ -133,6 +148,19 @@ const ExperienceLearningList = (props: any) => {
 
   const filterByPeriod = async (item: any) => {
     setAcademicPeriod(item?.node?.id === academicPeriod?.node?.id ? null : item);
+    if (item && item?.node?.id !== academicPeriod?.node?.id) {
+      const today = new Date();
+      const startDate = new Date(item?.node?.startDate);
+      const endDate = new Date(item?.node?.endDate);
+      const totalDays = calculateDaysTwoDate(startDate, endDate);
+      let countDays = totalDays;
+      if (today < endDate) {
+        countDays = calculateDaysTwoDate(new Date(), endDate);
+      }
+      setDateProgress({ startDate, endDate, totalDays, countDays })
+    } else {
+      setDateProgress({ startDate: null, endDate: null, totalDays: 0, countDays: 0 })
+    }
     setDataTable(null);
     await getDataTable(item?.node?.id);
   };
@@ -247,36 +275,62 @@ const ExperienceLearningList = (props: any) => {
             filterChildren={'experienceType'}
             header={
               <>
-                <div className="d-flex justify-content-between mt-4 align-items-center">
+                <div className="d-flex justify-content-between mt-0 align-items-center">
                   <HeaderInfoAcademic
                     asignature
                     grade
                     goTitle="Regresar a asignación académica"
                     academicAsignatureCourseId={academicAsignatureCourseId}
                   />
-                  <div>
-                    {academicPeriods
-                      ? academicPeriods?.map((item: any) => {
-                        return (
-                          <>
-                            <button
-                              onClick={() => {
-                                return filterByPeriod(item);
-                              }}
-                              key={item?.node?.id}
-                              className={`btn ${academicPeriod?.node?.id === item?.node?.id
+                  <div >
+                    <div className="d-flex justify-content-start align-items-center" >
+                      {academicPeriods
+                        ? academicPeriods?.map((item: any) => {
+                          return (
+                            <>
+                              <button
+                                onClick={() => {
+                                  return filterByPeriod(item);
+                                }}
+                                key={item?.node?.id}
+                                className={`ml-1 btn ${academicPeriod?.node?.id === item?.node?.id
                                   ? 'btn-info'
                                   : 'btn-outline-info'
-                                }`}
-                              type="button"
-                            >
-                              <i className="iconsminds-pen-2"></i> {item?.node?.name}
-                            </button>{' '}
-                          </>
-                        );
-                      })
-                      : ''}
+                                  }`}
+                                type="button"
+                              >
+                                <i className="iconsminds-pen-2"></i> {item?.node?.name}
+                              </button>{' '}
+                            </>
+                          );
+                        })
+                        : ''}
+                    </div>
+                    {dateProgress.startDate != null ?
+                      <>
+                        <div className="d-flex justify-content-start align-items-center mt-2 w-100">
+                          <div className="text-center">
+                            Progreso: {' '}
+                          </div>
+                          <Progress
+                            className="ml-2"
+                            bar
+                            color="primary"
+                            value={dateProgress.countDays > 0 ? ((dateProgress.countDays / dateProgress.totalDays) * 100) : 0}
+                          > ({dateProgress.countDays}/{dateProgress.totalDays}) {dateProgress.countDays > 0 ? ((dateProgress.countDays / dateProgress.totalDays) * 100).toFixed(0) : 0}%</Progress>
+                        </div>
+                        <div className="d-flex justify-content-start align-items-center mt-2 w-100">
+                          <div className="text-center w-50">
+                            Fecha Inicio: {' ' + moment(dateProgress.startDate).format("YYYY-MM-DD")}
+                          </div>
+                          <div className="text-center w-50">
+                            Fecha Fin: {' ' + moment(dateProgress.endDate).format("YYYY-MM-DD")}
+                          </div>
+                        </div>
+                      </>
+                      : ""}
                   </div>
+
                 </div>
               </>
             }
