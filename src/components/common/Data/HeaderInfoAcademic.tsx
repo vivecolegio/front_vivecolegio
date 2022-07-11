@@ -58,7 +58,7 @@ const HeaderInfoAcademic = (props: any) => {
 
   return (
     <>
-      <div className="mt-4">
+      <div className="mt-0">
         <div className="d-flex flex-row">
           {generic ?
             <span className="mb-0 text-muted mr-4 border-b-info">

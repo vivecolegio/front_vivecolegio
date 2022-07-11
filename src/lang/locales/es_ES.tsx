@@ -269,6 +269,7 @@ const esMessages = {
   'forms.criteria': 'Criterio',
   'forms.dateDelivery': 'Fecha de entrega',
   'forms.category': 'Categoria',
+  'forms.academicPeriod': 'Periodo Academico',
   'display.QUALITATIVE': 'Cualitativo',
   'display.QUANTITATIVE': 'Cuantitativo',
   'display.CAMPUS': 'Sede',

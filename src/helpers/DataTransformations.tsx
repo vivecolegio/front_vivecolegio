@@ -10,12 +10,22 @@ export function removeEmptyStringElements(obj: any) {
 }
 
 export function compare(a: any, b: any) {
-  if (a.code < b.code) {
-    return -1;
+  if (a.node) {
+    if (a.node.student.code < b.node.student.code) {
+      return -1;
+    }
+    if (a.node.student.code > b.node.student.code) {
+      return 1;
+    }
+  } else {
+    if (a.code < b.code) {
+      return -1;
+    }
+    if (a.code > b.code) {
+      return 1;
+    }
   }
-  if (a.code > b.code) {
-    return 1;
-  }
+
   return 0;
 }
 
@@ -27,4 +37,10 @@ export function comparePerformanceLevelsTopScore(a: any, b: any) {
     return 1;
   }
   return 0;
+}
+
+export function calculateDaysTwoDate(date1: Date, date2: Date) {
+  const dif = date2.getTime() - date1.getTime();
+  const days = Math.floor(dif / (1000 * 60 * 60 * 24));
+  return days;
 }

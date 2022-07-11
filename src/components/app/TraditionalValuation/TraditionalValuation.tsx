@@ -93,14 +93,34 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
       });
   };
 
+  const getPerformanceLevelAverage = (average: any) => {
+    let perf = null;
+    if (average) {
+      if (average > 0) {
+        perf = performanceLevels?.find((c: any) => {
+          return average < c.node.topScore && average >= c.node.minimumScore;
+        });
+        if (perf === undefined) {
+          perf = performanceLevels?.find((c: any) => {
+            return average <= c.node.topScore && average > c.node.minimumScore;
+          });
+        }
+      }
+      return perf
+    }
+  }
+
   const getPerformanceLevel = async (e: any, valuation: any) => {
-    let perf = performanceLevels?.find((c: any) => {
-      return e.target.value < c.node.topScore && e.target.value >= c.node.minimumScore;
-    });
-    if (perf === undefined) {
+    let perf = null;
+    if (e.target.value.length > 0) {
       perf = performanceLevels?.find((c: any) => {
-        return e.target.value <= c.node.topScore && e.target.value > c.node.minimumScore;
+        return e.target.value < c.node.topScore && e.target.value >= c.node.minimumScore;
       });
+      if (perf === undefined) {
+        perf = performanceLevels?.find((c: any) => {
+          return e.target.value <= c.node.topScore && e.target.value > c.node.minimumScore;
+        });
+      }
     }
     const elementIndex = valuations.findIndex((obj) => {
       return obj.node.id === valuation.node.id;
@@ -122,7 +142,7 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
     if (valuationsBase[elementIndex].node.assessment !== item?.node?.assessment) {
       let obj = {
         assessment: item?.node?.assessment,
-        performanceLevelId: item?.node?.performanceLevel?.id
+        performanceLevelId: item?.node?.performanceLevel ? item?.node?.performanceLevel?.id : null
       };
       await props.updateExperienceLearningTraditionalValuation(obj, item.node.id).then(
         () => {
@@ -257,8 +277,11 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
             end={valuations?.length > 0 ? average : 0}
             decimals={1}
             decimal={","}
+            className="font-weight-bold"
           />
-
+          <Badge color="primary" className="font-0-8rem ml-2">
+            {getPerformanceLevelAverage(average) ? getPerformanceLevelAverage(average)?.node.name : ""}
+          </Badge>
         </div>
         <div className="d-flex justify-content-start align-items-center mb-3 w-30">
           <div className="text-center mr-1">
@@ -271,7 +294,6 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
           > ({progress}/{valuations?.length}) {valuations?.length > 0 ? ((progress / valuations?.length) * 100).toFixed(2) : 0}%</Progress>
         </div>
       </div>
-
       {loading ? (
         <>
           <Colxx sm={12} className="d-flex justify-content-center">
