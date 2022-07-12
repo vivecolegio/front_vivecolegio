@@ -25,7 +25,6 @@ export function compare(a: any, b: any) {
       return 1;
     }
   }
-
   return 0;
 }
 
@@ -34,6 +33,17 @@ export function comparePerformanceLevelsTopScore(a: any, b: any) {
     return -1;
   }
   if (a?.node?.topScore > b?.node?.topScore) {
+    return 1;
+  }
+  return 0;
+}
+
+
+export function comparePerformanceLevelsTopScoreCriteriaRubric(a: any, b: any) {
+  if (a?.performanceLevel?.topScore > b?.performanceLevel?.topScore) {
+    return -1;
+  }
+  if (a?.performanceLevel?.topScore < b?.performanceLevel?.topScore) {
     return 1;
   }
   return 0;

@@ -157,6 +157,24 @@ const GradeAssignmentCreateEdit = (props: any) => {
             <ModalBody>
               <div className="form-group">
                 <Label>
+                  <IntlMessages id="menu.asignature" />
+                </Label>
+                <Select
+                  isClearable
+                  placeholder={<IntlMessages id="forms.select" />}
+                  {...register('academicAsignatureId', { required: true })}
+                  className="react-select"
+                  classNamePrefix="react-select"
+                  options={asignaturesList}
+                  value={asignature}
+                  onChange={(selectedOption) => {
+                    setValue('academicAsignatureId', selectedOption?.key);
+                    setAsignature(selectedOption);
+                  }}
+                />
+              </div>
+              <div className="form-group">
+                <Label>
                   <IntlMessages id="forms.hourlyIntensity" /> -
                   <IntlMessages id="forms.minimum" />
                 </Label>
@@ -175,24 +193,6 @@ const GradeAssignmentCreateEdit = (props: any) => {
                   {...maxHourlyIntensityRest}
                   innerRef={maxHourlyIntensityRef}
                   className="form-control"
-                />
-              </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="menu.asignature" />
-                </Label>
-                <Select
-                  isClearable
-                  placeholder={<IntlMessages id="forms.select" />}
-                  {...register('academicAsignatureId', { required: true })}
-                  className="react-select"
-                  classNamePrefix="react-select"
-                  options={asignaturesList}
-                  value={asignature}
-                  onChange={(selectedOption) => {
-                    setValue('academicAsignatureId', selectedOption?.key);
-                    setAsignature(selectedOption);
-                  }}
                 />
               </div>
               {!props?.loginReducer?.schoolId ? (

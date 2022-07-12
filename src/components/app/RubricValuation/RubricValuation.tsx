@@ -161,7 +161,7 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
                             </div>
                           </td>
                           <td className="text-center vertical-middle">
-                            <span>{item?.assessment}</span>
+                            <span>{item?.assessment?.toFixed(2)}</span>
                           </td>
                           <td className="text-center vertical-middle">
                             <span>{item?.observations}</span>

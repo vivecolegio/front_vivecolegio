@@ -99,75 +99,38 @@ const SpreadsheetList = (props: any) => {
       let avrgs: any = [];
       let avrgsFinal: any = [];
       let levels: any = [];
-
       await props
-        .getListAllPerformanceLevel(props?.loginReducer?.schoolId)
+        .getListAllPerformanceLevelAsignatureCourse(academicAsignatureCourseId)
         .then((dataLevels: any) => {
           setPerformanceLevels(dataLevels);
           levels = dataLevels;
         });
       await props.getAcademicPeriodsExperienceLearning(props?.loginReducer?.schoolId,
-        props?.loginReducer?.schoolYear).then((listData: any) => {
+        props?.loginReducer?.schoolYear).then(async (listData: any) => {
           setAcademicPeriods(listData);
           if (periodId) {
-            props
-              .generateAcademicAsignatureCoursePeriodValuationStudents(
-                props?.loginReducer?.schoolId,
-                periodId,
-                academicAsignatureCourseId,
-              )
-              .then((resp: any) => {
-                // get averages final
-                props
-                  .getAllAcademicAsignatureCoursePeriodValuation(periodId, academicAsignatureCourseId)
-                  .then(async (notesFinal: any) => {
-                    avrgsFinal = avrgsFinal.concat(notesFinal.data.edges.map((l: any) => {
-                      const perf = levels?.find((p: any) => {
-                        return (
-                          l?.node.assessment &&
-                          l?.node?.assessment <= p.node.topScore &&
-                          l?.node?.assessment >= p.node.minimumScore
-                        );
-                      });
-                      l.node.performance = perf?.node?.name;
-                      return l;
-                    }));
-                    setAveragesFinal(avrgsFinal);
-                  });
+            await props
+              .getAllAcademicAsignatureCoursePeriodValuation(periodId, academicAsignatureCourseId)
+              .then(async (notesFinal: any) => {
+                avrgsFinal = avrgsFinal.concat(notesFinal.data.edges);
+                setAveragesFinal(avrgsFinal);
               });
-            props
+            await props
               .getListAllComponentEvaluativeAcademicAsignatureCourse(academicAsignatureCourseId)
               .then(async (dataComponents: any) => {
-                dataComponents.map(async (c: any) => {
+                for (let c of dataComponents) {
                   // get averages for each evaluative component
-                  props
-                    .generateExperienceLearningAverageValuationStudents(
-                      c?.node?.id,
-                      periodId,
-                      academicAsignatureCourseId,
-                    )
-                    .then((resp: any) => { });
-                  props
+                  await props
                     .getAllExperienceLearningAverageValuation(
                       c?.node?.id,
                       periodId,
                       academicAsignatureCourseId,
                     )
                     .then((resp: any) => {
-                      avrgs = avrgs.concat(resp.data.edges.map((l: any) => {
-                        const perf = levels?.find((p: any) => {
-                          return (
-                            l?.node.assessment &&
-                            l?.node?.assessment <= p.node.topScore &&
-                            l?.node?.assessment >= p.node.minimumScore
-                          );
-                        });
-                        l.node.performance = perf?.node?.name;
-                        return l;
-                      }));
+                      avrgs = avrgs.concat(resp.data.edges);
                       setAverages(avrgs);
                     });
-                  props
+                  await props
                     .getAllExperienceLearningAcademicAsignatureCourse(
                       academicAsignatureCourseId,
                       periodId,
@@ -179,26 +142,21 @@ const SpreadsheetList = (props: any) => {
                           nts = nts.concat(resp.data);
                         });
                       });
-                      console.log(response, 'RESPONSE')
-
                       obj.push({
                         experiences: response.data,
                         name: `${c?.node?.name} (${c?.node?.weight}%)`,
                         evaluativeComponentId: c?.node?.id,
                       });
-
                     });
-                });
+                };
               });
+            setValuations(obj);
+            setNotes(nts);
+            setLoading(false);
           } else {
             setLoading(false);
           }
         });
-      setTimeout(() => {
-        setValuations(obj);
-        setNotes(nts);
-        setLoading(false);
-      }, 3000);
     });
   };
 
@@ -301,7 +259,7 @@ const SpreadsheetList = (props: any) => {
                         return getSpreadsheet(item?.node?.id);
                       }}
                       key={item?.node?.id}
-                      className={`btn ${currentAcademicPeriod === item?.node?.id
+                      className={`ml-1 btn ${currentAcademicPeriod === item?.node?.id
                         ? 'btn-info'
                         : 'btn-outline-info'
                         }`}
@@ -364,7 +322,7 @@ const SpreadsheetList = (props: any) => {
       ) : valuations.length > 0 ? (
         <>
           {students !== null ? (
-            <>
+            <div style={{ overflow: "scroll" }}>
               <table className="table table-bordered">
                 <thead>
                   <tr>
@@ -495,6 +453,7 @@ const SpreadsheetList = (props: any) => {
                                                   defaultValue={note?.assessment}
                                                   disabled={isFormEnabled}
                                                   className="form-control"
+                                                  style={{ width: "4.5vh" }}
                                                 />
                                               </>
                                             }
@@ -502,7 +461,6 @@ const SpreadsheetList = (props: any) => {
                                         </>
                                       );
                                     })} </> : <th></th>}
-
                                 {item2?.experiences?.length > 1 ? (
                                   <th className="text-center vertical-middle">
                                     <Input
@@ -516,6 +474,7 @@ const SpreadsheetList = (props: any) => {
                                         )?.node?.average?.toFixed(2)
                                       }
                                       className="form-control"
+                                      style={{ width: "4.5vh" }}
                                     />
                                   </th>
                                 ) : (
@@ -532,7 +491,7 @@ const SpreadsheetList = (props: any) => {
                             <Badge color="primary" className="font-0-8rem">
                               {averagesFinal.find(
                                 (c: any) => c?.node?.studentId === item?.id,
-                              )?.node?.performance || '--'}
+                              )?.node?.performanceLevel?.name || '--'}
                             </Badge>
                           </td>
                         </tr>
@@ -541,7 +500,7 @@ const SpreadsheetList = (props: any) => {
                   })}
                 </tbody>
               </table>
-            </>
+            </div>
           ) : (
             <></>
           )}

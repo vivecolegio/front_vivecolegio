@@ -165,14 +165,33 @@ const ExperienceLearningRubricCriteriaValuationList = (props: any) => {
     }
   };
 
-  const getPerformanceLevel = async (e: any, valuation: any) => {
-    let perf = performanceLevels?.find((c: any) => {
-      return e.target.value < c.node.topScore && e.target.value >= c.node.minimumScore;
-    });
-    if (perf === undefined) {
+  const getPerformanceLevelSelection = (valuation: number, performanceLevel: any) => {
+    let perf = null;
+    if (valuation > 0) {
       perf = performanceLevels?.find((c: any) => {
-        return e.target.value <= c.node.topScore && e.target.value > c.node.minimumScore;
+        return valuation < c.node.topScore && valuation >= c.node.minimumScore;
       });
+      if (perf === undefined) {
+        perf = performanceLevels?.find((c: any) => {
+          return valuation <= c.node.topScore && valuation > c.node.minimumScore;
+        });
+      }
+    }
+    console.log(valuation, perf, performanceLevel);
+    return perf?.node?.name === performanceLevel?.name
+  }
+
+  const getPerformanceLevel = async (e: any, valuation: any) => {
+    let perf = null;
+    if (e.target.value.length > 0) {
+      perf = performanceLevels?.find((c: any) => {
+        return e.target.value < c.node.topScore && e.target.value >= c.node.minimumScore;
+      });
+      if (perf === undefined) {
+        perf = performanceLevels?.find((c: any) => {
+          return e.target.value <= c.node.topScore && e.target.value > c.node.minimumScore;
+        });
+      }
     }
     const elementIndex = valuations.findIndex((obj) => {
       return obj.id === valuation.id;
@@ -368,7 +387,7 @@ const ExperienceLearningRubricCriteriaValuationList = (props: any) => {
                           {
                             item?.experienceLearningRubricCriteria?.experienceLearningRubricCriteriaPerformanceLevel?.map((v: any) => {
                               return <>
-                                <td className={(item?.assessment <= v?.performanceLevel?.topScore && item?.assessment >= v?.performanceLevel?.minimumScore) ? 'bg-warning-light' : ''}>{v?.criteria}</td>
+                                <td className={(getPerformanceLevelSelection(item?.assessment, v?.performanceLevel)) ? 'bg-warning-light' : ''}>{v?.criteria}</td>
                               </>
                             })
                           }

@@ -48,6 +48,10 @@ export const QUERY_GET_EXPERIENCE_LEARNING_RUBRIC_CRITERIA = gql`
       experienceLearningRubricCriteriaPerformanceLevel {
         criteria
         performanceLevelId
+        performanceLevel{
+          topScore
+          minimumScore
+        }
       }
       experienceLearningId
       experienceLearning {

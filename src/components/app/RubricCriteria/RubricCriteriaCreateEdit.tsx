@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 import Select from 'react-select';
 import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
+import { comparePerformanceLevelsTopScoreCriteriaRubric } from '../../../helpers/DataTransformations';
 import IntlMessages from '../../../helpers/IntlMessages';
 import * as experienceLearningRubricCriteriaActions from '../../../stores/actions/ExperienceLearningRubricCriteriaActions';
 import { Colxx } from '../../common/CustomBootstrap';
@@ -36,7 +37,9 @@ const ExperienceLearningRubricCriteriaCreateEdit = (props: any) => {
     getDropdowns(learningId);
     if (props?.data?.id) {
       if (props?.data?.experienceLearningRubricCriteriaPerformanceLevel !== undefined && props?.data?.experienceLearningRubricCriteriaPerformanceLevel != null) {
-        setCriteriaPerformances(props?.data?.experienceLearningRubricCriteriaPerformanceLevel.map((c: any) => {
+        let data = [...props?.data?.experienceLearningRubricCriteriaPerformanceLevel.sort(comparePerformanceLevelsTopScoreCriteriaRubric)]
+        console.log(data);
+        setCriteriaPerformances(data.map((c: any) => {
           return {
             performanceLevelId: c.performanceLevelId,
             criteria: c.criteria,
@@ -62,6 +65,10 @@ const ExperienceLearningRubricCriteriaCreateEdit = (props: any) => {
         required: true,
         value: learningId,
       });
+    } else {
+      setCriteriaPerformances([])
+      setEvidenceLearning(null)
+      setEvidencesLearning(null)
     }
   };
 
@@ -86,13 +93,22 @@ const ExperienceLearningRubricCriteriaCreateEdit = (props: any) => {
             };
           }),
         );
-      });
+        let criteriasPerfomances: any = [];
+        data?.dataPerformanceLevels?.edges.map((c: any) => {
+          criteriasPerfomances.push({
+            criteria: "",
+            performanceLevelId: c?.node.id,
+          });
+        });
+        //setCriteriaPerformances(criteriasPerfomances);
+        setValue('experienceLearningRubricCriteriaPerformanceLevel',
+          criteriasPerfomances,
+        );
+      })
   };
 
   const setCriteriaPerformance = async (e: any, id: any) => {
-    //console.log(id)
     let ind = criteriaPerformances.findIndex((c: any) => (c.performanceLevelId === id));
-    //console.log(ind)
     if (ind !== -1) {
       criteriaPerformances.splice(ind, 1);
     }
@@ -100,11 +116,26 @@ const ExperienceLearningRubricCriteriaCreateEdit = (props: any) => {
       criteria: e?.target?.value,
       performanceLevelId: id,
     });
+    if (criteriaPerformances.length !== performanceLevels.length) {
+      for (let performanceLevel of performanceLevels) {
+        let add = true;
+        for (let criteriaPerformance of criteriaPerformances) {
+          if (performanceLevel?.key === criteriaPerformance?.performanceLevelId) {
+            add = false;
+          }
+        }
+        if (add) {
+          criteriaPerformances.push({
+            criteria: "",
+            performanceLevelId: performanceLevel?.key,
+          });
+        }
+      }
+    }
     setCriteriaPerformances(criteriaPerformances);
-    register('experienceLearningRubricCriteriaPerformanceLevel', {
-      required: true,
-      value: criteriaPerformances,
-    });
+    setValue('experienceLearningRubricCriteriaPerformanceLevel',
+      criteriaPerformances,
+    );
   };
 
   const { ref: weightRef, ...weightRest } = register('weight', {
@@ -147,6 +178,8 @@ const ExperienceLearningRubricCriteriaCreateEdit = (props: any) => {
         </>
       ) : (
         <>
+          <DevTool control={control} /> {/* set up the dev tool */}
+
           <AddNewModal
             modalOpen={props.modalOpen}
             toggleModal={() => {
