@@ -18,7 +18,7 @@ const StandardCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
   const [asignaturesList, setAsignaturesList] = useState(null);
   const [gradesList, setGradesList] = useState(null);
-  const [standardList, setStandardsList] = useState(null);
+  const [standardList, setStandardsList] = useState([]);
   const [schoolList, setSchoolList] = useState(null);
   const [cycle, setCycle] = useState(null);
   const [asignature, setAsignature] = useState(null);
@@ -136,14 +136,16 @@ const StandardCreateEdit = (props: any) => {
   };
 
   const getStandards = async (generalAcademicCycleId: any, generalAcademicAsignatureId: any) => {
-    props.getListAllGeneralStandard(generalAcademicCycleId, generalAcademicAsignatureId).then((data: any) => {
-      //console.log(data);
-      setStandardsList(
-        data.map((c: any) => {
-          return { label: c.node.standard, value: c.node.id, key: c.node.id };
-        }),
-      );
-    });
+    if (generalAcademicCycleId && generalAcademicAsignatureId) {
+      props.getListAllGeneralStandard(generalAcademicCycleId, generalAcademicAsignatureId).then((data: any) => {
+        //console.log(data);
+        setStandardsList(
+          data.map((c: any) => {
+            return { label: c.node.standard, value: c.node.id, key: c.node.id };
+          }),
+        );
+      });
+    }
   };
 
   const { ref: standardRef, ...standardRest } = register('standard', {
@@ -211,6 +213,7 @@ const StandardCreateEdit = (props: any) => {
                   classNamePrefix="react-select"
                   options={standardList}
                   value={standard}
+                  isDisabled={standardList?.length == 0}
                   onChange={(selectedOption) => {
                     setValue('generalAcademicStandardId', selectedOption?.key);
                     setStandard(selectedOption);
