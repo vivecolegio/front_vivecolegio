@@ -4,12 +4,13 @@ import { gql } from '@apollo/client';
 export const QUERY_GET_VALUATIONS_STUDENT = gql`
   query getValuationStudents($id: String!) {
     data: getValuationStudents(id: $id) {
-      
-          id
-          studentId
-          experienceLearningId
-          assessment       
-       
+      id
+      studentId
+      experienceLearningId
+      assessment       
+      performanceLevel {
+        name
+      }   
     }
   }
 `;

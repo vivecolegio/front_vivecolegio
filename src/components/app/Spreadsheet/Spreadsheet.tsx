@@ -26,6 +26,7 @@ import moment from 'moment';
 const SpreadsheetList = (props: any) => {
   const [students, setStudents] = useState(null);
   const [performanceLevels, setPerformanceLevels] = useState(null);
+  const [performanceLevelType, setPerformanceLevelType] = useState(null);
   const [academicPeriods, setAcademicPeriods] = useState(null);
   const [currentAcademicPeriod, setCurrentAcademicPeriod] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -104,6 +105,7 @@ const SpreadsheetList = (props: any) => {
         .then((dataLevels: any) => {
           setPerformanceLevels(dataLevels);
           levels = dataLevels;
+          setPerformanceLevelType(dataLevels[0]?.node?.type);
         });
       await props.getAcademicPeriodsExperienceLearning(props?.loginReducer?.schoolId,
         props?.loginReducer?.schoolYear).then(async (listData: any) => {
@@ -259,7 +261,7 @@ const SpreadsheetList = (props: any) => {
                         return getSpreadsheet(item?.node?.id);
                       }}
                       key={item?.node?.id}
-                      className={`ml-1 btn ${currentAcademicPeriod === item?.node?.id
+                      className={`ml-1 btn ${currentAcademicPeriod?.id === item?.node?.id
                         ? 'btn-info'
                         : 'btn-outline-info'
                         }`}
@@ -441,10 +443,16 @@ const SpreadsheetList = (props: any) => {
                                           n?.experienceLearningId === e?.id &&
                                           item?.id === n?.studentId,
                                       );
+                                      console.log(note)
                                       return (
                                         <>
                                           <th className="text-center vertical-middle">
-                                            {
+                                            {performanceLevelType === "QUALITATIVE" ?
+                                              <>
+                                                <Badge color="primary" className="font-0-8rem">
+                                                  {note?.performanceLevel?.name || '--'}
+                                                </Badge>
+                                              </> :
                                               <>
                                                 <Input
                                                   onKeyPress={(event: any) => {
