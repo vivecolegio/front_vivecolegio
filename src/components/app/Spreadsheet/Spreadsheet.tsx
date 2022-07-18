@@ -93,7 +93,7 @@ const SpreadsheetList = (props: any) => {
 
   const getSpreadsheet = async (periodId: any) => {
     setLoading(true);
-    props.dataCourse(courseId).then(async (course: any) => {
+    await props.dataCourse(courseId).then(async (course: any) => {
       setStudents(course?.data?.students.sort(compare));
       let obj: any = [];
       let nts: any = [];
@@ -110,6 +110,7 @@ const SpreadsheetList = (props: any) => {
       await props.getAcademicPeriodsExperienceLearning(props?.loginReducer?.schoolId,
         props?.loginReducer?.schoolYear).then(async (listData: any) => {
           setAcademicPeriods(listData);
+          let promisesList: any[] = [];
           if (periodId) {
             await props
               .getAllAcademicAsignatureCoursePeriodValuation(periodId, academicAsignatureCourseId)
@@ -138,11 +139,12 @@ const SpreadsheetList = (props: any) => {
                       periodId,
                       c?.node?.id,
                     )
-                    .then((response: any) => {
-                      response.data.map((exp: any) => {
-                        props.getValuationStudents(exp?.id).then((resp: any) => {
-                          nts = nts.concat(resp.data);
-                        });
+                    .then(async (response: any) => {
+                      await response.data.map(async (exp: any) => {
+                        promisesList.push(
+                          props.getValuationStudents(exp?.id).then((resp: any) => {
+                            nts = nts.concat(resp.data);
+                          }));
                       });
                       obj.push({
                         experiences: response.data,
@@ -151,10 +153,13 @@ const SpreadsheetList = (props: any) => {
                       });
                     });
                 };
+                await Promise.all(promisesList).then(() => {
+                  setValuations(obj);
+                  setNotes(nts);
+                  setLoading(false);
+                });
               });
-            setValuations(obj);
-            setNotes(nts);
-            setLoading(false);
+
           } else {
             setLoading(false);
           }
@@ -383,6 +388,7 @@ const SpreadsheetList = (props: any) => {
                                           }}
                                           id={indexe}
                                         />
+                                        {/* {e?.title} */}
                                       </th>
                                     </>
                                   );
@@ -443,14 +449,13 @@ const SpreadsheetList = (props: any) => {
                                           n?.experienceLearningId === e?.id &&
                                           item?.id === n?.studentId,
                                       );
-                                      console.log(note)
                                       return (
                                         <>
                                           <th className="text-center vertical-middle">
                                             {performanceLevelType === "QUALITATIVE" ?
                                               <>
                                                 <Badge color="primary" className="font-0-8rem">
-                                                  {note?.performanceLevel?.name || '--'}
+                                                  {note?.performanceLevel?.name}
                                                 </Badge>
                                               </> :
                                               <>
@@ -461,7 +466,7 @@ const SpreadsheetList = (props: any) => {
                                                   defaultValue={note?.assessment}
                                                   disabled={isFormEnabled}
                                                   className="form-control"
-                                                  style={{ width: "4.5vh" }}
+                                                  style={{ width: "60px" }}
                                                 />
                                               </>
                                             }
@@ -471,19 +476,33 @@ const SpreadsheetList = (props: any) => {
                                     })} </> : <th></th>}
                                 {item2?.experiences?.length > 1 ? (
                                   <th className="text-center vertical-middle">
-                                    <Input
-                                      disabled={true}
-                                      defaultValue={
-                                        averages.find(
-                                          (n: any) =>
-                                            item2?.evaluativeComponentId ===
-                                            n?.node?.evaluativeComponentId &&
-                                            item?.id === n?.node?.studentId,
-                                        )?.node?.average?.toFixed(2)
-                                      }
-                                      className="form-control"
-                                      style={{ width: "4.5vh" }}
-                                    />
+                                    {performanceLevelType === "QUALITATIVE" ?
+                                      <>
+                                        <Badge color="primary" className="font-0-8rem">
+                                          {averages.find(
+                                            (n: any) =>
+                                              item2?.evaluativeComponentId ===
+                                              n?.node?.evaluativeComponentId &&
+                                              item?.id === n?.node?.studentId,
+                                          )?.node?.performanceLevel?.name}
+                                        </Badge>
+                                      </>
+                                      :
+                                      <>
+                                        <Input
+                                          disabled={true}
+                                          defaultValue={
+                                            averages.find(
+                                              (n: any) =>
+                                                item2?.evaluativeComponentId ===
+                                                n?.node?.evaluativeComponentId &&
+                                                item?.id === n?.node?.studentId,
+                                            )?.node?.average?.toFixed(2)
+                                          }
+                                          className="form-control"
+                                          style={{ width: "4.5vh" }}
+                                        />
+                                      </>}
                                   </th>
                                 ) : (
                                   ''

@@ -95,6 +95,8 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
         if (performanceLevelType == "QUALITATIVE") {
           listData.forEach((element: any) => {
             if (element?.node?.performanceLevel) {
+              let performanceLevelIndex = performanceLevelsList.findIndex((i: any) => i.key === element?.node?.performanceLevel?.id) + 1;
+              average += performanceLevelIndex;
               progress++;
             }
           });
@@ -178,6 +180,7 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
 
   const setAll = async () => {
     setLoading(true);
+    let promisesList: any[] = [];
     let perf;
     if (assesstmentSelected) {
       perf = performanceLevels?.find((c: any) => {
@@ -189,20 +192,16 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
       performanceLevelId: performanceSelected ? performanceSelected?.value : perf?.node?.id
     };
     for (const item of valuations) {
-      await props.updateExperienceLearningTraditionalValuation(obj, item.node.id).then(
-        () => {
-        },
-        () => {
-          createNotification('error', 'error', '');
-        },
-      );
+      promisesList.push(props.updateExperienceLearningTraditionalValuation(obj, item.node.id))
     }
-    createNotification('success', 'success', '');
-    setValuations([])
-    refreshDataTable();
-    setAssesstmentSelected(null);
-    setPerformanceSelected(null);
-    setLoading(false);
+    await Promise.all(promisesList).then(() => {
+      createNotification('success', 'success', '');
+      setValuations([])
+      refreshDataTable();
+      setAssesstmentSelected(null);
+      setPerformanceSelected(null);
+      setLoading(false);
+    });
   }
 
   return (

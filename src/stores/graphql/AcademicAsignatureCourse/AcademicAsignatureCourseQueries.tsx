@@ -33,6 +33,15 @@ export const QUERY_GET_ALL_ACADEMIC_ASIGNATURE_COURSE = gql`
               }
             }
           }
+          teacherId
+          teacher {
+            id
+            user {
+              id
+              name
+              lastName
+            }
+          }
           active
         }
       }
@@ -72,6 +81,15 @@ export const QUERY_GET_ALL_ACADEMIC_ASIGNATURE_COURSE_TEACHER = gql`
                   name
                 }
               }
+            }
+          }
+          teacherId
+          teacher {
+            id
+            user {
+              id
+              name
+              lastName
             }
           }
           active

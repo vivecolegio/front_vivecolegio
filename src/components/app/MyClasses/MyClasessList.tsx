@@ -28,6 +28,9 @@ const AcademicAsignatureCourseList = (props: any) => {
               c.node.asignature_format = c.node.academicAsignature
                 ? c.node.academicAsignature.name
                 : '';
+              c.node.teacher_format = c.node.teacherId
+                ? c.node.teacher?.user?.lastName + " " + c.node.teacher?.user?.name
+                : '';
               return c;
             }),
           );
@@ -61,6 +64,9 @@ const AcademicAsignatureCourseList = (props: any) => {
               c.node.grade_format = c?.node?.course?.academicGrade?.name;
               c.node.asignature_format = c.node.academicAsignature
                 ? c.node.academicAsignature.name
+                : '';
+              c.node.teacher_format = c.node.teacherId
+                ? c.node.teacher?.user?.lastName + " " + c.node.teacher?.user?.name
                 : '';
               return c;
             }),

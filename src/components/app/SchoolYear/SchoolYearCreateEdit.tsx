@@ -3,7 +3,7 @@ import DatePicker from 'react-datepicker';
 import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
 import Select from 'react-select';
-import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
+import { FormGroup, Input, Label, ModalBody, ModalFooter } from 'reactstrap';
 import IntlMessages from '../../../helpers/IntlMessages';
 import * as schoolYearActions from '../../../stores/actions/SchoolYearActions';
 import { Colxx } from '../../common/CustomBootstrap';
@@ -19,11 +19,11 @@ const SchoolYearCreateEdit = (props: any) => {
   const [endDate, setEndDate] = useState(null);
 
   const methods = useForm({
-    mode: 'onChange',
+    mode: 'all',
     reValidateMode: 'onChange',
   });
 
-  const { handleSubmit, control, register, reset, setValue, getValues } = methods;
+  const { handleSubmit, control, register, reset, setValue, formState, trigger } = methods;
 
   useEffect(() => {
     cleanForm();
@@ -120,14 +120,18 @@ const SchoolYearCreateEdit = (props: any) => {
             methods={methods}
             control={control}
             handleSubmit={handleSubmit}
+            formState={formState}
           >
-            <ModalBody>
-              <div className="form-group">
+            <ModalBody className="av-tooltip tooltip-label-right">
+              <FormGroup className="form-group">
                 <Label>
                   <IntlMessages id="menu.schoolYear" />
                 </Label>
                 <Input {...schoolYearRest} innerRef={schoolYearRef} className="form-control" />
-              </div>
+                {/* <div className="invalid-feedback d-block">
+                  {"errors"}
+                </div> */}
+              </FormGroup>
               <div className="form-group">
                 <Label>
                   <IntlMessages id="forms.folioNumber" />
@@ -144,6 +148,7 @@ const SchoolYearCreateEdit = (props: any) => {
                   onChange={(date: any) => {
                     setValue('startDate', date as Date);
                     setStartDate(date as Date);
+                    trigger("startDate");
                   }}
                 />
               </div>
@@ -157,6 +162,7 @@ const SchoolYearCreateEdit = (props: any) => {
                   onChange={(date: any) => {
                     setValue('endDate', date as Date);
                     setEndDate(date as Date);
+                    trigger("endDate");
                   }}
                 />
               </div>
@@ -176,6 +182,7 @@ const SchoolYearCreateEdit = (props: any) => {
                     onChange={(selectedOption) => {
                       setValue('schoolId', selectedOption?.key);
                       setSchool(selectedOption);
+                      trigger("schoolId");
                     }}
                   />
                 </div>

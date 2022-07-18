@@ -2,14 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
+import { Button } from 'reactstrap';
 import { COLUMN_LIST } from '../../../constants/AcademicAsignatureCourse/AcademicAsignatureCourseConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as academicIndicatorActions from '../../../stores/actions/AcademicAsignatureCourseActions';
+import * as courseActions from '../../../stores/actions/CourseActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import DataList from '../../common/Data/DataList';
 import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
 import { Loader } from '../../common/Loader';
 import AcademicAsignatureCourseCreateEdit from './AcademicAsignatureCourseBasicCreateEdit';
+import Select from 'react-select';
 
 const AcademicAsignatureCourseBasicList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
@@ -17,6 +20,8 @@ const AcademicAsignatureCourseBasicList = (props: any) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [currentMenuPermissionSpreadsheet, setCurrentMenuPermissionSpreadsheet] = useState(null);
   const [currentMenuPermissionExperienceLearning, setCurrentMenuPermissionExperienceLearning] = useState(null);
+  const [teachersList, setTeachersList] = useState(null);
+  const [teacher, setTeacher] = useState(null);
 
   let navigate = useNavigate();
   let [params] = useSearchParams();
@@ -43,9 +48,22 @@ const AcademicAsignatureCourseBasicList = (props: any) => {
             c.node.asignature_format = c.node.academicAsignature
               ? c.node.academicAsignature.name
               : '';
+            c.node.teacher_format = c.node.teacherId
+              ? c.node.teacher?.user?.lastName + " " + c.node.teacher?.user?.name
+              : '';
             return c;
           }),
         );
+        props.dataCourse(courseId).then((data: any) => {
+          let campusId = data?.data?.campus?.id;
+          props.getDropdownsAcademicAsignatureCourse(props?.loginReducer?.schoolId, campusId, courseId).then((data: any) => {
+            setTeachersList(
+              data.dataTeachers.edges.map((c: any) => {
+                return { label: `${c.node.user.name} ${c.node.user.lastName}`, value: c.node.id, key: c.node.id };
+              }),
+            );
+          });
+        });
       });
   }, []);
 
@@ -60,9 +78,22 @@ const AcademicAsignatureCourseBasicList = (props: any) => {
             c.node.asignature_format = c.node.academicAsignature
               ? c.node.academicAsignature.name
               : '';
+            c.node.teacher_format = c.node.teacherId
+              ? c.node.teacher?.user?.lastName + " " + c.node.teacher?.user?.name
+              : '';
             return c;
           }),
         );
+        props.dataCourse(courseId).then((data: any) => {
+          let campusId = data?.data?.campus?.id;
+          props.getDropdownsAcademicAsignatureCourse(props?.loginReducer?.schoolId, campusId, courseId).then((data: any) => {
+            setTeachersList(
+              data.dataTeachers.edges.map((c: any) => {
+                return { label: `${c.node.user.name} ${c.node.user.lastName}`, value: c.node.id, key: c.node.id };
+              }),
+            );
+          });
+        });
       });
   };
 
@@ -136,6 +167,22 @@ const AcademicAsignatureCourseBasicList = (props: any) => {
     createNotification('success', 'success', '');
   };
 
+  const setAll = async () => {
+    setDataTable(null);
+    for (const item of dataTable) {
+      item.node.teacherId = teacher?.key;
+      await props.updateAcademicAsignatureCourseTeacher({ teacherId: teacher?.key }, item?.node?.id).then(
+        () => {
+        },
+        () => {
+          createNotification('error', 'error', '');
+        },
+      );
+    }
+    createNotification('success', 'success', '');
+    refreshDataTable();
+  }
+
   const additionalFunction = async (item: any, btn: any) => {
     switch (btn?.action) {
       case 'goToChildrenStandard':
@@ -178,7 +225,34 @@ const AcademicAsignatureCourseBasicList = (props: any) => {
       {' '}
       {dataTable !== null ? (
         <>
-          <HeaderInfoAcademic generic={{ title: 'Curso', value: courseName }} goTitle="Regresar a cursos" />
+          <div className="d-flex justify-content-start align-items-center w-100">
+            <div className="d-flex justify-content-start align-items-center w-100">
+              <HeaderInfoAcademic generic={{ title: 'Curso', value: courseName }} goTitle="Regresar a cursos" />
+            </div>
+            {teachersList?.length > 0 ?
+              <div className="d-flex justify-content-start align-items-center">
+                <Select
+                  isClearable
+                  placeholder='Docente'
+                  className="react-select"
+                  classNamePrefix="react-select"
+                  options={teachersList}
+                  onChange={(selectedOption: any) => {
+                    setTeacher(selectedOption);
+                  }}
+                />
+                <Button
+                  className="ml-2 btn-outline-info"
+                  size="xs"
+                  onClick={() => {
+                    setAll();
+                  }}
+                  disabled={teachersList === null || teacher === null}
+                >
+                  Asignar a todos
+                </Button>
+              </div> : ""}
+          </div>
           <DataList
             data={dataTable}
             columns={columns}
@@ -231,7 +305,7 @@ const AcademicAsignatureCourseBasicList = (props: any) => {
     </>
   );
 };
-const mapDispatchToProps = { ...academicIndicatorActions };
+const mapDispatchToProps = { ...academicIndicatorActions, ...courseActions };
 
 const mapStateToProps = ({ loginReducer }: any) => {
   return { loginReducer };

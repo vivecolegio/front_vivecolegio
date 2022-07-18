@@ -278,3 +278,31 @@ export const getCoursesOfGrade = (academicGradeId:string, campusId: string) => {
     }
   };
 };
+
+export const updateAcademicAsignatureCourseTeacher = (data: any, id: any) => {
+  return async (dispatch: any) => {
+    try {
+      let model: any = {};
+      model = {
+        ...model,
+      };
+      model = {
+        ...model,
+        ...data,
+      };
+      let dataUpdate = null;
+      model.weight = model.weight && !isNaN(model.weight) ? parseFloat(model.weight) : 0;
+      await client
+        .mutate({
+          mutation: MUTATION_UPDATE_ACADEMIC_ASIGNATURE_COURSE,
+          variables: { id, input: model },
+        })
+        .then((dataReponse: any) => {
+        });
+      return dataUpdate as any;
+    } catch (error) {
+      createNotification('error', 'error', '');
+      return error;
+    }
+  };
+};

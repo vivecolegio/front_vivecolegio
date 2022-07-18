@@ -14,7 +14,8 @@ const AddNewModal = ({
   control,
   handleSubmit,
   hideFooter,
-}: any ) => {
+  formState
+}: any) => {
   const { isValid, errors } = useFormState({ control });
 
   return (
@@ -40,22 +41,22 @@ const AddNewModal = ({
             />
           </ModalHeader>
           {children}
-          {!hideFooter ? 
-          <ModalFooter>
-            <Button color="secondary" outline onClick={toggleModal}>
-              <IntlMessages id="pages.cancel" />
-            </Button>
-            <Button
-              color="primary"
-              onClick={() => {
-                onSubmit(methods.getValues());
-              }}
-              // disabled={!isValid}
-            >
-              <IntlMessages id="pages.submit" />
-            </Button>
-          </ModalFooter>
-          : ''}
+          {!hideFooter ?
+            <ModalFooter>
+              <Button color="secondary" outline onClick={toggleModal}>
+                <IntlMessages id="pages.cancel" />
+              </Button>
+              <Button
+                color="primary"
+                onClick={() => {
+                  onSubmit(methods.getValues());
+                }}
+              //disabled={!formState.isValid}
+              >
+                <IntlMessages id="pages.submit" />
+              </Button>
+            </ModalFooter>
+            : ''}
         </Modal>
       </form>
     </FormProvider>
