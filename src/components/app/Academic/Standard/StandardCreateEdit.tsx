@@ -223,7 +223,7 @@ const StandardCreateEdit = (props: any) => {
               </div>
               <div className="form-group">
                 <Label>
-                  <IntlMessages id="forms.standard" />
+                  <IntlMessages id="forms.standard2" />
                 </Label>
                 <Input type='textarea' rows="6" {...standardRest} innerRef={standardRef} className="form-control" />
               </div>
