@@ -239,6 +239,7 @@ const DataList = (props: any) => {
         sortOrderColumn={sortOrderColumn}
       />
       <ListPageListing
+        type={props?.type}
         items={items}
         displayMode={displayMode}
         selectedItems={selectedItems}

@@ -110,7 +110,7 @@ export const saveNewStudent = (data: any) => {
         ...data,
       };
       let dataCreate = null;
-      model.code = model.code && !isNaN(model.code) ? parseFloat(model.code) : 0;
+      //model.code = model.code && !isNaN(model.code) ? parseFloat(model.code) : 0;
       await client
         .mutate({
           mutation: MUTATION_CREATE_STUDENT,
@@ -146,7 +146,7 @@ export const updateStudent = (data: any, id: any) => {
         ...data,
       };
       let dataUpdate = null;
-      model.code = model.code && !isNaN(model.code) ? parseFloat(model.code) : 0;
+      //model.code = model.code && !isNaN(model.code) ? parseFloat(model.code) : 0;
       await client
         .mutate({
           mutation: MUTATION_UPDATE_STUDENT,

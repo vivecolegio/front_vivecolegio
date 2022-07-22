@@ -13,6 +13,8 @@ export const QUERY_GET_ALL_ACADEMIC_ASIGNATURE_COURSE = gql`
             generalAcademicAsignatureId
             generalAcademicAsignature {
               name
+              hasStandard
+              hasDba
             }
           }
           course {
@@ -63,6 +65,8 @@ export const QUERY_GET_ALL_ACADEMIC_ASIGNATURE_COURSE_TEACHER = gql`
             generalAcademicAsignatureId
             generalAcademicAsignature {
               name
+              hasStandard
+              hasDba
             }
           }
           course {

@@ -71,6 +71,19 @@ const GeneralAsignatureCreateEdit = (props: any) => {
     version: props?.data?.id ? props?.data?.version : null,
   };
 
+  const data = {
+    hasStandard:
+      props?.data?.id ||
+        props?.data?.hasStandard === methods.getValues('hasStandard')
+        ? props?.data?.hasStandard
+        : methods.getValues('hasStandard'),
+    hasDba:
+      props?.data?.id ||
+        props?.data?.hasDba === methods.getValues('hasDba')
+        ? props?.data?.hasDba
+        : methods.getValues('hasDba'),
+  }
+
   const [area, setArea] = useState(null);
 
   return (
@@ -119,6 +132,32 @@ const GeneralAsignatureCreateEdit = (props: any) => {
                     setArea(selectedOption);
                   }}
                 />
+              </div>
+              <div className="form-group d-flex align-items-center">
+                <Input
+                  className="itemCheck m-0 mr-2"
+                  type="checkbox"
+                  id={`check_hasStandard`}
+                  defaultChecked={data.hasStandard}
+                  onChange={() => {
+                    setValue('hasStandard', !data.hasStandard);
+                  }}
+                  label=""
+                />
+                {<IntlMessages id="forms.hasStandard" />}
+              </div>
+              <div className="form-group d-flex align-items-center">
+                <Input
+                  className="itemCheck m-0 mr-2"
+                  type="checkbox"
+                  id={`check_hasDba`}
+                  defaultChecked={data.hasDba}
+                  onChange={() => {
+                    setValue('hasDba', !data.hasDba);
+                  }}
+                  label=""
+                />
+                {<IntlMessages id="forms.hasDba" />}
               </div>
             </ModalBody>
             {props?.data?.id ? (

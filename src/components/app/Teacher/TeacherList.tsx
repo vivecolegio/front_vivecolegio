@@ -32,6 +32,7 @@ const TeacherList = (props: any) => {
             c.node.lastName = c.node.user ? c.node.user.lastName : '';
             c.node.phone = c.node.user ? c.node.user.phone : '';
             c.node.email = c.node.user ? c.node.user.email : '';
+            c.node.documentNumber = c.node.user ? c.node.user.documentNumber : '';
             return c;
           }),
         );
@@ -44,6 +45,7 @@ const TeacherList = (props: any) => {
             c.node.lastName = c.node.user ? c.node.user.lastName : '';
             c.node.phone = c.node.user ? c.node.user.phone : '';
             c.node.email = c.node.user ? c.node.user.email : '';
+            c.node.documentNumber = c.node.user ? c.node.user.documentNumber : '';
             return c;
           }),
         );
@@ -60,6 +62,7 @@ const TeacherList = (props: any) => {
             c.node.lastName = c.node.user ? c.node.user.lastName : '';
             c.node.phone = c.node.user ? c.node.user.phone : '';
             c.node.email = c.node.user ? c.node.user.email : '';
+            c.node.documentNumber = c.node.user ? c.node.user.documentNumber : '';
             return c;
           }),
         );
@@ -72,6 +75,7 @@ const TeacherList = (props: any) => {
             c.node.lastName = c.node.user ? c.node.user.lastName : '';
             c.node.phone = c.node.user ? c.node.user.phone : '';
             c.node.email = c.node.user ? c.node.user.email : '';
+            c.node.documentNumber = c.node.user ? c.node.user.documentNumber : '';
             return c;
           }),
         );

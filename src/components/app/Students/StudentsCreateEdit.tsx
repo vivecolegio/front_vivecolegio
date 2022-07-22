@@ -47,20 +47,18 @@ const StudentCreateEdit = (props: any) => {
   const [course, setCourse] = useState(null);
   const [documentType, setDocumentType] = useState(null);
   const [newUser, setNewUser] = useState({
-    name: null,
-    lastName: null,
-    phone: null,
-    email: null,
-    documentNumber: null,
-    password: null,
-    username: null,
-    genderId: null,
-    documentTypeId: null,
-    roleId: null,
+    name: undefined,
+    lastName: undefined,
+    phone: undefined,
+    email: undefined,
+    documentNumber: undefined,
+    genderId: undefined,
+    documentTypeId: undefined,
+    roleId: undefined,
   });
 
   const methods = useForm({
-    mode: 'onChange',
+    mode: 'all',
     reValidateMode: 'onChange',
   });
 
@@ -76,6 +74,7 @@ const StudentCreateEdit = (props: any) => {
           label: props?.data?.school?.name,
           value: props?.data?.school?.id,
         });
+        setValue('schoolId', props?.data?.schoolId);
       }
       if (props?.data?.campus !== undefined && props?.data?.campus != null) {
         setCampus({
@@ -83,6 +82,7 @@ const StudentCreateEdit = (props: any) => {
           label: props?.data?.campus[0]?.name,
           value: props?.data?.campus[0]?.id,
         });
+        setValue('campusId', props?.data?.campusId);
       }
       if (props?.data?.academicGrade !== undefined && props?.data?.academicGrade != null) {
         setGrade({
@@ -90,6 +90,8 @@ const StudentCreateEdit = (props: any) => {
           label: props?.data?.academicGrade.name,
           value: props?.data?.academicGrade.id,
         });
+        setValue('academicGradeId', props?.data?.academicGradeId);
+        getCourses(props?.data?.academicGrade.id);
       }
       if (props?.data?.course !== undefined && props?.data?.course != null) {
         setCourse({
@@ -97,6 +99,7 @@ const StudentCreateEdit = (props: any) => {
           label: props?.data?.course.name,
           value: props?.data?.course.id,
         });
+        setValue('courseId', props?.data?.courseId);
       }
       if (props?.data?.user !== undefined && props?.data?.user != null) {
         setNewUser({
@@ -105,8 +108,6 @@ const StudentCreateEdit = (props: any) => {
           phone: props?.data?.user?.phone,
           email: props?.data?.user?.email,
           documentNumber: props?.data?.user?.documentNumber,
-          password: props?.data?.user?.password,
-          username: props?.data?.user?.username,
           genderId: props?.data?.user?.genderId,
           documentTypeId: props?.data?.user?.documentTypeId,
           roleId: props?.data?.user?.roleId,
@@ -166,8 +167,6 @@ const StudentCreateEdit = (props: any) => {
       phone: null,
       email: null,
       documentNumber: null,
-      password: null,
-      username: null,
       genderId: null,
       documentTypeId: null,
       roleId: null,
@@ -233,7 +232,20 @@ const StudentCreateEdit = (props: any) => {
       let roles = data.dataRoles.edges;
       if (roles?.length == 1) {
         setRole({ label: roles[0]?.node?.name, value: roles[0]?.node?.id, key: roles[0]?.node?.id });
-        setValue('newUser', { ...newUser, ...{ roleId: roles[0]?.node?.id } });
+        setValue('newUser', {
+          ...{
+            name: props?.data?.user?.name,
+            lastName: props?.data?.user?.lastName,
+            phone: props?.data?.user?.phone,
+            email: props?.data?.user?.email,
+            documentNumber: props?.data?.user?.documentNumber,
+            password: props?.data?.user?.password,
+            username: props?.data?.user?.username,
+            genderId: props?.data?.user?.genderId,
+            documentTypeId: props?.data?.user?.documentTypeId,
+            roleId: roles[0]?.node?.id
+          }
+        });
       }
     });
   };
@@ -250,17 +262,13 @@ const StudentCreateEdit = (props: any) => {
     }
   };
 
-  const { ref: codeRef, ...codeRest } = register('code', {
-    required: true,
-    value: props?.data?.id ? props?.data?.code : '',
-  });
   register('schoolId', {
     required: true,
     value: props?.data?.id ? props?.data?.schoolId : '',
   });
   register('campusId', {
     required: true,
-    value: props?.data?.id ? props?.data?.campusId : '',
+    value: props?.data?.id ? props?.data?.campusId : [],
   });
   register('academicGradeId', {
     required: true,
@@ -378,12 +386,6 @@ const StudentCreateEdit = (props: any) => {
                         setNewUser({ ...newUser, ...{ name: data.target.value } });
                       }}
                     />
-                  </div>
-                  <div className="form-group">
-                    <Label>
-                      <IntlMessages id="forms.code" />
-                    </Label>
-                    <Input {...codeRest} innerRef={codeRef} className="form-control" />
                   </div>
                   <div className="form-group">
                     <Label>
@@ -518,28 +520,12 @@ const StudentCreateEdit = (props: any) => {
                       options={gradeList}
                       value={grade}
                       onChange={(selectedOption) => {
+                        console.log(newUser)
                         setValue('academicGradeId', selectedOption?.key);
                         setGrade(selectedOption);
+                        setCourse(null);
+                        setValue('courseId', null);
                         getCourses(selectedOption?.key);
-                      }}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <Label>
-                      <IntlMessages id="forms.course" />
-                    </Label>
-                    <Select
-                      isClearable
-                      placeholder={<IntlMessages id="forms.select" />}
-                      {...register('courseId', { required: true })}
-                      className="react-select"
-                      classNamePrefix="react-select"
-                      options={courseList}
-                      value={course}
-                      isDisabled={!grade}
-                      onChange={(selectedOption) => {
-                        setValue('courseId', selectedOption?.key);
-                        setCourse(selectedOption);
                       }}
                     />
                   </div>
@@ -566,7 +552,7 @@ const StudentCreateEdit = (props: any) => {
                   ) : (
                     ''
                   )}
-                  {!props?.loginReducer?.campusId ? (
+                  {!props?.loginReducer?.campusId && props?.data?.id ? (
                     <div className="form-group">
                       <Label>
                         <IntlMessages id="menu.campus" />
@@ -582,11 +568,36 @@ const StudentCreateEdit = (props: any) => {
                         onChange={(selectedOption) => {
                           setValue('campusId', [selectedOption?.key]);
                           setCampus(selectedOption);
-                          getDropdowns(selectedOption?.key);
+                          setCourse(null);
+                          setValue('courseId', null);
+                          //getDropdowns(selectedOption?.key);
                         }}
+                      //isDisabled={true}
                       />
                     </div>
                   ) : (
+                    ''
+                  )}
+                  {!props?.loginReducer?.campusId && props?.data?.id && props?.data?.courseId && course != null ? (
+                    <div className="form-group">
+                      <Label>
+                        <IntlMessages id="forms.course" />
+                      </Label>
+                      <Select
+                        isClearable
+                        placeholder={""}
+                        {...register('courseId', { required: true })}
+                        className="react-select"
+                        classNamePrefix="react-select"
+                        options={courseList}
+                        value={course}
+                        onChange={(selectedOption) => {
+                          setValue('courseId', selectedOption?.key);
+                          // setCourse(selectedOption);
+                        }}
+                        isDisabled={true}
+                      />
+                    </div>) : (
                     ''
                   )}
                 </TabPane>

@@ -57,7 +57,6 @@ const StudentList = (props: any) => {
   };
 
   const onSubmit = async (dataForm: any) => {
-    //console.log(dataForm)
     if (data === null) {
       await props.saveNewStudent(dataForm).then((id: any) => {
         if (id !== undefined) {
@@ -70,6 +69,7 @@ const StudentList = (props: any) => {
       delete dataForm.newUser.role;
       delete dataForm.newUser.gender;
       delete dataForm.newUser.documentType;
+      delete dataForm.newUser.password;
       await props.updateStudent(dataForm, data.id).then((id: any) => {
         if (id !== undefined) {
           setModalOpen(false);

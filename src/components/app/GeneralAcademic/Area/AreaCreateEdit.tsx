@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import {Loader} from '../../../common/Loader';
+import { Loader } from '../../../common/Loader';
 import { connect } from 'react-redux';
 import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
 import IntlMessages from '../../../../helpers/IntlMessages';
@@ -41,12 +41,25 @@ const GeneralAreaCreateEdit = (props: any) => {
     version: props?.data?.id ? props?.data?.version : null,
   };
 
+  const data = {
+    hasStandard:
+      props?.data?.id ||
+        props?.data?.hasStandard === methods.getValues('hasStandard')
+        ? props?.data?.hasStandard
+        : methods.getValues('hasStandard'),
+    hasDba:
+      props?.data?.id ||
+        props?.data?.hasDba === methods.getValues('hasDba')
+        ? props?.data?.hasDba
+        : methods.getValues('hasDba'),
+  }
+
   return (
     <>
       {loading ? (
         <>
           <Colxx sm={12} className="d-flex justify-content-center">
-            <Loader/>
+            <Loader />
           </Colxx>
         </>
       ) : (
@@ -64,10 +77,38 @@ const GeneralAreaCreateEdit = (props: any) => {
             handleSubmit={handleSubmit}
           >
             <ModalBody>
-              <Label>
-                <IntlMessages id="forms.name" />
-              </Label>
-              <Input {...nameRest} innerRef={nameRef} className="form-control" />
+              <div className="form-group">
+                <Label>
+                  <IntlMessages id="forms.name" />
+                </Label>
+                <Input {...nameRest} innerRef={nameRef} className="form-control" />
+              </div>
+              <div className="form-group d-flex align-items-center">
+                <Input
+                  className="itemCheck m-0 mr-2"
+                  type="checkbox"
+                  id={`check_hasStandard`}
+                  defaultChecked={data.hasStandard}
+                  onChange={() => {
+                    setValue('hasStandard', !data.hasStandard);
+                  }}
+                  label=""
+                />
+                {<IntlMessages id="forms.hasStandard" />}
+              </div>
+              <div className="form-group d-flex align-items-center">
+                <Input
+                  className="itemCheck m-0 mr-2"
+                  type="checkbox"
+                  id={`check_hasDba`}
+                  defaultChecked={data.hasDba}
+                  onChange={() => {
+                    setValue('hasDba', !data.hasDba);
+                  }}
+                  label=""
+                />
+                {<IntlMessages id="forms.hasDba" />}
+              </div>
             </ModalBody>
             {props?.data?.id ? (
               <ModalFooter className="p-3">

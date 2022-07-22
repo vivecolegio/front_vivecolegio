@@ -8,7 +8,12 @@ export const QUERY_GET_ALL_ASIGNATURE = gql`
         node {
           id
           name
-          active          
+          hasStandard
+          hasDba
+          active      
+          generalAcademicArea {
+            name
+          }    
         }
       }
       totalCount
@@ -21,6 +26,8 @@ export const QUERY_GET_ASIGNATURE = gql`
     data: getGeneralAcademicAsignature(id: $id) {
       id
       name
+      hasStandard
+      hasDba
       version
       generalAcademicAreaId
       generalAcademicArea {

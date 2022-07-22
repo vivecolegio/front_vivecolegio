@@ -19,6 +19,7 @@ const DataListView = ({
   additionalFunction,
   currentMenu,
   filterChildren,
+  type
 }: any) => {
   return (
     <Colxx xxs="12" className="mb-3">
@@ -53,20 +54,64 @@ const DataListView = ({
               <p className={"mb-0 flex-gap text-muted text-small"} style={{ 'width': columns[columns.length - 1].width }}>
                 {withChildren === true ? (
                   (filterChildren ? childrenButtons.filter((c: any) => { return (c.action === item[filterChildren]) }) : childrenButtons).map((button: any) => {
-                    return <>
-                      {!button.hide ?
-                        <Button
-                          key={button.id}
-                          color={button.color}
-                          size="xs"
-                          onClick={() => {
-                            return additionalFunction(item, button);
-                          }}>
-                          <i className={button.icon + ' font-1rem mr-2'} />
-                          {button.label}
-                        </Button> : ''}
-                      {' '}
-                    </>
+                    switch (type) {
+                      case "valuationReferents":
+                        switch (button.id) {
+                          case 1:
+                            return <>
+                              {
+                                !button.hide && item?.academicAsignature?.generalAcademicAsignature?.hasDba ?
+                                  <Button
+                                    key={button.id}
+                                    color={button.color}
+                                    size="xs"
+                                    onClick={() => {
+                                      return additionalFunction(item, button);
+                                    }}>
+                                    <i className={button.icon + ' font-1rem mr-2'} />
+                                    {button.label}
+                                  </Button> : ''
+                              }
+                            </>
+                            break;
+                          default:
+                            return <>
+                              {
+                                !button.hide ?
+                                  <Button
+                                    key={button.id}
+                                    color={button.color}
+                                    size="xs"
+                                    onClick={() => {
+                                      return additionalFunction(item, button);
+                                    }}>
+                                    <i className={button.icon + ' font-1rem mr-2'} />
+                                    {button.label}
+                                  </Button> : ''
+                              }
+                            </>
+                            break;
+                        }
+                        break;
+                      default:
+                        return <>
+                          {
+                            !button.hide ?
+                              <Button
+                                key={button.id}
+                                color={button.color}
+                                size="xs"
+                                onClick={() => {
+                                  return additionalFunction(item, button);
+                                }}>
+                                <i className={button.icon + ' font-1rem mr-2'} />
+                                {button.label}
+                              </Button> : ''
+                          }
+                          {' '}
+                        </>
+                        break;
+                    }
                   })
                 ) : (
                   ''

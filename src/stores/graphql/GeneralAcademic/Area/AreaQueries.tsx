@@ -8,6 +8,8 @@ export const QUERY_GET_ALL_AREA = gql`
         node {
           id
           name
+          hasStandard
+          hasDba
           active
         }
       }
@@ -21,6 +23,8 @@ export const QUERY_GET_AREA = gql`
     data: getGeneralAcademicArea(id: $id) {
       id
       name
+      hasStandard
+      hasDba
       version
       createdAt
       updatedAt

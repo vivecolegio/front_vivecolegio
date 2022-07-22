@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { COLUMN_LIST } from '../../../../constants/Asignature/asignatureConstants';
+import { COLUMN_LIST } from '../../../../constants/GeneralAcademicAsignature/generalAcademicAsignature';
 import { createNotification } from '../../../../helpers/Notification';
 import * as asignatureActions from '../../../../stores/actions/GeneralAcademic/AsignatureActions';
 import { Colxx } from '../../../common/CustomBootstrap';
@@ -17,13 +17,19 @@ const GeneralAsignatureList = (props: any) => {
   const [data, setData] = useState(null);
   useEffect(() => {
     props.getListAllGeneralAsignature().then((listData: any) => {
-      setDataTable(listData);
+      setDataTable(listData.map((c: any) => {
+        c.node.generalAcademicArea_format = c.node.generalAcademicArea ? c.node.generalAcademicArea.name : '';
+        return c;
+      }));
     });
   }, []);
 
   const getDataTable = async () => {
     props.getListAllGeneralAsignature().then((listData: any) => {
-      setDataTable(listData);
+      setDataTable(listData.map((c: any) => {
+        c.node.generalAcademicArea_format = c.node.generalAcademicArea ? c.node.generalAcademicArea.name : '';
+        return c;
+      }));
     });
   };
 

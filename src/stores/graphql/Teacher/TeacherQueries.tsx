@@ -18,6 +18,7 @@ export const QUERY_GET_ALL_TEACHER = gql`
             lastName
             email
             phone
+            documentNumber
           }
         }
       }
@@ -44,6 +45,7 @@ export const QUERY_GET_ALL_TEACHER_ONLY_SCHOOL = gql`
             lastName
             email
             phone
+            documentNumber
           }
         }
       }

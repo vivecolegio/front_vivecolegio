@@ -28,6 +28,7 @@ const AcademicAsignatureCourseList = (props: any) => {
               c.node.asignature_format = c.node.academicAsignature
                 ? c.node.academicAsignature.name
                 : '';
+              c.node.teacher_format = c.node.teacher ? c?.node?.teacher?.user?.lastName + " " + c?.node?.teacher?.user?.name : '';
               return c;
             }),
           );
@@ -43,6 +44,7 @@ const AcademicAsignatureCourseList = (props: any) => {
               c.node.asignature_format = c.node.academicAsignature
                 ? c.node.academicAsignature.name
                 : '';
+              c.node.teacher_format = c.node.teacher ? c?.node?.teacher?.user?.lastName + " " + c?.node?.teacher?.user?.name : '';
               return c;
             }),
           );
@@ -62,6 +64,7 @@ const AcademicAsignatureCourseList = (props: any) => {
               c.node.asignature_format = c.node.academicAsignature
                 ? c.node.academicAsignature.name
                 : '';
+              c.node.teacher_format = c.node.teacher ? c?.node?.teacher?.user?.lastName + " " + c?.node?.teacher?.user?.name : '';
               return c;
             }),
           );
@@ -77,6 +80,7 @@ const AcademicAsignatureCourseList = (props: any) => {
               c.node.asignature_format = c.node.academicAsignature
                 ? c.node.academicAsignature.name
                 : '';
+              c.node.teacher_format = c.node.teacher ? c?.node?.teacher?.user?.lastName + " " + c?.node?.teacher?.user?.name : '';
               return c;
             }),
           );
@@ -186,6 +190,7 @@ const AcademicAsignatureCourseList = (props: any) => {
       {dataTable !== null ? (
         <>
           <DataList
+            type={"valuationReferents"}
             data={dataTable}
             columns={columns}
             match={props?.match}
@@ -200,7 +205,7 @@ const AcademicAsignatureCourseList = (props: any) => {
             childrenButtons={[
               {
                 id: 0,
-                label: 'Estándares',
+                label: 'Estándares / Lineamientos',
                 color: 'secondary',
                 icon: 'iconsminds-check',
                 action: 'goToChildrenStandard',
@@ -214,7 +219,7 @@ const AcademicAsignatureCourseList = (props: any) => {
               },
               {
                 id: 2,
-                label: 'Aprendizaje',
+                label: 'Aprendizajes',
                 color: 'warning',
                 icon: 'iconsminds-idea',
                 action: 'goToChildrenLearning',

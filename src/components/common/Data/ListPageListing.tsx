@@ -29,6 +29,7 @@ const ListPageListing = ({
   childrenButtons,
   additionalFunction,
   currentMenu,
+  type
 }: any) => {
   return (
     <Row>
@@ -79,6 +80,7 @@ const ListPageListing = ({
         }
         return (
           <DataListView
+            type={type}
             key={item.node.id}
             item={item.node}
             isSelect={selectedItems.find((c: any) => {
