@@ -54,6 +54,58 @@ export const QUERY_GET_ALL_EXPERIENCE_LEARNING = gql`
   }
 `;
 
+export const QUERY_GET_ALL_EXPERIENCE_LEARNING_ASIGNATURE_COURSE_WHITOUT_CAMPUSID = gql`
+  query getAllExperienceLearningWhitoutCampusId(
+    $academicAsignatureCourseId: String!
+    $academicPeriodId: String
+  ) {
+    data: getAllExperienceLearningWhitoutCampusId(
+      orderCreated: true
+      allData: true
+      academicAsignatureCourseId: $academicAsignatureCourseId
+      academicPeriodId: $academicPeriodId
+    ) {
+      edges {
+        cursor
+        node {
+          id
+          active
+          title
+          experienceType
+          evaluativeComponentsId
+          evaluativeComponents {
+            id
+            name
+          }
+          academicPeriodId
+          academicPeriod {
+            name
+          }
+          evidenceLearningsId
+          evidenceLearnings {
+            id
+            statement
+          }
+          academicAsignatureCourse {
+            courseId
+            course {
+              name
+              academicGrade {
+                name
+              }
+            }
+            academicAsignature {
+              name
+            }
+          }
+          academicAsignatureCourseId
+        }
+      }
+      totalCount
+    }
+  }
+`;
+
 export const QUERY_GET_ALL_EXPERIENCE_LEARNING_ASIGNATURE_COURSE = gql`
   query getAllExperienceLearningAcademicPeriodEvaluativeComponentAcademicAsignatureCourse(
     $id: String!

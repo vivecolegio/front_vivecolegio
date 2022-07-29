@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
-import { Badge, Input, Progress } from 'reactstrap';
+import { Badge, Input, Label, Progress, Tooltip } from 'reactstrap';
 import { calculateDaysTwoDate, compare } from '../../../helpers/DataTransformations';
 import { createNotification } from '../../../helpers/Notification';
 import { getInitialsName } from '../../../helpers/Utils';
@@ -22,6 +22,8 @@ import TooltipItem from '../../common/TooltipItem';
 import ThumbnailImage from '../Aplications/AplicationsComponents/ThumbnailImage';
 import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
 import moment from 'moment';
+import FormGroupCustom from '../../common/Data/FormGroupCustom';
+import ReactTooltip from "react-tooltip";
 
 const SpreadsheetList = (props: any) => {
   const [students, setStudents] = useState(null);
@@ -57,6 +59,9 @@ const SpreadsheetList = (props: any) => {
   const asignatureName = params.get('asignatureName');
   const gradeName = params.get('gradeName');
   const courseName = params.get('courseName');
+
+  const [tooltipOpen, setTooltipOpen] = useState(false);
+  const toggle = () => setTooltipOpen(!tooltipOpen);
 
   const [data, setData] = useState(null);
   useEffect(() => {
@@ -344,9 +349,7 @@ const SpreadsheetList = (props: any) => {
                         <>
                           <th
                             colSpan={
-                              item?.experiences?.length > 1
-                                ? item?.experiences?.length + 1
-                                : item?.experiences?.length
+                              item?.experiences?.length + 1
                             }
                             className="text-center vertical-middle"
                           >
@@ -372,34 +375,26 @@ const SpreadsheetList = (props: any) => {
                                 item.experiences.map((e: any, indexe: any) => {
                                   return (
                                     <>
-                                      {/* <th className="text-center vertical-middle">{e?.title}</th> */}
                                       <th className="text-center vertical-middle">
-                                        <TooltipItem
-                                          key={`tooltip_${indexe}`}
-                                          target={
-                                            <i
-                                              className="iconsminds-idea-2 text-warning font-20"
-                                              id={`tooltip_${indexe}`}
-                                            ></i>
-                                          }
-                                          item={{
-                                            placement: 'left',
-                                            body: e?.title,
-                                          }}
-                                          id={indexe}
-                                        />
-                                        {/* {e?.title} */}
+                                        <a data-tip data-for={e?.id}>
+                                          <i
+                                            className="iconsminds-idea-2 text-warning font-20"
+                                          ></i>
+                                        </a>
+                                        <ReactTooltip id={e?.id} type='info' effect='solid'>
+                                          <span>{e?.title}</span>
+                                        </ReactTooltip>
                                       </th>
                                     </>
                                   );
                                 })
                               }</>
-                            : <th></th>}
-                          {item?.experiences?.length > 1 ? (
-                            <th className="text-center vertical-middle">Prom.</th>
-                          ) : (
-                            ''
-                          )}
+                            : ""}
+                          {/* {item?.experiences?.length >= 0 ? ( */}
+                          <th className="text-center vertical-middle">Prom.</th>
+                          {/* ) : ( */}
+                          {/* '' */}
+                          {/* )} */}
                         </>
                       );
                     })}
@@ -451,7 +446,7 @@ const SpreadsheetList = (props: any) => {
                                       );
                                       return (
                                         <>
-                                          <th className="text-center vertical-middle">
+                                          <td className="text-center vertical-middle">
                                             {performanceLevelType === "QUALITATIVE" ?
                                               <>
                                                 <Badge color="primary" className="font-0-8rem">
@@ -459,7 +454,8 @@ const SpreadsheetList = (props: any) => {
                                                 </Badge>
                                               </> :
                                               <>
-                                                <Input
+                                                {note?.assessment}
+                                                {/* <Input
                                                   onKeyPress={(event: any) => {
                                                     return saveNote(event, note, e, item);
                                                   }}
@@ -467,14 +463,14 @@ const SpreadsheetList = (props: any) => {
                                                   disabled={isFormEnabled}
                                                   className="form-control"
                                                   style={{ width: "60px" }}
-                                                />
+                                                /> */}
                                               </>
                                             }
-                                          </th>
+                                          </td>
                                         </>
                                       );
-                                    })} </> : <th></th>}
-                                {item2?.experiences?.length > 1 ? (
+                                    })} </> : ""}
+                                {item2?.experiences?.length > 0 ? (
                                   <th className="text-center vertical-middle">
                                     {performanceLevelType === "QUALITATIVE" ?
                                       <>
@@ -489,7 +485,13 @@ const SpreadsheetList = (props: any) => {
                                       </>
                                       :
                                       <>
-                                        <Input
+                                        {averages.find(
+                                          (n: any) =>
+                                            item2?.evaluativeComponentId ===
+                                            n?.node?.evaluativeComponentId &&
+                                            item?.id === n?.node?.studentId,
+                                        )?.node?.average?.toFixed(2)}
+                                        {/* <Input
                                           disabled={true}
                                           defaultValue={
                                             averages.find(
@@ -501,26 +503,26 @@ const SpreadsheetList = (props: any) => {
                                           }
                                           className="form-control"
                                           style={{ width: "4.5vh" }}
-                                        />
+                                        /> */}
                                       </>}
                                   </th>
                                 ) : (
-                                  ''
+                                  <th></th>
                                 )}
                               </>
                             );
                           })}
-                          <td className="text-center vertical-middle">
+                          <th className="text-center vertical-middle">
                             {averagesFinal.find((n: any) => item?.id === n?.node?.studentId)?.node
                               ?.assessment?.toFixed(2) || ''}
-                          </td>
-                          <td className="text-center vertical-middle">
+                          </th>
+                          <th className="text-center vertical-middle">
                             <Badge color="primary" className="font-0-8rem">
                               {averagesFinal.find(
                                 (c: any) => c?.node?.studentId === item?.id,
                               )?.node?.performanceLevel?.name || '--'}
                             </Badge>
-                          </td>
+                          </th>
                         </tr>
                       </>
                     );

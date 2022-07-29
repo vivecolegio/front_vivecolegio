@@ -64,18 +64,32 @@ const ExperienceLearningList = (props: any) => {
   }, []);
 
   const getDataTable = async (idAcademicPeriod: any = null) => {
-    props
-      .getListAllExperienceLearning(
-        props?.loginReducer?.campusId,
-        academicAsignatureCourseId,
-        idAcademicPeriod ? idAcademicPeriod : undefined,
-      )
-      .then((listData: any) => {
-        setDataTable(listData.map((c: any) => {
-          c.node.academicPeriod_format = c?.node?.academicPeriod ? c?.node?.academicPeriod?.name : '';
-          return c;
-        }))
-      });
+    if (props?.loginReducer?.campusId?.length > 0) {
+      props
+        .getListAllExperienceLearning(
+          props?.loginReducer?.campusId,
+          academicAsignatureCourseId,
+          idAcademicPeriod ? idAcademicPeriod : undefined,
+        )
+        .then((listData: any) => {
+          setDataTable(listData.map((c: any) => {
+            c.node.academicPeriod_format = c?.node?.academicPeriod ? c?.node?.academicPeriod?.name : '';
+            return c;
+          }))
+        });
+    } else {
+      props
+        .getAllExperienceLearningWhitoutCampusId(
+          academicAsignatureCourseId,
+          idAcademicPeriod ? idAcademicPeriod : undefined,
+        )
+        .then((listData: any) => {
+          setDataTable(listData.map((c: any) => {
+            c.node.academicPeriod_format = c?.node?.academicPeriod ? c?.node?.academicPeriod?.name : '';
+            return c;
+          }))
+        });
+    }
   };
 
   const refreshDataTable = async () => {
@@ -214,6 +228,62 @@ const ExperienceLearningList = (props: any) => {
       {' '}
       {dataTable !== null ? (
         <>
+          <div className="d-flex justify-content-between mt-0 align-items-center">
+            <HeaderInfoAcademic
+              asignature
+              grade
+              goTitle="Regresar a asignación académica"
+              academicAsignatureCourseId={academicAsignatureCourseId}
+            />
+            <div >
+              <div className="d-flex justify-content-start align-items-center" >
+                {academicPeriods
+                  ? academicPeriods?.map((item: any) => {
+                    return (
+                      <>
+                        <button
+                          onClick={() => {
+                            return filterByPeriod(item);
+                          }}
+                          key={item?.node?.id}
+                          className={`ml-1 btn ${academicPeriod?.node?.id === item?.node?.id
+                            ? 'btn-info'
+                            : 'btn-outline-info'
+                            }`}
+                          type="button"
+                        >
+                          <i className="iconsminds-pen-2"></i> {item?.node?.name}
+                        </button>{' '}
+                      </>
+                    );
+                  })
+                  : ''}
+              </div>
+              {dateProgress.startDate != null ?
+                <>
+                  <div className="d-flex justify-content-start align-items-center mt-2 w-100">
+                    <div className="text-center">
+                      Progreso: {' '}
+                    </div>
+                    <Progress
+                      className="ml-2"
+                      bar
+                      color="primary"
+                      value={dateProgress.countDays > 0 ? ((dateProgress.countDays / dateProgress.totalDays) * 100) : 0}
+                    > ({dateProgress.countDays}/{dateProgress.totalDays}) {dateProgress.countDays > 0 ? ((dateProgress.countDays / dateProgress.totalDays) * 100).toFixed(0) : 0}%</Progress>
+                  </div>
+                  <div className="d-flex justify-content-start align-items-center mt-2 w-100">
+                    <div className="text-center w-50">
+                      Fecha Inicio: {' ' + moment(dateProgress.startDate).format("YYYY-MM-DD")}
+                    </div>
+                    <div className="text-center w-50">
+                      Fecha Fin: {' ' + moment(dateProgress.endDate).format("YYYY-MM-DD")}
+                    </div>
+                  </div>
+                </>
+                : ""}
+            </div>
+          </div>
           <DataList
             data={dataTable}
             columns={columns}
@@ -274,67 +344,6 @@ const ExperienceLearningList = (props: any) => {
             ]}
             withChildren={true}
             filterChildren={'experienceType'}
-            header={
-              <>
-                <div className="d-flex justify-content-between mt-0 align-items-center">
-                  <HeaderInfoAcademic
-                    asignature
-                    grade
-                    goTitle="Regresar a asignación académica"
-                    academicAsignatureCourseId={academicAsignatureCourseId}
-                  />
-                  <div >
-                    <div className="d-flex justify-content-start align-items-center" >
-                      {academicPeriods
-                        ? academicPeriods?.map((item: any) => {
-                          return (
-                            <>
-                              <button
-                                onClick={() => {
-                                  return filterByPeriod(item);
-                                }}
-                                key={item?.node?.id}
-                                className={`ml-1 btn ${academicPeriod?.node?.id === item?.node?.id
-                                  ? 'btn-info'
-                                  : 'btn-outline-info'
-                                  }`}
-                                type="button"
-                              >
-                                <i className="iconsminds-pen-2"></i> {item?.node?.name}
-                              </button>{' '}
-                            </>
-                          );
-                        })
-                        : ''}
-                    </div>
-                    {dateProgress.startDate != null ?
-                      <>
-                        <div className="d-flex justify-content-start align-items-center mt-2 w-100">
-                          <div className="text-center">
-                            Progreso: {' '}
-                          </div>
-                          <Progress
-                            className="ml-2"
-                            bar
-                            color="primary"
-                            value={dateProgress.countDays > 0 ? ((dateProgress.countDays / dateProgress.totalDays) * 100) : 0}
-                          > ({dateProgress.countDays}/{dateProgress.totalDays}) {dateProgress.countDays > 0 ? ((dateProgress.countDays / dateProgress.totalDays) * 100).toFixed(0) : 0}%</Progress>
-                        </div>
-                        <div className="d-flex justify-content-start align-items-center mt-2 w-100">
-                          <div className="text-center w-50">
-                            Fecha Inicio: {' ' + moment(dateProgress.startDate).format("YYYY-MM-DD")}
-                          </div>
-                          <div className="text-center w-50">
-                            Fecha Fin: {' ' + moment(dateProgress.endDate).format("YYYY-MM-DD")}
-                          </div>
-                        </div>
-                      </>
-                      : ""}
-                  </div>
-
-                </div>
-              </>
-            }
             refreshDataTable={refreshDataTable}
           />
           <ExperienceLearningCreateEdit

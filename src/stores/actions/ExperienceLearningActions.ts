@@ -1,7 +1,7 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
 import { MUTATION_CHANGE_ACTIVE_EXPERIENCE_LEARNING, MUTATION_CREATE_EXPERIENCE_LEARNING, MUTATION_DELETE_EXPERIENCE_LEARNING, MUTATION_UPDATE_EXPERIENCE_LEARNING } from '../graphql/ExperienceLearning/ExperienceLearningMutations';
-import { QUERY_GET_ALL_EXPERIENCE_LEARNING, QUERY_GET_EXPERIENCE_LEARNING, QUERY_GET_DROPDOWNS_EXPERIENCE_LEARNING, QUERY_GET_ALL_EXPERIENCE_LEARNING_ASIGNATURE_COURSE, QUERY_GET_ALL_NAVIGATION_METHOD_QUESTION_TEST_ONLINE, QUERY_GET_ALL_EXPERIENCE_TYPE, QUERY_GET_ACADEMIC_PERIODS_EXPERIENCE_LEARNING } from '../graphql/ExperienceLearning/ExperienceLearningQueries';
+import { QUERY_GET_ALL_EXPERIENCE_LEARNING, QUERY_GET_EXPERIENCE_LEARNING, QUERY_GET_DROPDOWNS_EXPERIENCE_LEARNING, QUERY_GET_ALL_EXPERIENCE_LEARNING_ASIGNATURE_COURSE, QUERY_GET_ALL_NAVIGATION_METHOD_QUESTION_TEST_ONLINE, QUERY_GET_ALL_EXPERIENCE_TYPE, QUERY_GET_ACADEMIC_PERIODS_EXPERIENCE_LEARNING, QUERY_GET_ALL_EXPERIENCE_LEARNING_ASIGNATURE_COURSE_WHITOUT_CAMPUSID } from '../graphql/ExperienceLearning/ExperienceLearningQueries';
 
 
 export const getListAllExperienceLearning = (campusId:string, academicAsignatureCourseId : string, academicPeriodId: string) => {
@@ -13,6 +13,29 @@ export const getListAllExperienceLearning = (campusId:string, academicAsignature
           query: QUERY_GET_ALL_EXPERIENCE_LEARNING,
           variables:{
             campusId,
+            academicAsignatureCourseId,
+            academicPeriodId,
+          },
+        })
+        .then((result: any) => {
+          listData = result.data.data.edges;
+        });
+      return listData;
+    } catch (error) {
+      createNotification('error', 'error', '');
+      return error;
+    }
+  };
+};
+
+export const getAllExperienceLearningWhitoutCampusId = (academicAsignatureCourseId : string, academicPeriodId: string) => {
+  return async (dispatch: any) => {
+    try {
+      let listData = {};
+      await client
+        .query({
+          query: QUERY_GET_ALL_EXPERIENCE_LEARNING_ASIGNATURE_COURSE_WHITOUT_CAMPUSID,
+          variables:{
             academicAsignatureCourseId,
             academicPeriodId,
           },
