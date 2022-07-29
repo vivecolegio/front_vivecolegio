@@ -14,6 +14,9 @@ import * as StudentActions from '../../../stores/actions/StudentActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import AddNewModal from '../../common/Data/AddNewModal';
 import CreateEditAuditInformation from '../../common/Data/CreateEditAuditInformation';
+import FormGroupCustom from '../../common/Data/FormGroupCustom';
+import LabelCustom from '../../common/Data/LabelCustom';
+import RequiredMessagesCustom from '../../common/Data/RequiredMessagesCustom';
 import { Loader } from '../../common/Loader';
 
 const StudentAddCourse = (props: any) => {
@@ -24,7 +27,7 @@ const StudentAddCourse = (props: any) => {
   const [students, setStudents] = useState(null);
 
   const methods = useForm({
-    mode: 'onChange',
+    mode: 'all',
     reValidateMode: 'onChange',
   });
 
@@ -32,7 +35,7 @@ const StudentAddCourse = (props: any) => {
   const academicGradeId = params.get('gradeId');
   const courseId = params.get('courseId');
 
-  const { handleSubmit, control, register, reset, setValue, getValues } = methods;
+  const { handleSubmit, control, register, reset, setValue, formState, trigger } = methods;
 
   useEffect(() => {
     cleanForm();
@@ -97,10 +100,8 @@ const StudentAddCourse = (props: any) => {
             hideFooter={true}
           >
             <ModalBody>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="menu.students" />
-                </Label>
+              <FormGroupCustom>
+                <LabelCustom id="menu.students" />
                 <Select
                   isClearable
                   placeholder={<IntlMessages id="forms.select" />}
@@ -113,13 +114,14 @@ const StudentAddCourse = (props: any) => {
                     setStudents(selectedOption);
                   }}
                 />
-              </div>
+              </FormGroupCustom>
               <div className="form-group d-flex justify-content-center">
                 <Button
                   className='text-center'
                   onClick={() => {
                     return addStudentsCourse();
                   }}
+                  disabled={students === null || students?.length == 0}
                   color="primary">
                   <i className='iconsminds-add font-1rem mr-2' />
                   Vincular

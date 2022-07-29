@@ -10,6 +10,9 @@ import { Colxx } from '../../common/CustomBootstrap';
 import AddNewModal from '../../common/Data/AddNewModal';
 import CreateEditAuditInformation from '../../common/Data/CreateEditAuditInformation';
 import { useSearchParams } from 'react-router-dom';
+import FormGroupCustom from '../../common/Data/FormGroupCustom';
+import LabelCustom from '../../common/Data/LabelCustom';
+import RequiredMessagesCustom from '../../common/Data/RequiredMessagesCustom';
 
 const GradeAssignmentCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
@@ -21,14 +24,14 @@ const GradeAssignmentCreateEdit = (props: any) => {
   const [asignature, setAsignature] = useState(null);
 
   const methods = useForm({
-    mode: 'onChange',
+    mode: 'all',
     reValidateMode: 'onChange',
   });
 
   let [params] = useSearchParams();
   const academicGradeId = params.get('academicGradeId');
 
-  const { handleSubmit, control, register, reset, setValue, getValues } = methods;
+  const { handleSubmit, control, register, reset, setValue, formState, trigger } = methods;
 
   useEffect(() => {
     cleanForm();
@@ -58,6 +61,18 @@ const GradeAssignmentCreateEdit = (props: any) => {
           value: props?.data?.academicGrade?.id,
         });
       }
+      register('academicAsignatureId', {
+        required: true,
+        value: props?.data?.id ? props?.data?.academicAsignatureId : '',
+      });
+      register('academicGradeId', {
+        required: true,
+        value: props?.data?.id ? props?.data?.academicGradeId : '',
+      });
+      register('schoolId', {
+        required: true,
+        value: props?.data?.id ? props?.data?.schoolId : '',
+      });
     }
     setLoading(false);
   }, [props?.data]);
@@ -111,18 +126,6 @@ const GradeAssignmentCreateEdit = (props: any) => {
     required: true,
     value: props?.data?.id ? props?.data?.maxHourlyIntensity : '',
   });
-  register('academicAsignatureId', {
-    required: true,
-    value: props?.data?.id ? props?.data?.academicAsignatureId : '',
-  });
-  register('academicGradeId', {
-    required: true,
-    value: props?.data?.id ? props?.data?.academicGradeId : '',
-  });
-  register('schoolId', {
-    required: true,
-    value: props?.data?.id ? props?.data?.schoolId : '',
-  });
 
   const auditInfo = {
     createdAt: props?.data?.id ? props?.data?.createdAt : null,
@@ -155,10 +158,8 @@ const GradeAssignmentCreateEdit = (props: any) => {
             handleSubmit={handleSubmit}
           >
             <ModalBody>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="menu.asignature" />
-                </Label>
+              <FormGroupCustom>
+                <LabelCustom id="menu.asignature" required={true} />
                 <Select
                   isClearable
                   placeholder={<IntlMessages id="forms.select" />}
@@ -170,36 +171,34 @@ const GradeAssignmentCreateEdit = (props: any) => {
                   onChange={(selectedOption) => {
                     setValue('academicAsignatureId', selectedOption?.key);
                     setAsignature(selectedOption);
+                    trigger('academicAsignatureId')
                   }}
                 />
-              </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="forms.hourlyIntensity" /> -
-                  <IntlMessages id="forms.minimum" />
-                </Label>
+                <RequiredMessagesCustom formState={formState} register={"academicAsignatureId"} />
+              </FormGroupCustom>
+              <FormGroupCustom>
+                <LabelCustom id="forms.minHourlyIntensity" required={true} />
                 <Input
                   {...minHourlyIntensityRest}
                   innerRef={minHourlyIntensityRef}
                   className="form-control"
+                  type="number" step="1" min={1}
                 />
-              </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="forms.hourlyIntensity" /> -
-                  <IntlMessages id="forms.maximum" />
-                </Label>
+                <RequiredMessagesCustom formState={formState} register={"minHourlyIntensity"} />
+              </FormGroupCustom>
+              <FormGroupCustom>
+                <LabelCustom id="forms.maxHourlyIntensity" required={true} />
                 <Input
                   {...maxHourlyIntensityRest}
                   innerRef={maxHourlyIntensityRef}
                   className="form-control"
+                  type="number" step="1" min={1}
                 />
-              </div>
+                <RequiredMessagesCustom formState={formState} register={"maxHourlyIntensity"} />
+              </FormGroupCustom>
               {!props?.loginReducer?.schoolId ? (
-                <div className="form-group">
-                  <Label>
-                    <IntlMessages id="menu.school" />
-                  </Label>
+                <FormGroupCustom>
+                  <LabelCustom id="menu.school" />
                   <Select
                     isClearable
                     placeholder={<IntlMessages id="forms.select" />}
@@ -211,9 +210,11 @@ const GradeAssignmentCreateEdit = (props: any) => {
                     onChange={(selectedOption) => {
                       setValue('schoolId', selectedOption?.key);
                       setSchool(selectedOption);
+                      trigger('schoolId')
                     }}
                   />
-                </div>
+                  <RequiredMessagesCustom formState={formState} register={"schoolId"} />
+                </FormGroupCustom>
               ) : (
                 ''
               )}

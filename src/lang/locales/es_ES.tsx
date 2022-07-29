@@ -253,6 +253,8 @@ const esMessages = {
   'forms.folioNumber': 'Número de folio',
   'forms.indicator': 'Indicador',
   'forms.hourlyIntensity': 'Intensidad Horaria',
+  'forms.minHourlyIntensity': 'Intensidad Horaria - Minima',
+  'forms.maxHourlyIntensity': 'Intensidad Horaria - Maxima',
   'forms.gradeAssignment': 'Asignación de grado',
   'forms.workingDays': 'Días',
   'forms.permissions': 'Permisos',
