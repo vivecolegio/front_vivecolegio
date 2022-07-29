@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+
 import { COLUMN_LIST } from '../../../constants/Municipality/MunicipalityConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as municipalityActions from '../../../stores/actions/MunicipalityActions';
@@ -111,6 +112,7 @@ const MunicipalityList = (props: any) => {
             changeActiveData={changeActiveData}
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
+            refreshDataTable={refreshDataTable}
           />
           <MunicipalityCreateEdit
             data={data}

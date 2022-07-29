@@ -105,6 +105,7 @@ const RoleList = (props: any) => {
             changeActiveData={changeActiveData}
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
+            refreshDataTable={refreshDataTable}
           />
           <RoleCreateEdit
             data={data}

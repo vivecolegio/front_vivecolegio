@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+
 import { COLUMN_LIST } from '../../../../constants/GeneralAcademicAsignature/generalAcademicAsignature';
 import { createNotification } from '../../../../helpers/Notification';
 import * as asignatureActions from '../../../../stores/actions/GeneralAcademic/AsignatureActions';
@@ -119,6 +120,7 @@ const GeneralAsignatureList = (props: any) => {
             changeActiveData={changeActiveData}
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
+            refreshDataTable={refreshDataTable}
           />
           <AsignatureCreateEdit
             data={data}

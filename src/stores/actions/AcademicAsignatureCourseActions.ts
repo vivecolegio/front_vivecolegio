@@ -106,7 +106,7 @@ export const saveNewAcademicAsignatureCourse = (data: any) => {
         ...data,
       };
       let dataCreate = null;
-      model.weight = model.weight && !isNaN(model.weight) ? parseFloat(model.weight) : 0;
+      model.hourlyIntensity = model.hourlyIntensity && !isNaN(model.hourlyIntensity) ? parseFloat(model.hourlyIntensity) : 0;
       await client
         .mutate({
           mutation: MUTATION_CREATE_ACADEMIC_ASIGNATURE_COURSE,
@@ -142,7 +142,7 @@ export const updateAcademicAsignatureCourse = (data: any, id: any) => {
         ...data,
       };
       let dataUpdate = null;
-      model.weight = model.weight && !isNaN(model.weight) ? parseFloat(model.weight) : 0;
+      model.hourlyIntensity = model.hourlyIntensity && !isNaN(model.hourlyIntensity) ? parseFloat(model.hourlyIntensity) : 0;
       await client
         .mutate({
           mutation: MUTATION_UPDATE_ACADEMIC_ASIGNATURE_COURSE,

@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { useSearchParams } from 'react-router-dom';
-import { COLUMN_LIST } from '../../../constants/GradeAssignment/gradeAssignmentConstants';
 import { useNavigate } from 'react-router';
+import { useSearchParams } from 'react-router-dom';
+
+import { COLUMN_LIST } from '../../../constants/GradeAssignment/gradeAssignmentConstants';
 import * as gradeAssignmentActions from '../../../stores/actions/GradeAssignmentActions';
+import { Colxx } from '../../common/CustomBootstrap';
 import DataList from '../../common/Data/DataList';
 import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
-import { Colxx } from '../../common/CustomBootstrap';
 import { Loader } from '../../common/Loader';
 
 const GradeAssignmentReferentsList = (props: any) => {
@@ -37,6 +38,25 @@ const GradeAssignmentReferentsList = (props: any) => {
   const goToChildren = async (url: string) => {
     navigate(url);
   };
+
+  const refreshDataTable = async () => {
+    setDataTable(null);
+    await getDataTable();
+  };
+
+  const getDataTable = async () => {
+    props.getListAllGradeAssignmentByAsignature(props?.loginReducer?.schoolId, academicAsignatureId).then((listData: any) => {
+      setDataTable(
+        listData.map((c: any) => {
+          c.node.grade_format = c.node.academicGrade ? c.node.academicGrade.name : '';
+          c.node.asignature_format = c.node.academicAsignature
+            ? c.node.academicAsignature.name
+            : '';
+          return c;
+        }),
+      );
+    });
+  }
 
   const additionalFunction = async (item: any, btn: any) => {
     console.log(item)
@@ -75,7 +95,7 @@ const GradeAssignmentReferentsList = (props: any) => {
             childrenButtons={[
               {
                 id: 0,
-                label: 'Estándares',
+                label: 'Estándares / Lineamientos',
                 color: 'secondary',
                 icon: 'iconsminds-check',
                 action: 'goToChildrenStandard',
@@ -96,6 +116,7 @@ const GradeAssignmentReferentsList = (props: any) => {
               },
             ]}
             withChildren={true}
+            refreshDataTable={refreshDataTable}
           />
         </>
       ) : (

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+
 import { COLUMN_LIST } from '../../../../constants/Grade/gradeConstants';
 import { createNotification } from '../../../../helpers/Notification';
 import * as gradeActions from '../../../../stores/actions/GeneralAcademic/GradeActions';
@@ -123,6 +124,7 @@ const GeneralGradeList = (props: any) => {
             changeActiveData={changeActiveData}
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
+            refreshDataTable={refreshDataTable}
           />
           <GradeCreateEdit
             data={data}

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
+
 import { COLUMN_LIST } from '../../../constants/GradeAssignment/gradeAssignmentConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as academicIndicatorActions from '../../../stores/actions/GradeAssignmentActions';
@@ -135,6 +136,7 @@ const GradeAssignmentList = (props: any) => {
             changeActiveData={changeActiveData}
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
+            refreshDataTable={refreshDataTable}
           />
           <GradeAssignmentCreateEdit
             data={data}

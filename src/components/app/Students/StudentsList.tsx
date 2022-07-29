@@ -1,15 +1,15 @@
-/* eslint-disable no-await-in-loop */
-import { Loader } from '../../common/Loader';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+
 import { COLUMN_LIST } from '../../../constants/Student/studentConstants';
-import * as userActions from '../../../stores/actions/UserActions';
 import { createNotification } from '../../../helpers/Notification';
 import * as studentActions from '../../../stores/actions/StudentActions';
+import * as userActions from '../../../stores/actions/UserActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import DataList from '../../common/Data/DataList';
+/* eslint-disable no-await-in-loop */
+import { Loader } from '../../common/Loader';
 import StudentCreateEdit from './StudentsCreateEdit';
-
 
 const StudentList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
@@ -160,6 +160,7 @@ const StudentList = (props: any) => {
               },
             ]}
             withChildren={true}
+            refreshDataTable={refreshDataTable}
           />
           <StudentCreateEdit
             data={data}

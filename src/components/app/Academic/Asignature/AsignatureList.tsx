@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
+
 import { COLUMN_LIST } from '../../../../constants/Asignature/asignatureConstants';
 import { createNotification } from '../../../../helpers/Notification';
 import * as asignatureActions from '../../../../stores/actions/Academic/AsignatureActions';
@@ -126,6 +127,7 @@ const AsignatureList = (props: any) => {
             changeActiveData={changeActiveData}
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
+            refreshDataTable={refreshDataTable}
           />
           <AsignatureCreateEdit
             data={data}

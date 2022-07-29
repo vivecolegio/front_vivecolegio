@@ -4,11 +4,15 @@ import { useIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
+
 import IntlMessages from '../../../helpers/IntlMessages';
 import * as componentEvaluativeActions from '../../../stores/actions/ComponentEvaluativeActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import AddNewModal from '../../common/Data/AddNewModal';
 import CreateEditAuditInformation from '../../common/Data/CreateEditAuditInformation';
+import FormGroupCustom from '../../common/Data/FormGroupCustom';
+import LabelCustom from '../../common/Data/LabelCustom';
+import RequiredMessagesCustom from '../../common/Data/RequiredMessagesCustom';
 import { Loader } from '../../common/Loader';
 
 const ComponentEvaluativeCreateEdit = (props: any) => {
@@ -24,11 +28,11 @@ const ComponentEvaluativeCreateEdit = (props: any) => {
   const intl = useIntl();
 
   const methods = useForm({
-    mode: 'onChange',
+    mode: 'all',
     reValidateMode: 'onChange',
   });
 
-  const { handleSubmit, control, register, reset, setValue, getValues } = methods;
+  const { handleSubmit, control, register, reset, setValue, formState, trigger } = methods;
 
   useEffect(() => {
     cleanForm();
@@ -65,6 +69,22 @@ const ComponentEvaluativeCreateEdit = (props: any) => {
           }),
         );
       }
+      register('schoolId', {
+        required: true,
+        value: props?.data?.id ? props?.data?.schoolId : '',
+      });
+      register('type', {
+        required: true,
+        value: props?.data?.id ? props?.data?.type : '',
+      });
+      register('academicAreasId', {
+        required: props?.data?.type == 'AREA' ? true : false,
+        value: props?.data?.id ? props?.data?.academicAreasId : '',
+      });
+      register('academicAsignaturesId', {
+        required: props?.data?.type == 'ASIGNATURE' ? true : false,
+        value: props?.data?.id ? props?.data?.academicAsignaturesId : '',
+      });
     }
     setLoading(false);
   }, [props?.data]);
@@ -118,22 +138,6 @@ const ComponentEvaluativeCreateEdit = (props: any) => {
     required: true,
     value: props?.data?.id ? props?.data?.weight : '',
   });
-  register('schoolId', {
-    required: true,
-    value: props?.data?.id ? props?.data?.schoolId : '',
-  });
-  register('type', {
-    required: true,
-    value: props?.data?.id ? props?.data?.type : '',
-  });
-  register('academicAreasId', {
-    required: true,
-    value: props?.data?.id ? props?.data?.academicAreasId : '',
-  });
-  register('academicAsignaturesId', {
-    required: true,
-    value: props?.data?.id ? props?.data?.academicAsignaturesId : '',
-  });
 
   const auditInfo = {
     createdAt: props?.data?.id ? props?.data?.createdAt : null,
@@ -166,23 +170,19 @@ const ComponentEvaluativeCreateEdit = (props: any) => {
             handleSubmit={handleSubmit}
           >
             <ModalBody>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="forms.name" />
-                </Label>
+              <FormGroupCustom>
+                <LabelCustom id="forms.name" required={true} />
                 <Input {...nameRest} innerRef={nameRef} className="form-control" />
-              </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="forms.weight" />
-                </Label>
+                <RequiredMessagesCustom formState={formState} register={"name"} />
+              </FormGroupCustom>
+              <FormGroupCustom>
+                <LabelCustom id="forms.weight" required={true} />
                 <Input {...weightRest} innerRef={weightRef} className="form-control" />
-              </div>
+                <RequiredMessagesCustom formState={formState} register={"weight"} />
+              </FormGroupCustom>
               <>
-                <div className="form-group">
-                  <Label>
-                    <IntlMessages id="forms.type" />
-                  </Label>
+                <FormGroupCustom>
+                  <LabelCustom id="forms.type" required={true} />
                   <Select
                     isClearable
                     placeholder={<IntlMessages id="forms.select" />}
@@ -198,17 +198,25 @@ const ComponentEvaluativeCreateEdit = (props: any) => {
                       setAcademicAreas(null);
                       setValue('academicAsignaturesId', null);
                       setAcademicAsignatures(null);
+                      register('academicAreasId', {
+                        required: props?.data?.type == 'AREA' ? true : false,
+                        value: props?.data?.id ? props?.data?.academicAreasId : '',
+                      });
+                      register('academicAsignaturesId', {
+                        required: props?.data?.type == 'ASIGNATURE' ? true : false,
+                        value: props?.data?.id ? props?.data?.academicAsignaturesId : '',
+                      });
+                      trigger('type');
                     }}
                   />
-                </div>
+                  <RequiredMessagesCustom formState={formState} register={"type"} />
+                </FormGroupCustom>
                 {type ? (
                   <>
                     {type?.key === 'AREA' ? (
                       <>
-                        <div className="form-group">
-                          <Label>
-                            <IntlMessages id="menu.areas" />
-                          </Label>
+                        <FormGroupCustom>
+                          <LabelCustom id="menu.areas" required={true} />
                           <Select
                             isClearable
                             placeholder={<IntlMessages id="forms.select" />}
@@ -226,19 +234,19 @@ const ComponentEvaluativeCreateEdit = (props: any) => {
                                 }),
                               );
                               setAcademicAreas(selectedOption);
+                              trigger('academicAreasId');
                             }}
                           />
-                        </div>
+                          <RequiredMessagesCustom formState={formState} register={"academicAreasId"} />
+                        </FormGroupCustom>
                       </>
                     ) : (
                       ''
                     )}
                     {type?.key === 'ASIGNATURE' ? (
                       <>
-                        <div className="form-group">
-                          <Label>
-                            <IntlMessages id="menu.asignatures" />
-                          </Label>
+                        <FormGroupCustom>
+                          <LabelCustom id="menu.asignatures" required={true} />
                           <Select
                             isClearable
                             placeholder={<IntlMessages id="forms.select" />}
@@ -256,9 +264,11 @@ const ComponentEvaluativeCreateEdit = (props: any) => {
                                 }),
                               );
                               setAcademicAsignatures(selectedOption);
+                              trigger('academicAsignaturesId');
                             }}
                           />
-                        </div>
+                          <RequiredMessagesCustom formState={formState} register={"academicAsignaturesId"} />
+                        </FormGroupCustom>
                       </>
                     ) : (
                       ''
@@ -269,10 +279,8 @@ const ComponentEvaluativeCreateEdit = (props: any) => {
                 )}
               </>
               {!props?.loginReducer?.schoolId ? (
-                <div className="form-group">
-                  <Label>
-                    <IntlMessages id="menu.school" />
-                  </Label>
+                <FormGroupCustom>
+                  <LabelCustom id="menu.school" required={true} />
                   <Select
                     isClearable
                     placeholder={<IntlMessages id="forms.select" />}
@@ -284,9 +292,10 @@ const ComponentEvaluativeCreateEdit = (props: any) => {
                     onChange={(selectedOption) => {
                       setValue('schoolId', selectedOption?.key);
                       setSchool(selectedOption);
+                      trigger("schoolId");
                     }}
                   />
-                </div>
+                </FormGroupCustom>
               ) : (
                 ''
               )}

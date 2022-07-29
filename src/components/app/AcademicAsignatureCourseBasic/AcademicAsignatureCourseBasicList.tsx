@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
+import Select from 'react-select';
 import { Button } from 'reactstrap';
+
 import { COLUMN_LIST } from '../../../constants/AcademicAsignatureCourse/AcademicAsignatureCourseConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as academicIndicatorActions from '../../../stores/actions/AcademicAsignatureCourseActions';
@@ -12,7 +14,6 @@ import DataList from '../../common/Data/DataList';
 import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
 import { Loader } from '../../common/Loader';
 import AcademicAsignatureCourseCreateEdit from './AcademicAsignatureCourseBasicCreateEdit';
-import Select from 'react-select';
 
 const AcademicAsignatureCourseBasicList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
@@ -27,8 +28,18 @@ const AcademicAsignatureCourseBasicList = (props: any) => {
   let [params] = useSearchParams();
   const courseId = params.get('courseId');
   const courseName = params.get('courseName');
-
+  const currentUrl = location.pathname;
   const [data, setData] = useState(null);
+  const [currentMenu, setCurrentMenu] = useState({
+    createAction: false,
+    deleteAction: false,
+    updateAction: false,
+    readAction: false,
+    fullAccess: false,
+    activateAction: false,
+    inactiveAction: false,
+  });
+
   useEffect(() => {
     let { roleMenus } = props.loginReducer;
     let submenus: any = [];
@@ -37,6 +48,12 @@ const AcademicAsignatureCourseBasicList = (props: any) => {
     });
     setCurrentMenuPermissionSpreadsheet(submenus.find((c: any) => { return (c?.module?.url == 'see_valuations_asignature_course_permit') }));
     setCurrentMenuPermissionExperienceLearning(submenus.find((c: any) => { return (c?.module?.url == 'see_experience_learnig_asignature_course_permit') }));
+
+    let cm = submenus.find((c: any) => { return (currentUrl === c?.module?.url) });
+    if (cm && cm.readAction) {
+      setCurrentMenu(cm);
+    }
+
 
     props
       .getListAllAcademicAsignatureCourseByCourse(props?.loginReducer?.campusId, courseId)
@@ -229,7 +246,7 @@ const AcademicAsignatureCourseBasicList = (props: any) => {
             <div className="d-flex justify-content-start align-items-center w-100">
               <HeaderInfoAcademic generic={{ title: 'Curso', value: courseName }} goTitle="Regresar a cursos" />
             </div>
-            {teachersList?.length > 0 ?
+            {currentMenu?.updateAction && teachersList?.length > 0 ?
               <div className="d-flex justify-content-start align-items-center">
                 <Select
                   isClearable
@@ -284,6 +301,7 @@ const AcademicAsignatureCourseBasicList = (props: any) => {
               },
             ]}
             withChildren={true}
+            refreshDataTable={refreshDataTable}
           />
           <AcademicAsignatureCourseCreateEdit
             data={data}

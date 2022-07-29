@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+
 import { COLUMN_LIST } from '../../../constants/EducationLevel/EducationLevelConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as educationLevelActions from '../../../stores/actions/EducationLevelActions';
@@ -111,6 +112,7 @@ const EducationLevelList = (props: any) => {
             changeActiveData={changeActiveData}
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
+            refreshDataTable={refreshDataTable}
           />
           <EdicationLevelCreateEdit
             data={data}

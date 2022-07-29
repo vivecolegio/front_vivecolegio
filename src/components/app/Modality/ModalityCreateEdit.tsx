@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Loader } from '../../common/Loader';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
+
 import IntlMessages from '../../../helpers/IntlMessages';
 import * as modalityActions from '../../../stores/actions/ModalityActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import AddNewModal from '../../common/Data/AddNewModal';
 import CreateEditAuditInformation from '../../common/Data/CreateEditAuditInformation';
+import FormGroupCustom from '../../common/Data/FormGroupCustom';
+import LabelCustom from '../../common/Data/LabelCustom';
+import RequiredMessagesCustom from '../../common/Data/RequiredMessagesCustom';
+import { Loader } from '../../common/Loader';
 
 const ModalityCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
@@ -16,11 +20,11 @@ const ModalityCreateEdit = (props: any) => {
   const [school, setSchool] = useState(null);
 
   const methods = useForm({
-    mode: 'onChange',
+    mode: 'all',
     reValidateMode: 'onChange',
   });
 
-  const { handleSubmit, control, register, reset, setValue, getValues } = methods;
+  const { handleSubmit, control, register, reset, setValue, formState, trigger } = methods;
 
   useEffect(() => {
     cleanForm();
@@ -33,6 +37,10 @@ const ModalityCreateEdit = (props: any) => {
           value: props?.data?.school?.id,
         });
       }
+      register('schoolId', {
+        required: true,
+        value: props?.data?.id ? props?.data?.schoolId : '',
+      });
     }
     setLoading(false);
   }, [props?.data]);
@@ -64,13 +72,10 @@ const ModalityCreateEdit = (props: any) => {
     value: props?.data?.id ? props?.data?.name : '',
   });
   const { ref: codeRef, ...codeRest } = register('code', {
-    required: true,
+    required: false,
     value: props?.data?.id ? props?.data?.code : '',
   });
-  register('schoolId', {
-    required: true,
-    value: props?.data?.id ? props?.data?.schoolId : '',
-  });
+
 
   const auditInfo = {
     createdAt: props?.data?.id ? props?.data?.createdAt : null,
@@ -103,23 +108,18 @@ const ModalityCreateEdit = (props: any) => {
             handleSubmit={handleSubmit}
           >
             <ModalBody>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="forms.name" />
-                </Label>
+              <FormGroupCustom>
+                <LabelCustom id="forms.name" required={true} />
                 <Input {...nameRest} innerRef={nameRef} className="form-control" />
-              </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="forms.code" />
-                </Label>
+                <RequiredMessagesCustom formState={formState} register={"name"} />
+              </FormGroupCustom>
+              <FormGroupCustom>
+                <LabelCustom id="forms.code" required={false} />
                 <Input {...codeRest} innerRef={codeRef} className="form-control" />
-              </div>
+              </FormGroupCustom>
               {!props?.loginReducer?.schoolId ? (
-                <div className="form-group">
-                  <Label>
-                    <IntlMessages id="menu.school" />
-                  </Label>
+                <FormGroupCustom>
+                  <LabelCustom id="menu.school" required={true} />
                   <Select
                     isClearable
                     placeholder={<IntlMessages id="forms.select" />}
@@ -133,7 +133,7 @@ const ModalityCreateEdit = (props: any) => {
                       setSchool(selectedOption);
                     }}
                   />
-                </div>
+                </FormGroupCustom>
               ) : (
                 ''
               )}

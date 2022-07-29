@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+
 import { COLUMN_LIST } from '../../../../constants/Cycle/cycleConstants';
 import { createNotification } from '../../../../helpers/Notification';
 import * as cycleActions from '../../../../stores/actions/GeneralAcademic/CycleActions';
@@ -112,6 +113,7 @@ const GeneralCycleList = (props: any) => {
             changeActiveData={changeActiveData}
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
+            refreshDataTable={refreshDataTable}
           />
           <CycleCreateEdit
             data={data}

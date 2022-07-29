@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
+
 import { COLUMN_LIST } from '../../../constants/ExperienceLearningRubricCriteria/experienceLearningRubricCriteriaConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as academicPeriodActions from '../../../stores/actions/AcademicPeriodActions';
@@ -222,6 +223,7 @@ const ExperienceLearningRubricCriteriaList = (props: any) => {
                 </div>
               </>
             }
+            refreshDataTable={refreshDataTable}
           />
           <ExperienceLearningRubricCriteriaCreateEdit
             data={data}

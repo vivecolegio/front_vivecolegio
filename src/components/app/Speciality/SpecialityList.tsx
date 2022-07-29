@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+
 import { COLUMN_LIST } from '../../../constants/Speciality/SpecialityConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as specialityActions from '../../../stores/actions/SpecialityActions';
@@ -122,6 +123,7 @@ const SpecialityList = (props: any) => {
             changeActiveData={changeActiveData}
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
+            refreshDataTable={refreshDataTable}
           />
           <SpecialityCreateEdit
             data={data}

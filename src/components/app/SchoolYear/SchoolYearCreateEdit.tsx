@@ -3,12 +3,16 @@ import DatePicker from 'react-datepicker';
 import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
 import Select from 'react-select';
-import { FormGroup, Input, Label, ModalBody, ModalFooter } from 'reactstrap';
+import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
+
 import IntlMessages from '../../../helpers/IntlMessages';
 import * as schoolYearActions from '../../../stores/actions/SchoolYearActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import AddNewModal from '../../common/Data/AddNewModal';
 import CreateEditAuditInformation from '../../common/Data/CreateEditAuditInformation';
+import FormGroupCustom from '../../common/Data/FormGroupCustom';
+import LabelCustom from '../../common/Data/LabelCustom';
+import RequiredMessagesCustom from '../../common/Data/RequiredMessagesCustom';
 import { Loader } from '../../common/Loader';
 
 const SchoolYearCreateEdit = (props: any) => {
@@ -42,6 +46,18 @@ const SchoolYearCreateEdit = (props: any) => {
       if (props?.data?.endDate !== undefined && props?.data?.endDate != null) {
         setEndDate(new Date(props?.data?.endDate));
       }
+      register('schoolId', {
+        required: true,
+        value: props?.data?.id ? props?.data?.schoolId : '',
+      });
+      register('startDate', {
+        required: true,
+        value: props?.data?.id ? props?.data?.startDate : '',
+      });
+      register('endDate', {
+        required: true,
+        value: props?.data?.id ? props?.data?.endDate : '',
+      });
     }
     setLoading(false);
   }, [props?.data]);
@@ -71,24 +87,13 @@ const SchoolYearCreateEdit = (props: any) => {
   };
 
   const { ref: folioNumberRef, ...folioNumberRest } = register('folioNumber', {
-    required: true,
+    required: false,
     value: props?.data?.id ? props?.data?.folioNumber : '',
   });
+
   const { ref: schoolYearRef, ...schoolYearRest } = register('schoolYear', {
     required: true,
     value: props?.data?.id ? props?.data?.schoolYear : '',
-  });
-  register('startDate', {
-    required: true,
-    value: props?.data?.id ? props?.data?.startDate : '',
-  });
-  register('endDate', {
-    required: true,
-    value: props?.data?.id ? props?.data?.endDate : '',
-  });
-  register('schoolId', {
-    required: true,
-    value: props?.data?.id ? props?.data?.schoolId : '',
   });
 
   const auditInfo = {
@@ -120,57 +125,48 @@ const SchoolYearCreateEdit = (props: any) => {
             methods={methods}
             control={control}
             handleSubmit={handleSubmit}
-            formState={formState}
           >
-            <ModalBody className="av-tooltip tooltip-label-right">
-              <FormGroup className="form-group">
-                <Label>
-                  <IntlMessages id="menu.schoolYear" />
-                </Label>
+            <ModalBody >
+              <FormGroupCustom>
+                <LabelCustom id="menu.schoolYear" required={true} />
                 <Input {...schoolYearRest} innerRef={schoolYearRef} className="form-control" />
-                {/* <div className="invalid-feedback d-block">
-                  {"errors"}
-                </div> */}
-              </FormGroup>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="forms.folioNumber" />
-                </Label>
+                <RequiredMessagesCustom formState={formState} register={"schoolYear"} />
+              </FormGroupCustom>
+              <FormGroupCustom>
+                <LabelCustom id="forms.folioNumber" required={false} />
                 <Input {...folioNumberRest} innerRef={folioNumberRef} className="form-control" />
-              </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="forms.startDate" />
-                </Label>
+              </FormGroupCustom>
+              <FormGroupCustom>
+                <LabelCustom id="forms.startDate" required={true} />
                 <DatePicker
                   {...register('startDate', { required: true })}
                   selected={startDate}
                   onChange={(date: any) => {
                     setValue('startDate', date as Date);
                     setStartDate(date as Date);
-                    trigger("startDate");
+                    trigger('startDate');
                   }}
                 />
-              </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="forms.endDate" />
-                </Label>
+                <RequiredMessagesCustom formState={formState} register={"startDate"} />
+              </FormGroupCustom>
+              <FormGroupCustom>
+                <LabelCustom id="forms.endDate" required={true} />
                 <DatePicker
                   {...register('endDate', { required: true })}
                   selected={endDate}
                   onChange={(date: any) => {
                     setValue('endDate', date as Date);
                     setEndDate(date as Date);
-                    trigger("endDate");
+                    trigger('endDate');
                   }}
+                  minDate={startDate}
+                  disabled={startDate == null}
                 />
-              </div>
+                <RequiredMessagesCustom formState={formState} register={"endDate"} />
+              </FormGroupCustom>
               {!props?.loginReducer?.schoolId ? (
-                <div className="form-group">
-                  <Label>
-                    <IntlMessages id="menu.school" />
-                  </Label>
+                <FormGroupCustom>
+                  <LabelCustom id="menu.school" required={true} />
                   <Select
                     isClearable
                     placeholder={<IntlMessages id="forms.select" />}
@@ -185,7 +181,7 @@ const SchoolYearCreateEdit = (props: any) => {
                       trigger("schoolId");
                     }}
                   />
-                </div>
+                </FormGroupCustom>
               ) : (
                 ''
               )}

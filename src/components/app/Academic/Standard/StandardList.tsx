@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
+
 import { COLUMN_LIST } from '../../../../constants/Standard/standardConstants';
 import { createNotification } from '../../../../helpers/Notification';
 import * as standardActions from '../../../../stores/actions/Academic/StandardActions';
@@ -128,6 +129,7 @@ const StandardList = (props: any) => {
       {' '}
       {dataTable !== null ? (
         <>
+          <HeaderInfoAcademic asignature cicle goTitle={gradeAssignment ? "Regresar a grados" : "Regresar a carga académica"} gradeAssignment={gradeAssignment} academicAsignatureCourseId={academicAsignatureCourseId} />
           <DataList
             data={dataTable}
             columns={columns}
@@ -139,11 +141,12 @@ const StandardList = (props: any) => {
             changeActiveData={changeActiveData}
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
-            header={
-              <>
-                <HeaderInfoAcademic asignature cicle goTitle={gradeAssignment ? "Regresar a grados" : "Regresar a carga académica"} gradeAssignment={gradeAssignment} academicAsignatureCourseId={academicAsignatureCourseId} />
-              </>
-            }
+            // header={
+            //   <>
+            //     <HeaderInfoAcademic asignature cicle goTitle={gradeAssignment ? "Regresar a grados" : "Regresar a carga académica"} gradeAssignment={gradeAssignment} academicAsignatureCourseId={academicAsignatureCourseId} />
+            //   </>
+            // }
+            refreshDataTable={refreshDataTable}
           />
           <StandardCreateEdit
             data={data}

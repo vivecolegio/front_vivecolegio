@@ -2,16 +2,20 @@ import { DevTool } from '@hookform/devtools';
 import React, { useEffect, useState } from 'react';
 import ReactDatePicker from 'react-datepicker';
 import { useForm } from 'react-hook-form';
-import { Loader } from '../../common/Loader';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
+
 import { loaderColor, loaderIcon } from '../../../constants/defaultValues';
 import IntlMessages from '../../../helpers/IntlMessages';
 import * as AdministratorActions from '../../../stores/actions/AdministratorCampusActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import AddNewModal from '../../common/Data/AddNewModal';
 import CreateEditAuditInformation from '../../common/Data/CreateEditAuditInformation';
+import FormGroupCustom from '../../common/Data/FormGroupCustom';
+import LabelCustom from '../../common/Data/LabelCustom';
+import RequiredMessagesCustom from '../../common/Data/RequiredMessagesCustom';
+import { Loader } from '../../common/Loader';
 
 const AdministratorCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
@@ -40,11 +44,11 @@ const AdministratorCreateEdit = (props: any) => {
   });
 
   const methods = useForm({
-    mode: 'onChange',
+    mode: 'all',
     reValidateMode: 'onChange',
   });
 
-  const { handleSubmit, control, register, reset, setValue, getValues } = methods;
+  const { handleSubmit, control, register, reset, setValue, formState, trigger } = methods;
 
   useEffect(() => {
     cleanForm();
@@ -118,6 +122,18 @@ const AdministratorCreateEdit = (props: any) => {
           value: props?.data?.user?.documentType?.id,
         });
       }
+      register('schoolId', {
+        required: true,
+        value: props?.data?.id ? props?.data?.schoolId : '',
+      });
+      register('campusId', {
+        required: true,
+        value: props?.data?.id ? props?.data?.campusId : '',
+      });
+      register('newUser', {
+        required: true,
+        value: newUser,
+      });
     }
     setLoading(false);
   }, [props?.data]);
@@ -188,23 +204,23 @@ const AdministratorCreateEdit = (props: any) => {
       let roles = data.dataRoles.edges;
       if (roles?.length == 1) {
         setRole({ label: roles[0].node.name, value: roles[0].node.id, key: roles[0].node.id });
-        setValue('newUser', { ...newUser, ...{ roleId: roles[0]?.node?.id } });
+        setValue('newUser', {
+          ...{
+            name: props?.data?.user?.name,
+            lastName: props?.data?.user?.lastName,
+            phone: props?.data?.user?.phone,
+            email: props?.data?.user?.email,
+            documentNumber: props?.data?.user?.documentNumber,
+            password: props?.data?.user?.password,
+            username: props?.data?.user?.username,
+            genderId: props?.data?.user?.genderId,
+            documentTypeId: props?.data?.user?.documentTypeId,
+            roleId: roles[0]?.node?.id
+          }
+        });
       }
     });
   };
-
-  register('schoolId', {
-    required: true,
-    value: props?.data?.id ? props?.data?.schoolId : '',
-  });
-  register('campusId', {
-    required: true,
-    value: props?.data?.id ? props?.data?.campusId : '',
-  });
-  register('newUser', {
-    required: true,
-    value: newUser,
-  });
 
   const auditInfo = {
     createdAt: props?.data?.id ? props?.data?.createdAt : null,
@@ -238,10 +254,8 @@ const AdministratorCreateEdit = (props: any) => {
             handleSubmit={handleSubmit}
           >
             <ModalBody>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="forms.name" />
-                </Label>
+              <FormGroupCustom>
+                <LabelCustom id="forms.name" required={true} />
                 <Input
                   name="name"
                   defaultValue={newUser.name}
@@ -250,11 +264,10 @@ const AdministratorCreateEdit = (props: any) => {
                     setNewUser({ ...newUser, ...{ name: data.target.value } });
                   }}
                 />
-              </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="forms.lastname" />
-                </Label>
+                <RequiredMessagesCustom formState={formState} register={"name"} />
+              </FormGroupCustom>
+              <FormGroupCustom>
+                <LabelCustom id="forms.lastname" required={true} />
                 <Input
                   name="lastName"
                   defaultValue={newUser.lastName}
@@ -263,11 +276,10 @@ const AdministratorCreateEdit = (props: any) => {
                     setNewUser({ ...newUser, ...{ lastName: data.target.value } });
                   }}
                 />
-              </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="forms.phone" />
-                </Label>
+                <RequiredMessagesCustom formState={formState} register={"lastname"} />
+              </FormGroupCustom>
+              <FormGroupCustom>
+                <LabelCustom id="forms.phone" required={false} />
                 <Input
                   name="phone"
                   defaultValue={newUser.phone}
@@ -276,11 +288,9 @@ const AdministratorCreateEdit = (props: any) => {
                     setNewUser({ ...newUser, ...{ phone: data.target.value } });
                   }}
                 />
-              </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="forms.email" />
-                </Label>
+              </FormGroupCustom>
+              <FormGroupCustom>
+                <LabelCustom id="forms.email" required={false} />
                 <Input
                   name="email"
                   defaultValue={newUser.email}
@@ -289,11 +299,9 @@ const AdministratorCreateEdit = (props: any) => {
                     setNewUser({ ...newUser, ...{ email: data.target.value } });
                   }}
                 />
-              </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="forms.birthdate" />
-                </Label>
+              </FormGroupCustom>
+              <FormGroupCustom>
+                <LabelCustom id="forms.birthdate" required={false} />
                 <ReactDatePicker
                   selected={birtdate}
                   onChange={(date) => {
@@ -302,11 +310,9 @@ const AdministratorCreateEdit = (props: any) => {
                     setBirtdate(date as Date);
                   }}
                 />
-              </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="forms.role" />
-                </Label>
+              </FormGroupCustom>
+              <FormGroupCustom>
+                <LabelCustom id="forms.role" required={true} />
                 <Select
                   isClearable
                   placeholder={<IntlMessages id="forms.select" />}
@@ -321,11 +327,10 @@ const AdministratorCreateEdit = (props: any) => {
                     setRole(selectedOption);
                   }}
                 />
-              </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="forms.gender" />
-                </Label>
+                <RequiredMessagesCustom formState={formState} register={"role"} />
+              </FormGroupCustom>
+              <FormGroupCustom>
+                <LabelCustom id="forms.gender" required={true} />
                 <Select
                   isClearable
                   placeholder={<IntlMessages id="forms.select" />}
@@ -339,11 +344,10 @@ const AdministratorCreateEdit = (props: any) => {
                     setGender(selectedOption);
                   }}
                 />
-              </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="forms.documentType" />
-                </Label>
+                <RequiredMessagesCustom formState={formState} register={"gender"} />
+              </FormGroupCustom>
+              <FormGroupCustom>
+                <LabelCustom id="forms.documentType" required={true} />
                 <Select
                   isClearable
                   placeholder={<IntlMessages id="forms.select" />}
@@ -357,11 +361,10 @@ const AdministratorCreateEdit = (props: any) => {
                     setDocumentType(selectedOption);
                   }}
                 />
-              </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="forms.documentNumber" />
-                </Label>
+                <RequiredMessagesCustom formState={formState} register={"documentType"} />
+              </FormGroupCustom>
+              <FormGroupCustom>
+                <LabelCustom id="forms.documentNumber" required={true} />
                 <Input
                   name="documentNumber"
                   defaultValue={newUser.documentNumber}
@@ -370,12 +373,11 @@ const AdministratorCreateEdit = (props: any) => {
                     setNewUser({ ...newUser, ...{ documentNumber: data.target.value } });
                   }}
                 />
-              </div>
+                <RequiredMessagesCustom formState={formState} register={"documentNumber"} />
+              </FormGroupCustom>
               {!props?.loginReducer?.schoolId ? (
-                <div className="form-group">
-                  <Label>
-                    <IntlMessages id="menu.school" />
-                  </Label>
+                <FormGroupCustom>
+                  <LabelCustom id="menu.school" required={true} />
                   <Select
                     isClearable
                     placeholder={<IntlMessages id="forms.select" />}
@@ -390,15 +392,14 @@ const AdministratorCreateEdit = (props: any) => {
                       getDropdowns(selectedOption?.key);
                     }}
                   />
-                </div>
+                  <RequiredMessagesCustom formState={formState} register={"schoolId"} />
+                </FormGroupCustom>
               ) : (
                 ''
               )}
               {!props?.loginReducer?.campusId ? (
-                <div className="form-group">
-                  <Label>
-                    <IntlMessages id="menu.campus" />
-                  </Label>
+                <FormGroupCustom>
+                  <LabelCustom id="menu.campus" required={true} />
                   <Select
                     isClearable
                     placeholder={<IntlMessages id="forms.select" />}
@@ -412,7 +413,8 @@ const AdministratorCreateEdit = (props: any) => {
                       setCampus(selectedOption);
                     }}
                   />
-                </div>
+                  <RequiredMessagesCustom formState={formState} register={"campusId"} />
+                </FormGroupCustom>
               ) : (
                 ''
               )}

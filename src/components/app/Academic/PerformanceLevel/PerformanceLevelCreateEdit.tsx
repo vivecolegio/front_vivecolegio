@@ -1,16 +1,21 @@
+import { DevTool } from '@hookform/devtools';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Loader } from '../../../common/Loader';
+import { useIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
+
 import { loaderColor, loaderIcon } from '../../../../constants/defaultValues';
 import IntlMessages from '../../../../helpers/IntlMessages';
 import * as performanceLevelAction from '../../../../stores/actions/Academic/PerformanceLevelActions';
 import { Colxx } from '../../../common/CustomBootstrap';
 import AddNewModal from '../../../common/Data/AddNewModal';
 import CreateEditAuditInformation from '../../../common/Data/CreateEditAuditInformation';
-import { useIntl } from 'react-intl';
+import FormGroupCustom from '../../../common/Data/FormGroupCustom';
+import LabelCustom from '../../../common/Data/LabelCustom';
+import RequiredMessagesCustom from '../../../common/Data/RequiredMessagesCustom';
+import { Loader } from '../../../common/Loader';
 
 const AreaCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
@@ -22,14 +27,16 @@ const AreaCreateEdit = (props: any) => {
   const [type, setType] = useState(null);
   const [campusList, setCampusList] = useState(null);
   const [campus, setCampus] = useState(null);
+  const [academicGradesList, setAcademicGradesList] = useState(null);
+  const [academicGrades, setAcademicGrades] = useState(null);
   const intl = useIntl();
 
   const methods = useForm({
-    mode: 'onChange',
+    mode: 'all',
     reValidateMode: 'onChange',
   });
 
-  const { handleSubmit, control, register, reset, setValue, getValues } = methods;
+  const { handleSubmit, control, register, unregister, reset, setValue, formState, trigger } = methods;
 
   useEffect(() => {
     cleanForm();
@@ -67,14 +74,40 @@ const AreaCreateEdit = (props: any) => {
           return { label: c.name, value: c.id, key: c.id };
         }));
       }
+      if (props?.data?.academicGrades !== undefined && props?.data?.academicGrades != null) {
+        setAcademicGrades(props?.data?.academicGrades.map((c: any) => {
+          return { label: c.name, value: c.id, key: c.id };
+        }));
+      }
+      register('schoolId', {
+        required: true,
+        value: props?.data?.id ? props?.data?.schoolId : '',
+      });
+      register('generalPerformanceLevelId', {
+        required: true,
+        value: props?.data?.id ? props?.data?.generalPerformanceLevelId : '',
+      });
+      register('type', {
+        required: true,
+        value: props?.data?.id ? props?.data?.type : '',
+      });
+      register('campusId', {
+        required: false,
+        value: props?.data?.id ? props?.data?.campusId : '',
+      });
+      register('academicGradesId', {
+        required: false,
+        value: props?.data?.id ? props?.data?.academicGradesId : '',
+      });
     }
     setLoading(false);
   }, [props?.data]);
 
   const cleanForm = async () => {
     reset();
-    setGeneralPerformanceLevel(null);
     setSchool(null);
+    setGeneralPerformanceLevel(null);
+    setType(null);
     if (props?.loginReducer?.schoolId && !props?.data?.id) {
       // set value when register is new and sesion contains value
       register('schoolId', {
@@ -106,6 +139,11 @@ const AreaCreateEdit = (props: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };
         }),
       );
+      setAcademicGradesList(
+        data.dataAcademicGrade.edges.map((c: any) => {
+          return { label: c.node.name, value: c.node.id, key: c.node.id };
+        }),
+      )
     });
   };
 
@@ -113,22 +151,17 @@ const AreaCreateEdit = (props: any) => {
     required: true,
     value: props?.data?.id ? props?.data?.name : '',
   });
+
   const { ref: minimumScoreRef, ...minimumScoreRest } = register('minimumScore', {
-    required: true,
+    required: props?.data?.id && props?.data?.type !== "QUALITATIVE" ? true : false,
     value: props?.data?.id ? props?.data?.minimumScore : '',
   });
+
   const { ref: topScoreRef, ...topScoreRest } = register('topScore', {
-    required: true,
+    required: props?.data?.id && props?.data?.type !== "QUALITATIVE" ? true : false,
     value: props?.data?.id ? props?.data?.topScore : '',
   });
-  register('schoolId', {
-    required: true,
-    value: props?.data?.id ? props?.data?.schoolId : '',
-  });
-  register('generalPerformanceLevelId', {
-    required: true,
-    value: props?.data?.id ? props?.data?.generalPerformanceLevelId : '',
-  });
+
 
   const auditInfo = {
     createdAt: props?.data?.id ? props?.data?.createdAt : null,
@@ -140,6 +173,7 @@ const AreaCreateEdit = (props: any) => {
 
   return (
     <>
+      <DevTool control={methods.control} placement="top-left" />
       {loading ? (
         <>
           <Colxx sm={12} className="d-flex justify-content-center">
@@ -161,16 +195,13 @@ const AreaCreateEdit = (props: any) => {
             handleSubmit={handleSubmit}
           >
             <ModalBody>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="forms.name" />
-                </Label>
+              <FormGroupCustom>
+                <LabelCustom id="forms.name" required={true} />
                 <Input {...nameRest} innerRef={nameRef} className="form-control" />
-              </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="forms.type" />
-                </Label>
+                <RequiredMessagesCustom formState={formState} register={"name"} />
+              </FormGroupCustom>
+              <FormGroupCustom>
+                <LabelCustom id="forms.type" required={true} />
                 <Select
                   isClearable
                   placeholder={<IntlMessages id="forms.select" />}
@@ -182,31 +213,44 @@ const AreaCreateEdit = (props: any) => {
                   onChange={(selectedOption: any) => {
                     setValue('type', selectedOption?.key);
                     setType(selectedOption);
+                    if (selectedOption?.key == 'QUALITATIVE') {
+                      register('minimumScore', {
+                        required: false, value: null
+                      });
+                      register('topScore', {
+                        required: false, value: null
+                      });
+                    } else {
+                      register('minimumScore', {
+                        required: true,
+                        value: props?.data?.id ? props?.data?.minimumScore : '',
+                      });
+                      register('topScore', {
+                        required: true,
+                        value: props?.data?.id ? props?.data?.topScore : '',
+                      });
+                    }
+                    trigger('type');
                   }}
                 />
-              </div>
-              {type?.key !== 'QUALITATIVE' ?
+                <RequiredMessagesCustom formState={formState} register={"type"} />
+              </FormGroupCustom>
+              {type?.key && type?.key !== 'QUALITATIVE' ?
                 <>
-                  <div className="form-group">
-                    <Label>
-                      <IntlMessages id="forms.minimumScore" />
-                    </Label>
+                  <FormGroupCustom>
+                    <LabelCustom id="forms.minimumScore" required={true} />
                     <Input {...minimumScoreRest} innerRef={minimumScoreRef} className="form-control" />
-                  </div>
-                  <div className="form-group">
-                    <Label>
-                      <IntlMessages id="forms.topScore" />
-                    </Label>
+                    <RequiredMessagesCustom formState={formState} register={"minimumScore"} />
+                  </FormGroupCustom>
+                  <FormGroupCustom>
+                    <LabelCustom id="forms.topScore" required={true} />
                     <Input {...topScoreRest} innerRef={topScoreRef} className="form-control" />
-                  </div>
+                    <RequiredMessagesCustom formState={formState} register={"topScore"} />
+                  </FormGroupCustom>
                 </>
                 : ''}
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="menu.performanceLevel" />
-                  {' - '}
-                  <IntlMessages id="menu.national" />
-                </Label>
+              <FormGroupCustom>
+                <LabelCustom id="menu.performanceLevelGeneral" required={true} />
                 <Select
                   isClearable
                   placeholder={<IntlMessages id="forms.select" />}
@@ -218,18 +262,35 @@ const AreaCreateEdit = (props: any) => {
                   onChange={(selectedOption: any) => {
                     setValue('generalPerformanceLevelId', selectedOption?.key);
                     setGeneralPerformanceLevel(selectedOption);
+                    trigger('generalPerformanceLevelId');
                   }}
                 />
-              </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="menu.campus" />
-                </Label>
+                <RequiredMessagesCustom formState={formState} register={"generalPerformanceLevelId"} />
+              </FormGroupCustom>
+              <FormGroupCustom>
+                <LabelCustom id="menu.grades" required={false} />
                 <Select
                   isClearable
                   placeholder={<IntlMessages id="forms.select" />}
                   isMulti
-                  {...register('campusId', { required: true })}
+                  {...register('academicGradesId', { required: false })}
+                  className="react-select"
+                  classNamePrefix="react-select"
+                  options={academicGradesList}
+                  value={academicGrades}
+                  onChange={(selectedOption: any) => {
+                    setValue('academicGradesId', selectedOption.map((c: any) => { return c.key }));
+                    setAcademicGrades(selectedOption);
+                  }}
+                />
+              </FormGroupCustom>
+              <FormGroupCustom>
+                <LabelCustom id="menu.campus" required={false} />
+                <Select
+                  isClearable
+                  placeholder={<IntlMessages id="forms.select" />}
+                  isMulti
+                  {...register('campusId', { required: false })}
                   className="react-select"
                   classNamePrefix="react-select"
                   options={campusList}
@@ -239,12 +300,10 @@ const AreaCreateEdit = (props: any) => {
                     setCampus(selectedOption);
                   }}
                 />
-              </div>
+              </FormGroupCustom>
               {!props?.loginReducer?.schoolId ? (
-                <div className="form-group">
-                  <Label>
-                    <IntlMessages id="menu.school" />
-                  </Label>
+                <FormGroupCustom>
+                  <LabelCustom id="menu.school" required={true} />
                   <Select
                     isClearable
                     placeholder={<IntlMessages id="forms.select" />}
@@ -258,7 +317,8 @@ const AreaCreateEdit = (props: any) => {
                       setSchool(selectedOption);
                     }}
                   />
-                </div>
+                  <RequiredMessagesCustom formState={formState} register={"schoolId"} />
+                </FormGroupCustom>
               ) : (
                 ''
               )}

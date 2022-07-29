@@ -11,6 +11,9 @@ import * as teacherActions from '../../../stores/actions/TeacherActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import AddNewModal from '../../common/Data/AddNewModal';
 import CreateEditAuditInformation from '../../common/Data/CreateEditAuditInformation';
+import FormGroupCustom from '../../common/Data/FormGroupCustom';
+import LabelCustom from '../../common/Data/LabelCustom';
+import RequiredMessagesCustom from '../../common/Data/RequiredMessagesCustom';
 import { Loader } from '../../common/Loader';
 
 const CourseCreateEdit = (props: any) => {
@@ -27,11 +30,11 @@ const CourseCreateEdit = (props: any) => {
   const academicGradeId = params.get('academicGradeId');
 
   const methods = useForm({
-    mode: 'onChange',
+    mode: 'all',
     reValidateMode: 'onChange',
   });
 
-  const { handleSubmit, control, register, reset, setValue, getValues } = methods;
+  const { handleSubmit, control, register, reset, setValue, formState, trigger } = methods;
 
   useEffect(() => {
     cleanForm();
@@ -66,6 +69,22 @@ const CourseCreateEdit = (props: any) => {
           value: props?.data?.academicDay?.id,
         });
       }
+      register('academicGradeId', {
+        required: true,
+        value: props?.data?.id ? props?.data?.academicGradeId : '',
+      });
+      register('campusId', {
+        required: true,
+        value: props?.data?.id ? props?.data?.campusId : '',
+      });
+      register('teacherId', {
+        required: true,
+        value: props?.data?.id ? props?.data?.teacherId : '',
+      });
+      register('academicDayId', {
+        required: true,
+        value: props?.data?.id ? props?.data?.academicDayId : '',
+      });
     }
     setLoading(false);
   }, [props?.data]);
@@ -134,25 +153,10 @@ const CourseCreateEdit = (props: any) => {
     value: props?.data?.id ? props?.data?.name : '',
   });
   const { ref: orderRef, ...orderRest } = register('order', {
-    required: true,
+    required: false,
     value: props?.data?.id ? props?.data?.order : '',
   });
-  register('academicGradeId', {
-    required: true,
-    value: props?.data?.id ? props?.data?.academicGradeId : '',
-  });
-  register('campusId', {
-    required: true,
-    value: props?.data?.id ? props?.data?.campusId : '',
-  });
-  register('teacherId', {
-    required: true,
-    value: props?.data?.id ? props?.data?.teacherId : '',
-  });
-  register('academicDayId', {
-    required: true,
-    value: props?.data?.id ? props?.data?.academicDayId : '',
-  });
+
 
   const auditInfo = {
     createdAt: props?.data?.id ? props?.data?.createdAt : null,
@@ -185,23 +189,19 @@ const CourseCreateEdit = (props: any) => {
             handleSubmit={handleSubmit}
           >
             <ModalBody>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="forms.name" />
-                </Label>
+              <FormGroupCustom>
+                <LabelCustom id="forms.name" required={true} />
                 <Input {...nameRest} innerRef={nameRef} className="form-control" />
-              </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="forms.sorting" />
-                </Label>
+                <RequiredMessagesCustom formState={formState} register={"name"} />
+              </FormGroupCustom>
+              <FormGroupCustom>
+                <LabelCustom id="forms.sorting" required={false} />
                 <Input {...orderRest} innerRef={orderRef} className="form-control" />
-              </div>
+                <RequiredMessagesCustom formState={formState} register={"sorting"} />
+              </FormGroupCustom>
               {!props?.loginReducer?.campusId ? (
-                <div className="form-group">
-                  <Label>
-                    <IntlMessages id="menu.campus" />
-                  </Label>
+                <FormGroupCustom>
+                  <LabelCustom id="menu.campus" required={true} />
                   <Select
                     isClearable
                     placeholder={<IntlMessages id="forms.select" />}
@@ -214,14 +214,16 @@ const CourseCreateEdit = (props: any) => {
                       setValue('campusId', selectedOption?.key);
                       setCampus(selectedOption);
                       getTeacherAndDays(selectedOption?.key);
+                      trigger("campusId");
                     }}
                   />
-                </div>
+                  <RequiredMessagesCustom formState={formState} register={"campusId"} />
+                </FormGroupCustom>
               ) : (
                 ''
               )}
-              <div className="form-group">
-                <Label>Titular</Label>
+              <FormGroupCustom>
+                <LabelCustom id="forms.headline" required={true} />
                 <Select
                   isClearable
                   placeholder={<IntlMessages id="forms.select" />}
@@ -233,14 +235,14 @@ const CourseCreateEdit = (props: any) => {
                   onChange={(selectedOption) => {
                     setValue('teacherId', selectedOption?.key);
                     setTeacher(selectedOption);
+                    trigger("teacherId");
                   }}
                   isDisabled={teachers?.length === 0 || teachers === null}
                 />
-              </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="menu.academicDay" />
-                </Label>
+                <RequiredMessagesCustom formState={formState} register={"teacherId"} />
+              </FormGroupCustom>
+              <FormGroupCustom>
+                <LabelCustom id="menu.academicDay" required={true} />
                 <Select
                   isClearable
                   placeholder={<IntlMessages id="forms.select" />}
@@ -252,10 +254,12 @@ const CourseCreateEdit = (props: any) => {
                   onChange={(selectedOption) => {
                     setValue('academicDayId', selectedOption?.key);
                     setAcademicDay(selectedOption);
+                    trigger("academicDayId");
                   }}
                   isDisabled={academicDays?.length === 0 || academicDays === null}
                 />
-              </div>
+                <RequiredMessagesCustom formState={formState} register={"academicDayId"} />
+              </FormGroupCustom>
             </ModalBody>
             {props?.data?.id ? (
               <ModalFooter className="p-3">

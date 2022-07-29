@@ -3,7 +3,6 @@ import { client } from '../../graphql';
 import { MUTATION_CHANGE_ACTIVE_AREA, MUTATION_CREATE_AREA, MUTATION_DELETE_AREA, MUTATION_UPDATE_AREA } from '../../graphql/Academic/Area/AreaMutations';
 import { QUERY_GET_ALL_AREA, QUERY_GET_AREA, QUERY_GET_DROPDOWNS_AREA } from '../../graphql/Academic/Area/AreaQueries';
 
-
 export const getListAllAcademicArea = (schoolId:string) => {
   return async (dispatch: any) => {
     try {
@@ -51,7 +50,7 @@ export const dataArea = (id: any) => {
 export const saveNewArea = (data: any) => {
   return async (dispatch: any) => {
     try {
-      let model: {};
+      let model: any = {};
       model = {
         ...model,
       };
@@ -60,6 +59,7 @@ export const saveNewArea = (data: any) => {
         ...data,
       };
       let dataCreate = null;
+      model.order = model.order && !isNaN(model.order) ? parseFloat(model.order) : 0;
       await client
         .mutate({
           mutation: MUTATION_CREATE_AREA,
@@ -86,7 +86,7 @@ export const saveNewArea = (data: any) => {
 export const updateArea = (data: any, id: any) => {
   return async (dispatch: any) => {
     try {
-      let model: {};
+      let model: any = {};
       model = {
         ...model,
       };
@@ -95,6 +95,7 @@ export const updateArea = (data: any, id: any) => {
         ...data,
       };
       let dataUpdate = null;
+      model.order = model.order && !isNaN(model.order) ? parseFloat(model.order) : 0;
       await client
         .mutate({
           mutation: MUTATION_UPDATE_AREA,

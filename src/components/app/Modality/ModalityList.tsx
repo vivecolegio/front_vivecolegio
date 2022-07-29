@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+
 import { COLUMN_LIST } from '../../../constants/Modality/ModalityConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as modalityActions from '../../../stores/actions/ModalityActions';
@@ -112,6 +113,7 @@ const ModalityList = (props: any) => {
             changeActiveData={changeActiveData}
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
+            refreshDataTable={refreshDataTable}
           />
           <ModalityCreateEdit
             data={data}

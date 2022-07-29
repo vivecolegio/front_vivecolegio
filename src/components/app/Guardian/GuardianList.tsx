@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+
 import { COLUMN_LIST } from '../../../constants/Guardian/guardianConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as guardianActions from '../../../stores/actions/GuardianActions';
-import { Colxx } from '../../common/CustomBootstrap';
 import * as userActions from '../../../stores/actions/UserActions';
+import { Colxx } from '../../common/CustomBootstrap';
 import DataList from '../../common/Data/DataList';
 import { Loader } from '../../common/Loader';
 import GuardianCreateEdit from './GuardianCreateEdit';
@@ -168,6 +169,7 @@ const GuardianList = (props: any) => {
               },
             ]}
             withChildren={true}
+            refreshDataTable={refreshDataTable}
           />
           <GuardianCreateEdit
             data={data}

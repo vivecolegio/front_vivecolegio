@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
+
 import { COLUMN_LIST } from '../../../constants/AcademicDay/academicDayConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as academicDayActions from '../../../stores/actions/AcademicDayActions';
@@ -143,6 +144,7 @@ const AcademicDayList = (props: any) => {
               },
             ]}
             withChildren={true}
+            refreshDataTable={refreshDataTable}
           />
           <AcademicDayCreateEdit
             data={data}

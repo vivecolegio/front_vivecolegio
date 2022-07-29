@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+
 import { COLUMN_LIST } from '../../../constants/Campus/campusConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as campusActions from '../../../stores/actions/CampusActions';
@@ -112,6 +113,7 @@ const CampusList = (props: any) => {
             changeActiveData={changeActiveData}
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
+            refreshDataTable={refreshDataTable}
           />
           <CampusCreateEdit
             data={data}

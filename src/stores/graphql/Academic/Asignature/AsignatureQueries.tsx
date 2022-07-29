@@ -8,6 +8,7 @@ export const QUERY_GET_ALL_ASIGNATURE = gql`
         node {
           id
           name 
+          order
           abbreviation     
           active 
           generalAcademicAsignature {
@@ -26,6 +27,7 @@ export const QUERY_GET_ASIGNATURE = gql`
     data: getAcademicAsignature(id: $id) {
       id
       name
+      order
       abbreviation
       code
       minWeight

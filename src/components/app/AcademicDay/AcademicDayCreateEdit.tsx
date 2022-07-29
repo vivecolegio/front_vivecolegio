@@ -4,11 +4,15 @@ import { useIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
+
 import IntlMessages from '../../../helpers/IntlMessages';
 import * as AcademicDayActions from '../../../stores/actions/AcademicDayActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import AddNewModal from '../../common/Data/AddNewModal';
 import CreateEditAuditInformation from '../../common/Data/CreateEditAuditInformation';
+import FormGroupCustom from '../../common/Data/FormGroupCustom';
+import LabelCustom from '../../common/Data/LabelCustom';
+import RequiredMessagesCustom from '../../common/Data/RequiredMessagesCustom';
 import { Loader } from '../../common/Loader';
 
 const AcademicDayCreateEdit = (props: any) => {
@@ -20,11 +24,11 @@ const AcademicDayCreateEdit = (props: any) => {
   const intl = useIntl();
 
   const methods = useForm({
-    mode: 'onChange',
+    mode: 'all',
     reValidateMode: 'onChange',
   });
 
-  const { handleSubmit, control, register, reset, setValue, getValues } = methods;
+  const { handleSubmit, control, register, reset, setValue, formState, trigger } = methods;
 
   useEffect(() => {
     cleanForm();
@@ -42,6 +46,14 @@ const AcademicDayCreateEdit = (props: any) => {
           return { label: intl.messages["display." + c], value: c, key: c };
         }));
       }
+      register('campusId', {
+        required: true,
+        value: props?.data?.id ? props?.data?.campusId : '',
+      });
+      register('day', {
+        required: true,
+        value: props?.data?.id ? props?.data?.day : '',
+      });
     }
     setLoading(false);
   }, [props?.data]);
@@ -78,14 +90,6 @@ const AcademicDayCreateEdit = (props: any) => {
     required: true,
     value: props?.data?.id ? props?.data?.name : '',
   });
-  register('campusId', {
-    required: true,
-    value: props?.data?.id ? props?.data?.campusId : '',
-  });
-  register('day', {
-    required: true,
-    value: props?.data?.id ? props?.data?.day : '',
-  });
 
   const auditInfo = {
     createdAt: props?.data?.id ? props?.data?.createdAt : null,
@@ -118,10 +122,13 @@ const AcademicDayCreateEdit = (props: any) => {
             handleSubmit={handleSubmit}
           >
             <ModalBody>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="forms.workingDay" />
-                </Label>
+              <FormGroupCustom>
+                <LabelCustom id="forms.name" required={true} />
+                <Input {...nameRest} innerRef={nameRef} className="form-control" />
+                <RequiredMessagesCustom formState={formState} register={"name"} />
+              </FormGroupCustom>
+              <FormGroupCustom>
+                <LabelCustom id="forms.workingDays" required={true} />
                 <Select
                   isClearable
                   isMulti
@@ -139,20 +146,14 @@ const AcademicDayCreateEdit = (props: any) => {
                       }),
                     );
                     setDay(selectedOption);
+                    trigger("day")
                   }}
                 />
-              </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="forms.name" />
-                </Label>
-                <Input {...nameRest} innerRef={nameRef} className="form-control" />
-              </div>
+                <RequiredMessagesCustom formState={formState} register={"day"} />
+              </FormGroupCustom>
               {!props?.loginReducer?.campusId ? (
-                <div className="form-group">
-                  <Label>
-                    <IntlMessages id="menu.campus" />
-                  </Label>
+                <FormGroupCustom>
+                  <LabelCustom id="menu.campus" required={true} />
                   <Select
                     isClearable
                     placeholder={<IntlMessages id="forms.select" />}
@@ -164,9 +165,11 @@ const AcademicDayCreateEdit = (props: any) => {
                     onChange={(selectedOption) => {
                       setValue('campusId', selectedOption?.key);
                       setCampus(selectedOption);
+                      trigger("campusId")
                     }}
                   />
-                </div>
+                  <RequiredMessagesCustom formState={formState} register={"campusId"} />
+                </FormGroupCustom>
               ) : (
                 ''
               )}

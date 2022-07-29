@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+
 import { COLUMN_LIST } from '../../../constants/ComponentEvaluative/componentEvaluativeConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as componentEvaluativeActions from '../../../stores/actions/ComponentEvaluativeActions';
@@ -112,6 +113,7 @@ const ComponentEvaluativeList = (props: any) => {
             changeActiveData={changeActiveData}
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
+            refreshDataTable={refreshDataTable}
           />
           <ComponentEvaluativeCreateEdit
             data={data}

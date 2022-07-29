@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+import { useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
+
 import { COLUMN_LIST } from '../../../constants/Course/CourseConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as courseActions from '../../../stores/actions/CourseActions';
+import { Colxx } from '../../common/CustomBootstrap';
 import DataList from '../../common/Data/DataList';
 import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
-import CourseCreateEdit from './CourseCreateEdit';
-import { useNavigate } from 'react-router';
-import { Colxx } from '../../common/CustomBootstrap';
 import { Loader } from '../../common/Loader';
+import CourseCreateEdit from './CourseCreateEdit';
 
 const CourseList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
@@ -167,6 +168,7 @@ const CourseList = (props: any) => {
               },
             ]}
             withChildren={true}
+            refreshDataTable={refreshDataTable}
           />
           <CourseCreateEdit
             data={data}

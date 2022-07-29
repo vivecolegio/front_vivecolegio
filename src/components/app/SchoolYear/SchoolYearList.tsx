@@ -1,6 +1,7 @@
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+
 import { COLUMN_LIST } from '../../../constants/SchoolYear/schoolYearConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as schoolYearActions from '../../../stores/actions/SchoolYearActions';
@@ -124,6 +125,7 @@ const SchoolYearList = (props: any) => {
             changeActiveData={changeActiveData}
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
+            refreshDataTable={refreshDataTable}
           />
           <SchoolYearCreateEdit
             data={data}

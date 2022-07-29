@@ -3,7 +3,6 @@ import { client } from '../../graphql';
 import { MUTATION_CHANGE_ACTIVE_ASIGNATURE, MUTATION_CREATE_ASIGNATURE, MUTATION_DELETE_ASIGNATURE, MUTATION_UPDATE_ASIGNATURE } from '../../graphql/Academic/Asignature/AsignatureMutations';
 import { QUERY_GET_ALL_ASIGNATURE, QUERY_GET_ASIGNATURE, QUERY_GET_DROPDOWNS_ASIGNATURE } from '../../graphql/Academic/Asignature/AsignatureQueries';
 
-
 export const getListAllAcademicAsignature = (schoolId:string, academicAreaId: string) => {
   return async (dispatch: any) => {
     try {
@@ -63,6 +62,7 @@ export const saveNewAsignature = (data: any) => {
       let dataCreate = null;
       model.maxWeight = model.weight && !isNaN(model.maxWeight) ? parseFloat(model.maxWeight) : 0;
       model.minWeight = model.weight && !isNaN(model.minWeight) ? parseFloat(model.minWeight) : 0;
+      model.order = model.order && !isNaN(model.order) ? parseFloat(model.order) : 0;
       await client
         .mutate({
           mutation: MUTATION_CREATE_ASIGNATURE,
@@ -100,6 +100,7 @@ export const updateAsignature = (data: any, id: any) => {
       let dataUpdate = null;
       model.maxWeight = model.maxWeight && !isNaN(model.maxWeight) ? parseFloat(model.maxWeight) : 0;
       model.minWeight = model.minWeight && !isNaN(model.minWeight) ? parseFloat(model.minWeight) : 0;
+      model.order = model.order && !isNaN(model.order) ? parseFloat(model.order) : 0;
       await client
         .mutate({
           mutation: MUTATION_UPDATE_ASIGNATURE,

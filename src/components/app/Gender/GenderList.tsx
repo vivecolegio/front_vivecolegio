@@ -104,6 +104,7 @@ const GenderList = (props: any) => {
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
             changeActiveData={changeActiveData}
+            refreshDataTable={refreshDataTable}
           />
           <GenderCreateEdit
             data={data}

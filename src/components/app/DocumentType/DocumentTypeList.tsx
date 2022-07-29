@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+
 import { COLUMN_LIST } from '../../../constants/DocumentType/documentTypeConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as documentTypeActions from '../../../stores/actions/DocumentTypeActions';
@@ -112,6 +113,7 @@ const DocumentTypeList = (props: any) => {
             changeActiveData={changeActiveData}
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
+            refreshDataTable={refreshDataTable}
           />
           <DocumentTypeCreateEdit
             data={data}

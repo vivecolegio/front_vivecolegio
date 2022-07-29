@@ -1,6 +1,7 @@
 /* eslint-disable no-await-in-loop */
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+
 import { COLUMN_LIST } from '../../../constants/Module/moduleConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as moduleActions from '../../../stores/actions/ModuleActions';
@@ -112,6 +113,7 @@ const ModuleList = (props: any) => {
             changeActiveData={changeActiveData}
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
+            refreshDataTable={refreshDataTable}
           />
           <ModuleCreateEdit
             data={data}

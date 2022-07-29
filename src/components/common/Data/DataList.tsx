@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { useNavigate, useLocation } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
+
 import { createNotification } from '../../../helpers/Notification';
 import useMousetrap from '../../../hooks/use-mousetrap';
 import { Loader } from '../Loader';
 import ListPageHeading from './ListPageHeading';
 import ListPageListing from './ListPageListing';
-
 
 const getIndex = (value: any, arr: any, prop: any) => {
   for (let i = 0; i < arr.length; i += 1) {
@@ -237,6 +237,7 @@ const DataList = (props: any) => {
         }}
         sortColumn={sortColumn}
         sortOrderColumn={sortOrderColumn}
+        refreshDataTable={props?.refreshDataTable}
       />
       <ListPageListing
         type={props?.type}

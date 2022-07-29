@@ -3,12 +3,16 @@ import DatePicker from 'react-datepicker';
 import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
 import Select from 'react-select';
-import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
+import { Input, InputGroup, InputGroupText, ModalBody, ModalFooter } from 'reactstrap';
+
 import IntlMessages from '../../../helpers/IntlMessages';
 import * as academicPeriodActions from '../../../stores/actions/AcademicPeriodActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import AddNewModal from '../../common/Data/AddNewModal';
 import CreateEditAuditInformation from '../../common/Data/CreateEditAuditInformation';
+import FormGroupCustom from '../../common/Data/FormGroupCustom';
+import LabelCustom from '../../common/Data/LabelCustom';
+import RequiredMessagesCustom from '../../common/Data/RequiredMessagesCustom';
 import { Loader } from '../../common/Loader';
 
 const AcademicPeriodCreateEdit = (props: any) => {
@@ -21,11 +25,11 @@ const AcademicPeriodCreateEdit = (props: any) => {
   const [endDate, setEndDate] = useState(null);
 
   const methods = useForm({
-    mode: 'onChange',
+    mode: 'all',
     reValidateMode: 'onChange',
   });
 
-  const { handleSubmit, control, register, reset, setValue, getValues } = methods;
+  const { handleSubmit, control, register, reset, setValue, formState, trigger } = methods;
 
   useEffect(() => {
     cleanForm();
@@ -51,6 +55,18 @@ const AcademicPeriodCreateEdit = (props: any) => {
       if (props?.data?.endDate !== undefined && props?.data?.endDate != null) {
         setEndDate(new Date(props?.data?.endDate));
       }
+      register('schoolYearId', {
+        required: true,
+        value: props?.data?.id ? props?.data?.schoolYear?.id : '',
+      });
+      register('startDate', {
+        required: true,
+        value: props?.data?.id ? props?.data?.startDate : '',
+      });
+      register('endDate', {
+        required: true,
+        value: props?.data?.id ? props?.data?.endDate : '',
+      });
     }
     setLoading(false);
   }, [props?.data]);
@@ -97,14 +113,6 @@ const AcademicPeriodCreateEdit = (props: any) => {
     required: true,
     value: props?.data?.id ? props?.data?.name : '',
   });
-  register('startDate', {
-    required: true,
-    value: props?.data?.id ? props?.data?.startDate : '',
-  });
-  register('endDate', {
-    required: true,
-    value: props?.data?.id ? props?.data?.endDate : '',
-  });
 
   const auditInfo = {
     createdAt: props?.data?.id ? props?.data?.createdAt : null,
@@ -137,54 +145,13 @@ const AcademicPeriodCreateEdit = (props: any) => {
             handleSubmit={handleSubmit}
           >
             <ModalBody>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="forms.name" />
-                </Label>
+              <FormGroupCustom>
+                <LabelCustom id="forms.name" required={true} />
                 <Input {...nameRest} innerRef={nameRef} className="form-control" />
-              </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="forms.weight" />
-                </Label>
-                <Input {...weightRest} innerRef={weightRef} className="form-control" />
-              </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="forms.sorting" />
-                </Label>
-                <Input {...orderRest} innerRef={orderRef} className="form-control" />
-              </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="forms.startDate" />
-                </Label>
-                <DatePicker
-                  {...register('startDate', { required: true })}
-                  selected={startDate}
-                  onChange={(date: any) => {
-                    setValue('startDate', date as Date);
-                    setStartDate(date as Date);
-                  }}
-                />
-              </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="forms.endDate" />
-                </Label>
-                <DatePicker
-                  {...register('endDate', { required: true })}
-                  selected={endDate}
-                  onChange={(date: any) => {
-                    setValue('endDate', date as Date);
-                    setEndDate(date as Date);
-                  }}
-                />
-              </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="menu.schoolYear" />
-                </Label>
+                <RequiredMessagesCustom formState={formState} register={"name"} />
+              </FormGroupCustom>
+              <FormGroupCustom>
+                <LabelCustom id="menu.schoolYear" required={true} />
                 <Select
                   isClearable
                   placeholder={<IntlMessages id="forms.select" />}
@@ -196,14 +163,55 @@ const AcademicPeriodCreateEdit = (props: any) => {
                   onChange={(selectedOption) => {
                     setValue('schoolYearId', selectedOption?.key);
                     setSchoolYear(selectedOption);
+                    trigger('schoolYearId');
                   }}
                 />
-              </div>
+                <RequiredMessagesCustom formState={formState} register={"schoolYearId"} />
+              </FormGroupCustom>
+              <FormGroupCustom>
+                <LabelCustom id="forms.startDate" required={true} />
+                <DatePicker
+                  {...register('startDate', { required: true })}
+                  selected={startDate}
+                  onChange={(date: any) => {
+                    setValue('startDate', date as Date);
+                    setStartDate(date as Date);
+                    trigger('startDate');
+                  }}
+                />
+                <RequiredMessagesCustom formState={formState} register={"startDate"} />
+              </FormGroupCustom>
+              <FormGroupCustom>
+                <LabelCustom id="forms.endDate" required={true} />
+                <DatePicker
+                  {...register('endDate', { required: true })}
+                  selected={endDate}
+                  onChange={(date: any) => {
+                    setValue('endDate', date as Date);
+                    setEndDate(date as Date);
+                    trigger('endDate');
+                  }}
+                  minDate={startDate}
+                  disabled={startDate == null}
+                />
+                <RequiredMessagesCustom formState={formState} register={"endDate"} />
+              </FormGroupCustom>
+              <FormGroupCustom>
+                <LabelCustom id="forms.weight" required={true} />
+                <InputGroup>
+                  <Input {...weightRest} innerRef={weightRef} className="form-control" type="number" step="1" min={1} max={100} />
+                  <InputGroupText addonType="append">%</InputGroupText>
+                </InputGroup>
+                <RequiredMessagesCustom formState={formState} register={"weight"} />
+              </FormGroupCustom>
+              <FormGroupCustom>
+                <LabelCustom id="forms.sorting" required={true} />
+                <Input {...orderRest} innerRef={orderRef} className="form-control" type="number" step="1" min={1} />
+                <RequiredMessagesCustom formState={formState} register={"order"} />
+              </FormGroupCustom>
               {!props?.loginReducer?.schoolId ? (
-                <div className="form-group">
-                  <Label>
-                    <IntlMessages id="menu.school" />
-                  </Label>
+                <FormGroupCustom>
+                  <LabelCustom id="menu.school" required={true} />
                   <Select
                     isClearable
                     placeholder={<IntlMessages id="forms.select" />}
@@ -215,9 +223,12 @@ const AcademicPeriodCreateEdit = (props: any) => {
                     onChange={(selectedOption) => {
                       setValue('schoolId', selectedOption?.key);
                       setSchool(selectedOption);
+                      trigger("schoolId");
                     }}
                   />
-                </div>
+                  <RequiredMessagesCustom formState={formState} register={"schoolId"} />
+
+                </FormGroupCustom>
               ) : (
                 ''
               )}

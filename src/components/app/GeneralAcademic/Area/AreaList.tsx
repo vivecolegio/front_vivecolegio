@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+
 import { COLUMN_LIST } from '../../../../constants/GeneralAcademicArea/generalAcademicAreaConstants';
 import { createNotification } from '../../../../helpers/Notification';
 import * as areaActions from '../../../../stores/actions/GeneralAcademic/AreaActions';
@@ -112,6 +113,7 @@ const GeneralAreaList = (props: any) => {
             changeActiveData={changeActiveData}
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
+            refreshDataTable={refreshDataTable}
           />
           <AreaCreateEdit
             data={data}

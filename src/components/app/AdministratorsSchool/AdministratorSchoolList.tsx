@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+
 import { COLUMN_LIST } from '../../../constants/AdministratorSchool/administratorSchoolConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as administratorSchoolActions from '../../../stores/actions/AdministratorSchoolActions';
@@ -168,6 +169,7 @@ const AdministratorSchoolList = (props: any) => {
               },
             ]}
             withChildren={true}
+            refreshDataTable={refreshDataTable}
           />
           <AdministratorCreateEdit
             data={data}

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
+
 import { COLUMN_LIST } from '../../../constants/CourseTeacher/CourseTeacherConstants';
 import * as courseActions from '../../../stores/actions/CourseActions';
 import { Colxx } from '../../common/CustomBootstrap';
@@ -26,6 +27,11 @@ const CoursesTeacherList = (props: any) => {
       }));
     });
   }, []);
+
+  const refreshDataTable = async () => {
+    setDataTable(null);
+    await getDataTable();
+  };
 
   const getDataTable = async () => {
     props.getListAllCourseTeacher(props?.loginReducer?.teacherId,).then((listData: any) => {
@@ -100,6 +106,7 @@ const CoursesTeacherList = (props: any) => {
               },
             ]}
             withChildren={true}
+            refreshDataTable={refreshDataTable}
           />
         </>
       ) : (

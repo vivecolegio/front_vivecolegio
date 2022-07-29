@@ -1,6 +1,7 @@
 import React from 'react';
 import { FormProvider, useFormState } from 'react-hook-form';
 import { Button, Modal, ModalFooter, ModalHeader } from 'reactstrap';
+
 import IntlMessages from '../../../helpers/IntlMessages';
 
 const AddNewModal = ({
@@ -16,11 +17,11 @@ const AddNewModal = ({
   hideFooter,
   formState
 }: any) => {
-  const { isValid, errors } = useFormState({ control });
-
+  // const { isValid, errors } = useFormState({ control });
+  // console.log(methods?.formState?.errors)
   return (
     <FormProvider {...methods}>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} className="av-tooltip tooltip-label-right">
         <Modal
           isOpen={modalOpen}
           toggle={toggleModal}
@@ -51,7 +52,7 @@ const AddNewModal = ({
                 onClick={() => {
                   onSubmit(methods.getValues());
                 }}
-              //disabled={!formState.isValid}
+              //disabled={!methods?.formState?.isValid}
               >
                 <IntlMessages id="pages.submit" />
               </Button>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+
 import { COLUMN_LIST } from '../../../constants/AdministratorSchool/administratorSchoolConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as coordinatorCampusActions from '../../../stores/actions/CoordinatorCampusActions';
@@ -168,6 +169,7 @@ const CoordinatorCampusList = (props: any) => {
               },
             ]}
             withChildren={true}
+            refreshDataTable={refreshDataTable}
           />
           <CoordinatorCampusCreateEdit
             data={data}

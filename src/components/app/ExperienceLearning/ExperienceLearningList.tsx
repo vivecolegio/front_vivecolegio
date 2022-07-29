@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
 import { Progress } from 'reactstrap';
+
 import { COLUMN_LIST } from '../../../constants/ExperienceLearning/experienceLearningConstants';
 import { calculateDaysTwoDate } from '../../../helpers/DataTransformations';
 import { createNotification } from '../../../helpers/Notification';
@@ -334,6 +335,7 @@ const ExperienceLearningList = (props: any) => {
                 </div>
               </>
             }
+            refreshDataTable={refreshDataTable}
           />
           <ExperienceLearningCreateEdit
             data={data}

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+
 import { COLUMN_LIST } from '../../../../constants/GeneralStandard/standardConstants';
 import { createNotification } from '../../../../helpers/Notification';
 import * as standardActions from '../../../../stores/actions/GeneralAcademic/StandardActions';
@@ -112,6 +113,7 @@ const GeneralStandardList = (props: any) => {
             changeActiveData={changeActiveData}
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
+            refreshDataTable={refreshDataTable}
           />
           <StandardCreateEdit
             data={data}

@@ -9,6 +9,9 @@ import * as LearningActions from '../../../stores/actions/LearningActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import AddNewModal from '../../common/Data/AddNewModal';
 import CreateEditAuditInformation from '../../common/Data/CreateEditAuditInformation';
+import FormGroupCustom from '../../common/Data/FormGroupCustom';
+import LabelCustom from '../../common/Data/LabelCustom';
+import RequiredMessagesCustom from '../../common/Data/RequiredMessagesCustom';
 import { Loader } from '../../common/Loader';
 
 const LearningCreateEdit = (props: any) => {
@@ -29,11 +32,11 @@ const LearningCreateEdit = (props: any) => {
   const gradeGeneralId = params.get('gradeGeneralId');
 
   const methods = useForm({
-    mode: 'onChange',
+    mode: 'all',
     reValidateMode: 'onChange',
   });
 
-  const { handleSubmit, control, register, reset, setValue, getValues } = methods;
+  const { handleSubmit, control, register, reset, setValue, formState, trigger } = methods;
 
   useEffect(() => {
     cleanForm();
@@ -66,6 +69,30 @@ const LearningCreateEdit = (props: any) => {
           return { label: c.name, value: c.id, key: c.id };
         }));
       }
+      register('academicAsignatureId', {
+        required: true,
+        value: props?.data?.id ? props?.data?.academicAsignatureId : '',
+      });
+      register('academicGradeId', {
+        required: true,
+        value: props?.data?.id ? props?.data?.academicGradeId : '',
+      });
+      register('academicStandardId', {
+        required: true,
+        value: props?.data?.id ? props?.data?.academicStandardId : '',
+      });
+      register('generalBasicLearningRightId', {
+        required: false,
+        value: props?.data?.id ? props?.data?.generalBasicLearningRightId : '',
+      });
+      register('schoolId', {
+        required: true,
+        value: props?.data?.id ? props?.data?.schoolId : '',
+      });
+      register('academicPeriodsId', {
+        required: true,
+        value: props?.data?.id ? props?.data?.academicPeriodsId : '',
+      });
     }
     setLoading(false);
   }, [props?.data]);
@@ -133,30 +160,6 @@ const LearningCreateEdit = (props: any) => {
     required: true,
     value: props?.data?.id ? props?.data?.statement : '',
   });
-  register('academicAsignatureId', {
-    required: true,
-    value: props?.data?.id ? props?.data?.academicAsignatureId : '',
-  });
-  register('academicGradeId', {
-    required: true,
-    value: props?.data?.id ? props?.data?.academicGradeId : '',
-  });
-  register('academicStandardId', {
-    required: true,
-    value: props?.data?.id ? props?.data?.academicStandardId : '',
-  });
-  register('generalBasicLearningRightId', {
-    required: true,
-    value: props?.data?.id ? props?.data?.generalBasicLearningRightId : '',
-  });
-  register('schoolId', {
-    required: true,
-    value: props?.data?.id ? props?.data?.schoolId : '',
-  });
-  register('academicPeriodsId', {
-    required: true,
-    value: props?.data?.id ? props?.data?.academicPeriodsId : '',
-  });
 
   const auditInfo = {
     createdAt: props?.data?.id ? props?.data?.createdAt : null,
@@ -189,34 +192,32 @@ const LearningCreateEdit = (props: any) => {
             handleSubmit={handleSubmit}
           >
             <ModalBody>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="menu.learning" />
-                </Label>
+              <FormGroupCustom>
+                <LabelCustom id="menu.learning" required={true} />
                 <Input type='textarea' rows="2" {...statementRest} innerRef={statementRef} className="form-control" />
-              </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="menu.dba" />
-                </Label>
-                <Select
-                  isClearable
-                  placeholder={<IntlMessages id="forms.select" />}
-                  {...register('generalBasicLearningRightId', { required: true })}
-                  className="react-select"
-                  classNamePrefix="react-select"
-                  options={generalBasicLearningRightList}
-                  value={generalBasicLearningRight}
-                  onChange={(selectedOption) => {
-                    setValue('generalBasicLearningRightId', selectedOption?.key);
-                    setGeneralBasicLearningRight(selectedOption);
-                  }}
-                />
-              </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="forms.standard" />
-                </Label>
+                <RequiredMessagesCustom formState={formState} register={"learning"} />
+              </FormGroupCustom>
+              {generalBasicLearningRightList && generalBasicLearningRightList?.length > 0 ?
+                <FormGroupCustom>
+                  <LabelCustom id="menu.dba" required={false} />
+                  <Select
+                    isClearable
+                    placeholder={<IntlMessages id="forms.select" />}
+                    {...register('generalBasicLearningRightId', { required: false })}
+                    className="react-select"
+                    classNamePrefix="react-select"
+                    options={generalBasicLearningRightList}
+                    value={generalBasicLearningRight}
+                    onChange={(selectedOption) => {
+                      setValue('generalBasicLearningRightId', selectedOption?.key);
+                      setGeneralBasicLearningRight(selectedOption);
+                    }}
+                  />
+                </FormGroupCustom>
+                :
+                <></>}
+              <FormGroupCustom>
+                <LabelCustom id="forms.standard2" required={true} />
                 <Select
                   isClearable
                   placeholder={<IntlMessages id="forms.select" />}
@@ -228,13 +229,13 @@ const LearningCreateEdit = (props: any) => {
                   onChange={(selectedOption) => {
                     setValue('academicStandardId', selectedOption?.key);
                     setStandard(selectedOption);
+                    trigger("academicStandardId");
                   }}
                 />
-              </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="menu.periodAcademic" />
-                </Label>
+                <RequiredMessagesCustom formState={formState} register={"academicStandardId"} />
+              </FormGroupCustom>
+              <FormGroupCustom>
+                <LabelCustom id="menu.periodAcademic" required={true} />
                 <Select
                   isClearable
                   placeholder={<IntlMessages id="forms.select" />}
@@ -252,14 +253,14 @@ const LearningCreateEdit = (props: any) => {
                       }),
                     );
                     setAcademicPeriod(selectedOption);
+                    trigger("academicPeriodsId");
                   }}
                 />
-              </div>
+                <RequiredMessagesCustom formState={formState} register={"academicPeriodsId"} />
+              </FormGroupCustom>
               {!props?.loginReducer?.schoolId ? (
-                <div className="form-group">
-                  <Label>
-                    <IntlMessages id="menu.school" />
-                  </Label>
+                <FormGroupCustom>
+                  <LabelCustom id="menu.school" required={true} />
                   <Select
                     isClearable
                     placeholder={<IntlMessages id="forms.select" />}
@@ -271,9 +272,11 @@ const LearningCreateEdit = (props: any) => {
                     onChange={(selectedOption) => {
                       setValue('schoolId', selectedOption?.key);
                       setSchool(selectedOption);
+                      trigger("schoolId");
                     }}
                   />
-                </div>
+                  <RequiredMessagesCustom formState={formState} register={"schoolId"} />
+                </FormGroupCustom>
               ) : (
                 ''
               )}

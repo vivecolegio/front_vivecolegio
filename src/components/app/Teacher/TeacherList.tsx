@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+
 import { COLUMN_LIST } from '../../../constants/Teacher/teacherConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as teacherActions from '../../../stores/actions/TeacherActions';
@@ -200,6 +201,7 @@ const TeacherList = (props: any) => {
               },
             ]}
             withChildren={true}
+            refreshDataTable={refreshDataTable}
           />
           <TeacherCreateEdit
             data={data}

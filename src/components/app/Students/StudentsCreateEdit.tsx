@@ -5,23 +5,16 @@ import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import Select from 'react-select';
-import {
-  Button,
-  Input,
-  InputGroup,
-  Label,
-  ModalBody,
-  ModalFooter,
-  Nav,
-  NavItem,
-  TabContent,
-  TabPane,
-} from 'reactstrap';
+import { Button, Input, InputGroup, Label, ModalBody, ModalFooter, Nav, NavItem, TabContent, TabPane } from 'reactstrap';
+
 import IntlMessages from '../../../helpers/IntlMessages';
 import * as StudentActions from '../../../stores/actions/StudentActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import AddNewModal from '../../common/Data/AddNewModal';
 import CreateEditAuditInformation from '../../common/Data/CreateEditAuditInformation';
+import FormGroupCustom from '../../common/Data/FormGroupCustom';
+import LabelCustom from '../../common/Data/LabelCustom';
+import RequiredMessagesCustom from '../../common/Data/RequiredMessagesCustom';
 import { Loader } from '../../common/Loader';
 
 const StudentCreateEdit = (props: any) => {
@@ -62,7 +55,7 @@ const StudentCreateEdit = (props: any) => {
     reValidateMode: 'onChange',
   });
 
-  const { handleSubmit, control, register, reset, setValue, getValues } = methods;
+  const { handleSubmit, control, register, reset, setValue, formState, trigger } = methods;
 
   useEffect(() => {
     cleanForm();
@@ -153,6 +146,26 @@ const StudentCreateEdit = (props: any) => {
           value: props?.data?.user?.documentType?.id,
         });
       }
+      register('schoolId', {
+        required: true,
+        value: props?.data?.id ? props?.data?.schoolId : '',
+      });
+      register('campusId', {
+        required: false,
+        value: props?.data?.id ? props?.data?.campusId : [],
+      });
+      register('academicGradeId', {
+        required: true,
+        value: props?.data?.id ? props?.data?.academicGradeId : '',
+      });
+      register('courseId', {
+        required: false,
+        value: props?.data?.id ? props?.data?.courseId : '',
+      });
+      register('newUser', {
+        required: true,
+        value: newUser,
+      });
     }
     setLoading(false);
   }, [props?.data]);
@@ -184,7 +197,7 @@ const StudentCreateEdit = (props: any) => {
     if (props?.loginReducer?.campusId && !props?.data?.id) {
       // set value when register is new and sesion contains value
       register('campusId', {
-        required: true,
+        required: false,
         value: props?.loginReducer?.campusId,
       });
     }
@@ -261,27 +274,6 @@ const StudentCreateEdit = (props: any) => {
       });
     }
   };
-
-  register('schoolId', {
-    required: true,
-    value: props?.data?.id ? props?.data?.schoolId : '',
-  });
-  register('campusId', {
-    required: true,
-    value: props?.data?.id ? props?.data?.campusId : [],
-  });
-  register('academicGradeId', {
-    required: true,
-    value: props?.data?.id ? props?.data?.academicGradeId : '',
-  });
-  register('courseId', {
-    required: true,
-    value: props?.data?.id ? props?.data?.courseId : '',
-  });
-  register('newUser', {
-    required: true,
-    value: newUser,
-  });
 
   const searchGuardianList = async () => {
     props.getGuardianByCriteria(searchValue, documentTypeGuardian?.key).then((data: any) => {
@@ -374,10 +366,8 @@ const StudentCreateEdit = (props: any) => {
               </Nav>
               <TabContent activeTab={activeTab}>
                 <TabPane tabId="student">
-                  <div className="form-group">
-                    <Label>
-                      <IntlMessages id="forms.name" />
-                    </Label>
+                  <FormGroupCustom>
+                    <LabelCustom id="forms.name" required={true} />
                     <Input
                       name="name"
                       defaultValue={newUser.name}
@@ -386,11 +376,10 @@ const StudentCreateEdit = (props: any) => {
                         setNewUser({ ...newUser, ...{ name: data.target.value } });
                       }}
                     />
-                  </div>
-                  <div className="form-group">
-                    <Label>
-                      <IntlMessages id="forms.lastname" />
-                    </Label>
+                    <RequiredMessagesCustom formState={formState} register={"name"} />
+                  </FormGroupCustom>
+                  <FormGroupCustom>
+                    <LabelCustom id="forms.lastname" required={true} />
                     <Input
                       name="lastName"
                       defaultValue={newUser.lastName}
@@ -399,11 +388,10 @@ const StudentCreateEdit = (props: any) => {
                         setNewUser({ ...newUser, ...{ lastName: data.target.value } });
                       }}
                     />
-                  </div>
-                  <div className="form-group">
-                    <Label>
-                      <IntlMessages id="forms.phone" />
-                    </Label>
+                    <RequiredMessagesCustom formState={formState} register={"lastName"} />
+                  </FormGroupCustom>
+                  <FormGroupCustom>
+                    <LabelCustom id="forms.phone" required={false} />
                     <Input
                       name="phone"
                       defaultValue={newUser.phone}
@@ -412,11 +400,9 @@ const StudentCreateEdit = (props: any) => {
                         setNewUser({ ...newUser, ...{ phone: data.target.value } });
                       }}
                     />
-                  </div>
-                  <div className="form-group">
-                    <Label>
-                      <IntlMessages id="forms.email" />
-                    </Label>
+                  </FormGroupCustom>
+                  <FormGroupCustom>
+                    <LabelCustom id="forms.email" required={false} />
                     <Input
                       name="email"
                       defaultValue={newUser.email}
@@ -425,11 +411,9 @@ const StudentCreateEdit = (props: any) => {
                         setNewUser({ ...newUser, ...{ email: data.target.value } });
                       }}
                     />
-                  </div>
-                  <div className="form-group">
-                    <Label>
-                      <IntlMessages id="forms.birthdate" />
-                    </Label>
+                  </FormGroupCustom>
+                  <FormGroupCustom>
+                    <LabelCustom id="forms.birthdate" required={false} />
                     <ReactDatePicker
                       selected={birtdate}
                       onChange={(date) => {
@@ -438,11 +422,9 @@ const StudentCreateEdit = (props: any) => {
                         setBirtdate(date as Date);
                       }}
                     />
-                  </div>
-                  <div className="form-group">
-                    <Label>
-                      <IntlMessages id="forms.role" />
-                    </Label>
+                  </FormGroupCustom>
+                  <FormGroupCustom>
+                    <LabelCustom id="forms.role" required={true} />
                     <Select
                       isClearable
                       placeholder={<IntlMessages id="forms.select" />}
@@ -457,11 +439,10 @@ const StudentCreateEdit = (props: any) => {
                         setRole(selectedOption);
                       }}
                     />
-                  </div>
-                  <div className="form-group">
-                    <Label>
-                      <IntlMessages id="forms.gender" />
-                    </Label>
+                    <RequiredMessagesCustom formState={formState} register={"role"} />
+                  </FormGroupCustom>
+                  <FormGroupCustom>
+                    <LabelCustom id="forms.gender" required={true} />
                     <Select
                       isClearable
                       placeholder={<IntlMessages id="forms.select" />}
@@ -475,11 +456,10 @@ const StudentCreateEdit = (props: any) => {
                         setGender(selectedOption);
                       }}
                     />
-                  </div>
-                  <div className="form-group">
-                    <Label>
-                      <IntlMessages id="forms.documentType" />
-                    </Label>
+                    <RequiredMessagesCustom formState={formState} register={"gender"} />
+                  </FormGroupCustom>
+                  <FormGroupCustom>
+                    <LabelCustom id="forms.documentType" required={true} />
                     <Select
                       isClearable
                       placeholder={<IntlMessages id="forms.select" />}
@@ -493,11 +473,10 @@ const StudentCreateEdit = (props: any) => {
                         setDocumentType(selectedOption);
                       }}
                     />
-                  </div>
-                  <div className="form-group">
-                    <Label>
-                      <IntlMessages id="forms.documentNumber" />
-                    </Label>
+                    <RequiredMessagesCustom formState={formState} register={"documentType"} />
+                  </FormGroupCustom>
+                  <FormGroupCustom>
+                    <LabelCustom id="forms.documentNumber" required={true} />
                     <Input
                       name="documentNumber"
                       defaultValue={newUser.documentNumber}
@@ -506,11 +485,10 @@ const StudentCreateEdit = (props: any) => {
                         setNewUser({ ...newUser, ...{ documentNumber: data.target.value } });
                       }}
                     />
-                  </div>
-                  <div className="form-group">
-                    <Label>
-                      <IntlMessages id="forms.grade" />
-                    </Label>
+                    <RequiredMessagesCustom formState={formState} register={"documentNumber"} />
+                  </FormGroupCustom>
+                  <FormGroupCustom>
+                    <LabelCustom id="forms.grade" required={true} />
                     <Select
                       isClearable
                       placeholder={<IntlMessages id="forms.select" />}
@@ -526,14 +504,14 @@ const StudentCreateEdit = (props: any) => {
                         setCourse(null);
                         setValue('courseId', null);
                         getCourses(selectedOption?.key);
+                        trigger("academicGradeId")
                       }}
                     />
-                  </div>
+                    <RequiredMessagesCustom formState={formState} register={"academicGradeId"} />
+                  </FormGroupCustom>
                   {!props?.loginReducer?.schoolId ? (
-                    <div className="form-group">
-                      <Label>
-                        <IntlMessages id="menu.school" />
-                      </Label>
+                    <FormGroupCustom>
+                      <LabelCustom id="menu.school" required={true} />
                       <Select
                         isClearable
                         placeholder={<IntlMessages id="forms.select" />}
@@ -546,21 +524,20 @@ const StudentCreateEdit = (props: any) => {
                           setValue('schoolId', [selectedOption?.key]);
                           setSchool(selectedOption);
                           getDropdowns(selectedOption?.key);
+                          trigger("schoolId")
                         }}
                       />
-                    </div>
+                    </FormGroupCustom>
                   ) : (
                     ''
                   )}
                   {!props?.loginReducer?.campusId && props?.data?.id ? (
-                    <div className="form-group">
-                      <Label>
-                        <IntlMessages id="menu.campus" />
-                      </Label>
+                    <FormGroupCustom>
+                      <LabelCustom id="menu.campus" required={false} />
                       <Select
                         isClearable
                         placeholder={<IntlMessages id="forms.select" />}
-                        {...register('campusId', { required: true })}
+                        {...register('campusId', { required: false })}
                         className="react-select"
                         classNamePrefix="react-select"
                         options={campusList}
@@ -570,23 +547,22 @@ const StudentCreateEdit = (props: any) => {
                           setCampus(selectedOption);
                           setCourse(null);
                           setValue('courseId', null);
+                          trigger("campusId")
                           //getDropdowns(selectedOption?.key);
                         }}
                       //isDisabled={true}
                       />
-                    </div>
+                    </FormGroupCustom>
                   ) : (
                     ''
                   )}
                   {!props?.loginReducer?.campusId && props?.data?.id && props?.data?.courseId && course != null ? (
-                    <div className="form-group">
-                      <Label>
-                        <IntlMessages id="forms.course" />
-                      </Label>
+                    <FormGroupCustom>
+                      <LabelCustom id="forms.course" required={false} />
                       <Select
                         isClearable
                         placeholder={""}
-                        {...register('courseId', { required: true })}
+                        {...register('courseId', { required: false })}
                         className="react-select"
                         classNamePrefix="react-select"
                         options={courseList}
@@ -594,15 +570,16 @@ const StudentCreateEdit = (props: any) => {
                         onChange={(selectedOption) => {
                           setValue('courseId', selectedOption?.key);
                           // setCourse(selectedOption);
+                          trigger("courseId")
                         }}
                         isDisabled={true}
                       />
-                    </div>) : (
+                    </FormGroupCustom>) : (
                     ''
                   )}
                 </TabPane>
-                <TabPane tabId="guardian">
-                  <div className="form-group">
+                {/* <TabPane tabId="guardian">
+                  <FormGroupCustom>
                     <Label>
                       <IntlMessages id="forms.documentType" />
                     </Label>
@@ -617,8 +594,8 @@ const StudentCreateEdit = (props: any) => {
                         setDocumentTypeGuardian(selectedOption);
                       }}
                     />
-                  </div>
-                  <div className="form-group">
+                  </FormGroupCustom>
+                  <FormGroupCustom>
                     <Label>
                       <IntlMessages id="forms.guardian" />
                     </Label>
@@ -652,7 +629,7 @@ const StudentCreateEdit = (props: any) => {
                         <IntlMessages id="forms.search" />
                       </Button>
                     </InputGroup>
-                  </div>
+                  </FormGroupCustom>
                   <div className="form-group text-center">
                     <Button
                       onClick={() => {
@@ -665,7 +642,7 @@ const StudentCreateEdit = (props: any) => {
                       <IntlMessages id="menu.assignGuardian" />
                     </Button>
                   </div>
-                </TabPane>
+                </TabPane> */}
               </TabContent>
             </ModalBody>
             {props?.data?.id ? (

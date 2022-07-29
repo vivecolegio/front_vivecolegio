@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
 import { Button } from 'reactstrap';
+
 import { COLUMN_LIST } from '../../../constants/ClassroomPlan/ClassroomPlanConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as classroomPlanActions from '../../../stores/actions/ClassroomPlanActions';
@@ -176,6 +177,7 @@ const ClassroomPlanList = (props: any) => {
                 </div>
               </>
             }
+            refreshDataTable={refreshDataTable}
           />
         </>
       ) : (

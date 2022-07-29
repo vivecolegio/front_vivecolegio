@@ -1,3 +1,4 @@
+import { DevTool } from '@hookform/devtools';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
@@ -10,6 +11,9 @@ import * as courseActions from '../../../stores/actions/CourseActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import AddNewModal from '../../common/Data/AddNewModal';
 import CreateEditAuditInformation from '../../common/Data/CreateEditAuditInformation';
+import FormGroupCustom from '../../common/Data/FormGroupCustom';
+import LabelCustom from '../../common/Data/LabelCustom';
+import RequiredMessagesCustom from '../../common/Data/RequiredMessagesCustom';
 import { Loader } from '../../common/Loader';
 
 const AcademicAsignatureCourseBasicCreateEdit = (props: any) => {
@@ -26,7 +30,7 @@ const AcademicAsignatureCourseBasicCreateEdit = (props: any) => {
   const [hourIntensity, setHourIntensity] = useState(null);
 
   const methods = useForm({
-    mode: 'onChange',
+    mode: 'all',
     reValidateMode: 'onChange',
   });
 
@@ -34,7 +38,7 @@ const AcademicAsignatureCourseBasicCreateEdit = (props: any) => {
   const courseId = params.get('courseId');
   let campusId: any = null;
 
-  const { handleSubmit, control, register, reset, setValue, getValues } = methods;
+  const { handleSubmit, control, register, reset, setValue, formState, trigger } = methods;
 
   useEffect(() => {
     cleanForm();
@@ -43,7 +47,7 @@ const AcademicAsignatureCourseBasicCreateEdit = (props: any) => {
       getDropdowns();
     });
     if (props?.data?.id) {
-      setHourIntensity(props?.data?.weight);
+      setHourIntensity(props?.data?.hourlyIntensity);
       if (props?.data?.campus !== undefined && props?.data?.campus != null) {
         setCampus({
           key: props?.data?.campus?.id,
@@ -77,6 +81,22 @@ const AcademicAsignatureCourseBasicCreateEdit = (props: any) => {
           value: props?.data?.teacher?.id,
         });
       }
+      register('academicAsignatureId', {
+        required: true,
+        value: props?.data?.id ? props?.data?.academicAsignatureId : '',
+      });
+      register('courseId', {
+        required: true,
+        value: props?.data?.id ? props?.data?.courseId : '',
+      });
+      register('campusId', {
+        required: false,
+        value: props?.data?.id ? props?.data?.campusId : '',
+      });
+      register('teacherId', {
+        required: true,
+        value: props?.data?.id ? props?.data?.teacherId : '',
+      });
     }
     setLoading(false);
   }, [props?.data]);
@@ -131,27 +151,15 @@ const AcademicAsignatureCourseBasicCreateEdit = (props: any) => {
     });
   };
 
+  const { ref: hourlyIntensityRef, ...hourlyIntensityRest } = register('hourlyIntensity', {
+    required: true,
+    value: props?.data?.id ? props?.data?.hourlyIntensity : '',
+  });
 
-  const { ref: weightRef, ...weightRest } = register('weight', {
-    required: true,
-    value: props?.data?.id ? props?.data?.weight : '',
-  });
-  register('academicAsignatureId', {
-    required: true,
-    value: props?.data?.id ? props?.data?.academicAsignatureId : '',
-  });
-  register('courseId', {
-    required: true,
-    value: props?.data?.id ? props?.data?.courseId : '',
-  });
-  register('campusId', {
-    required: true,
-    value: props?.data?.id ? props?.data?.campusId : '',
-  });
-  register('teacherId', {
-    required: true,
-    value: props?.data?.id ? props?.data?.teacherId : '',
-  });
+  // const { ref: weightRef, ...weightRest } = register('weight', {
+  //   required: true,
+  //   value: props?.data?.id ? props?.data?.weight : '',
+  // });
 
   const auditInfo = {
     createdAt: props?.data?.id ? props?.data?.createdAt : null,
@@ -184,10 +192,8 @@ const AcademicAsignatureCourseBasicCreateEdit = (props: any) => {
             handleSubmit={handleSubmit}
           >
             <ModalBody>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="menu.asignature" />
-                </Label>
+              <FormGroupCustom>
+                <LabelCustom id="menu.asignature" required={true} />
                 <Select
                   isClearable
                   placeholder={<IntlMessages id="forms.select" />}
@@ -199,26 +205,29 @@ const AcademicAsignatureCourseBasicCreateEdit = (props: any) => {
                   onChange={(selectedOption) => {
                     setValue('gradeAssignmentId', selectedOption?.key2);
                     setValue('academicAsignatureId', selectedOption?.key);
-                    setValue('weight', selectedOption?.minHourlyIntensity);
+                    setValue('hourlyIntensity', selectedOption?.minHourlyIntensity);
                     setHourIntensity(selectedOption?.minHourlyIntensity);
                     setAsignature(selectedOption);
+                    trigger("gradeAssignmentId");
+                    trigger("academicAsignatureId");
                   }}
                 />
-              </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="forms.hourlyIntensity" />
-                </Label>
+                <RequiredMessagesCustom formState={formState} register={"academicAsignatureId"} />
+              </FormGroupCustom>
+              <FormGroupCustom>
+                <LabelCustom id="forms.hourlyIntensity" required={true} />
                 <Input
                   type='range'
                   disabled={!asignature}
                   min={asignature?.minHourlyIntensity}
                   max={asignature?.maxHourlyIntensity}
-                  {...weightRest}
-                  innerRef={weightRef}
+                  {...hourlyIntensityRest}
+                  innerRef={hourlyIntensityRef}
                   className="form-control"
                   onChange={(e) => {
                     setHourIntensity(e.target.value);
+                    setValue('hourlyIntensity', e.target.value);
+                    trigger("hourlyIntensity");
                   }}
                 />
                 <div className='d-flex justify-content-between'>
@@ -226,11 +235,10 @@ const AcademicAsignatureCourseBasicCreateEdit = (props: any) => {
                   <span className='font-bold'>Valor: {hourIntensity}</span>
                   <span>{asignature?.maxHourlyIntensity}</span>
                 </div>
-              </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="menu.teacher" />
-                </Label>
+                <RequiredMessagesCustom formState={formState} register={"hourlyIntensity"} />
+              </FormGroupCustom>
+              <FormGroupCustom>
+                <LabelCustom id="menu.teacher" required={true} />
                 <Select
                   isClearable
                   placeholder={<IntlMessages id="forms.select" />}
@@ -242,18 +250,18 @@ const AcademicAsignatureCourseBasicCreateEdit = (props: any) => {
                   onChange={(selectedOption) => {
                     setValue('teacherId', selectedOption?.key);
                     setTeacher(selectedOption);
+                    trigger("teacherId");
                   }}
                 />
-              </div>
+                <RequiredMessagesCustom formState={formState} register={"teacherId"} />
+              </FormGroupCustom>
               {!props?.loginReducer?.schoolId ? (
-                <div className="form-group">
-                  <Label>
-                    <IntlMessages id="menu.campus" />
-                  </Label>
+                <FormGroupCustom>
+                  <LabelCustom id="menu.campus" required={false} />
                   <Select
                     isClearable
                     placeholder={<IntlMessages id="forms.select" />}
-                    {...register('schoolId', { required: true })}
+                    {...register('campusId', { required: false })}
                     className="react-select"
                     classNamePrefix="react-select"
                     options={campusList}
@@ -261,9 +269,11 @@ const AcademicAsignatureCourseBasicCreateEdit = (props: any) => {
                     onChange={(selectedOption) => {
                       setValue('campusId', selectedOption?.key);
                       setCampus(selectedOption);
+                      trigger("campusId");
                     }}
                   />
-                </div>
+                  <RequiredMessagesCustom formState={formState} register={"campusId"} />
+                </FormGroupCustom>
               ) : (
                 ''
               )}

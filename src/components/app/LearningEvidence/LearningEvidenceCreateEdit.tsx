@@ -10,6 +10,9 @@ import * as learningEvidenceActions from '../../../stores/actions/LearningEviden
 import { Colxx } from '../../common/CustomBootstrap';
 import AddNewModal from '../../common/Data/AddNewModal';
 import CreateEditAuditInformation from '../../common/Data/CreateEditAuditInformation';
+import FormGroupCustom from '../../common/Data/FormGroupCustom';
+import LabelCustom from '../../common/Data/LabelCustom';
+import RequiredMessagesCustom from '../../common/Data/RequiredMessagesCustom';
 import { Loader } from '../../common/Loader';
 
 const LearningEvidenceCreateEdit = (props: any) => {
@@ -27,7 +30,7 @@ const LearningEvidenceCreateEdit = (props: any) => {
     reValidateMode: 'onChange',
   });
 
-  const { handleSubmit, control, register, reset, setValue, getValues } = methods;
+  const { handleSubmit, control, register, reset, setValue, formState, trigger } = methods;
 
   useEffect(() => {
     cleanForm();
@@ -50,6 +53,14 @@ const LearningEvidenceCreateEdit = (props: any) => {
           value: props?.data?.school?.id,
         });
       }
+      register('learningId', {
+        required: true,
+        value: props?.data?.id ? props?.data?.learningId : '',
+      });
+      register('schoolId', {
+        required: true,
+        value: props?.data?.id ? props?.data?.schoolId : '',
+      });
     }
     setLoading(false);
   }, [props?.data]);
@@ -88,14 +99,6 @@ const LearningEvidenceCreateEdit = (props: any) => {
     required: true,
     value: props?.data?.id ? props?.data?.statement : '',
   });
-  register('learningId', {
-    required: true,
-    value: props?.data?.id ? props?.data?.learningId : '',
-  });
-  register('schoolId', {
-    required: true,
-    value: props?.data?.id ? props?.data?.schoolId : '',
-  });
 
   const auditInfo = {
     createdAt: props?.data?.id ? props?.data?.createdAt : null,
@@ -129,17 +132,14 @@ const LearningEvidenceCreateEdit = (props: any) => {
             handleSubmit={handleSubmit}
           >
             <ModalBody>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="menu.statement" />
-                </Label>
+              <FormGroupCustom>
+                <LabelCustom id="menu.statement" required={true} />
                 <Input type='textarea' rows="2" {...statementRest} innerRef={statementRef} className="form-control" />
-              </div>
+                <RequiredMessagesCustom formState={formState} register={"statement"} />
+              </FormGroupCustom>
               {!props?.loginReducer?.schoolId ? (
-                <div className="form-group">
-                  <Label>
-                    <IntlMessages id="menu.school" />
-                  </Label>
+                <FormGroupCustom>
+                  <LabelCustom id="menu.school" required={true} />
                   <Select
                     isClearable
                     placeholder={<IntlMessages id="forms.select" />}
@@ -151,9 +151,10 @@ const LearningEvidenceCreateEdit = (props: any) => {
                     onChange={(selectedOption) => {
                       setValue('schoolId', selectedOption?.key);
                       setSchool(selectedOption);
+                      trigger("schoolId");
                     }}
                   />
-                </div>
+                </FormGroupCustom>
               ) : (
                 ''
               )}

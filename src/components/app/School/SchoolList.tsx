@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+
 import { COLUMN_LIST } from '../../../constants/School/schoolConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as areaActions from '../../../stores/actions/SchoolActions';
@@ -112,6 +113,7 @@ const SchoolList = (props: any) => {
             changeActiveData={changeActiveData}
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
+            refreshDataTable={refreshDataTable}
           />
           <SchoolCreateEdit
             data={data}

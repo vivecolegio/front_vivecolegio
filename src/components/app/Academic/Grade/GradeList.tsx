@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
+
 import { COLUMN_LIST } from '../../../../constants/AcademicGrade/AcademicGradeConstants';
 import { createNotification } from '../../../../helpers/Notification';
 import * as gradeActions from '../../../../stores/actions/Academic/GradeActions';
@@ -174,6 +175,7 @@ const GradeList = (props: any) => {
               },
             ]}
             withChildren={true}
+            refreshDataTable={refreshDataTable}
           />
           <GradeCreateEdit
             data={data}

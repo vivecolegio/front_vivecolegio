@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { useSearchParams } from 'react-router-dom';
 import { useNavigate } from 'react-router';
+import { useSearchParams } from 'react-router-dom';
+
 import { COLUMN_LIST } from '../../../constants/Learning/LearningConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as learningActions from '../../../stores/actions/LearningActions';
-import DataList from '../../common/Data/DataList';
-import LearningCreateEdit from './LearningCreateEdit';
-import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
 import { Colxx } from '../../common/CustomBootstrap';
+import DataList from '../../common/Data/DataList';
+import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
 import { Loader } from '../../common/Loader';
+import LearningCreateEdit from './LearningCreateEdit';
 
 const Learning = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
@@ -31,9 +32,8 @@ const Learning = (props: any) => {
     props.getListAllLearning(props?.loginReducer?.schoolId, asignatureId ? asignatureId : '', gradeId ? gradeId : '').then((listData: any) => {
       setDataTable(
         listData.map((c: any) => {
-          c.node.grade_format = c.node.academicGrade ? c.node.academicGrade.name : '';
-          c.node.asignature_format = c.node.academicAsignature
-            ? c.node.academicAsignature.name
+          c.node.academicStandard_format = c.node.academicStandard
+            ? c.node.academicStandard.standard
             : '';
           return c;
         }),
@@ -53,9 +53,8 @@ const Learning = (props: any) => {
     props.getListAllLearning(props?.loginReducer?.schoolId, asignatureId ? asignatureId : '', gradeId ? gradeId : '', idAcademicPeriod.length > 0 ? idAcademicPeriod : undefined).then((listData: any) => {
       setDataTable(
         listData.map((c: any) => {
-          c.node.grade_format = c.node.academicGrade ? c.node.academicGrade.name : '';
-          c.node.asignature_format = c.node.academicAsignature
-            ? c.node.academicAsignature.name
+          c.node.academicStandard_format = c.node.academicStandard
+            ? c.node.academicStandard.standard
             : '';
           return c;
         }),
@@ -136,7 +135,7 @@ const Learning = (props: any) => {
   const additionalFunction = async (item: any, btn: any) => {
     switch (btn?.action) {
       case 'goToChildrenLearning':
-        goToChildren(`/evidenceLearning?learningId=${item.id}&academicAsignatureCourseId=${academicAsignatureCourseId}`);
+        goToChildren(`/evidenceLearning?learningId=${item.id}&academicAsignatureCourseId=${academicAsignatureCourseId}&gradeAssignment=${gradeAssignment}`);
         break;
     }
   };
@@ -162,6 +161,27 @@ const Learning = (props: any) => {
       {' '}
       {dataTable !== null ? (
         <>
+          <>
+            <div className='d-flex justify-content-between align-items-center mt-4'>
+              <HeaderInfoAcademic asignature grade goTitle={gradeAssignment ? "Regresar a grados" : "Regresar a carga académica"} gradeAssignment={gradeAssignment} academicAsignatureCourseId={academicAsignatureCourseId} />
+              <div>
+                {academicPeriods ?
+                  academicPeriods.map((item: any) => {
+                    return (
+                      <>
+                        <button onClick={() => { return filterByPeriod(item); }} key={item?.node?.id} className={`btn ${academicPeriod.find((c: any) => { return (c === item?.node?.id) }) ? "btn-info" : "btn-outline-info"}`}
+                          type="button"
+                        >
+                          <i className='iconsminds-pen-2'></i>{' '}
+                          {item?.node?.name}
+                        </button>{' '}
+                      </>
+                    )
+                  })
+                  : ''}
+              </div>
+            </div>
+          </>
           <DataList
             data={dataTable}
             columns={columns}
@@ -172,29 +192,29 @@ const Learning = (props: any) => {
             deleteData={deleteData}
             changeActiveData={changeActiveData}
             deleteAll={deleteAll}
-            header={
-              <>
-                <div className='d-flex justify-content-between align-items-center mt-4'>
-                  <HeaderInfoAcademic asignature grade goTitle={gradeAssignment ? "Regresar a grados" : "Regresar a carga académica"} gradeAssignment={gradeAssignment} academicAsignatureCourseId={academicAsignatureCourseId} />
-                  <div>
-                    {academicPeriods ?
-                      academicPeriods.map((item: any) => {
-                        return (
-                          <>
-                            <button onClick={() => { return filterByPeriod(item); }} key={item?.node?.id} className={`btn ${academicPeriod.find((c: any) => { return (c === item?.node?.id) }) ? "btn-info" : "btn-outline-info"}`}
-                              type="button"
-                            >
-                              <i className='iconsminds-pen-2'></i>{' '}
-                              {item?.node?.name}
-                            </button>{' '}
-                          </>
-                        )
-                      })
-                      : ''}
-                  </div>
-                </div>
-              </>
-            }
+            // header={
+            //   <>
+            //     <div className='d-flex justify-content-between align-items-center mt-4'>
+            //       <HeaderInfoAcademic asignature grade goTitle={gradeAssignment ? "Regresar a grados" : "Regresar a carga académica"} gradeAssignment={gradeAssignment} academicAsignatureCourseId={academicAsignatureCourseId} />
+            //       <div>
+            //         {academicPeriods ?
+            //           academicPeriods.map((item: any) => {
+            //             return (
+            //               <>
+            //                 <button onClick={() => { return filterByPeriod(item); }} key={item?.node?.id} className={`btn ${academicPeriod.find((c: any) => { return (c === item?.node?.id) }) ? "btn-info" : "btn-outline-info"}`}
+            //                   type="button"
+            //                 >
+            //                   <i className='iconsminds-pen-2'></i>{' '}
+            //                   {item?.node?.name}
+            //                 </button>{' '}
+            //               </>
+            //             )
+            //           })
+            //           : ''}
+            //       </div>
+            //     </div>
+            //   </>
+            // }
             changeActiveDataAll={changeActiveDataAll}
             additionalFunction={additionalFunction}
             childrenButtons={[
@@ -207,6 +227,7 @@ const Learning = (props: any) => {
               },
             ]}
             withChildren={true}
+            refreshDataTable={refreshDataTable}
           />
           <LearningCreateEdit
             data={data}

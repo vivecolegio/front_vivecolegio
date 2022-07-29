@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
+
 import { COLUMN_LIST } from '../../../constants/LearningEvidence/learningEvidenceConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as learningEvidenceActions from '../../../stores/actions/LearningEvidenceActions';
@@ -21,6 +22,7 @@ const LearningEvidenceList = (props: any) => {
   let [params] = useSearchParams();
   const learningId = params.get('learningId');
   const academicAsignatureCourseId = params.get('academicAsignatureCourseId');
+  const gradeAssignment = params.get('gradeAssignment');
 
   const [data, setData] = useState(null);
   useEffect(() => {
@@ -113,6 +115,7 @@ const LearningEvidenceList = (props: any) => {
       {' '}
       {dataTable !== null ? (
         <>
+          <HeaderInfoAcademic asignature grade learning goTitle="Regresar a aprendizajes" learningId={learningId} gradeAssignment={gradeAssignment} academicAsignatureCourseId={academicAsignatureCourseId} />
           <DataList
             data={dataTable}
             columns={columns}
@@ -124,11 +127,12 @@ const LearningEvidenceList = (props: any) => {
             changeActiveData={changeActiveData}
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
-            header={
-              <>
-                <HeaderInfoAcademic asignature grade learning goTitle="Regresar a aprendizajes" learningId={learningId} academicAsignatureCourseId={academicAsignatureCourseId} />
-              </>
-            }
+            // header={
+            //   <>
+            //     <HeaderInfoAcademic asignature grade learning goTitle="Regresar a aprendizajes" learningId={learningId} gradeAssignment={gradeAssignment} academicAsignatureCourseId={academicAsignatureCourseId} />
+            //   </>
+            // }
+            refreshDataTable={refreshDataTable}
           />
           <LearningEvidenceCreateEdit
             data={data}

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
+
 import { COLUMN_LIST } from '../../../constants/Menu/menuConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as loginActions from '../../../stores/actions/LoginActions';
@@ -9,7 +10,6 @@ import { Colxx } from '../../common/CustomBootstrap';
 import DataList from '../../common/Data/DataList';
 import { Loader } from '../../common/Loader';
 import MenuItemCreateEdit from './SubmenuCreateEdit';
-
 
 const MenuItemList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
@@ -126,6 +126,7 @@ const MenuItemList = (props: any) => {
             changeActiveData={changeActiveData}
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
+            refreshDataTable={refreshDataTable}
           />
           <MenuItemCreateEdit
             data={data}

@@ -4,14 +4,18 @@ import { connect } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 import Select from 'react-select';
 import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
+
 import IntlMessages from '../../../../helpers/IntlMessages';
+import * as asignatureActions from '../../../../stores/actions/Academic/AsignatureActions';
+import * as gradeActions from '../../../../stores/actions/Academic/GradeActions';
 import * as standardActions from '../../../../stores/actions/Academic/StandardActions';
 import * as standardGeneralActions from '../../../../stores/actions/GeneralAcademic/StandardActions';
-import * as gradeActions from '../../../../stores/actions/Academic/GradeActions';
-import * as asignatureActions from '../../../../stores/actions/Academic/AsignatureActions';
 import { Colxx } from '../../../common/CustomBootstrap';
 import AddNewModal from '../../../common/Data/AddNewModal';
 import CreateEditAuditInformation from '../../../common/Data/CreateEditAuditInformation';
+import FormGroupCustom from '../../../common/Data/FormGroupCustom';
+import LabelCustom from '../../../common/Data/LabelCustom';
+import RequiredMessagesCustom from '../../../common/Data/RequiredMessagesCustom';
 import { Loader } from '../../../common/Loader';
 
 const StandardCreateEdit = (props: any) => {
@@ -26,7 +30,7 @@ const StandardCreateEdit = (props: any) => {
   const [school, setSchool] = useState(null);
 
   const methods = useForm({
-    mode: 'onChange',
+    mode: 'all',
     reValidateMode: 'onChange',
   });
 
@@ -34,7 +38,7 @@ const StandardCreateEdit = (props: any) => {
   const asignatureId = params.get('asignatureId');
   const gradeId = params.get('gradeId');
 
-  const { handleSubmit, control, register, reset, setValue, getValues } = methods;
+  const { handleSubmit, control, register, reset, setValue, formState, trigger } = methods;
 
   useEffect(() => {
     cleanForm();
@@ -77,6 +81,22 @@ const StandardCreateEdit = (props: any) => {
           value: props?.data?.school?.id,
         });
       }
+      register('schoolId', {
+        required: true,
+        value: props?.data?.id ? props?.data?.schoolId : '',
+      });
+      register('academicGradeId', {
+        required: true,
+        value: props?.data?.id ? props?.data?.academicGradeId : '',
+      });
+      register('academicAsignatureId', {
+        required: true,
+        value: props?.data?.id ? props?.data?.academicAsignatureId : '',
+      });
+      register('generalAcademicStandardId', {
+        required: false,
+        value: props?.data?.id ? props?.data?.generalAcademicStandardId : '',
+      });
     }
     props.dataGrade(gradeId).then((resp: any) => {
       props.dataAsignature(asignatureId).then((resp2: any) => {
@@ -152,22 +172,6 @@ const StandardCreateEdit = (props: any) => {
     required: true,
     value: props?.data?.id ? props?.data?.standard : '',
   });
-  register('schoolId', {
-    required: true,
-    value: props?.data?.id ? props?.data?.schoolId : '',
-  });
-  register('academicGradeId', {
-    required: true,
-    value: props?.data?.id ? props?.data?.academicGradeId : '',
-  });
-  register('academicAsignatureId', {
-    required: true,
-    value: props?.data?.id ? props?.data?.academicAsignatureId : '',
-  });
-  register('generalAcademicStandardId', {
-    required: true,
-    value: props?.data?.id ? props?.data?.generalAcademicStandardId : '',
-  });
 
   const auditInfo = {
     createdAt: props?.data?.id ? props?.data?.createdAt : null,
@@ -200,38 +204,36 @@ const StandardCreateEdit = (props: any) => {
             handleSubmit={handleSubmit}
           >
             <ModalBody>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="forms.standard" /> {' - '}
-                  <IntlMessages id="menu.general" />
-                </Label>
-                <Select
-                  isClearable
-                  placeholder={<IntlMessages id="forms.select" />}
-                  {...register('generalAcademicStandardId', { required: true })}
-                  className="react-select"
-                  classNamePrefix="react-select"
-                  options={standardList}
-                  value={standard}
-                  isDisabled={standardList?.length == 0}
-                  onChange={(selectedOption) => {
-                    setValue('generalAcademicStandardId', selectedOption?.key);
-                    setStandard(selectedOption);
-                    setValue('standard', selectedOption?.label);
-                  }}
-                />
-              </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="forms.standard2" />
-                </Label>
+              {standardList && standardList?.length > 0 ?
+                <FormGroupCustom >
+                  <LabelCustom id="forms.nationalStandard" required={false} />
+                  <Select
+                    isClearable
+                    placeholder={<IntlMessages id="forms.select" />}
+                    {...register('generalAcademicStandardId', { required: false })}
+                    className="react-select"
+                    classNamePrefix="react-select"
+                    options={standardList}
+                    value={standard}
+                    isDisabled={standardList?.length == 0}
+                    onChange={(selectedOption) => {
+                      setValue('generalAcademicStandardId', selectedOption?.key);
+                      setStandard(selectedOption);
+                      setValue('standard', selectedOption?.label);
+                      trigger("standard");
+                    }}
+                  />
+                </FormGroupCustom>
+                :
+                <></>}
+              <FormGroupCustom>
+                <LabelCustom id="forms.standard2" required={true} />
                 <Input type='textarea' rows="6" {...standardRest} innerRef={standardRef} className="form-control" />
-              </div>
+                <RequiredMessagesCustom formState={formState} register={"standard"} />
+              </FormGroupCustom>
               {!props?.loginReducer?.schoolId ? (
-                <div className="form-group">
-                  <Label>
-                    <IntlMessages id="menu.school" />
-                  </Label>
+                <FormGroupCustom>
+                  <LabelCustom id="menu.school" required={true} />
                   <Select
                     isClearable
                     placeholder={<IntlMessages id="forms.select" />}
@@ -243,9 +245,11 @@ const StandardCreateEdit = (props: any) => {
                     onChange={(selectedOption) => {
                       setValue('schoolId', selectedOption?.key);
                       setSchool(selectedOption);
+                      trigger("schoolId");
                     }}
                   />
-                </div>
+                  <RequiredMessagesCustom formState={formState} register={"schoolId"} />
+                </FormGroupCustom>
               ) : (
                 ''
               )}

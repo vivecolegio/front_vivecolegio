@@ -9,25 +9,10 @@ export const QUERY_GET_ALL_LEARNING = gql`
           id
           statement
           active
-          evidenceLearnings {
-            statement
-            id
-          }
-          academicAsignature {
-            id
-            name
-          }
-          academicGrade {
-            id
-            name
-          }
+          academicAsignatureId
           academicStandard {
             id
             standard
-          }
-          generalBasicLearningRight {
-            id
-            dba
           }
         }
       }

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+
 import { COLUMN_LIST } from '../../../constants/SchoolAdministrative/schoolAdministrativecConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as schoolAdministrativeActions from '../../../stores/actions/SchoolAdministrativeActions';
-import { Colxx } from '../../common/CustomBootstrap';
 import * as userActions from '../../../stores/actions/UserActions';
+import { Colxx } from '../../common/CustomBootstrap';
 import DataList from '../../common/Data/DataList';
 import { Loader } from '../../common/Loader';
 import SchoolAdministrativeCreateEdit from './SchoolAdministrativeCreateEdit';
@@ -168,6 +169,7 @@ const SchoolAdministrativeList = (props: any) => {
               },
             ]}
             withChildren={true}
+            refreshDataTable={refreshDataTable}
           />
           <SchoolAdministrativeCreateEdit
             data={data}

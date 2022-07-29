@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
+
 import { COLUMN_LIST } from '../../../constants/AcademicHour/academicHourConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as academicHourActions from '../../../stores/actions/AcademicHourActions';
@@ -112,6 +113,19 @@ const AcademicHourList = (props: any) => {
       {' '}
       {dataTable !== null ? (
         <>
+          <>
+            <div className="mt-0">
+              <div className="d-flex flex-row">
+                <span className="mb-0 text-muted border-b-warning">
+                  Jornada: <h2 className="text-warning font-bold">{academicDayName}</h2>
+                </span>
+              </div>
+              <p className="text-muted mt-2 d-flex align-items-center cursor-pointer" onClick={() => { return goTo('/academicDay') }}>
+                <i className="simple-icon-arrow-left-circle mr-2"></i>
+                Regresar a Jornadas
+              </p>
+            </div>
+          </>
           <DataList
             data={dataTable}
             columns={columns}
@@ -123,19 +137,7 @@ const AcademicHourList = (props: any) => {
             changeActiveData={changeActiveData}
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
-            header={
-              <>
-                <div className='mt-4'>
-                  <h2 className='mb-0'>
-                    <span className='text-green font-bold'>{academicDayName}</span>
-                  </h2>
-                  <p className='text-muted d-flex align-items-center cursor-pointer' onClick={() => { return goTo('/academicDay') }}>
-                    <i className='simple-icon-arrow-left-circle mr-2'></i>
-                    Regresar a jornadas
-                  </p>
-                </div>
-              </>
-            }
+            refreshDataTable={refreshDataTable}
           />
           <AcademicHourCreateEdit
             data={data}

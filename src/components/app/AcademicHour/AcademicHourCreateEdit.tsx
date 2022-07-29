@@ -6,11 +6,15 @@ import { useSearchParams } from 'react-router-dom';
 import Select from 'react-select';
 import TimePicker from 'react-time-picker';
 import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
+
 import IntlMessages from '../../../helpers/IntlMessages';
 import * as AcademicHourActions from '../../../stores/actions/AcademicHourActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import AddNewModal from '../../common/Data/AddNewModal';
 import CreateEditAuditInformation from '../../common/Data/CreateEditAuditInformation';
+import FormGroupCustom from '../../common/Data/FormGroupCustom';
+import LabelCustom from '../../common/Data/LabelCustom';
+import RequiredMessagesCustom from '../../common/Data/RequiredMessagesCustom';
 import { Loader } from '../../common/Loader';
 
 const AcademicHourCreateEdit = (props: any) => {
@@ -24,11 +28,11 @@ const AcademicHourCreateEdit = (props: any) => {
   const academicDayId = params.get('academicDayId');
 
   const methods = useForm({
-    mode: 'onChange',
+    mode: 'all',
     reValidateMode: 'onChange',
   });
 
-  const { handleSubmit, control, register, reset, setValue, getValues } = methods;
+  const { handleSubmit, control, register, reset, setValue, formState, trigger } = methods;
 
   useEffect(() => {
     cleanForm();
@@ -47,6 +51,22 @@ const AcademicHourCreateEdit = (props: any) => {
       if (props?.data?.endTime !== undefined && props?.data?.endTime != null) {
         setEndTime(props?.data?.endTime);
       }
+      register('startTime', {
+        required: true,
+        value: props?.data?.id ? props?.data?.startTime : '',
+      });
+      register('endTime', {
+        required: true,
+        value: props?.data?.id ? props?.data?.endTime : '',
+      });
+      register('academicDayId', {
+        required: true,
+        value: props?.data?.id ? props?.data?.academicDayId : '',
+      });
+      register('campusId', {
+        required: false,
+        value: props?.data?.id ? props?.data?.campusId : '',
+      });
     }
     setLoading(false);
   }, [props?.data]);
@@ -82,22 +102,7 @@ const AcademicHourCreateEdit = (props: any) => {
     });
   };
 
-  register('startTime', {
-    required: true,
-    value: props?.data?.id ? props?.data?.startTime : '',
-  });
-  register('endTime', {
-    required: true,
-    value: props?.data?.id ? props?.data?.endTime : '',
-  });
-  register('academicDayId', {
-    required: true,
-    value: props?.data?.id ? props?.data?.academicDayId : '',
-  });
-  register('campusId', {
-    required: true,
-    value: props?.data?.id ? props?.data?.campusId : '',
-  });
+
   const { ref: orderRef, ...orderRest } = register('order', {
     required: true,
     value: props?.data?.id ? props?.data?.order : '',
@@ -135,10 +140,8 @@ const AcademicHourCreateEdit = (props: any) => {
             handleSubmit={handleSubmit}
           >
             <ModalBody>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="forms.startTime" />
-                </Label>
+              <FormGroupCustom>
+                <LabelCustom id="forms.startTime" required={true} />
                 <TimePicker
                   value={startTime}
                   {...register('startTime', { required: true })}
@@ -148,13 +151,13 @@ const AcademicHourCreateEdit = (props: any) => {
                   onChange={(date) => {
                     setValue('startTime', date as Date);
                     setStartTime(date as Date);
+                    trigger('startTime')
                   }}
                 />
-              </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="forms.endTime" />
-                </Label>
+                <RequiredMessagesCustom formState={formState} register={"startTime"} />
+              </FormGroupCustom>
+              <FormGroupCustom>
+                <LabelCustom id="forms.endTime" required={true} />
                 <TimePicker
                   value={endTime}
                   {...register('endTime', { required: true })}
@@ -164,17 +167,18 @@ const AcademicHourCreateEdit = (props: any) => {
                   onChange={(date) => {
                     setValue('endTime', date as Date);
                     setEndTime(date as Date);
+                    trigger('endTime')
                   }}
                 />
-              </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="forms.sorting" />
-                </Label>
-                <Input {...orderRest} innerRef={orderRef} className="form-control" />
-              </div>
+                <RequiredMessagesCustom formState={formState} register={"endTime"} />
+              </FormGroupCustom>
+              <FormGroupCustom>
+                <LabelCustom id="forms.sorting" required={true} />
+                <Input {...orderRest} innerRef={orderRef} className="form-control" type="number" step="1" min={1} />
+                <RequiredMessagesCustom formState={formState} register={"order"} />
+              </FormGroupCustom>
               {/* {!props?.loginReducer?.campusId ? (
-                <div className="form-group">
+                <FormGroupCustom>
                   <Label>
                     <IntlMessages id="menu.campus" />
                   </Label>
@@ -191,7 +195,7 @@ const AcademicHourCreateEdit = (props: any) => {
                       setCampus(selectedOption);
                     }}
                   />
-                </div>
+                </FormGroupCustom>
               ) : (
                 ''
               )} */}

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
+
 import { COLUMN_LIST } from '../../../constants/Asignature/asignatureConstants';
 import * as asignatureActions from '../../../stores/actions/Academic/AsignatureActions';
 import { Colxx } from '../../common/CustomBootstrap';
@@ -19,6 +20,7 @@ const ValuationReferents = (props: any) => {
   const areaName = params.get('areaName');
 
   const [data, setData] = useState(null);
+
   useEffect(() => {
     const areaId = params.get('id');
     props.getListAllAcademicAsignature(props?.loginReducer?.schoolId, areaId ? areaId : '').then((listData: any) => {
@@ -28,6 +30,22 @@ const ValuationReferents = (props: any) => {
       }));
     });
   }, []);
+
+  const refreshDataTable = async () => {
+    setDataTable(null);
+    await getDataTable();
+  };
+
+  const getDataTable = async () => {
+    const areaId = params.get('id');
+    props.getListAllAcademicAsignature(props?.loginReducer?.schoolId, areaId ? areaId : '').then((listData: any) => {
+      setDataTable(listData.map((c: any) => {
+        c.node.generalAsignature_format = c.node.generalAcademicAsignature ? c.node.generalAcademicAsignature.name : '';
+        return c;
+      }));
+    });
+  };
+
 
   const goToChildren = async (url: any) => {
     navigate(url);
@@ -63,6 +81,7 @@ const ValuationReferents = (props: any) => {
               },
             ]}
             withChildren={true}
+            refreshDataTable={refreshDataTable}
           />
         </>
       ) : (

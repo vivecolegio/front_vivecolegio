@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
+
 import { COLUMN_LIST } from '../../../../constants/Area/areaConstants';
 import { createNotification } from '../../../../helpers/Notification';
 import * as areaActions from '../../../../stores/actions/Academic/AreaActions';
@@ -145,6 +146,7 @@ const AreaList = (props: any) => {
               },
             ]}
             withChildren={true}
+            refreshDataTable={refreshDataTable}
           />
           <AreaCreateEdit
             data={data}

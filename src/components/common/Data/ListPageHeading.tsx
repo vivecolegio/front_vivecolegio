@@ -1,18 +1,8 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState } from 'react';
 import { injectIntl } from 'react-intl';
-import {
-  Button,
-  ButtonDropdown,
-  Card,
-  Collapse,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  Input,
-  Row,
-  UncontrolledDropdown,
-} from 'reactstrap';
+import { Button, ButtonDropdown, Card, Collapse, DropdownItem, DropdownMenu, DropdownToggle, Input, Row, UncontrolledDropdown } from 'reactstrap';
+
 import IntlMessages from '../../../helpers/IntlMessages';
 import { Colxx, Separator } from '../CustomBootstrap';
 import BreadcrumbContainer from '../navs/Breadcrumb';
@@ -51,7 +41,8 @@ const ListPageHeading = ({
   showOptionsTypeView,
   onSort,
   sortColumn,
-  sortOrderColumn
+  sortOrderColumn,
+  refreshDataTable
 }: any) => {
   const [dropdownSplitOpen, setDropdownSplitOpen] = useState(false);
   const [displayOptionsIsOpen, setDisplayOptionsIsOpen] = useState(false);
@@ -66,6 +57,11 @@ const ListPageHeading = ({
           </h1> */}
 
           <div className="text-zero top-right-button-container">
+            <Button className="top-right-button mr-1" onClick={() => {
+              return refreshDataTable();
+            }}>
+              <i className="simple-icon-refresh" />
+            </Button>
             {currentMenu.createAction && !createActionDisabled ? (
               <Button
                 color="primary"
@@ -75,6 +71,7 @@ const ListPageHeading = ({
                   return toggleModal();
                 }}
               >
+                <i className="iconsminds-add" />
                 <IntlMessages id="pages.add-new" />
               </Button>
             ) : (
@@ -82,8 +79,8 @@ const ListPageHeading = ({
             )}
             {'  '}
             {currentMenu.deleteAction ||
-            currentMenu.activateAction ||
-            currentMenu.inactiveAction ? (
+              currentMenu.activateAction ||
+              currentMenu.inactiveAction ? (
               <>
                 <ButtonDropdown
                   isOpen={dropdownSplitOpen}
@@ -102,11 +99,10 @@ const ListPageHeading = ({
                       }}
                       label={
                         <span
-                          className={`custom-control-label ${
-                            selectedItemsLength > 0 && selectedItemsLength < itemsLength
-                              ? 'indeterminate'
-                              : ''
-                          }`}
+                          className={`custom-control-label ${selectedItemsLength > 0 && selectedItemsLength < itemsLength
+                            ? 'indeterminate'
+                            : ''
+                            }`}
                         />
                       }
                     />
@@ -246,7 +242,7 @@ const ListPageHeading = ({
                           style={{ width: item.width }}
                         >
                           <i
-                            className={`glyph-icon text-one cursor-pointer ${ sortColumn === item?.column ?  sortOrderColumn ? 'iconsminds-up-1' : 'iconsminds-down-1' : 'iconsminds-down-1' }`}
+                            className={`glyph-icon text-one cursor-pointer ${sortColumn === item?.column ? sortOrderColumn ? 'iconsminds-up-1' : 'iconsminds-down-1' : 'iconsminds-down-1'}`}
                             onClick={(e: any) => {
                               //console.log(sortColumn)
                               return onSort(item);

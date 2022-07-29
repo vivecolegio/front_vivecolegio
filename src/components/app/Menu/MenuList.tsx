@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
+
 import { COLUMN_LIST } from '../../../constants/Menu/menuConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as loginActions from '../../../stores/actions/LoginActions';
@@ -144,6 +145,7 @@ const MenuList = (props: any) => {
               ]
             }
             withChildren={true}
+            refreshDataTable={refreshDataTable}
           />
           <MenuCreateEdit
             isLg={true}

@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+
 import { COLUMN_LIST } from '../../../constants/User/userConstants';
+import { createNotification } from "../../../helpers/Notification";
 import * as roleActions from '../../../stores/actions/UserActions';
+import { Colxx } from '../../common/CustomBootstrap';
 import AddNewModal from '../../common/Data/AddNewModal';
 import DataList from '../../common/Data/DataList';
-import UserCreateEdit from './UserCreateEdit';
-import { createNotification } from "../../../helpers/Notification";
-import { Colxx } from '../../common/CustomBootstrap';
 import { Loader } from '../../common/Loader';
+import UserCreateEdit from './UserCreateEdit';
 
 const UserList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
@@ -111,6 +112,7 @@ const UserList = (props: any) => {
             changeActiveData={changeActiveData}
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
+            refreshDataTable={refreshDataTable}
           />
           <UserCreateEdit
             data={data}

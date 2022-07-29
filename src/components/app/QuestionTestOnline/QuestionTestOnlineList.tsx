@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+
 import { COLUMN_LIST } from '../../../constants/QuestionTestOnline/questionTestOnlineConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as QuestionTestOnlineActions from '../../../stores/actions/QuestionTestOnlineActions';
@@ -122,6 +123,7 @@ const QuestionTestOnlineList = (props: any) => {
               },
             ]}
             withChildren={true}
+            refreshDataTable={refreshDataTable}
           />
           <QuestionTestOnlineCreateEdit
             data={data}

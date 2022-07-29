@@ -13,6 +13,7 @@ export const QUERY_GET_ALL_PERFORMANCE_LEVEL = gql`
           minimumScore
           active
           category
+          categoryGrade
         }
       }
       totalCount
@@ -47,6 +48,7 @@ export const QUERY_GET_PERFORMANCE_LEVEL = gql`
       name
       topScore
       type
+      campusId
       campus {
         id
         name
@@ -60,6 +62,11 @@ export const QUERY_GET_PERFORMANCE_LEVEL = gql`
       schoolId
       school {
         id 
+        name
+      }
+      academicGradesId
+      academicGrades {
+        id
         name
       }
       version
@@ -94,6 +101,14 @@ export const QUERY_GET_DROPDOWNS_PERFORMANCE_LEVEL = gql`
       }
     }
     dataGeneralPerformanceLevels: getAllGeneralPerformanceLevel(allData: false, orderCreated: false) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+    dataAcademicGrade: getAllAcademicGrade(orderCreated: false, allData: false, schoolId: $schoolId) {
       edges {
         node {
           id

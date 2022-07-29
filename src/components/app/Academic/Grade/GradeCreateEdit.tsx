@@ -8,6 +8,9 @@ import * as gradeActions from '../../../../stores/actions/Academic/GradeActions'
 import { Colxx } from '../../../common/CustomBootstrap';
 import AddNewModal from '../../../common/Data/AddNewModal';
 import CreateEditAuditInformation from '../../../common/Data/CreateEditAuditInformation';
+import FormGroupCustom from '../../../common/Data/FormGroupCustom';
+import LabelCustom from '../../../common/Data/LabelCustom';
+import RequiredMessagesCustom from '../../../common/Data/RequiredMessagesCustom';
 import { Loader } from '../../../common/Loader';
 
 const GradeCreateEdit = (props: any) => {
@@ -20,15 +23,15 @@ const GradeCreateEdit = (props: any) => {
   const [cycle, setCycle] = useState(null);
   const [school, setSchool] = useState(null);
   const [educationLevel, setEducationLevel] = useState(null);
-  const [speciality, setSpeciality] = useState(null);
+  // const [speciality, setSpeciality] = useState(null);
   const [generalAcademicGrade, setGeneralAcademicGrade] = useState(null);
 
   const methods = useForm({
-    mode: 'onChange',
+    mode: 'all',
     reValidateMode: 'onChange',
   });
 
-  const { handleSubmit, control, register, reset, setValue, getValues } = methods;
+  const { handleSubmit, control, register, reset, setValue, formState, trigger } = methods;
 
   useEffect(() => {
     cleanForm();
@@ -58,13 +61,13 @@ const GradeCreateEdit = (props: any) => {
           value: props?.data?.educationLevel?.id,
         });
       }
-      if (props?.data?.specialty !== undefined && props?.data?.specialty != null) {
-        setSpeciality({
-          key: props?.data?.specialty?.id,
-          label: props?.data?.specialty?.name,
-          value: props?.data?.specialty?.id,
-        });
-      }
+      // if (props?.data?.specialty !== undefined && props?.data?.specialty != null) {
+      //   setSpeciality({
+      //     key: props?.data?.specialty?.id,
+      //     label: props?.data?.specialty?.name,
+      //     value: props?.data?.specialty?.id,
+      //   });
+      // }
       if (props?.data?.generalAcademicGrade !== undefined && props?.data?.generalAcademicGrade != null) {
         setGeneralAcademicGrade({
           key: props?.data?.generalAcademicGrade?.id,
@@ -72,6 +75,26 @@ const GradeCreateEdit = (props: any) => {
           value: props?.data?.generalAcademicGrade?.id,
         });
       }
+      register('generalAcademicCycleId', {
+        required: true,
+        value: props?.data?.id ? props?.data?.generalAcademicCycleId : '',
+      });
+      register('schoolId', {
+        required: true,
+        value: props?.data?.id ? props?.data?.schoolId : '',
+      });
+      // register('specialtyId', {
+      //   required: true,
+      //   value: props?.data?.id ? props?.data?.specialtyId : '',
+      // });
+      register('educationLevelId', {
+        required: true,
+        value: props?.data?.id ? props?.data?.educationLevelId : '',
+      });
+      register('generalAcademicGradeId', {
+        required: false,
+        value: props?.data?.id ? props?.data?.generalAcademicGradeId : '',
+      });
     }
     setLoading(false);
   }, [props?.data]);
@@ -80,7 +103,7 @@ const GradeCreateEdit = (props: any) => {
     reset();
     setCycle(null);
     setSchool(null);
-    setSpeciality(null);
+    // setSpeciality(null);
     setGeneralAcademicGrade(null);
     setEducationLevel(null);
     if (props?.loginReducer?.schoolId && !props?.data?.id) {
@@ -126,26 +149,7 @@ const GradeCreateEdit = (props: any) => {
     required: true,
     value: props?.data?.id ? props?.data?.name : '',
   });
-  register('generalAcademicCycleId', {
-    required: true,
-    value: props?.data?.id ? props?.data?.generalAcademicCycleId : '',
-  });
-  register('schoolId', {
-    required: true,
-    value: props?.data?.id ? props?.data?.schoolId : '',
-  });
-  register('specialtyId', {
-    required: true,
-    value: props?.data?.id ? props?.data?.specialtyId : '',
-  });
-  register('educationLevelId', {
-    required: true,
-    value: props?.data?.id ? props?.data?.educationLevelId : '',
-  });
-  register('generalAcademicGradeId', {
-    required: true,
-    value: props?.data?.id ? props?.data?.generalAcademicGradeId : '',
-  });
+
 
   const auditInfo = {
     createdAt: props?.data?.id ? props?.data?.createdAt : null,
@@ -178,16 +182,13 @@ const GradeCreateEdit = (props: any) => {
             handleSubmit={handleSubmit}
           >
             <ModalBody>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="forms.name" />
-                </Label>
+              <FormGroupCustom>
+                <LabelCustom id="forms.name" required={true} />
                 <Input {...nameRest} innerRef={nameRef} className="form-control" />
-              </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="menu.cycleAcademic" />
-                </Label>
+                <RequiredMessagesCustom formState={formState} register={"name"} />
+              </FormGroupCustom>
+              <FormGroupCustom>
+                <LabelCustom id="menu.cycleAcademic" required={true} />
                 <Select
                   isClearable
                   placeholder={<IntlMessages id="forms.select" />}
@@ -199,13 +200,13 @@ const GradeCreateEdit = (props: any) => {
                   onChange={(selectedOption) => {
                     setValue('generalAcademicCycleId', selectedOption?.key);
                     setCycle(selectedOption);
+                    trigger("generalAcademicCycleId");
                   }}
                 />
-              </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="menu.educationLevel" />
-                </Label>
+                <RequiredMessagesCustom formState={formState} register={"generalAcademicCycleId"} />
+              </FormGroupCustom>
+              <FormGroupCustom>
+                <LabelCustom id="menu.educationLevel" required={true} />
                 <Select
                   isClearable
                   placeholder={<IntlMessages id="forms.select" />}
@@ -217,13 +218,13 @@ const GradeCreateEdit = (props: any) => {
                   onChange={(selectedOption) => {
                     setValue('educationLevelId', selectedOption?.key);
                     setEducationLevel(selectedOption);
+                    trigger("educationLevelId");
                   }}
                 />
-              </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="menu.speciality" />
-                </Label>
+                <RequiredMessagesCustom formState={formState} register={"educationLevelId"} />
+              </FormGroupCustom>
+              {/* <FormGroupCustom>
+                <LabelCustom id="menu.speciality" required={true} />
                 <Select
                   isClearable
                   placeholder={<IntlMessages id="forms.select" />}
@@ -237,17 +238,14 @@ const GradeCreateEdit = (props: any) => {
                     setSpeciality(selectedOption);
                   }}
                 />
-              </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="menu.grade" />
-                  {' - '}
-                  <IntlMessages id="menu.national" />
-                </Label>
+                <RequiredMessagesCustom formState={formState} register={"specialtyId"} />
+              </FormGroupCustom> */}
+              <FormGroupCustom>
+                <LabelCustom id="forms.nationalGrade" required={false} />
                 <Select
                   isClearable
                   placeholder={<IntlMessages id="forms.select" />}
-                  {...register('generalAcademicGradeId', { required: true })}
+                  {...register('generalAcademicGradeId', { required: false })}
                   className="react-select"
                   classNamePrefix="react-select"
                   options={generalAcademicGradesList}
@@ -257,12 +255,10 @@ const GradeCreateEdit = (props: any) => {
                     setGeneralAcademicGrade(selectedOption);
                   }}
                 />
-              </div>
+              </FormGroupCustom>
               {!props?.loginReducer?.schoolId ? (
-                <div className="form-group">
-                  <Label>
-                    <IntlMessages id="menu.school" />
-                  </Label>
+                <FormGroupCustom>
+                  <LabelCustom id="menu.school" required={true} />
                   <Select
                     isClearable
                     placeholder={<IntlMessages id="forms.select" />}
@@ -274,9 +270,11 @@ const GradeCreateEdit = (props: any) => {
                     onChange={(selectedOption) => {
                       setValue('schoolId', selectedOption?.key);
                       setSchool(selectedOption);
+                      trigger("schoolId");
                     }}
                   />
-                </div>
+                  <RequiredMessagesCustom formState={formState} register={"schoolIdW"} />
+                </FormGroupCustom>
               ) : (
                 ''
               )}

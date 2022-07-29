@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+
 import { COLUMN_LIST } from '../../../../constants/PerformanceLevel/performanceLevelConstants';
 import { createNotification } from '../../../../helpers/Notification';
 import * as performanceLevelActions from '../../../../stores/actions/Academic/PerformanceLevelActions';
@@ -111,6 +112,7 @@ const PerformanceLevelList = (props: any) => {
             changeActiveData={changeActiveData}
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
+            refreshDataTable={refreshDataTable}
           />
           <PerformanceLevelCreateEdit
             data={data}

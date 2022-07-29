@@ -8,6 +8,7 @@ export const QUERY_GET_ALL_AREA = gql`
         node {
           id
           name
+          order
           abbreviation
           active
           generalAcademicAreaId
@@ -28,6 +29,7 @@ export const QUERY_GET_AREA = gql`
       id
       name
       abbreviation
+      order
       schoolId
       school {
         id

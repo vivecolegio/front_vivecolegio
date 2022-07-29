@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
+
 import { COLUMN_LIST } from '../../../constants/BasicLearningDuties/BasicLearningDutiesConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as generalBasicLearningRightActions from '../../../stores/actions/BasicLearningDutiesActions';
@@ -132,6 +133,7 @@ const GeneralBasicLearningRightList = (props: any) => {
       {' '}
       {dataTable !== null ? (
         <>
+          <HeaderInfoAcademic asignatureGeneral grade goTitle={gradeAssignment ? "Regresar a grados" : "Regresar a carga académica"} gradeAssignment={gradeAssignment} academicAsignatureCourseId={academicAsignatureCourseId} />
           <DataList
             data={dataTable}
             columns={columns}
@@ -143,11 +145,12 @@ const GeneralBasicLearningRightList = (props: any) => {
             changeActiveData={changeActiveData}
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
-            header={
-              <>
-                <HeaderInfoAcademic asignatureGeneral grade goTitle={gradeAssignment ? "Regresar a grados" : "Regresar a carga académica"} gradeAssignment={gradeAssignment} academicAsignatureCourseId={academicAsignatureCourseId} />
-              </>
-            }
+            // header={
+            //   <>
+            //     <HeaderInfoAcademic asignatureGeneral grade goTitle={gradeAssignment ? "Regresar a grados" : "Regresar a carga académica"} gradeAssignment={gradeAssignment} academicAsignatureCourseId={academicAsignatureCourseId} />
+            //   </>
+            // }
+            refreshDataTable={refreshDataTable}
           />
           <GeneralBasicLearningRightCreateEdit
             data={data}

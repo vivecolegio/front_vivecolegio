@@ -4,11 +4,15 @@ import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
+
 import IntlMessages from '../../../../helpers/IntlMessages';
 import * as areaActions from '../../../../stores/actions/Academic/AreaActions';
 import { Colxx } from '../../../common/CustomBootstrap';
 import AddNewModal from '../../../common/Data/AddNewModal';
 import CreateEditAuditInformation from '../../../common/Data/CreateEditAuditInformation';
+import FormGroupCustom from '../../../common/Data/FormGroupCustom';
+import LabelCustom from '../../../common/Data/LabelCustom';
+import RequiredMessagesCustom from '../../../common/Data/RequiredMessagesCustom';
 import { Loader } from '../../../common/Loader';
 
 const AreaCreateEdit = (props: any) => {
@@ -19,11 +23,11 @@ const AreaCreateEdit = (props: any) => {
   const [school, setSchool] = useState(null);
 
   const methods = useForm({
-    mode: 'onChange',
+    mode: 'all',
     reValidateMode: 'onChange',
   });
 
-  const { handleSubmit, control, register, reset, setValue, getValues } = methods;
+  const { handleSubmit, control, register, reset, setValue, formState, trigger } = methods;
 
   useEffect(() => {
     cleanForm();
@@ -46,6 +50,14 @@ const AreaCreateEdit = (props: any) => {
           value: props?.data?.school?.id,
         });
       }
+      register('generalAcademicAreaId', {
+        required: false,
+        value: props?.data?.id ? props?.data?.generalAcademicAreaId : '',
+      });
+      register('schoolId', {
+        required: true,
+        value: props?.data?.id ? props?.data?.schoolId : '',
+      });
     }
     setLoading(false);
   }, [props?.data]);
@@ -82,17 +94,13 @@ const AreaCreateEdit = (props: any) => {
     required: true,
     value: props?.data?.id ? props?.data?.name : '',
   });
+  const { ref: orderRef, ...orderRest } = register('order', {
+    required: true,
+    value: props?.data?.id ? props?.data?.order : '',
+  });
   const { ref: abbreviationRef, ...abbreviationRest } = register('abbreviation', {
     required: true,
     value: props?.data?.id ? props?.data?.abbreviation : '',
-  });
-  register('generalAcademicAreaId', {
-    required: true,
-    value: props?.data?.id ? props?.data?.generalAcademicAreaId : '',
-  });
-  register('schoolId', {
-    required: true,
-    value: props?.data?.id ? props?.data?.schoolId : '',
   });
 
   const auditInfo = {
@@ -127,27 +135,27 @@ const AreaCreateEdit = (props: any) => {
             handleSubmit={handleSubmit}
           >
             <ModalBody>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="forms.name" />
-                </Label>
+              <FormGroupCustom>
+                <LabelCustom id="forms.name" required={true} />
                 <Input {...nameRest} innerRef={nameRef} className="form-control" />
-              </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="forms.abbreviation" />
-                </Label>
+                <RequiredMessagesCustom formState={formState} register={"name"} />
+              </FormGroupCustom>
+              <FormGroupCustom>
+                <LabelCustom id="forms.sorting" required={true} />
+                <Input {...orderRest} innerRef={orderRef} className="form-control" type="number" step="1" min={1} />
+                <RequiredMessagesCustom formState={formState} register={"order"} />
+              </FormGroupCustom>
+              <FormGroupCustom>
+                <LabelCustom id="forms.abbreviation" required={true} />
                 <Input {...abbreviationRest} innerRef={abbreviationRef} className="form-control" />
-              </div>
-              <div className="form-group">
-                <Label>
-                  <IntlMessages id="menu.area" /> {' - '}
-                  <IntlMessages id="menu.national" />
-                </Label>
+                <RequiredMessagesCustom formState={formState} register={"abbreviation"} />
+              </FormGroupCustom>
+              <FormGroupCustom>
+                <LabelCustom id="forms.nationalArea" required={false} />
                 <Select
                   isClearable
                   placeholder={<IntlMessages id="forms.select" />}
-                  {...register('generalAcademicAreaId', { required: true })}
+                  {...register('generalAcademicAreaId', { required: false })}
                   className="react-select"
                   classNamePrefix="react-select"
                   options={generalAreasList}
@@ -155,14 +163,13 @@ const AreaCreateEdit = (props: any) => {
                   onChange={(selectedOption) => {
                     setValue('generalAcademicAreaId', selectedOption?.key);
                     setGeneralArea(selectedOption);
+                    trigger("generalAcademicAreaId");
                   }}
                 />
-              </div>
+              </FormGroupCustom>
               {!props?.loginReducer?.schoolId ? (
-                <div className="form-group">
-                  <Label>
-                    <IntlMessages id="menu.school" />
-                  </Label>
+                <FormGroupCustom>
+                  <LabelCustom id="menu.school" required={true} />
                   <Select
                     isClearable
                     placeholder={<IntlMessages id="forms.select" />}
@@ -174,9 +181,11 @@ const AreaCreateEdit = (props: any) => {
                     onChange={(selectedOption) => {
                       setValue('schoolId', selectedOption?.key);
                       setSchool(selectedOption);
+                      trigger("schoolId");
                     }}
                   />
-                </div>
+                  <RequiredMessagesCustom formState={formState} register={"schoolId"} />
+                </FormGroupCustom>
               ) : (
                 ''
               )}
