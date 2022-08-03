@@ -1,26 +1,37 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
+import { useSearchParams } from 'react-router-dom';
 
 import { COLUMN_LIST } from '../../../constants/AcademicAsignatureCourse/AcademicAsignatureCourseConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as academicIndicatorActions from '../../../stores/actions/AcademicAsignatureCourseActions';
+import * as teacherActions from '../../../stores/actions/TeacherActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import DataList from '../../common/Data/DataList';
+import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
 import { Loader } from '../../common/Loader';
 
-const AcademicAsignatureCourseList = (props: any) => {
+const AcademicAssignmentTeacher = (props: any) => {
+
   const [dataTable, setDataTable] = useState(null);
   const [columns, setColumns] = useState(COLUMN_LIST);
   const [modalOpen, setModalOpen] = useState(false);
+  const [teacher, setTeacher] = useState(null);
+
+  let [params] = useSearchParams();
+  const teacherId = params.get('teacherId');
 
   let navigate = useNavigate();
 
   const [data, setData] = useState(null);
   useEffect(() => {
-    if (props?.loginReducer?.teacherId) {
+    if (teacherId) {
+      props.dataTeacher(teacherId).then((data: any) => {
+        setTeacher(data?.data);
+      });
       props
-        .getListAllAcademicAsignatureCourseTeacher(props?.loginReducer?.teacherId)
+        .getListAllAcademicAsignatureCourseTeacher(teacherId)
         .then((listData: any) => {
           setDataTable(
             listData.map((c: any) => {
@@ -31,21 +42,6 @@ const AcademicAsignatureCourseList = (props: any) => {
                 : '';
               c.node.teacher_format = c.node.teacherId
                 ? c.node.teacher?.user?.lastName + " " + c.node.teacher?.user?.name
-                : '';
-              return c;
-            }),
-          );
-        });
-    } else {
-      props
-        .getListAllAcademicAsignatureCourse(props?.loginReducer?.campusId)
-        .then((listData: any) => {
-          setDataTable(
-            listData.map((c: any) => {
-              c.node.course_format = c.node.course ? c.node.course.name : '';
-              c.node.grade_format = c?.node?.course?.academicGrade?.name;
-              c.node.asignature_format = c.node.academicAsignature
-                ? c.node.academicAsignature.name
                 : '';
               return c;
             }),
@@ -55,9 +51,9 @@ const AcademicAsignatureCourseList = (props: any) => {
   }, []);
 
   const getDataTable = async () => {
-    if (props?.loginReducer?.teacherId) {
+    if (teacherId) {
       props
-        .getListAllAcademicAsignatureCourseTeacher(props?.loginReducer?.teacherId)
+        .getListAllAcademicAsignatureCourseTeacher(teacherId)
         .then((listData: any) => {
           setDataTable(
             listData.map((c: any) => {
@@ -68,21 +64,6 @@ const AcademicAsignatureCourseList = (props: any) => {
                 : '';
               c.node.teacher_format = c.node.teacherId
                 ? c.node.teacher?.user?.lastName + " " + c.node.teacher?.user?.name
-                : '';
-              return c;
-            }),
-          );
-        });
-    } else {
-      props
-        .getListAllAcademicAsignatureCourse(props?.loginReducer?.campusId)
-        .then((listData: any) => {
-          setDataTable(
-            listData.map((c: any) => {
-              c.node.course_format = c.node.course ? c.node.course.name : '';
-              c.node.grade_format = c?.node?.course?.academicGrade?.name;
-              c.node.asignature_format = c.node.academicAsignature
-                ? c.node.academicAsignature.name
                 : '';
               return c;
             }),
@@ -116,51 +97,6 @@ const AcademicAsignatureCourseList = (props: any) => {
     }
   };
 
-  const viewEditData = async (id: any) => {
-    await props.dataAcademicAsignatureCourse(id).then((formData: any) => {
-      setData(formData.data);
-      setModalOpen(true);
-    });
-  };
-
-  const changeActiveData = async (active: any, id: any) => {
-    await props.changeActiveAcademicAsignatureCourse(active, id, true).then((formData: any) => {
-      refreshDataTable();
-    });
-  };
-
-  const deleteData = async (id: any) => {
-    await props.deleteAcademicAsignatureCourse(id, true).then((formData: any) => {
-      refreshDataTable();
-    });
-  };
-
-  const deleteAll = async (items: any) => {
-    items.map(async (item: any) => {
-      await props.deleteUser(item.id, false).then(
-        () => { },
-        () => {
-          createNotification('error', 'error', '');
-        },
-      );
-    });
-    refreshDataTable();
-    createNotification('success', 'success', '');
-  };
-
-  const changeActiveDataAll = async (items: any) => {
-    items.map(async (item: any) => {
-      await props.changeActiveUser(!item.active, item.id, false).then(
-        () => { },
-        () => {
-          createNotification('error', 'error', '');
-        },
-      );
-    });
-    refreshDataTable();
-    createNotification('success', 'success', '');
-  };
-
   const additionalFunction = async (item: any, btn: any) => {
     switch (btn?.action) {
       case 'goToChildrenExperience':
@@ -182,22 +118,24 @@ const AcademicAsignatureCourseList = (props: any) => {
     navigate(url);
   };
 
+
   return (
     <>
+
       {' '}
       {dataTable !== null ? (
         <>
+          <div className="d-flex justify-content-start align-items-center w-100">
+            <div className="d-flex justify-content-start align-items-center w-100">
+              <HeaderInfoAcademic generic={{ title: 'Docente', value: teacher?.user?.lastName + " " + teacher?.user?.name }} goTitle="Regresar Asignacion Academica Docente" />
+            </div>
+          </div>
           <DataList
             data={dataTable}
             columns={columns}
             match={props?.match}
             modalOpen={modalOpen}
             setModalOpen={setModalOpen}
-            viewEditData={viewEditData}
-            deleteData={deleteData}
-            changeActiveData={changeActiveData}
-            deleteAll={deleteAll}
-            changeActiveDataAll={changeActiveDataAll}
             additionalFunction={additionalFunction}
             childrenButtons={[
               {
@@ -221,20 +159,6 @@ const AcademicAsignatureCourseList = (props: any) => {
                 icon: 'iconsminds-letter-open',
                 action: 'goToChildrenValuations',
               },
-              {
-                id: 3,
-                label: 'Asistencia',
-                color: 'info',
-                icon: 'iconsminds-letter-open',
-                action: 'goToChildrenValuations',
-              },
-              {
-                id: 4,
-                label: 'Planilla General',
-                color: 'warning',
-                icon: 'iconsminds-letter-open',
-                action: 'goToChildrenValuations',
-              },
             ]}
             withChildren={true}
             refreshDataTable={refreshDataTable}
@@ -248,12 +172,13 @@ const AcademicAsignatureCourseList = (props: any) => {
         </>
       )}
     </>
-  );
-};
-const mapDispatchToProps = { ...academicIndicatorActions };
+  )
+}
+
+const mapDispatchToProps = { ...academicIndicatorActions, ...teacherActions };
 
 const mapStateToProps = ({ loginReducer }: any) => {
   return { loginReducer };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AcademicAsignatureCourseList);
+export default connect(mapStateToProps, mapDispatchToProps)(AcademicAssignmentTeacher);

@@ -41,6 +41,26 @@ export const QUERY_GET_ALL_PERFORMANCE_LEVEL_ASIGNATURE_COURSE = gql`
   }
 `;
 
+export const QUERY_GET_ALL_PERFORMANCE_LEVEL_COURSE = gql`
+  query getAllPerformanceLevelAcademicCourse($courseId: String!) {
+    data: getAllPerformanceLevelAcademicCourse(courseId: $courseId) {
+      edges {
+        cursor
+        node {
+          id
+          name
+          type
+          topScore
+          minimumScore
+          active
+          category
+        }
+      }
+      totalCount
+    }
+  }
+`;
+
 export const QUERY_GET_PERFORMANCE_LEVEL = gql`
   query getPerformanceLevel($id: String!) {
     data: getPerformanceLevel(id: $id) {

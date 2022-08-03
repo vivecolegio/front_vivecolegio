@@ -54,3 +54,13 @@ export function calculateDaysTwoDate(date1: Date, date2: Date) {
   const days = Math.floor(dif / (1000 * 60 * 60 * 24));
   return days;
 }
+
+export function compareOrderAcademicArea(a: any, b: any) {
+  if (a?.order > b?.order) {
+    return -1;
+  }
+  if (a?.order < b?.order) {
+    return 1;
+  }
+  return 0;
+}

@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
 export const QUERY_GET_ALL_ACADEMIC_ASIGNATURE_COURSE = gql`
-  query getAllAcademicAsignatureCourse($campusId: String!, $courseId: String) {
+  query getAllAcademicAsignatureCourse($campusId: String, $courseId: String) {
     data: getAllAcademicAsignatureCourse(orderCreated: true, allData: true, campusId: $campusId, courseId: $courseId) {
       edges {
         cursor
@@ -17,6 +17,15 @@ export const QUERY_GET_ALL_ACADEMIC_ASIGNATURE_COURSE = gql`
               hasStandard
               hasDba
             }
+            academicAreaId
+            academicArea{
+              id
+              name
+              order
+              abbreviation
+            }
+            order
+            abbreviation
           }
           course {
             id

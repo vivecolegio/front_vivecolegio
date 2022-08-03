@@ -161,7 +161,7 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
     const elementIndex = valuationsBase.findIndex((obj) => {
       return obj.node.id === item.node.id;
     });
-    if ((valuationsBase[elementIndex].node.performanceLevel?.id !== item?.node?.performanceLevel?.id) || (item?.node?.assessment !== undefined && valuationsBase[elementIndex].node.assessment !== item?.node?.assessment)) {
+    if ((valuationsBase[elementIndex].node.performanceLevel?.id !== item?.node?.performanceLevel?.id) || (valuationsBase[elementIndex].node.assessment !== item?.node?.assessment)) {
       let obj = {
         assessment: item?.node?.assessment,
         performanceLevelId: item?.node?.performanceLevel ? item?.node?.performanceLevel?.id : null

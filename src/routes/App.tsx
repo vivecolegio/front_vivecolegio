@@ -2,6 +2,7 @@ import React, { Suspense, useLayoutEffect, useState } from 'react';
 import { IntlProvider } from 'react-intl';
 import { connect } from 'react-redux';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+
 import ColorSwitcher from '../components/common/ColorSwitcher';
 import Layout from '../components/common/layout/Layout';
 import { NotificationContainer } from '../components/common/Notifications';
@@ -48,6 +49,18 @@ const MunicipalityList = React.lazy(() => {
 const MyClasessList = React.lazy(() => {
   return import(
     /* webpackChunkName: "MyClasessList" */ '../components/app/MyClasses/MyClasessList'
+  );
+});
+
+const AcademicAssignment = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "AcademicAssignment" */ '../components/app/AcademicAssignment/AcademicAssignment'
+  );
+});
+
+const AcademicAssignmentTeacher = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "AcademicAssignmentTeacher" */ '../components/app/AcademicAssignment/AcademicAssignmentTeacher'
   );
 });
 
@@ -375,6 +388,11 @@ const Spreadsheet = React.lazy(() => {
   return import(/* webpackChunkName: "Spreadsheet" */ '../components/app/Spreadsheet/Spreadsheet');
 });
 
+
+const SpreadsheetCourse = React.lazy(() => {
+  return import(/* webpackChunkName: "SpreadsheetCourse" */ '../components/app/SpreadsheetCourse/SpreadsheetCourse');
+});
+
 const StudentsList = React.lazy(() => {
   return import(/* webpackChunkName: "StudentsList" */ '../components/app/Students/StudentsList');
 });
@@ -515,6 +533,8 @@ const App = (props: any) => {
                     <Route path="/evidenceLearning" element={<LearningEvidenceList />} />
                     <Route path="/experienceLearning" element={<ExperienceLearningList />} />
                     <Route path="/myClasses" element={<MyClasessList />} />
+                    <Route path="/academicAssignment" element={<AcademicAssignment />} />
+                    <Route path="/academicAssignmentTeacher" element={<AcademicAssignmentTeacher />} />
                     <Route path="/traditionalValuation" element={<TraditionalValuation />} />
                     <Route path="/selfValuation" element={<SelfValuation />} />
                     <Route path="/rubricCriteria" element={<RubricCriteriaList />} />
@@ -523,6 +543,7 @@ const App = (props: any) => {
                     <Route path="/coEvaluation" element={<CoEvaluation />} />
                     <Route path="/coEvaluationStudents" element={<CoEvaluationStudents />} />
                     <Route path="/spreadsheet" element={<Spreadsheet />} />
+                    <Route path="/spreadsheetCourse" element={<SpreadsheetCourse />} />
                     <Route
                       path="/questionCategoryTestOnline"
                       element={<QuestionCategoryTestOnlineList />}

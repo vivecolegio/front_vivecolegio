@@ -310,7 +310,9 @@ const esMessages = {
   'forms.hourlyIntensitymax': 'Máxima intensidad horaria',
   'forms.hasStandard': 'Tiene Estandar',
   'forms.hasDba': 'Tiene DBA',
-  'forms.headline': 'Titular'
+  'forms.headline': 'Titular',
+  'menu.academicAssignment': 'Asignacion Academica',
+  'menu.academicAssignmentTeacher': 'Asignacion Academica Docente',
 };
 
 export default esMessages;

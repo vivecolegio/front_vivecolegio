@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
+
 import * as academicAsignatureCourseActions from '../../../stores/actions/AcademicAsignatureCourseActions';
-import * as studentActions from '../../../stores/actions/StudentActions';
-import * as learningActions from '../../../stores/actions/LearningActions';
-import * as gradeAssignmentActions from '../../../stores/actions/GradeAssignmentActions';
+import * as courseActions from '../../../stores/actions/CourseActions';
 import * as experienceLearningActions from '../../../stores/actions/ExperienceLearningActions';
+import * as gradeAssignmentActions from '../../../stores/actions/GradeAssignmentActions';
+import * as learningActions from '../../../stores/actions/LearningActions';
+import * as studentActions from '../../../stores/actions/StudentActions';
 
 const HeaderInfoAcademic = (props: any) => {
   const [data, setData] = useState(null);
   const [studentData, setStudent] = useState(null);
   const [experienceLearningData, setExperienceLearning] = useState(null);
   const [learningData, setLearning] = useState(null);
-  const { generic, asignature, asignatureGeneral, grade, course, modality, cicle, experienceLearnig, learning, student, academicAsignatureCourseId, gradeAssignment, experienceLearnigId, learningId, studentId, goTitle } = props;
+
+  const { generic, asignature, asignatureGeneral, grade, course, modality, cicle, experienceLearnig, learning, student, academicAsignatureCourseId, gradeAssignment, experienceLearnigId, learningId, studentId, courseId, goTitle } = props;
 
   let navigate = useNavigate();
 
@@ -29,10 +32,12 @@ const HeaderInfoAcademic = (props: any) => {
     if (gradeAssignment) {
       await props.dataGradeAssignment(gradeAssignment).then((resp: any) => {
         let dataUpdatedFormat = resp.data;
-        dataUpdatedFormat.course = {
-          academicGrade: resp.data.academicGrade
-        };
-        setData(dataUpdatedFormat)
+        if (resp?.data?.academicGrade) {
+          dataUpdatedFormat.course = {
+            academicGrade: resp.data?.academicGrade
+          };
+          setData(dataUpdatedFormat)
+        }
       });
     }
     if (studentId) {
@@ -48,6 +53,11 @@ const HeaderInfoAcademic = (props: any) => {
     if (learningId) {
       await props.dataLearning(learningId).then((resp: any) => {
         setLearning(resp?.data);
+      });
+    }
+    if (courseId) {
+      await props.dataCourse(courseId).then((resp: any) => {
+        setData({ course: resp?.data });
       });
     }
   };
@@ -134,7 +144,7 @@ const HeaderInfoAcademic = (props: any) => {
   );
 };
 
-const mapDispatchToProps = { ...academicAsignatureCourseActions, ...studentActions, ...experienceLearningActions, ...learningActions, ...gradeAssignmentActions };
+const mapDispatchToProps = { ...academicAsignatureCourseActions, ...studentActions, ...experienceLearningActions, ...learningActions, ...gradeAssignmentActions, ...courseActions };
 
 const mapStateToProps = ({ loginReducer }: any) => {
   return { loginReducer };
