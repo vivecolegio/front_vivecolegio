@@ -81,7 +81,7 @@ const ExperienceLearningCoEvaluationList = (props: any) => {
           props
             .getListAllExperienceLearningCoEvaluationValuation(learningId)
             .then(async (listDataValuation: any) => {
-              console.log(listDataValuation)
+              // console.log(listDataValuation)
               setStudents(listDataValuation.map((e: any) => {
                 return e?.node?.student
               })?.sort(compare));
@@ -113,7 +113,7 @@ const ExperienceLearningCoEvaluationList = (props: any) => {
             setProgress(progress);
             setAverage(average / listData.length);
             setValuations([...listData.sort(compare)]);
-            console.log(listData)
+            // console.log(listData)
             setValuationsBase(JSON.parse(JSON.stringify(listData)));
           });
         });
@@ -215,7 +215,7 @@ const ExperienceLearningCoEvaluationList = (props: any) => {
                 </thead>
                 <tbody>
                   {students.map((item: any, index: any) => {
-                    console.log(item);
+                    // console.log(item);
                     return (
                       <>
                         <tr key={index}>

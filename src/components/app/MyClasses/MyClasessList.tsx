@@ -221,20 +221,20 @@ const AcademicAsignatureCourseList = (props: any) => {
                 icon: 'iconsminds-letter-open',
                 action: 'goToChildrenValuations',
               },
-              {
-                id: 3,
-                label: 'Asistencia',
-                color: 'info',
-                icon: 'iconsminds-letter-open',
-                action: 'goToChildrenValuations',
-              },
-              {
-                id: 4,
-                label: 'Planilla General',
-                color: 'warning',
-                icon: 'iconsminds-letter-open',
-                action: 'goToChildrenValuations',
-              },
+              // {
+              //   id: 3,
+              //   label: 'Asistencia',
+              //   color: 'info',
+              //   icon: 'iconsminds-letter-open',
+              //   action: 'goToChildrenValuations',
+              // },
+              // {
+              //   id: 4,
+              //   label: 'Planilla General',
+              //   color: 'warning',
+              //   icon: 'iconsminds-letter-open',
+              //   action: 'goToChildrenValuations',
+              // },
             ]}
             withChildren={true}
             refreshDataTable={refreshDataTable}

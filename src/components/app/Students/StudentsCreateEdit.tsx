@@ -498,7 +498,7 @@ const StudentCreateEdit = (props: any) => {
                       options={gradeList}
                       value={grade}
                       onChange={(selectedOption) => {
-                        console.log(newUser)
+                        // console.log(newUser)
                         setValue('academicGradeId', selectedOption?.key);
                         setGrade(selectedOption);
                         setCourse(null);

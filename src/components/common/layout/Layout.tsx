@@ -22,7 +22,7 @@ const Layout = (props: any) => {
 
   const initData = useCallback(async () => {
     if (!isLatestVersion) {
-      console.log('borrando cache');
+      // console.log('borrando cache');
       await emptyCacheStorage();
     }
   }, [isLatestVersion]);

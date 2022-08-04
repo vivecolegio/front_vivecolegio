@@ -27,7 +27,7 @@ const Login = (props: any) => {
   let navigate = useNavigate();
 
   useEffect(() => {
-    console.log(props);
+    // console.log(props);
     setLoading(false);
     if (props.loginReducer.userId?.length > 0) {
       navigate('/home');
@@ -128,9 +128,8 @@ const Login = (props: any) => {
                       {loading ? <Loader size={50} /> : ''}
                       <Button
                         color="primary"
-                        className={`mb-5 mt-5 btn-login btn-shadow btn-multiple-state ${
-                          props.loading ? 'show-spinner' : ''
-                        }`}
+                        className={`mb-5 mt-5 btn-login btn-shadow btn-multiple-state ${props.loading ? 'show-spinner' : ''
+                          }`}
                         size="lg"
                         type="submit"
                         onClick={onSubmit}

@@ -145,7 +145,7 @@ const SpreadsheetCourse = (props: any) => {
               });
             await Promise.all(promisesList).then(() => {
               setValuations(nts);
-              console.log(nts)
+              // console.log(nts)
               setLoading(false);
             });
 
@@ -429,7 +429,7 @@ const SpreadsheetCourse = (props: any) => {
                           })}
 
                           {valuations?.map((item2: any, index2: any) => {
-                            console.log("acas")
+                            // console.log("acas")
                             return (
                               <>
                                 {item2.experiences.length > 0 ?

@@ -143,7 +143,7 @@ const ExperienceLearningRubricCriteriaValuationList = (props: any) => {
   };
 
   const saveBlur = async (item: any) => {
-    console.log(item)
+    // console.log(item)
     const elementIndex = valuationsBase.findIndex((obj) => {
       return obj?.node?.id === item.id;
     });
@@ -177,7 +177,7 @@ const ExperienceLearningRubricCriteriaValuationList = (props: any) => {
         });
       }
     }
-    console.log(valuation, perf, performanceLevel);
+    // console.log(valuation, perf, performanceLevel);
     return perf?.node?.name === performanceLevel?.name
   }
 
