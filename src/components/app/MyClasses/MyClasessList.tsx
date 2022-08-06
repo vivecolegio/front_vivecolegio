@@ -173,6 +173,11 @@ const AcademicAsignatureCourseList = (props: any) => {
           `/spreadsheet?gradeId=${item?.course?.academicGradeId}&gradeName=${item?.course?.academicGrade?.name}&courseName=${item?.course?.name}&courseId=${item?.course?.id}&academicAsignatureCourseId=${item?.id}&asignatureId=${item.academicAsignatureId}&asignatureName=${item.academicAsignature?.name}&academicAsignatureCourseId=${item?.id}`,
         );
         break;
+      case 'goToChildrenStudentAttendance':
+        goToChildren(
+          `/studentAttendance?courseName=${item?.course?.name}&courseId=${item?.course?.id}&academicAsignatureCourseId=${item?.id}&asignatureId=${item.academicAsignatureId}&asignatureName=${item.academicAsignature?.name}&academicAsignatureCourseId=${item?.id}`,
+        );
+        break;
       default:
         break;
     }
@@ -221,13 +226,13 @@ const AcademicAsignatureCourseList = (props: any) => {
                 icon: 'iconsminds-letter-open',
                 action: 'goToChildrenValuations',
               },
-              // {
-              //   id: 3,
-              //   label: 'Asistencia',
-              //   color: 'info',
-              //   icon: 'iconsminds-letter-open',
-              //   action: 'goToChildrenValuations',
-              // },
+              {
+                id: 3,
+                label: 'Asistencia',
+                color: 'info',
+                icon: 'iconsminds-letter-open',
+                action: 'goToChildrenStudentAttendance',
+              },
               // {
               //   id: 4,
               //   label: 'Planilla General',

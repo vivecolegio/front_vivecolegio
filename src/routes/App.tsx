@@ -52,6 +52,12 @@ const MyClasessList = React.lazy(() => {
   );
 });
 
+const StudentAttendance = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "StudentAttendance" */ '../components/app/StudentAttendance/StudentAttendance'
+  );
+});
+
 const AcademicAssignment = React.lazy(() => {
   return import(
     /* webpackChunkName: "AcademicAssignment" */ '../components/app/AcademicAssignment/AcademicAssignment'
@@ -533,6 +539,7 @@ const App = (props: any) => {
                     <Route path="/evidenceLearning" element={<LearningEvidenceList />} />
                     <Route path="/experienceLearning" element={<ExperienceLearningList />} />
                     <Route path="/myClasses" element={<MyClasessList />} />
+                    <Route path="/studentAttendance" element={<StudentAttendance />} />
                     <Route path="/academicAssignment" element={<AcademicAssignment />} />
                     <Route path="/academicAssignmentTeacher" element={<AcademicAssignmentTeacher />} />
                     <Route path="/traditionalValuation" element={<TraditionalValuation />} />
@@ -559,6 +566,8 @@ const App = (props: any) => {
                       element={<GradeAssignmentReferentsList />}
                     />
                     {/* ACADEMIC */}
+
+
                     {/* APPLICATIONS */}
                     <Route path="/chat" element={<ChatApp />} />
                     <Route path="/foros" element={<ForumListApp />} />
