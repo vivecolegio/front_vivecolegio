@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
-import { Badge, Progress } from 'reactstrap';
+import { Badge, Input, Progress } from 'reactstrap';
 
 import { calculateDaysTwoDate, compare, compareOrderAcademicArea } from '../../../helpers/DataTransformations';
 import { createNotification } from '../../../helpers/Notification';
@@ -19,6 +19,7 @@ import * as experienceLearningCoEvaluationActions from '../../../stores/actions/
 import * as experienceLearningSelfActions from '../../../stores/actions/ExperienceLearningSelfAssessmentValuationActions';
 import * as experienceLearningTraditionalActions from '../../../stores/actions/ExperienceLearningTraditionalValuationActions';
 import * as valuationsActions from '../../../stores/actions/ValuationsActions';
+import * as studentAttendance from '../../../stores/actions/StudentAttendanceActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
 import { Loader } from '../../common/Loader';
@@ -44,11 +45,13 @@ const StudentAttendance = (props: any) => {
     activateAction: false,
     inactiveAction: false,
   });
-  let [valuations, setValuations] = useState(null);
-  let [notes, setNotes] = useState([]);
-  let [averages, setAverages] = useState([]);
-  let [averagesFinal, setAveragesFinal] = useState([]);
+  const [valuations, setValuations] = useState(null);
+  const [notes, setNotes] = useState([]);
+  const [averages, setAverages] = useState([]);
+  const [averagesFinal, setAveragesFinal] = useState([]);
   const [dateProgress, setDateProgress] = useState({ startDate: null, endDate: null, totalDays: 0, countDays: 0 })
+  const [days, setDays] = useState([]);
+
 
   let navigate = useNavigate();
   const location = useLocation();
@@ -57,6 +60,7 @@ const StudentAttendance = (props: any) => {
 
   let [params] = useSearchParams();
   const courseId = params.get('courseId');
+  const academicAsignatureCourseId = params.get('academicAsignatureCourseId');
 
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const toggle = () => setTooltipOpen(!tooltipOpen);
@@ -89,6 +93,15 @@ const StudentAttendance = (props: any) => {
           countDays = calculateDaysTwoDate(new Date(), endDate);
         }
         setDateProgress({ startDate, endDate, totalDays, countDays })
+        let daysTemp = [];
+        for (let i = 0; i < countDays; i++) {
+          let date = new Date(period.startDate);
+          date.setDate(date.getDate() + i);
+          if (date.getDay() > 0 && date.getDay() < 6) {
+            daysTemp.push(date);
+          }
+        }
+        setDays(daysTemp);
       }
       getSpreadsheet(period?.id);
     });
@@ -103,49 +116,19 @@ const StudentAttendance = (props: any) => {
       let avrgs: any = [];
       let avrgsFinal: any = [];
       let levels: any = [];
-      await props
-        .getListAllPerformanceLevelCourse(courseId)
-        .then((dataLevels: any) => {
-          setPerformanceLevels(dataLevels);
-          levels = dataLevels;
-          setPerformanceLevelType(dataLevels[0]?.node?.type);
-        });
       await props.getAcademicPeriodsExperienceLearning(props?.loginReducer?.schoolId,
         props?.loginReducer?.schoolYear).then(async (listData: any) => {
           setAcademicPeriods(listData);
           let promisesList: any[] = [];
           if (periodId) {
             await props
-              .getListAllAcademicAsignatureCourseByCourse(null, courseId)
-              .then(async (asignaturesList: any) => {
-                setAsignatures(asignaturesList)
-                let areasAux: any[] = []
-                for (let asignature of asignaturesList) {
-                  areasAux.push(asignature?.node?.academicAsignature?.academicArea);
-                  promisesList.push(
-                    props
-                      .getAllAcademicAsignatureCoursePeriodValuation(periodId, asignature?.node?.id)
-                      .then(async (notesFinal: any) => {
-                        nts[asignature?.node?.id] = notesFinal.data.edges;
-                      })
-                  );
-                }
-                const ids = areasAux.map(o => o.id)
-                const count: any = {};
-                ids.forEach(element => {
-                  count[element] = (count[element] || 0) + 1;
-                });
-                const filtered = areasAux.filter(({ id }, index) => !ids.includes(id, index + 1))
-                for (let filter of filtered) {
-                  filter.count = count[filter?.id];
-                }
-                setAreas(filtered.sort(compareOrderAcademicArea));
+              .getAllStudentAttendance(periodId, academicAsignatureCourseId)
+              .then(async (notesFinal: any) => {
+                console.log(notesFinal.data.edges)
+                avrgsFinal = avrgsFinal.concat(notesFinal.data.edges);
+                setValuations(avrgsFinal);
+                setLoading(false);
               });
-            await Promise.all(promisesList).then(() => {
-              setValuations(nts);
-              // console.log(nts)
-              setLoading(false);
-            });
           } else {
             setLoading(false);
           }
@@ -157,10 +140,22 @@ const StudentAttendance = (props: any) => {
     navigate(-1);
   };
 
+  const saveNewStudentAttendance = (day: any, studentId: any) => {
+    props.saveNewStudentAttendance({ day, studentId, academicAsignatureCourseId, academicPeriodId: currentAcademicPeriod }).then((resp: any) => {
+      getSpreadsheet(currentAcademicPeriod)
+    });
+  }
+
+  const deleteStudentAttendance = (itemId: any) => {
+    props.deleteStudentAttendance(itemId).then((resp: any) => {
+      getSpreadsheet(currentAcademicPeriod)
+    });
+  }
+
   return (
     <>
       <div className="mt-4 d-flex justify-content-center align-items-center">
-        <h1 className="font-bold">Planilla General</h1>
+        <h1 className="font-bold">Planilla Inasistencia</h1>
       </div>
       <hr />
       <div className="d-flex justify-content-between align-items-center">
@@ -183,6 +178,15 @@ const StudentAttendance = (props: any) => {
                           countDays = calculateDaysTwoDate(new Date(), endDate);
                         }
                         setDateProgress({ startDate, endDate, totalDays, countDays })
+                        let daysTemp = [];
+                        for (let i = 0; i < countDays; i++) {
+                          let date = new Date(item?.node?.startDate);
+                          date.setDate(date.getDate() + i);
+                          if (date.getDay() > 0 && date.getDay() < 6) {
+                            daysTemp.push(date);
+                          }
+                        }
+                        setDays(daysTemp);
                         return getSpreadsheet(item?.node?.id);
                       }}
                       key={item?.node?.id}
@@ -237,54 +241,20 @@ const StudentAttendance = (props: any) => {
               <table className="table table-bordered">
                 <thead>
                   <tr>
-                    <th rowSpan={2} className="text-center vertical-middle">
+                    <th rowSpan={1} className="text-center vertical-middle">
                       Código
                     </th>
-                    <th rowSpan={2} className="text-center vertical-middle">
+                    <th rowSpan={1} className="text-center vertical-middle">
                       Estudiante
                     </th>
-                    {areas?.map((item: any, index: any) => {
+                    {days?.map((item: any, index: any) => {
                       return (
                         <>
                           <th
-                            colSpan={
-                              item?.count + 1
-                            }
                             className="text-center vertical-middle"
                           >
-                            {/* {item?.abbreviation ? item?.abbreviation : item?.name} */}
-                            {item?.name}
+                            {item?.toLocaleDateString()}
                           </th>
-                        </>
-                      );
-                    })}
-                  </tr>
-                  <tr>
-                    {areas?.map((item: any, index: any) => {
-                      return (
-                        <>
-                          {
-                            asignatures?.map((e: any, indexe: any) => {
-                              return (
-                                <>
-                                  {e?.node?.academicAsignature?.academicAreaId === item?.id ?
-                                    <th className="text-center vertical-middle">
-                                      <a data-tip data-for={e?.node?.id}>
-                                        <i
-                                          className="iconsminds-idea-2 text-warning font-20"
-                                        ></i>
-                                      </a>
-                                      <ReactTooltip id={e?.node?.id} type='info' effect='solid'>
-                                        <span>{e?.node?.academicAsignature?.name}</span>
-                                        {/* {item?.abbreviation ? item?.abbreviation : item?.name} */}
-                                      </ReactTooltip>
-                                    </th>
-                                    : <></>}
-                                </>
-                              );
-                            })
-                          }
-                          <th className="text-center vertical-middle">Valoracion Final.</th>
                         </>
                       );
                     })}
@@ -292,6 +262,7 @@ const StudentAttendance = (props: any) => {
                 </thead>
                 <tbody>
                   {students.map((itemStudent: any, index: any) => {
+                    let studentAttendance = valuations?.filter((itemV: any) => itemV?.node?.studentId == itemStudent?.id.toString());
                     return (
                       <>
                         <tr key={index}>
@@ -323,129 +294,33 @@ const StudentAttendance = (props: any) => {
                               </span>
                             </div>
                           </td>
-                          {areas?.map((itemArea: any, index: any) => {
-                            let asignaturesArea = asignatures?.filter((itemV: any) => itemV?.node?.academicAsignature?.academicAreaId == itemArea?.id);
+                          {days?.map((item: any, index: any) => {
+                            let studentAttendanceDay = studentAttendance?.filter((itemV: any) => new Date(itemV?.node?.day).getTime() == item.getTime());
                             return (
                               <>
-                                {
-                                  asignaturesArea?.map((itemAsignature: any, indexe: any) => {
-                                    let valuation = valuations[itemAsignature?.node?.id]?.filter((itemV: any) => itemV?.node?.studentId == itemStudent?.id);
-                                    return (
-                                      <>
-                                        {valuation?.length > 0 ?
-                                          <td className="text-center vertical-middle">
-                                            {performanceLevelType === "QUALITATIVE" ?
-                                              <>
-                                                <Badge color="primary" className="font-0-8rem">
-                                                  {valuation[0]?.node?.performanceLevel?.name}
-                                                </Badge>
-                                              </> :
-                                              <>
-                                                {valuation[0]?.node?.assessment}
-                                              </>
-                                            }
-                                          </td>
-                                          : <td></td>}
-                                      </>
-                                    );
-                                  })
-                                }
-                                <td></td>
+                                <td
+                                  className="text-center vertical-middle"
+                                >
+                                  {/* {item?.toLocaleDateString()} */}
+                                  <Input
+                                    className="itemCheck mb-0 mr-2"
+                                    type="checkbox"
+                                    id={`check_shuffleQuestions`}
+                                    defaultChecked={studentAttendanceDay?.length > 0 ? true : false}
+                                    onChange={() => {
+                                      //setValue('shuffleQuestions', !data.shuffleQuestions);
+                                      if (studentAttendanceDay?.length > 0) {
+                                        deleteStudentAttendance(studentAttendanceDay[0]?.node?.id)
+                                      } else {
+                                        saveNewStudentAttendance(item, itemStudent?.id.toString());
+                                      }
+                                    }}
+                                    label=""
+                                  />
+                                </td>
                               </>
                             );
                           })}
-
-                          {valuations?.map((item2: any, index2: any) => {
-                            // console.log("acas")
-                            return (
-                              <>
-                                {item2.experiences.length > 0 ?
-                                  <>
-                                    {item2.experiences.map((e: any) => {
-                                      let note = notes.find(
-                                        (n: any) =>
-                                          n?.experienceLearningId === e?.id &&
-                                          itemStudent?.id === n?.studentId,
-                                      );
-                                      return (
-                                        <>
-                                          <td className="text-center vertical-middle">
-                                            {performanceLevelType === "QUALITATIVE" ?
-                                              <>
-                                                <Badge color="primary" className="font-0-8rem">
-                                                  {note?.performanceLevel?.name}
-                                                </Badge>
-                                              </> :
-                                              <>
-                                                {note?.assessment}
-                                                {/* <Input
-                                                      onKeyPress={(event: any) => {
-                                                        return saveNote(event, note, e, item);
-                                                      }}
-                                                      defaultValue={note?.assessment}
-                                                      disabled={isFormEnabled}
-                                                      className="form-control"
-                                                      style={{ width: "60px" }}
-                                                    /> */}
-                                              </>
-                                            }
-                                          </td>
-                                        </>
-                                      );
-                                    })} </> : ""}
-                                {item2?.experiences?.length > 0 ? (
-                                  <th className="text-center vertical-middle">
-                                    {performanceLevelType === "QUALITATIVE" ?
-                                      <>
-                                        <Badge color="primary" className="font-0-8rem">
-                                          {averages.find(
-                                            (n: any) =>
-                                              item2?.evaluativeComponentId ===
-                                              n?.node?.evaluativeComponentId &&
-                                              itemStudent?.id === n?.node?.studentId,
-                                          )?.node?.performanceLevel?.name}
-                                        </Badge>
-                                      </>
-                                      :
-                                      <>
-                                        {averages.find(
-                                          (n: any) =>
-                                            item2?.evaluativeComponentId ===
-                                            n?.node?.evaluativeComponentId &&
-                                            itemStudent?.id === n?.node?.studentId,
-                                        )?.node?.average?.toFixed(2)}
-                                        {/* <Input
-                                              disabled={true}
-                                              defaultValue={
-                                                averages.find(
-                                                  (n: any) =>
-                                                    item2?.evaluativeComponentId ===
-                                                    n?.node?.evaluativeComponentId &&
-                                                    item?.id === n?.node?.studentId,
-                                                )?.node?.average?.toFixed(2)
-                                              }
-                                              className="form-control"
-                                              style={{ width: "4.5vh" }}
-                                            /> */}
-                                      </>}
-                                  </th>
-                                ) : (
-                                  <th></th>
-                                )}
-                              </>
-                            );
-                          })}
-                          {/* <th className="text-center vertical-middle">
-                            {averagesFinal.find((n: any) => itemStudent?.id === n?.node?.studentId)?.node
-                              ?.assessment?.toFixed(2) || ''}
-                          </th>
-                          <th className="text-center vertical-middle">
-                            <Badge color="primary" className="font-0-8rem">
-                              {averagesFinal.find(
-                                (c: any) => c?.node?.studentId === itemStudent?.id,
-                              )?.node?.performanceLevel?.name || '--'}
-                            </Badge>
-                          </th> */}
                         </tr>
                       </>
                     );
@@ -474,7 +349,8 @@ const mapDispatchToProps = {
   ...experienceLearningCoEvaluationActions,
   ...experienceLearningTraditionalActions,
   ...performanceLevelActions,
-  ...academicAsignatureCouseActions
+  ...academicAsignatureCouseActions,
+  ...studentAttendance
 };
 
 const mapStateToProps = ({ loginReducer }: any) => {

@@ -1,7 +1,7 @@
 import classnames from 'classnames';
-import React from 'react';
+import React, { useState } from 'react';
 import { ContextMenuTrigger } from 'react-contextmenu';
-import { Button, Card, Input } from 'reactstrap';
+import { Button, Card, Input, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import IntlMessages from '../../../../helpers/IntlMessages';
 import { Colxx } from '../../CustomBootstrap';
 
@@ -21,6 +21,11 @@ const DataListView = ({
   filterChildren,
   type
 }: any) => {
+
+  const [modalBasicDelete, setModalBasicDelete] = useState({ status: false, id: null });
+  const [modalBasicActivate, setModalBasicActivate] = useState({ status: false, id: null });
+  const [modalBasicInactivate, setModalBasicInactivate] = useState({ status: false, id: null });
+
   return (
     <Colxx xxs="12" className="mb-3">
       <ContextMenuTrigger id="context_menu" collect={collect}>
@@ -133,7 +138,8 @@ const DataListView = ({
                     color="orange"
                     size="xs"
                     onClick={() => {
-                      return deleteData(item.id);
+                      // return deleteData(item.id);
+                      setModalBasicDelete({ status: !modalBasicDelete?.status, id: item.id })
                     }}
                   >
                     <i className="simple-icon-trash font-1rem mr-2" />
@@ -144,13 +150,14 @@ const DataListView = ({
                     color={item.active ? 'danger' : 'green'}
                     size="xs"
                     onClick={() => {
-                      return changeActiveData(!item.active, item.id);
+                      // return changeActiveData(!item.active, item.id);
+                      item.active ?
+                        setModalBasicInactivate({ status: !modalBasicInactivate?.status, id: item.id }) : setModalBasicActivate({ status: !modalBasicActivate?.status, id: item.id });
                     }}
                   >
                     <i className={item.active ? 'simple-icon-close font-1rem mr-2' : 'simple-icon-check font-1rem mr-2'} />
                     {item.active ? <IntlMessages id="pages.inactivate" /> : <IntlMessages id="pages.activate" />}
                   </Button> : ''}{' '}
-
               </p>
             </div>
             <div className="custom-control custom-checkbox pl-1 align-self-center pr-4">
@@ -166,6 +173,93 @@ const DataListView = ({
           </div>
         </Card>
       </ContextMenuTrigger>
+      <Modal
+        isOpen={modalBasicDelete?.status}
+        toggle={() => setModalBasicDelete({ status: false, id: null })}
+      >
+        <ModalHeader>
+          <IntlMessages id="pages.delete" />
+        </ModalHeader>
+        <ModalBody>
+          Esta seguro que desea eliminar el registro ?
+        </ModalBody>
+        <ModalFooter>
+          <Button
+            color="secondary" outline
+            onClick={() => setModalBasicDelete({ status: false, id: null })}
+          >
+            <IntlMessages id="pages.cancel" />
+          </Button>
+          <Button
+            color="danger"
+            onClick={() => {
+              deleteData(modalBasicDelete?.id);
+              setModalBasicDelete({ status: false, id: null })
+            }}
+          >
+            <IntlMessages id="pages.delete" />
+          </Button>{' '}
+        </ModalFooter>
+      </Modal>
+
+      <Modal
+        isOpen={modalBasicActivate?.status}
+        toggle={() => setModalBasicActivate({ status: false, id: null })}
+      >
+        <ModalHeader>
+          <IntlMessages id="pages.activate" />
+        </ModalHeader>
+        <ModalBody>
+          Esta seguro que desea cambiar el estado del registro de Inactivo a Activo ?
+        </ModalBody>
+        <ModalFooter>
+          <Button
+            color="secondary" outline
+            onClick={() => setModalBasicActivate({ status: false, id: null })}
+          >
+            <IntlMessages id="pages.cancel" />
+          </Button>
+          <Button
+            color="primary"
+            onClick={() => {
+              changeActiveData(true, modalBasicActivate.id);
+              setModalBasicActivate({ status: false, id: null })
+            }}
+          >
+            <IntlMessages id="pages.activate" />
+          </Button>{' '}
+        </ModalFooter>
+      </Modal>
+
+      <Modal
+        isOpen={modalBasicInactivate?.status}
+        toggle={() => setModalBasicInactivate({ status: false, id: null })}
+      >
+        <ModalHeader>
+          <IntlMessages id="pages.inactivate" />
+        </ModalHeader>
+        <ModalBody>
+          Esta seguro que desea cambiar el estado del registro de Activo a Inactivo?
+        </ModalBody>
+        <ModalFooter>
+          <Button
+            color="secondary" outline
+            onClick={() => setModalBasicInactivate({ status: false, id: null })}
+          >
+            <IntlMessages id="pages.cancel" />
+          </Button>
+          <Button
+            color="warning"
+            onClick={() => {
+              changeActiveData(false, modalBasicInactivate.id);
+              setModalBasicInactivate({ status: false, id: null })
+            }}
+          >
+            <IntlMessages id="pages.inactivate" />
+          </Button>{' '}
+        </ModalFooter>
+      </Modal>
+
     </Colxx>
   );
 };

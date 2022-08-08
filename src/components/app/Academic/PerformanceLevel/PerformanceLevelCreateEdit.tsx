@@ -1,10 +1,11 @@
 import { DevTool } from '@hookform/devtools';
 import React, { useEffect, useState } from 'react';
+import { CirclePicker, TwitterPicker } from 'react-color';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import Select from 'react-select';
-import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
+import { Button, Input, InputGroup, ModalBody, ModalFooter } from 'reactstrap';
 
 import { loaderColor, loaderIcon } from '../../../../constants/defaultValues';
 import IntlMessages from '../../../../helpers/IntlMessages';
@@ -29,6 +30,8 @@ const AreaCreateEdit = (props: any) => {
   const [campus, setCampus] = useState(null);
   const [academicGradesList, setAcademicGradesList] = useState(null);
   const [academicGrades, setAcademicGrades] = useState(null);
+  const [color, setColor] = useState({ background: '' });
+
   const intl = useIntl();
 
   const methods = useForm({
@@ -79,6 +82,9 @@ const AreaCreateEdit = (props: any) => {
           return { label: c.name, value: c.id, key: c.id };
         }));
       }
+      if (props?.data?.colorHex) {
+        setColor({ background: props?.data?.colorHex })
+      }
       register('schoolId', {
         required: true,
         value: props?.data?.id ? props?.data?.schoolId : '',
@@ -108,6 +114,7 @@ const AreaCreateEdit = (props: any) => {
     setSchool(null);
     setGeneralPerformanceLevel(null);
     setType(null);
+    setColor({ background: '' });
     if (props?.loginReducer?.schoolId && !props?.data?.id) {
       // set value when register is new and sesion contains value
       register('schoolId', {
@@ -162,6 +169,15 @@ const AreaCreateEdit = (props: any) => {
     value: props?.data?.id ? props?.data?.topScore : '',
   });
 
+  const { ref: abbreviationRef, ...abbreviationRest } = register('abbreviation', {
+    required: false,
+    value: props?.data?.id ? props?.data?.abbreviation : '',
+  });
+
+  const { ref: colorRef, ...colorRest } = register('colorHex', {
+    required: false,
+    value: props?.data?.id ? props?.data?.colorHex : '',
+  });
 
   const auditInfo = {
     createdAt: props?.data?.id ? props?.data?.createdAt : null,
@@ -171,9 +187,14 @@ const AreaCreateEdit = (props: any) => {
     version: props?.data?.id ? props?.data?.version : null,
   };
 
+  const handleChange = (color: any) => {
+    setColor({ background: color.hex })
+    setValue('colorHex', color.hex);
+  };
+
   return (
     <>
-      <DevTool control={methods.control} placement="top-left" />
+      {/* <DevTool control={methods.control} placement="top-left" /> */}
       {loading ? (
         <>
           <Colxx sm={12} className="d-flex justify-content-center">
@@ -199,6 +220,11 @@ const AreaCreateEdit = (props: any) => {
                 <LabelCustom id="forms.name" required={true} />
                 <Input {...nameRest} innerRef={nameRef} className="form-control" />
                 <RequiredMessagesCustom formState={formState} register={"name"} />
+              </FormGroupCustom>
+              <FormGroupCustom>
+                <LabelCustom id="forms.abbreviation" required={false} />
+                <Input {...abbreviationRest} innerRef={abbreviationRef} className="form-control" />
+                <RequiredMessagesCustom formState={formState} register={"abbreviation"} />
               </FormGroupCustom>
               <FormGroupCustom>
                 <LabelCustom id="forms.type" required={true} />
@@ -249,6 +275,18 @@ const AreaCreateEdit = (props: any) => {
                   </FormGroupCustom>
                 </>
                 : ''}
+              <FormGroupCustom>
+                <LabelCustom id="forms.color" required={false} />
+                <InputGroup addonType="append">
+                  <Input {...colorRest} innerRef={colorRef} className="form-control" disabled={true} />
+                  <div style={{
+                    width: '36px',
+                    borderRadius: '2px',
+                    background: color?.background
+                  }} />
+                </InputGroup>
+                <TwitterPicker color={color?.background} onChange={(event) => { handleChange(event) }} />
+              </FormGroupCustom>
               <FormGroupCustom>
                 <LabelCustom id="menu.performanceLevelGeneral" required={true} />
                 <Select

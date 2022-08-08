@@ -66,6 +66,8 @@ export const QUERY_GET_PERFORMANCE_LEVEL = gql`
     data: getPerformanceLevel(id: $id) {
       id
       name
+      colorHex
+      abbreviation
       topScore
       type
       campusId

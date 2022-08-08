@@ -1,4 +1,3 @@
-import { getValue } from '@testing-library/user-event/dist/types/utils';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import ReactDatePicker from 'react-datepicker';
@@ -8,6 +7,7 @@ import { useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
 import Select from 'react-select';
 import { Button, Card, CardBody, Collapse, Input, Modal, ModalBody, ModalFooter, ModalHeader, Row } from 'reactstrap';
+
 import * as academicAsignatureCourseActions from '../../../stores/actions/AcademicAsignatureCourseActions';
 import * as academicPeriodActions from '../../../stores/actions/AcademicPeriodActions';
 import * as classroomPlanActions from '../../../stores/actions/ClassroomPlanActions';
@@ -15,7 +15,6 @@ import * as courseActions from '../../../stores/actions/CourseActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
 import EditorHTML from '../../common/EditorHTML';
-
 
 const ClassroomPlanDetail = (props: any) => {
   const [academicPeriods, setAcademicPeriods] = useState(null);

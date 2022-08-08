@@ -313,6 +313,7 @@ const esMessages = {
   'forms.headline': 'Titular',
   'menu.academicAssignment': 'Asignacion Academica',
   'menu.academicAssignmentTeacher': 'Asignacion Academica Docente',
+  'forms.color': 'Color',
 };
 
 export default esMessages;
