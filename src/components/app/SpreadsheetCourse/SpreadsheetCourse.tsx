@@ -414,7 +414,7 @@ const SpreadsheetCourse = (props: any) => {
                                                 </Badge>
                                               </> :
                                               <>
-                                                {valuation[0]?.node?.assessment}
+                                                {valuation[0]?.node?.assessment?.toFixed(2)}
                                               </>
                                             }
                                           </td>
@@ -450,7 +450,7 @@ const SpreadsheetCourse = (props: any) => {
                                                 </Badge>
                                               </> :
                                               <>
-                                                {note?.assessment}
+                                                {note?.assessment?.toFixed(2)}
                                                 {/* <Input
                                                       onKeyPress={(event: any) => {
                                                         return saveNote(event, note, e, item);
