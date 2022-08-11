@@ -18,6 +18,7 @@ import * as experienceLearningActions from '../../../stores/actions/ExperienceLe
 import * as experienceLearningCoEvaluationActions from '../../../stores/actions/ExperienceLearningCoEvaluationValuationActions';
 import * as experienceLearningSelfActions from '../../../stores/actions/ExperienceLearningSelfAssessmentValuationActions';
 import * as experienceLearningTraditionalActions from '../../../stores/actions/ExperienceLearningTraditionalValuationActions';
+import * as schoolConfiguarionActions from '../../../stores/actions/SchoolConfigurationActions';
 import * as valuationsActions from '../../../stores/actions/ValuationsActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import FormGroupCustom from '../../common/Data/FormGroupCustom';
@@ -48,6 +49,7 @@ const SpreadsheetList = (props: any) => {
   let [averages, setAverages] = useState([]);
   let [averagesFinal, setAveragesFinal] = useState([]);
   const [dateProgress, setDateProgress] = useState({ startDate: null, endDate: null, totalDays: 0, countDays: 0 })
+  let [countDigits, setCountDigits] = useState(2);
 
   let navigate = useNavigate();
   const location = useLocation();
@@ -99,6 +101,13 @@ const SpreadsheetList = (props: any) => {
 
   const getSpreadsheet = async (periodId: any) => {
     setLoading(true);
+    await props.getListAllSchoolConfiguration(props?.loginReducer?.schoolId).then(async (schoolConfigurations: any) => {
+      for (let schoolConfiguration of schoolConfigurations) {
+        if (schoolConfiguration?.node?.code == "COUNT_DIGITS_PERFORMANCE_LEVEL") {
+          setCountDigits(schoolConfiguration?.node?.valueNumber);
+        }
+      }
+    });
     await props.dataCourse(courseId).then(async (course: any) => {
       setStudents(course?.data?.students.sort(compare));
       let obj: any = [];
@@ -549,6 +558,7 @@ const mapDispatchToProps = {
   ...experienceLearningCoEvaluationActions,
   ...experienceLearningTraditionalActions,
   ...performanceLevelActions,
+  ...schoolConfiguarionActions
 };
 
 const mapStateToProps = ({ loginReducer }: any) => {

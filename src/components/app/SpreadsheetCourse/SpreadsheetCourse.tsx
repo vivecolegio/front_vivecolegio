@@ -122,7 +122,9 @@ const SpreadsheetCourse = (props: any) => {
                 setAsignatures(asignaturesList)
                 let areasAux: any[] = []
                 for (let asignature of asignaturesList) {
-                  areasAux.push(asignature?.node?.academicAsignature?.academicArea);
+                  if (asignature?.node?.academicAsignature?.academicArea) {
+                    areasAux.push(asignature?.node?.academicAsignature?.academicArea);
+                  }
                   promisesList.push(
                     props
                       .getAllAcademicAsignatureCoursePeriodValuation(periodId, asignature?.node?.id)
@@ -131,7 +133,8 @@ const SpreadsheetCourse = (props: any) => {
                       })
                   );
                 }
-                const ids = areasAux.map(o => o.id)
+                console.log(areasAux);
+                const ids = areasAux.map(o => o?.id)
                 const count: any = {};
                 ids.forEach(element => {
                   count[element] = (count[element] || 0) + 1;
