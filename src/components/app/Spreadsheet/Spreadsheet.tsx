@@ -118,6 +118,7 @@ const SpreadsheetList = (props: any) => {
           setAcademicPeriods(listData);
           let promisesList: any[] = [];
           if (periodId) {
+            await updateAverages(periodId);
             await props
               .getAllAcademicAsignatureCoursePeriodValuation(periodId, academicAsignatureCourseId)
               .then(async (notesFinal: any) => {
@@ -128,14 +129,6 @@ const SpreadsheetList = (props: any) => {
               .getListAllComponentEvaluativeAcademicAsignatureCourse(academicAsignatureCourseId)
               .then(async (dataComponents: any) => {
                 for (let c of dataComponents) {
-                  // get averages for each evaluative component
-                  // await props
-                  //   .generateExperienceLearningAverageValuationStudents(
-                  //     c?.node?.id,
-                  //     periodId,
-                  //     academicAsignatureCourseId,
-                  //   )
-                  //   .then((resp: any) => { });
                   await props
                     .getAllExperienceLearningAverageValuation(
                       c?.node?.id,
@@ -166,12 +159,6 @@ const SpreadsheetList = (props: any) => {
                       });
                     });
                 };
-                // await props
-                //   .generateAcademicAsignatureCoursePeriodValuationStudents(
-                //     props?.loginReducer?.schoolId,
-                //     periodId,
-                //     academicAsignatureCourseId,
-                //   ).then((resp: any) => { });
                 await Promise.all(promisesList).then(() => {
                   setValuations(obj);
                   setNotes(nts);
@@ -190,32 +177,17 @@ const SpreadsheetList = (props: any) => {
     navigate(-1);
   };
 
-  const updateAverages = async () => {
-    let avrgs: any = [];
-    props
-      .getListAllComponentEvaluative(props?.loginReducer?.schoolId)
-      .then(async (dataComponents: any) => {
-        dataComponents.map(async (c: any) => {
-          // get averages for each evaluative component
-          props
-            .generateExperienceLearningAverageValuationStudents(
-              c?.node?.id,
-              currentAcademicPeriod?.id,
-              academicAsignatureCourseId,
-            )
-            .then((resp: any) => { });
-          props
-            .getAllExperienceLearningAverageValuation(
-              c?.node?.id,
-              currentAcademicPeriod?.id,
-              academicAsignatureCourseId,
-            )
-            .then((resp: any) => {
-              avrgs = avrgs.concat(resp.data.edges);
-              setAverages(avrgs);
-            });
+  const updateAverages = async (period: any) => {
+    if (period) {
+      await props
+        .updateAllStudentAcademicAsignatureCoursePeriodValuation(
+          period,
+          academicAsignatureCourseId,
+        )
+        .then((resp: any) => {
+          // getSpreadsheet(currentAcademicPeriod);
         });
-      });
+    }
   };
 
   const saveNote = async (event: any, note: any, experience: any, student: any) => {
@@ -228,14 +200,14 @@ const SpreadsheetList = (props: any) => {
           props
             .updateExperienceLearningSelfAssessmentValuation(obj, note?.id, true)
             .then((resp: any) => {
-              updateAverages();
+              // updateAverages();
             });
           break;
         case 'TRADITIONALVALUATION':
           props
             .updateExperienceLearningTraditionalValuation(obj, note?.id, true)
             .then((resp: any) => {
-              updateAverages();
+              // updateAverages();
             });
           break;
 
@@ -246,7 +218,7 @@ const SpreadsheetList = (props: any) => {
           props
             .updateExperienceLearningCoEvaluationValuation(obj, note?.id, true)
             .then((resp: any) => {
-              updateAverages();
+              // updateAverages();
             });
           break;
 
@@ -322,20 +294,33 @@ const SpreadsheetList = (props: any) => {
             </>
             : ""}
 
-          {/* <div className='d-flex mt-3 justify-content-end'>
-            <button
-              className="btn btn-green mr-2"
-              type="button"
-              onClick={() => {
-                return setIsFormEnabled(!isFormEnabled);
-              }}
-            >
-              <i className="iconsminds-file-edit"></i> Habilitar edición
-            </button>
-            <button className="btn btn-orange" type="button">
-              <i className="iconsminds-delete-file"></i> Cerrar periodo
-            </button>
-          </div> */}
+          {/* {currentAcademicPeriod != null ?
+            <div className='d-flex mt-3 justify-content-end mb-2'>
+               <button
+                className="btn btn-green mr-2"
+                type="button"
+                onClick={() => {
+                  return setIsFormEnabled(!isFormEnabled);
+                }}
+              >
+                <i className="iconsminds-file-edit"></i> Habilitar edición
+              </button>
+              <button className="btn btn-orange" type="button">
+                <i className="iconsminds-delete-file"></i> Cerrar periodo
+              </button> 
+              <button
+                className="btn btn-green mr-2"
+                type="button"
+                onClick={() => {
+                  return updateAverages();
+                }}
+              >
+                <i className="iconsminds-file-edit"></i> Recalcular Valoracion
+              </button>
+            </div>
+            :
+            <></>
+          } */}
         </div>
       </div>
 

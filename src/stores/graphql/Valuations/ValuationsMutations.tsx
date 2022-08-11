@@ -12,3 +12,8 @@ export const MUTATION_CREATE_ACADEMIC_ASIGNATURE_COURSE_PERIOD_VALUATION_STUDENT
   }
 `;
 
+export const MUTATION_UPDATE_ALL_STUDENT_ACADEMIC_ASIGNATURE_COURSE_PERIOD_VALUATION = gql`
+  mutation updateAllStudentAcademicAsignatureCoursePeriodValuation($academicPeriodId: String!, $academicAsignatureCourseId: String!) {
+    create: updateAllStudentAcademicAsignatureCoursePeriodValuation(academicPeriodId: $academicPeriodId, academicAsignatureCourseId: $academicAsignatureCourseId)
+  }
+`;
