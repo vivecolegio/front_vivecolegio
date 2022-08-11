@@ -18,6 +18,7 @@ import * as experienceLearningActions from '../../../stores/actions/ExperienceLe
 import * as experienceLearningCoEvaluationActions from '../../../stores/actions/ExperienceLearningCoEvaluationValuationActions';
 import * as experienceLearningSelfActions from '../../../stores/actions/ExperienceLearningSelfAssessmentValuationActions';
 import * as experienceLearningTraditionalActions from '../../../stores/actions/ExperienceLearningTraditionalValuationActions';
+import * as schoolConfiguarionActions from '../../../stores/actions/SchoolConfigurationActions';
 import * as valuationsActions from '../../../stores/actions/ValuationsActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
@@ -50,6 +51,7 @@ const SpreadsheetCourse = (props: any) => {
   let [averages, setAverages] = useState([]);
   let [averagesFinal, setAveragesFinal] = useState([]);
   const [dateProgress, setDateProgress] = useState({ startDate: null, endDate: null, totalDays: 0, countDays: 0 })
+  let [countDigits, setCountDigits] = useState(2);
 
   let navigate = useNavigate();
   const location = useLocation();
@@ -79,6 +81,13 @@ const SpreadsheetCourse = (props: any) => {
       createNotification('warning', 'notPermissions', '');
     }
     props.dataCurrentAcademicPeriod(props?.loginReducer?.schoolId).then(async (period: any) => {
+      await props.getListAllSchoolConfiguration(props?.loginReducer?.schoolId).then(async (schoolConfigurations: any) => {
+        for (let schoolConfiguration of schoolConfigurations) {
+          if (schoolConfiguration?.node?.code == "COUNT_DIGITS_PERFORMANCE_LEVEL") {
+            setCountDigits(schoolConfiguration?.node?.valueNumber);
+          }
+        }
+      });
       await setCurrentAcademicPeriod(period);
       if (period) {
         const today = new Date();
@@ -133,7 +142,7 @@ const SpreadsheetCourse = (props: any) => {
                       })
                   );
                 }
-                console.log(areasAux);
+                //console.log(areasAux);
                 const ids = areasAux.map(o => o?.id)
                 const count: any = {};
                 ids.forEach(element => {
@@ -417,7 +426,7 @@ const SpreadsheetCourse = (props: any) => {
                                                 </Badge>
                                               </> :
                                               <>
-                                                {valuation[0]?.node?.assessment?.toFixed(2)}
+                                                {valuation[0]?.node?.assessment?.toFixed(countDigits)}
                                               </>
                                             }
                                           </td>
@@ -453,7 +462,7 @@ const SpreadsheetCourse = (props: any) => {
                                                 </Badge>
                                               </> :
                                               <>
-                                                {note?.assessment?.toFixed(2)}
+                                                {note?.assessment?.toFixed(countDigits)}
                                                 {/* <Input
                                                       onKeyPress={(event: any) => {
                                                         return saveNote(event, note, e, item);
@@ -489,7 +498,7 @@ const SpreadsheetCourse = (props: any) => {
                                             item2?.evaluativeComponentId ===
                                             n?.node?.evaluativeComponentId &&
                                             itemStudent?.id === n?.node?.studentId,
-                                        )?.node?.average?.toFixed(2)}
+                                        )?.node?.average?.toFixed(countDigits)}
                                         {/* <Input
                                               disabled={true}
                                               defaultValue={
@@ -549,7 +558,8 @@ const mapDispatchToProps = {
   ...experienceLearningCoEvaluationActions,
   ...experienceLearningTraditionalActions,
   ...performanceLevelActions,
-  ...academicAsignatureCouseActions
+  ...academicAsignatureCouseActions,
+  ...schoolConfiguarionActions
 };
 
 const mapStateToProps = ({ loginReducer }: any) => {

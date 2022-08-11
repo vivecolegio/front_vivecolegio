@@ -83,6 +83,13 @@ const SpreadsheetList = (props: any) => {
       createNotification('warning', 'notPermissions', '');
     }
     props.dataCurrentAcademicPeriod(props?.loginReducer?.schoolId).then(async (period: any) => {
+      await props.getListAllSchoolConfiguration(props?.loginReducer?.schoolId).then(async (schoolConfigurations: any) => {
+        for (let schoolConfiguration of schoolConfigurations) {
+          if (schoolConfiguration?.node?.code == "COUNT_DIGITS_PERFORMANCE_LEVEL") {
+            setCountDigits(schoolConfiguration?.node?.valueNumber);
+          }
+        }
+      });
       await setCurrentAcademicPeriod(period);
       if (period) {
         const today = new Date();
@@ -101,13 +108,6 @@ const SpreadsheetList = (props: any) => {
 
   const getSpreadsheet = async (periodId: any) => {
     setLoading(true);
-    await props.getListAllSchoolConfiguration(props?.loginReducer?.schoolId).then(async (schoolConfigurations: any) => {
-      for (let schoolConfiguration of schoolConfigurations) {
-        if (schoolConfiguration?.node?.code == "COUNT_DIGITS_PERFORMANCE_LEVEL") {
-          setCountDigits(schoolConfiguration?.node?.valueNumber);
-        }
-      }
-    });
     await props.dataCourse(courseId).then(async (course: any) => {
       setStudents(course?.data?.students.sort(compare));
       let obj: any = [];
@@ -498,7 +498,7 @@ const SpreadsheetList = (props: any) => {
                                             item2?.evaluativeComponentId ===
                                             n?.node?.evaluativeComponentId &&
                                             item?.id === n?.node?.studentId,
-                                        )?.node?.average?.toFixed(2)}
+                                        )?.node?.average?.toFixed(countDigits)}
                                         {/* <Input
                                           disabled={true}
                                           defaultValue={
@@ -522,7 +522,7 @@ const SpreadsheetList = (props: any) => {
                           })}
                           <th className="text-center vertical-middle">
                             {averagesFinal.find((n: any) => item?.id === n?.node?.studentId)?.node
-                              ?.assessment?.toFixed(2) || ''}
+                              ?.assessment?.toFixed(countDigits) || ''}
                           </th>
                           <th className="text-center vertical-middle">
                             <Badge color="primary" className="font-0-8rem">
