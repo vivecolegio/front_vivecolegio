@@ -1,14 +1,17 @@
+import moment from 'moment';
 /* eslint-disable arrow-body-style */
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
+import ReactTooltip from "react-tooltip";
 import { Badge, Input, Label, Progress, Tooltip } from 'reactstrap';
+
 import { calculateDaysTwoDate, compare } from '../../../helpers/DataTransformations';
 import { createNotification } from '../../../helpers/Notification';
 import { getInitialsName } from '../../../helpers/Utils';
-import * as academicPeriodActions from '../../../stores/actions/AcademicPeriodActions';
 import * as performanceLevelActions from '../../../stores/actions/Academic/PerformanceLevelActions';
+import * as academicPeriodActions from '../../../stores/actions/AcademicPeriodActions';
 import * as componentEvaluativeActions from '../../../stores/actions/ComponentEvaluativeActions';
 import * as courseActions from '../../../stores/actions/CourseActions';
 import * as experienceLearningActions from '../../../stores/actions/ExperienceLearningActions';
@@ -17,13 +20,11 @@ import * as experienceLearningSelfActions from '../../../stores/actions/Experien
 import * as experienceLearningTraditionalActions from '../../../stores/actions/ExperienceLearningTraditionalValuationActions';
 import * as valuationsActions from '../../../stores/actions/ValuationsActions';
 import { Colxx } from '../../common/CustomBootstrap';
+import FormGroupCustom from '../../common/Data/FormGroupCustom';
+import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
 import { Loader } from '../../common/Loader';
 import TooltipItem from '../../common/TooltipItem';
 import ThumbnailImage from '../Aplications/AplicationsComponents/ThumbnailImage';
-import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
-import moment from 'moment';
-import FormGroupCustom from '../../common/Data/FormGroupCustom';
-import ReactTooltip from "react-tooltip";
 
 const SpreadsheetList = (props: any) => {
   const [students, setStudents] = useState(null);
@@ -128,6 +129,13 @@ const SpreadsheetList = (props: any) => {
               .then(async (dataComponents: any) => {
                 for (let c of dataComponents) {
                   // get averages for each evaluative component
+                  // await props
+                  //   .generateExperienceLearningAverageValuationStudents(
+                  //     c?.node?.id,
+                  //     periodId,
+                  //     academicAsignatureCourseId,
+                  //   )
+                  //   .then((resp: any) => { });
                   await props
                     .getAllExperienceLearningAverageValuation(
                       c?.node?.id,
@@ -158,6 +166,12 @@ const SpreadsheetList = (props: any) => {
                       });
                     });
                 };
+                // await props
+                //   .generateAcademicAsignatureCoursePeriodValuationStudents(
+                //     props?.loginReducer?.schoolId,
+                //     periodId,
+                //     academicAsignatureCourseId,
+                //   ).then((resp: any) => { });
                 await Promise.all(promisesList).then(() => {
                   setValuations(obj);
                   setNotes(nts);
