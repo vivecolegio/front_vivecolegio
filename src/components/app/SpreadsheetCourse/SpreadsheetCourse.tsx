@@ -47,6 +47,7 @@ const SpreadsheetCourse = (props: any) => {
     inactiveAction: false,
   });
   let [valuations, setValuations] = useState(null);
+  let [valuationsArea, setValuationsArea] = useState(null);
   let [notes, setNotes] = useState([]);
   let [averages, setAverages] = useState([]);
   let [averagesFinal, setAveragesFinal] = useState([]);
@@ -110,6 +111,7 @@ const SpreadsheetCourse = (props: any) => {
       setStudents(course?.data?.students.sort(compare));
       let obj: any = [];
       let nts: any = [];
+      let ntsArea: any = [];
       let avrgs: any = [];
       let avrgsFinal: any = [];
       let levels: any = [];
@@ -123,7 +125,8 @@ const SpreadsheetCourse = (props: any) => {
       await props.getAcademicPeriodsExperienceLearning(props?.loginReducer?.schoolId,
         props?.loginReducer?.schoolYear).then(async (listData: any) => {
           setAcademicPeriods(listData);
-          let promisesList: any[] = [];
+          let promisesListAsignatures: any[] = [];
+          let promisesListAreas: any[] = [];
           if (periodId) {
             await props
               .getListAllAcademicAsignatureCourseByCourse(null, courseId)
@@ -134,7 +137,7 @@ const SpreadsheetCourse = (props: any) => {
                   if (asignature?.node?.academicAsignature?.academicArea) {
                     areasAux.push(asignature?.node?.academicAsignature?.academicArea);
                   }
-                  promisesList.push(
+                  promisesListAsignatures.push(
                     props
                       .getAllAcademicAsignatureCoursePeriodValuation(periodId, asignature?.node?.id)
                       .then(async (notesFinal: any) => {
@@ -148,14 +151,27 @@ const SpreadsheetCourse = (props: any) => {
                 ids.forEach(element => {
                   count[element] = (count[element] || 0) + 1;
                 });
-                const filtered = areasAux.filter(({ id }, index) => !ids.includes(id, index + 1))
+                let filtered = areasAux.filter(({ id }, index) => !ids.includes(id, index + 1))
                 for (let filter of filtered) {
                   filter.count = count[filter?.id];
                 }
-                setAreas(filtered.sort(compareOrderAcademicArea));
-
+                filtered = filtered.sort(compareOrderAcademicArea);
+                setAreas(filtered);
+                for (let area of filtered) {
+                  promisesListAreas.push(
+                    props
+                      .getAllAcademicAreaCoursePeriodValuation(periodId, area?.id)
+                      .then(async (notesFinal: any) => {
+                        ntsArea[area?.id] = notesFinal.data.edges;
+                      })
+                  );
+                }
               });
-            await Promise.all(promisesList).then(() => {
+            await Promise.all(promisesListAreas).then(() => {
+              setValuationsArea(ntsArea);
+              console.log(ntsArea)
+            });
+            await Promise.all(promisesListAsignatures).then(() => {
               setValuations(nts);
               // console.log(nts)
               setLoading(false);
@@ -410,6 +426,9 @@ const SpreadsheetCourse = (props: any) => {
                           </td>
                           {areas?.map((itemArea: any, index: any) => {
                             let asignaturesArea = asignatures?.filter((itemV: any) => itemV?.node?.academicAsignature?.academicAreaId == itemArea?.id);
+                            console.log(itemArea)
+                            let valuationArea = valuationsArea[itemArea?.id]?.filter((itemA: any) => itemA?.node?.studentId == itemStudent?.id);
+                            console.log(valuationArea)
                             return (
                               <>
                                 {
@@ -435,7 +454,24 @@ const SpreadsheetCourse = (props: any) => {
                                     );
                                   })
                                 }
-                                <td></td>
+                                {
+                                  <>
+                                    {valuationArea?.length > 0 ?
+                                      <td className="text-center vertical-middle">
+                                        {performanceLevelType === "QUALITATIVE" ?
+                                          <>
+                                            <Badge color="primary" className="font-0-8rem">
+                                              {valuationArea[0]?.node?.performanceLevel?.name}
+                                            </Badge>
+                                          </> :
+                                          <>
+                                            {valuationArea[0]?.node?.assessment?.toFixed(countDigits)}
+                                          </>
+                                        }
+                                      </td>
+                                      : <td></td>}
+                                  </>
+                                }
                               </>
                             );
                           })}

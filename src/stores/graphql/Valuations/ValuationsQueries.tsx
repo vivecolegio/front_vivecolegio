@@ -50,3 +50,22 @@ export const QUERY_GET_All_ACADEMIC_ASIGNATURE_COURSE_PERIOD_VALUATION = gql`
     }
   }
 `;
+
+export const QUERY_GET_All_ACADEMIC_AREA_COURSE_PERIOD_VALUATION = gql`
+  query getAllAcademicAreaCoursePeriodValuation($academicPeriodId: String!, $academicAreaId: String!) {
+    data: getAllAcademicAreaCoursePeriodValuation(orderCreated: true, allData: true, academicPeriodId: $academicPeriodId, academicAreaId: $academicAreaId) {
+      edges {
+        cursor
+        node {
+          id
+          studentId
+          assessment    
+          performanceLevel {
+            name
+          }      
+        }
+      }    
+       
+    }
+  }
+`;
