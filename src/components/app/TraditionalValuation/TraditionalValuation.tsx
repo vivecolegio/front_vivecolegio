@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
 import Select from 'react-select';
 import { Badge, Button, Input, Progress } from 'reactstrap';
+
 import { compare, comparePerformanceLevelsTopScore } from '../../../helpers/DataTransformations';
 import IntlMessages from '../../../helpers/IntlMessages';
 import { createNotification } from '../../../helpers/Notification';
@@ -16,6 +17,7 @@ import { urlImages } from '../../../stores/graphql';
 import { Colxx } from '../../common/CustomBootstrap';
 import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
 import { Loader } from '../../common/Loader';
+import { StyledBadge } from '../../styled/BadgeCustom';
 import ThumbnailImage from '../Aplications/AplicationsComponents/ThumbnailImage';
 
 const ExperienceLearningTraditionalValuationList = (props: any) => {
@@ -321,14 +323,14 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
                 decimal={","}
                 className="font-weight-bold"
               />
-              <Badge color="primary" className="font-0-8rem ml-2">
+              <StyledBadge color="primary" className="font-0-8rem ml-2" background={getPerformanceLevelAverage(average)?.node?.colorHex ? `${getPerformanceLevelAverage(average)?.node?.colorHex}` : "#00cafe"}>
                 {getPerformanceLevelAverage(average) ? getPerformanceLevelAverage(average)?.node.name : ""}
-              </Badge>
+              </StyledBadge>
             </> :
             <>
-              <Badge color="primary" className="font-0-8rem ml-2">
+              <StyledBadge color="primary" className="font-0-8rem ml-2" background={average > 0 ? `${performanceLevels[Math.trunc(average) - 1]?.colorHex}` : "#00cafe"}>
                 {average > 0 ? performanceLevels[Math.trunc(average) - 1]?.node.name : ""}
-              </Badge>
+              </StyledBadge>
             </>}
         </div>
         <div className="d-flex justify-content-start align-items-center mb-3 w-30">
@@ -431,9 +433,9 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
                             valuations[0]?.performanceLevel?.type == 'QUALITATIVE' ?
                               '' :
                               <td className="text-center vertical-middle">
-                                <Badge color="primary" className="font-0-8rem">
+                                <StyledBadge color="primary" className="font-0-8rem" background={item?.node?.performanceLevel?.colorHex ? `${item?.node?.performanceLevel?.colorHex}` : "#00cafe"} >
                                   {item?.node?.performanceLevel?.name}
-                                </Badge>
+                                </StyledBadge>
                               </td>
                           }
                         </tr>

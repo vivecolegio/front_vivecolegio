@@ -13,6 +13,8 @@ export const QUERY_GET_ALL_EXPERIENCE_LEARNING_TRADITIONAL_VALUATION = gql`
             name
             id
             type
+            colorHex
+            abbreviation
           }    
           studentId
           student {

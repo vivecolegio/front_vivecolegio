@@ -25,6 +25,7 @@ import FormGroupCustom from '../../common/Data/FormGroupCustom';
 import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
 import { Loader } from '../../common/Loader';
 import TooltipItem from '../../common/TooltipItem';
+import { StyledBadge } from '../../styled/BadgeCustom';
 import ThumbnailImage from '../Aplications/AplicationsComponents/ThumbnailImage';
 
 const SpreadsheetList = (props: any) => {
@@ -457,9 +458,9 @@ const SpreadsheetList = (props: any) => {
                                           <td className="text-center vertical-middle">
                                             {performanceLevelType === "QUALITATIVE" ?
                                               <>
-                                                <Badge color="primary" className="font-0-8rem">
+                                                <StyledBadge color="primary" className="font-0-8rem" background={note?.performanceLevel?.colorHex ? `${note?.performanceLevel?.colorHex}` : "#00cafe"}>
                                                   {note?.performanceLevel?.name}
-                                                </Badge>
+                                                </StyledBadge>
                                               </> :
                                               <>
                                                 {note?.assessment}
@@ -482,14 +483,24 @@ const SpreadsheetList = (props: any) => {
                                   <th className="text-center vertical-middle">
                                     {performanceLevelType === "QUALITATIVE" ?
                                       <>
-                                        <Badge color="primary" className="font-0-8rem">
+                                        <StyledBadge color="primary" className="font-0-8rem" background={averages.find(
+                                          (n: any) =>
+                                            item2?.evaluativeComponentId ===
+                                            n?.node?.evaluativeComponentId &&
+                                            item?.id === n?.node?.studentId,
+                                        )?.performanceLevel?.colorHex ? `${averages.find(
+                                          (n: any) =>
+                                            item2?.evaluativeComponentId ===
+                                            n?.node?.evaluativeComponentId &&
+                                            item?.id === n?.node?.studentId,
+                                        )?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
                                           {averages.find(
                                             (n: any) =>
                                               item2?.evaluativeComponentId ===
                                               n?.node?.evaluativeComponentId &&
                                               item?.id === n?.node?.studentId,
                                           )?.node?.performanceLevel?.name}
-                                        </Badge>
+                                        </StyledBadge>
                                       </>
                                       :
                                       <>
@@ -525,11 +536,15 @@ const SpreadsheetList = (props: any) => {
                               ?.assessment?.toFixed(countDigits) || ''}
                           </th>
                           <th className="text-center vertical-middle">
-                            <Badge color="primary" className="font-0-8rem">
+                            <StyledBadge color="primary" className="font-0-8rem" background={averagesFinal.find(
+                              (c: any) => c?.node?.studentId === item?.id,
+                            )?.node?.performanceLevel?.colorHex ? `${averagesFinal.find(
+                              (c: any) => c?.node?.studentId === item?.id,
+                            )?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
                               {averagesFinal.find(
                                 (c: any) => c?.node?.studentId === item?.id,
                               )?.node?.performanceLevel?.name || '--'}
-                            </Badge>
+                            </StyledBadge>
                           </th>
                         </tr>
                       </>

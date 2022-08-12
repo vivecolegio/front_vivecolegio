@@ -34,6 +34,8 @@ export const QUERY_GET_ALL_PERFORMANCE_LEVEL_ASIGNATURE_COURSE = gql`
           minimumScore
           active
           category
+          colorHex
+          abbreviation
         }
       }
       totalCount

@@ -23,6 +23,7 @@ import * as valuationsActions from '../../../stores/actions/ValuationsActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
 import { Loader } from '../../common/Loader';
+import { StyledBadge } from '../../styled/BadgeCustom';
 import AreaList from '../Academic/Area/AreaList';
 import ThumbnailImage from '../Aplications/AplicationsComponents/ThumbnailImage';
 
@@ -440,9 +441,9 @@ const SpreadsheetCourse = (props: any) => {
                                           <td className="text-center vertical-middle">
                                             {performanceLevelType === "QUALITATIVE" ?
                                               <>
-                                                <Badge color="primary" className="font-0-8rem">
+                                                <StyledBadge color="primary" className="font-0-8rem" background={valuation[0]?.node?.performanceLevel?.colorHex ? `${valuation[0]?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
                                                   {valuation[0]?.node?.performanceLevel?.name}
-                                                </Badge>
+                                                </StyledBadge>
                                               </> :
                                               <>
                                                 {valuation[0]?.node?.assessment?.toFixed(countDigits)}
@@ -460,9 +461,9 @@ const SpreadsheetCourse = (props: any) => {
                                       <td className="text-center vertical-middle">
                                         {performanceLevelType === "QUALITATIVE" ?
                                           <>
-                                            <Badge color="primary" className="font-0-8rem">
+                                            <StyledBadge color="primary" className="font-0-8rem" background={valuationArea[0]?.node?.performanceLevel?.colorHex ? `${valuationArea[0]?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
                                               {valuationArea[0]?.node?.performanceLevel?.name}
-                                            </Badge>
+                                            </StyledBadge>
                                           </> :
                                           <>
                                             {valuationArea[0]?.node?.assessment?.toFixed(countDigits)}
@@ -493,9 +494,9 @@ const SpreadsheetCourse = (props: any) => {
                                           <td className="text-center vertical-middle">
                                             {performanceLevelType === "QUALITATIVE" ?
                                               <>
-                                                <Badge color="primary" className="font-0-8rem">
+                                                <StyledBadge color="primary" className="font-0-8rem" background={note?.performanceLevel?.colorHex ? `${note?.performanceLevel?.colorHex}` : "#00cafe"}>
                                                   {note?.performanceLevel?.name}
-                                                </Badge>
+                                                </StyledBadge>
                                               </> :
                                               <>
                                                 {note?.assessment?.toFixed(countDigits)}
@@ -518,14 +519,24 @@ const SpreadsheetCourse = (props: any) => {
                                   <th className="text-center vertical-middle">
                                     {performanceLevelType === "QUALITATIVE" ?
                                       <>
-                                        <Badge color="primary" className="font-0-8rem">
+                                        <StyledBadge color="primary" className="font-0-8rem" background={averages.find(
+                                          (n: any) =>
+                                            item2?.evaluativeComponentId ===
+                                            n?.node?.evaluativeComponentId &&
+                                            itemStudent?.id === n?.node?.studentId,
+                                        )?.node?.performanceLevel?.colorHex ? `${averages.find(
+                                          (n: any) =>
+                                            item2?.evaluativeComponentId ===
+                                            n?.node?.evaluativeComponentId &&
+                                            itemStudent?.id === n?.node?.studentId,
+                                        )?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
                                           {averages.find(
                                             (n: any) =>
                                               item2?.evaluativeComponentId ===
                                               n?.node?.evaluativeComponentId &&
                                               itemStudent?.id === n?.node?.studentId,
                                           )?.node?.performanceLevel?.name}
-                                        </Badge>
+                                        </StyledBadge>
                                       </>
                                       :
                                       <>
