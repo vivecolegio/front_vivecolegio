@@ -64,6 +64,8 @@ export const QUERY_GET_All_ACADEMIC_AREA_COURSE_PERIOD_VALUATION = gql`
           assessment    
           performanceLevel {
             name
+            colorHex
+            abbreviation
           }      
         }
       }    

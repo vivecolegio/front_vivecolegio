@@ -97,8 +97,8 @@ const SpreadsheetCourse = (props: any) => {
         const endDate = new Date(period?.endDate);
         const totalDays = calculateDaysTwoDate(startDate, endDate);
         let countDays = totalDays;
-        if (today < endDate) {
-          countDays = calculateDaysTwoDate(new Date(), endDate);
+        if (today < endDate && today > startDate) {
+          countDays = calculateDaysTwoDate(startDate, new Date());
         }
         setDateProgress({ startDate, endDate, totalDays, countDays })
       }
@@ -253,14 +253,14 @@ const SpreadsheetCourse = (props: any) => {
                   <>
                     <button
                       onClick={() => {
-                        setCurrentAcademicPeriod(item?.node?.id);
+                        setCurrentAcademicPeriod(item?.node);
                         const today = new Date();
                         const startDate = new Date(item?.node?.startDate);
                         const endDate = new Date(item?.node?.endDate);
                         const totalDays = calculateDaysTwoDate(startDate, endDate);
                         let countDays = totalDays;
-                        if (today < endDate) {
-                          countDays = calculateDaysTwoDate(new Date(), endDate);
+                        if (today < endDate && today > startDate) {
+                          countDays = calculateDaysTwoDate(startDate, new Date());
                         }
                         setDateProgress({ startDate, endDate, totalDays, countDays })
                         return getSpreadsheet(item?.node?.id);
@@ -329,7 +329,7 @@ const SpreadsheetCourse = (props: any) => {
       ) : valuations != null ? (
         <>
           {students !== null ? (
-            <div style={{ overflow: "scroll" }}>
+            <div style={{ overflow: "scroll", height: "70vh" }}>
               <table className="table table-bordered">
                 <thead>
                   <tr>
@@ -442,7 +442,7 @@ const SpreadsheetCourse = (props: any) => {
                                             {performanceLevelType === "QUALITATIVE" ?
                                               <>
                                                 <StyledBadge color="primary" className="font-0-8rem" background={valuation[0]?.node?.performanceLevel?.colorHex ? `${valuation[0]?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
-                                                  {valuation[0]?.node?.performanceLevel?.name}
+                                                  {valuation[0]?.node?.performanceLevel?.abbreviation ? valuation[0]?.node?.performanceLevel?.abbreviation : valuation[0]?.node?.performanceLevel?.name}
                                                 </StyledBadge>
                                               </> :
                                               <>
@@ -462,7 +462,7 @@ const SpreadsheetCourse = (props: any) => {
                                         {performanceLevelType === "QUALITATIVE" ?
                                           <>
                                             <StyledBadge color="primary" className="font-0-8rem" background={valuationArea[0]?.node?.performanceLevel?.colorHex ? `${valuationArea[0]?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
-                                              {valuationArea[0]?.node?.performanceLevel?.name}
+                                              {valuationArea[0]?.node?.performanceLevel?.abbreviation ? valuationArea[0]?.node?.performanceLevel?.abbreviation : valuationArea[0]?.node?.performanceLevel?.name}
                                             </StyledBadge>
                                           </> :
                                           <>
@@ -495,7 +495,7 @@ const SpreadsheetCourse = (props: any) => {
                                             {performanceLevelType === "QUALITATIVE" ?
                                               <>
                                                 <StyledBadge color="primary" className="font-0-8rem" background={note?.performanceLevel?.colorHex ? `${note?.performanceLevel?.colorHex}` : "#00cafe"}>
-                                                  {note?.performanceLevel?.name}
+                                                  {note?.performanceLevel?.abbreviation ? note?.performanceLevel?.abbreviation : note?.performanceLevel?.name}
                                                 </StyledBadge>
                                               </> :
                                               <>

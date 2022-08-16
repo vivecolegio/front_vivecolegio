@@ -98,8 +98,8 @@ const SpreadsheetList = (props: any) => {
         const endDate = new Date(period?.endDate);
         const totalDays = calculateDaysTwoDate(startDate, endDate);
         let countDays = totalDays;
-        if (today < endDate) {
-          countDays = calculateDaysTwoDate(new Date(), endDate);
+        if (today < endDate && today > startDate) {
+          countDays = calculateDaysTwoDate(startDate, new Date());
         }
         setDateProgress({ startDate, endDate, totalDays, countDays })
       }
@@ -254,14 +254,14 @@ const SpreadsheetList = (props: any) => {
                   <>
                     <button
                       onClick={() => {
-                        setCurrentAcademicPeriod(item?.node?.id);
+                        setCurrentAcademicPeriod(item?.node);
                         const today = new Date();
                         const startDate = new Date(item?.node?.startDate);
                         const endDate = new Date(item?.node?.endDate);
                         const totalDays = calculateDaysTwoDate(startDate, endDate);
                         let countDays = totalDays;
-                        if (today < endDate) {
-                          countDays = calculateDaysTwoDate(new Date(), endDate);
+                        if (today < endDate && today > startDate) {
+                          countDays = calculateDaysTwoDate(startDate, new Date());
                         }
                         setDateProgress({ startDate, endDate, totalDays, countDays })
                         return getSpreadsheet(item?.node?.id);

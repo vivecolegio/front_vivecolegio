@@ -18,8 +18,8 @@ import * as experienceLearningActions from '../../../stores/actions/ExperienceLe
 import * as experienceLearningCoEvaluationActions from '../../../stores/actions/ExperienceLearningCoEvaluationValuationActions';
 import * as experienceLearningSelfActions from '../../../stores/actions/ExperienceLearningSelfAssessmentValuationActions';
 import * as experienceLearningTraditionalActions from '../../../stores/actions/ExperienceLearningTraditionalValuationActions';
-import * as valuationsActions from '../../../stores/actions/ValuationsActions';
 import * as studentAttendance from '../../../stores/actions/StudentAttendanceActions';
+import * as valuationsActions from '../../../stores/actions/ValuationsActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
 import { Loader } from '../../common/Loader';
@@ -89,8 +89,8 @@ const StudentAttendance = (props: any) => {
         const endDate = new Date(period?.endDate);
         const totalDays = calculateDaysTwoDate(startDate, endDate);
         let countDays = totalDays;
-        if (today < endDate) {
-          countDays = calculateDaysTwoDate(new Date(), endDate);
+        if (today < endDate && today > startDate) {
+          countDays = calculateDaysTwoDate(startDate, new Date());
         }
         setDateProgress({ startDate, endDate, totalDays, countDays })
         let daysTemp = [];
@@ -174,8 +174,8 @@ const StudentAttendance = (props: any) => {
                         const endDate = new Date(item?.node?.endDate);
                         const totalDays = calculateDaysTwoDate(startDate, endDate);
                         let countDays = totalDays;
-                        if (today < endDate) {
-                          countDays = calculateDaysTwoDate(new Date(), endDate);
+                        if (today < endDate && today > startDate) {
+                          countDays = calculateDaysTwoDate(startDate, new Date());
                         }
                         setDateProgress({ startDate, endDate, totalDays, countDays })
                         let daysTemp = [];

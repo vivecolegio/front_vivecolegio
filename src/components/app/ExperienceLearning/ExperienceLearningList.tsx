@@ -169,8 +169,8 @@ const ExperienceLearningList = (props: any) => {
       const endDate = new Date(item?.node?.endDate);
       const totalDays = calculateDaysTwoDate(startDate, endDate);
       let countDays = totalDays;
-      if (today < endDate) {
-        countDays = calculateDaysTwoDate(new Date(), endDate);
+      if (today < endDate && today > startDate) {
+        countDays = calculateDaysTwoDate(startDate, new Date());
       }
       setDateProgress({ startDate, endDate, totalDays, countDays })
     } else {
