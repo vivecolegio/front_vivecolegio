@@ -19,6 +19,8 @@ import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
 import { Loader } from '../../common/Loader';
 import { StyledBadge } from '../../styled/BadgeCustom';
 import ThumbnailImage from '../Aplications/AplicationsComponents/ThumbnailImage';
+import * as academicIndicatorActions from '../../../stores/actions/AcademicAsignatureCourseActions';
+
 
 const ExperienceLearningTraditionalValuationList = (props: any) => {
   const [students, setStudents] = useState(null);
@@ -43,6 +45,13 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
 
   const [data, setData] = useState(null);
   useEffect(() => {
+    props.dataAcademicAsignatureCourse(academicAsignatureCourseId).then((formData: any) => {
+      props.dataCourse(formData?.data?.course?.id).then((course: any) => {
+        setStudents(course?.data?.students.sort(compare));
+      });
+    });
+
+
     props.generateExperienceLearningTraditionalValuation(learningId).then((response: any) => {
       props
         .getListAllExperienceLearningTraditionalValuation(learningId)
@@ -50,6 +59,7 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
           await props
             .getListAllPerformanceLevelAsignatureCourse(academicAsignatureCourseId)
             .then((levels: any) => {
+
               setPerformanceLevels(levels);
               let levelsOrderDesc = levels.sort(comparePerformanceLevelsTopScore);
               setMax(levelsOrderDesc[levelsOrderDesc.length - 1]?.node?.topScore);
@@ -89,6 +99,11 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
   }, []);
 
   const refreshDataTable = async () => {
+    await props.dataAcademicAsignatureCourse(academicAsignatureCourseId).then(async (formData: any) => {
+      await props.dataCourse(formData?.data?.course?.id).then((course: any) => {
+        setStudents(course?.data?.students.sort(compare));
+      });
+    });
     await props
       .getListAllExperienceLearningTraditionalValuation(learningId)
       .then((listData: any) => {
@@ -352,7 +367,7 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
         </>
       ) : (
         <>
-          {valuations !== null ? (
+          {valuations !== null && students !== null ? (
             <>
               <table className="table table-bordered">
                 <thead>
@@ -364,83 +379,92 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {valuations.map((item: any, index: any) => {
+                  {students.map((itemStudent: any, indexE: any) => {
+                    let valuation = valuations?.filter((itemV: any) => itemV?.node?.studentId == itemStudent?.id);
                     return (
                       <>
-                        <tr key={index}>
+                        <tr key={indexE}>
                           <td className="text-center vertical-middle">
-                            <span className="font-bold">{item?.node?.student?.code}</span>
+                            <span className="font-bold">{itemStudent?.code}</span>
                           </td>
-                          <td className="text-center">
+                          <td className="text-center vertical-middle">
                             <div className="d-flex align-items-center justify-content-start">
-                              {item?.node?.student?.user?.profilePhoto ? (
+                              {itemStudent?.user?.urlPhoto ? (
                                 <ThumbnailImage
                                   rounded
-                                  src={urlImages + item?.node?.student?.user?.profilePhoto}
+                                  src={itemStudent?.user?.urlPhoto}
                                   alt="profile"
                                   className="xsmall mr-3"
                                 />
                               ) : (
                                 <span className="img-thumbnail md-avatar-initials border-0 span-initials rounded-circle mr-3 list-thumbnail align-self-center xsmall">
                                   {getInitialsName(
-                                    item?.node?.student?.user
-                                      ? item?.node?.student?.user?.lastName +
+                                    itemStudent?.user
+                                      ? itemStudent?.user?.lastName +
                                       ' ' +
-                                      item?.node?.student?.user?.name
+                                      itemStudent?.user?.name
                                       : 'N N',
                                   )}
                                 </span>
                               )}
                               <span>
-                                {item?.node?.student?.user?.lastName} {item?.node?.student?.user?.name}
+                                {itemStudent?.user?.lastName} {itemStudent?.user?.name}
                               </span>
                             </div>
                           </td>
-                          <td className="text-center vertical-middle">
-                            {
-                              performanceLevelType === "QUALITATIVE" ?
-                                <Select
-                                  //isClearable
-                                  placeholder={<IntlMessages id="forms.select" />}
-                                  className="react-select"
-                                  classNamePrefix="react-select"
-                                  options={performanceLevelsList}
-                                  value={{ label: item?.node?.performanceLevel?.name, key: item?.node?.performanceLevel?.id, value: item?.node?.performanceLevel?.id }}
-                                  onChange={(selectedOption: any) => {
-                                    item.node.assessment = undefined;
-                                    item.node.performanceLevel = { id: selectedOption?.key, name: selectedOption?.label }
-                                    saveBlur(item);
-                                  }}
-                                /> : performanceLevelType === "QUANTITATIVE" ?
-                                  <Input
-                                    type="number"
-                                    onBlur={(event: any) => {
-                                      return saveBlur(item);
-                                    }}
-                                    onInput={(e: any) => {
-                                      if (e.target.value < min || e.target.value > max) {
-                                        e.target.value = null;
-                                      }
-                                      return getPerformanceLevel(e, item);
-                                    }}
-                                    {...item?.node?.assessment}
-                                    defaultValue={item?.node?.assessment}
-                                    className={item?.node?.assessment ? 'border-green form-control' : 'form-control'}
-                                  /> : ""
-                            }
-                          </td>
-                          {
-                            valuations[0]?.performanceLevel?.type == 'QUALITATIVE' ?
-                              '' :
-                              <td className="text-center vertical-middle">
-                                <StyledBadge color="primary" className="font-0-8rem" background={item?.node?.performanceLevel?.colorHex ? `${item?.node?.performanceLevel?.colorHex}` : "#00cafe"} >
-                                  {item?.node?.performanceLevel?.name}
-                                </StyledBadge>
-                              </td>
-                          }
+
+                          {valuation?.map((item: any, index: any) => {
+                            return (
+                              <>
+                                <td className="text-center vertical-middle">
+                                  {
+                                    performanceLevelType === "QUALITATIVE" ?
+                                      <Select
+                                        //isClearable
+                                        placeholder={<IntlMessages id="forms.select" />}
+                                        className="react-select"
+                                        classNamePrefix="react-select"
+                                        options={performanceLevelsList}
+                                        value={{ label: item?.node?.performanceLevel?.name, key: item?.node?.performanceLevel?.id, value: item?.node?.performanceLevel?.id }}
+                                        onChange={(selectedOption: any) => {
+                                          item.node.assessment = undefined;
+                                          item.node.performanceLevel = { id: selectedOption?.key, name: selectedOption?.label }
+                                          saveBlur(item);
+                                        }}
+                                      /> : performanceLevelType === "QUANTITATIVE" ?
+                                        <Input
+                                          type="number"
+                                          onBlur={(event: any) => {
+                                            return saveBlur(item);
+                                          }}
+                                          onInput={(e: any) => {
+                                            if (e.target.value < min || e.target.value > max) {
+                                              e.target.value = null;
+                                            }
+                                            return getPerformanceLevel(e, item);
+                                          }}
+                                          {...item?.node?.assessment}
+                                          defaultValue={item?.node?.assessment}
+                                          className={item?.node?.assessment ? 'border-green form-control' : 'form-control'}
+                                        /> : ""
+                                  }
+                                </td>
+                                {
+                                  valuations[0]?.performanceLevel?.type == 'QUALITATIVE' ?
+                                    '' :
+                                    <td className="text-center vertical-middle">
+                                      <StyledBadge color="primary" className="font-0-8rem" background={item?.node?.performanceLevel?.colorHex ? `${item?.node?.performanceLevel?.colorHex}` : "#00cafe"} >
+                                        {item?.node?.performanceLevel?.name}
+                                      </StyledBadge>
+                                    </td>
+                                }
+                              </>
+                            );
+                          })}
                         </tr>
                       </>
-                    );
+
+                    )
                   })}
                 </tbody>
               </table>
@@ -457,6 +481,7 @@ const mapDispatchToProps = {
   ...courseActions,
   ...performanceLevelActions,
   ...experienceLearningTraditionalValuationlActions,
+  ...academicIndicatorActions
 };
 
 const mapStateToProps = ({ loginReducer }: any) => {
