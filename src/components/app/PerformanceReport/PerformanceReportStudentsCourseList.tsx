@@ -12,7 +12,7 @@ import DataList from '../../common/Data/DataList';
 import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
 import { Loader } from '../../common/Loader';
 
-const PerformanceCertificateStudentCourseList = (props: any) => {
+const PerformanceReportStudentCourseList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
   const [columns, setColumns] = useState(COLUMN_LIST);
   const [modalOpen, setModalOpen] = useState(false);
@@ -166,4 +166,4 @@ const mapStateToProps = ({ loginReducer }: any) => {
   return { loginReducer };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(PerformanceCertificateStudentCourseList);
+export default connect(mapStateToProps, mapDispatchToProps)(PerformanceReportStudentCourseList);

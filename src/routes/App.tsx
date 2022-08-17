@@ -440,19 +440,19 @@ const BasicLearningDutiesList = React.lazy(() => {
 });
 
 
-const PerformanceCertificateCourseList = React.lazy(() => {
+const PerformanceReportCourseList = React.lazy(() => {
   return import(
-    /* webpackChunkName: "PerformanceCertificateCourseList" */ '../components/app/PerformanceCertificate/PerformanceCertificateCourseList'
+    /* webpackChunkName: "PerformanceReportCourseList" */ '../components/app/PerformanceReport/PerformanceReportCourseList'
   );
 });
-const PerformanceCertificateGradeList = React.lazy(() => {
+const PerformanceReportGradeList = React.lazy(() => {
   return import(
-    /* webpackChunkName: "PerformanceCertificateGradeList" */ '../components/app/PerformanceCertificate/PerformanceCertificateGradeList'
+    /* webpackChunkName: "PerformanceReportGradeList" */ '../components/app/PerformanceReport/PerformanceReportGradeList'
   );
 });
-const PerformanceCertificateStudentsCourseList = React.lazy(() => {
+const PerformanceReportStudentsCourseList = React.lazy(() => {
   return import(
-    /* webpackChunkName: "PerformanceCertificateStudentsCourseList" */ '../components/app/PerformanceCertificate/PerformanceCertificateStudentsCourseList'
+    /* webpackChunkName: "PerformanceReportStudentsCourseList" */ '../components/app/PerformanceReport/PerformanceReportStudentsCourseList'
   );
 });
 
@@ -595,9 +595,9 @@ const App = (props: any) => {
                     <Route path="/encuestas-detalle" element={<SurveyDetail />} />
                     <Route path="/informe-avance-desempeno" element={<Analytics />} />
 
-                    <Route path="/performanceCertificateGrade" element={<PerformanceCertificateGradeList />} />
-                    <Route path="/performanceCertificateCourse" element={<PerformanceCertificateCourseList />} />
-                    <Route path="/performanceCertificateStudentsCourse" element={<PerformanceCertificateStudentsCourseList />} />
+                    <Route path="/performanceReportGrade" element={<PerformanceReportGradeList />} />
+                    <Route path="/performanceReportCourse" element={<PerformanceReportCourseList />} />
+                    <Route path="/performanceReportStudentsCourse" element={<PerformanceReportStudentsCourseList />} />
 
                   </>
                 ) : (

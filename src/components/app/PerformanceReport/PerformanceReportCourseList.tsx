@@ -11,7 +11,7 @@ import DataList from '../../common/Data/DataList';
 import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
 import { Loader } from '../../common/Loader';
 
-const PerformanceCertificateCourseList = (props: any) => {
+const PerformanceReportCourseList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
   const [columns, setColumns] = useState(COLUMN_LIST);
   const [modalOpen, setModalOpen] = useState(false);
@@ -118,7 +118,7 @@ const PerformanceCertificateCourseList = (props: any) => {
   const additionalFunction = async (item: any, btn: any) => {
     switch (btn?.action) {
       case 'goToChildrenStudents':
-        goToChildren(`/performanceCertificateStudentsCourse?courseId=${item.id}&courseName=${item.name}&gradeName=${gradeName}&gradeId=${academicGradeId}`);
+        goToChildren(`/performanceReportStudentsCourse?courseId=${item.id}&courseName=${item.name}&gradeName=${gradeName}&gradeId=${academicGradeId}`);
         break;
       default:
         break;
@@ -183,4 +183,4 @@ const mapStateToProps = ({ loginReducer }: any) => {
   return { loginReducer };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(PerformanceCertificateCourseList);
+export default connect(mapStateToProps, mapDispatchToProps)(PerformanceReportCourseList);

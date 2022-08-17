@@ -9,7 +9,7 @@ import { Colxx } from '../../common/CustomBootstrap';
 import DataList from '../../common/Data/DataList';
 import { Loader } from '../../common/Loader';
 
-const PerformanceCertificateGradeList = (props: any) => {
+const PerformanceReportGradeList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
   const [columns, setColumns] = useState(COLUMN_LIST);
   const [modalOpen, setModalOpen] = useState(false);
@@ -90,7 +90,7 @@ const PerformanceCertificateGradeList = (props: any) => {
   const additionalFunction = async (item: any, btn: any) => {
     switch (btn?.action) {
       case 'goToChildrenCourse':
-        goToChildren(`/performanceCertificateCourse?academicGradeId=${item?.id}&gradeName=${item?.name}`);
+        goToChildren(`/performanceReportCourse?academicGradeId=${item?.id}&gradeName=${item?.name}`);
         break;
       default:
         break;
@@ -174,4 +174,4 @@ const mapStateToProps = ({ loginReducer }: any) => {
   return { loginReducer };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(PerformanceCertificateGradeList);
+export default connect(mapStateToProps, mapDispatchToProps)(PerformanceReportGradeList);

@@ -275,6 +275,9 @@ const enMessages = {
   'forms.maximum': 'Maximum',
   'forms.hourlyIntensitymin': 'Minimum hourly intensity',
   'forms.hourlyIntensitymax': 'Maximum hourly intensity',
+  'menu.performanceReportGrade': 'Informe Desempeño',
+  'menu.performanceReportCourse': 'Informe Desempeño',
+  'menu.performanceReportStudentsCourse': 'Informe Desempeño',
 };
 
 export default enMessages;

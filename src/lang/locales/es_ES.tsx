@@ -314,6 +314,9 @@ const esMessages = {
   'menu.academicAssignment': 'Asignacion Academica',
   'menu.academicAssignmentTeacher': 'Asignacion Academica Docente',
   'forms.color': 'Color',
+  'menu.performanceReportGrade': 'Informe Desempeño',
+  'menu.performanceReportCourse': 'Informe Desempeño',
+  'menu.performanceReportStudentsCourse': 'Informe Desempeño',
 };
 
 export default esMessages;
