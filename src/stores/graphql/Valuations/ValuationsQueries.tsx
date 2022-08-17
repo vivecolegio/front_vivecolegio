@@ -10,6 +10,8 @@ export const QUERY_GET_VALUATIONS_STUDENT = gql`
       assessment       
       performanceLevel {
         name
+        colorHex
+        abbreviation
       }   
     }
   }
@@ -25,9 +27,13 @@ export const QUERY_GET_All_EXPERIENCE_LEARNING_AVERAGE_VALUATION = gql`
           studentId
           evaluativeComponentId
           average 
+          performanceLevel {
+            name
+            colorHex
+            abbreviation
+          }   
         }
       }    
-       
     }
   }
 `;

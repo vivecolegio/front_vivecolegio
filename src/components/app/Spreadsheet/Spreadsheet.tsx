@@ -148,6 +148,7 @@ const SpreadsheetList = (props: any) => {
                     .then((resp: any) => {
                       avrgs = avrgs.concat(resp.data.edges);
                       setAverages(avrgs);
+                      console.log(avrgs)
                     });
                   await props
                     .getAllExperienceLearningAcademicAsignatureCourse(
@@ -174,6 +175,7 @@ const SpreadsheetList = (props: any) => {
                   setNotes(nts);
                   setLoading(false);
                 });
+
               });
 
           } else {
@@ -343,7 +345,7 @@ const SpreadsheetList = (props: any) => {
       ) : valuations.length > 0 ? (
         <>
           {students !== null ? (
-            <div style={{ overflow: "scroll" }}>
+            <div style={{ overflow: "scroll", height: "70vh" }}>
               <table className="table table-bordered">
                 <thead>
                   <tr>
@@ -367,9 +369,11 @@ const SpreadsheetList = (props: any) => {
                         </>
                       );
                     })}
-                    <th rowSpan={2} className="text-center vertical-middle">
-                      Valoración
-                    </th>
+                    {performanceLevelType === "QUANTITATIVE" ?
+                      <th rowSpan={2} className="text-center vertical-middle">
+                        Valoración
+                      </th> : <></>
+                    }
                     <th rowSpan={2} className="text-center vertical-middle">
                       Nivel de desempeño
                     </th>
@@ -459,7 +463,7 @@ const SpreadsheetList = (props: any) => {
                                             {performanceLevelType === "QUALITATIVE" ?
                                               <>
                                                 <StyledBadge color="primary" className="font-0-8rem" background={note?.performanceLevel?.colorHex ? `${note?.performanceLevel?.colorHex}` : "#00cafe"}>
-                                                  {note?.performanceLevel?.name}
+                                                  {note?.performanceLevel?.abbreviation ? note?.performanceLevel?.abbreviation : note?.performanceLevel?.name}
                                                 </StyledBadge>
                                               </> :
                                               <>
@@ -488,13 +492,23 @@ const SpreadsheetList = (props: any) => {
                                             item2?.evaluativeComponentId ===
                                             n?.node?.evaluativeComponentId &&
                                             item?.id === n?.node?.studentId,
-                                        )?.performanceLevel?.colorHex ? `${averages.find(
+                                        )?.node?.performanceLevel?.colorHex ? `${averages.find(
                                           (n: any) =>
                                             item2?.evaluativeComponentId ===
                                             n?.node?.evaluativeComponentId &&
                                             item?.id === n?.node?.studentId,
                                         )?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
                                           {averages.find(
+                                            (n: any) =>
+                                              item2?.evaluativeComponentId ===
+                                              n?.node?.evaluativeComponentId &&
+                                              item?.id === n?.node?.studentId,
+                                          )?.node?.performanceLevel?.abbreviation ? averages.find(
+                                            (n: any) =>
+                                              item2?.evaluativeComponentId ===
+                                              n?.node?.evaluativeComponentId &&
+                                              item?.id === n?.node?.studentId,
+                                          )?.node?.performanceLevel?.abbreviation : averages.find(
                                             (n: any) =>
                                               item2?.evaluativeComponentId ===
                                               n?.node?.evaluativeComponentId &&
@@ -531,10 +545,14 @@ const SpreadsheetList = (props: any) => {
                               </>
                             );
                           })}
-                          <th className="text-center vertical-middle">
-                            {averagesFinal.find((n: any) => item?.id === n?.node?.studentId)?.node
-                              ?.assessment?.toFixed(countDigits) || ''}
-                          </th>
+                          {performanceLevelType === "QUANTITATIVE" ?
+                            <>
+                              <th className="text-center vertical-middle">
+                                {averagesFinal.find((n: any) => item?.id === n?.node?.studentId)?.node
+                                  ?.assessment?.toFixed(countDigits) || ''}
+                              </th>
+                            </> : <></>
+                          }
                           <th className="text-center vertical-middle">
                             <StyledBadge color="primary" className="font-0-8rem" background={averagesFinal.find(
                               (c: any) => c?.node?.studentId === item?.id,
