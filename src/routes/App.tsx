@@ -439,6 +439,24 @@ const BasicLearningDutiesList = React.lazy(() => {
   );
 });
 
+
+const PerformanceCertificateCourseList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "PerformanceCertificateCourseList" */ '../components/app/PerformanceCertificate/PerformanceCertificateCourseList'
+  );
+});
+const PerformanceCertificateGradeList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "PerformanceCertificateGradeList" */ '../components/app/PerformanceCertificate/PerformanceCertificateGradeList'
+  );
+});
+const PerformanceCertificateStudentsCourseList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "PerformanceCertificateStudentsCourseList" */ '../components/app/PerformanceCertificate/PerformanceCertificateStudentsCourseList'
+  );
+});
+
+
 const App = (props: any) => {
   const { locale } = props.translateReducer;
 
@@ -576,6 +594,11 @@ const App = (props: any) => {
                     <Route path="/encuestas" element={<Survey />} />
                     <Route path="/encuestas-detalle" element={<SurveyDetail />} />
                     <Route path="/informe-avance-desempeno" element={<Analytics />} />
+
+                    <Route path="/performanceCertificateGrade" element={<PerformanceCertificateGradeList />} />
+                    <Route path="/performanceCertificateCourse" element={<PerformanceCertificateCourseList />} />
+                    <Route path="/performanceCertificateStudentsCourse" element={<PerformanceCertificateStudentsCourseList />} />
+
                   </>
                 ) : (
                   <Route path="*" element={<Login />} />
