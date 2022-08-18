@@ -11,6 +11,12 @@ import { Colxx } from '../../common/CustomBootstrap';
 import DataList from '../../common/Data/DataList';
 import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
 import { Loader } from '../../common/Loader';
+import * as academicPeriodActions from '../../../stores/actions/AcademicPeriodActions';
+import * as experienceLearningActions from '../../../stores/actions/ExperienceLearningActions';
+import * as performanceReportActions from '../../../stores/actions/PerformanceReportActions';
+import { compare } from '../../../helpers/DataTransformations';
+import ThumbnailImage from '../Aplications/AplicationsComponents/ThumbnailImage';
+import { getInitialsName } from '../../../helpers/Utils';
 
 const PerformanceReportStudentCourseList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
@@ -18,83 +24,39 @@ const PerformanceReportStudentCourseList = (props: any) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [data, setData] = useState(null);
   const [currentMenu, setCurrentMenu] = useState(null);
+  const [academicPeriods, setAcademicPeriods] = useState(null);
+  const [students, setStudents] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   let [params] = useSearchParams();
   const courseName = params.get('courseName');
   const gradeName = params.get('gradeName');
   const courseId = params.get('courseId');
   const gradeId = params.get('gradeId');
-  const fromGrade = params.get('fromGrade');
-
 
   useEffect(() => {
-
     let { roleMenus } = props.loginReducer;
     let submenus: any = [];
     roleMenus.map((c: any) => {
       return submenus = submenus.concat(c.menuItemsLogin);
     });
     setCurrentMenu(submenus.find((c: any) => { return (c?.module?.url == 'student_link_course_permit') }));
-
-    if (courseId && !fromGrade) {
-      props.dataCourse(courseId).then((resp: any) => {
-        setData(resp);
-        setDataTable(resp?.data?.students?.map((c: any) => {
-          c.node = {};
-          c.node.code = c?.code;
-          c.node.id = c?.id;
-          c.node.name = c?.user ? c?.user?.name : '';
-          c.node.lastName = c?.user ? c?.user?.lastName : '';
-          c.node.documentType_format = c?.user ? c?.user?.documentType?.name : '';
-          c.node.documentNumber = c?.user ? c?.user?.documentNumber : '';
-          c.node.gender_format = c?.user ? c?.user?.gender?.name : '';
-          return c;
-        }));
-      });
-    }
-    if (fromGrade) {
-      props.getListAllStudentAcademicGrade(props?.loginReducer?.campusId, gradeId, props?.loginReducer?.schoolId).then((response: any) => {
-        setData(response);
-        setDataTable(response?.map((c: any) => {
-          c.node.name = c?.node?.user ? c?.node?.user?.name : '';
-          c.node.lastName = c?.node?.user ? c?.node?.user?.lastName : '';
-          c.node.documentNumber = c?.node?.user ? c?.node?.user?.documentNumber : '';
-          c.node.documentType_format = c?.node?.user ? c?.node?.user?.documentType?.name : '';
-          c.node.gender_format = c?.node?.user ? c?.node?.user?.gender?.name : '';
-          return c;
-        }));
-      });
-    }
+    getDataTable();
   }, []);
 
   const getDataTable = async () => {
-    if (courseId && !fromGrade) {
-      props.dataCourse(courseId).then((listData: any) => {
-        setData(listData);
-        setDataTable(listData?.data?.students?.map((c: any) => {
-          c.node = {};
-          c.node.code = c?.code;
-          c.node.id = c?.id;
-          c.node.name = c?.user ? c?.user?.name : '';
-          c.node.lastName = c?.user ? c?.user?.lastName : '';
-          c.node.documentType_format = c?.user ? c?.user?.documentType?.name : '';
-          c.node.gender_format = c?.user ? c?.user?.gender?.name : '';
-          return c;
-        }));
-      });
-    }
-    if (fromGrade) {
-      props.getListAllStudentAcademicGrade(props?.loginReducer?.campusId, gradeId, props?.loginReducer?.schoolId).then((listData: any) => {
-        setData(listData);
-        setDataTable(listData?.map((c: any) => {
-          c.node.name = c?.node?.user ? c?.node?.user?.name : '';
-          c.node.lastName = c?.node?.user ? c?.node?.user?.lastName : '';
-          c.node.documentNumber = c?.node?.user ? c?.node?.user?.documentNumber : '';
-          c.node.documentType_format = c?.node?.user ? c?.node?.user?.documentType?.name : '';
-          c.node.gender_format = c?.node?.user ? c?.node?.user?.gender?.name : '';
-          return c;
-        }));
-      });
+    setLoading(true);
+    if (courseId) {
+      await props.getAcademicPeriodsExperienceLearning(props?.loginReducer?.schoolId,
+        props?.loginReducer?.schoolYear).then(async (listData: any) => {
+          setAcademicPeriods(listData);
+          await props.dataCourse(courseId).then((course: any) => {
+            setStudents(course?.data?.students.sort(compare));
+            setLoading(false);
+          });
+        });
+    } else {
+      setLoading(false);
     }
   };
 
@@ -103,64 +65,144 @@ const PerformanceReportStudentCourseList = (props: any) => {
     await getDataTable();
   };
 
-  const onSubmit = async (dataForm: any) => {
-
-  };
-
-  const additionalFunction = async (item: any, btn: any) => {
-    switch (btn?.action) {
-      case 'goToChildrenRemove':
-        //removeStudent(item);
-        break;
-      default:
-        break;
-    }
+  const generatePerformanceReportCourse = async (academicPeriodId: any) => {
+    props.generatePerformanceReportCourse(courseId, props?.loginReducer?.schoolId,
+      props?.loginReducer?.schoolYear, academicPeriodId, true).then(async (dataUrl: any) => {
+        console.log(dataUrl);
+      });
   };
 
   return (
     <>
       {' '}
-      {dataTable !== null ? (
-        <>
-          <div className='d-flex justify-content-between align-items-center'>
-            {fromGrade ?
-              <HeaderInfoAcademic generic={{ title: 'Grado', value: gradeName }} goTitle="Regresar a grados" />
-              :
-              <HeaderInfoAcademic generic={{ title: 'Grado / Curso', value: gradeName + ' / ' + courseName }} goTitle="Regresar a cursos" />
-            }
+      <>
+        <div className='d-flex justify-content-between align-items-center'>
+          <HeaderInfoAcademic generic={{ title: 'Grado / Curso', value: gradeName + ' / ' + courseName }} goTitle="Regresar a cursos" />
+          <div>
+            <div className="d-flex justify-content-start align-items-center" >
+              {academicPeriods
+                ? academicPeriods.map((item: any) => {
+                  return (
+                    <>
+                      <button
+                        onClick={() => {
+                          return generatePerformanceReportCourse(item?.node?.id);
+                          //return getSpreadsheet(item?.node?.id);
+                        }}
+                        key={item?.node?.id}
+                        className={`ml-1 btn btn-info`}
+                        type="button"
+                      >
+                        <i className="iconsminds-download"></i> {item?.node?.name}
+                      </button>{'  '}
+                    </>
+                  );
+                })
+                : ''}
+            </div>
           </div>
-          <DataList
-            data={dataTable}
-            columns={columns}
-            match={props?.match}
-            modalOpen={modalOpen}
-            setModalOpen={setModalOpen}
-            additionalFunction={additionalFunction}
-            childrenButtons={[
-              {
-                id: 0,
-                label: 'Certificado Desempeño',
-                color: 'info',
-                icon: 'iconsminds-download',
-                action: 'goToChildrenRemove',
-                hide: !fromGrade && currentMenu?.readAction ? false : true
-              },
-            ]}
-            withChildren={fromGrade ? false : true}
-            refreshDataTable={refreshDataTable}
-          />
-        </>
-      ) : (
-        <>
-          <Colxx sm={12} className="d-flex justify-content-center">
-            <Loader />
-          </Colxx>
-        </>
-      )}
+        </div>
+
+        {loading ? (
+          <>
+            <Colxx sm={12} className="d-flex justify-content-center">
+              <Loader />
+            </Colxx>
+          </>
+        ) : students !== null ? (
+          <div style={{ overflow: "scroll", height: "70vh" }}>
+            <table className="table table-bordered">
+              <thead>
+                <tr>
+                  <th rowSpan={1} className="text-center vertical-middle">
+                    Código
+                  </th>
+                  <th rowSpan={1} className="text-center vertical-middle">
+                    Estudiante
+                  </th>
+                  {academicPeriods.map((item: any, index: any) => {
+                    return (
+                      <>
+                        <th
+                          colSpan={1}
+                          className="text-center vertical-middle"
+                        >
+                          {item?.name}
+                        </th>
+                      </>
+                    );
+                  })}
+                </tr>
+              </thead>
+              <tbody>
+                {students.map((item: any, index: any) => {
+                  return (
+                    <>
+                      <tr key={index}>
+                        <td className="text-center vertical-middle">
+                          <span className="font-bold">{item?.code}</span>
+                        </td>
+                        <td className="text-center vertical-middle">
+                          <div className="d-flex align-items-center justify-content-start">
+                            {item?.user?.urlPhoto ? (
+                              <ThumbnailImage
+                                rounded
+                                src={item?.user?.urlPhoto}
+                                alt="profile"
+                                className="xsmall mr-3"
+                              />
+                            ) : (
+                              <span className="img-thumbnail md-avatar-initials border-0 span-initials rounded-circle mr-3 list-thumbnail align-self-center xsmall">
+                                {getInitialsName(
+                                  item?.user
+                                    ? item?.user?.lastName +
+                                    ' ' +
+                                    item?.user?.name
+                                    : 'N N',
+                                )}
+                              </span>
+                            )}
+                            <span>
+                              {item?.user?.lastName} {item?.user?.name}
+                            </span>
+                          </div>
+                        </td>
+                        {academicPeriods
+                          ? academicPeriods.map((item: any) => {
+                            return (
+                              <>
+                                <td>
+                                  <button
+                                    onClick={() => {
+                                      return generatePerformanceReportCourse(item?.node?.id);
+                                      //return getSpreadsheet(item?.node?.id);
+                                    }}
+                                    key={item?.node?.id}
+                                    className={`ml-1 btn btn-info`}
+                                    type="button"
+                                  >
+                                    <i className="iconsminds-download"></i> {item?.node?.name}
+                                  </button>
+                                </td>
+                              </>
+                            );
+                          })
+                          : ''}
+                      </tr>
+                    </>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <></>
+        )}
+      </>
     </>
   );
 };
-const mapDispatchToProps = { ...courseActions, ...studentActions };
+const mapDispatchToProps = { ...courseActions, ...studentActions, ...academicPeriodActions, ...experienceLearningActions, ...performanceReportActions };
 
 const mapStateToProps = ({ loginReducer }: any) => {
   return { loginReducer };

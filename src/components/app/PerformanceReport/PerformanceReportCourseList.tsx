@@ -154,14 +154,7 @@ const PerformanceReportCourseList = (props: any) => {
                 color: 'secondary',
                 icon: 'iconsminds-student-male-female',
                 action: 'goToChildrenStudents',
-              },
-              {
-                id: 2,
-                label: 'Certificado Desempeño Curso',
-                color: 'info',
-                icon: 'iconsminds-download',
-                action: 'downloadPerformanceCertificate',
-              },
+              }
             ]}
             withChildren={true}
             refreshDataTable={refreshDataTable}
