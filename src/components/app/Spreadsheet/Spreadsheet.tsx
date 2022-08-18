@@ -1,6 +1,7 @@
 import moment from 'moment';
 /* eslint-disable arrow-body-style */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { useDownloadExcel } from 'react-export-table-to-excel';
 import { connect } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
@@ -51,11 +52,13 @@ const SpreadsheetList = (props: any) => {
   let [averagesFinal, setAveragesFinal] = useState([]);
   const [dateProgress, setDateProgress] = useState({ startDate: null, endDate: null, totalDays: 0, countDays: 0 })
   let [countDigits, setCountDigits] = useState(2);
+  let [countDownload, setcountDownload] = useState(0);
 
   let navigate = useNavigate();
   const location = useLocation();
   const history = useNavigate();
   const currentUrl = location.pathname;
+  const tableRef = useRef();
 
   let [params] = useSearchParams();
   const academicAsignatureCourseId = params.get('academicAsignatureCourseId');
@@ -240,6 +243,20 @@ const SpreadsheetList = (props: any) => {
     }
   };
 
+  const download = async () => {
+    // console.log(tableRef)
+    if (countDownload != 0) {
+      onDownload();
+    }
+    setcountDownload(countDownload + 1)
+  };
+
+  const { onDownload } = useDownloadExcel({
+    currentTableRef: tableRef.current,
+    filename: 'Planilla General',
+    sheet: 'Planilla General'
+  })
+
   return (
     <>
       <div className="mt-4 d-flex justify-content-center align-items-center">
@@ -334,6 +351,14 @@ const SpreadsheetList = (props: any) => {
             <></>
           } */}
         </div>
+        <button
+          onClick={download}
+          key={"download"}
+          className={`ml-1 btn btn-info`}
+          type="button"
+        >
+          <i className="iconsminds-download"></i> {"Descargar XLS"}
+        </button>
       </div>
 
       {loading ? (
@@ -346,7 +371,7 @@ const SpreadsheetList = (props: any) => {
         <>
           {students !== null ? (
             <div style={{ overflow: "scroll", height: "70vh" }}>
-              <table className="table table-bordered">
+              <table className="table table-bordered" ref={tableRef}>
                 <thead>
                   <tr>
                     <th rowSpan={2} className="text-center vertical-middle">

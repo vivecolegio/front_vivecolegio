@@ -69,7 +69,12 @@ const PerformanceReportStudentCourseList = (props: any) => {
   const generatePerformanceReportCourse = async (academicPeriodId: any) => {
     props.generatePerformanceReportCourse(courseId, props?.loginReducer?.schoolId,
       props?.loginReducer?.schoolYear, academicPeriodId, true).then(async (dataUrl: any) => {
-        console.log(dataUrl);
+        let alink = document.createElement('a');
+        alink.href = urlImages + dataUrl;
+        alink.target = "_blank"
+        alink.download = 'SamplePDF.pdf';
+        alink.click();
+        setLoading(false);
       });
   };
 
