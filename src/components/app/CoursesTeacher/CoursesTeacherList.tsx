@@ -109,13 +109,6 @@ const CoursesTeacherList = (props: any) => {
                 action: 'goToChildrenAsignatureCourse',
               },
               {
-                id: 3,
-                label: 'Asignaturas',
-                color: 'primary',
-                icon: 'iconsminds-blackboard',
-                action: 'goToChildrenAsignatureCourse',
-              },
-              {
                 id: 4,
                 label: 'Planilla General',
                 color: 'warning',
