@@ -5,18 +5,19 @@ import { useSearchParams } from 'react-router-dom';
 import { Button } from 'reactstrap';
 
 import { COLUMN_LIST } from '../../../constants/Student/studentConstants';
+import { compare } from '../../../helpers/DataTransformations';
+import { getInitialsName } from '../../../helpers/Utils';
+import * as academicPeriodActions from '../../../stores/actions/AcademicPeriodActions';
 import * as courseActions from '../../../stores/actions/CourseActions';
+import * as experienceLearningActions from '../../../stores/actions/ExperienceLearningActions';
+import * as performanceReportActions from '../../../stores/actions/PerformanceReportActions';
 import * as studentActions from '../../../stores/actions/StudentActions';
+import { urlImages } from '../../../stores/graphql/index';
 import { Colxx } from '../../common/CustomBootstrap';
 import DataList from '../../common/Data/DataList';
 import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
 import { Loader } from '../../common/Loader';
-import * as academicPeriodActions from '../../../stores/actions/AcademicPeriodActions';
-import * as experienceLearningActions from '../../../stores/actions/ExperienceLearningActions';
-import * as performanceReportActions from '../../../stores/actions/PerformanceReportActions';
-import { compare } from '../../../helpers/DataTransformations';
 import ThumbnailImage from '../Aplications/AplicationsComponents/ThumbnailImage';
-import { getInitialsName } from '../../../helpers/Utils';
 
 const PerformanceReportStudentCourseList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
@@ -69,6 +70,19 @@ const PerformanceReportStudentCourseList = (props: any) => {
     props.generatePerformanceReportCourse(courseId, props?.loginReducer?.schoolId,
       props?.loginReducer?.schoolYear, academicPeriodId, true).then(async (dataUrl: any) => {
         console.log(dataUrl);
+      });
+  };
+
+  const generatePerformanceReportCourseStudent = async (academicPeriodId: any, studentId: any) => {
+    setLoading(true);
+    props.generatePerformanceReportCourseStudent(courseId, props?.loginReducer?.schoolId,
+      props?.loginReducer?.schoolYear, academicPeriodId, studentId, true).then(async (dataUrl: any) => {
+        let alink = document.createElement('a');
+        alink.href = urlImages + dataUrl;
+        alink.target = "_blank"
+        alink.download = 'SamplePDF.pdf';
+        alink.click();
+        setLoading(false);
       });
   };
 
@@ -127,7 +141,7 @@ const PerformanceReportStudentCourseList = (props: any) => {
                           colSpan={1}
                           className="text-center vertical-middle"
                         >
-                          {item?.name}
+                          {item?.node?.name}
                         </th>
                       </>
                     );
@@ -135,53 +149,53 @@ const PerformanceReportStudentCourseList = (props: any) => {
                 </tr>
               </thead>
               <tbody>
-                {students.map((item: any, index: any) => {
+                {students.map((itemStudent: any, index: any) => {
                   return (
                     <>
                       <tr key={index}>
                         <td className="text-center vertical-middle">
-                          <span className="font-bold">{item?.code}</span>
+                          <span className="font-bold">{itemStudent?.code}</span>
                         </td>
                         <td className="text-center vertical-middle">
                           <div className="d-flex align-items-center justify-content-start">
-                            {item?.user?.urlPhoto ? (
+                            {itemStudent?.user?.urlPhoto ? (
                               <ThumbnailImage
                                 rounded
-                                src={item?.user?.urlPhoto}
+                                src={itemStudent?.user?.urlPhoto}
                                 alt="profile"
                                 className="xsmall mr-3"
                               />
                             ) : (
                               <span className="img-thumbnail md-avatar-initials border-0 span-initials rounded-circle mr-3 list-thumbnail align-self-center xsmall">
                                 {getInitialsName(
-                                  item?.user
-                                    ? item?.user?.lastName +
+                                  itemStudent?.user
+                                    ? itemStudent?.user?.lastName +
                                     ' ' +
-                                    item?.user?.name
+                                    itemStudent?.user?.name
                                     : 'N N',
                                 )}
                               </span>
                             )}
                             <span>
-                              {item?.user?.lastName} {item?.user?.name}
+                              {itemStudent?.user?.lastName} {itemStudent?.user?.name}
                             </span>
                           </div>
                         </td>
                         {academicPeriods
-                          ? academicPeriods.map((item: any) => {
+                          ? academicPeriods.map((itemAcademicPeriod: any) => {
                             return (
                               <>
                                 <td>
                                   <button
                                     onClick={() => {
-                                      return generatePerformanceReportCourse(item?.node?.id);
+                                      return generatePerformanceReportCourseStudent(itemAcademicPeriod?.node?.id, itemStudent?.id);
                                       //return getSpreadsheet(item?.node?.id);
                                     }}
-                                    key={item?.node?.id}
+                                    key={itemAcademicPeriod?.node?.id}
                                     className={`ml-1 btn btn-info`}
                                     type="button"
                                   >
-                                    <i className="iconsminds-download"></i> {item?.node?.name}
+                                    <i className="iconsminds-download"></i> {"Descargar"}
                                   </button>
                                 </td>
                               </>

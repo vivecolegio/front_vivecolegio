@@ -56,6 +56,10 @@ const CoursesTeacherList = (props: any) => {
       case 'goToChildrenAsignatureCourse':
         goToChildren(`/academicAsignatureCourseBasic?courseId=${item.id}&courseName=${item.name}`);
         break;
+      case 'goToChildrenSpredsheetCourse':
+        goToChildren(
+          `/spreadsheetCourse?courseId=${item.id}`,
+        );
       default:
         break;
     }
@@ -103,6 +107,20 @@ const CoursesTeacherList = (props: any) => {
                 color: 'primary',
                 icon: 'iconsminds-blackboard',
                 action: 'goToChildrenAsignatureCourse',
+              },
+              {
+                id: 3,
+                label: 'Asignaturas',
+                color: 'primary',
+                icon: 'iconsminds-blackboard',
+                action: 'goToChildrenAsignatureCourse',
+              },
+              {
+                id: 4,
+                label: 'Planilla General',
+                color: 'warning',
+                icon: 'iconsminds-library',
+                action: 'goToChildrenSpredsheetCourse',
               },
             ]}
             withChildren={true}

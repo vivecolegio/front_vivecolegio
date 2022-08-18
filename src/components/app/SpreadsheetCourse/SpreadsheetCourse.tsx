@@ -1,5 +1,6 @@
 import moment from 'moment';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import { downloadExcel, DownloadTableExcel, useDownloadExcel } from 'react-export-table-to-excel';
 import { connect } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
@@ -52,8 +53,10 @@ const SpreadsheetCourse = (props: any) => {
   let [notes, setNotes] = useState([]);
   let [averages, setAverages] = useState([]);
   let [averagesFinal, setAveragesFinal] = useState([]);
+  let [countDownload, setcountDownload] = useState(0);
   const [dateProgress, setDateProgress] = useState({ startDate: null, endDate: null, totalDays: 0, countDays: 0 })
   let [countDigits, setCountDigits] = useState(2);
+  const tableRef = useRef();
 
   let navigate = useNavigate();
   const location = useLocation();
@@ -170,7 +173,7 @@ const SpreadsheetCourse = (props: any) => {
               });
             await Promise.all(promisesListAreas).then(() => {
               setValuationsArea(ntsArea);
-              console.log(ntsArea)
+              //console.log(ntsArea)
             });
             await Promise.all(promisesListAsignatures).then(() => {
               setValuations(nts);
@@ -236,6 +239,20 @@ const SpreadsheetCourse = (props: any) => {
   const goTo = async () => {
     navigate(-1);
   };
+
+  const download = async () => {
+    // console.log(tableRef)
+    if (countDownload != 0) {
+      onDownload();
+    }
+    setcountDownload(countDownload + 1)
+  };
+
+  const { onDownload } = useDownloadExcel({
+    currentTableRef: tableRef.current,
+    filename: 'Planilla General',
+    sheet: 'Planilla General'
+  })
 
   return (
     <>
@@ -318,8 +335,19 @@ const SpreadsheetCourse = (props: any) => {
                 </button>
               </div> */}
         </div>
+        <button
+          onClick={download}
+          key={"download"}
+          className={`ml-1 btn btn-info`}
+          type="button"
+        >
+          <i className="iconsminds-download"></i> {"Descargar XLS"}
+        </button>
+        {/* <button onClick={download}> Export excel </button> */}
       </div>
+      <div className='mb-2' style={{ textAlign: "right" }}>
 
+      </div>
       {loading ? (
         <>
           <Colxx sm={12} className="d-flex justify-content-center">
@@ -330,7 +358,7 @@ const SpreadsheetCourse = (props: any) => {
         <>
           {students !== null ? (
             <div style={{ overflow: "scroll", height: "70vh" }}>
-              <table className="table table-bordered">
+              <table className="table table-bordered" ref={tableRef}>
                 <thead>
                   <tr>
                     <th rowSpan={2} className="text-center vertical-middle">
@@ -427,9 +455,9 @@ const SpreadsheetCourse = (props: any) => {
                           </td>
                           {areas?.map((itemArea: any, index: any) => {
                             let asignaturesArea = asignatures?.filter((itemV: any) => itemV?.node?.academicAsignature?.academicAreaId == itemArea?.id);
-                            console.log(itemArea)
+                            //console.log(itemArea)
                             let valuationArea = valuationsArea[itemArea?.id]?.filter((itemA: any) => itemA?.node?.studentId == itemStudent?.id);
-                            console.log(valuationArea)
+                            //console.log(valuationArea)
                             return (
                               <>
                                 {
