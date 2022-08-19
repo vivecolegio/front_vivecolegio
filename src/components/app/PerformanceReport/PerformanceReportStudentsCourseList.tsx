@@ -66,9 +66,9 @@ const PerformanceReportStudentCourseList = (props: any) => {
     await getDataTable();
   };
 
-  const generatePerformanceReportCourse = async (academicPeriodId: any) => {
+  const generatePerformanceReportCourse = async (academicPeriodId: any, format: any) => {
     props.generatePerformanceReportCourse(courseId, props?.loginReducer?.schoolId,
-      props?.loginReducer?.schoolYear, academicPeriodId, true).then(async (dataUrl: any) => {
+      props?.loginReducer?.schoolYear, academicPeriodId, format, true).then(async (dataUrl: any) => {
         let alink = document.createElement('a');
         alink.href = urlImages + dataUrl;
         alink.target = "_blank"
@@ -78,10 +78,10 @@ const PerformanceReportStudentCourseList = (props: any) => {
       });
   };
 
-  const generatePerformanceReportCourseStudent = async (academicPeriodId: any, studentId: any) => {
+  const generatePerformanceReportCourseStudent = async (academicPeriodId: any, studentId: any, format: any) => {
     setLoading(true);
     props.generatePerformanceReportCourseStudent(courseId, props?.loginReducer?.schoolId,
-      props?.loginReducer?.schoolYear, academicPeriodId, studentId, true).then(async (dataUrl: any) => {
+      props?.loginReducer?.schoolYear, academicPeriodId, studentId, format, true).then(async (dataUrl: any) => {
         let alink = document.createElement('a');
         alink.href = urlImages + dataUrl;
         alink.target = "_blank"
@@ -105,14 +105,35 @@ const PerformanceReportStudentCourseList = (props: any) => {
                     <>
                       <button
                         onClick={() => {
-                          return generatePerformanceReportCourse(item?.node?.id);
+                          return generatePerformanceReportCourse(item?.node?.id, "Letter");
                           //return getSpreadsheet(item?.node?.id);
                         }}
                         key={item?.node?.id}
                         className={`ml-1 btn btn-info`}
                         type="button"
                       >
-                        <i className="iconsminds-download"></i> {item?.node?.name}
+                        <i className="iconsminds-download"></i> {item?.node?.name} {' - Carta'}
+                      </button>{'  '}
+                    </>
+                  );
+                })
+                : ''}
+            </div>
+            <div className="d-flex justify-content-start align-items-center mt-2" >
+              {academicPeriods
+                ? academicPeriods.map((item: any) => {
+                  return (
+                    <>
+                      <button
+                        onClick={() => {
+                          return generatePerformanceReportCourse(item?.node?.id, "Legal");
+                          //return getSpreadsheet(item?.node?.id);
+                        }}
+                        key={item?.node?.id}
+                        className={`ml-1 btn btn-info`}
+                        type="button"
+                      >
+                        <i className="iconsminds-download"></i>  {item?.node?.name} {' - Oficio'}
                       </button>{'  '}
                     </>
                   );
@@ -193,14 +214,25 @@ const PerformanceReportStudentCourseList = (props: any) => {
                                 <td>
                                   <button
                                     onClick={() => {
-                                      return generatePerformanceReportCourseStudent(itemAcademicPeriod?.node?.id, itemStudent?.id);
+                                      return generatePerformanceReportCourseStudent(itemAcademicPeriod?.node?.id, itemStudent?.id, "Letter");
                                       //return getSpreadsheet(item?.node?.id);
                                     }}
                                     key={itemAcademicPeriod?.node?.id}
                                     className={`ml-1 btn btn-info`}
                                     type="button"
                                   >
-                                    <i className="iconsminds-download"></i> {"Descargar"}
+                                    <i className="iconsminds-download"></i> {"Descargar - Carta"}
+                                  </button>
+                                  <button
+                                    onClick={() => {
+                                      return generatePerformanceReportCourseStudent(itemAcademicPeriod?.node?.id, itemStudent?.id, "Legal");
+                                      //return getSpreadsheet(item?.node?.id);
+                                    }}
+                                    key={itemAcademicPeriod?.node?.id}
+                                    className={`ml-1 btn btn-info`}
+                                    type="button"
+                                  >
+                                    <i className="iconsminds-download"></i> {"Descargar - Oficio"}
                                   </button>
                                 </td>
                               </>
