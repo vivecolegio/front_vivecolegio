@@ -131,7 +131,7 @@ const SpreadsheetList = (props: any) => {
           setAcademicPeriods(listData);
           let promisesList: any[] = [];
           if (periodId) {
-            await updateAverages(periodId);
+            //await updateAverages(periodId);
             await props
               .getAllAcademicAsignatureCoursePeriodValuation(periodId, academicAsignatureCourseId)
               .then(async (notesFinal: any) => {

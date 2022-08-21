@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
 
 import * as academicAsignatureCourseActions from '../../../stores/actions/AcademicAsignatureCourseActions';
+import * as academicPeriodActions from '../../../stores/actions/AcademicPeriodActions';
 import * as courseActions from '../../../stores/actions/CourseActions';
 import * as experienceLearningActions from '../../../stores/actions/ExperienceLearningActions';
 import * as gradeAssignmentActions from '../../../stores/actions/GradeAssignmentActions';
@@ -15,7 +16,7 @@ const HeaderInfoAcademic = (props: any) => {
   const [experienceLearningData, setExperienceLearning] = useState(null);
   const [learningData, setLearning] = useState(null);
 
-  const { generic, asignature, asignatureGeneral, grade, course, modality, cicle, experienceLearnig, learning, student, academicAsignatureCourseId, gradeAssignment, experienceLearnigId, learningId, studentId, courseId, goTitle } = props;
+  const { generic, asignature, asignatureGeneral, grade, course, modality, cicle, experienceLearnig, learning, student, academicAsignatureCourseId, gradeAssignment, experienceLearnigId, learningId, studentId, courseId, goTitle, periodId, period } = props;
 
   let navigate = useNavigate();
 
@@ -60,6 +61,11 @@ const HeaderInfoAcademic = (props: any) => {
         setData({ course: resp?.data });
       });
     }
+    if (periodId) {
+      await props.dataAcademicPeriod(periodId).then((resp: any) => {
+        setData({ period: resp?.data });
+      });
+    }
   };
 
   const goTo = async () => {
@@ -101,8 +107,13 @@ const HeaderInfoAcademic = (props: any) => {
             </span>
             : ''}
           {modality ?
-            <span className="mb-0 text-muted border-b-warning">
+            <span className="mb-0 text-muted mr-4 border-b-warning">
               Jornada: <h2 className="text-warning font-bold">{data?.course?.academicDay?.name}</h2>
+            </span>
+            : ''}
+          {period ?
+            <span className="mb-0 text-muted border-b-info">
+              Periodo: <h2 className="text-info font-bold">{data?.period?.name}</h2>
             </span>
             : ''}
         </div>
@@ -144,7 +155,7 @@ const HeaderInfoAcademic = (props: any) => {
   );
 };
 
-const mapDispatchToProps = { ...academicAsignatureCourseActions, ...studentActions, ...experienceLearningActions, ...learningActions, ...gradeAssignmentActions, ...courseActions };
+const mapDispatchToProps = { ...academicAsignatureCourseActions, ...studentActions, ...experienceLearningActions, ...learningActions, ...gradeAssignmentActions, ...courseActions, ...academicPeriodActions };
 
 const mapStateToProps = ({ loginReducer }: any) => {
   return { loginReducer };

@@ -1,47 +1,45 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
-import { useSearchParams } from 'react-router-dom';
 
-import { COLUMN_LIST } from '../../../constants/Course/CourseConstants';
+import { COLUMN_LIST } from '../../../constants/AcademicGrade/AcademicGradeConstants';
 import { createNotification } from '../../../helpers/Notification';
-import * as courseActions from '../../../stores/actions/CourseActions';
+import * as gradeActions from '../../../stores/actions/Academic/GradeActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import DataList from '../../common/Data/DataList';
-import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
 import { Loader } from '../../common/Loader';
 
-const ValuationDefinitivePeriodCourse = (props: any) => {
+const ValuationDefinitivePeriodGradeList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
   const [columns, setColumns] = useState(COLUMN_LIST);
   const [modalOpen, setModalOpen] = useState(false);
+  const [data, setData] = useState(null);
 
   let navigate = useNavigate();
 
-  let [params] = useSearchParams();
-  const academicGradeId = params.get('academicGradeId');
-  const gradeName = params.get('gradeName');
-
-  const [data, setData] = useState(null);
   useEffect(() => {
-    props.getListAllCourse(props?.loginReducer?.campusId, academicGradeId ? academicGradeId : '', props?.loginReducer?.schoolId).then((listData: any) => {
-      setDataTable(listData.map((c: any) => {
-        c.node.teacher_format = c.node.teacher ? c?.node?.teacher?.user?.name + c?.node?.teacher?.user?.lastName : '';
-        c.node.academicDay_format = c.node.academicDay ? c.node.academicDay.name : '';
-        c.node.campus_format = c.node.campus ? c.node.campus.name : '';
-        return c;
-      }));
+    props.getListAllGrade(props?.loginReducer?.schoolId).then((listData: any) => {
+      setDataTable(
+        listData.map((c: any) => {
+          c.node.cycle_format = c.node.generalAcademicCycle ? c.node.generalAcademicCycle.name : '';
+          c.node.speciality_format = c.node.specialty ? c.node.specialty.name : '';
+          c.node.education_level_format = c.node.educationLevel ? c.node.educationLevel.name : '';
+          return c;
+        }),
+      );
     });
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllCourse(props?.loginReducer?.campusId, academicGradeId ? academicGradeId : '', props?.loginReducer?.schoolId).then((listData: any) => {
-      setDataTable(listData.map((c: any) => {
-        c.node.teacher_format = c.node.teacher ? c?.node?.teacher?.user?.name + c?.node?.teacher?.user?.lastName : '';
-        c.node.academicDay_format = c.node.academicDay ? c.node.academicDay.name : '';
-        c.node.campus_format = c.node.campus ? c.node.campus.name : '';
-        return c;
-      }));
+    props.getListAllGrade(props?.loginReducer?.schoolId).then((listData: any) => {
+      setDataTable(
+        listData.map((c: any) => {
+          c.node.cycle_format = c.node.generalAcademicCycle ? c.node.generalAcademicCycle.name : '';
+          c.node.speciality_format = c.node.specialty ? c.node.specialty.name : '';
+          c.node.education_level_format = c.node.educationLevel ? c.node.educationLevel.name : '';
+          return c;
+        }),
+      );
     });
   };
 
@@ -53,14 +51,14 @@ const ValuationDefinitivePeriodCourse = (props: any) => {
   const onSubmit = async (dataForm: any) => {
     //console.log(dataForm);
     if (data === null) {
-      await props.saveNewCourse(dataForm).then((id: any) => {
+      await props.saveNewGrade(dataForm).then((id: any) => {
         if (id !== undefined) {
           setModalOpen(false);
           refreshDataTable();
         }
       });
     } else {
-      await props.updateCourse(dataForm, data.id).then((id: any) => {
+      await props.updateGrade(dataForm, data.id).then((id: any) => {
         if (id !== undefined) {
           setModalOpen(false);
           setData(null);
@@ -71,27 +69,41 @@ const ValuationDefinitivePeriodCourse = (props: any) => {
   };
 
   const viewEditData = async (id: any) => {
-    await props.dataCourse(id).then((formData: any) => {
+    await props.dataGrade(id).then((formData: any) => {
       setData(formData.data);
       setModalOpen(true);
     });
   };
 
   const changeActiveData = async (active: any, id: any) => {
-    await props.changeActiveCourse(active, id, true).then((formData: any) => {
+    await props.changeActiveGrade(active, id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
 
   const deleteData = async (id: any) => {
-    await props.deleteCourse(id, true).then((formData: any) => {
+    await props.deleteGrade(id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
 
+  const additionalFunction = async (item: any, btn: any) => {
+    switch (btn?.action) {
+      case 'goToChildrenCourse':
+        goToChildren(`/valuationDefinitivePeriodCourse?academicGradeId=${item?.id}&gradeName=${item?.name}`);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const goToChildren = async (url: any) => {
+    navigate(url);
+  };
+
   const deleteAll = async (items: any) => {
     items.map(async (item: any) => {
-      await props.deleteCourse(item.id, false).then(
+      await props.deleteGrade(item.id, false).then(
         () => { },
         () => {
           createNotification('error', 'error', '');
@@ -104,7 +116,7 @@ const ValuationDefinitivePeriodCourse = (props: any) => {
 
   const changeActiveDataAll = async (items: any) => {
     items.map(async (item: any) => {
-      await props.changeActiveCourse(!item.active, item.id, false).then(
+      await props.changeActiveGrade(!item.active, item.id, false).then(
         () => { },
         () => {
           createNotification('error', 'error', '');
@@ -115,26 +127,11 @@ const ValuationDefinitivePeriodCourse = (props: any) => {
     createNotification('success', 'success', '');
   };
 
-  const additionalFunction = async (item: any, btn: any) => {
-    switch (btn?.action) {
-      case 'goToChildrenStudents':
-        goToChildren(`/performanceReportStudentsCourse?courseId=${item.id}&courseName=${item.name}&gradeName=${gradeName}&gradeId=${academicGradeId}`);
-        break;
-      default:
-        break;
-    }
-  };
-
-  const goToChildren = async (url: any) => {
-    navigate(url);
-  };
-
   return (
     <>
       {' '}
       {dataTable !== null ? (
         <>
-          <HeaderInfoAcademic generic={{ title: 'Grado', value: gradeName }} goTitle="Regresar a grados" />
           <DataList
             data={dataTable}
             columns={columns}
@@ -149,16 +146,17 @@ const ValuationDefinitivePeriodCourse = (props: any) => {
             additionalFunction={additionalFunction}
             childrenButtons={[
               {
-                id: 1,
-                label: 'Estudiantes',
+                id: 0,
+                label: 'Cursos',
                 color: 'secondary',
-                icon: 'iconsminds-student-male-female',
-                action: 'goToChildrenStudents',
-              }
+                icon: 'simple-icon-link',
+                action: 'goToChildrenCourse',
+              },
             ]}
             withChildren={true}
             refreshDataTable={refreshDataTable}
           />
+
         </>
       ) : (
         <>
@@ -170,10 +168,10 @@ const ValuationDefinitivePeriodCourse = (props: any) => {
     </>
   );
 };
-const mapDispatchToProps = { ...courseActions };
+const mapDispatchToProps = { ...gradeActions };
 
 const mapStateToProps = ({ loginReducer }: any) => {
   return { loginReducer };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ValuationDefinitivePeriodCourse);
+export default connect(mapStateToProps, mapDispatchToProps)(ValuationDefinitivePeriodGradeList);

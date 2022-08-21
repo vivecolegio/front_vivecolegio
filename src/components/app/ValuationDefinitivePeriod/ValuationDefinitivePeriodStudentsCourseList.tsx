@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from 'reactstrap';
 
 import { COLUMN_LIST } from '../../../constants/Student/studentConstants';
@@ -18,7 +18,7 @@ import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
 import { Loader } from '../../common/Loader';
 import ThumbnailImage from '../Aplications/AplicationsComponents/ThumbnailImage';
 
-const ValuationDefinitivePeriodStudent = (props: any) => {
+const ValuationDefinitivePeriodStudentsCourseList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
   const [columns, setColumns] = useState(COLUMN_LIST);
   const [modalOpen, setModalOpen] = useState(false);
@@ -27,6 +27,8 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
   const [academicPeriods, setAcademicPeriods] = useState(null);
   const [students, setStudents] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  let navigate = useNavigate();
 
   let [params] = useSearchParams();
   const courseName = params.get('courseName');
@@ -65,29 +67,8 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
     await getDataTable();
   };
 
-  const generatePerformanceReportCourse = async (academicPeriodId: any, format: any) => {
-    props.generatePerformanceReportCourse(courseId, props?.loginReducer?.schoolId,
-      props?.loginReducer?.schoolYear, academicPeriodId, format, true).then(async (dataUrl: any) => {
-        let alink = document.createElement('a');
-        alink.href = urlImages + dataUrl;
-        alink.target = "_blank"
-        alink.download = 'SamplePDF.pdf';
-        alink.click();
-        setLoading(false);
-      });
-  };
-
-  const generatePerformanceReportCourseStudent = async (academicPeriodId: any, studentId: any, format: any) => {
-    setLoading(true);
-    props.generatePerformanceReportCourseStudent(courseId, props?.loginReducer?.schoolId,
-      props?.loginReducer?.schoolYear, academicPeriodId, studentId, format, true).then(async (dataUrl: any) => {
-        let alink = document.createElement('a');
-        alink.href = urlImages + dataUrl;
-        alink.target = "_blank"
-        alink.download = 'SamplePDF.pdf';
-        alink.click();
-        setLoading(false);
-      });
+  const goToChildren = async (url: any) => {
+    navigate(url);
   };
 
   return (
@@ -96,52 +77,7 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
       <>
         <div className='d-flex justify-content-between align-items-center'>
           <HeaderInfoAcademic generic={{ title: 'Grado / Curso', value: gradeName + ' / ' + courseName }} goTitle="Regresar a cursos" />
-          <div>
-            <div className="d-flex justify-content-start align-items-center" >
-              {academicPeriods
-                ? academicPeriods.map((item: any) => {
-                  return (
-                    <>
-                      <button
-                        onClick={() => {
-                          return generatePerformanceReportCourse(item?.node?.id, "Letter");
-                          //return getSpreadsheet(item?.node?.id);
-                        }}
-                        key={item?.node?.id}
-                        className={`ml-1 btn btn-info`}
-                        type="button"
-                      >
-                        <i className="iconsminds-download"></i> {item?.node?.name} {' - Carta'}
-                      </button>{'  '}
-                    </>
-                  );
-                })
-                : ''}
-            </div>
-            <div className="d-flex justify-content-start align-items-center mt-2" >
-              {academicPeriods
-                ? academicPeriods.map((item: any) => {
-                  return (
-                    <>
-                      <button
-                        onClick={() => {
-                          return generatePerformanceReportCourse(item?.node?.id, "Legal");
-                          //return getSpreadsheet(item?.node?.id);
-                        }}
-                        key={item?.node?.id}
-                        className={`ml-1 btn btn-info`}
-                        type="button"
-                      >
-                        <i className="iconsminds-download"></i>  {item?.node?.name} {' - Oficio'}
-                      </button>{'  '}
-                    </>
-                  );
-                })
-                : ''}
-            </div>
-          </div>
         </div>
-
         {loading ? (
           <>
             <Colxx sm={12} className="d-flex justify-content-center">
@@ -213,25 +149,13 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
                                 <td>
                                   <button
                                     onClick={() => {
-                                      return generatePerformanceReportCourseStudent(itemAcademicPeriod?.node?.id, itemStudent?.id, "Letter");
-                                      //return getSpreadsheet(item?.node?.id);
+                                      return goToChildren(`/valuationDefinitivePeriodStudent?academicPeriodId=${itemAcademicPeriod?.node?.id}&studentId=${itemStudent?.id}&courseId=${courseId}`);
                                     }}
                                     key={itemAcademicPeriod?.node?.id}
                                     className={`ml-1 btn btn-info`}
                                     type="button"
                                   >
-                                    <i className="iconsminds-download"></i> {"Descargar - Carta"}
-                                  </button>
-                                  <button
-                                    onClick={() => {
-                                      return generatePerformanceReportCourseStudent(itemAcademicPeriod?.node?.id, itemStudent?.id, "Legal");
-                                      //return getSpreadsheet(item?.node?.id);
-                                    }}
-                                    key={itemAcademicPeriod?.node?.id}
-                                    className={`ml-1 btn btn-info`}
-                                    type="button"
-                                  >
-                                    <i className="iconsminds-download"></i> {"Descargar - Oficio"}
+                                    <i className="iconsminds-gear"></i> {"Valoraciones"}
                                   </button>
                                 </td>
                               </>
@@ -258,4 +182,4 @@ const mapStateToProps = ({ loginReducer }: any) => {
   return { loginReducer };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ValuationDefinitivePeriodStudent);
+export default connect(mapStateToProps, mapDispatchToProps)(ValuationDefinitivePeriodStudentsCourseList);

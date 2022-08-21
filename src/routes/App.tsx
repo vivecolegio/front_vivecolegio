@@ -456,6 +456,28 @@ const PerformanceReportStudentsCourseList = React.lazy(() => {
   );
 });
 
+const ValuationDefinitivePeriodCourseList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "ValuationDefinitivePeriodCourseList" */ '../components/app/ValuationDefinitivePeriod/ValuationDefinitivePeriodCourseList'
+  );
+});
+const ValuationDefinitivePeriodGradeList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "ValuationDefinitivePeriodGradeList" */ '../components/app/ValuationDefinitivePeriod/ValuationDefinitivePeriodGradeList'
+  );
+});
+const ValuationDefinitivePeriodStudentsCourseList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "ValuationDefinitivePeriodStudentsCourseList" */ '../components/app/ValuationDefinitivePeriod/ValuationDefinitivePeriodStudentsCourseList'
+  );
+});
+const ValuationDefinitivePeriodStudent = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "ValuationDefinitivePeriodStudent" */ '../components/app/ValuationDefinitivePeriod/ValuationDefinitivePeriodStudent'
+  );
+});
+
+
 
 const App = (props: any) => {
   const { locale } = props.translateReducer;
@@ -599,6 +621,11 @@ const App = (props: any) => {
                     <Route path="/performanceReportCourse" element={<PerformanceReportCourseList />} />
                     <Route path="/performanceReportStudentsCourse" element={<PerformanceReportStudentsCourseList />} />
 
+
+                    <Route path="/valuationDefinitivePeriodGrade" element={<ValuationDefinitivePeriodGradeList />} />
+                    <Route path="/valuationDefinitivePeriodCourse" element={<ValuationDefinitivePeriodCourseList />} />
+                    <Route path="/valuationDefinitivePeriodStudentsCourse" element={<ValuationDefinitivePeriodStudentsCourseList />} />
+                    <Route path="/valuationDefinitivePeriodStudent" element={<ValuationDefinitivePeriodStudent />} />
                   </>
                 ) : (
                   <Route path="*" element={<Login />} />

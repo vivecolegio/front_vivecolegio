@@ -317,6 +317,9 @@ const esMessages = {
   'menu.performanceReportGrade': 'Informe Desempeño',
   'menu.performanceReportCourse': 'Informe Desempeño',
   'menu.performanceReportStudentsCourse': 'Informe Desempeño',
+  'menu.valuationDefinitivePeriodGrade': 'Valoraciones Estudiantes',
+  'menu.valuationDefinitivePeriodCourse': 'Valoraciones Estudiantes',
+  'menu.valuationDefinitivePeriodStudentsCourse': 'Valoraciones Estudiantes',
 };
 
 export default esMessages;
