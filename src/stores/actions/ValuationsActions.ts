@@ -1,7 +1,7 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
 import { MUTATION_CREATE_ACADEMIC_ASIGNATURE_COURSE_PERIOD_VALUATION_STUDENTS, MUTATION_CREATE_EXPERIENCE_LEARNING_AVERAGE_VALUATION_STUDENTS, MUTATION_UPDATE_ALL_STUDENT_ACADEMIC_ASIGNATURE_COURSE_PERIOD_VALUATION } from "../graphql/Valuations/ValuationsMutations";
-import { QUERY_GET_All_ACADEMIC_AREA_COURSE_PERIOD_VALUATION, QUERY_GET_All_ACADEMIC_ASIGNATURE_COURSE_PERIOD_VALUATION, QUERY_GET_All_EXPERIENCE_LEARNING_AVERAGE_VALUATION, QUERY_GET_VALUATIONS_STUDENT } from "../graphql/Valuations/ValuationsQueries";
+import { QUERY_GET_All_ACADEMIC_AREA_COURSE_PERIOD_VALUATION, QUERY_GET_All_ACADEMIC_AREA_COURSE_PERIOD_VALUATION_STUDENT, QUERY_GET_All_ACADEMIC_ASIGNATURE_COURSE_PERIOD_VALUATION, QUERY_GET_All_ACADEMIC_ASIGNATURE_COURSE_PERIOD_VALUATION_STUDENT, QUERY_GET_All_EXPERIENCE_LEARNING_AVERAGE_VALUATION, QUERY_GET_VALUATIONS_STUDENT } from "../graphql/Valuations/ValuationsQueries";
 
 export const generateAcademicAsignatureCoursePeriodValuationStudents = (schoolId : string, academicPeriodId: string, academicAsignatureCourseId: string) => {
   return async (dispatch: any) => {
@@ -117,6 +117,29 @@ export const getAllAcademicAsignatureCoursePeriodValuation = (academicPeriodId: 
   };
 };
 
+export const getAllAcademicAsignatureCoursePeriodValuationStudent = (academicPeriodId: string, academicAsignatureCourseId: string, studentId: string) => {
+  return async (dispatch: any) => {
+    try {
+      let data = {};
+      await client
+        .query({
+          query: QUERY_GET_All_ACADEMIC_ASIGNATURE_COURSE_PERIOD_VALUATION_STUDENT,
+          variables: {
+            academicPeriodId, academicAsignatureCourseId, studentId
+          },
+        })
+        .then((result: any) => {
+          data = result.data;
+        });
+      return data;
+    } catch (error) {
+      createNotification('error', 'error', '');
+      return error;
+    }
+  };
+};
+
+
 export const getAllAcademicAreaCoursePeriodValuation = (academicPeriodId: string, academicAreaId: string) => {
   return async (dispatch: any) => {
     try {
@@ -138,6 +161,29 @@ export const getAllAcademicAreaCoursePeriodValuation = (academicPeriodId: string
     }
   };
 };
+
+export const getAllAcademicAreaCoursePeriodValuationStudent = (academicPeriodId: string, academicAreaId: string, studentId: string) => {
+  return async (dispatch: any) => {
+    try {
+      let data = {};
+      await client
+        .query({
+          query: QUERY_GET_All_ACADEMIC_AREA_COURSE_PERIOD_VALUATION_STUDENT,
+          variables: {
+            academicPeriodId, academicAreaId, studentId
+          },
+        })
+        .then((result: any) => {
+          data = result.data;
+        });
+      return data;
+    } catch (error) {
+      createNotification('error', 'error', '');
+      return error;
+    }
+  };
+};
+
 
 export const generateExperienceLearningAverageValuationStudents = (evaluativeComponentId : string, academicPeriodId: string, academicAsignatureCourseId: string) => {
   return async (dispatch: any) => {

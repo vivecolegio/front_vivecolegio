@@ -59,9 +59,52 @@ export const QUERY_GET_All_ACADEMIC_ASIGNATURE_COURSE_PERIOD_VALUATION = gql`
   }
 `;
 
+
+export const QUERY_GET_All_ACADEMIC_ASIGNATURE_COURSE_PERIOD_VALUATION_STUDENT = gql`
+  query getAllAcademicAsignatureCoursePeriodValuation($academicPeriodId: String!, $academicAsignatureCourseId: String!, $studentId: String!) {
+    data: getAllAcademicAsignatureCoursePeriodValuation(orderCreated: true, allData: true, academicPeriodId: $academicPeriodId, academicAsignatureCourseId: $academicAsignatureCourseId, studentId: $studentId) {
+      edges {
+        cursor
+        node {
+          id
+          studentId
+          assessment    
+          performanceLevel {
+            name
+            colorHex
+            abbreviation
+          }      
+        }
+      }    
+       
+    }
+  }
+`;
+
 export const QUERY_GET_All_ACADEMIC_AREA_COURSE_PERIOD_VALUATION = gql`
   query getAllAcademicAreaCoursePeriodValuation($academicPeriodId: String!, $academicAreaId: String!) {
     data: getAllAcademicAreaCoursePeriodValuation(orderCreated: true, allData: true, academicPeriodId: $academicPeriodId, academicAreaId: $academicAreaId) {
+      edges {
+        cursor
+        node {
+          id
+          studentId
+          assessment    
+          performanceLevel {
+            name
+            colorHex
+            abbreviation
+          }      
+        }
+      }    
+       
+    }
+  }
+`;
+
+export const QUERY_GET_All_ACADEMIC_AREA_COURSE_PERIOD_VALUATION_STUDENT = gql`
+  query getAllAcademicAreaCoursePeriodValuation($academicPeriodId: String!, $academicAreaId: String!, $studentId: String!) {
+    data: getAllAcademicAreaCoursePeriodValuation(orderCreated: true, allData: true, academicPeriodId: $academicPeriodId, academicAreaId: $academicAreaId, studentId: $studentId) {
       edges {
         cursor
         node {

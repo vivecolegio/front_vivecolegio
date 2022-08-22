@@ -15,7 +15,7 @@ const HeaderInfoAcademic = (props: any) => {
   const [studentData, setStudent] = useState(null);
   const [experienceLearningData, setExperienceLearning] = useState(null);
   const [learningData, setLearning] = useState(null);
-
+  const [periodData, setPeriod] = useState(null);
   const { generic, asignature, asignatureGeneral, grade, course, modality, cicle, experienceLearnig, learning, student, academicAsignatureCourseId, gradeAssignment, experienceLearnigId, learningId, studentId, courseId, goTitle, periodId, period } = props;
 
   let navigate = useNavigate();
@@ -58,12 +58,12 @@ const HeaderInfoAcademic = (props: any) => {
     }
     if (courseId) {
       await props.dataCourse(courseId).then((resp: any) => {
-        setData({ course: resp?.data });
+        setData({ ...data, course: resp?.data });
       });
     }
     if (periodId) {
       await props.dataAcademicPeriod(periodId).then((resp: any) => {
-        setData({ period: resp?.data });
+        setPeriod(resp?.data);
       });
     }
   };
@@ -113,7 +113,7 @@ const HeaderInfoAcademic = (props: any) => {
             : ''}
           {period ?
             <span className="mb-0 text-muted border-b-info">
-              Periodo: <h2 className="text-info font-bold">{data?.period?.name}</h2>
+              Periodo: <h2 className="text-info font-bold">{periodData?.name}</h2>
             </span>
             : ''}
         </div>

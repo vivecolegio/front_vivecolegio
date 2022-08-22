@@ -4,10 +4,12 @@ import { downloadExcel, DownloadTableExcel, useDownloadExcel } from 'react-expor
 import { connect } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
+import Select from 'react-select';
 import ReactTooltip from 'react-tooltip';
-import { Badge, Progress } from 'reactstrap';
+import { Badge, Button, Input, Progress } from 'reactstrap';
 
-import { calculateDaysTwoDate, compare, compareOrderAcademicArea } from '../../../helpers/DataTransformations';
+import { calculateDaysTwoDate, compare, compareOrderAcademicArea, comparePerformanceLevelsTopScore } from '../../../helpers/DataTransformations';
+import IntlMessages from '../../../helpers/IntlMessages';
 import { createNotification } from '../../../helpers/Notification';
 import { getInitialsName } from '../../../helpers/Utils';
 import * as performanceLevelActions from '../../../stores/actions/Academic/PerformanceLevelActions';
@@ -32,6 +34,7 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
 
   const [students, setStudents] = useState(null);
   const [performanceLevels, setPerformanceLevels] = useState(null);
+  const [performanceLevelsList, setPerformanceLevelsList] = useState(null);
   const [performanceLevelType, setPerformanceLevelType] = useState(null);
   const [academicPeriods, setAcademicPeriods] = useState(null);
   const [currentAcademicPeriod, setCurrentAcademicPeriod] = useState(null);
@@ -57,6 +60,8 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
   const [dateProgress, setDateProgress] = useState({ startDate: null, endDate: null, totalDays: 0, countDays: 0 })
   let [countDigits, setCountDigits] = useState(2);
   const tableRef = useRef();
+  const [min, setMin] = useState(null);
+  const [max, setMax] = useState(null);
 
   let navigate = useNavigate();
   const location = useLocation();
@@ -122,11 +127,19 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
       let avrgsFinal: any = [];
       let levels: any = [];
       await props
-        .getListAllPerformanceLevelCourse(courseId)
+        .getListAllPerformanceLevelCourseFinal(courseId)
         .then((dataLevels: any) => {
           setPerformanceLevels(dataLevels);
+          let levelsOrderDesc = levels.sort(comparePerformanceLevelsTopScore);
+          setMax(levelsOrderDesc[levelsOrderDesc.length - 1]?.node?.topScore);
+          setMin(levelsOrderDesc[0]?.node?.minimumScore);
           levels = dataLevels;
           setPerformanceLevelType(dataLevels[0]?.node?.type);
+          setPerformanceLevelsList(
+            levels.map((c: any) => {
+              return { label: c.node.name, value: c.node.id, key: c.node.id };
+            }),
+          );
         });
       await props.getAcademicPeriodsExperienceLearning(props?.loginReducer?.schoolId,
         props?.loginReducer?.schoolYear).then(async (listData: any) => {
@@ -145,7 +158,7 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
                   }
                   promisesListAsignatures.push(
                     props
-                      .getAllAcademicAsignatureCoursePeriodValuation(periodId, asignature?.node?.id)
+                      .getAllAcademicAsignatureCoursePeriodValuationStudent(periodId, asignature?.node?.id, studentId)
                       .then(async (notesFinal: any) => {
                         nts[asignature?.node?.id] = notesFinal.data.edges;
                       })
@@ -166,7 +179,7 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
                 for (let area of filtered) {
                   promisesListAreas.push(
                     props
-                      .getAllAcademicAreaCoursePeriodValuation(periodId, area?.id)
+                      .getAllAcademicAreaCoursePeriodValuationStudent(periodId, area?.id, studentId)
                       .then(async (notesFinal: any) => {
                         ntsArea[area?.id] = notesFinal.data.edges;
                       })
@@ -219,134 +232,43 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
               <table className="table table-bordered" ref={tableRef}>
                 <thead>
                   <tr>
-                    <th rowSpan={2} className="text-center vertical-middle">
-                      Código
+                    <th rowSpan={1} className="text-center vertical-middle">
+                      Tipo
                     </th>
-                    <th rowSpan={2} className="text-center vertical-middle">
-                      Estudiante
+                    <th rowSpan={1} className="text-center vertical-middle">
+                      Area/Asignatura
                     </th>
-                    {areas?.map((item: any, index: any) => {
-                      return (
-                        <>
-                          <th
-                            colSpan={
-                              item?.count + 1
-                            }
-                            className="text-center vertical-middle"
-                          >
-                            {/* {item?.abbreviation ? item?.abbreviation : item?.name} */}
-                            {item?.name}
-                          </th>
-                        </>
-                      );
-                    })}
-                    {/* <th rowSpan={2} className="text-center vertical-middle">
-                      Valoración
+                    <th rowSpan={1} className="text-center vertical-middle">
+                      Valoración Calculada
                     </th>
-                    <th rowSpan={2} className="text-center vertical-middle">
-                      Nivel de desempeño
-                    </th> */}
-                  </tr>
-                  <tr>
-                    {areas?.map((item: any, index: any) => {
-                      return (
-                        <>
-                          {
-                            asignatures?.map((e: any, indexe: any) => {
-                              return (
-                                <>
-                                  {e?.node?.academicAsignature?.academicAreaId === item?.id ?
-                                    <th className="text-center vertical-middle">
-                                      <a data-tip data-for={e?.node?.id}>
-                                        <i
-                                          className="iconsminds-idea-2 text-warning font-20"
-                                        ></i>
-                                      </a>
-                                      <ReactTooltip id={e?.node?.id} type='info' effect='solid'>
-                                        <span>{e?.node?.academicAsignature?.name}</span>
-                                        {/* {item?.abbreviation ? item?.abbreviation : item?.name} */}
-                                      </ReactTooltip>
-                                    </th>
-                                    : <></>}
-                                </>
-                              );
-                            })
-                          }
-                          <th className="text-center vertical-middle">Valoracion Final.</th>
-                        </>
-                      );
-                    })}
+                    <th rowSpan={1} className="text-center vertical-middle">
+                      Valoración Final
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
-                  {students.map((itemStudent: any, index: any) => {
+                  {areas?.map((item: any, index: any) => {
                     return (
                       <>
-                        <tr key={index}>
+                        <tr>
                           <td className="text-center vertical-middle">
-                            <span className="font-bold">{itemStudent?.code}</span>
+                            {"Area"}
                           </td>
                           <td className="text-center vertical-middle">
-                            <div className="d-flex align-items-center justify-content-start">
-                              {itemStudent?.user?.urlPhoto ? (
-                                <ThumbnailImage
-                                  rounded
-                                  src={itemStudent?.user?.urlPhoto}
-                                  alt="profile"
-                                  className="xsmall mr-3"
-                                />
-                              ) : (
-                                <span className="img-thumbnail md-avatar-initials border-0 span-initials rounded-circle mr-3 list-thumbnail align-self-center xsmall">
-                                  {getInitialsName(
-                                    itemStudent?.user
-                                      ? itemStudent?.user?.lastName +
-                                      ' ' +
-                                      itemStudent?.user?.name
-                                      : 'N N',
-                                  )}
-                                </span>
-                              )}
-                              <span>
-                                {itemStudent?.user?.lastName} {itemStudent?.user?.name}
-                              </span>
-                            </div>
+                            {item?.name}
                           </td>
-                          {areas?.map((itemArea: any, index: any) => {
-                            let asignaturesArea = asignatures?.filter((itemV: any) => itemV?.node?.academicAsignature?.academicAreaId == itemArea?.id);
-                            let valuationArea = valuationsArea[itemArea?.id]?.filter((itemA: any) => itemA?.node?.studentId == itemStudent?.id);
+                          {students.map((itemStudent: any, index: any) => {
+                            let valuationArea = valuationsArea[item?.id]?.filter((itemA: any) => itemA?.node?.studentId == itemStudent?.id);
                             return (
                               <>
-                                {
-                                  asignaturesArea?.map((itemAsignature: any, indexe: any) => {
-                                    let valuation = valuations[itemAsignature?.node?.id]?.filter((itemV: any) => itemV?.node?.studentId == itemStudent?.id);
-                                    return (
-                                      <>
-                                        {valuation?.length > 0 ?
-                                          <td className="text-center vertical-middle">
-                                            {performanceLevelType === "QUALITATIVE" ?
-                                              <>
-                                                <StyledBadge color="primary" className="font-0-8rem" background={valuation[0]?.node?.performanceLevel?.colorHex ? `${valuation[0]?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
-                                                  {valuation[0]?.node?.performanceLevel?.abbreviation ? valuation[0]?.node?.performanceLevel?.abbreviation : valuation[0]?.node?.performanceLevel?.name}
-                                                </StyledBadge>
-                                              </> :
-                                              <>
-                                                {valuation[0]?.node?.assessment?.toFixed(countDigits)}
-                                              </>
-                                            }
-                                          </td>
-                                          : <td></td>}
-                                      </>
-                                    );
-                                  })
-                                }
-                                {
+                                {itemStudent?.id?.toString() == studentId ?
                                   <>
                                     {valuationArea?.length > 0 ?
                                       <td className="text-center vertical-middle">
                                         {performanceLevelType === "QUALITATIVE" ?
                                           <>
                                             <StyledBadge color="primary" className="font-0-8rem" background={valuationArea[0]?.node?.performanceLevel?.colorHex ? `${valuationArea[0]?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
-                                              {valuationArea[0]?.node?.performanceLevel?.abbreviation ? valuationArea[0]?.node?.performanceLevel?.abbreviation : valuationArea[0]?.node?.performanceLevel?.name}
+                                              {valuationArea[0]?.node?.performanceLevel?.name}
                                             </StyledBadge>
                                           </> :
                                           <>
@@ -356,112 +278,121 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
                                       </td>
                                       : <td></td>}
                                   </>
-                                }
+                                  : <></>}
                               </>
                             );
                           })}
-
-                          {valuations?.map((item2: any, index2: any) => {
-                            return (
-                              <>
-                                {item2.experiences.length > 0 ?
-                                  <>
-                                    {item2.experiences.map((e: any) => {
-                                      let note = notes.find(
-                                        (n: any) =>
-                                          n?.experienceLearningId === e?.id &&
-                                          itemStudent?.id === n?.studentId,
-                                      );
+                          <td>
+                            {
+                              performanceLevelType === "QUALITATIVE" ?
+                                <Select
+                                  //isClearable
+                                  placeholder={<IntlMessages id="forms.select" />}
+                                  className="react-select"
+                                  classNamePrefix="react-select"
+                                  options={performanceLevelsList}
+                                  value={{ label: item?.node?.performanceLevel?.name, key: item?.node?.performanceLevel?.id, value: item?.node?.performanceLevel?.id }}
+                                  onChange={(selectedOption: any) => {
+                                    item.node.assessment = undefined;
+                                    item.node.performanceLevel = { id: selectedOption?.key, name: selectedOption?.label }
+                                    //saveBlur(item);
+                                  }}
+                                /> : performanceLevelType === "QUANTITATIVE" ?
+                                  <Input
+                                    type="number"
+                                    onBlur={(event: any) => {
+                                      //return saveBlur(item);
+                                    }}
+                                    onInput={(e: any) => {
+                                      if (e.target.value < min || e.target.value > max) {
+                                        e.target.value = null;
+                                      }
+                                      //return getPerformanceLevel(e, item);
+                                    }}
+                                    {...item?.node?.assessment}
+                                    defaultValue={item?.node?.assessment}
+                                    className={item?.node?.assessment ? 'border-green form-control' : 'form-control'}
+                                  /> : ""
+                            }
+                          </td>
+                        </tr>
+                        {students.map((itemStudent: any, index: any) => {
+                          let asignaturesArea = asignatures?.filter((itemV: any) => itemV?.node?.academicAsignature?.academicAreaId == item?.id);
+                          return (
+                            <>
+                              {itemStudent?.id?.toString() == studentId ?
+                                <>
+                                  {
+                                    asignaturesArea?.map((itemAsignature: any, indexe: any) => {
+                                      let valuation = valuations[itemAsignature?.node?.id]?.filter((itemV: any) => itemV?.node?.studentId == itemStudent?.id);
                                       return (
                                         <>
-                                          <td className="text-center vertical-middle">
-                                            {performanceLevelType === "QUALITATIVE" ?
-                                              <>
-                                                <StyledBadge color="primary" className="font-0-8rem" background={note?.performanceLevel?.colorHex ? `${note?.performanceLevel?.colorHex}` : "#00cafe"}>
-                                                  {note?.performanceLevel?.abbreviation ? note?.performanceLevel?.abbreviation : note?.performanceLevel?.name}
-                                                </StyledBadge>
-                                              </> :
-                                              <>
-                                                {note?.assessment?.toFixed(countDigits)}
-                                                {/* <Input
-                                                      onKeyPress={(event: any) => {
-                                                        return saveNote(event, note, e, item);
+                                          <tr>
+                                            <td className="text-center vertical-middle">
+                                              {"Asignatura"}
+                                            </td>
+                                            {itemAsignature?.node?.academicAsignature?.academicAreaId === item?.id ?
+                                              <td className="text-center vertical-middle">
+                                                {itemAsignature?.node?.academicAsignature?.name}
+                                              </td>
+                                              : <></>}
+                                            {valuation?.length > 0 ?
+                                              <td className="text-center vertical-middle">
+                                                {performanceLevelType === "QUALITATIVE" ?
+                                                  <>
+                                                    <StyledBadge color="primary" className="font-0-8rem" background={valuation[0]?.node?.performanceLevel?.colorHex ? `${valuation[0]?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
+                                                      {valuation[0]?.node?.performanceLevel?.name}
+                                                    </StyledBadge>
+                                                  </> :
+                                                  <>
+                                                    {valuation[0]?.node?.assessment?.toFixed(countDigits)}
+                                                  </>
+                                                }
+                                              </td>
+                                              : <td></td>}
+                                            <td>
+                                              {
+                                                performanceLevelType === "QUALITATIVE" ?
+                                                  <Select
+                                                    //isClearable
+                                                    placeholder={<IntlMessages id="forms.select" />}
+                                                    className="react-select"
+                                                    classNamePrefix="react-select"
+                                                    options={performanceLevelsList}
+                                                    value={{ label: item?.node?.performanceLevel?.name, key: item?.node?.performanceLevel?.id, value: item?.node?.performanceLevel?.id }}
+                                                    onChange={(selectedOption: any) => {
+                                                      item.node.assessment = undefined;
+                                                      item.node.performanceLevel = { id: selectedOption?.key, name: selectedOption?.label }
+                                                      //saveBlur(item);
+                                                    }}
+                                                  /> : performanceLevelType === "QUANTITATIVE" ?
+                                                    <Input
+                                                      type="number"
+                                                      onBlur={(event: any) => {
+                                                        //return saveBlur(item);
                                                       }}
-                                                      defaultValue={note?.assessment}
-                                                      disabled={isFormEnabled}
-                                                      className="form-control"
-                                                      style={{ width: "60px" }}
-                                                    /> */}
-                                              </>
-                                            }
-                                          </td>
+                                                      onInput={(e: any) => {
+                                                        if (e.target.value < min || e.target.value > max) {
+                                                          e.target.value = null;
+                                                        }
+                                                        //return getPerformanceLevel(e, item);
+                                                      }}
+                                                      {...item?.node?.assessment}
+                                                      defaultValue={item?.node?.assessment}
+                                                      className={item?.node?.assessment ? 'border-green form-control' : 'form-control'}
+                                                    /> : ""
+                                              }
+                                            </td>
+                                          </tr>
                                         </>
                                       );
-                                    })} </> : ""}
-                                {item2?.experiences?.length > 0 ? (
-                                  <th className="text-center vertical-middle">
-                                    {performanceLevelType === "QUALITATIVE" ?
-                                      <>
-                                        <StyledBadge color="primary" className="font-0-8rem" background={averages.find(
-                                          (n: any) =>
-                                            item2?.evaluativeComponentId ===
-                                            n?.node?.evaluativeComponentId &&
-                                            itemStudent?.id === n?.node?.studentId,
-                                        )?.node?.performanceLevel?.colorHex ? `${averages.find(
-                                          (n: any) =>
-                                            item2?.evaluativeComponentId ===
-                                            n?.node?.evaluativeComponentId &&
-                                            itemStudent?.id === n?.node?.studentId,
-                                        )?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
-                                          {averages.find(
-                                            (n: any) =>
-                                              item2?.evaluativeComponentId ===
-                                              n?.node?.evaluativeComponentId &&
-                                              itemStudent?.id === n?.node?.studentId,
-                                          )?.node?.performanceLevel?.name}
-                                        </StyledBadge>
-                                      </>
-                                      :
-                                      <>
-                                        {averages.find(
-                                          (n: any) =>
-                                            item2?.evaluativeComponentId ===
-                                            n?.node?.evaluativeComponentId &&
-                                            itemStudent?.id === n?.node?.studentId,
-                                        )?.node?.average?.toFixed(countDigits)}
-                                        {/* <Input
-                                              disabled={true}
-                                              defaultValue={
-                                                averages.find(
-                                                  (n: any) =>
-                                                    item2?.evaluativeComponentId ===
-                                                    n?.node?.evaluativeComponentId &&
-                                                    item?.id === n?.node?.studentId,
-                                                )?.node?.average?.toFixed(2)
-                                              }
-                                              className="form-control"
-                                              style={{ width: "4.5vh" }}
-                                            /> */}
-                                      </>}
-                                  </th>
-                                ) : (
-                                  <th></th>
-                                )}
-                              </>
-                            );
-                          })}
-                          {/* <th className="text-center vertical-middle">
-                            {averagesFinal.find((n: any) => itemStudent?.id === n?.node?.studentId)?.node
-                              ?.assessment?.toFixed(2) || ''}
-                          </th>
-                          <th className="text-center vertical-middle">
-                            <Badge color="primary" className="font-0-8rem">
-                              {averagesFinal.find(
-                                (c: any) => c?.node?.studentId === itemStudent?.id,
-                              )?.node?.performanceLevel?.name || '--'}
-                            </Badge>
-                          </th> */}
-                        </tr>
+                                    })
+                                  }
+                                </>
+                                : <></>}
+                            </>
+                          );
+                        })}
                       </>
                     );
                   })}
