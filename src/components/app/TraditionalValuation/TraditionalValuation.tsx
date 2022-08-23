@@ -11,6 +11,7 @@ import IntlMessages from '../../../helpers/IntlMessages';
 import { createNotification } from '../../../helpers/Notification';
 import { getInitialsName } from '../../../helpers/Utils';
 import * as performanceLevelActions from '../../../stores/actions/Academic/PerformanceLevelActions';
+import * as academicIndicatorActions from '../../../stores/actions/AcademicAsignatureCourseActions';
 import * as courseActions from '../../../stores/actions/CourseActions';
 import * as experienceLearningTraditionalValuationlActions from '../../../stores/actions/ExperienceLearningTraditionalValuationActions';
 import { urlImages } from '../../../stores/graphql';
@@ -19,8 +20,6 @@ import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
 import { Loader } from '../../common/Loader';
 import { StyledBadge } from '../../styled/BadgeCustom';
 import ThumbnailImage from '../Aplications/AplicationsComponents/ThumbnailImage';
-import * as academicIndicatorActions from '../../../stores/actions/AcademicAsignatureCourseActions';
-
 
 const ExperienceLearningTraditionalValuationList = (props: any) => {
   const [students, setStudents] = useState(null);
@@ -343,10 +342,11 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
               </StyledBadge>
             </> :
             <>
-              <StyledBadge color="primary" className="font-0-8rem ml-2" background={average > 0 ? `${performanceLevels[Math.trunc(average) - 1]?.colorHex}` : "#00cafe"}>
+              <StyledBadge color="primary" className="font-0-8rem ml-2" background={average > 0 ? `${performanceLevels[Math.trunc(average) - 1]?.node?.colorHex}` : "#00cafe"}>
                 {average > 0 ? performanceLevels[Math.trunc(average) - 1]?.node.name : ""}
               </StyledBadge>
-            </>}
+            </>
+          }
         </div>
         <div className="d-flex justify-content-start align-items-center mb-3 w-30">
           <div className="text-center mr-1">

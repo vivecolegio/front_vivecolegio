@@ -13,7 +13,9 @@ import IntlMessages from '../../../helpers/IntlMessages';
 import { createNotification } from '../../../helpers/Notification';
 import { getInitialsName } from '../../../helpers/Utils';
 import * as performanceLevelActions from '../../../stores/actions/Academic/PerformanceLevelActions';
+import * as academicAreaCoursePeriodValuationActions from '../../../stores/actions/AcademicAreaCoursePeriodValuationActions';
 import * as academicAsignatureCouseActions from '../../../stores/actions/AcademicAsignatureCourseActions';
+import * as academicAsignatureCoursePeriodValuationActions from '../../../stores/actions/AcademicAsignatureCoursePeriodValuationActions';
 import * as academicPeriodActions from '../../../stores/actions/AcademicPeriodActions';
 import * as componentEvaluativeActions from '../../../stores/actions/ComponentEvaluativeActions';
 import * as courseActions from '../../../stores/actions/CourseActions';
@@ -92,28 +94,28 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
       history(`/home`);
       createNotification('warning', 'notPermissions', '');
     }
-    props.dataCurrentAcademicPeriod(props?.loginReducer?.schoolId).then(async (period: any) => {
-      await props.getListAllSchoolConfiguration(props?.loginReducer?.schoolId).then(async (schoolConfigurations: any) => {
-        for (let schoolConfiguration of schoolConfigurations) {
-          if (schoolConfiguration?.node?.code == "COUNT_DIGITS_PERFORMANCE_LEVEL") {
-            setCountDigits(schoolConfiguration?.node?.valueNumber);
-          }
+    // props.dataCurrentAcademicPeriod(props?.loginReducer?.schoolId).then(async (period: any) => {
+    props.getListAllSchoolConfiguration(props?.loginReducer?.schoolId).then(async (schoolConfigurations: any) => {
+      for (let schoolConfiguration of schoolConfigurations) {
+        if (schoolConfiguration?.node?.code == "COUNT_DIGITS_PERFORMANCE_LEVEL") {
+          setCountDigits(schoolConfiguration?.node?.valueNumber);
         }
-      });
-      await setCurrentAcademicPeriod(period);
-      if (period) {
-        const today = new Date();
-        const startDate = new Date(period.startDate);
-        const endDate = new Date(period?.endDate);
-        const totalDays = calculateDaysTwoDate(startDate, endDate);
-        let countDays = totalDays;
-        if (today < endDate && today > startDate) {
-          countDays = calculateDaysTwoDate(startDate, new Date());
-        }
-        setDateProgress({ startDate, endDate, totalDays, countDays })
       }
-      getSpreadsheet(period?.id);
     });
+    // await setCurrentAcademicPeriod(period);
+    // if (period) {
+    //   const today = new Date();
+    //   const startDate = new Date(period.startDate);
+    //   const endDate = new Date(period?.endDate);
+    //   const totalDays = calculateDaysTwoDate(startDate, endDate);
+    //   let countDays = totalDays;
+    //   if (today < endDate && today > startDate) {
+    //     countDays = calculateDaysTwoDate(startDate, new Date());
+    //   }
+    //   setDateProgress({ startDate, endDate, totalDays, countDays })
+    // }
+    getSpreadsheet(periodId);
+    // });
   }, []);
 
   const getSpreadsheet = async (periodId: any) => {
@@ -141,70 +143,137 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
             }),
           );
         });
-      await props.getAcademicPeriodsExperienceLearning(props?.loginReducer?.schoolId,
-        props?.loginReducer?.schoolYear).then(async (listData: any) => {
-          setAcademicPeriods(listData);
-          let promisesListAsignatures: any[] = [];
-          let promisesListAreas: any[] = [];
-          if (periodId) {
-            await props
-              .getListAllAcademicAsignatureCourseByCourse(null, courseId)
-              .then(async (asignaturesList: any) => {
-                setAsignatures(asignaturesList)
-                let areasAux: any[] = []
-                for (let asignature of asignaturesList) {
-                  if (asignature?.node?.academicAsignature?.academicArea) {
-                    areasAux.push(asignature?.node?.academicAsignature?.academicArea);
-                  }
-                  promisesListAsignatures.push(
-                    props
-                      .getAllAcademicAsignatureCoursePeriodValuationStudent(periodId, asignature?.node?.id, studentId)
-                      .then(async (notesFinal: any) => {
-                        nts[asignature?.node?.id] = notesFinal.data.edges;
-                      })
-                  );
-                }
-                //console.log(areasAux);
-                const ids = areasAux.map(o => o?.id)
-                const count: any = {};
-                ids.forEach(element => {
-                  count[element] = (count[element] || 0) + 1;
-                });
-                let filtered = areasAux.filter(({ id }, index) => !ids.includes(id, index + 1))
-                for (let filter of filtered) {
-                  filter.count = count[filter?.id];
-                }
-                filtered = filtered.sort(compareOrderAcademicArea);
-                setAreas(filtered);
-                for (let area of filtered) {
-                  promisesListAreas.push(
-                    props
-                      .getAllAcademicAreaCoursePeriodValuationStudent(periodId, area?.id, studentId)
-                      .then(async (notesFinal: any) => {
-                        ntsArea[area?.id] = notesFinal.data.edges;
-                      })
-                  );
-                }
-              });
-            await Promise.all(promisesListAreas).then(() => {
-              setValuationsArea(ntsArea);
-              //console.log(ntsArea)
+      // await props.getAcademicPeriodsExperienceLearning(props?.loginReducer?.schoolId,
+      //   props?.loginReducer?.schoolYear).then(async (listData: any) => {
+      //     setAcademicPeriods(listData);
+      let promisesListAsignatures: any[] = [];
+      let promisesListAreas: any[] = [];
+      if (periodId) {
+        await props
+          .getListAllAcademicAsignatureCourseByCourse(null, courseId)
+          .then(async (asignaturesList: any) => {
+            setAsignatures(asignaturesList)
+            let areasAux: any[] = []
+            for (let asignature of asignaturesList) {
+              if (asignature?.node?.academicAsignature?.academicArea) {
+                areasAux.push(asignature?.node?.academicAsignature?.academicArea);
+              }
+              promisesListAsignatures.push(
+                props
+                  .getAllAcademicAsignatureCoursePeriodValuationStudent(periodId, asignature?.node?.id, studentId)
+                  .then(async (notesFinal: any) => {
+                    nts[asignature?.node?.id] = notesFinal.data.edges;
+                  })
+              );
+            }
+            //console.log(areasAux);
+            const ids = areasAux.map(o => o?.id)
+            const count: any = {};
+            ids.forEach(element => {
+              count[element] = (count[element] || 0) + 1;
             });
-            await Promise.all(promisesListAsignatures).then(() => {
-              setValuations(nts);
-              // console.log(nts)
-              setLoading(false);
-            });
-
-          } else {
-            setLoading(false);
-          }
+            let filtered = areasAux.filter(({ id }, index) => !ids.includes(id, index + 1))
+            for (let filter of filtered) {
+              filter.count = count[filter?.id];
+            }
+            filtered = filtered.sort(compareOrderAcademicArea);
+            setAreas(filtered);
+            for (let area of filtered) {
+              promisesListAreas.push(
+                props
+                  .getAllAcademicAreaCoursePeriodValuationStudent(periodId, area?.id, studentId)
+                  .then(async (notesFinal: any) => {
+                    ntsArea[area?.id] = notesFinal.data.edges;
+                  })
+              );
+            }
+          });
+        await Promise.all(promisesListAreas).then(() => {
+          setValuationsArea(ntsArea);
+          //console.log(ntsArea)
         });
+        await Promise.all(promisesListAsignatures).then(() => {
+          setValuations(nts);
+          // console.log(nts)
+          setLoading(false);
+        });
+
+      } else {
+        setLoading(false);
+      }
+      // });
     });
   };
 
   const goTo = async () => {
     navigate(-1);
+  };
+
+  const saveBlur = async (item: any, type: any, valuationType: any, assessment: any, performanceLevelId: any) => {
+    //console.log(type, item)
+    let data: any = {};
+    switch (type) {
+      case "AREA":
+        switch (valuationType) {
+          case "CALCULATE":
+            data.academicAreaId = item?.academicAreaId;
+            data.academicPeriodId = item?.academicPeriodId;
+            data.assessment = assessment;
+            if (performanceLevelType == "QUALITATIVE") {
+              data.performanceLevelId = performanceLevelId;
+            }
+            data.studentId = item?.studentId;
+            data.valuationType = "DEFINITIVE";
+            await props.saveNewAcademicAreaCoursePeriodValuation(data).then(() => {
+              getSpreadsheet(periodId);
+            });
+            break;
+          case "DEFINITIVE":
+            data.academicAreaId = item?.academicAreaId;
+            data.academicPeriodId = item?.academicPeriodId;
+            data.assessment = assessment;
+            if (performanceLevelType == "QUALITATIVE") {
+              data.performanceLevelId = performanceLevelId;
+            }
+            data.studentId = item?.studentId;
+            data.valuationType = item?.valuationType;
+            await props.updateAcademicAreaCoursePeriodValuation(data, item?.id?.toString()).then(() => {
+              getSpreadsheet(periodId);
+            });
+            break;
+        }
+        break;
+      case "ASIGNATURE":
+        switch (valuationType) {
+          case "CALCULATE":
+            data.academicAsignatureCourseId = item?.academicAsignatureCourseId;
+            data.academicPeriodId = item?.academicPeriodId;
+            data.assessment = assessment;
+            if (performanceLevelType == "QUALITATIVE") {
+              data.performanceLevelId = performanceLevelId;
+            }
+            data.studentId = item?.studentId;
+            data.valuationType = "DEFINITIVE";
+            await props.saveNewAcademicAsignatureCoursePeriodValuation(data).then(() => {
+              getSpreadsheet(periodId);
+            });
+            break;
+          case "DEFINITIVE":
+            data.academicAsignatureCourseId = item?.academicAsignatureCourseId;
+            data.academicPeriodId = item?.academicPeriodId;
+            data.assessment = assessment;
+            if (performanceLevelType == "QUALITATIVE") {
+              data.performanceLevelId = performanceLevelId;
+            }
+            data.studentId = item?.studentId;
+            data.valuationType = item?.valuationType;
+            await props.updateAcademicAsignatureCoursePeriodValuation(data, item?.id?.toString()).then(() => {
+              getSpreadsheet(periodId);
+            });
+            break;
+        }
+        break;
+    }
   };
 
 
@@ -244,6 +313,9 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
                     <th rowSpan={1} className="text-center vertical-middle">
                       Valoración Final
                     </th>
+                    <th rowSpan={1} className="text-center vertical-middle">
+                      Cambiar Valoracion Final a:
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -259,62 +331,87 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
                           </td>
                           {students.map((itemStudent: any, index: any) => {
                             let valuationArea = valuationsArea[item?.id]?.filter((itemA: any) => itemA?.node?.studentId == itemStudent?.id);
+                            let valuationAreaCalculate;
+                            let valuationAreaDefinitive;
+                            for (let valuationAreaAux of valuationArea) {
+                              switch (valuationAreaAux?.node?.valuationType) {
+                                case "CALCULATE":
+                                  valuationAreaCalculate = valuationAreaAux;
+                                  break;
+                                case "DEFINITIVE":
+                                  valuationAreaDefinitive = valuationAreaAux;
+                                  break;
+                              }
+                            }
+                            let valuationType = valuationAreaDefinitive ? "DEFINITIVE" : valuationAreaCalculate ? "CALCULATE" : "";
                             return (
                               <>
                                 {itemStudent?.id?.toString() == studentId ?
                                   <>
-                                    {valuationArea?.length > 0 ?
+                                    {valuationAreaCalculate ?
                                       <td className="text-center vertical-middle">
                                         {performanceLevelType === "QUALITATIVE" ?
                                           <>
-                                            <StyledBadge color="primary" className="font-0-8rem" background={valuationArea[0]?.node?.performanceLevel?.colorHex ? `${valuationArea[0]?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
-                                              {valuationArea[0]?.node?.performanceLevel?.name}
+                                            <StyledBadge color="primary" className="font-0-8rem" background={valuationAreaCalculate?.node?.performanceLevel?.colorHex ? `${valuationAreaCalculate?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
+                                              {valuationAreaCalculate?.node?.performanceLevel?.name}
                                             </StyledBadge>
                                           </> :
                                           <>
-                                            {valuationArea[0]?.node?.assessment?.toFixed(countDigits)}
+                                            {valuationAreaCalculate?.node?.assessment?.toFixed(countDigits)}
                                           </>
                                         }
                                       </td>
                                       : <td></td>}
+                                    {valuationAreaDefinitive ?
+                                      <td className="text-center vertical-middle">
+                                        {performanceLevelType === "QUALITATIVE" ?
+                                          <>
+                                            <StyledBadge color="primary" className="font-0-8rem" background={valuationAreaDefinitive?.node?.performanceLevel?.colorHex ? `${valuationAreaDefinitive?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
+                                              {valuationAreaDefinitive?.node?.performanceLevel?.name}
+                                            </StyledBadge>
+                                          </> :
+                                          <>
+                                            {valuationAreaDefinitive?.node?.assessment?.toFixed(countDigits)}
+                                          </>
+                                        }
+                                      </td>
+                                      : <td></td>}
+                                    <td>
+                                      {
+                                        performanceLevelType === "QUALITATIVE" ?
+                                          <Select
+                                            //isClearable
+                                            placeholder={<IntlMessages id="forms.select" />}
+                                            className="react-select"
+                                            classNamePrefix="react-select"
+                                            options={performanceLevelsList}
+                                            onChange={(selectedOption: any) => {
+                                              saveBlur(valuationArea[0]?.node, "AREA", valuationType, 0, selectedOption?.key);
+                                            }}
+                                          /> : performanceLevelType === "QUANTITATIVE" ?
+                                            <Input
+                                              type="number"
+                                              onBlur={(event: any) => {
+                                                //return saveBlur(item);
+                                              }}
+                                              onInput={(e: any) => {
+                                                if (e.target.value < min || e.target.value > max) {
+                                                  e.target.value = null;
+                                                }
+                                                //return getPerformanceLevel(e, item);
+                                              }}
+                                              {...item?.node?.assessment}
+                                              defaultValue={item?.node?.assessment}
+                                              className={item?.node?.assessment ? 'border-green form-control' : 'form-control'}
+                                            /> : ""
+                                      }
+                                    </td>
                                   </>
                                   : <></>}
                               </>
                             );
                           })}
-                          <td>
-                            {
-                              performanceLevelType === "QUALITATIVE" ?
-                                <Select
-                                  //isClearable
-                                  placeholder={<IntlMessages id="forms.select" />}
-                                  className="react-select"
-                                  classNamePrefix="react-select"
-                                  options={performanceLevelsList}
-                                  value={{ label: item?.node?.performanceLevel?.name, key: item?.node?.performanceLevel?.id, value: item?.node?.performanceLevel?.id }}
-                                  onChange={(selectedOption: any) => {
-                                    item.node.assessment = undefined;
-                                    item.node.performanceLevel = { id: selectedOption?.key, name: selectedOption?.label }
-                                    //saveBlur(item);
-                                  }}
-                                /> : performanceLevelType === "QUANTITATIVE" ?
-                                  <Input
-                                    type="number"
-                                    onBlur={(event: any) => {
-                                      //return saveBlur(item);
-                                    }}
-                                    onInput={(e: any) => {
-                                      if (e.target.value < min || e.target.value > max) {
-                                        e.target.value = null;
-                                      }
-                                      //return getPerformanceLevel(e, item);
-                                    }}
-                                    {...item?.node?.assessment}
-                                    defaultValue={item?.node?.assessment}
-                                    className={item?.node?.assessment ? 'border-green form-control' : 'form-control'}
-                                  /> : ""
-                            }
-                          </td>
+
                         </tr>
                         {students.map((itemStudent: any, index: any) => {
                           let asignaturesArea = asignatures?.filter((itemV: any) => itemV?.node?.academicAsignature?.academicAreaId == item?.id);
@@ -324,7 +421,22 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
                                 <>
                                   {
                                     asignaturesArea?.map((itemAsignature: any, indexe: any) => {
-                                      let valuation = valuations[itemAsignature?.node?.id]?.filter((itemV: any) => itemV?.node?.studentId == itemStudent?.id);
+                                      //let valuation = valuations[itemAsignature?.node?.id]?.filter((itemV: any) => itemV?.node?.studentId == itemStudent?.id);
+                                      let valuationAsignature = valuations[itemAsignature?.node?.id]?.filter((itemA: any) => itemA?.node?.studentId == itemStudent?.id);
+                                      let valuationAsignatureCalculate;
+                                      let valuationAsignatureDefinitive;
+                                      for (let valuationAsignatureAux of valuationAsignature) {
+                                        switch (valuationAsignatureAux?.node?.valuationType) {
+                                          case "CALCULATE":
+                                            valuationAsignatureCalculate = valuationAsignatureAux;
+                                            break;
+                                          case "DEFINITIVE":
+                                            valuationAsignatureDefinitive = valuationAsignatureAux;
+                                            break;
+                                        }
+                                      }
+                                      let valuationType = valuationAsignatureDefinitive ? "DEFINITIVE" : valuationAsignatureCalculate ? "CALCULATE" : "";
+
                                       return (
                                         <>
                                           <tr>
@@ -336,16 +448,30 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
                                                 {itemAsignature?.node?.academicAsignature?.name}
                                               </td>
                                               : <></>}
-                                            {valuation?.length > 0 ?
+                                            {valuationAsignatureCalculate ?
                                               <td className="text-center vertical-middle">
                                                 {performanceLevelType === "QUALITATIVE" ?
                                                   <>
-                                                    <StyledBadge color="primary" className="font-0-8rem" background={valuation[0]?.node?.performanceLevel?.colorHex ? `${valuation[0]?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
-                                                      {valuation[0]?.node?.performanceLevel?.name}
+                                                    <StyledBadge color="primary" className="font-0-8rem" background={valuationAsignatureCalculate?.node?.performanceLevel?.colorHex ? `${valuationAsignatureCalculate?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
+                                                      {valuationAsignatureCalculate?.node?.performanceLevel?.name}
                                                     </StyledBadge>
                                                   </> :
                                                   <>
-                                                    {valuation[0]?.node?.assessment?.toFixed(countDigits)}
+                                                    {valuationAsignatureCalculate?.node?.assessment?.toFixed(countDigits)}
+                                                  </>
+                                                }
+                                              </td>
+                                              : <td></td>}
+                                            {valuationAsignatureDefinitive ?
+                                              <td className="text-center vertical-middle">
+                                                {performanceLevelType === "QUALITATIVE" ?
+                                                  <>
+                                                    <StyledBadge color="primary" className="font-0-8rem" background={valuationAsignatureDefinitive?.node?.performanceLevel?.colorHex ? `${valuationAsignatureDefinitive?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
+                                                      {valuationAsignatureDefinitive?.node?.performanceLevel?.name}
+                                                    </StyledBadge>
+                                                  </> :
+                                                  <>
+                                                    {valuationAsignatureDefinitive?.node?.assessment?.toFixed(countDigits)}
                                                   </>
                                                 }
                                               </td>
@@ -359,11 +485,10 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
                                                     className="react-select"
                                                     classNamePrefix="react-select"
                                                     options={performanceLevelsList}
-                                                    value={{ label: item?.node?.performanceLevel?.name, key: item?.node?.performanceLevel?.id, value: item?.node?.performanceLevel?.id }}
                                                     onChange={(selectedOption: any) => {
-                                                      item.node.assessment = undefined;
-                                                      item.node.performanceLevel = { id: selectedOption?.key, name: selectedOption?.label }
-                                                      //saveBlur(item);
+                                                      //item.node.assessment = undefined;
+                                                      //item.node.performanceLevel = { id: selectedOption?.key, name: selectedOption?.label }
+                                                      saveBlur(valuationAsignature[0]?.node, "ASIGNATURE", valuationType, 0, selectedOption?.key);
                                                     }}
                                                   /> : performanceLevelType === "QUANTITATIVE" ?
                                                     <Input
@@ -420,7 +545,9 @@ const mapDispatchToProps = {
   ...experienceLearningTraditionalActions,
   ...performanceLevelActions,
   ...academicAsignatureCouseActions,
-  ...schoolConfiguarionActions
+  ...schoolConfiguarionActions,
+  ...academicAreaCoursePeriodValuationActions,
+  ...academicAsignatureCoursePeriodValuationActions
 };
 
 const mapStateToProps = ({ loginReducer }: any) => {

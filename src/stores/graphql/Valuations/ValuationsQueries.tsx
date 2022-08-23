@@ -46,12 +46,16 @@ export const QUERY_GET_All_ACADEMIC_ASIGNATURE_COURSE_PERIOD_VALUATION = gql`
         node {
           id
           studentId
-          assessment    
+          assessment   
+          academicAsignatureCourseId
+          academicPeriodId
+          performanceLevelId 
           performanceLevel {
             name
             colorHex
             abbreviation
-          }      
+          }    
+          valuationType  
         }
       }    
        
@@ -69,11 +73,15 @@ export const QUERY_GET_All_ACADEMIC_ASIGNATURE_COURSE_PERIOD_VALUATION_STUDENT =
           id
           studentId
           assessment    
+          academicAsignatureCourseId
+          academicPeriodId
+          performanceLevelId
           performanceLevel {
             name
             colorHex
             abbreviation
           }      
+          valuationType
         }
       }    
        
@@ -90,11 +98,15 @@ export const QUERY_GET_All_ACADEMIC_AREA_COURSE_PERIOD_VALUATION = gql`
           id
           studentId
           assessment    
+          academicAreaId
+          academicPeriodId 
+          performanceLevelId
           performanceLevel {
             name
             colorHex
             abbreviation
           }      
+          valuationType
         }
       }    
        
@@ -110,12 +122,16 @@ export const QUERY_GET_All_ACADEMIC_AREA_COURSE_PERIOD_VALUATION_STUDENT = gql`
         node {
           id
           studentId
-          assessment    
+          assessment   
+          academicAreaId
+          academicPeriodId 
+          performanceLevelId
           performanceLevel {
             name
             colorHex
             abbreviation
-          }      
+          }   
+          valuationType   
         }
       }    
        
