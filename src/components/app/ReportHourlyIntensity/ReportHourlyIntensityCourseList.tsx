@@ -134,7 +134,22 @@ const ReportHourlyIntensityCourseList = (props: any) => {
       {' '}
       {dataTable !== null ? (
         <>
-          <HeaderInfoAcademic generic={{ title: 'Grado', value: gradeName }} goTitle="Regresar a grados" />
+          <div className="d-flex justify-content-between align-items-center mb-2">
+            <HeaderInfoAcademic generic={{ title: 'Grado', value: gradeName }} goTitle="Regresar a grados" />
+            <div>
+              <button
+                onClick={() => {
+                  console.log("a")
+                  return goToChildren(`/reportHourlyIntensityGrade?academicGradeId=${academicGradeId}&gradeName=${gradeName}`);
+                }}
+                key={academicGradeId}
+                className={`ml-1 btn btn-info`}
+                type="button"
+              >
+                <i className="iconsminds-gear"></i> {"Intensidad Horaria Grado"}
+              </button>
+            </div>
+          </div>
           <DataList
             data={dataTable}
             columns={columns}

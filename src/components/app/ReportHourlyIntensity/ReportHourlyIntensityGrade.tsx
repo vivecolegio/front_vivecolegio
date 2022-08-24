@@ -60,6 +60,7 @@ const ReportHourlyIntensityGrade = (props: any) => {
 
   let [params] = useSearchParams();
   const academicGradeId = params.get('academicGradeId');
+  const gradeName = params.get('gradeName');
 
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const toggle = () => setTooltipOpen(!tooltipOpen);
@@ -156,7 +157,7 @@ const ReportHourlyIntensityGrade = (props: any) => {
       </div>
       <hr />
       <div className="d-flex justify-content-between align-items-center">
-        {/* <HeaderInfoAcademic grade course modality goTitle="Regresar a Cursos" courseId={courseId} /> */}
+        <HeaderInfoAcademic generic={{ title: 'Grado', value: gradeName }} goTitle="Regresar a grados" />
       </div>
       <div className='mb-2' style={{ textAlign: "right" }}>
       </div>
