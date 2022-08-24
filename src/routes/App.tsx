@@ -477,6 +477,26 @@ const ValuationDefinitivePeriodStudent = React.lazy(() => {
   );
 });
 
+const ReportHourlyIntensityGradeList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "ReportHourlyIntensityGradeList" */ '../components/app/ReportHourlyIntensity/ReportHourlyIntensityGradeList'
+  );
+});
+const ReportHourlyIntensityCourseList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "ReportHourlyIntensityCourseList" */ '../components/app/ReportHourlyIntensity/ReportHourlyIntensityCourseList'
+  );
+});
+const ReportHourlyIntensityCourse = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "ReportHourlyIntensityCourse" */ '../components/app/ReportHourlyIntensity/ReportHourlyIntensityCourse'
+  );
+});
+const ReportHourlyIntensityGrade = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "ReportHourlyIntensityGrade" */ '../components/app/ReportHourlyIntensity/ReportHourlyIntensityGrade'
+  );
+});
 
 
 const App = (props: any) => {
@@ -621,12 +641,18 @@ const App = (props: any) => {
                     <Route path="/performanceReportCourse" element={<PerformanceReportCourseList />} />
                     <Route path="/performanceReportStudentsCourse" element={<PerformanceReportStudentsCourseList />} />
 
-
                     <Route path="/valuationDefinitivePeriodGrade" element={<ValuationDefinitivePeriodGradeList />} />
                     <Route path="/valuationDefinitivePeriodCourse" element={<ValuationDefinitivePeriodCourseList />} />
                     <Route path="/valuationDefinitivePeriodStudentsCourse" element={<ValuationDefinitivePeriodStudentsCourseList />} />
                     <Route path="/valuationDefinitivePeriodStudent" element={<ValuationDefinitivePeriodStudent />} />
+
+                    <Route path="/reportHourlyIntensityGradeList" element={<ReportHourlyIntensityGradeList />} />
+                    <Route path="/reportHourlyIntensityCourseList" element={<ReportHourlyIntensityCourseList />} />
+                    <Route path="/reportHourlyIntensityCourse" element={<ReportHourlyIntensityCourse />} />
+                    <Route path="/reportHourlyIntensityGrade" element={<ReportHourlyIntensityGrade />} />
+
                   </>
+
                 ) : (
                   <Route path="*" element={<Login />} />
                 )}

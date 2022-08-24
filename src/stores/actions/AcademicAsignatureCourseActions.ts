@@ -1,6 +1,6 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
-import { MUTATION_CHANGE_ACTIVE_ACADEMIC_ASIGNATURE_COURSE, MUTATION_CREATE_ACADEMIC_ASIGNATURE_COURSE, MUTATION_DELETE_ACADEMIC_ASIGNATURE_COURSE, MUTATION_UPDATE_ACADEMIC_ASIGNATURE_COURSE } from '../graphql/AcademicAsignatureCourse/AcademicAsignatureCourseMutations';
+import { MUTATION_CHANGE_ACTIVE_ACADEMIC_ASIGNATURE_COURSE, MUTATION_CREATE_ACADEMIC_ASIGNATURE_COURSE, MUTATION_DELETE_ACADEMIC_ASIGNATURE_COURSE, MUTATION_UPDATE_ACADEMIC_ASIGNATURE_COURSE, MUTATION_UPDATE_ACADEMIC_ASIGNATURE_COURSE_HOURLY_INTENSITY } from '../graphql/AcademicAsignatureCourse/AcademicAsignatureCourseMutations';
 import { QUERY_GET_ACADEMIC_ASIGNATURE_COURSE, QUERY_GET_ALL_ACADEMIC_ASIGNATURE_COURSE, QUERY_GET_ALL_ACADEMIC_ASIGNATURE_COURSE_TEACHER, QUERY_GET_COURSES_OF_GRADES, QUERY_GET_DROPDOWNS_ACADEMIC_ASIGNATURE_COURSE } from '../graphql/AcademicAsignatureCourse/AcademicAsignatureCourseQueries';
 
 export const getListAllAcademicAsignatureCourse = (campusId:string) => {
@@ -145,6 +145,43 @@ export const updateAcademicAsignatureCourse = (data: any, id: any) => {
       await client
         .mutate({
           mutation: MUTATION_UPDATE_ACADEMIC_ASIGNATURE_COURSE,
+          variables: { id, input: model },
+        })
+        .then((dataReponse: any) => {
+          if (dataReponse.errors?.length > 0) {
+            dataReponse.errors.forEach((error: any) => {
+              createNotification('error', 'error', '');
+            });
+          } else {
+            dataUpdate = dataReponse.data.update.id;
+            createNotification('success', 'success', '');
+          }
+        });
+      return dataUpdate as any;
+    } catch (error) {
+      createNotification('error', 'error', '');
+      return error;
+    }
+  };
+};
+
+
+export const updateAcademicAsignatureCourseHourltIntensity = (data: any, id: any) => {
+  return async (dispatch: any) => {
+    try {
+      let model: any = {};
+      model = {
+        ...model,
+      };
+      model = {
+        ...model,
+        ...data,
+      };
+      let dataUpdate = null;
+      model.hourlyIntensity = model.hourlyIntensity && !isNaN(model.hourlyIntensity) ? parseFloat(model.hourlyIntensity) : 0;
+      await client
+        .mutate({
+          mutation: MUTATION_UPDATE_ACADEMIC_ASIGNATURE_COURSE_HOURLY_INTENSITY,
           variables: { id, input: model },
         })
         .then((dataReponse: any) => {

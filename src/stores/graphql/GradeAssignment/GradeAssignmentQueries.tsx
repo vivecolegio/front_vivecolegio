@@ -11,9 +11,17 @@ export const QUERY_GET_ALL_GRADE_ASSIGNMENT = gql`
           minHourlyIntensity                            
           academicAsignature {
             name
+            id
+            academicArea {
+              id
+              name
+            }
+            academicAreaId
           }           
+          academicAsignatureId
           academicGrade {    
             name
+            id
           }             
           active          
         }

@@ -64,3 +64,14 @@ export function compareOrderAcademicArea(a: any, b: any) {
   }
   return 0;
 }
+
+export function compareOrderAcademicAreaAsc(a: any, b: any) {
+  if (a?.order < b?.order) {
+    return -1;
+  }
+  if (a?.order > b?.order) {
+    return 1;
+  }
+  return 0;
+}
+

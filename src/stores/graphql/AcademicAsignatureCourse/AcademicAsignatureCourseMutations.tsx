@@ -16,6 +16,16 @@ export const MUTATION_UPDATE_ACADEMIC_ASIGNATURE_COURSE = gql`
   }
 `;
 
+
+export const MUTATION_UPDATE_ACADEMIC_ASIGNATURE_COURSE_HOURLY_INTENSITY = gql`
+  mutation updateAcademicAsignatureCourseHourltIntensity($id: String!, $input: NewAcademicAsignatureCourse!) {
+    update: updateAcademicAsignatureCourseHourltIntensity(id: $id, data: $input) {
+      id
+    }
+  }
+`;
+
+
 export const MUTATION_CHANGE_ACTIVE_ACADEMIC_ASIGNATURE_COURSE = gql`
   mutation changeActiveAcademicAsignatureCourse($id: String!, $active: Boolean!) {
     changeActive: changeActiveAcademicAsignatureCourse(id: $id, active: $active)

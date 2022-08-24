@@ -320,6 +320,9 @@ const esMessages = {
   'menu.valuationDefinitivePeriodGrade': 'Valoraciones Estudiantes',
   'menu.valuationDefinitivePeriodCourse': 'Valoraciones Estudiantes',
   'menu.valuationDefinitivePeriodStudentsCourse': 'Valoraciones Estudiantes',
+  'menu.reportHourlyIntensityGradeList': 'Intensidad Horaria',
+  'menu.reportHourlyIntensityCourseList': 'Intensidad Horaria',
+  'menu.reportHourlyIntensityCourse': 'Intensidad Horaria',
 };
 
 export default esMessages;

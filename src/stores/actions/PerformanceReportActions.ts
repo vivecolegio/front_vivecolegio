@@ -19,7 +19,7 @@ export const generatePerformanceReportCourse = (id: any, schoolId: any, schoolYe
                 }
               });
             } else {
-              dataChangeActive = dataReponse.data.changeActive;
+              dataChangeActive = dataReponse.data.generate;
               if (showToast) {
                 createNotification('success', 'success', '');
               }
