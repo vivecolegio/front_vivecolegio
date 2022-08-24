@@ -74,8 +74,10 @@ const PerformanceReportStudentCourseList = (props: any) => {
         alink.href = urlImages + dataUrl;
         alink.target = "_blank"
         alink.download = 'SamplePDF.pdf';
-        alink.click();
-        setLoading(false);
+        setTimeout(() => {
+          alink.click();
+          setLoading(false);
+        }, 5000);
       });
   };
 
