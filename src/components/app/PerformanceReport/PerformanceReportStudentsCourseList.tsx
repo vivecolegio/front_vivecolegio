@@ -67,6 +67,7 @@ const PerformanceReportStudentCourseList = (props: any) => {
   };
 
   const generatePerformanceReportCourse = async (academicPeriodId: any, format: any) => {
+    setLoading(true);
     props.generatePerformanceReportCourse(courseId, props?.loginReducer?.schoolId,
       props?.loginReducer?.schoolYear, academicPeriodId, format, true).then(async (dataUrl: any) => {
         let alink = document.createElement('a');

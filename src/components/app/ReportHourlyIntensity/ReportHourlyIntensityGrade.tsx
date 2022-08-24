@@ -107,7 +107,6 @@ const ReportHourlyIntensityGrade = (props: any) => {
       filtered = filtered.sort(compareOrderAcademicAreaAsc);
       setAsignatures(asigantauresAux)
       setAreas(filtered);
-      console.log(filtered)
     });
     await props.getListAllCourse(props?.loginReducer?.campusId, academicGradeId ? academicGradeId : '', props?.loginReducer?.schoolId).then(async (courses: any) => {
       setCourses(courses);

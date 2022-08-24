@@ -15,7 +15,9 @@ export const QUERY_GET_ALL_GRADE_ASSIGNMENT = gql`
             academicArea {
               id
               name
+              order
             }
+            order
             academicAreaId
           }           
           academicAsignatureId
