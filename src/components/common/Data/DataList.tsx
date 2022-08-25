@@ -204,7 +204,7 @@ const DataList = (props: any) => {
         itemsLength={items ? items.length : 0}
         currentMenu={currentMenu}
         onSearchKey={(e: any) => {
-          setItems(itemsDefault.filter(dato => { return matches(dato, e) }));
+          setItems(itemsDefault.filter(dato => { return matches(dato, e?.toString()?.toLocaleLowerCase()) }));
         }}
         orderOptions={orderOptions}
         pageSizes={pageSizes}
