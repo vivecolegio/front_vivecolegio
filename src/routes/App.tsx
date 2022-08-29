@@ -57,6 +57,11 @@ const StudentAttendance = React.lazy(() => {
     /* webpackChunkName: "StudentAttendance" */ '../components/app/StudentAttendance/StudentAttendance'
   );
 });
+const StudentBehaviour = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "StudentBehaviour" */ '../components/app/StudentBehaviour/StudentBehaviour'
+  );
+});
 
 const AcademicAssignment = React.lazy(() => {
   return import(
@@ -600,6 +605,7 @@ const App = (props: any) => {
                     <Route path="/experienceLearning" element={<ExperienceLearningList />} />
                     <Route path="/myClasses" element={<MyClasessList />} />
                     <Route path="/studentAttendance" element={<StudentAttendance />} />
+                    <Route path="/studentBehaviour" element={<StudentBehaviour />} />
                     <Route path="/academicAssignment" element={<AcademicAssignment />} />
                     <Route path="/academicAssignmentTeacher" element={<AcademicAssignmentTeacher />} />
                     <Route path="/traditionalValuation" element={<TraditionalValuation />} />

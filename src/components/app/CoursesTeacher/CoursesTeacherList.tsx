@@ -60,6 +60,12 @@ const CoursesTeacherList = (props: any) => {
         goToChildren(
           `/spreadsheetCourse?courseId=${item.id}`,
         );
+        break;
+      case 'goToChildrenStudentBehaviour':
+        goToChildren(
+          `/studentBehaviour?courseId=${item.id}`,
+        );
+        break;
       default:
         break;
     }
@@ -114,6 +120,13 @@ const CoursesTeacherList = (props: any) => {
                 color: 'warning',
                 icon: 'iconsminds-library',
                 action: 'goToChildrenSpredsheetCourse',
+              },
+              {
+                id: 5,
+                label: 'Comportamiento Escolar',
+                color: 'info',
+                icon: 'iconsminds-library',
+                action: 'goToChildrenStudentBehaviour',
               },
             ]}
             withChildren={true}
