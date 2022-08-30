@@ -165,9 +165,9 @@ const ReportHourlyIntensityCourseList = (props: any) => {
             childrenButtons={[
               {
                 id: 1,
-                label: 'Estudiantes',
+                label: 'Areas/Asignaturas',
                 color: 'secondary',
-                icon: 'iconsminds-student-male-female',
+                icon: 'iconsminds-gear',
                 action: 'goToChildrenStudents',
               }
             ]}
