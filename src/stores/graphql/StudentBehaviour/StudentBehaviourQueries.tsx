@@ -8,6 +8,10 @@ export const QUERY_GET_All_STUDENT_BEHAVIOUR = gql`
         node {
           id
           studentId
+          student {
+            id
+            code
+          }
           academicPeriodId
           assessment  
           performanceLevel {

@@ -166,6 +166,7 @@ const StudentBehaviour = (props: any) => {
                       setProgress(progress);
                       setAverage(average / progress);
                       setValuations([...avrgsFinal.sort(compare)]);
+                      console.log(JSON.parse(JSON.stringify(avrgsFinal)));
                       setValuationsBase(JSON.parse(JSON.stringify(avrgsFinal)));
                     });
                 });
@@ -228,6 +229,9 @@ const StudentBehaviour = (props: any) => {
       let obj = {
         observation: event.target.value,
       };
+      if (obj?.observation?.length == 0) {
+        obj.observation = null;
+      }
       await props.updateStudentBehaviourObservation(obj, item.node.id).then(
         () => {
           createNotification('success', 'success', '');
