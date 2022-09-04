@@ -66,6 +66,11 @@ const CoursesTeacherList = (props: any) => {
           `/studentBehaviour?courseId=${item.id}`,
         );
         break;
+      case 'goToChildrenPerformanceReportStudentsCourse':
+        goToChildren(
+          `/performanceReportStudentsCourse?courseId=${item.id}&courseName=${item.name}&gradeName=${item?.academicGrade?.name}&gradeId=${item?.academicGrade?.id}`,
+        );
+        break;
       default:
         break;
     }
@@ -127,6 +132,13 @@ const CoursesTeacherList = (props: any) => {
                 color: 'info',
                 icon: 'iconsminds-library',
                 action: 'goToChildrenStudentBehaviour',
+              },
+              {
+                id: 6,
+                label: 'Certificado Desempeño',
+                color: 'primary',
+                icon: 'iconsminds-library',
+                action: 'goToChildrenPerformanceReportStudentsCourse',
               },
             ]}
             withChildren={true}
