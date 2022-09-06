@@ -108,7 +108,8 @@ const DataListView = ({
                                 size="xs"
                                 onClick={() => {
                                   return additionalFunction(item, button);
-                                }}>
+                                }}
+                                disabled={button?.disabled ? button?.disabled : false}>
                                 <i className={button.icon + ' font-1rem mr-2'} />
                                 {button.label}
                               </Button> : ''
