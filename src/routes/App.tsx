@@ -503,6 +503,12 @@ const ReportHourlyIntensityGrade = React.lazy(() => {
   );
 });
 
+const RecoveryPlanAcademicAsignatureCourseList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "RecoveryPlanAcademicAsignatureCourseList" */ '../components/app/RecoveryPlan/RecoveryPlanAcademicAsignatureCourseList'
+  );
+});
+
 
 const App = (props: any) => {
   const { locale } = props.translateReducer;
@@ -656,6 +662,8 @@ const App = (props: any) => {
                     <Route path="/reportHourlyIntensityCourseList" element={<ReportHourlyIntensityCourseList />} />
                     <Route path="/reportHourlyIntensityCourse" element={<ReportHourlyIntensityCourse />} />
                     <Route path="/reportHourlyIntensityGrade" element={<ReportHourlyIntensityGrade />} />
+
+                    <Route path="/recoveryPlanAcademicAsignatureCourse" element={<RecoveryPlanAcademicAsignatureCourseList />} />
 
                   </>
 
