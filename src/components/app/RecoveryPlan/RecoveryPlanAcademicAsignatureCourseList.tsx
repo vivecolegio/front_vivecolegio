@@ -206,7 +206,6 @@ const RecoveryPlanAcademicAsignatureCourseList = (props: any) => {
                 color: 'secondary',
                 icon: 'iconsminds-blackboard',
                 action: 'goToChildrenExperience',
-                disabled: true,
               },
               {
                 id: 2,
@@ -214,7 +213,6 @@ const RecoveryPlanAcademicAsignatureCourseList = (props: any) => {
                 color: 'warning',
                 icon: 'iconsminds-letter-open',
                 action: 'goToChildrenValuations',
-                disabled: true,
               },
             ]}
             withChildren={true}
