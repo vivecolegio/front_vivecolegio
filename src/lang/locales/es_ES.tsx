@@ -323,6 +323,7 @@ const esMessages = {
   'menu.reportHourlyIntensityGradeList': 'Intensidad Horaria',
   'menu.reportHourlyIntensityCourseList': 'Intensidad Horaria',
   'menu.reportHourlyIntensityCourse': 'Intensidad Horaria',
+  'menu.recoveryPlanAcademicAsignatureCourse': 'Plan de Nivelación',
 };
 
 export default esMessages;
