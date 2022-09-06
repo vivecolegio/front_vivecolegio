@@ -70,6 +70,7 @@ const ExperienceLearningList = (props: any) => {
           props?.loginReducer?.campusId,
           academicAsignatureCourseId,
           idAcademicPeriod ? idAcademicPeriod : undefined,
+          "NORMAL"
         )
         .then((listData: any) => {
           setDataTable(listData.map((c: any) => {
@@ -82,6 +83,7 @@ const ExperienceLearningList = (props: any) => {
         .getAllExperienceLearningWhitoutCampusId(
           academicAsignatureCourseId,
           idAcademicPeriod ? idAcademicPeriod : undefined,
+          "NORMAL"
         )
         .then((listData: any) => {
           setDataTable(listData.map((c: any) => {
@@ -347,6 +349,7 @@ const ExperienceLearningList = (props: any) => {
             refreshDataTable={refreshDataTable}
           />
           <ExperienceLearningCreateEdit
+            experienceLearningType={"NORMAL"}
             data={data}
             isLg={true}
             modalOpen={modalOpen}

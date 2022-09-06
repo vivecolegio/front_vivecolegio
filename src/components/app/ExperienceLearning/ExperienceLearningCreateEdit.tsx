@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 import Select from 'react-select';
 import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
+
 import IntlMessages from '../../../helpers/IntlMessages';
 import * as experienceLearningActions from '../../../stores/actions/ExperienceLearningActions';
 import { Colxx } from '../../common/CustomBootstrap';
@@ -35,6 +36,7 @@ const ExperienceLearningCreateEdit = (props: any) => {
   const [navigationMethod, setNavigationMethod] = useState(null);
   const [navigationMethodList, setNavigationMethodList] = useState(null);
   const [experienceTypes, setExperienceTypes] = useState([]);
+  const [experienceRecoveryPlanTypes, setExperienceRecoveryPlanTypes] = useState([]);
   let [params] = useSearchParams();
   const academicAsignatureCourseId = params.get('academicAsignatureCourseId');
   const asignatureId = params.get('asignatureId');
@@ -207,6 +209,13 @@ const ExperienceLearningCreateEdit = (props: any) => {
         }),
       );
     });
+    props.getExperienceRecoveryPlanType().then((data: any) => {
+      setExperienceRecoveryPlanTypes(
+        data.map((c: any) => {
+          return { label: intl.messages['display.' + c.name], value: c.name, key: c.name };
+        }),
+      );
+    });
     props
       .getDropdownsExperienceLearning(
         props?.loginReducer?.schoolId,
@@ -333,6 +342,10 @@ const ExperienceLearningCreateEdit = (props: any) => {
     required: true,
     value: criteriaPerformances,
   });
+  register('experienceLearningType', {
+    required: true,
+    value: props?.experienceLearningType,
+  });
 
   const auditInfo = {
     createdAt: props?.data?.id ? props?.data?.createdAt : null,
@@ -377,19 +390,33 @@ const ExperienceLearningCreateEdit = (props: any) => {
                 <Label>
                   <IntlMessages id="forms.experienceType" />
                 </Label>
-                <Select
-                  isClearable
-                  placeholder={<IntlMessages id="forms.select" />}
-                  {...register('experienceType', { required: true })}
-                  className="react-select"
-                  classNamePrefix="react-select"
-                  options={experienceTypes}
-                  value={experienceType}
-                  onChange={(selectedOption) => {
-                    setValue('experienceType', selectedOption?.key);
-                    setExperienceType(selectedOption);
-                  }}
-                />
+                {props?.experienceLearningType === "NORMAL" ?
+                  <Select
+                    isClearable
+                    placeholder={<IntlMessages id="forms.select" />}
+                    {...register('experienceType', { required: true })}
+                    className="react-select"
+                    classNamePrefix="react-select"
+                    options={experienceTypes}
+                    value={experienceType}
+                    onChange={(selectedOption) => {
+                      setValue('experienceType', selectedOption?.key);
+                      setExperienceType(selectedOption);
+                    }} />
+                  :
+                  <Select
+                    isClearable
+                    placeholder={<IntlMessages id="forms.select" />}
+                    {...register('experienceType', { required: true })}
+                    className="react-select"
+                    classNamePrefix="react-select"
+                    options={experienceRecoveryPlanTypes}
+                    value={experienceType}
+                    onChange={(selectedOption) => {
+                      setValue('experienceType', selectedOption?.key);
+                      setExperienceType(selectedOption);
+                    }} />
+                }
               </div>
               {experienceType?.key === 'ONLINETEST' ? (
                 <>

@@ -5,6 +5,7 @@ export const QUERY_GET_ALL_EXPERIENCE_LEARNING = gql`
     $campusId: String!,
     $academicAsignatureCourseId: String
     $academicPeriodId: String
+    $experienceLearningType: ExperienceLearningType!
   ) {
     data: getAllExperienceLearning(
       orderCreated: true
@@ -12,6 +13,7 @@ export const QUERY_GET_ALL_EXPERIENCE_LEARNING = gql`
       campusId: $campusId
       academicAsignatureCourseId: $academicAsignatureCourseId
       academicPeriodId: $academicPeriodId
+      experienceLearningType: $experienceLearningType
     ) {
       edges {
         cursor
@@ -58,12 +60,14 @@ export const QUERY_GET_ALL_EXPERIENCE_LEARNING_ASIGNATURE_COURSE_WHITOUT_CAMPUSI
   query getAllExperienceLearningWhitoutCampusId(
     $academicAsignatureCourseId: String!
     $academicPeriodId: String
+    $experienceLearningType: ExperienceLearningType!
   ) {
     data: getAllExperienceLearningWhitoutCampusId(
       orderCreated: true
       allData: true
       academicAsignatureCourseId: $academicAsignatureCourseId
       academicPeriodId: $academicPeriodId
+      experienceLearningType: $experienceLearningType
     ) {
       edges {
         cursor
@@ -316,6 +320,29 @@ export const QUERY_GET_ALL_NAVIGATION_METHOD_QUESTION_TEST_ONLINE = gql`
 export const QUERY_GET_ALL_EXPERIENCE_TYPE = gql`
     query getAllExperienceType {
       __type(name: "ExperienceType") {
+        name
+        enumValues {
+          name
+        }
+      }
+    }
+`;
+
+export const QUERY_GET_ALL_EXPERIENCE_RECOVERY_PLAN_TYPE = gql`
+    query getAllExperienceRecoveryPlanType {
+      __type(name: "ExperienceRecoveryPlanType") {
+        name
+        enumValues {
+          name
+        }
+      }
+    }
+`;
+
+
+export const QUERY_GET_ALL_EXPERIENCE_LEARNING_TYPE = gql`
+    query getAllExperienceLearningType {
+      __type(name: "ExperienceLearningType") {
         name
         enumValues {
           name
