@@ -189,6 +189,7 @@ const esMessages = {
   'menu.statement': 'Enunciado',
   'menu.evidenceLearning': 'Evidencia de aprendizaje',
   'menu.experienceLearning': 'Actividad de valoración',
+  'menu.experienceLearningRecoveryPlan': 'Actividad de nivelación',
   'menu.myClasses': 'Asignación Académica',
   'menu.learnings': 'Aprendizajes',
   'menu.rubricValuation': 'Rúbrica de valoración',
@@ -324,6 +325,7 @@ const esMessages = {
   'menu.reportHourlyIntensityCourseList': 'Intensidad Horaria',
   'menu.reportHourlyIntensityCourse': 'Intensidad Horaria',
   'menu.recoveryPlanAcademicAsignatureCourse': 'Plan de Nivelación',
+
 };
 
 export default esMessages;

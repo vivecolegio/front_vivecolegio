@@ -257,6 +257,13 @@ const ExperienceLearningList = React.lazy(() => {
   );
 });
 
+const ExperienceLearningRecoveryPlanList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "ExperienceLearningRecoveryPlanList" */ '../components/app/ExperienceLearning/ExperienceLearningRecoveryPlanList'
+  );
+});
+
+
 const GenderList = React.lazy(() => {
   return import(/* webpackChunkName: "GenderList" */ '../components/app/Gender/GenderList');
 });
@@ -609,6 +616,7 @@ const App = (props: any) => {
                     <Route path="/learning" element={<LearningList />} />
                     <Route path="/evidenceLearning" element={<LearningEvidenceList />} />
                     <Route path="/experienceLearning" element={<ExperienceLearningList />} />
+                    <Route path="/experienceLearningRecoveryPlan" element={<ExperienceLearningRecoveryPlanList />} />
                     <Route path="/myClasses" element={<MyClasessList />} />
                     <Route path="/studentAttendance" element={<StudentAttendance />} />
                     <Route path="/studentBehaviour" element={<StudentBehaviour />} />
