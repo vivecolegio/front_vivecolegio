@@ -73,7 +73,7 @@ export const getValuationStudents = (id: any) => {
   };
 };
 
-export const getAllExperienceLearningAverageValuation = (evaluativeComponentId : string, academicPeriodId: string, academicAsignatureCourseId: string) => {
+export const getAllExperienceLearningAverageValuation = (evaluativeComponentId : string, academicPeriodId: string, academicAsignatureCourseId: string, experienceLearningType:string) => {
   return async (dispatch: any) => {
     try {
       let data = {};
@@ -81,7 +81,7 @@ export const getAllExperienceLearningAverageValuation = (evaluativeComponentId :
         .query({
           query: QUERY_GET_All_EXPERIENCE_LEARNING_AVERAGE_VALUATION,
           variables: {
-            evaluativeComponentId,academicPeriodId, academicAsignatureCourseId,
+            evaluativeComponentId,academicPeriodId, academicAsignatureCourseId, experienceLearningType
           },
         })
         .then((result: any) => {

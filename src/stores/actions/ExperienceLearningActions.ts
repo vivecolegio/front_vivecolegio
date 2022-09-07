@@ -52,7 +52,7 @@ export const getAllExperienceLearningWhitoutCampusId = (academicAsignatureCourse
   };
 };
 
-export const getAllExperienceLearningAcademicAsignatureCourse = (id : string, academicPeriodId: string, evaluativeComponentId: string) => {
+export const getAllExperienceLearningAcademicAsignatureCourse = (id : string, academicPeriodId: string, evaluativeComponentId: string, experienceLearningType:string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
@@ -63,6 +63,7 @@ export const getAllExperienceLearningAcademicAsignatureCourse = (id : string, ac
             id,
             academicPeriodId,
             evaluativeComponentId,
+            experienceLearningType,
           },
         })
         .then((result: any) => {

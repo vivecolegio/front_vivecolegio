@@ -115,11 +115,13 @@ export const QUERY_GET_ALL_EXPERIENCE_LEARNING_ASIGNATURE_COURSE = gql`
     $id: String!
     $academicPeriodId: String!
     $evaluativeComponentId: String!
+    $experienceLearningType: ExperienceLearningType!
   ) {
     data: getAllExperienceLearningAcademicPeriodEvaluativeComponentAcademicAsignatureCourse(
       id: $id
       academicPeriodId: $academicPeriodId
       evaluativeComponentId: $evaluativeComponentId
+      experienceLearningType: $experienceLearningType
     ) {
       id
       active

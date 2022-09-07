@@ -29,7 +29,7 @@ import TooltipItem from '../../common/TooltipItem';
 import { StyledBadge } from '../../styled/BadgeCustom';
 import ThumbnailImage from '../Aplications/AplicationsComponents/ThumbnailImage';
 
-const SpreadsheetList = (props: any) => {
+const SpreadsheetRecoveryPlanList = (props: any) => {
   const [students, setStudents] = useState(null);
   const [performanceLevels, setPerformanceLevels] = useState(null);
   const [performanceLevelType, setPerformanceLevelType] = useState(null);
@@ -147,7 +147,7 @@ const SpreadsheetList = (props: any) => {
                       c?.node?.id,
                       periodId,
                       academicAsignatureCourseId,
-                      "NORMAL"
+                      "RECOVERY"
                     )
                     .then((resp: any) => {
                       avrgs = avrgs.concat(resp.data.edges);
@@ -159,7 +159,7 @@ const SpreadsheetList = (props: any) => {
                       academicAsignatureCourseId,
                       periodId,
                       c?.node?.id,
-                      "NORMAL"
+                      "RECOVERY"
                     )
                     .then(async (response: any) => {
                       await response.data.map(async (exp: any) => {
@@ -262,7 +262,7 @@ const SpreadsheetList = (props: any) => {
   return (
     <>
       <div className="mt-4 d-flex justify-content-center align-items-center">
-        <h1 className="font-bold">Planilla de Valoración</h1>
+        <h1 className="font-bold">Planilla de Nivelación</h1>
       </div>
       <hr />
       <div className="d-flex justify-content-between align-items-center">
@@ -442,60 +442,69 @@ const SpreadsheetList = (props: any) => {
                 </thead>
                 <tbody>
                   {students.map((item: any, index: any) => {
-                    return (
-                      <>
-                        <tr key={index}>
-                          <td className="text-center vertical-middle">
-                            <span className="font-bold">{item?.code}</span>
-                          </td>
-                          <td className="text-center vertical-middle">
-                            <div className="d-flex align-items-center justify-content-start">
-                              {item?.user?.urlPhoto ? (
-                                <ThumbnailImage
-                                  rounded
-                                  src={item?.user?.urlPhoto}
-                                  alt="profile"
-                                  className="xsmall mr-3"
-                                />
-                              ) : (
-                                <span className="img-thumbnail md-avatar-initials border-0 span-initials rounded-circle mr-3 list-thumbnail align-self-center xsmall">
-                                  {getInitialsName(
-                                    item?.user
-                                      ? item?.user?.lastName +
-                                      ' ' +
-                                      item?.user?.name
-                                      : 'N N',
-                                  )}
+                    let averageFinal = averagesFinal?.filter((itemV: any) => itemV?.node?.studentId == item?.id);
+                    let show = false;
+                    for (let final of averageFinal) {
+                      if (final?.node?.valuationType !== "RECOVERY") {
+                        if (final?.node?.performanceLevel?.isRecovery) {
+                          show = true;
+                        }
+                      }
+                    } if (show) {
+                      return (
+                        <>
+                          <tr key={index}>
+                            <td className="text-center vertical-middle">
+                              <span className="font-bold">{item?.code}</span>
+                            </td>
+                            <td className="text-center vertical-middle">
+                              <div className="d-flex align-items-center justify-content-start">
+                                {item?.user?.urlPhoto ? (
+                                  <ThumbnailImage
+                                    rounded
+                                    src={item?.user?.urlPhoto}
+                                    alt="profile"
+                                    className="xsmall mr-3"
+                                  />
+                                ) : (
+                                  <span className="img-thumbnail md-avatar-initials border-0 span-initials rounded-circle mr-3 list-thumbnail align-self-center xsmall">
+                                    {getInitialsName(
+                                      item?.user
+                                        ? item?.user?.lastName +
+                                        ' ' +
+                                        item?.user?.name
+                                        : 'N N',
+                                    )}
+                                  </span>
+                                )}
+                                <span>
+                                  {item?.user?.lastName} {item?.user?.name}
                                 </span>
-                              )}
-                              <span>
-                                {item?.user?.lastName} {item?.user?.name}
-                              </span>
-                            </div>
-                          </td>
-                          {valuations.map((item2: any, index2: any) => {
-                            return (
-                              <>
-                                {item2.experiences.length > 0 ?
-                                  <>
-                                    {item2.experiences.map((e: any) => {
-                                      let note = notes.find(
-                                        (n: any) =>
-                                          n?.experienceLearningId === e?.id &&
-                                          item?.id === n?.studentId,
-                                      );
-                                      return (
-                                        <>
-                                          <td className="text-center vertical-middle">
-                                            {performanceLevelType === "QUALITATIVE" ?
-                                              <>
-                                                <StyledBadge color="primary" className="font-0-8rem" background={note?.performanceLevel?.colorHex ? `${note?.performanceLevel?.colorHex}` : "#00cafe"}>
-                                                  {note?.performanceLevel?.abbreviation ? note?.performanceLevel?.abbreviation : note?.performanceLevel?.name}
-                                                </StyledBadge>
-                                              </> :
-                                              <>
-                                                {note?.assessment}
-                                                {/* <Input
+                              </div>
+                            </td>
+                            {valuations.map((item2: any, index2: any) => {
+                              return (
+                                <>
+                                  {item2.experiences.length > 0 ?
+                                    <>
+                                      {item2.experiences.map((e: any) => {
+                                        let note = notes.find(
+                                          (n: any) =>
+                                            n?.experienceLearningId === e?.id &&
+                                            item?.id === n?.studentId,
+                                        );
+                                        return (
+                                          <>
+                                            <td className="text-center vertical-middle">
+                                              {performanceLevelType === "QUALITATIVE" ?
+                                                <>
+                                                  <StyledBadge color="primary" className="font-0-8rem" background={note?.performanceLevel?.colorHex ? `${note?.performanceLevel?.colorHex}` : "#00cafe"}>
+                                                    {note?.performanceLevel?.abbreviation ? note?.performanceLevel?.abbreviation : note?.performanceLevel?.name}
+                                                  </StyledBadge>
+                                                </> :
+                                                <>
+                                                  {note?.assessment}
+                                                  {/* <Input
                                                   onKeyPress={(event: any) => {
                                                     return saveNote(event, note, e, item);
                                                   }}
@@ -504,54 +513,54 @@ const SpreadsheetList = (props: any) => {
                                                   className="form-control"
                                                   style={{ width: "60px" }}
                                                 /> */}
-                                              </>
-                                            }
-                                          </td>
+                                                </>
+                                              }
+                                            </td>
+                                          </>
+                                        );
+                                      })} </> : ""}
+                                  {item2?.experiences?.length > 0 ? (
+                                    <th className="text-center vertical-middle">
+                                      {performanceLevelType === "QUALITATIVE" ?
+                                        <>
+                                          <StyledBadge color="primary" className="font-0-8rem" background={averages.find(
+                                            (n: any) =>
+                                              item2?.evaluativeComponentId ===
+                                              n?.node?.evaluativeComponentId &&
+                                              item?.id === n?.node?.studentId,
+                                          )?.node?.performanceLevel?.colorHex ? `${averages.find(
+                                            (n: any) =>
+                                              item2?.evaluativeComponentId ===
+                                              n?.node?.evaluativeComponentId &&
+                                              item?.id === n?.node?.studentId,
+                                          )?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
+                                            {averages.find(
+                                              (n: any) =>
+                                                item2?.evaluativeComponentId ===
+                                                n?.node?.evaluativeComponentId &&
+                                                item?.id === n?.node?.studentId,
+                                            )?.node?.performanceLevel?.abbreviation ? averages.find(
+                                              (n: any) =>
+                                                item2?.evaluativeComponentId ===
+                                                n?.node?.evaluativeComponentId &&
+                                                item?.id === n?.node?.studentId,
+                                            )?.node?.performanceLevel?.abbreviation : averages.find(
+                                              (n: any) =>
+                                                item2?.evaluativeComponentId ===
+                                                n?.node?.evaluativeComponentId &&
+                                                item?.id === n?.node?.studentId,
+                                            )?.node?.performanceLevel?.name}
+                                          </StyledBadge>
                                         </>
-                                      );
-                                    })} </> : ""}
-                                {item2?.experiences?.length > 0 ? (
-                                  <th className="text-center vertical-middle">
-                                    {performanceLevelType === "QUALITATIVE" ?
-                                      <>
-                                        <StyledBadge color="primary" className="font-0-8rem" background={averages.find(
-                                          (n: any) =>
-                                            item2?.evaluativeComponentId ===
-                                            n?.node?.evaluativeComponentId &&
-                                            item?.id === n?.node?.studentId,
-                                        )?.node?.performanceLevel?.colorHex ? `${averages.find(
-                                          (n: any) =>
-                                            item2?.evaluativeComponentId ===
-                                            n?.node?.evaluativeComponentId &&
-                                            item?.id === n?.node?.studentId,
-                                        )?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
+                                        :
+                                        <>
                                           {averages.find(
                                             (n: any) =>
                                               item2?.evaluativeComponentId ===
                                               n?.node?.evaluativeComponentId &&
                                               item?.id === n?.node?.studentId,
-                                          )?.node?.performanceLevel?.abbreviation ? averages.find(
-                                            (n: any) =>
-                                              item2?.evaluativeComponentId ===
-                                              n?.node?.evaluativeComponentId &&
-                                              item?.id === n?.node?.studentId,
-                                          )?.node?.performanceLevel?.abbreviation : averages.find(
-                                            (n: any) =>
-                                              item2?.evaluativeComponentId ===
-                                              n?.node?.evaluativeComponentId &&
-                                              item?.id === n?.node?.studentId,
-                                          )?.node?.performanceLevel?.name}
-                                        </StyledBadge>
-                                      </>
-                                      :
-                                      <>
-                                        {averages.find(
-                                          (n: any) =>
-                                            item2?.evaluativeComponentId ===
-                                            n?.node?.evaluativeComponentId &&
-                                            item?.id === n?.node?.studentId,
-                                        )?.node?.average?.toFixed(countDigits)}
-                                        {/* <Input
+                                          )?.node?.average?.toFixed(countDigits)}
+                                          {/* <Input
                                           disabled={true}
                                           defaultValue={
                                             averages.find(
@@ -564,36 +573,37 @@ const SpreadsheetList = (props: any) => {
                                           className="form-control"
                                           style={{ width: "4.5vh" }}
                                         /> */}
-                                      </>}
-                                  </th>
-                                ) : (
-                                  <th></th>
-                                )}
-                              </>
-                            );
-                          })}
-                          {performanceLevelType === "QUANTITATIVE" ?
-                            <>
-                              <th className="text-center vertical-middle">
-                                {averagesFinal.find((n: any) => item?.id === n?.node?.studentId)?.node
-                                  ?.assessment?.toFixed(countDigits) || ''}
-                              </th>
-                            </> : <></>
-                          }
-                          <th className="text-center vertical-middle">
-                            <StyledBadge color="primary" className="font-0-8rem" background={averagesFinal.find(
-                              (c: any) => c?.node?.studentId === item?.id,
-                            )?.node?.performanceLevel?.colorHex ? `${averagesFinal.find(
-                              (c: any) => c?.node?.studentId === item?.id,
-                            )?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
-                              {averagesFinal.find(
-                                (c: any) => c?.node?.studentId === item?.id,
-                              )?.node?.performanceLevel?.name || '--'}
-                            </StyledBadge>
-                          </th>
-                        </tr>
-                      </>
-                    );
+                                        </>}
+                                    </th>
+                                  ) : (
+                                    <th></th>
+                                  )}
+                                </>
+                              );
+                            })}
+                            {performanceLevelType === "QUANTITATIVE" ?
+                              <>
+                                <th className="text-center vertical-middle">
+                                  {averagesFinal.find((n: any) => item?.id === n?.node?.studentId && n?.node?.valuationType === "RECOVERY")?.node
+                                    ?.assessment?.toFixed(countDigits) || ''}
+                                </th>
+                              </> : <></>
+                            }
+                            <th className="text-center vertical-middle">
+                              <StyledBadge color="primary" className="font-0-8rem" background={averagesFinal.find(
+                                (c: any) => c?.node?.studentId === item?.id && c?.node?.valuationType === "RECOVERY",
+                              )?.node?.performanceLevel?.colorHex ? `${averagesFinal.find(
+                                (c: any) => c?.node?.studentId === item?.id && c?.node?.valuationType === "RECOVERY",
+                              )?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
+                                {averagesFinal.find(
+                                  (c: any) => c?.node?.studentId === item?.id && c?.node?.valuationType === "RECOVERY",
+                                )?.node?.performanceLevel?.name || '--'}
+                              </StyledBadge>
+                            </th>
+                          </tr>
+                        </>
+                      );
+                    }
                   })}
                 </tbody>
               </table>
@@ -625,4 +635,4 @@ const mapStateToProps = ({ loginReducer }: any) => {
   return { loginReducer };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SpreadsheetList);
+export default connect(mapStateToProps, mapDispatchToProps)(SpreadsheetRecoveryPlanList);

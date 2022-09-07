@@ -406,6 +406,9 @@ const Spreadsheet = React.lazy(() => {
   return import(/* webpackChunkName: "Spreadsheet" */ '../components/app/Spreadsheet/Spreadsheet');
 });
 
+const SpreadsheetRecoveryPlan = React.lazy(() => {
+  return import(/* webpackChunkName: "SpreadsheetRecoveryPlan" */ '../components/app/Spreadsheet/SpreadsheetRecoveryPlan');
+});
 
 const SpreadsheetCourse = React.lazy(() => {
   return import(/* webpackChunkName: "SpreadsheetCourse" */ '../components/app/SpreadsheetCourse/SpreadsheetCourse');
@@ -432,6 +435,11 @@ const TeacherList = React.lazy(() => {
 const TraditionalValuation = React.lazy(() => {
   return import(
     /* webpackChunkName: "TraditionalValuation" */ '../components/app/TraditionalValuation/TraditionalValuation'
+  );
+});
+const TraditionalValuationRecoveryPlan = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "TraditionalValuationRecoveryPlan" */ '../components/app/TraditionalValuation/TraditionalValuationRecoveryPlan'
   );
 });
 
@@ -623,6 +631,7 @@ const App = (props: any) => {
                     <Route path="/academicAssignment" element={<AcademicAssignment />} />
                     <Route path="/academicAssignmentTeacher" element={<AcademicAssignmentTeacher />} />
                     <Route path="/traditionalValuation" element={<TraditionalValuation />} />
+                    <Route path="/traditionalValuationRecoveryPlan" element={<TraditionalValuationRecoveryPlan />} />
                     <Route path="/selfValuation" element={<SelfValuation />} />
                     <Route path="/rubricCriteria" element={<RubricCriteriaList />} />
                     <Route path="/rubricValuation" element={<RubricValuation />} />
@@ -630,6 +639,7 @@ const App = (props: any) => {
                     <Route path="/coEvaluation" element={<CoEvaluation />} />
                     <Route path="/coEvaluationStudents" element={<CoEvaluationStudents />} />
                     <Route path="/spreadsheet" element={<Spreadsheet />} />
+                    <Route path="/spreadsheetRecoveryPlan" element={<SpreadsheetRecoveryPlan />} />
                     <Route path="/spreadsheetCourse" element={<SpreadsheetCourse />} />
                     <Route
                       path="/questionCategoryTestOnline"

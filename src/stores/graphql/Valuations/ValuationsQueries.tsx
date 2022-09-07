@@ -18,8 +18,8 @@ export const QUERY_GET_VALUATIONS_STUDENT = gql`
 `;
 
 export const QUERY_GET_All_EXPERIENCE_LEARNING_AVERAGE_VALUATION = gql`
-  query getAllExperienceLearningAverageValuation($evaluativeComponentId : String!, $academicPeriodId: String!, $academicAsignatureCourseId: String!) {
-    data: getAllExperienceLearningAverageValuation(orderCreated: true, allData: true, evaluativeComponentId:$evaluativeComponentId, academicPeriodId: $academicPeriodId, academicAsignatureCourseId: $academicAsignatureCourseId) {
+  query getAllExperienceLearningAverageValuation($evaluativeComponentId : String!, $academicPeriodId: String!, $academicAsignatureCourseId: String!,     $experienceLearningType: ExperienceLearningType!) {
+    data: getAllExperienceLearningAverageValuation(orderCreated: true, allData: true, evaluativeComponentId:$evaluativeComponentId, academicPeriodId: $academicPeriodId, academicAsignatureCourseId: $academicAsignatureCourseId, experienceLearningType: $experienceLearningType) {
       edges {
         cursor
         node {
@@ -54,6 +54,7 @@ export const QUERY_GET_All_ACADEMIC_ASIGNATURE_COURSE_PERIOD_VALUATION = gql`
             name
             colorHex
             abbreviation
+            isRecovery
           }    
           valuationType  
         }

@@ -194,7 +194,7 @@ const ExperienceLearningRecoveryPlanList = (props: any) => {
     switch (btn?.action) {
       case 'TRADITIONALVALUATION':
         goToChildren(
-          `/traditionalValuation?learningId=${item?.id}&academicAsignatureCourseId=${item?.academicAsignatureCourseId}`,
+          `/traditionalValuationRecoveryPlan?learningId=${item?.id}&academicAsignatureCourseId=${item?.academicAsignatureCourseId}`,
         );
         break;
       case 'SELFAPPRAISAL':
