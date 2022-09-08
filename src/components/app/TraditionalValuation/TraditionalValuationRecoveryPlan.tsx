@@ -55,7 +55,6 @@ const ExperienceLearningTraditionalValuationRecoveryPlanList = (props: any) => {
       });
     });
     props.dataExperienceLearning(learningId).then((formData: any) => {
-      console.log(formData.data);
       props
         .getAllAcademicAsignatureCoursePeriodValuation(formData.data?.academicPeriodId, academicAsignatureCourseId)
         .then(async (notesFinal: any) => {
@@ -117,7 +116,6 @@ const ExperienceLearningTraditionalValuationRecoveryPlanList = (props: any) => {
       });
     });
     props.dataExperienceLearning(learningId).then((formData: any) => {
-      console.log(formData.data);
       props
         .getAllAcademicAsignatureCoursePeriodValuation(formData.data?.academicPeriodId, academicAsignatureCourseId)
         .then(async (notesFinal: any) => {
@@ -230,7 +228,16 @@ const ExperienceLearningTraditionalValuationRecoveryPlanList = (props: any) => {
       performanceLevelId: performanceSelected ? performanceSelected?.value : perf?.node?.id
     };
     for (const item of valuations) {
-      promisesList.push(props.updateExperienceLearningTraditionalValuation(obj, item.node.id))
+      let averageFinal = averagesFinal?.filter((itemV: any) => itemV?.node?.studentId == item.node?.studentId);
+      let show = false;
+      for (let final of averageFinal) {
+        console.log(final)
+        if (final?.node?.valuationType !== "RECOVERY") {
+          if (final?.node?.performanceLevel?.isRecovery) {
+            promisesList.push(props.updateExperienceLearningTraditionalValuation(obj, item.node.id))
+          }
+        }
+      }
     }
     await Promise.all(promisesList).then(() => {
       createNotification('success', 'success', '');
