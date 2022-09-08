@@ -231,7 +231,6 @@ const ExperienceLearningTraditionalValuationRecoveryPlanList = (props: any) => {
       let averageFinal = averagesFinal?.filter((itemV: any) => itemV?.node?.studentId == item.node?.studentId);
       let show = false;
       for (let final of averageFinal) {
-        console.log(final)
         if (final?.node?.valuationType !== "RECOVERY") {
           if (final?.node?.performanceLevel?.isRecovery) {
             promisesList.push(props.updateExperienceLearningTraditionalValuation(obj, item.node.id))
