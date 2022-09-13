@@ -227,6 +227,21 @@ const AcademicAsignatureCourseBasicList = (props: any) => {
           `/experienceLearning?gradeId=${item?.course?.academicGradeId}&asignatureId=${item.academicAsignatureId}&academicAsignatureCourseId=${item?.id}`,
         );
         break;
+      case 'goToChildrenStudentAttendance':
+        goToChildren(
+          `/studentAttendance?courseName=${item?.course?.name}&courseId=${item?.course?.id}&academicAsignatureCourseId=${item?.id}&asignatureId=${item.academicAsignatureId}&asignatureName=${item.academicAsignature?.name}&academicAsignatureCourseId=${item?.id}`,
+        );
+        break;
+      case 'goToChildrenRecoveryExperienceLearning':
+        goToChildren(
+          `/experienceLearningRecoveryPlan?gradeId=${item?.course?.academicGradeId}&asignatureId=${item.academicAsignatureId}&academicAsignatureCourseId=${item?.id}`,
+        );
+        break;
+      case 'goToChildrenRecoverySpredsheet':
+        goToChildren(
+          `/spreadsheetRecoveryPlan?gradeId=${item?.course?.academicGradeId}&gradeName=${item?.course?.academicGrade?.name}&courseName=${item?.course?.name}&courseId=${item?.course?.id}&academicAsignatureCourseId=${item?.id}&asignatureId=${item.academicAsignatureId}&asignatureName=${item.academicAsignature?.name}&academicAsignatureCourseId=${item?.id}`,
+        );
+        break;;
       default:
         break;
     }
@@ -301,18 +316,25 @@ const AcademicAsignatureCourseBasicList = (props: any) => {
               },
               {
                 id: 2,
-                label: 'Planilla Nivelación',
+                label: 'Asistencia',
                 color: 'info',
-                icon: 'iconsminds-library',
-                action: 'goToChildrenSpredsheet',
-                hide: currentMenuPermissionSpreadsheet?.readAction ? false : true
+                icon: 'iconsminds-letter-open',
+                action: 'goToChildrenStudentAttendance',
               },
               {
                 id: 3,
+                label: 'Planilla Nivelación',
+                color: 'info',
+                icon: 'iconsminds-library',
+                action: 'goToChildrenRecoverySpredsheet',
+                hide: currentMenuPermissionSpreadsheet?.readAction ? false : true
+              },
+              {
+                id: 4,
                 label: 'Actividades de nivelación',
                 color: 'secondary',
                 icon: 'iconsminds-blackboard',
-                action: 'goToChildrenExperienceLearning',
+                action: 'goToChildrenRecoveryExperienceLearning',
                 hide: currentMenuPermissionExperienceLearning?.readAction ? false : true
               },
             ]}

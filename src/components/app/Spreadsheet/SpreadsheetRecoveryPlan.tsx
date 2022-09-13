@@ -382,6 +382,14 @@ const SpreadsheetRecoveryPlanList = (props: any) => {
                     <th rowSpan={2} className="text-center vertical-middle">
                       Estudiante
                     </th>
+                    {performanceLevelType === "QUANTITATIVE" ?
+                      <th rowSpan={2} className="text-center vertical-middle">
+                        Valoración Periodo
+                      </th> : <></>
+                    }
+                    <th rowSpan={2} className="text-center vertical-middle">
+                      Nivel de desempeño Periodo
+                    </th>
                     {valuations.map((item: any, index: any) => {
                       return (
                         <>
@@ -454,6 +462,7 @@ const SpreadsheetRecoveryPlanList = (props: any) => {
                       return (
                         <>
                           <tr key={index}>
+
                             <td className="text-center vertical-middle">
                               <span className="font-bold">{item?.code}</span>
                             </td>
@@ -481,6 +490,25 @@ const SpreadsheetRecoveryPlanList = (props: any) => {
                                   {item?.user?.lastName} {item?.user?.name}
                                 </span>
                               </div>
+                            </td>
+                            {performanceLevelType === "QUANTITATIVE" ?
+                              <>
+                                <td className="text-center vertical-middle">
+                                  {averagesFinal.find((n: any) => item?.id === n?.node?.studentId && (n?.node?.valuationType == "CALCULATE" || n?.node?.valuationType == "DEFINITIVE"))?.node
+                                    ?.assessment?.toFixed(countDigits) || ''}
+                                </td>
+                              </> : <></>
+                            }
+                            <td className="text-center vertical-middle">
+                              <StyledBadge color="primary" className="font-0-8rem" background={averagesFinal.find(
+                                (c: any) => c?.node?.studentId === item?.id && (c?.node?.valuationType == "CALCULATE" || c?.node?.valuationType == "DEFINITIVE")
+                              )?.node?.performanceLevel?.colorHex ? `${averagesFinal.find(
+                                (c: any) => c?.node?.studentId === item?.id && (c?.node?.valuationType == "CALCULATE" || c?.node?.valuationType == "DEFINITIVE")
+                              )?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
+                                {averagesFinal.find(
+                                  (c: any) => c?.node?.studentId === item?.id && (c?.node?.valuationType == "CALCULATE" || c?.node?.valuationType == "DEFINITIVE")
+                                )?.node?.performanceLevel?.name || '--'}
+                              </StyledBadge>
                             </td>
                             {valuations.map((item2: any, index2: any) => {
                               return (
