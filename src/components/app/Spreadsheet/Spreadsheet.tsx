@@ -137,6 +137,7 @@ const SpreadsheetList = (props: any) => {
               .then(async (notesFinal: any) => {
                 avrgsFinal = avrgsFinal.concat(notesFinal.data.edges);
                 setAveragesFinal(avrgsFinal);
+                console.log(avrgsFinal);
               });
             await props
               .getListAllComponentEvaluativeAcademicAsignatureCourse(academicAsignatureCourseId)
@@ -152,7 +153,6 @@ const SpreadsheetList = (props: any) => {
                     .then((resp: any) => {
                       avrgs = avrgs.concat(resp.data.edges);
                       setAverages(avrgs);
-                      console.log(avrgs)
                     });
                   await props
                     .getAllExperienceLearningAcademicAsignatureCourse(
@@ -398,11 +398,18 @@ const SpreadsheetList = (props: any) => {
                     })}
                     {performanceLevelType === "QUANTITATIVE" ?
                       <th rowSpan={2} className="text-center vertical-middle">
-                        Valoración
+                        Valoración Periodo
                       </th> : <></>
                     }
                     <th rowSpan={2} className="text-center vertical-middle">
-                      Nivel de desempeño
+                      Nivel de desempeño Periodo
+                    </th>
+                    {performanceLevelType === "QUANTITATIVE" ? <th rowSpan={2} className="text-center vertical-middle">
+                      Valoración Nivelación
+                    </th> : <></>
+                    }
+                    <th rowSpan={2} className="text-center vertical-middle">
+                      Nivel de desempeño Nivelación
                     </th>
                   </tr>
                   <tr>
@@ -575,20 +582,39 @@ const SpreadsheetList = (props: any) => {
                           {performanceLevelType === "QUANTITATIVE" ?
                             <>
                               <th className="text-center vertical-middle">
-                                {averagesFinal.find((n: any) => item?.id === n?.node?.studentId)?.node
+                                {averagesFinal.find((n: any) => item?.id === n?.node?.studentId && (n?.node?.valuationType == "CALCULATE" || n?.node?.valuationType == "DEFINITIVE"))?.node
                                   ?.assessment?.toFixed(countDigits) || ''}
                               </th>
                             </> : <></>
                           }
                           <th className="text-center vertical-middle">
                             <StyledBadge color="primary" className="font-0-8rem" background={averagesFinal.find(
-                              (c: any) => c?.node?.studentId === item?.id,
+                              (c: any) => c?.node?.studentId === item?.id && (c?.node?.valuationType == "CALCULATE" || c?.node?.valuationType == "DEFINITIVE")
                             )?.node?.performanceLevel?.colorHex ? `${averagesFinal.find(
-                              (c: any) => c?.node?.studentId === item?.id,
+                              (c: any) => c?.node?.studentId === item?.id && (c?.node?.valuationType == "CALCULATE" || c?.node?.valuationType == "DEFINITIVE")
                             )?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
                               {averagesFinal.find(
-                                (c: any) => c?.node?.studentId === item?.id,
+                                (c: any) => c?.node?.studentId === item?.id && (c?.node?.valuationType == "CALCULATE" || c?.node?.valuationType == "DEFINITIVE")
                               )?.node?.performanceLevel?.name || '--'}
+                            </StyledBadge>
+                          </th>
+                          {performanceLevelType === "QUANTITATIVE" ?
+                            <>
+                              <th className="text-center vertical-middle">
+                                {averagesFinal.find((n: any) => item?.id === n?.node?.studentId && n?.node?.valuationType == "RECOVERY")?.node
+                                  ?.assessment?.toFixed(countDigits) || ''}
+                              </th>
+                            </> : <></>
+                          }
+                          <th className="text-center vertical-middle">
+                            <StyledBadge color="primary" className="font-0-8rem" background={averagesFinal.find(
+                              (c: any) => c?.node?.studentId === item?.id && c?.node?.valuationType == "RECOVERY"
+                            )?.node?.performanceLevel?.colorHex ? `${averagesFinal.find(
+                              (c: any) => c?.node?.studentId === item?.id && c?.node?.valuationType == "RECOVERY"
+                            )?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
+                              {averagesFinal.find(
+                                (c: any) => c?.node?.studentId === item?.id && c?.node?.valuationType == "RECOVERY"
+                              )?.node?.performanceLevel?.name || ''}
                             </StyledBadge>
                           </th>
                         </tr>

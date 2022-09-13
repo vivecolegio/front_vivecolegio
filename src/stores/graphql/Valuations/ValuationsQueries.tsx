@@ -46,6 +46,7 @@ export const QUERY_GET_All_ACADEMIC_ASIGNATURE_COURSE_PERIOD_VALUATION = gql`
         node {
           id
           studentId
+          valuationType
           assessment   
           academicAsignatureCourseId
           academicPeriodId
