@@ -285,7 +285,7 @@ const AcademicAsignatureCourseBasicList = (props: any) => {
             childrenButtons={[
               {
                 id: 0,
-                label: 'Planillas',
+                label: 'Planilla Valoración',
                 color: 'info',
                 icon: 'iconsminds-library',
                 action: 'goToChildrenSpredsheet',
@@ -293,7 +293,23 @@ const AcademicAsignatureCourseBasicList = (props: any) => {
               },
               {
                 id: 1,
-                label: 'Actividades de valoracion',
+                label: 'Actividades de valoración',
+                color: 'secondary',
+                icon: 'iconsminds-blackboard',
+                action: 'goToChildrenExperienceLearning',
+                hide: currentMenuPermissionExperienceLearning?.readAction ? false : true
+              },
+              {
+                id: 2,
+                label: 'Planilla Nivelación',
+                color: 'info',
+                icon: 'iconsminds-library',
+                action: 'goToChildrenSpredsheet',
+                hide: currentMenuPermissionSpreadsheet?.readAction ? false : true
+              },
+              {
+                id: 3,
+                label: 'Actividades de nivelación',
                 color: 'secondary',
                 icon: 'iconsminds-blackboard',
                 action: 'goToChildrenExperienceLearning',
