@@ -3636,7 +3636,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-lines-ellipsis@^0.15.1":
+"@types/react-lines-ellipsis@0.15.1":
   version "0.15.1"
   resolved "https://registry.yarnpkg.com/@types/react-lines-ellipsis/-/react-lines-ellipsis-0.15.1.tgz#7bc47dbe12e7fe16de2ecb33134b270fbb88802a"
   integrity sha512-j0lZ5UyO1ShIs2Fk2OfvmUBc1s5gUP3/5n6pHnRCVKLvSfensCBJVqXNa1Tzlcgf6BE31wfEfmn22QrSlnSBnw==

@@ -55,6 +55,7 @@ const esMessages = {
   'layouts.messages': 'Mensajes',
   'layouts.mySchedule': 'Mi Horario',
   'layouts.chat': 'Chat',
+  'layouts.faq': 'FAQ',
   'layouts.forums': 'Foros',
   'layouts.details': 'Detalles',
   'layouts.comments': 'Comentarios',
