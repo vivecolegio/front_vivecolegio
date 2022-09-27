@@ -3522,6 +3522,11 @@
   resolved "https://registry.npmjs.org/@types/json5/-/json5-0.0.29.tgz"
   integrity sha1-7ihweulOEdK4J7y+UnC86n8+ce4=
 
+"@types/lodash@*":
+  version "4.14.185"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.185.tgz#c9843f5a40703a8f5edfd53358a58ae729816908"
+  integrity sha512-evMDG1bC4rgQg4ku9tKpuMh5iBNEwNa3tf9zRHdP1qlv+1WUg44xat4IxCE14gIpZRGUUWAx2VhItCZc25NfMA==
+
 "@types/lodash@^4.14.168":
   version "4.14.181"
   resolved "https://registry.npmjs.org/@types/lodash/-/lodash-4.14.181.tgz"
@@ -3629,6 +3634,14 @@
   resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-18.0.3.tgz#a022ea08c75a476fe5e96b675c3e673363853831"
   integrity sha512-1RRW9kst+67gveJRYPxGmVy8eVJ05O43hg77G2j5m76/RFJtMbcfAs2viQ2UNsvvDg8F7OfQZx8qQcl6ymygaQ==
   dependencies:
+    "@types/react" "*"
+
+"@types/react-lines-ellipsis@^0.15.1":
+  version "0.15.1"
+  resolved "https://registry.yarnpkg.com/@types/react-lines-ellipsis/-/react-lines-ellipsis-0.15.1.tgz#7bc47dbe12e7fe16de2ecb33134b270fbb88802a"
+  integrity sha512-j0lZ5UyO1ShIs2Fk2OfvmUBc1s5gUP3/5n6pHnRCVKLvSfensCBJVqXNa1Tzlcgf6BE31wfEfmn22QrSlnSBnw==
+  dependencies:
+    "@types/lodash" "*"
     "@types/react" "*"
 
 "@types/react-loader-spinner@4.0.0":
