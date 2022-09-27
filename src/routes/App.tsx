@@ -28,6 +28,10 @@ const Profile = React.lazy(() => {
   return import(/* webpackChunkName: "Profile" */ '../components/app/Profile/Profile');
 });
 
+const Faq = React.lazy(() => {
+  return import(/* webpackChunkName: "Faq" */ '../components/app/Faq/Faq');
+});
+
 const MenuList = React.lazy(() => {
   return import(/* webpackChunkName: "MenuList" */ '../components/app/Menu/MenuList');
 });
@@ -263,7 +267,6 @@ const ExperienceLearningRecoveryPlanList = React.lazy(() => {
   );
 });
 
-
 const GenderList = React.lazy(() => {
   return import(/* webpackChunkName: "GenderList" */ '../components/app/Gender/GenderList');
 });
@@ -407,11 +410,15 @@ const Spreadsheet = React.lazy(() => {
 });
 
 const SpreadsheetRecoveryPlan = React.lazy(() => {
-  return import(/* webpackChunkName: "SpreadsheetRecoveryPlan" */ '../components/app/Spreadsheet/SpreadsheetRecoveryPlan');
+  return import(
+    /* webpackChunkName: "SpreadsheetRecoveryPlan" */ '../components/app/Spreadsheet/SpreadsheetRecoveryPlan'
+  );
 });
 
 const SpreadsheetCourse = React.lazy(() => {
-  return import(/* webpackChunkName: "SpreadsheetCourse" */ '../components/app/SpreadsheetCourse/SpreadsheetCourse');
+  return import(
+    /* webpackChunkName: "SpreadsheetCourse" */ '../components/app/SpreadsheetCourse/SpreadsheetCourse'
+  );
 });
 
 const StudentsList = React.lazy(() => {
@@ -458,7 +465,6 @@ const BasicLearningDutiesList = React.lazy(() => {
     /* webpackChunkName: "BasicLearningDutiesList" */ '../components/app/BasicLearningDuties/BasicLearningDutiesList'
   );
 });
-
 
 const PerformanceReportCourseList = React.lazy(() => {
   return import(
@@ -524,7 +530,6 @@ const RecoveryPlanAcademicAsignatureCourseList = React.lazy(() => {
   );
 });
 
-
 const App = (props: any) => {
   const { locale } = props.translateReducer;
 
@@ -557,6 +562,7 @@ const App = (props: any) => {
                 {permissions ? (
                   <>
                     <Route path="/profile" element={<Profile />} />
+                    <Route path="/faq" element={<Faq />} />
                     <Route path="/myScheduleOffice" element={<OfficeSchedule />} />
                     <Route path="/myScheduleShool" element={<SchoolSchedule />} />
                     <Route path="/messages" element={<InboxDetail />} />
@@ -624,14 +630,23 @@ const App = (props: any) => {
                     <Route path="/learning" element={<LearningList />} />
                     <Route path="/evidenceLearning" element={<LearningEvidenceList />} />
                     <Route path="/experienceLearning" element={<ExperienceLearningList />} />
-                    <Route path="/experienceLearningRecoveryPlan" element={<ExperienceLearningRecoveryPlanList />} />
+                    <Route
+                      path="/experienceLearningRecoveryPlan"
+                      element={<ExperienceLearningRecoveryPlanList />}
+                    />
                     <Route path="/myClasses" element={<MyClasessList />} />
                     <Route path="/studentAttendance" element={<StudentAttendance />} />
                     <Route path="/studentBehaviour" element={<StudentBehaviour />} />
                     <Route path="/academicAssignment" element={<AcademicAssignment />} />
-                    <Route path="/academicAssignmentTeacher" element={<AcademicAssignmentTeacher />} />
+                    <Route
+                      path="/academicAssignmentTeacher"
+                      element={<AcademicAssignmentTeacher />}
+                    />
                     <Route path="/traditionalValuation" element={<TraditionalValuation />} />
-                    <Route path="/traditionalValuationRecoveryPlan" element={<TraditionalValuationRecoveryPlan />} />
+                    <Route
+                      path="/traditionalValuationRecoveryPlan"
+                      element={<TraditionalValuationRecoveryPlan />}
+                    />
                     <Route path="/selfValuation" element={<SelfValuation />} />
                     <Route path="/rubricCriteria" element={<RubricCriteriaList />} />
                     <Route path="/rubricValuation" element={<RubricValuation />} />
@@ -657,7 +672,6 @@ const App = (props: any) => {
                     />
                     {/* ACADEMIC */}
 
-
                     {/* APPLICATIONS */}
                     <Route path="/chat" element={<ChatApp />} />
                     <Route path="/foros" element={<ForumListApp />} />
@@ -667,24 +681,58 @@ const App = (props: any) => {
                     <Route path="/encuestas-detalle" element={<SurveyDetail />} />
                     <Route path="/informe-avance-desempeno" element={<Analytics />} />
 
-                    <Route path="/performanceReportGrade" element={<PerformanceReportGradeList />} />
-                    <Route path="/performanceReportCourse" element={<PerformanceReportCourseList />} />
-                    <Route path="/performanceReportStudentsCourse" element={<PerformanceReportStudentsCourseList />} />
+                    <Route
+                      path="/performanceReportGrade"
+                      element={<PerformanceReportGradeList />}
+                    />
+                    <Route
+                      path="/performanceReportCourse"
+                      element={<PerformanceReportCourseList />}
+                    />
+                    <Route
+                      path="/performanceReportStudentsCourse"
+                      element={<PerformanceReportStudentsCourseList />}
+                    />
 
-                    <Route path="/valuationDefinitivePeriodGrade" element={<ValuationDefinitivePeriodGradeList />} />
-                    <Route path="/valuationDefinitivePeriodCourse" element={<ValuationDefinitivePeriodCourseList />} />
-                    <Route path="/valuationDefinitivePeriodStudentsCourse" element={<ValuationDefinitivePeriodStudentsCourseList />} />
-                    <Route path="/valuationDefinitivePeriodStudent" element={<ValuationDefinitivePeriodStudent />} />
+                    <Route
+                      path="/valuationDefinitivePeriodGrade"
+                      element={<ValuationDefinitivePeriodGradeList />}
+                    />
+                    <Route
+                      path="/valuationDefinitivePeriodCourse"
+                      element={<ValuationDefinitivePeriodCourseList />}
+                    />
+                    <Route
+                      path="/valuationDefinitivePeriodStudentsCourse"
+                      element={<ValuationDefinitivePeriodStudentsCourseList />}
+                    />
+                    <Route
+                      path="/valuationDefinitivePeriodStudent"
+                      element={<ValuationDefinitivePeriodStudent />}
+                    />
 
-                    <Route path="/reportHourlyIntensityGradeList" element={<ReportHourlyIntensityGradeList />} />
-                    <Route path="/reportHourlyIntensityCourseList" element={<ReportHourlyIntensityCourseList />} />
-                    <Route path="/reportHourlyIntensityCourse" element={<ReportHourlyIntensityCourse />} />
-                    <Route path="/reportHourlyIntensityGrade" element={<ReportHourlyIntensityGrade />} />
+                    <Route
+                      path="/reportHourlyIntensityGradeList"
+                      element={<ReportHourlyIntensityGradeList />}
+                    />
+                    <Route
+                      path="/reportHourlyIntensityCourseList"
+                      element={<ReportHourlyIntensityCourseList />}
+                    />
+                    <Route
+                      path="/reportHourlyIntensityCourse"
+                      element={<ReportHourlyIntensityCourse />}
+                    />
+                    <Route
+                      path="/reportHourlyIntensityGrade"
+                      element={<ReportHourlyIntensityGrade />}
+                    />
 
-                    <Route path="/recoveryPlanAcademicAsignatureCourse" element={<RecoveryPlanAcademicAsignatureCourseList />} />
-
+                    <Route
+                      path="/recoveryPlanAcademicAsignatureCourse"
+                      element={<RecoveryPlanAcademicAsignatureCourseList />}
+                    />
                   </>
-
                 ) : (
                   <Route path="*" element={<Login />} />
                 )}

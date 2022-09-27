@@ -41,6 +41,7 @@
     "react-idle-timer": "5.4.2",
     "react-image-lightbox": "5.1.4",
     "react-intl": "5.24.8",
+    "react-lines-ellipsis": "^0.15.3",
     "react-loader-spinner": "6.0.0-0",
     "react-perfect-scrollbar": "1.5.8",
     "react-quill": "2.0.0",
