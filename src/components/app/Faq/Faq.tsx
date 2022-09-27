@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Button, Card, Collapse, Row } from 'reactstrap';
 import { Colxx } from '../../common/CustomBootstrap';
-import faqData from './data';
+import faqData from '../data/faq';
 
 const Faq = () => {
   const [showingIndex, setShowIndex] = useState(0);

@@ -1,9 +1,15 @@
 const faq = [
   {
     question: '¿CÓMO REALIZAR EL CARGUE DE LAS NOTAS?',
-    answer: `Luego de haber creado los estándares y aprendizajes, se dirige al módulo académico asignación académica en esta podrás crear las actividades de valoración, una vez ingrese seleccione agregar nuevo.
-    Una vez creadas las actividades de valoración podrás calificarlas individualmente, ingresando en valoración tradicional o dependiendo el tipo de experiencia que seleccionaron.
-    En la parte de abajo encontramos una tabla con el código, nombre del estudiante, valoración y nivel de desempeño. Entonces para asignar una valoración, debemos hacer lo siguiente: Vamos a la columna Valoración, y en la fila donde aparece el estudiante que vamos a calificar, agregamos un valor: Lo podemos hacer dando clic en las flechas que aparecen acá, ya sea para aumentar el número o para disminuir. También lo podemos hacer dando clic en la casilla y escribiendo el número correspondiente. Cómo se podrán dar cuenta, el nivel de desempeño se va modificando automáticamente de acuerdo con el número que vayamos agregando. En esta tabla que está en la parte superior derecha podemos ver el número que corresponde a cada nivel de desempeño. Una vez asignemos la valoración que deseamos, damos clic en un espacio en blanco para concluir el proceso.`,
+    answer: `Luego de haber creado los estándares y aprendizajes, se dirige al módulo académico asignación académica en esta podrás crear las actividades de valoración, una vez ingrese seleccione agregar nuevo.<br><br>
+    Una vez creadas las actividades de valoración podrás calificarlas individualmente, ingresando en valoración tradicional o dependiendo el tipo de experiencia que seleccionaron.<br><br>
+    En la parte de abajo encontramos una tabla con el código, nombre del estudiante, valoración y nivel de desempeño. Entonces para asignar una valoración, debemos hacer lo siguiente: <br><br>
+    <ol>
+      <li>Vamos a la columna Valoración, y en la fila donde aparece el estudiante que vamos a calificar, agregamos un valor: Lo podemos hacer dando clic en las flechas que aparecen acá, ya sea para aumentar el número o para disminuir. </li>
+      <li>También lo podemos hacer dando clic en la casilla y escribiendo el número correspondiente. Cómo se podrán dar cuenta, el nivel de desempeño se va modificando automáticamente de acuerdo con el número que vayamos agregando. En esta tabla que está en la parte superior derecha podemos ver el número que corresponde a cada nivel de desempeño. </li>
+      <li>Una vez asignemos la valoración que deseamos, damos clic en un espacio en blanco para concluir el proceso.</li>
+    </ol>
+    `,
   },
   {
     question: '¿CÓMO INGRESAR NOTAS EN LOS PERIODOS ACADÉMICOS ANTERIORES?',
