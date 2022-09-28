@@ -32,6 +32,14 @@ const Faq = React.lazy(() => {
   return import(/* webpackChunkName: "Faq" */ '../components/app/Faq/Faq');
 });
 
+const Tutorials = React.lazy(() => {
+  return import(/* webpackChunkName: "Tutorials" */ '../components/app/Tutorials/Tutorials');
+});
+
+const StudentList = React.lazy(() => {
+  return import(/* webpackChunkName: "StudentList" */ '../components/app/Graphics/StudentList');
+});
+
 const MenuList = React.lazy(() => {
   return import(/* webpackChunkName: "MenuList" */ '../components/app/Menu/MenuList');
 });
@@ -563,6 +571,8 @@ const App = (props: any) => {
                   <>
                     <Route path="/profile" element={<Profile />} />
                     <Route path="/faq" element={<Faq />} />
+                    <Route path="/tutorials" element={<Tutorials />} />
+                    <Route path="/studentList" element={<StudentList />} />
                     <Route path="/myScheduleOffice" element={<OfficeSchedule />} />
                     <Route path="/myScheduleShool" element={<SchoolSchedule />} />
                     <Route path="/messages" element={<InboxDetail />} />

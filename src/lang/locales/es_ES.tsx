@@ -56,6 +56,7 @@ const esMessages = {
   'layouts.mySchedule': 'Mi Horario',
   'layouts.chat': 'Chat',
   'layouts.faq': 'FAQ',
+  'layouts.tutorials': 'Tutoriales',
   'layouts.forums': 'Foros',
   'layouts.details': 'Detalles',
   'layouts.comments': 'Comentarios',
@@ -326,7 +327,6 @@ const esMessages = {
   'menu.reportHourlyIntensityCourseList': 'Intensidad Horaria',
   'menu.reportHourlyIntensityCourse': 'Intensidad Horaria',
   'menu.recoveryPlanAcademicAsignatureCourse': 'Plan de Nivelación',
-
 };
 
 export default esMessages;

@@ -244,10 +244,13 @@ const TopNav = (props: any) => {
               </DropdownMenu>
             </UncontrolledDropdown>
           </div> */}
-          <div className="navbar-logo m-0 ml-4 position-relative d-none d-none d-lg-inline-block">
+          <a
+            href="/home"
+            className="navbar-logo m-0 ml-4 position-relative d-none d-none d-lg-inline-block"
+          >
             <span className="logo d-none d-sm-block" />
             <span className="logo-mobile d-block d-sm-none" />
-          </div>
+          </a>
           {/* <a className="navbar-logo" href="/home">
             <span className="logo d-none d-sm-block" />
             <span className="logo-mobile d-block d-sm-none" />
@@ -349,6 +352,11 @@ const TopNav = (props: any) => {
                 <NavLink to="/faq">
                   <DropdownItem>
                     <IntlMessages id="layouts.faq" />
+                  </DropdownItem>
+                </NavLink>
+                <NavLink to="/tutorials">
+                  <DropdownItem>
+                    <IntlMessages id="layouts.tutorials" />
                   </DropdownItem>
                 </NavLink>
                 {/* <NavLink to="/chat">
