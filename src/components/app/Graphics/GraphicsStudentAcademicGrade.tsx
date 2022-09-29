@@ -50,9 +50,9 @@ const GraphicsStudentAcademicGrade = (props: any) => {
 		<>
 			<Row>
 				<Colxx xxs="12">
-					<CardTitle className="mb-4">
-						<h1>Listado alumnos</h1>
-					</CardTitle>
+					<div className="mt-4 d-flex justify-content-center align-items-center">
+						<h1 className="font-bold">Grafica de Estudiantes por Grado</h1>
+					</div>
 					<Row className="icon-cards-row mb-2">
 						<div id="chartdiv" style={{ width: '100%', height: '500px' }}></div>
 					</Row>
