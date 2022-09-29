@@ -36,8 +36,8 @@ const Tutorials = React.lazy(() => {
   return import(/* webpackChunkName: "Tutorials" */ '../components/app/Tutorials/Tutorials');
 });
 
-const StudentList = React.lazy(() => {
-  return import(/* webpackChunkName: "StudentList" */ '../components/app/Graphics/StudentList');
+const GraphicsStudentAcademicGrade = React.lazy(() => {
+  return import(/* webpackChunkName: "GraphicsStudentAcademicGrade" */ '../components/app/Graphics/GraphicsStudentAcademicGrade');
 });
 
 const MenuList = React.lazy(() => {
@@ -572,7 +572,7 @@ const App = (props: any) => {
                     <Route path="/profile" element={<Profile />} />
                     <Route path="/faq" element={<Faq />} />
                     <Route path="/tutorials" element={<Tutorials />} />
-                    <Route path="/studentList" element={<StudentList />} />
+                    <Route path="/graphicsStudentAcademicGrade" element={<GraphicsStudentAcademicGrade />} />
                     <Route path="/myScheduleOffice" element={<OfficeSchedule />} />
                     <Route path="/myScheduleShool" element={<SchoolSchedule />} />
                     <Route path="/messages" element={<InboxDetail />} />
