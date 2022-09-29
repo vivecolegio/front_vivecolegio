@@ -1,70 +1,141 @@
-import * as am5 from '@amcharts/amcharts5';
-import * as am5percent from '@amcharts/amcharts5/percent';
-import am5themes_Animated from '@amcharts/amcharts5/themes/Animated';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { CardTitle, Row } from 'reactstrap';
+import { COLUMN_LIST } from '../../../constants/Graphics/studentListGradeConstants';
 import * as graphicsStudentAcademicGradeActions from '../../../stores/actions/GraphicsStudentAcademicGradeActions';
 import { Colxx } from '../../common/CustomBootstrap';
+import DataList from '../../common/Data/DataList';
+/* eslint-disable no-await-in-loop */
+import classnames from 'classnames';
+import { NavLink } from 'react-router-dom';
+import { Card, CardBody, CardHeader, Nav, NavItem, Row, TabContent, TabPane } from 'reactstrap';
+import { Loader } from '../../common/Loader';
+import GraphicBarStudentGrade from './GraphicBarStudentGrade';
+import GraphicDonutStudentGrade from './GraphicDonutStudentGrade';
 
 const GraphicsStudentAcademicGrade = (props: any) => {
+  const [dataTable, setDataTable] = useState(null);
+  const [columns, setColumns] = useState(COLUMN_LIST);
+  const [activeSecondTab, setActiveSecondTab] = useState('1');
+  let Students: number;
 
-	const [dataChart, setDataChart] = useState(null);
+  useEffect(() => {
+    props.dataGraphicsStudentAcademicGrade(props?.loginReducer?.schoolId).then((listData: any) => {
+      Students = listData.reduce((prev: any, next: any) => prev + next.node.countStudent, 0);
+      setDataTable(
+        listData.map((c: any) => {
+          c.node.grade = c.node ? c.node.name : '';
+          c.node.students = c.node ? c.node.countStudent : '';
+          c.node.percentage = c.node
+            ? ((c.node.countStudent * 100) / Students).toFixed(2) + ' %'
+            : '';
+          return c;
+        }),
+      );
+    });
+  }, []);
 
-	useEffect(() => {
-		getDataChat(props?.loginReducer?.schoolId);
-	}, []);
+  const getDataTable = async () => {
+    props.dataGraphicsStudentAcademicGrade(props?.loginReducer?.schoolId).then((listData: any) => {
+      Students = listData.reduce((prev: any, next: any) => prev + next.node.countStudent, 0);
+      setDataTable(
+        listData.map((c: any) => {
+          c.node.grade = c.node ? c.node.name : '';
+          c.node.students = c.node ? c.node.countStudent : '';
+          c.node.percentage = c.node
+            ? ((c.node.countStudent * 100) / Students).toFixed(2) + ' %'
+            : '';
+          return c;
+        }),
+      );
+    });
+  };
 
-	useEffect(() => {
-		if (dataChart) {
-			let root = am5.Root.new('chartdiv');
-			root.setThemes([am5themes_Animated.new(root)]);
-			let chart = root.container.children.push(
-				am5percent.PieChart.new(root, {
-					layout: root.verticalLayout,
-				}),
-			);
-			let series = chart.series.push(
-				am5percent.PieSeries.new(root, {
-					valueField: 'value',
-					categoryField: 'category',
-				}),
-			);
-			series.labels.template.set("text", "{category}: [bold]{valuePercentTotal.formatNumber('0.00')}%[/] ({value})");
-			series.data.setAll(dataChart);
-			series.appear(1000, 100);
-		}
-	}, [dataChart]);
+  const refreshDataTable = async () => {
+    setDataTable(null);
+    await getDataTable();
+  };
 
-	const getDataChat = async (schoolId: any) => {
-		props.dataGraphicsStudentAcademicGrade(schoolId).then((listData: any) => {
-			setDataChart(
-				listData.map((c: any) => {
-					return { category: c.node.name, value: c.node.countStudent };
-				})
-			);
-		});
-	};
+  return (
+    <>
+      {' '}
+      {dataTable !== null ? (
+        <>
+          <div className="mt-4 d-flex justify-content-center align-items-center">
+            <h1 className="font-bold">Grafica de Estudiantes por Grado</h1>
+          </div>
+          <Colxx xxs="12" xs="12" lg="12">
+            <Card className="mb-4">
+              <CardHeader className="pl-0 pr-0">
+                <Nav tabs className=" card-header-tabs  ml-0 mr-0">
+                  <NavItem className="w-50 text-center">
+                    <NavLink
+                      to="#"
+                      className={classnames({
+                        active: activeSecondTab === '1',
+                        'nav-link': true,
+                      })}
+                      onClick={() => {
+                        setActiveSecondTab('1');
+                      }}
+                    >
+                      <div className="glyph-icon iconsminds-pie-chart-3"></div>
+                    </NavLink>
+                  </NavItem>
+                  <NavItem className="w-50 text-center">
+                    <NavLink
+                      to="#"
+                      className={classnames({
+                        active: activeSecondTab === '2',
+                        'nav-link': true,
+                      })}
+                      onClick={() => {
+                        setActiveSecondTab('2');
+                      }}
+                    >
+                      <div className="glyph-icon iconsminds-bar-chart-4"></div>
+                    </NavLink>
+                  </NavItem>
+                </Nav>
+              </CardHeader>
 
-	return (
-		<>
-			<Row>
-				<Colxx xxs="12">
-					<div className="mt-4 d-flex justify-content-center align-items-center">
-						<h1 className="font-bold">Grafica de Estudiantes por Grado</h1>
-					</div>
-					<Row className="icon-cards-row mb-2">
-						<div id="chartdiv" style={{ width: '100%', height: '500px' }}></div>
-					</Row>
-				</Colxx>
-			</Row>
-		</>
-	);
+              <TabContent activeTab={activeSecondTab}>
+                <TabPane tabId="1">
+                  <Row>
+                    <Colxx sm="12">
+                      <CardBody>
+                        <GraphicDonutStudentGrade />
+                      </CardBody>
+                    </Colxx>
+                  </Row>
+                </TabPane>
+                <TabPane tabId="2">
+                  <Row>
+                    <Colxx sm="12">
+                      <CardBody>
+                        <GraphicBarStudentGrade />
+                      </CardBody>
+                    </Colxx>
+                  </Row>
+                </TabPane>
+              </TabContent>
+            </Card>
+          </Colxx>
+          <DataList data={dataTable} columns={columns} refreshDataTable={refreshDataTable} />
+        </>
+      ) : (
+        <>
+          <Colxx sm={12} className="d-flex justify-content-center">
+            <Loader />
+          </Colxx>
+        </>
+      )}
+    </>
+  );
 };
 const mapDispatchToProps = { ...graphicsStudentAcademicGradeActions };
 
 const mapStateToProps = ({ loginReducer }: any) => {
-	return { loginReducer };
+  return { loginReducer };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GraphicsStudentAcademicGrade);
