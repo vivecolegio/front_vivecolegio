@@ -14,7 +14,7 @@ export const dataGraphicsStudentAcademicGrade = (id: any) => {
             },
           })
           .then((result: any) => {
-            data = result.data;
+            data = result.data.data.edges;
           });
         return data;
       } catch (error) {

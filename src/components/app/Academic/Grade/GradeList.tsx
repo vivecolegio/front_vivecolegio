@@ -111,7 +111,7 @@ const GradeList = (props: any) => {
   const deleteAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.deleteGrade(item.id, false).then(
-        () => { },
+        () => {},
         () => {
           createNotification('error', 'error', '');
         },
@@ -124,7 +124,7 @@ const GradeList = (props: any) => {
   const changeActiveDataAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.changeActiveGrade(!item.active, item.id, false).then(
-        () => { },
+        () => {},
         () => {
           createNotification('error', 'error', '');
         },

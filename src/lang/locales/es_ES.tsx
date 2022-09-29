@@ -278,6 +278,8 @@ const esMessages = {
   'forms.category': 'Categoria',
   'forms.categoryGrade': 'Grados',
   'forms.academicPeriod': 'Periodo Academico',
+  'forms.students': 'Numero de Estudiantes',
+  'forms.percentage': 'Porcentaje',
   'display.true': 'Si',
   'display.false': 'No',
   'display.QUALITATIVE': 'Cualitativo',
@@ -327,6 +329,7 @@ const esMessages = {
   'menu.reportHourlyIntensityCourseList': 'Intensidad Horaria',
   'menu.reportHourlyIntensityCourse': 'Intensidad Horaria',
   'menu.recoveryPlanAcademicAsignatureCourse': 'Plan de Nivelación',
+  'menu.graphicsStudentAcademicGrade': 'Estudiantes por grado',
 };
 
 export default esMessages;
