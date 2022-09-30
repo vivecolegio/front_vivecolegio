@@ -1,52 +1,57 @@
 import React, { useEffect, useState } from 'react';
 /* eslint-disable no-await-in-loop */
-import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
 import Select from 'react-select';
-
-import { COLUMN_LIST } from '../../../constants/Graphics/studentListGradeConstants';
+import { COLUMN_LIST } from '../../../constants/Graphics/studentListCourseConstants';
 import * as graphicsStudentAcademicCourseActions from '../../../stores/actions/GraphicsStudentAcademicCourseActions';
-import * as StudentActions from '../../../stores/actions/StudentActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import DataList from '../../common/Data/DataList';
 import FormGroupCustom from '../../common/Data/FormGroupCustom';
 import LabelCustom from '../../common/Data/LabelCustom';
 import { Loader } from '../../common/Loader';
+import GraphicsCourse from './GraphicsCourse';
 
 const GraphicsStudentAcademicCourse = (props: any) => {
   const [gradeList, setGradesList] = useState(null);
   const [dataTable, setDataTable] = useState(null);
   const [columns, setColumns] = useState(COLUMN_LIST);
-  const [activeSecondTab, setActiveSecondTab] = useState('1');
   const [grade, setGrade] = useState(null);
+  const [label, setLabel] = useState(null);
+  let Students: number;
 
   useEffect(() => {
-    props.getDropdownsGraphicsStudentAcademicCourse(props?.loginReducer?.schoolId).then((data: any) => {
-      setGradesList(
-        data.dataGrades.edges.map((c: any) => {
-          return { label: c.node.name, value: c.node.id, key: c.node.id };
-        }),
-      );
-    });
+    props
+      .getDropdownsGraphicsStudentAcademicCourse(props?.loginReducer?.schoolId)
+      .then((data: any) => {
+        setGradesList(
+          data.dataGrades.edges.map((c: any) => {
+            return { label: c.node.name, value: c.node.id, key: c.node.id };
+          }),
+        );
+      });
   }, []);
 
   const getDataTable = async (schoolId: any, academicGradeId: any) => {
     props.dataGraphicsStudentAcademicCourse(schoolId, academicGradeId).then((listData: any) => {
+      Students = listData.reduce((prev: any, next: any) => prev + next.node.countStudent, 0);
       setDataTable(
         listData.map((c: any) => {
-          c.node.grade = c.node ? c.node.name : '';
+          c.node.course = c.node ? c.node.name + ' - ' + c.node.campus.name : '';
           c.node.students = c.node ? c.node.countStudent : '';
-          c.node.percentage = c.node ? c.node.countStudent * 100 + ' %' : '';
+          c.node.percentage = c.node
+            ? ((c.node.countStudent * 100) / Students).toFixed(2) + ' %'
+            : '';
           return c;
         }),
       );
     });
   };
 
-  const getCourses = async (academicGradeId: any) => {
+  const getCourses = async (academicGradeId: any, academicLabel: any) => {
     if (academicGradeId) {
       setDataTable(null);
-      setGrade(academicGradeId)
+      setGrade(academicGradeId);
+      setLabel(academicLabel);
       await getDataTable(props?.loginReducer?.schoolId, academicGradeId);
     }
   };
@@ -59,6 +64,9 @@ const GraphicsStudentAcademicCourse = (props: any) => {
   return (
     <>
       {' '}
+      <div className="mt-4 d-flex justify-content-center align-items-center">
+        <h1 className="font-bold">Grafica de Estudiantes por Grado {label}</h1>
+      </div>
       <FormGroupCustom>
         <LabelCustom id="forms.grade" required={true} />
         <Select
@@ -68,15 +76,13 @@ const GraphicsStudentAcademicCourse = (props: any) => {
           options={gradeList}
           value={grade}
           onChange={(selectedOption) => {
-            getCourses(selectedOption?.key)
+            getCourses(selectedOption?.key, selectedOption?.label);
           }}
         />
       </FormGroupCustom>
       {dataTable !== null ? (
         <>
-          <div className="mt-4 d-flex justify-content-center align-items-center">
-            <h1 className="font-bold">Grafica de Estudiantes por Grado</h1>
-          </div>
+          <GraphicsCourse data={grade} />
           <DataList data={dataTable} columns={columns} refreshDataTable={refreshDataTable} />
         </>
       ) : (
@@ -89,7 +95,7 @@ const GraphicsStudentAcademicCourse = (props: any) => {
     </>
   );
 };
-const mapDispatchToProps = { ...graphicsStudentAcademicCourseActions, ...StudentActions };
+const mapDispatchToProps = { ...graphicsStudentAcademicCourseActions };
 
 const mapStateToProps = ({ loginReducer }: any) => {
   return { loginReducer };
