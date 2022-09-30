@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
+/* eslint-disable no-await-in-loop */
+import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
+import Select from 'react-select';
+
 import { COLUMN_LIST } from '../../../constants/Graphics/studentListGradeConstants';
 import * as graphicsStudentAcademicCourseActions from '../../../stores/actions/GraphicsStudentAcademicCourseActions';
 import * as StudentActions from '../../../stores/actions/StudentActions';
-/* eslint-disable no-await-in-loop */
-import { useForm } from 'react-hook-form';
-import Select from 'react-select';
 import { Colxx } from '../../common/CustomBootstrap';
 import DataList from '../../common/Data/DataList';
 import FormGroupCustom from '../../common/Data/FormGroupCustom';
@@ -18,35 +19,16 @@ const GraphicsStudentAcademicCourse = (props: any) => {
   const [columns, setColumns] = useState(COLUMN_LIST);
   const [activeSecondTab, setActiveSecondTab] = useState('1');
   const [grade, setGrade] = useState(null);
-  const [course, setCourse] = useState(null);
-  const [courseList, setCourseList] = useState(null);
-  const methods = useForm({
-    mode: 'all',
-    reValidateMode: 'onChange',
-  });
-  const { setValue, trigger } = methods;
-  useEffect(() => {
-    getDropdowns(props?.loginReducer?.schoolId);
-    if (props?.data?.academicGrade !== undefined && props?.data?.academicGrade != null) {
-      setGrade({
-        key: props?.data?.academicGrade.id,
-        label: props?.data?.academicGrade.name,
-        value: props?.data?.academicGrade.id,
-      });
-      setValue('academicGradeId', props?.data?.academicGradeId);
-      getCourses(props?.data?.academicGrade.id);
-    }
-  }, []);
 
-  const getDropdowns = async (schoolId: any) => {
-    props.getDropdownsStudent('Student', schoolId).then((data: any) => {
+  useEffect(() => {
+    props.getDropdownsGraphicsStudentAcademicCourse(props?.loginReducer?.schoolId).then((data: any) => {
       setGradesList(
         data.dataGrades.edges.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };
         }),
       );
     });
-  };
+  }, []);
 
   const getDataTable = async (schoolId: any, academicGradeId: any) => {
     props.dataGraphicsStudentAcademicCourse(schoolId, academicGradeId).then((listData: any) => {
@@ -64,27 +46,14 @@ const GraphicsStudentAcademicCourse = (props: any) => {
   const getCourses = async (academicGradeId: any) => {
     if (academicGradeId) {
       setDataTable(null);
+      setGrade(academicGradeId)
       await getDataTable(props?.loginReducer?.schoolId, academicGradeId);
-      props
-        .getCoursesOfGrade(
-          academicGradeId,
-          props?.loginReducer?.campusId,
-          props?.loginReducer?.schoolId,
-        )
-        .then((data: any) => {
-          console.log(data.dataCourses.edges);
-
-          setCourseList(
-            data.dataCourses.edges.map((c: any) => {
-              return { label: c.node.name, value: c.node.id, key: c.node.id };
-            }),
-          );
-        });
     }
   };
+
   const refreshDataTable = async () => {
     setDataTable(null);
-    await getDataTable(props?.loginReducer?.schoolId);
+    await getDataTable(props?.loginReducer?.schoolId, grade);
   };
 
   return (
@@ -99,9 +68,7 @@ const GraphicsStudentAcademicCourse = (props: any) => {
           options={gradeList}
           value={grade}
           onChange={(selectedOption) => {
-            // console.log(newUser)
-            setValue('academicGradeId', selectedOption?.key);
-            setGrade(selectedOption);
+            getCourses(selectedOption?.key)
           }}
         />
       </FormGroupCustom>
