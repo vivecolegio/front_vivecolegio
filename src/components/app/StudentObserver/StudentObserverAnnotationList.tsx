@@ -27,7 +27,7 @@ const StudentObserverAnnotationList = (props: any) => {
     props.getListAllStudentObserverAnnotation(courseId, studentId).then((listData: any) => {
       setDataTable(listData.map((c: any) => {
         c.node.academicPeriod_format = c?.node?.academicPeriod ? c?.node?.academicPeriod?.name : '';
-        c.node.observerAnnotacionType_format = c?.node?.observerAnnotacionType ? c?.node?.observerAnnotacionType?.name : '';
+        c.node.observerAnnotationType_format = c?.node?.observerAnnotationType ? c?.node?.observerAnnotationType?.name : '';
         return c;
       }))
     });
@@ -37,7 +37,7 @@ const StudentObserverAnnotationList = (props: any) => {
     props.getListAllStudentObserverAnnotation(courseId, studentId).then((listData: any) => {
       setDataTable(listData.map((c: any) => {
         c.node.academicPeriod_format = c?.node?.academicPeriod ? c?.node?.academicPeriod?.name : '';
-        c.node.observerAnnotacionType_format = c?.node?.observerAnnotacionType ? c?.node?.observerAnnotacionType?.name : '';
+        c.node.observerAnnotationType_format = c?.node?.observerAnnotationType ? c?.node?.observerAnnotationType?.name : '';
         return c;
       }))
     });

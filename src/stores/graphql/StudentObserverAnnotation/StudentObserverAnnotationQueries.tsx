@@ -7,8 +7,8 @@ export const QUERY_GET_ALL_STUDENT_OBSERVER_ANNOTATION = gql`
         cursor
         node {
           id
-          observerAnnotacionTypeId
-          observerAnnotacionType{
+          observerAnnotationTypeId
+          observerAnnotationType{
             name
           }
           academicPeriodId
@@ -29,8 +29,8 @@ export const QUERY_GET_STUDENT_OBSERVER_ANNOTATION = gql`
   query getStudentObserverAnnotation($id: String!) {
     data: getStudentObserverAnnotation(id: $id) {
       id
-      observerAnnotacionTypeId
-      observerAnnotacionType{
+      observerAnnotationTypeId
+      observerAnnotationType{
         name
       }
       academicPeriodId
