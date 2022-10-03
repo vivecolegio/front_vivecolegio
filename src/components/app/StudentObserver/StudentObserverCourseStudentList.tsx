@@ -11,7 +11,6 @@ import { Colxx } from '../../common/CustomBootstrap';
 import DataList from '../../common/Data/DataList';
 import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
 import { Loader } from '../../common/Loader';
-//import StudentAddCourse from './StudentAddCourse';
 
 const StudentObserverCourseStudentList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
@@ -106,7 +105,7 @@ const StudentObserverCourseStudentList = (props: any) => {
   const additionalFunction = async (item: any, btn: any) => {
     switch (btn?.action) {
       case 'goToChildrenStudentObserver':
-        //goToChildren(`/studentObserverCourseList?academicGradeId=${item?.id}&gradeName=${item?.name}`);
+        goToChildren(`/studentObserverAnnotationList?studentId=${item?.id}&courseId=${courseId}&gradeId=${gradeId}`);
         break;
       default:
         break;

@@ -335,6 +335,11 @@ const esMessages = {
   'menu.studentObserverCourseList': 'Observador Estudiante',
   'menu.studentObserverCourseStudentList': 'Observador Estudiante',
   'menu.observerAnnotationType': 'Tipo Anotacion Observador',
+  'menu.studentObserverAnnotationList': 'Observador Estudiante',
+  'forms.observerAnnotationType': 'Tipo de Anotación',
+  'forms.periodAcademic': 'Periodo Academico',
+  'forms.observation': 'Observacion',
+  'forms.commitment': 'Compromiso',
 };
 
 export default esMessages;

@@ -538,6 +538,11 @@ const StudentObserverCourseStudentList = React.lazy(() => {
     /* webpackChunkName: "StudentObserverCourseStudentList" */ '../components/app/StudentObserver/StudentObserverCourseStudentList'
   );
 });
+const StudentObserverAnnotationList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "StudentObserverAnnotationList" */ '../components/app/StudentObserver/StudentObserverAnnotationList'
+  );
+});
 
 const ReportHourlyIntensityGradeList = React.lazy(() => {
   return import(
@@ -768,6 +773,10 @@ const App = (props: any) => {
                     <Route
                       path="/studentObserverCourseStudentList"
                       element={<StudentObserverCourseStudentList />}
+                    />
+                    <Route
+                      path="/studentObserverAnnotationList"
+                      element={<StudentObserverAnnotationList />}
                     />
                     <Route
                       path="/reportHourlyIntensityGradeList"
