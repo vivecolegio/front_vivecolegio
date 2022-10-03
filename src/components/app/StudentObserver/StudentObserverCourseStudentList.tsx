@@ -142,7 +142,6 @@ const StudentObserverCourseStudentList = (props: any) => {
                 color: 'danger',
                 icon: 'iconsminds-user',
                 action: 'goToChildrenStudentObserver',
-                hide: !fromGrade && currentMenu?.readAction ? false : true
               },
             ]}
             withChildren={fromGrade ? false : true}
