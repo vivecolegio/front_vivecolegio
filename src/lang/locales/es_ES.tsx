@@ -331,6 +331,10 @@ const esMessages = {
   'menu.recoveryPlanAcademicAsignatureCourse': 'Plan de Nivelación',
   'menu.graphicsStudentAcademicGrade': 'Estudiantes por grado',
   'menu.graphicsStudentAcademicCourse': 'Estudiantes por curso',
+  'menu.studentObserverGradeList': 'Observador Estudiante',
+  'menu.studentObserverCourseList': 'Observador Estudiante',
+  'menu.studentObserverCourseStudentList': 'Observador Estudiante',
+  'menu.observerAnnotationType': 'Tipo Anotacion Observador',
 };
 
 export default esMessages;

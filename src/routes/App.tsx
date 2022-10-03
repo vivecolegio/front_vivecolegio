@@ -56,6 +56,10 @@ const ModalityList = React.lazy(() => {
   return import(/* webpackChunkName: "ModalityList" */ '../components/app/Modality/ModalityList');
 });
 
+const ObserverAnnotationTypeList = React.lazy(() => {
+  return import(/* webpackChunkName: "ObserverAnnotationTypeList" */ '../components/app/ObserverAnnotationType/ObserverAnnotationTypeList');
+});
+
 const ModuleList = React.lazy(() => {
   return import(/* webpackChunkName: "ModuleList" */ '../components/app/Module/ModuleList');
 });
@@ -519,6 +523,22 @@ const ValuationDefinitivePeriodStudent = React.lazy(() => {
   );
 });
 
+const StudentObserverGradeList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "StudentObserverGradeList" */ '../components/app/StudentObserver/StudentObserverGradeList'
+  );
+});
+const StudentObserverCourseList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "StudentObserverCourseList" */ '../components/app/StudentObserver/StudentObserverCourseList'
+  );
+});
+const StudentObserverCourseStudentList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "StudentObserverCourseStudentList" */ '../components/app/StudentObserver/StudentObserverCourseStudentList'
+  );
+});
+
 const ReportHourlyIntensityGradeList = React.lazy(() => {
   return import(
     /* webpackChunkName: "ReportHourlyIntensityGradeList" */ '../components/app/ReportHourlyIntensity/ReportHourlyIntensityGradeList'
@@ -634,6 +654,7 @@ const App = (props: any) => {
                     <Route path="/educationLevel" element={<EducationLevelList />} />
                     <Route path="/evaluativeComponent" element={<ComponentEvaluativeList />} />
                     <Route path="/modality" element={<ModalityList />} />
+                    <Route path="/observerAnnotationType" element={<ObserverAnnotationTypeList />} />
                     <Route path="/schoolYear" element={<SchoolYearList />} />
                     <Route path="/speciality" element={<SpecialityList />} />
                     <Route path="/periodAcademic" element={<AcademicPeriodList />} />
@@ -736,6 +757,18 @@ const App = (props: any) => {
                       element={<ValuationDefinitivePeriodStudent />}
                     />
 
+                    <Route
+                      path="/studentObserverGradeList"
+                      element={<StudentObserverGradeList />}
+                    />
+                    <Route
+                      path="/studentObserverCourseList"
+                      element={<StudentObserverCourseList />}
+                    />
+                    <Route
+                      path="/studentObserverCourseStudentList"
+                      element={<StudentObserverCourseStudentList />}
+                    />
                     <Route
                       path="/reportHourlyIntensityGradeList"
                       element={<ReportHourlyIntensityGradeList />}

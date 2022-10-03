@@ -7,7 +7,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { Card, CardBody, CardHeader, Nav, NavItem, Row, TabContent, TabPane } from 'reactstrap';
-import * as graphicsStudentAcademicCourseActions from '../../../stores/actions/graphicsStudentAcademicCourseActions';
+import * as graphicsStudentAcademicCourseActions from '../../../stores/actions/GraphicsStudentAcademicCourseActions';
 import { Colxx } from '../../common/CustomBootstrap';
 
 const GraphicsCourse = (props: any) => {
