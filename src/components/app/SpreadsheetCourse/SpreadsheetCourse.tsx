@@ -456,6 +456,7 @@ const SpreadsheetCourse = (props: any) => {
                           {areas?.map((itemArea: any, index: any) => {
                             let asignaturesArea = asignatures?.filter((itemV: any) => itemV?.node?.academicAsignature?.academicAreaId == itemArea?.id);
                             let valuationArea = valuationsArea[itemArea?.id]?.filter((itemA: any) => itemA?.node?.studentId == itemStudent?.id);
+                            console.log(valuationArea);
                             let valuationAreaCalculate: any;
                             let valuationAreaDefinitive: any;
                             for (let valuationAreaAux of valuationArea) {
@@ -562,6 +563,7 @@ const SpreadsheetCourse = (props: any) => {
                                             </>
                                           }
                                         </>}
+                                      {/* {valuationAreaDefinitive?.node} */}
                                     </td>
                                   </>
                                 }

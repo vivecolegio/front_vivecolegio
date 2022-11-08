@@ -441,9 +441,15 @@ const SpreadsheetCourse = React.lazy(() => {
   );
 });
 
-const SpreadsheetAccumulatedCourse = React.lazy(() => {
+const SpreadsheetAccumulatedAsignatureCourse = React.lazy(() => {
   return import(
-    /* webpackChunkName: "SpreadsheetCourse" */ '../components/app/SpreadsheetCourse/SpreadsheetAccumulatedCourse'
+    /* webpackChunkName: "SpreadsheetCourse" */ '../components/app/SpreadsheetCourse/SpreadsheetAccumulatedAsignatureCourse'
+  );
+});
+
+const SpreadsheetAccumulatedAreaCourse = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "SpreadsheetCourse" */ '../components/app/SpreadsheetCourse/SpreadsheetAccumulatedAreaCourse'
   );
 });
 
@@ -714,7 +720,8 @@ const App = (props: any) => {
                     <Route path="/spreadsheetRecoveryPlan" element={<SpreadsheetRecoveryPlan />} />
                     <Route path="/spreadsheetCourse" element={<SpreadsheetCourse />} />
 
-                    <Route path="/spreadsheetAccumulatedCourse" element={<SpreadsheetAccumulatedCourse />} />
+                    <Route path="/spreadsheetAccumulatedAsignatureCourse" element={<SpreadsheetAccumulatedAsignatureCourse />} />
+                    <Route path="/spreadsheetAccumulatedAreaCourse" element={<SpreadsheetAccumulatedAreaCourse />} />
                     <Route
                       path="/questionCategoryTestOnline"
                       element={<QuestionCategoryTestOnlineList />}

@@ -153,15 +153,6 @@ const SpreadsheetAccumulatedCourse = (props: any) => {
                   }
                   filtered = filtered.sort(compareOrderAcademicArea);
                   setAreas(filtered);
-                  // for (let area of filtered) {
-                  //   promisesListAreas.push(
-                  //     props
-                  //       .getAllAcademicAreaCoursePeriodValuation(period.node.id?.toString(), area?.id)
-                  //       .then(async (notesFinal: any) => {
-                  //         ntsArea[area?.id] = notesFinal.data.edges;
-                  //       })
-                  //   );
-                  // }
                 });
               await Promise.all(promisesListAreas).then(() => {
                 setValuationsArea(ntsArea);
@@ -199,7 +190,7 @@ const SpreadsheetAccumulatedCourse = (props: any) => {
   return (
     <>
       <div className="mt-4 d-flex justify-content-center align-items-center">
-        <h1 className="font-bold">Planilla General</h1>
+        <h1 className="font-bold">Planilla General Acumulada / Asignaturas</h1>
       </div>
       <hr />
       <div className="d-flex justify-content-between align-items-center">
@@ -351,54 +342,59 @@ const SpreadsheetAccumulatedCourse = (props: any) => {
                               <>
                                 {
                                   asignaturesArea?.map((itemAsignature: any, indexe: any) => {
-                                    academicPeriods.map((itemPeriod: any) => {
-                                      let valuationAsignature = valuations[itemAsignature?.node?.id]?.filter((itemA: any) => itemA?.node?.studentId == itemStudent?.id && itemA?.node?.academicPeriodId == itemPeriod?.node?.id.toString());
-                                      console.log(valuationAsignature);
-                                      let valuationAsignatureCalculate;
-                                      let valuationAsignatureDefinitive;
-                                      for (let valuationAsignatureAux of valuationAsignature) {
-                                        switch (valuationAsignatureAux?.node?.valuationType) {
-                                          case "CALCULATE":
-                                            valuationAsignatureCalculate = valuationAsignatureAux;
-                                            break;
-                                          case "DEFINITIVE":
-                                            valuationAsignatureDefinitive = valuationAsignatureAux;
-                                            break;
-                                        }
-                                      }
-                                      let valuationType = valuationAsignatureDefinitive ? "DEFINITIVE" : valuationAsignatureCalculate ? "CALCULATE" : "";
-                                      return (
-                                        <>
-                                          <td className="text-center vertical-middle">
-                                            {valuationAsignatureDefinitive ?
-                                              <>
-                                                {performanceLevelType === "QUALITATIVE" ?
+                                    return (
+                                      <>
+                                        {academicPeriods.map((itemPeriod: any) => {
+                                          let valuationAsignature = valuations[itemAsignature?.node?.id]?.filter((itemA: any) => itemA?.node?.studentId == itemStudent?.id && itemA?.node?.academicPeriodId == itemPeriod?.node?.id.toString());
+                                          console.log(valuationAsignature);
+                                          let valuationAsignatureCalculate;
+                                          let valuationAsignatureDefinitive;
+                                          for (let valuationAsignatureAux of valuationAsignature) {
+                                            switch (valuationAsignatureAux?.node?.valuationType) {
+                                              case "CALCULATE":
+                                                valuationAsignatureCalculate = valuationAsignatureAux;
+                                                break;
+                                              case "DEFINITIVE":
+                                                valuationAsignatureDefinitive = valuationAsignatureAux;
+                                                break;
+                                            }
+                                          }
+                                          let valuationType = valuationAsignatureDefinitive ? "DEFINITIVE" : valuationAsignatureCalculate ? "CALCULATE" : "";
+                                          return (
+                                            <>
+                                              <td className="text-center vertical-middle">
+                                                {valuationAsignatureDefinitive ?
                                                   <>
-                                                    <StyledBadge color="primary" className="font-0-8rem pt-2" background={valuationAsignatureDefinitive?.node?.performanceLevel?.colorHex ? `${valuationAsignatureDefinitive?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
-                                                      {valuationAsignatureDefinitive?.node?.performanceLevel?.abbreviation ? valuationAsignatureDefinitive?.node?.performanceLevel?.abbreviation : valuationAsignatureDefinitive?.node?.performanceLevel?.name} ""
-                                                    </StyledBadge>
-                                                  </> :
-                                                  <>
-                                                    {valuationAsignatureDefinitive?.node?.assessment?.toFixed(countDigits)}
+                                                    {performanceLevelType === "QUALITATIVE" ?
+                                                      <>
+                                                        <StyledBadge color="primary" className="font-0-8rem pt-2" background={valuationAsignatureDefinitive?.node?.performanceLevel?.colorHex ? `${valuationAsignatureDefinitive?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
+                                                          {valuationAsignatureDefinitive?.node?.performanceLevel?.abbreviation ? valuationAsignatureDefinitive?.node?.performanceLevel?.abbreviation : valuationAsignatureDefinitive?.node?.performanceLevel?.name} ""
+                                                        </StyledBadge>
+                                                      </> :
+                                                      <>
+                                                        {valuationAsignatureDefinitive?.node?.assessment?.toFixed(countDigits)}
+                                                      </>
+                                                    }
                                                   </>
-                                                }
-                                              </>
-                                              : <>
-                                                {performanceLevelType === "QUALITATIVE" ?
-                                                  <>
-                                                    <StyledBadge color="primary" className="font-0-8rem ${}" background={valuationAsignatureCalculate?.node?.performanceLevel?.colorHex ? `${valuationAsignatureCalculate?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
-                                                      {valuationAsignatureCalculate?.node?.performanceLevel?.abbreviation ? valuationAsignatureCalculate?.node?.performanceLevel?.abbreviation : valuationAsignatureCalculate?.node?.performanceLevel?.name}
-                                                    </StyledBadge>
-                                                  </> :
-                                                  <>
-                                                    {valuationAsignatureCalculate?.node?.assessment?.toFixed(countDigits)}
-                                                  </>
-                                                }
-                                              </>}
-                                          </td>
-                                        </>
-                                      );
-                                    })
+                                                  : <>
+                                                    {performanceLevelType === "QUALITATIVE" ?
+                                                      <>
+                                                        <StyledBadge color="primary" className="font-0-8rem ${}" background={valuationAsignatureCalculate?.node?.performanceLevel?.colorHex ? `${valuationAsignatureCalculate?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
+                                                          {valuationAsignatureCalculate?.node?.performanceLevel?.abbreviation ? valuationAsignatureCalculate?.node?.performanceLevel?.abbreviation : valuationAsignatureCalculate?.node?.performanceLevel?.name}
+                                                        </StyledBadge>
+                                                      </> :
+                                                      <>
+                                                        {valuationAsignatureCalculate?.node?.assessment?.toFixed(countDigits)}
+                                                      </>
+                                                    }
+                                                  </>}
+                                              </td>
+                                            </>
+                                          );
+                                        })}
+                                        <td></td>
+                                      </>
+                                    );
                                   })
                                 }
                                 {/* {
