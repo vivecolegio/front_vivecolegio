@@ -340,6 +340,12 @@ const esMessages = {
   'forms.periodAcademic': 'Periodo Academico',
   'forms.observation': 'Observacion',
   'forms.commitment': 'Compromiso',
+  'menu.reportSpreadsheetAccumulatedCourseGradeList': 'Planilla Consolidado General',
+  'menu.reportSpreadsheetAccumulatedAreaCourseGradeList': 'Planilla Consolidado Area',
+  'menu.reportSpreadsheetAccumulatedAsignatureCourseGradeList': 'Planilla Consolidado Asignatura',
+  'menu.reportSpreadsheetAccumulatedCourseCourseList': 'Planilla Consolidado General',
+  'menu.reportSpreadsheetAccumulatedAreaCourseCourseList': 'Planilla Consolidado Area',
+  'menu.reportSpreadsheetAccumulatedAsignatureCourseCourseList': 'Planilla Consolidado Asignatura',
 };
 
 export default esMessages;

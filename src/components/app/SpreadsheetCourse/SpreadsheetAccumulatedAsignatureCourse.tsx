@@ -190,7 +190,7 @@ const SpreadsheetAccumulatedCourse = (props: any) => {
   return (
     <>
       <div className="mt-4 d-flex justify-content-center align-items-center">
-        <h1 className="font-bold">Planilla General Acumulada / Asignaturas</h1>
+        <h1 className="font-bold">Planilla Consolidado Asignatura</h1>
       </div>
       <hr />
       <div className="d-flex justify-content-between align-items-center">

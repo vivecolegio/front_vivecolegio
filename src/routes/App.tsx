@@ -441,6 +441,41 @@ const SpreadsheetCourse = React.lazy(() => {
   );
 });
 
+const ReportSpreadsheetAccumulatedCourseGradeList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "ReportSpreadsheetAccumulatedCourseGradeList" */ '../components/app/ReportSpreadsheetAccumulatedCourse/ReportSpreadsheetAccumulatedCourseGradeList'
+  );
+});
+const ReportSpreadsheetAccumulatedCourseCourseList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "ReportSpreadsheetAccumulatedCourseCourseList" */ '../components/app/ReportSpreadsheetAccumulatedCourse/ReportSpreadsheetAccumulatedCourseCourseList'
+  );
+});
+
+
+const ReportSpreadsheetAccumulatedAreaCourseGradeList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "ReportSpreadsheetAccumulatedAreaCourseGradeList" */ '../components/app/ReportSpreadsheetAccumulatedAreaCourse/ReportSpreadsheetAccumulatedAreaCourseGradeList'
+  );
+});
+const ReportSpreadsheetAccumulatedAreaCourseCourseList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "ReportSpreadsheetAccumulatedCourseCourseList" */ '../components/app/ReportSpreadsheetAccumulatedAreaCourse/ReportSpreadsheetAccumulatedAreaCourseCourseList'
+  );
+});
+
+
+const ReportSpreadsheetAccumulatedAsignatureCourseGradeList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "ReportSpreadsheetAccumulatedAsignatureCourseGradeList" */ '../components/app/ReportSpreadsheetAccumulatedAsignatureCourse/ReportSpreadsheetAccumulatedAsignatureCourseGradeList'
+  );
+});
+const ReportSpreadsheetAccumulatedAsignatureCourseCourseList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "ReportSpreadsheetAccumulatedAsignatureCourseCourseList" */ '../components/app/ReportSpreadsheetAccumulatedAsignatureCourse/ReportSpreadsheetAccumulatedAsignatureCourseCourseList'
+  );
+});
+
 const SpreadsheetAccumulatedAsignatureCourse = React.lazy(() => {
   return import(
     /* webpackChunkName: "SpreadsheetCourse" */ '../components/app/SpreadsheetCourse/SpreadsheetAccumulatedAsignatureCourse'
@@ -719,6 +754,32 @@ const App = (props: any) => {
                     <Route path="/spreadsheet" element={<Spreadsheet />} />
                     <Route path="/spreadsheetRecoveryPlan" element={<SpreadsheetRecoveryPlan />} />
                     <Route path="/spreadsheetCourse" element={<SpreadsheetCourse />} />
+                    <Route
+                      path="/reportSpreadsheetAccumulatedCourseGradeList"
+                      element={<ReportSpreadsheetAccumulatedCourseGradeList />}
+                    />
+                    <Route
+                      path="/reportSpreadsheetAccumulatedCourseCourseList"
+                      element={<ReportSpreadsheetAccumulatedCourseCourseList />}
+                    />
+
+                    <Route
+                      path="/reportSpreadsheetAccumulatedAreaCourseGradeList"
+                      element={<ReportSpreadsheetAccumulatedAreaCourseGradeList />}
+                    />
+                    <Route
+                      path="/reportSpreadsheetAccumulatedAreaCourseCourseList"
+                      element={<ReportSpreadsheetAccumulatedAreaCourseCourseList />}
+                    />
+
+                    <Route
+                      path="/reportSpreadsheetAccumulatedAsignatureCourseGradeList"
+                      element={<ReportSpreadsheetAccumulatedAsignatureCourseGradeList />}
+                    />
+                    <Route
+                      path="/reportSpreadsheetAccumulatedAsignatureCourseCourseList"
+                      element={<ReportSpreadsheetAccumulatedAsignatureCourseCourseList />}
+                    />
 
                     <Route path="/spreadsheetAccumulatedAsignatureCourse" element={<SpreadsheetAccumulatedAsignatureCourse />} />
                     <Route path="/spreadsheetAccumulatedAreaCourse" element={<SpreadsheetAccumulatedAreaCourse />} />

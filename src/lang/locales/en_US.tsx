@@ -278,6 +278,9 @@ const enMessages = {
   'menu.performanceReportGrade': 'Informe Desempeño',
   'menu.performanceReportCourse': 'Informe Desempeño',
   'menu.performanceReportStudentsCourse': 'Informe Desempeño',
+  'menu.reportSpreadsheetAccumulatedCourseGradeList': 'Planilla Consolidado General',
+  'menu.reportSpreadsheetAccumulatedAreaCourseGradeList': 'Planilla Consolidado Area',
+  'menu.reportSpreadsheetAccumulatedAsignautreCourseGradeList': 'Planilla Consolidado Asignatura',
 };
 
 export default enMessages;
