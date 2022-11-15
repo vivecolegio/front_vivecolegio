@@ -89,7 +89,7 @@ const SpreadsheetAverageCourse = (props: any) => {
     props.dataCurrentAcademicPeriod(props?.loginReducer?.schoolId).then(async (period: any) => {
       await props.getListAllSchoolConfiguration(props?.loginReducer?.schoolId).then(async (schoolConfigurations: any) => {
         for (let schoolConfiguration of schoolConfigurations) {
-          if (schoolConfiguration?.node?.code == "COUNT_DIGITS_PERFORMANCE_LEVEL") {
+          if (schoolConfiguration?.node?.code == "COUNT_DIGITS_AVERAGE_STUDENT") {
             setCountDigits(schoolConfiguration?.node?.valueNumber);
           }
         }
@@ -167,7 +167,7 @@ const SpreadsheetAverageCourse = (props: any) => {
 
   const recalculateScorePeriod = async () => {
     setLoading(true);
-    await props.updateAllStudentCoursePeriodValuation(courseId, currentAcademicPeriod?.id, "NORMAL").then(async (data: any) => {
+    await props.updateAllAverageStudentCoursePeriod(courseId, currentAcademicPeriod?.id).then(async (data: any) => {
       setLoading(false);
     })
   }
@@ -262,15 +262,14 @@ const SpreadsheetAverageCourse = (props: any) => {
           >
             <i className="iconsminds-download"></i> {"Descargar XLS"}
           </button>
-          {/* <button
+          <button
             onClick={recalculateScorePeriod}
             key={"download"}
             className={`ml-1 btn btn-danger`}
             type="button"
-            disabled
           >
             <i className="iconsminds-download"></i> {"Recalcular Promedios"}
-          </button> */}
+          </button>
         </div>
         {/* <button onClick={download}> Export excel </button> */}
       </div>
@@ -346,7 +345,7 @@ const SpreadsheetAverageCourse = (props: any) => {
                             <span className="font-bold">{valuationArea[0]?.node?.score}</span>
                           </td>
                           <td className="text-center vertical-middle">
-                            <span className="font-bold">{valuationArea[0]?.node?.assessment}</span>
+                            <span className="font-bold">{valuationArea[0]?.node?.assessment?.toFixed(countDigits)}</span>
                           </td>
                           <td className="text-center vertical-middle">
                             <StyledBadge color="primary" className="font-0-8rem ${}" background={valuationArea[0]?.node?.performanceLevel?.colorHex ? `${valuationArea[0]?.node?.performanceLevel?.colorHex}` : "#00cafe"}>

@@ -89,7 +89,7 @@ const SpreadsheetAccumulatedAverageCourse = (props: any) => {
     props.dataCurrentAcademicPeriod(props?.loginReducer?.schoolId).then(async (period: any) => {
       await props.getListAllSchoolConfiguration(props?.loginReducer?.schoolId).then(async (schoolConfigurations: any) => {
         for (let schoolConfiguration of schoolConfigurations) {
-          if (schoolConfiguration?.node?.code == "COUNT_DIGITS_PERFORMANCE_LEVEL") {
+          if (schoolConfiguration?.node?.code == "COUNT_DIGITS_AVERAGE_STUDENT") {
             setCountDigits(schoolConfiguration?.node?.valueNumber);
           }
         }
@@ -297,7 +297,7 @@ const SpreadsheetAccumulatedAverageCourse = (props: any) => {
                                   <span className="font-bold">{valuationArea[0]?.node?.score}</span>
                                 </td>
                                 <td className="text-center vertical-middle">
-                                  <span className="font-bold">{valuationArea[0]?.node?.assessment}</span>
+                                  <span className="font-bold">{valuationArea[0]?.node?.assessment?.toFixed(countDigits)}</span>
                                 </td>
                                 <td className="text-center vertical-middle">
                                   <StyledBadge color="primary" className="font-0-8rem ${}" background={valuationArea[0]?.node?.performanceLevel?.colorHex ? `${valuationArea[0]?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
