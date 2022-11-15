@@ -441,6 +441,23 @@ const SpreadsheetCourse = React.lazy(() => {
   );
 });
 
+const SpreadsheetAverageCourse = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "SpreadsheetAverageCourse" */ '../components/app/SpreadsheetCourse/SpreadsheetAverageCourse'
+  );
+});
+
+const ReportSpreadsheetAccumulatedAverageCourseGradeList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "ReportSpreadsheetAccumulatedAverageCourseGradeList" */ '../components/app/ReportSpreadsheetAccumulatedAverageCourse/ReportSpreadsheetAccumulatedAverageCourseGradeList'
+  );
+});
+const ReportSpreadsheetAccumulatedAverageCourseCourseList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "ReportSpreadsheetAccumulatedAverageCourseCourseList" */ '../components/app/ReportSpreadsheetAccumulatedAverageCourse/ReportSpreadsheetAccumulatedAverageCourseCourseList'
+  );
+});
+
 const ReportSpreadsheetAccumulatedCourseGradeList = React.lazy(() => {
   return import(
     /* webpackChunkName: "ReportSpreadsheetAccumulatedCourseGradeList" */ '../components/app/ReportSpreadsheetAccumulatedCourse/ReportSpreadsheetAccumulatedCourseGradeList'
@@ -754,6 +771,16 @@ const App = (props: any) => {
                     <Route path="/spreadsheet" element={<Spreadsheet />} />
                     <Route path="/spreadsheetRecoveryPlan" element={<SpreadsheetRecoveryPlan />} />
                     <Route path="/spreadsheetCourse" element={<SpreadsheetCourse />} />
+                    <Route path="/spreadsheetAverageCourse" element={<SpreadsheetAverageCourse />} />
+                    <Route
+                      path="/reportSpreadsheetAccumulatedAverageCourseGradeList"
+                      element={<ReportSpreadsheetAccumulatedAverageCourseGradeList />}
+                    />
+                    <Route
+                      path="/reportSpreadsheetAccumulatedAverageCourseCourseList"
+                      element={<ReportSpreadsheetAccumulatedAverageCourseCourseList />}
+                    />
+
                     <Route
                       path="/reportSpreadsheetAccumulatedCourseGradeList"
                       element={<ReportSpreadsheetAccumulatedCourseGradeList />}

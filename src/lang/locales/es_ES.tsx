@@ -346,6 +346,9 @@ const esMessages = {
   'menu.reportSpreadsheetAccumulatedCourseCourseList': 'Planilla Consolidado General',
   'menu.reportSpreadsheetAccumulatedAreaCourseCourseList': 'Planilla Consolidado Area',
   'menu.reportSpreadsheetAccumulatedAsignatureCourseCourseList': 'Planilla Consolidado Asignatura',
+  'menu.reportSpreadsheetAccumulatedAverageCourseGradeList': 'Planilla Consolidado Promedios',
+  'menu.reportSpreadsheetAccumulatedAverageCourseCourseList': 'Planilla Consolidado Promedios',
+
 };
 
 export default esMessages;
