@@ -262,14 +262,15 @@ const SpreadsheetAverageCourse = (props: any) => {
           >
             <i className="iconsminds-download"></i> {"Descargar XLS"}
           </button>
-          <button
+          {/* <button
             onClick={recalculateScorePeriod}
             key={"download"}
             className={`ml-1 btn btn-danger`}
             type="button"
+            disabled
           >
-            <i className="iconsminds-download"></i> {"Recalcular Periodo"}
-          </button>
+            <i className="iconsminds-download"></i> {"Recalcular Promedios"}
+          </button> */}
         </div>
         {/* <button onClick={download}> Export excel </button> */}
       </div>
@@ -310,9 +311,6 @@ const SpreadsheetAverageCourse = (props: any) => {
                 <tbody>
                   {students.map((itemStudent: any, index: any) => {
                     let valuationArea = valuationsArea?.filter((itemA: any) => itemA?.node?.studentId == itemStudent?.id);
-                    console.log(valuationArea)
-
-
                     return (
                       <>
                         <tr key={index}>
