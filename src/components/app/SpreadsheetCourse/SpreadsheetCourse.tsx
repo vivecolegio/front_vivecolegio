@@ -254,6 +254,13 @@ const SpreadsheetCourse = (props: any) => {
     sheet: 'Planilla General'
   })
 
+  const recalculatePeriod = async () => {
+    setLoading(true);
+    await props.updateAllStudentCoursePeriodValuation(courseId, currentAcademicPeriod?.id, "NORMAL").then(async (data: any) => {
+      setLoading(false);
+    })
+  }
+
   return (
     <>
       <div className="mt-4 d-flex justify-content-center align-items-center">
@@ -335,14 +342,25 @@ const SpreadsheetCourse = (props: any) => {
                 </button>
               </div> */}
         </div>
-        <button
-          onClick={download}
-          key={"download"}
-          className={`ml-1 btn btn-info`}
-          type="button"
-        >
-          <i className="iconsminds-download"></i> {"Descargar XLS"}
-        </button>
+        <div className="d-flex justify-content-start align-items-center flex-column" >
+          <button
+            onClick={download}
+            key={"download"}
+            className={`ml-1 btn btn-info mb-2`}
+            type="button"
+          >
+            <i className="iconsminds-download"></i> {"Descargar XLS"}
+          </button>
+          <button
+            onClick={recalculatePeriod}
+            key={"download"}
+            className={`ml-1 btn btn-danger`}
+            type="button"
+          >
+            <i className="iconsminds-download"></i> {"Recalcular Periodo"}
+          </button>
+        </div>
+
         {/* <button onClick={download}> Export excel </button> */}
       </div>
       <div className='mb-2' style={{ textAlign: "right" }}>

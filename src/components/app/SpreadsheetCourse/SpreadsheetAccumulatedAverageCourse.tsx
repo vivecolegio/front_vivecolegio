@@ -130,19 +130,28 @@ const SpreadsheetAccumulatedAverageCourse = (props: any) => {
       await props.getAcademicPeriodsExperienceLearning(props?.loginReducer?.schoolId,
         props?.loginReducer?.schoolYear).then(async (listData: any) => {
           setAcademicPeriods(listData);
-          let promisesListAsignatures: any[] = [];
           let promisesListAreas: any[] = [];
-          if (periodId) {
-            await props
-              .getAllAverageAcademicPeriodStudent(periodId, courseId)
-              .then(async (notesFinal: any) => {
-                ntsArea = notesFinal.data.edges;
-              })
+          await listData.forEach(async (period: any) => {
+            if (period.node.id?.toString()) {
+              promisesListAreas.push(
+                props
+                  .getAllAverageAcademicPeriodStudent(period.node.id?.toString(), courseId)
+                  .then(async (notesFinal: any) => {
+                    if (ntsArea[period.node.id?.toString()] != null) {
+                      ntsArea[period.node.id?.toString()] = [...ntsArea[period.node.id?.toString()], ...notesFinal.data.edges];
+                    } else {
+                      ntsArea[period.node.id?.toString()] = [...notesFinal.data.edges];
+                    }
+                  })
+              );
+            } else {
+              setLoading(false);
+            }
+          });
+          await Promise.all(promisesListAreas).then(() => {
             setValuationsArea(ntsArea);
             setLoading(false);
-          } else {
-            setLoading(false);
-          }
+          });
         });
     });
   };
@@ -173,79 +182,6 @@ const SpreadsheetAccumulatedAverageCourse = (props: any) => {
       <hr />
       <div className="d-flex justify-content-between align-items-center">
         <HeaderInfoAcademic grade course modality goTitle="Regresar a cursos" courseId={courseId} />
-        <div>
-          <div className="d-flex justify-content-start align-items-center" >
-            {academicPeriods
-              ? academicPeriods.map((item: any) => {
-                return (
-                  <>
-                    <button
-                      onClick={() => {
-                        setCurrentAcademicPeriod(item?.node);
-                        const today = new Date();
-                        const startDate = new Date(item?.node?.startDate);
-                        const endDate = new Date(item?.node?.endDate);
-                        const totalDays = calculateDaysTwoDate(startDate, endDate);
-                        let countDays = totalDays;
-                        if (today < endDate && today > startDate) {
-                          countDays = calculateDaysTwoDate(startDate, new Date());
-                        }
-                        setDateProgress({ startDate, endDate, totalDays, countDays })
-                        return getSpreadsheet(item?.node?.id);
-                      }}
-                      key={item?.node?.id}
-                      className={`ml-1 btn ${currentAcademicPeriod?.id === item?.node?.id
-                        ? 'btn-info'
-                        : 'btn-outline-info'
-                        }`}
-                      type="button"
-                    >
-                      <i className="iconsminds-pen-2"></i> {item?.node?.name}
-                    </button>{'  '}
-                  </>
-                );
-              })
-              : ''}
-          </div>
-          {dateProgress.startDate != null ?
-            <>
-              <div className="d-flex justify-content-start align-items-center mt-2 w-100">
-                <div className="text-center">
-                  Progreso: {' '}
-                </div>
-                <Progress
-                  className="ml-2"
-                  bar
-                  color="primary"
-                  value={dateProgress.countDays > 0 ? ((dateProgress.countDays / dateProgress.totalDays) * 100) : 0}
-                > ({dateProgress.countDays}/{dateProgress.totalDays}) {dateProgress.countDays > 0 ? ((dateProgress.countDays / dateProgress.totalDays) * 100).toFixed(0) : 0}%</Progress>
-              </div>
-              <div className="d-flex justify-content-start align-items-center mt-2 w-100">
-                <div className="text-center w-50">
-                  Fecha Inicio: {' ' + moment(dateProgress.startDate).format("YYYY-MM-DD")}
-                </div>
-                <div className="text-center w-50">
-                  Fecha Fin: {' ' + moment(dateProgress.endDate).format("YYYY-MM-DD")}
-                </div>
-              </div>
-            </>
-            : ""}
-
-          {/* <div className='d-flex mt-3 justify-content-end'>
-                <button
-                  className="btn btn-green mr-2"
-                  type="button"
-                  onClick={() => {
-                    return setIsFormEnabled(!isFormEnabled);
-                  }}
-                >
-                  <i className="iconsminds-file-edit"></i> Habilitar edición
-                </button>
-                <button className="btn btn-orange" type="button">
-                  <i className="iconsminds-delete-file"></i> Cerrar periodo
-                </button>
-              </div> */}
-        </div>
         <button
           onClick={download}
           key={"download"}
@@ -257,7 +193,6 @@ const SpreadsheetAccumulatedAverageCourse = (props: any) => {
         {/* <button onClick={download}> Export excel </button> */}
       </div>
       <div className='mb-2' style={{ textAlign: "right" }}>
-
       </div>
       {loading ? (
         <>
@@ -272,30 +207,57 @@ const SpreadsheetAccumulatedAverageCourse = (props: any) => {
               <table className="table table-bordered" ref={tableRef}>
                 <thead>
                   <tr>
-                    <th rowSpan={1} className="text-center vertical-middle">
+                    <th rowSpan={2} className="text-center vertical-middle">
                       Código
                     </th>
-                    <th rowSpan={1} className="text-center vertical-middle">
+                    <th rowSpan={2} className="text-center vertical-middle">
                       Estudiante
                     </th>
 
-                    <th rowSpan={1} className="text-center vertical-middle">
-                      Puesto
-                    </th>
-                    <th rowSpan={1} className="text-center vertical-middle">
-                      Promedio
-                    </th>
-                    <th rowSpan={1} className="text-center vertical-middle">
-                      Nivel de desempeño
-                    </th>
+                    {academicPeriods
+                      ? academicPeriods.map((item: any) => {
+                        return (
+                          <>
+                            <th colSpan={3} className="text-center vertical-middle"> {item?.node?.name}</th>
+                          </>
+                        );
+                      })
+                      : ''}
+                    {academicPeriods ?
+                      <th colSpan={3} className="text-center vertical-middle">Acumulado Final.</th>
+                      : ''}
+                  </tr>
+                  <tr>
+                    {academicPeriods
+                      ? academicPeriods.map((item: any) => {
+                        return (
+                          <>
+                            <th rowSpan={1} className="text-center vertical-middle">
+                              Puesto
+                            </th>
+                            <th rowSpan={1} className="text-center vertical-middle">
+                              Promedio
+                            </th>
+                            <th rowSpan={1} className="text-center vertical-middle">
+                              Nivel de desempeño
+                            </th>                                </>
+                        );
+                      })
+                      : ''}
+                    {academicPeriods ? <>
+                      <th rowSpan={1} className="text-center vertical-middle">
+                        Puesto
+                      </th>
+                      <th rowSpan={1} className="text-center vertical-middle">
+                        Promedio
+                      </th>
+                      <th rowSpan={1} className="text-center vertical-middle">
+                        Nivel de desempeño
+                      </th> </> : ''}
                   </tr>
                 </thead>
                 <tbody>
                   {students.map((itemStudent: any, index: any) => {
-                    let valuationArea = valuationsArea?.filter((itemA: any) => itemA?.node?.studentId == itemStudent?.id);
-                    console.log(valuationArea)
-
-
                     return (
                       <>
                         <tr key={index}>
@@ -327,20 +289,27 @@ const SpreadsheetAccumulatedAverageCourse = (props: any) => {
                               </span>
                             </div>
                           </td>
-                          <td className="text-center vertical-middle">
-                            <span className="font-bold">{valuationArea[0]?.node?.score}</span>
-                          </td>
-                          <td className="text-center vertical-middle">
-                            <span className="font-bold">{valuationArea[0]?.node?.assessment}</span>
-                          </td>
-                          <td className="text-center vertical-middle">
-                            <StyledBadge color="primary" className="font-0-8rem ${}" background={valuationArea[0]?.node?.performanceLevel?.colorHex ? `${valuationArea[0]?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
-                              {valuationArea[0]?.node?.performanceLevel?.abbreviation ? valuationArea[0]?.node?.performanceLevel?.abbreviation : valuationArea[0]?.node?.performanceLevel?.name}
-                            </StyledBadge>
-                          </td>
+                          {academicPeriods.map((itemPeriod: any) => {
+                            let valuationArea = valuationsArea[itemPeriod?.node?.id?.toString()]?.filter((itemA: any) => itemA?.node?.studentId == itemStudent?.id && itemA?.node?.academicPeriodId == itemPeriod?.node?.id.toString());
+                            return (
+                              <>
+                                <td className="text-center vertical-middle">
+                                  <span className="font-bold">{valuationArea[0]?.node?.score}</span>
+                                </td>
+                                <td className="text-center vertical-middle">
+                                  <span className="font-bold">{valuationArea[0]?.node?.assessment}</span>
+                                </td>
+                                <td className="text-center vertical-middle">
+                                  <StyledBadge color="primary" className="font-0-8rem ${}" background={valuationArea[0]?.node?.performanceLevel?.colorHex ? `${valuationArea[0]?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
+                                    {valuationArea[0]?.node?.performanceLevel?.abbreviation ? valuationArea[0]?.node?.performanceLevel?.abbreviation : valuationArea[0]?.node?.performanceLevel?.name}
+                                  </StyledBadge>
+                                </td>
+                              </>
+                            );
+                          })}
                         </tr>
                       </>
-                    );
+                    )
                   })}
                 </tbody>
               </table>

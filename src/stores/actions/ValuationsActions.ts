@@ -1,6 +1,6 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
-import { MUTATION_CREATE_ACADEMIC_ASIGNATURE_COURSE_PERIOD_VALUATION_STUDENTS, MUTATION_CREATE_EXPERIENCE_LEARNING_AVERAGE_VALUATION_STUDENTS, MUTATION_UPDATE_ALL_STUDENT_ACADEMIC_ASIGNATURE_COURSE_PERIOD_VALUATION } from "../graphql/Valuations/ValuationsMutations";
+import { MUTATION_CREATE_ACADEMIC_ASIGNATURE_COURSE_PERIOD_VALUATION_STUDENTS, MUTATION_CREATE_EXPERIENCE_LEARNING_AVERAGE_VALUATION_STUDENTS, MUTATION_UPDATE_ALL_STUDENT_ACADEMIC_ASIGNATURE_COURSE_PERIOD_VALUATION, MUTATION_UPDATE_ALL_STUDENT_COURSE_PERIOD_VALUATION } from "../graphql/Valuations/ValuationsMutations";
 import { QUERY_GET_All_ACADEMIC_AREA_COURSE_PERIOD_VALUATION, QUERY_GET_All_ACADEMIC_AREA_COURSE_PERIOD_VALUATION_STUDENT, QUERY_GET_All_ACADEMIC_ASIGNATURE_COURSE_PERIOD_VALUATION, QUERY_GET_All_ACADEMIC_ASIGNATURE_COURSE_PERIOD_VALUATION_STUDENT, QUERY_GET_All_EXPERIENCE_LEARNING_AVERAGE_VALUATION, QUERY_GET_VALUATIONS_STUDENT } from "../graphql/Valuations/ValuationsQueries";
 
 export const generateAcademicAsignatureCoursePeriodValuationStudents = (schoolId : string, academicPeriodId: string, academicAsignatureCourseId: string) => {
@@ -212,8 +212,6 @@ export const generateExperienceLearningAverageValuationStudents = (evaluativeCom
 
 };
 
-
-
 export const updateAllStudentAcademicAsignatureCoursePeriodValuation = (academicPeriodId: string, academicAsignatureCourseId: string) => {
   return async (dispatch: any) => {
     try {    
@@ -228,6 +226,34 @@ export const updateAllStudentAcademicAsignatureCoursePeriodValuation = (academic
             dataResponse.errors.forEach((error: any) => {            
                 createNotification('error', 'error', '');
             });
+          } else {
+            dataCreate = dataResponse.data.create.id;
+            //createNotification('success', 'success', '');
+          }
+        });
+      return dataCreate as any;
+    } catch (error) {
+        createNotification('error', 'error', '');
+      return error;
+    }
+  };
+};
+
+export const updateAllStudentCoursePeriodValuation = (courseId: string, academicPeriodId: string, experienceLearningType: string) => {
+  return async (dispatch: any) => {
+    try {    
+      let dataCreate = null; 
+      await client
+        .mutate({
+          mutation: MUTATION_UPDATE_ALL_STUDENT_COURSE_PERIOD_VALUATION,
+          variables: {courseId, academicPeriodId, experienceLearningType },
+        })
+        .then((dataResponse: any) => {
+          if (dataResponse.errors?.length > 0) {
+            dataResponse.errors.forEach((error: any) => {            
+                //createNotification('error', 'error', '');
+            });
+            createNotification('success', 'success', '');
           } else {
             dataCreate = dataResponse.data.create.id;
             //createNotification('success', 'success', '');

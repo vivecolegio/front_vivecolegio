@@ -122,6 +122,11 @@ const ReportSpreadsheetAccumulatedCourseCourseList = (props: any) => {
           `/spreadsheetCourse?courseId=${item.id}`,
         );
         break;
+      case 'goToChildrenSpredsheetAverageCourse':
+        goToChildren(
+          `/spreadsheetAverageCourse?courseId=${item.id}`,
+        );
+        break;
       default:
         break;
     }
@@ -158,6 +163,13 @@ const ReportSpreadsheetAccumulatedCourseCourseList = (props: any) => {
                 color: 'secondary',
                 icon: 'iconsminds-gear',
                 action: 'goToChildrenSpredsheetCourse',
+              },
+              {
+                id: 2,
+                label: 'Planilla Promedios',
+                color: 'primary',
+                icon: 'iconsminds-gear',
+                action: 'goToChildrenSpredsheetAverageCourse',
               }
             ]}
             withChildren={true}

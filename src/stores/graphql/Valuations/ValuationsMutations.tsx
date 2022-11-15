@@ -17,3 +17,9 @@ export const MUTATION_UPDATE_ALL_STUDENT_ACADEMIC_ASIGNATURE_COURSE_PERIOD_VALUA
     create: updateAllStudentAcademicAsignatureCoursePeriodValuation(academicPeriodId: $academicPeriodId, academicAsignatureCourseId: $academicAsignatureCourseId)
   }
 `;
+
+export const MUTATION_UPDATE_ALL_STUDENT_COURSE_PERIOD_VALUATION = gql`
+  mutation updateAllStudentCoursePeriodValuation($courseId: String!, $academicPeriodId: String!, $experienceLearningType: ExperienceLearningType!) {
+    create: updateAllStudentCoursePeriodValuation(courseId: $courseId, academicPeriodId: $academicPeriodId, experienceLearningType: $experienceLearningType)
+  }
+`;

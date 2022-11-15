@@ -119,7 +119,7 @@ const ReportSpreadsheetAccumulatedAverageCourseCourseList = (props: any) => {
     switch (btn?.action) {
       case 'goToChildrenSpredsheetCourse':
         goToChildren(
-          `/spreadsheetCourse?courseId=${item.id}`,
+          `/spreadsheetAccumulatedAverageCourse?courseId=${item.id}`,
         );
         break;
       default:
@@ -154,7 +154,7 @@ const ReportSpreadsheetAccumulatedAverageCourseCourseList = (props: any) => {
             childrenButtons={[
               {
                 id: 1,
-                label: 'Planilla Consolidado',
+                label: 'Planilla Promedios',
                 color: 'secondary',
                 icon: 'iconsminds-gear',
                 action: 'goToChildrenSpredsheetCourse',
