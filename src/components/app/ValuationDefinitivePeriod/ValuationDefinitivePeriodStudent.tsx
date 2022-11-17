@@ -210,7 +210,7 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
   };
 
   const saveBlur = async (item: any, type: any, valuationType: any, assessment: any, performanceLevelId: any) => {
-    console.log("item", item)
+    //console.log("item", item)
     //console.log(type, item)
     let data: any = {};
     switch (type) {
@@ -227,7 +227,9 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
             } else {
               data.performaceLevelId = await getPerformanceLevel(assessment);
             }
-            console.log("data", data);
+            await props.saveNewAcademicAreaCoursePeriodValuation(data).then(() => {
+              getSpreadsheet(periodId);
+            });
             break;
           case "CALCULATE":
             data.academicAreaId = item?.academicAreaId;
@@ -238,9 +240,9 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
             }
             data.studentId = item?.studentId;
             data.valuationType = "DEFINITIVE";
-            // await props.saveNewAcademicAreaCoursePeriodValuation(data).then(() => {
-            //   getSpreadsheet(periodId);
-            // });
+            await props.saveNewAcademicAreaCoursePeriodValuation(data).then(() => {
+              getSpreadsheet(periodId);
+            });
             break;
           case "DEFINITIVE":
             data.academicAreaId = item?.academicAreaId;
@@ -251,14 +253,29 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
             }
             data.studentId = item?.studentId;
             data.valuationType = item?.valuationType;
-            // await props.updateAcademicAreaCoursePeriodValuation(data, item?.id?.toString()).then(() => {
-            //   getSpreadsheet(periodId);
-            // });
+            await props.updateAcademicAreaCoursePeriodValuation(data, item?.id?.toString()).then(() => {
+              getSpreadsheet(periodId);
+            });
             break;
         }
         break;
       case "ASIGNATURE":
         switch (valuationType) {
+          case "":
+            data.academicAreaId = item?.academicAsignatureCourseId;
+            data.academicPeriodId = item?.academicPeriodId;
+            data.assessment = assessment;
+            data.studentId = item?.studentId;
+            data.valuationType = "DEFINITIVE";
+            if (performanceLevelType == "QUALITATIVE") {
+              data.performanceLevelId = performanceLevelId;
+            } else {
+              data.performaceLevelId = await getPerformanceLevel(assessment);
+            }
+            await props.saveNewAcademicAsignatureCoursePeriodValuation(data).then(() => {
+              getSpreadsheet(periodId);
+            });
+            break;
           case "CALCULATE":
             data.academicAsignatureCourseId = item?.academicAsignatureCourseId;
             data.academicPeriodId = item?.academicPeriodId;
@@ -268,9 +285,9 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
             }
             data.studentId = item?.studentId;
             data.valuationType = "DEFINITIVE";
-            // await props.saveNewAcademicAsignatureCoursePeriodValuation(data).then(() => {
-            //   getSpreadsheet(periodId);
-            // });
+            await props.saveNewAcademicAsignatureCoursePeriodValuation(data).then(() => {
+              getSpreadsheet(periodId);
+            });
             break;
           case "DEFINITIVE":
             data.academicAsignatureCourseId = item?.academicAsignatureCourseId;
@@ -281,9 +298,9 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
             }
             data.studentId = item?.studentId;
             data.valuationType = item?.valuationType;
-            // await props.updateAcademicAsignatureCoursePeriodValuation(data, item?.id?.toString()).then(() => {
-            //   getSpreadsheet(periodId);
-            // });
+            await props.updateAcademicAsignatureCoursePeriodValuation(data, item?.id?.toString()).then(() => {
+              getSpreadsheet(periodId);
+            });
             break;
         }
         break;
@@ -291,7 +308,6 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
   };
 
   const getPerformanceLevel = async (assesment: any) => {
-    debugger
     let perf = null;
     if (assesment) {
       perf = performanceLevels?.find((c: any) => {
@@ -441,7 +457,6 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
                                                 if (e.target.value < min || e.target.value > max) {
                                                   e.target.value = null;
                                                 }
-                                                //return getPerformanceLevel(e, item);
                                               }}
                                               {...item?.node?.assessment}
                                               defaultValue={item?.node?.assessment}
@@ -537,7 +552,17 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
                                                     <Input
                                                       type="number"
                                                       onBlur={(event: any) => {
-                                                        //return saveBlur(item);
+                                                        let valuation = valuationAsignature[0]?.node;
+                                                        if (valuation == null) {
+                                                          valuation = {};
+                                                          valuation.studentId = itemStudent?.id;
+                                                          valuation.academicPeriodId = periodId;
+                                                          valuation.academicAsignatureCourseId = itemAsignature?.node?.id;
+                                                          valuation.assesment = Number(event?.target?.value);
+                                                          valuation.valuationType = "DEFINITIVE";
+                                                          valuation.performaceLevelId = "";
+                                                        }
+                                                        saveBlur(valuation, "AREA", valuationType, Number(event?.target?.value), null);
                                                       }}
                                                       onInput={(e: any) => {
                                                         if (e.target.value < min || e.target.value > max) {
