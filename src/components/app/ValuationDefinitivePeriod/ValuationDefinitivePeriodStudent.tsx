@@ -210,11 +210,25 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
   };
 
   const saveBlur = async (item: any, type: any, valuationType: any, assessment: any, performanceLevelId: any) => {
+    console.log("item", item)
     //console.log(type, item)
     let data: any = {};
     switch (type) {
       case "AREA":
         switch (valuationType) {
+          case "":
+            data.academicAreaId = item?.academicAreaId;
+            data.academicPeriodId = item?.academicPeriodId;
+            data.assessment = assessment;
+            data.studentId = item?.studentId;
+            data.valuationType = "DEFINITIVE";
+            if (performanceLevelType == "QUALITATIVE") {
+              data.performanceLevelId = performanceLevelId;
+            } else {
+              data.performaceLevelId = await getPerformanceLevel(assessment);
+            }
+            console.log("data", data);
+            break;
           case "CALCULATE":
             data.academicAreaId = item?.academicAreaId;
             data.academicPeriodId = item?.academicPeriodId;
@@ -224,9 +238,9 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
             }
             data.studentId = item?.studentId;
             data.valuationType = "DEFINITIVE";
-            await props.saveNewAcademicAreaCoursePeriodValuation(data).then(() => {
-              getSpreadsheet(periodId);
-            });
+            // await props.saveNewAcademicAreaCoursePeriodValuation(data).then(() => {
+            //   getSpreadsheet(periodId);
+            // });
             break;
           case "DEFINITIVE":
             data.academicAreaId = item?.academicAreaId;
@@ -237,9 +251,9 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
             }
             data.studentId = item?.studentId;
             data.valuationType = item?.valuationType;
-            await props.updateAcademicAreaCoursePeriodValuation(data, item?.id?.toString()).then(() => {
-              getSpreadsheet(periodId);
-            });
+            // await props.updateAcademicAreaCoursePeriodValuation(data, item?.id?.toString()).then(() => {
+            //   getSpreadsheet(periodId);
+            // });
             break;
         }
         break;
@@ -254,9 +268,9 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
             }
             data.studentId = item?.studentId;
             data.valuationType = "DEFINITIVE";
-            await props.saveNewAcademicAsignatureCoursePeriodValuation(data).then(() => {
-              getSpreadsheet(periodId);
-            });
+            // await props.saveNewAcademicAsignatureCoursePeriodValuation(data).then(() => {
+            //   getSpreadsheet(periodId);
+            // });
             break;
           case "DEFINITIVE":
             data.academicAsignatureCourseId = item?.academicAsignatureCourseId;
@@ -267,15 +281,34 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
             }
             data.studentId = item?.studentId;
             data.valuationType = item?.valuationType;
-            await props.updateAcademicAsignatureCoursePeriodValuation(data, item?.id?.toString()).then(() => {
-              getSpreadsheet(periodId);
-            });
+            // await props.updateAcademicAsignatureCoursePeriodValuation(data, item?.id?.toString()).then(() => {
+            //   getSpreadsheet(periodId);
+            // });
             break;
         }
         break;
     }
   };
 
+  const getPerformanceLevel = async (assesment: any) => {
+    debugger
+    let perf = null;
+    if (assesment) {
+      perf = performanceLevels?.find((c: any) => {
+        return assesment < c.node.topScore && assesment >= c.node.minimumScore;
+      });
+      if (perf === undefined) {
+        perf = performanceLevels?.find((c: any) => {
+          return assesment <= c.node.topScore && assesment.target.value > c.node.minimumScore;
+        });
+      }
+    }
+    if (perf) {
+      return perf.node;
+    } else {
+      return null;
+    }
+  };
 
   return (
     <>
@@ -392,7 +425,17 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
                                             <Input
                                               type="number"
                                               onBlur={(event: any) => {
-                                                //return saveBlur(item);
+                                                let valuation = valuationArea[0]?.node;
+                                                if (valuation == null) {
+                                                  valuation = {};
+                                                  valuation.studentId = itemStudent?.id;
+                                                  valuation.academicPeriodId = periodId;
+                                                  valuation.academicAreaId = item?.id;
+                                                  valuation.assesment = Number(event?.target?.value);
+                                                  valuation.valuationType = "DEFINITIVE";
+                                                  valuation.performaceLevelId = "";
+                                                }
+                                                saveBlur(valuation, "AREA", valuationType, Number(event?.target?.value), null);
                                               }}
                                               onInput={(e: any) => {
                                                 if (e.target.value < min || e.target.value > max) {
