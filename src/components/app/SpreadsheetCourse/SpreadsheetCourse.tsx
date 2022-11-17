@@ -257,7 +257,7 @@ const SpreadsheetCourse = (props: any) => {
   const recalculatePeriod = async () => {
     setLoading(true);
     await props.updateAllStudentCoursePeriodValuation(courseId, currentAcademicPeriod?.id, "NORMAL").then(async (data: any) => {
-      setLoading(false);
+      getSpreadsheet(currentAcademicPeriod?.id)
     })
   }
 

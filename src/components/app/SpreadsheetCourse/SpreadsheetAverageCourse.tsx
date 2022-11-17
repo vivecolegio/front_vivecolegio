@@ -168,7 +168,7 @@ const SpreadsheetAverageCourse = (props: any) => {
   const recalculateScorePeriod = async () => {
     setLoading(true);
     await props.updateAllAverageStudentCoursePeriod(courseId, currentAcademicPeriod?.id).then(async (data: any) => {
-      setLoading(false);
+      getSpreadsheet(currentAcademicPeriod?.id)
     })
   }
 
