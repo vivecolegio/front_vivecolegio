@@ -140,3 +140,29 @@ export const QUERY_GET_All_ACADEMIC_AREA_COURSE_PERIOD_VALUATION_STUDENT = gql`
     }
   }
 `;
+
+export const QUERY_GET_All_ACADEMIC_ASIGNATURE_COURSE_YEAR_VALUATION = gql`
+  query getAllAcademicAsignatureCourseYearValuation($schoolYearId: String!, $academicAsignatureCourseId: String!) {
+    data: getAllAcademicAsignatureCourseYearValuation(orderCreated: true, allData: true, schoolYearId: $schoolYearId, academicAsignatureCourseId: $academicAsignatureCourseId) {
+      edges {
+        cursor
+        node {
+          id
+          studentId
+          valuationType
+          assessment   
+          academicAsignatureCourseId
+          schoolYearId
+          performanceLevelId 
+          performanceLevel {
+            name
+            colorHex
+            abbreviation
+            isRecovery
+          }    
+          valuationType  
+        }
+      }    
+    }
+  }
+`;

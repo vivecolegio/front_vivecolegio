@@ -29,3 +29,9 @@ export const MUTATION_UPDATE_ALL_AVERAGE_STUDENT_COURSE_PERIOD = gql`
     create: updateAllAverageStudentCoursePeriod(courseId: $courseId, academicPeriodId: $academicPeriodId)
   }
 `;
+
+export const MUTATION_UPDATE_ALL_STUDENT_COURSE_YEAR_VALUATION = gql`
+  mutation updateAllStudentCourseYearValuation($courseId: String!, $schoolId: String!, $schoolYearId: String!) {
+    create: updateAllStudentCourseYearValuation(courseId: $courseId, schoolId: $schoolId, schoolYearId: $schoolYearId)
+  }
+`;

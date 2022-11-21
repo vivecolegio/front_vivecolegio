@@ -141,6 +141,13 @@ const SpreadsheetAccumulatedCourse = (props: any) => {
                           }
                         })
                     );
+                    promisesListAreas.push(
+                      props
+                        .getAllAcademicAsignatureCourseYearValuation(props?.loginReducer?.schoolYear, asignature?.node?.id)
+                        .then(async (notesFinal: any) => {
+                          ntsArea[asignature?.node?.id] = [...notesFinal.data.edges];
+                        })
+                    )
                   }
                   const ids = areasAux.map(o => o?.id)
                   const count: any = {};
@@ -187,6 +194,14 @@ const SpreadsheetAccumulatedCourse = (props: any) => {
     sheet: 'Planilla General'
   })
 
+  const recalculateYear = async () => {
+    setLoading(true);
+    await props.updateAllStudentCourseYearValuation(courseId, props?.loginReducer?.schoolId,
+      props?.loginReducer?.schoolYear).then(async (data: any) => {
+        getSpreadsheet();
+      })
+  }
+
   return (
     <>
       <div className="mt-4 d-flex justify-content-center align-items-center">
@@ -195,16 +210,24 @@ const SpreadsheetAccumulatedCourse = (props: any) => {
       <hr />
       <div className="d-flex justify-content-between align-items-center">
         <HeaderInfoAcademic grade course modality goTitle="Regresar a cursos" courseId={courseId} />
-
-        <button
-          onClick={download}
-          key={"download"}
-          className={`ml-1 btn btn-info`}
-          type="button"
-        >
-          <i className="iconsminds-download"></i> {"Descargar XLS"}
-        </button>
-        {/* <button onClick={download}> Export excel </button> */}
+        <div className="d-flex justify-content-start align-items-center flex-column" >
+          <button
+            onClick={download}
+            key={"download"}
+            className={`ml-1 btn btn-info mb-2`}
+            type="button"
+          >
+            <i className="iconsminds-download"></i> {"Descargar XLS"}
+          </button>
+          <button
+            onClick={recalculateYear}
+            key={"download"}
+            className={`ml-1 btn btn-danger`}
+            type="button"
+          >
+            <i className="iconsminds-download"></i> {"Recalcular Año"}
+          </button>
+        </div>
       </div>
       <div className='mb-2' style={{ textAlign: "right" }}>
 
@@ -342,11 +365,11 @@ const SpreadsheetAccumulatedCourse = (props: any) => {
                               <>
                                 {
                                   asignaturesArea?.map((itemAsignature: any, indexe: any) => {
+                                    let valuationAsignatureYear = valuationsArea[itemAsignature?.node?.id]?.filter((itemA: any) => itemA?.node?.studentId == itemStudent?.id)[0];
                                     return (
                                       <>
                                         {academicPeriods.map((itemPeriod: any) => {
                                           let valuationAsignature = valuations[itemAsignature?.node?.id]?.filter((itemA: any) => itemA?.node?.studentId == itemStudent?.id && itemA?.node?.academicPeriodId == itemPeriod?.node?.id.toString());
-                                          console.log(valuationAsignature);
                                           let valuationAsignatureCalculate;
                                           let valuationAsignatureDefinitive;
                                           for (let valuationAsignatureAux of valuationAsignature) {
@@ -392,7 +415,18 @@ const SpreadsheetAccumulatedCourse = (props: any) => {
                                             </>
                                           );
                                         })}
-                                        <td></td>
+                                        <td className="text-center vertical-middle font-weight-bold">
+                                          {performanceLevelType === "QUALITATIVE" ?
+                                            <>
+                                              <StyledBadge color="primary" className="font-0-8rem pt-2" background={valuationAsignatureYear?.node?.performanceLevel?.colorHex ? `${valuationAsignatureYear?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
+                                                {valuationAsignatureYear?.node?.performanceLevel?.abbreviation ? valuationAsignatureYear?.node?.performanceLevel?.abbreviation : valuationAsignatureYear?.node?.performanceLevel?.name} ""
+                                              </StyledBadge>
+                                            </> :
+                                            <>
+                                              {valuationAsignatureYear?.node?.assessment?.toFixed(countDigits)}
+                                            </>
+                                          }
+                                        </td>
                                       </>
                                     );
                                   })
