@@ -210,7 +210,6 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
   };
 
   const saveBlur = async (item: any, type: any, valuationType: any, assessment: any, performanceLevelId: any) => {
-    //console.log("item", item)
     //console.log(type, item)
     let data: any = {};
     switch (type) {
@@ -263,7 +262,7 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
       case "ASIGNATURE":
         switch (valuationType) {
           case "":
-            data.academicAreaId = item?.academicAsignatureCourseId;
+            data.academicAsignatureCourseId = item?.academicAsignatureCourseId;
             data.academicPeriodId = item?.academicPeriodId;
             data.assessment = assessment;
             data.studentId = item?.studentId;
@@ -564,7 +563,7 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
                                                           valuation.valuationType = "DEFINITIVE";
                                                           valuation.performanceLevelId = "";
                                                         }
-                                                        saveBlur(valuation, "AREA", valuationType, Number(event?.target?.value), null);
+                                                        saveBlur(valuation, "ASIGNATURE", valuationType, Number(event?.target?.value), null);
                                                       }}
                                                       onInput={(e: any) => {
                                                         if (e.target.value < min || e.target.value > max) {
