@@ -231,10 +231,10 @@ const SpreadsheetAccumulatedAreaCourse = (props: any) => {
               <table className="table table-bordered" ref={tableRef}>
                 <thead>
                   <tr>
-                    <th rowSpan={3} className="text-center vertical-middle">
+                    <th rowSpan={2} className="text-center vertical-middle">
                       Código
                     </th>
-                    <th rowSpan={3} className="text-center vertical-middle">
+                    <th rowSpan={2} className="text-center vertical-middle">
                       Estudiante
                     </th>
                     {areas?.map((item: any, index: any) => {
