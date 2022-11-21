@@ -225,7 +225,8 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
             if (performanceLevelType == "QUALITATIVE") {
               data.performanceLevelId = performanceLevelId;
             } else {
-              data.performaceLevelId = await getPerformanceLevel(assessment);
+              data.performanceLevelId = await getPerformanceLevel(assessment);
+              data.performanceLevelId = data.performanceLevelId?.id;
             }
             await props.saveNewAcademicAreaCoursePeriodValuation(data).then(() => {
               getSpreadsheet(periodId);
@@ -270,7 +271,8 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
             if (performanceLevelType == "QUALITATIVE") {
               data.performanceLevelId = performanceLevelId;
             } else {
-              data.performaceLevelId = await getPerformanceLevel(assessment);
+              data.performanceLevelId = await getPerformanceLevel(assessment);
+              data.performanceLevelId = data.performanceLevelId?.id;
             }
             await props.saveNewAcademicAsignatureCoursePeriodValuation(data).then(() => {
               getSpreadsheet(periodId);
@@ -449,7 +451,7 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
                                                   valuation.academicAreaId = item?.id;
                                                   valuation.assesment = Number(event?.target?.value);
                                                   valuation.valuationType = "DEFINITIVE";
-                                                  valuation.performaceLevelId = "";
+                                                  valuation.performanceLevelId = "";
                                                 }
                                                 saveBlur(valuation, "AREA", valuationType, Number(event?.target?.value), null);
                                               }}
@@ -560,7 +562,7 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
                                                           valuation.academicAsignatureCourseId = itemAsignature?.node?.id;
                                                           valuation.assesment = Number(event?.target?.value);
                                                           valuation.valuationType = "DEFINITIVE";
-                                                          valuation.performaceLevelId = "";
+                                                          valuation.performanceLevelId = "";
                                                         }
                                                         saveBlur(valuation, "AREA", valuationType, Number(event?.target?.value), null);
                                                       }}
