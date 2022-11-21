@@ -1,7 +1,7 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
 import { MUTATION_CREATE_ACADEMIC_ASIGNATURE_COURSE_PERIOD_VALUATION_STUDENTS, MUTATION_CREATE_EXPERIENCE_LEARNING_AVERAGE_VALUATION_STUDENTS, MUTATION_UPDATE_ALL_AVERAGE_STUDENT_COURSE_PERIOD, MUTATION_UPDATE_ALL_STUDENT_ACADEMIC_ASIGNATURE_COURSE_PERIOD_VALUATION, MUTATION_UPDATE_ALL_STUDENT_COURSE_PERIOD_VALUATION, MUTATION_UPDATE_ALL_STUDENT_COURSE_YEAR_VALUATION } from "../graphql/Valuations/ValuationsMutations";
-import { QUERY_GET_All_ACADEMIC_AREA_COURSE_PERIOD_VALUATION, QUERY_GET_All_ACADEMIC_AREA_COURSE_PERIOD_VALUATION_STUDENT, QUERY_GET_All_ACADEMIC_ASIGNATURE_COURSE_PERIOD_VALUATION, QUERY_GET_All_ACADEMIC_ASIGNATURE_COURSE_PERIOD_VALUATION_STUDENT, QUERY_GET_All_ACADEMIC_ASIGNATURE_COURSE_YEAR_VALUATION, QUERY_GET_All_EXPERIENCE_LEARNING_AVERAGE_VALUATION, QUERY_GET_VALUATIONS_STUDENT } from "../graphql/Valuations/ValuationsQueries";
+import { QUERY_GET_All_ACADEMIC_AREA_COURSE_PERIOD_VALUATION, QUERY_GET_All_ACADEMIC_AREA_COURSE_PERIOD_VALUATION_STUDENT, QUERY_GET_All_ACADEMIC_AREA_COURSE_YEAR_VALUATION, QUERY_GET_All_ACADEMIC_ASIGNATURE_COURSE_PERIOD_VALUATION, QUERY_GET_All_ACADEMIC_ASIGNATURE_COURSE_PERIOD_VALUATION_STUDENT, QUERY_GET_All_ACADEMIC_ASIGNATURE_COURSE_YEAR_VALUATION, QUERY_GET_All_EXPERIENCE_LEARNING_AVERAGE_VALUATION, QUERY_GET_VALUATIONS_STUDENT } from "../graphql/Valuations/ValuationsQueries";
 
 export const generateAcademicAsignatureCoursePeriodValuationStudents = (schoolId : string, academicPeriodId: string, academicAsignatureCourseId: string) => {
   return async (dispatch: any) => {
@@ -332,6 +332,28 @@ export const getAllAcademicAsignatureCourseYearValuation = (schoolYearId: string
           query: QUERY_GET_All_ACADEMIC_ASIGNATURE_COURSE_YEAR_VALUATION,
           variables: {
             schoolYearId, academicAsignatureCourseId,
+          },
+        })
+        .then((result: any) => {
+          data = result.data;
+        });
+      return data;
+    } catch (error) {
+      createNotification('error', 'error', '');
+      return error;
+    }
+  };
+};
+
+export const getAllAcademicAreaCourseYearValuation = (schoolYearId: string, academicAreaId: string) => {
+  return async (dispatch: any) => {
+    try {
+      let data = {};
+      await client
+        .query({
+          query: QUERY_GET_All_ACADEMIC_AREA_COURSE_YEAR_VALUATION,
+          variables: {
+            schoolYearId, academicAreaId,
           },
         })
         .then((result: any) => {

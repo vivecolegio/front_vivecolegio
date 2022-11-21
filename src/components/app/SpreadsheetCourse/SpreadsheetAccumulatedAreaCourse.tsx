@@ -154,6 +154,13 @@ const SpreadsheetAccumulatedAreaCourse = (props: any) => {
                           }
                         })
                     );
+                    promisesListAsignatures.push(
+                      props
+                        .getAllAcademicAreaCourseYearValuation(props?.loginReducer?.schoolYear, area?.id)
+                        .then(async (notesFinal: any) => {
+                          nts[area?.id] = [...notesFinal.data.edges];
+                        })
+                    )
                   }
                 } else {
                   setLoading(false);
@@ -161,7 +168,6 @@ const SpreadsheetAccumulatedAreaCourse = (props: any) => {
               });
               await Promise.all(promisesListAreas).then(() => {
                 setValuationsArea(ntsArea);
-                setLoading(false);
               });
               await Promise.all(promisesListAsignatures).then(() => {
                 setValuations(nts);
@@ -299,6 +305,7 @@ const SpreadsheetAccumulatedAreaCourse = (props: any) => {
                             </div>
                           </td>
                           {areas?.map((itemArea: any, index: any) => {
+                            let valuationAreaYear = valuations[itemArea?.id]?.filter((itemA: any) => itemA?.node?.studentId == itemStudent?.id)[0];
                             return (
                               <>
                                 {academicPeriods.map((itemPeriod: any) => {
@@ -349,7 +356,18 @@ const SpreadsheetAccumulatedAreaCourse = (props: any) => {
                                     </>
                                   )
                                 })}
-                                <td></td>
+                                <td className="text-center vertical-middle font-weight-bold">
+                                  {performanceLevelType === "QUALITATIVE" ?
+                                    <>
+                                      <StyledBadge color="primary" className="font-0-8rem pt-2" background={valuationAreaYear?.node?.performanceLevel?.colorHex ? `${valuationAreaYear?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
+                                        {valuationAreaYear?.node?.performanceLevel?.abbreviation ? valuationAreaYear?.node?.performanceLevel?.abbreviation : valuationAreaYear?.node?.performanceLevel?.name} ""
+                                      </StyledBadge>
+                                    </> :
+                                    <>
+                                      {valuationAreaYear?.node?.assessment?.toFixed(countDigits)}
+                                    </>
+                                  }
+                                </td>
                               </>
                             );
                           })}
