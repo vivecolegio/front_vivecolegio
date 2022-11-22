@@ -107,6 +107,12 @@ const ValuationDefinitivePeriodStudentsCourseList = (props: any) => {
                       </>
                     );
                   })}
+                  <th
+                    colSpan={1}
+                    className="text-center vertical-middle"
+                  >
+                    {"Final"}
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -162,6 +168,18 @@ const ValuationDefinitivePeriodStudentsCourseList = (props: any) => {
                             );
                           })
                           : ''}
+                        <td>
+                          <button
+                            onClick={() => {
+                              return goToChildren(`/valuationDefinitiveYearStudent?schoolYearId=${props?.loginReducer?.schoolYear}&studentId=${itemStudent?.id}&courseId=${courseId}`);
+                            }}
+                            key={props?.loginReducer?.schoolYear}
+                            className={`ml-1 btn btn-info`}
+                            type="button"
+                          >
+                            <i className="iconsminds-gear"></i> {"Valoraciones"}
+                          </button>
+                        </td>
                       </tr>
                     </>
                   );

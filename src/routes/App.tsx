@@ -606,7 +606,11 @@ const ValuationDefinitivePeriodStudent = React.lazy(() => {
     /* webpackChunkName: "ValuationDefinitivePeriodStudent" */ '../components/app/ValuationDefinitivePeriod/ValuationDefinitivePeriodStudent'
   );
 });
-
+const ValuationDefinitiveYearStudent = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "ValuationDefinitiveYearStudent" */ '../components/app/ValuationDefinitivePeriod/ValuationDefinitiveYearStudent'
+  );
+});
 const StudentObserverGradeList = React.lazy(() => {
   return import(
     /* webpackChunkName: "StudentObserverGradeList" */ '../components/app/StudentObserver/StudentObserverGradeList'
@@ -892,7 +896,10 @@ const App = (props: any) => {
                       path="/valuationDefinitivePeriodStudent"
                       element={<ValuationDefinitivePeriodStudent />}
                     />
-
+                    <Route
+                      path="/valuationDefinitiveYearStudent"
+                      element={<ValuationDefinitiveYearStudent />}
+                    />
                     <Route
                       path="/studentObserverGradeList"
                       element={<StudentObserverGradeList />}

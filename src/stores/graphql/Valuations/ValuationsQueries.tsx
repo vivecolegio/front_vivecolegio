@@ -192,3 +192,54 @@ export const QUERY_GET_All_ACADEMIC_AREA_COURSE_YEAR_VALUATION = gql`
     }
   }
 `;
+
+
+export const QUERY_GET_All_ACADEMIC_ASIGNATURE_COURSE_YEAR_VALUATION_STUDENT = gql`
+  query getAllAcademicAsignatureCourseYearValuation($schoolYearId: String!, $academicAsignatureCourseId: String!, $studentId: String!) {
+    data: getAllAcademicAsignatureCourseYearValuation(orderCreated: true, allData: true, schoolYearId: $schoolYearId, academicAsignatureCourseId: $academicAsignatureCourseId, studentId: $studentId) {
+      edges {
+        cursor
+        node {
+          id
+          studentId
+          assessment    
+          academicAsignatureCourseId
+          schoolYearId
+          performanceLevelId
+          performanceLevel {
+            name
+            colorHex
+            abbreviation
+          }      
+          valuationType
+        }
+      }    
+       
+    }
+  }
+`;
+
+export const QUERY_GET_All_ACADEMIC_AREA_COURSE_YEAR_VALUATION_STUDENT = gql`
+  query getAllAcademicAreaCourseYearValuation($schoolYearId: String!, $academicAreaId: String!, $studentId: String!) {
+    data: getAllAcademicAreaCourseYearValuation(orderCreated: true, allData: true, schoolYearId: $schoolYearId, academicAreaId: $academicAreaId, studentId: $studentId) {
+      edges {
+        cursor
+        node {
+          id
+          studentId
+          assessment   
+          academicAreaId
+          schoolYearId 
+          performanceLevelId
+          performanceLevel {
+            name
+            colorHex
+            abbreviation
+          }   
+          valuationType   
+        }
+      }    
+       
+    }
+  }
+`;
