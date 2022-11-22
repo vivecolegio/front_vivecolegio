@@ -13,6 +13,7 @@ import { getInitialsName } from '../../../helpers/Utils';
 import * as performanceLevelActions from '../../../stores/actions/Academic/PerformanceLevelActions';
 import * as academicAsignatureCouseActions from '../../../stores/actions/AcademicAsignatureCourseActions';
 import * as academicPeriodActions from '../../../stores/actions/AcademicPeriodActions';
+import * as averageAcademicPeriodStudentActions from '../../../stores/actions/AverageAcademicPeriodStudentActions';
 import * as componentEvaluativeActions from '../../../stores/actions/ComponentEvaluativeActions';
 import * as courseActions from '../../../stores/actions/CourseActions';
 import * as experienceLearningActions from '../../../stores/actions/ExperienceLearningActions';
@@ -21,7 +22,6 @@ import * as experienceLearningSelfActions from '../../../stores/actions/Experien
 import * as experienceLearningTraditionalActions from '../../../stores/actions/ExperienceLearningTraditionalValuationActions';
 import * as schoolConfiguarionActions from '../../../stores/actions/SchoolConfigurationActions';
 import * as valuationsActions from '../../../stores/actions/ValuationsActions';
-import * as averageAcademicPeriodStudentActions from '../../../stores/actions/AverageAcademicPeriodStudentActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
 import { Loader } from '../../common/Loader';
@@ -130,6 +130,7 @@ const SpreadsheetAccumulatedAverageCourse = (props: any) => {
       await props.getAcademicPeriodsExperienceLearning(props?.loginReducer?.schoolId,
         props?.loginReducer?.schoolYear).then(async (listData: any) => {
           setAcademicPeriods(listData);
+          let promisesListAsignatures: any[] = [];
           let promisesListAreas: any[] = [];
           await listData.forEach(async (period: any) => {
             if (period.node.id?.toString()) {
@@ -144,12 +145,22 @@ const SpreadsheetAccumulatedAverageCourse = (props: any) => {
                     }
                   })
               );
+              promisesListAsignatures.push(
+                props
+                  .getAllAverageAcademicYearStudent(props?.loginReducer?.schoolYear, courseId)
+                  .then(async (notesFinal: any) => {
+                    nts[props?.loginReducer?.schoolYear] = [...notesFinal.data.edges];
+                  })
+              )
             } else {
               setLoading(false);
             }
           });
           await Promise.all(promisesListAreas).then(() => {
             setValuationsArea(ntsArea);
+          });
+          await Promise.all(promisesListAsignatures).then(() => {
+            setValuations(nts);
             setLoading(false);
           });
         });
@@ -258,6 +269,7 @@ const SpreadsheetAccumulatedAverageCourse = (props: any) => {
                 </thead>
                 <tbody>
                   {students.map((itemStudent: any, index: any) => {
+                    let valuationAreaYear = valuations[props?.loginReducer?.schoolYear]?.filter((itemA: any) => itemA?.node?.studentId == itemStudent?.id)[0];
                     return (
                       <>
                         <tr key={index}>
@@ -307,6 +319,19 @@ const SpreadsheetAccumulatedAverageCourse = (props: any) => {
                               </>
                             );
                           })}
+                          <>
+                            <td className="text-center vertical-middle">
+                              <span className="font-bold">{valuationAreaYear?.node?.score}</span>
+                            </td>
+                            <td className="text-center vertical-middle">
+                              <span className="font-bold">{valuationAreaYear?.node?.assessment?.toFixed(countDigits)}</span>
+                            </td>
+                            <td className="text-center vertical-middle font-weight-bold">
+                              <StyledBadge color="primary" className="font-0-8rem pt-2" background={valuationAreaYear?.node?.performanceLevel?.colorHex ? `${valuationAreaYear?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
+                                {valuationAreaYear?.node?.performanceLevel?.abbreviation ? valuationAreaYear?.node?.performanceLevel?.abbreviation : valuationAreaYear?.node?.performanceLevel?.name} ""
+                              </StyledBadge>
+                            </td>
+                          </>
                         </tr>
                       </>
                     )

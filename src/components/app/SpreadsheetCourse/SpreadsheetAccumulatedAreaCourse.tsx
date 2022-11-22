@@ -196,6 +196,14 @@ const SpreadsheetAccumulatedAreaCourse = (props: any) => {
     sheet: 'Planilla General'
   })
 
+  const recalculateYear = async () => {
+    setLoading(true);
+    await props.updateAllStudentCourseYearValuation(courseId, props?.loginReducer?.schoolId,
+      props?.loginReducer?.schoolYear).then(async (data: any) => {
+        getSpreadsheet();
+      })
+  }
+
   return (
     <>
       <div className="mt-4 d-flex justify-content-center align-items-center">
@@ -205,15 +213,24 @@ const SpreadsheetAccumulatedAreaCourse = (props: any) => {
       <div className="d-flex justify-content-between align-items-center">
         <HeaderInfoAcademic grade course modality goTitle="Regresar a cursos" courseId={courseId} />
 
-        <button
-          onClick={download}
-          key={"download"}
-          className={`ml-1 btn btn-info`}
-          type="button"
-        >
-          <i className="iconsminds-download"></i> {"Descargar XLS"}
-        </button>
-        {/* <button onClick={download}> Export excel </button> */}
+        <div className="d-flex justify-content-start align-items-center flex-column" >
+          <button
+            onClick={download}
+            key={"download"}
+            className={`ml-1 btn btn-info mb-2`}
+            type="button"
+          >
+            <i className="iconsminds-download"></i> {"Descargar XLS"}
+          </button>
+          <button
+            onClick={recalculateYear}
+            key={"download"}
+            className={`ml-1 btn btn-danger`}
+            type="button"
+          >
+            <i className="iconsminds-download"></i> {"Recalcular Año"}
+          </button>
+        </div>
       </div>
       <div className='mb-2' style={{ textAlign: "right" }}>
 
