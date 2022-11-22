@@ -562,6 +562,7 @@ const PerformanceReportCourseList = React.lazy(() => {
     /* webpackChunkName: "PerformanceReportCourseList" */ '../components/app/PerformanceReport/PerformanceReportCourseList'
   );
 });
+
 const PerformanceReportGradeList = React.lazy(() => {
   return import(
     /* webpackChunkName: "PerformanceReportGradeList" */ '../components/app/PerformanceReport/PerformanceReportGradeList'
@@ -570,6 +571,18 @@ const PerformanceReportGradeList = React.lazy(() => {
 const PerformanceReportStudentsCourseList = React.lazy(() => {
   return import(
     /* webpackChunkName: "PerformanceReportStudentsCourseList" */ '../components/app/PerformanceReport/PerformanceReportStudentsCourseList'
+  );
+});
+
+const PerformanceReportStudentsCourseList2 = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "PerformanceReportStudentsCourseList2" */ '../components/app/PerformanceReport/PerformanceReportStudentsCourseList2'
+  );
+});
+
+const PerformanceReportStudentsCourseList3 = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "PerformanceReportStudentsCourseList3" */ '../components/app/PerformanceReport/PerformanceReportStudentsCourseList3'
   );
 });
 
@@ -855,7 +868,14 @@ const App = (props: any) => {
                       path="/performanceReportStudentsCourse"
                       element={<PerformanceReportStudentsCourseList />}
                     />
-
+                    <Route
+                      path="/performanceReportStudentsCourse2"
+                      element={<PerformanceReportStudentsCourseList2 />}
+                    />
+                    <Route
+                      path="/performanceReportStudentsCourse3"
+                      element={<PerformanceReportStudentsCourseList3 />}
+                    />
                     <Route
                       path="/valuationDefinitivePeriodGrade"
                       element={<ValuationDefinitivePeriodGradeList />}

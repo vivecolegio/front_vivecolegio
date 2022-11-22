@@ -117,8 +117,14 @@ const PerformanceReportCourseList = (props: any) => {
 
   const additionalFunction = async (item: any, btn: any) => {
     switch (btn?.action) {
-      case 'goToChildrenStudents':
+      case 'goToChildrenStudents1':
         goToChildren(`/performanceReportStudentsCourse?courseId=${item.id}&courseName=${item.name}&gradeName=${gradeName}&gradeId=${academicGradeId}`);
+        break;
+      case 'goToChildrenStudents2':
+        goToChildren(`/performanceReportStudentsCourse2?courseId=${item.id}&courseName=${item.name}&gradeName=${gradeName}&gradeId=${academicGradeId}`);
+        break;
+      case 'goToChildrenStudents3':
+        goToChildren(`/performanceReportStudentsCourse3?courseId=${item.id}&courseName=${item.name}&gradeName=${gradeName}&gradeId=${academicGradeId}`);
         break;
       default:
         break;
@@ -150,11 +156,26 @@ const PerformanceReportCourseList = (props: any) => {
             childrenButtons={[
               {
                 id: 1,
-                label: 'Estudiantes',
+                label: 'Desempeño Periodos',
                 color: 'secondary',
                 icon: 'iconsminds-student-male-female',
-                action: 'goToChildrenStudents',
+                action: 'goToChildrenStudents1',
+              },
+              {
+                id: 2,
+                label: 'Desempeño Final',
+                color: 'secondary',
+                icon: 'iconsminds-student-male-female',
+                action: 'goToChildrenStudents2',
+              },
+              {
+                id: 3,
+                label: 'Certificado',
+                color: 'secondary',
+                icon: 'iconsminds-student-male-female',
+                action: 'goToChildrenStudents3',
               }
+
             ]}
             withChildren={true}
             refreshDataTable={refreshDataTable}
