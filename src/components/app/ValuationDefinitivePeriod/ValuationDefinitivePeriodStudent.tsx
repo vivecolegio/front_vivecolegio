@@ -210,7 +210,6 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
   };
 
   const saveBlur = async (item: any, type: any, valuationType: any, assessment: any, performanceLevelId: any) => {
-    //console.log(type, item)
     let data: any = {};
     switch (type) {
       case "AREA":
@@ -436,7 +435,17 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
                                             classNamePrefix="react-select"
                                             options={performanceLevelsList}
                                             onChange={(selectedOption: any) => {
-                                              saveBlur(valuationArea[0]?.node, "AREA", valuationType, 0, selectedOption?.key);
+                                              let valuation = valuationArea[0]?.node;
+                                              if (valuation == null) {
+                                                valuation = {};
+                                                valuation.studentId = itemStudent?.id;
+                                                valuation.academicPeriodId = periodId;
+                                                valuation.academicAreaId = item?.id;
+                                                valuation.assesment = 0;
+                                                valuation.valuationType = "DEFINITIVE";
+                                                valuation.performanceLevelId = "";
+                                              }
+                                              saveBlur(valuation, "AREA", valuationType, 0, selectedOption?.key);
                                             }}
                                           /> : performanceLevelType === "QUANTITATIVE" ?
                                             <Input
@@ -545,9 +554,17 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
                                                     classNamePrefix="react-select"
                                                     options={performanceLevelsList}
                                                     onChange={(selectedOption: any) => {
-                                                      //item.node.assessment = undefined;
-                                                      //item.node.performanceLevel = { id: selectedOption?.key, name: selectedOption?.label }
-                                                      saveBlur(valuationAsignature[0]?.node, "ASIGNATURE", valuationType, 0, selectedOption?.key);
+                                                      let valuation = valuationAsignature[0]?.node;
+                                                      if (valuation == null) {
+                                                        valuation = {};
+                                                        valuation.studentId = itemStudent?.id;
+                                                        valuation.academicPeriodId = periodId;
+                                                        valuation.academicAsignatureCourseId = itemAsignature?.node?.id;
+                                                        valuation.assesment = 0;
+                                                        valuation.valuationType = "DEFINITIVE";
+                                                        valuation.performanceLevelId = "";
+                                                      }
+                                                      saveBlur(valuation, "ASIGNATURE", valuationType, 0, selectedOption?.key);
                                                     }}
                                                   /> : performanceLevelType === "QUANTITATIVE" ?
                                                     <Input
