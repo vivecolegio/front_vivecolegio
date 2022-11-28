@@ -251,7 +251,6 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
               data.performanceLevelId = performanceLevelId;
             }
             data.studentId = item?.studentId;
-            data.valuationType = item?.valuationType;
             await props.updateAcademicAreaCoursePeriodValuation(data, item?.id?.toString()).then(() => {
               getSpreadsheet(periodId);
             });
@@ -297,7 +296,6 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
               data.performanceLevelId = performanceLevelId;
             }
             data.studentId = item?.studentId;
-            data.valuationType = item?.valuationType;
             await props.updateAcademicAsignatureCoursePeriodValuation(data, item?.id?.toString()).then(() => {
               getSpreadsheet(periodId);
             });
@@ -380,8 +378,8 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
                           </td>
                           {students.map((itemStudent: any, index: any) => {
                             let valuationArea = valuationsArea[item?.id]?.filter((itemA: any) => itemA?.node?.studentId == itemStudent?.id);
-                            let valuationAreaCalculate;
-                            let valuationAreaDefinitive;
+                            let valuationAreaCalculate: any;
+                            let valuationAreaDefinitive: any;
                             for (let valuationAreaAux of valuationArea) {
                               switch (valuationAreaAux?.node?.valuationType) {
                                 case "CALCULATE":
@@ -435,7 +433,12 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
                                             classNamePrefix="react-select"
                                             options={performanceLevelsList}
                                             onChange={(selectedOption: any) => {
-                                              let valuation = valuationArea[0]?.node;
+                                              let valuation: any;
+                                              if (valuationType == "DEFINITIVE") {
+                                                valuation = valuationAreaDefinitive?.node;
+                                              } else {
+                                                valuation = valuationAreaCalculate?.node;
+                                              }
                                               if (valuation == null) {
                                                 valuation = {};
                                                 valuation.studentId = itemStudent?.id;
@@ -451,7 +454,12 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
                                             <Input
                                               type="number"
                                               onBlur={(event: any) => {
-                                                let valuation = valuationArea[0]?.node;
+                                                let valuation: any;
+                                                if (valuationType == "DEFINITIVE") {
+                                                  valuation = valuationAreaDefinitive?.node;
+                                                } else {
+                                                  valuation = valuationAreaCalculate?.node;
+                                                }
                                                 if (valuation == null) {
                                                   valuation = {};
                                                   valuation.studentId = itemStudent?.id;
@@ -491,8 +499,8 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
                                     asignaturesArea?.map((itemAsignature: any, indexe: any) => {
                                       //let valuation = valuations[itemAsignature?.node?.id]?.filter((itemV: any) => itemV?.node?.studentId == itemStudent?.id);
                                       let valuationAsignature = valuations[itemAsignature?.node?.id]?.filter((itemA: any) => itemA?.node?.studentId == itemStudent?.id);
-                                      let valuationAsignatureCalculate;
-                                      let valuationAsignatureDefinitive;
+                                      let valuationAsignatureCalculate: any;
+                                      let valuationAsignatureDefinitive: any;
                                       for (let valuationAsignatureAux of valuationAsignature) {
                                         switch (valuationAsignatureAux?.node?.valuationType) {
                                           case "CALCULATE":
@@ -504,7 +512,6 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
                                         }
                                       }
                                       let valuationType = valuationAsignatureDefinitive ? "DEFINITIVE" : valuationAsignatureCalculate ? "CALCULATE" : "";
-
                                       return (
                                         <>
                                           <tr>
@@ -554,7 +561,13 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
                                                     classNamePrefix="react-select"
                                                     options={performanceLevelsList}
                                                     onChange={(selectedOption: any) => {
-                                                      let valuation = valuationAsignature[0]?.node;
+                                                      let valuation: any;
+                                                      if (valuationType == "DEFINITIVE") {
+                                                        valuation = valuationAsignatureDefinitive?.node;
+                                                      } else {
+                                                        valuation = valuationAsignatureCalculate?.node;
+                                                      }
+                                                      console.log(valuation)
                                                       if (valuation == null) {
                                                         valuation = {};
                                                         valuation.studentId = itemStudent?.id;
@@ -570,7 +583,12 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
                                                     <Input
                                                       type="number"
                                                       onBlur={(event: any) => {
-                                                        let valuation = valuationAsignature[0]?.node;
+                                                        let valuation: any;
+                                                        if (valuationType == "DEFINITIVE") {
+                                                          valuation = valuationAsignatureDefinitive?.node;
+                                                        } else {
+                                                          valuation = valuationAsignatureCalculate?.node;
+                                                        }
                                                         if (valuation == null) {
                                                           valuation = {};
                                                           valuation.studentId = itemStudent?.id;
