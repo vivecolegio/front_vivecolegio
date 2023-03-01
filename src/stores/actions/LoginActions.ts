@@ -25,7 +25,6 @@ export const login = (user: any) => {
                 userId: data.data.userId,
                 entityId: data?.data?.student?.id,
                 teacherId: data?.data?.teacher?.id,
-                schoolYear: data?.data?.schoolYear?.id,
                 role: data.data.role,
                 roleMenus: data.data.roleMenus,
                 name: data.data.name,
@@ -37,6 +36,9 @@ export const login = (user: any) => {
                 schoolMulti: data?.data?.schools,
                 campusId: data.data.campus && data.data.campus[0] ? data.data.campus[0].id : "",
                 schoolId: data.data.schools && data.data.schools[0] ? data.data.schools[0].id : "",
+                schoolYear: data.data.schools &&  data.data.schools[0]?.schoolYear[0] ? data.data.schools[0].schoolYear[0]?.id : "",
+                schoolYearName: data?.data.schools &&  data.data.schools[0]?.schoolYear[0] ? data.data.schools[0].schoolYear[0]?.schoolYear : "",
+                schoolData: data.data.schools && data.data.schools[0] ? data.data.schools[0] : "",
               },
             });
           }else{
@@ -45,6 +47,7 @@ export const login = (user: any) => {
         });
       return data != null;
     } catch (error) {
+      console.log(error)
       createNotification('error', 'errorSesion', '');
       return error;
     }
@@ -96,7 +99,6 @@ export const me = (id: any) => {
                 userId: data.me.userId,
                 entityId: data?.me?.student?.id,
                 teacherId: data?.me?.teacher?.id,
-                schoolYear: data?.data?.schoolYear?.id,
                 role: data.me.role,
                 roleMenus: data.me.roleMenus,
                 name: data.me.name,
@@ -110,6 +112,50 @@ export const me = (id: any) => {
     } catch (error) {
       console.log(error)
       createNotification('error', 'error', '');
+      return error;
+    }
+  };
+};
+
+export const changeSchool = (data: any, dataReducer:any) => {
+  return async (dispatch: any) => {
+    try {
+      if(data !=null){
+        dispatch({
+          type: LOGIN,
+          payload: {
+            ...dataReducer,
+            school: data.name ? data.name : "",
+            schoolId: data.id ? data.id : "",
+            schoolYear: data.schoolYear ? data.schoolYear[0]?.id : "",
+            schoolYearName: data?.schoolYear ?  data.schoolYear[0]?.schoolYear : "",
+          },
+        });
+      };
+      return data != null;
+    } catch (error) {
+      createNotification('error', 'errorSesion', '');
+      return error;
+    }
+  };
+};
+
+export const changeSchoolYear = (data: any, dataReducer:any) => {
+  return async (dispatch: any) => {
+    try {
+      if(data !=null){
+        dispatch({
+          type: LOGIN,
+          payload: {
+            ...dataReducer,
+            schoolYear: data.id ? data.id : "",
+            schoolYearName: data?.schoolYear ?  data.schoolYear : "",
+          },
+        });
+      };
+      return data != null;
+    } catch (error) {
+      createNotification('error', 'errorSesion', '');
       return error;
     }
   };

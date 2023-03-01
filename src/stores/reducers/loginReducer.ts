@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/default-param-last */
-import { LOGOUT, LOGIN, ME } from './types/loginTypes';
+import { LOGIN, LOGOUT, ME } from './types/loginTypes';
 
 const INITIAL_STATE = {
   userId: '',
   entityId: '',
   teacherId: '',
   schoolYear: '',
+  schoolYearName: '',
   role: {},
   roleMenus: {},
   name: '',
@@ -17,6 +18,7 @@ const INITIAL_STATE = {
   schoolId: '',
   campusMulti: {},
   schoolMulti: {},
+  schoolData: {},
 };
 
 export default (state = INITIAL_STATE, action: any) => {
@@ -39,6 +41,8 @@ export default (state = INITIAL_STATE, action: any) => {
         school: action.payload.school,
         schoolMulti: action.payload.schoolMulti,
         schoolId: action.payload.schoolId,
+        schoolYearName: action.payload.schoolYearName,
+        schoolData: action.payload.schoolData,
       };
     case ME:
       return {
@@ -63,7 +67,9 @@ export default (state = INITIAL_STATE, action: any) => {
         campusId: '',
         school: '',
         schoolMulti: [],
-        schoolId: '',        
+        schoolId: '',       
+        schoolYearName: '',
+        schoolData:  {}, 
       };
     default:
       return state;

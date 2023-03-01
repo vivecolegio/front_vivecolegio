@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { NavLink } from 'react-router-dom';
 import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
+
 import ProfileImg from '../../../../assets/img/profiles/empty.png';
 import { isDarkSwitchActive, menuHiddenBreakpoint } from '../../../../constants/defaultValues';
 import IntlMessages from '../../../../helpers/IntlMessages';
@@ -181,6 +182,16 @@ const TopNav = (props: any) => {
     });
   };
 
+  const changeSchool = (data: any) => {
+    props?.changeSchool(data, props?.loginReducer);
+  };
+
+  const changeSchoolYear = (data: any) => {
+    props?.changeSchoolYear(data, props?.loginReducer);
+    console.log(data);
+    console.log(props?.loginReducer);
+  };
+
   return (
     <>
       <nav className="navbar fixed-top">
@@ -274,51 +285,85 @@ const TopNav = (props: any) => {
               )}
             </button>
           </div>
+          <div className="mr-2 border-separator-right align-middle pr-2 d-inline-block" style={{ height: "40px" }}>
+          </div>
           <div className="mr-2 border-separator-right align-middle pr-2 d-inline-block">
             <UncontrolledDropdown className="dropdown-menu-right">
               <DropdownToggle className="p-0" color="empty">
-                <p className="text-muted text-small mb-1">{props?.loginReducer?.school}</p>
+                <p className="text-muted text-small mb-1"> Año Lectivo:</p>
+                <p className="text-muted text-small mb-1 font-weight-bold"> {props?.loginReducer?.schoolYearName}</p>
               </DropdownToggle>
-              <DropdownMenu className="mt-3" end>
-                {props?.loginReducer?.schoolMulti?.map((s: any) => {
-                  return (
-                    <>
-                      {s.id !== props?.loginReducer?.schoolId ? (
-                        <DropdownItem>{s?.name}</DropdownItem>
-                      ) : (
-                        ''
-                      )}
-                    </>
-                  );
-                })}
-              </DropdownMenu>
+              {props?.loginReducer?.schoolData &&
+                <DropdownMenu className="mt-3" end>
+                  {props?.loginReducer?.schoolData?.schoolYear?.map((schoolYear: any) => {
+                    return (
+                      <>
+                        {schoolYear.id !== props?.loginReducer?.schoolYear ? (
+                          <DropdownItem onClick={() => { changeSchoolYear(schoolYear) }}>{schoolYear?.schoolYear}</DropdownItem>
+                        ) : (
+                          ''
+                        )}
+                      </>
+                    );
+                  })}
+                </DropdownMenu>
+              }
             </UncontrolledDropdown>
-            <UncontrolledDropdown className="dropdown-menu-right">
-              <DropdownToggle className="p-0" color="empty">
-                {props?.loginReducer?.campus ? (
-                  <p className="text-muted text-small mb-0">{props?.loginReducer?.campus}</p>
-                ) : null}
-              </DropdownToggle>
-              <DropdownMenu className="mt-3" end>
-                {props?.loginReducer?.campusMulti?.map((c: any) => {
-                  return (
-                    <>
-                      {c.id !== props?.loginReducer?.campusId ? (
-                        <DropdownItem
-                          onClick={(e) => {
-                            return setNewCampus(c);
-                          }}
-                        >
-                          {c?.name}
-                        </DropdownItem>
-                      ) : (
-                        ''
-                      )}
-                    </>
-                  );
-                })}
-              </DropdownMenu>
-            </UncontrolledDropdown>
+          </div>
+          <div className="mr-2 border-separator-right align-middle pr-2 d-inline-block">
+            {props?.loginReducer?.school &&
+              <UncontrolledDropdown className="dropdown-menu-right">
+                <DropdownToggle className="p-0" color="empty">
+                  <p className="text-muted text-small mb-1"> Institución Educativa:</p>
+                  <p className="text-muted text-small mb-1 font-weight-bold"> {props?.loginReducer?.school}</p>
+                </DropdownToggle>
+                {props?.loginReducer?.schoolMulti?.length > 1 &&
+                  <DropdownMenu className="mt-3" end>
+                    {props?.loginReducer?.schoolMulti?.map((school: any) => {
+                      return (
+                        <>
+                          {school.id !== props?.loginReducer?.schoolId ? (
+                            <DropdownItem onClick={() => { changeSchool(school) }}>{school?.name}</DropdownItem>
+                          ) : (
+                            ''
+                          )}
+                        </>
+                      );
+                    })}
+                  </DropdownMenu>
+                }
+              </UncontrolledDropdown>
+            }
+            {props?.loginReducer?.campus &&
+              <UncontrolledDropdown className="dropdown-menu-right">
+                <DropdownToggle className="p-0" color="empty">
+                  {props?.loginReducer?.campus ? (
+                    <p className="text-muted text-small mb-0">{props?.loginReducer?.campus}</p>
+                  ) : null}
+                </DropdownToggle>
+                {props?.loginReducer?.campusMulti?.length > 1 &&
+                  <DropdownMenu className="mt-3" end>
+                    {props?.loginReducer?.campusMulti?.map((c: any) => {
+                      return (
+                        <>
+                          {c.id !== props?.loginReducer?.campusId ? (
+                            <DropdownItem
+                              onClick={(e) => {
+                                return setNewCampus(c);
+                              }}
+                            >
+                              {c?.name}
+                            </DropdownItem>
+                          ) : (
+                            ''
+                          )}
+                        </>
+                      );
+                    })}
+                  </DropdownMenu>
+                }
+              </UncontrolledDropdown>
+            }
           </div>
           <div className="user d-inline-block">
             <UncontrolledDropdown className="dropdown-menu-right">
@@ -363,7 +408,8 @@ const TopNav = (props: any) => {
                   <DropdownItem>
                     <IntlMessages id="layouts.chat" />
                   </DropdownItem>
-                </NavLink>                                            */}
+                </NavLink>                                            
+                */}
                 <DropdownItem divider />
                 <DropdownItem
                   onClick={() => {

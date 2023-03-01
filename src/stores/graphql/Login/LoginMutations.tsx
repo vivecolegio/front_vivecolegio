@@ -20,7 +20,11 @@ export const MUTATION_LOGIN = gql`
       userId      
       schools {
         id
-        name
+        name 
+        schoolYear {
+          id
+          schoolYear
+         }
       }
       campus {
         id
