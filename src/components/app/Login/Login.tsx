@@ -14,6 +14,7 @@ import IntlMessages from '../../../helpers/IntlMessages';
 import * as loginActions from '../../../stores/actions/LoginActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import { Loader } from '../../common/Loader';
+import Abrazate from '../../../assets/img/logos/AbrazateLogo.png';
 
 const Login = (props: any) => {
   const [loading, setLoading] = useState(true);
@@ -79,7 +80,8 @@ const Login = (props: any) => {
               md="3"
               className="mx-auto mt-10 text-center d-none d-sm-none d-sm-block d-md-none d-lg-block"
             >
-              <img src={LogoImg} className="width-logo" />
+              {/* <img src={LogoImg} className="width-logo" /> */}
+              <a href='http://vivecolegios.nortedesantander.gov.co:8082/abrazate'><img src={Abrazate} className="width-logo" /></a>
             </Colxx>
             <Colxx xxs="12" sm="12" md="3" lg="3" className="mx-auto mt-5 center-flex">
               <Card className="auth-card w-330">
