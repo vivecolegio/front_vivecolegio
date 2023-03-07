@@ -19,7 +19,7 @@ const GradeList = (props: any) => {
   let navigate = useNavigate();
 
   useEffect(() => {
-    props.getListAllGrade(props?.loginReducer?.schoolId).then((listData: any) => {
+    props.getListAllGrade(props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear).then((listData: any) => {
       setDataTable(
         listData.map((c: any) => {
           c.node.cycle_format = c.node.generalAcademicCycle ? c.node.generalAcademicCycle.name : '';
@@ -32,7 +32,7 @@ const GradeList = (props: any) => {
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllGrade(props?.loginReducer?.schoolId).then((listData: any) => {
+    props.getListAllGrade(props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear).then((listData: any) => {
       setDataTable(
         listData.map((c: any) => {
           c.node.cycle_format = c.node.generalAcademicCycle ? c.node.generalAcademicCycle.name : '';
@@ -111,7 +111,7 @@ const GradeList = (props: any) => {
   const deleteAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.deleteGrade(item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },
@@ -124,7 +124,7 @@ const GradeList = (props: any) => {
   const changeActiveDataAll = async (items: any) => {
     items.map(async (item: any) => {
       await props.changeActiveGrade(!item.active, item.id, false).then(
-        () => {},
+        () => { },
         () => {
           createNotification('error', 'error', '');
         },

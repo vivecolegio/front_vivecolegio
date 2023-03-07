@@ -1,10 +1,9 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
 import { MUTATION_CHANGE_ACTIVE_ACADEMIC_PERIOD, MUTATION_CREATE_ACADEMIC_PERIOD, MUTATION_DELETE_ACADEMIC_PERIOD, MUTATION_UPDATE_ACADEMIC_PERIOD } from '../graphql/AcademicPeriod/AcademicPeriodMutations';
-import { QUERY_GET_ALL_ACADEMIC_PERIOD, QUERY_GET_ACADEMIC_PERIOD, QUERY_GET_DROPDOWNS_ACADEMIC_PERIOD, QUERY_GET_CURRENT_ACADEMIC_PERIOD, QUERY_GET_ACADEMIC_PERIODS_ORDER } from '../graphql/AcademicPeriod/AcademicPeriodQueries';
+import { QUERY_GET_ACADEMIC_PERIOD, QUERY_GET_ACADEMIC_PERIODS_ORDER, QUERY_GET_ALL_ACADEMIC_PERIOD, QUERY_GET_CURRENT_ACADEMIC_PERIOD, QUERY_GET_DROPDOWNS_ACADEMIC_PERIOD } from '../graphql/AcademicPeriod/AcademicPeriodQueries';
 
-
-export const getListAllAcademicPeriod = (schoolId:string) => {
+export const getListAllAcademicPeriod = (schoolId:string, schoolYearId:string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
@@ -13,6 +12,7 @@ export const getListAllAcademicPeriod = (schoolId:string) => {
           query: QUERY_GET_ALL_ACADEMIC_PERIOD,
           variables:{
             schoolId,
+            schoolYearId
           },
         })
         .then((result: any) => {

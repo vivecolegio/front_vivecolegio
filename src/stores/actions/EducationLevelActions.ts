@@ -3,8 +3,7 @@ import { client } from '../graphql';
 import { MUTATION_CHANGE_ACTIVE_EDUCATION_LEVEL, MUTATION_CREATE_EDUCATION_LEVEL, MUTATION_DELETE_EDUCATION_LEVEL, MUTATION_UPDATE_EDUCATION_LEVEL } from '../graphql/EducationLevel/EducationLevelMutations';
 import { QUERY_GET_ALL_EDUCATION_LEVEL, QUERY_GET_DROPDOWNS_EDUCATION_LEVEL, QUERY_GET_EDUCATION_LEVEL } from '../graphql/EducationLevel/EducationLevelQueries';
 
-
-export const getListAllEducationLevel = (schoolId:string) => {
+export const getListAllEducationLevel = (schoolId:string, schoolYearId:string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
@@ -12,7 +11,8 @@ export const getListAllEducationLevel = (schoolId:string) => {
         .query({
           query: QUERY_GET_ALL_EDUCATION_LEVEL,
           variables:{
-            schoolId
+            schoolId,
+            schoolYearId
           }
         })
         .then((result: any) => {

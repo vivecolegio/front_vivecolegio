@@ -3,8 +3,7 @@ import { client } from '../../graphql';
 import { MUTATION_CHANGE_ACTIVE_GRADE, MUTATION_CREATE_GRADE, MUTATION_DELETE_GRADE, MUTATION_UPDATE_GRADE } from '../../graphql/Academic/Grade/GradeMutations';
 import { QUERY_GET_ALL_GRADE, QUERY_GET_DROPDOWNS_GRADE, QUERY_GET_GRADE } from '../../graphql/Academic/Grade/GradeQueries';
 
-
-export const getListAllGrade = (schoolId:string) => {
+export const getListAllGrade = (schoolId:string,  schoolYearId:string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
@@ -13,6 +12,7 @@ export const getListAllGrade = (schoolId:string) => {
           query: QUERY_GET_ALL_GRADE,
           variables:{
             schoolId,
+            schoolYearId
           },
         })
         .then((result: any) => {

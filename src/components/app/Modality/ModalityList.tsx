@@ -16,13 +16,13 @@ const ModalityList = (props: any) => {
 
   const [data, setData] = useState(null);
   useEffect(() => {
-    props.getListAllModality(props?.loginReducer?.schoolId).then((listData: any) => {
+    props.getListAllModality(props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear).then((listData: any) => {
       setDataTable(listData);
     });
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllModality(props?.loginReducer?.schoolId).then((listData: any) => {
+    props.getListAllModality(props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear).then((listData: any) => {
       setDataTable(listData);
     });
   };

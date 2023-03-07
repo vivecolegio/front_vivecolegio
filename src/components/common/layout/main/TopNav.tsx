@@ -188,9 +188,12 @@ const TopNav = (props: any) => {
 
   const changeSchoolYear = (data: any) => {
     props?.changeSchoolYear(data, props?.loginReducer);
-    console.log(data);
-    console.log(props?.loginReducer);
+    // console.log(data);
+    // console.log(props?.loginReducer);
+    refresh();
   };
+
+  const refresh = () => window.location.reload();
 
   return (
     <>

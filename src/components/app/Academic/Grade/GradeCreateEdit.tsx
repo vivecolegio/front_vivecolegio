@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
+
 import IntlMessages from '../../../../helpers/IntlMessages';
 import * as gradeActions from '../../../../stores/actions/Academic/GradeActions';
 import { Colxx } from '../../../common/CustomBootstrap';
@@ -111,6 +112,13 @@ const GradeCreateEdit = (props: any) => {
       register('schoolId', {
         required: true,
         value: props?.loginReducer?.schoolId,
+      });
+    }
+    if (props?.loginReducer?.schoolYear && !props?.data?.id) {
+      // set value when register is new and sesion contains value
+      register('schoolYearId', {
+        required: true,
+        value: props?.loginReducer?.schoolYear,
       });
     }
   };

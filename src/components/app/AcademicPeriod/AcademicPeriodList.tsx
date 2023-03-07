@@ -17,7 +17,7 @@ const AcademicPeriodList = (props: any) => {
 
   const [data, setData] = useState(null);
   useEffect(() => {
-    props.getListAllAcademicPeriod(props?.loginReducer?.schoolId).then((listData: any) => {
+    props.getListAllAcademicPeriod(props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear).then((listData: any) => {
       setDataTable(
         listData.map((c: any) => {
           c.node.startDate = c.node.startDate ? moment(c.node.startDate).format('YYYY-MM-DD') : '';
@@ -30,7 +30,7 @@ const AcademicPeriodList = (props: any) => {
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllAcademicPeriod(props?.loginReducer?.schoolId).then((listData: any) => {
+    props.getListAllAcademicPeriod(props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear).then((listData: any) => {
       setDataTable(
         listData.map((c: any) => {
           c.node.startDate = c.node.startDate ? moment(c.node.startDate).format('YYYY-MM-DD') : '';

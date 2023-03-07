@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Loader } from '../../common/Loader';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
+
 import IntlMessages from '../../../helpers/IntlMessages';
 import * as educationLevelActions from '../../../stores/actions/EducationLevelActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import AddNewModal from '../../common/Data/AddNewModal';
 import CreateEditAuditInformation from '../../common/Data/CreateEditAuditInformation';
 import FormGroupCustom from '../../common/Data/FormGroupCustom';
-import RequiredMessagesCustom from '../../common/Data/RequiredMessagesCustom';
 import LabelCustom from '../../common/Data/LabelCustom';
+import RequiredMessagesCustom from '../../common/Data/RequiredMessagesCustom';
+import { Loader } from '../../common/Loader';
 
 const EducationLevelCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
@@ -51,6 +52,13 @@ const EducationLevelCreateEdit = (props: any) => {
       register('schoolId', {
         required: true,
         value: props?.loginReducer?.schoolId,
+      });
+    }
+    if (props?.loginReducer?.schoolYear && !props?.data?.id) {
+      // set value when register is new and sesion contains value
+      register('schoolYearId', {
+        required: true,
+        value: props?.loginReducer?.schoolYear,
       });
     }
   };

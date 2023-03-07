@@ -94,6 +94,13 @@ const AsignatureCreateEdit = (props: any) => {
         value: areaId,
       });
     }
+    if (props?.loginReducer?.schoolYear && !props?.data?.id) {
+      // set value when register is new and sesion contains value
+      register('schoolYearId', {
+        required: true,
+        value: props?.loginReducer?.schoolYear,
+      });
+    }
   };
 
   const getDropdowns = async () => {

@@ -16,7 +16,7 @@ const SpecialityList = (props: any) => {
 
   const [data, setData] = useState(null);
   useEffect(() => {
-    props.getListAllSpeciality(props?.loginReducer?.schoolId).then((listData: any) => {
+    props.getListAllSpeciality(props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear).then((listData: any) => {
       setDataTable(
         listData.map((c: any) => {
           c.node.modality_format = c.node.modality ? c.node.modality.name : '';
@@ -27,7 +27,7 @@ const SpecialityList = (props: any) => {
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllSpeciality(props?.loginReducer?.schoolId).then((listData: any) => {
+    props.getListAllSpeciality(props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear).then((listData: any) => {
       setDataTable(
         listData.map((c: any) => {
           c.node.modality_format = c.node.modality ? c.node.modality.name : '';

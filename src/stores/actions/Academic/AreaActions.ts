@@ -3,7 +3,7 @@ import { client } from '../../graphql';
 import { MUTATION_CHANGE_ACTIVE_AREA, MUTATION_CREATE_AREA, MUTATION_DELETE_AREA, MUTATION_UPDATE_AREA } from '../../graphql/Academic/Area/AreaMutations';
 import { QUERY_GET_ALL_AREA, QUERY_GET_AREA, QUERY_GET_DROPDOWNS_AREA } from '../../graphql/Academic/Area/AreaQueries';
 
-export const getListAllAcademicArea = (schoolId:string) => {
+export const getListAllAcademicArea = (schoolId:string, schoolYearId:string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
@@ -11,7 +11,8 @@ export const getListAllAcademicArea = (schoolId:string) => {
         .query({
           query: QUERY_GET_ALL_AREA,
           variables:{
-            schoolId
+            schoolId,
+            schoolYearId
           }
         })
         .then((result: any) => {

@@ -16,13 +16,13 @@ const ComponentEvaluativeList = (props: any) => {
 
   const [data, setData] = useState(null);
   useEffect(() => {
-    props.getListAllComponentEvaluative(props?.loginReducer?.schoolId).then((listData: any) => {
+    props.getListAllComponentEvaluative(props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear).then((listData: any) => {
       setDataTable(listData);
     });
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllComponentEvaluative(props?.loginReducer?.schoolId).then((listData: any) => {
+    props.getListAllComponentEvaluative(props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear).then((listData: any) => {
       setDataTable(listData);
     });
   };

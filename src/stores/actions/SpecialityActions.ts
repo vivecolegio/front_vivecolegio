@@ -3,8 +3,7 @@ import { client } from '../graphql';
 import { MUTATION_CHANGE_ACTIVE_SPECIALITY, MUTATION_CREATE_SPECIALITY, MUTATION_DELETE_SPECIALITY, MUTATION_UPDATE_SPECIALITY } from '../graphql/Speciality/SpecialityMutations';
 import { QUERY_GET_ALL_SPECIALITY, QUERY_GET_DROPDOWNS_SPECIALITY, QUERY_GET_SPECIALITY } from '../graphql/Speciality/SpecialityQueries';
 
-
-export const getListAllSpeciality = (schoolId:string) => {
+export const getListAllSpeciality = (schoolId:string, schoolYearId:string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
@@ -12,7 +11,8 @@ export const getListAllSpeciality = (schoolId:string) => {
         .query({
           query: QUERY_GET_ALL_SPECIALITY,
           variables:{
-            schoolId
+            schoolId,
+            schoolYearId
           }
         })
         .then((result: any) => {

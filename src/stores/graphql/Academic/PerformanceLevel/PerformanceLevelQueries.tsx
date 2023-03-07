@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const QUERY_GET_ALL_PERFORMANCE_LEVEL = gql`
-  query getAllPerformanceLevel($schoolId: String!) {
-    data: getAllPerformanceLevel(orderCreated: true, allData: true, schoolId: $schoolId) {
+  query getAllPerformanceLevel($schoolId: String!, $schoolYearId: String) {
+    data: getAllPerformanceLevel(orderCreated: true, allData: true, schoolId: $schoolId, schoolYearId: $schoolYearId) {
       edges {
         cursor
         node {

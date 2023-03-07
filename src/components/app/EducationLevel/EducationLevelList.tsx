@@ -16,13 +16,13 @@ const EducationLevelList = (props: any) => {
 
   const [data, setData] = useState(null);
   useEffect(() => {
-    props.getListAllEducationLevel(props?.loginReducer?.schoolId).then((listData: any) => {
+    props.getListAllEducationLevel(props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear).then((listData: any) => {
       setDataTable(listData);
     });
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllEducationLevel(props?.loginReducer?.schoolId).then((listData: any) => {
+    props.getListAllEducationLevel(props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear).then((listData: any) => {
       setDataTable(listData);
     });
   };

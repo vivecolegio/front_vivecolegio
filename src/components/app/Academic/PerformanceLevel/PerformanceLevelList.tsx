@@ -16,13 +16,13 @@ const PerformanceLevelList = (props: any) => {
 
   const [data, setData] = useState(null);
   useEffect(() => {
-    props.getListAllPerformanceLevel(props?.loginReducer?.schoolId).then((listData: any) => {
+    props.getListAllPerformanceLevel(props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear).then((listData: any) => {
       setDataTable(listData);
     });
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllPerformanceLevel(props?.loginReducer?.schoolId).then((listData: any) => {
+    props.getListAllPerformanceLevel(props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear).then((listData: any) => {
       setDataTable(listData);
     });
   };
