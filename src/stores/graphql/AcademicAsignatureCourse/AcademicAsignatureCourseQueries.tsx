@@ -63,8 +63,8 @@ export const QUERY_GET_ALL_ACADEMIC_ASIGNATURE_COURSE = gql`
 `;
 
 export const QUERY_GET_ALL_ACADEMIC_ASIGNATURE_COURSE_TEACHER = gql`
-  query getAllAcademicAsignatureCourseTeacher($teacherId: String!) {
-    data: getAllAcademicAsignatureCourseTeacher(teacherId: $teacherId) {
+  query getAllAcademicAsignatureCourseTeacher($teacherId: String!, $schoolYearId: String) {
+    data: getAllAcademicAsignatureCourseTeacher(teacherId: $teacherId,schoolYearId: $schoolYearId) {
       edges {
         cursor
         node {

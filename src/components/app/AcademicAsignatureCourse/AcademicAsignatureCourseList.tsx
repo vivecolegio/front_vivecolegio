@@ -20,7 +20,7 @@ const AcademicAsignatureCourseList = (props: any) => {
   useEffect(() => {
     if (props?.loginReducer?.teacherId) {
       props
-        .getListAllAcademicAsignatureCourseTeacher(props?.loginReducer?.teacherId)
+        .getListAllAcademicAsignatureCourseTeacher(props?.loginReducer?.teacherId, props?.loginReducer?.schoolYear)
         .then((listData: any) => {
           setDataTable(
             listData.map((c: any) => {
@@ -56,7 +56,7 @@ const AcademicAsignatureCourseList = (props: any) => {
   const getDataTable = async () => {
     if (props?.loginReducer?.teacherId) {
       props
-        .getListAllAcademicAsignatureCourseTeacher(props?.loginReducer?.teacherId)
+        .getListAllAcademicAsignatureCourseTeacher(props?.loginReducer?.teacherId, props?.loginReducer?.schoolYear)
         .then((listData: any) => {
           setDataTable(
             listData.map((c: any) => {

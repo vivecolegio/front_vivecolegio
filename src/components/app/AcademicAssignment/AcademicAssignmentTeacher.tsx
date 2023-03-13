@@ -31,7 +31,7 @@ const AcademicAssignmentTeacher = (props: any) => {
         setTeacher(data?.data);
       });
       props
-        .getListAllAcademicAsignatureCourseTeacher(teacherId)
+        .getListAllAcademicAsignatureCourseTeacher(teacherId, props?.loginReducer?.schoolYear)
         .then((listData: any) => {
           setDataTable(
             listData.map((c: any) => {
@@ -53,7 +53,7 @@ const AcademicAssignmentTeacher = (props: any) => {
   const getDataTable = async () => {
     if (teacherId) {
       props
-        .getListAllAcademicAsignatureCourseTeacher(teacherId)
+        .getListAllAcademicAsignatureCourseTeacher(teacherId, props?.loginReducer?.schoolYear)
         .then((listData: any) => {
           setDataTable(
             listData.map((c: any) => {

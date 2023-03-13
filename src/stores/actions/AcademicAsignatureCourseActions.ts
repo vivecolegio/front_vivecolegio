@@ -25,7 +25,7 @@ export const getListAllAcademicAsignatureCourse = (campusId:string) => {
   };
 };
 
-export const getListAllAcademicAsignatureCourseTeacher = (teacherId:string) => {
+export const getListAllAcademicAsignatureCourseTeacher = (teacherId:string,schoolYearId:string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
@@ -34,6 +34,7 @@ export const getListAllAcademicAsignatureCourseTeacher = (teacherId:string) => {
           query: QUERY_GET_ALL_ACADEMIC_ASIGNATURE_COURSE_TEACHER,
           variables:{
             teacherId,
+            schoolYearId
           },
         })
         .then((result: any) => {
