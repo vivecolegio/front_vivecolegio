@@ -96,6 +96,10 @@ const GradeCreateEdit = (props: any) => {
         required: false,
         value: props?.data?.id ? props?.data?.generalAcademicGradeId : '',
       });
+      register('schoolYearId', {
+        required: true,
+        value: props?.data?.id ? props?.data?.schoolYearId : '',
+      });
     }
     setLoading(false);
   }, [props?.data]);

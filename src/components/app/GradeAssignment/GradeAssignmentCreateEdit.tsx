@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Loader } from '../../common/Loader';
 import { connect } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
 import Select from 'react-select';
 import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
+
 import IntlMessages from '../../../helpers/IntlMessages';
 import * as GradeAssignmentActions from '../../../stores/actions/GradeAssignmentActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import AddNewModal from '../../common/Data/AddNewModal';
 import CreateEditAuditInformation from '../../common/Data/CreateEditAuditInformation';
-import { useSearchParams } from 'react-router-dom';
 import FormGroupCustom from '../../common/Data/FormGroupCustom';
 import LabelCustom from '../../common/Data/LabelCustom';
 import RequiredMessagesCustom from '../../common/Data/RequiredMessagesCustom';
+import { Loader } from '../../common/Loader';
 
 const GradeAssignmentCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
@@ -72,6 +73,10 @@ const GradeAssignmentCreateEdit = (props: any) => {
       register('schoolId', {
         required: true,
         value: props?.data?.id ? props?.data?.schoolId : '',
+      });
+      register('schoolYearId', {
+        required: true,
+        value: props?.data?.id ? props?.data?.schoolYearId : '',
       });
     }
     setLoading(false);

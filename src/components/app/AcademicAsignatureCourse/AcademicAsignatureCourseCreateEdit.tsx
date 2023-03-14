@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
+
 import IntlMessages from '../../../helpers/IntlMessages';
 import * as academicIndicatorActions from '../../../stores/actions/AcademicAsignatureCourseActions';
 import { Colxx } from '../../common/CustomBootstrap';
@@ -65,6 +66,14 @@ const AcademicAsignatureCourseCreateEdit = (props: any) => {
           value: props?.data?.teacher?.id,
         });
       }
+      register('schoolId', {
+        required: true,
+        value: props?.data?.id ? props?.data?.schoolId : '',
+      })
+      register('schoolYearId', {
+        required: true,
+        value: props?.data?.id ? props?.data?.schoolYearId : '',
+      });
     }
     setLoading(false);
   }, [props?.data]);
@@ -80,6 +89,20 @@ const AcademicAsignatureCourseCreateEdit = (props: any) => {
       register('campusId', {
         required: true,
         value: props?.loginReducer?.campusId,
+      });
+    }
+    if (props?.loginReducer?.schoolId && !props?.data?.id) {
+      // set value when register is new and sesion contains value
+      register('schoolId', {
+        required: true,
+        value: props?.loginReducer?.schoolId,
+      });
+    }
+    if (props?.loginReducer?.schoolYear && !props?.data?.id) {
+      // set value when register is new and sesion contains value
+      register('schoolYearId', {
+        required: true,
+        value: props?.loginReducer?.schoolYear,
       });
     }
   };
