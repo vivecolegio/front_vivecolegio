@@ -19,7 +19,7 @@ const ReportSpreadsheetAccumulatedCourseGradeList = (props: any) => {
   let navigate = useNavigate();
 
   useEffect(() => {
-    props.getListAllGrade(props?.loginReducer?.schoolId).then((listData: any) => {
+    props.getListAllGrade(props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear).then((listData: any) => {
       setDataTable(
         listData.map((c: any) => {
           c.node.cycle_format = c.node.generalAcademicCycle ? c.node.generalAcademicCycle.name : '';
@@ -32,7 +32,7 @@ const ReportSpreadsheetAccumulatedCourseGradeList = (props: any) => {
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllGrade(props?.loginReducer?.schoolId).then((listData: any) => {
+    props.getListAllGrade(props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear).then((listData: any) => {
       setDataTable(
         listData.map((c: any) => {
           c.node.cycle_format = c.node.generalAcademicCycle ? c.node.generalAcademicCycle.name : '';
