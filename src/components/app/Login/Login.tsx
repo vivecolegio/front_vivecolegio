@@ -31,7 +31,10 @@ const Login = (props: any) => {
     // console.log(props);
     setLoading(false);
     if (props.loginReducer.userId?.length > 0) {
-      navigate('/home');
+      console.log("schoolYearIDLogin", props?.loginReducer?.schoolYear);
+      props.me(props?.loginReducer?.schoolYear).then(() => {
+        navigate('/home');
+      })
       // props.history.push('/home');
     } else {
       props.resetApp();
@@ -48,13 +51,9 @@ const Login = (props: any) => {
         username: getValues('username'),
         password: getValues('password'),
       })
-      .then(
-        () => {
-          setLoading(false);
-        },
-        () => {
-          setLoading(false);
-        },
+      .then(() => {
+        setLoading(false);
+      }
       );
     //   }
     // });

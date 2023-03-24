@@ -82,13 +82,17 @@ export const resetApp = () => {
   };
 };
 
-export const me = (id: any) => {
+export const me = (schoolYearId:any) => {
   return async (dispatch: any) => {
     try {
       let data: any = {};
+      console.log(schoolYearId, "VARIABLES")
       await client
         .query({
-          query: QUERY_ME,         
+          query: QUERY_ME,   
+          variables: {
+            schoolYearId
+          }      
         })
         .then((result: any) => {
           data = result.data;
@@ -96,8 +100,6 @@ export const me = (id: any) => {
             dispatch({
               type: ME,
               payload: {
-                userId: data.me.userId,
-                entityId: data?.me?.student?.id,
                 teacherId: data?.me?.teacher?.id,
                 role: data.me.role,
                 roleMenus: data.me.roleMenus,

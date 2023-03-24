@@ -7,10 +7,6 @@ export const MUTATION_LOGIN = gql`
       name
       lastName
       profilePhoto
-      schoolYear {
-        id
-        schoolYear
-      }
       student {
         id
       }
@@ -61,8 +57,8 @@ export const MUTATION_LOGIN = gql`
 `;
 
 export const QUERY_ME = gql`
-  query {
-    me {
+  query ($schoolYearId: String!) {
+    me (schoolYearId: $schoolYearId) {
       name
       lastName
       profilePhoto

@@ -46,7 +46,11 @@ export default (state = INITIAL_STATE, action: any) => {
       };
     case ME:
       return {
-        ...state,      
+        ...state,   
+        name: action.payload.name,
+        lastName: action.payload.lastName,
+        teacherId: action.payload.teacherId, 
+        role: action.payload.role,  
         roleMenus: action.payload.roleMenus,  
         profilePhoto: action.payload.profilePhoto,      
       };
