@@ -4,7 +4,7 @@ import { MUTATION_CHANGE_ACTIVE_TEACHER, MUTATION_CREATE_TEACHER, MUTATION_DELET
 import { QUERY_GET_ALL_TEACHER, QUERY_GET_ALL_TEACHER_ACTIVE, QUERY_GET_ALL_TEACHER_ONLY_SCHOOL, QUERY_GET_DROPDOWNS_TEACHER, QUERY_GET_TEACHER } from '../graphql/Teacher/TeacherQueries';
 
 
-export const getListAllTeacher = (campusId:string ,schoolId:string) => {
+export const getListAllTeacher = (campusId:string ,schoolId:string, schoolYearId:string) => {
   let c = campusId ? campusId : null;
   return async (dispatch: any) => {
     try {
@@ -14,7 +14,8 @@ export const getListAllTeacher = (campusId:string ,schoolId:string) => {
           query: QUERY_GET_ALL_TEACHER,
           variables:{
             campusId,
-            schoolId
+            schoolId,
+            schoolYearId
           }
         })
         .then((result: any) => {
@@ -28,7 +29,7 @@ export const getListAllTeacher = (campusId:string ,schoolId:string) => {
   };
 };
 
-export const getListAllTeacherOnlySchool = (schoolId:string) => {
+export const getListAllTeacherOnlySchool = (schoolId:string, schoolYearId:string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
@@ -36,7 +37,8 @@ export const getListAllTeacherOnlySchool = (schoolId:string) => {
         .query({
           query: QUERY_GET_ALL_TEACHER_ONLY_SCHOOL,
           variables:{
-            schoolId
+            schoolId,
+            schoolYearId
           }
         })
         .then((result: any) => {

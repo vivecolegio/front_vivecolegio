@@ -26,7 +26,7 @@ const TeacherList = (props: any) => {
     setCurrentMenu(submenus.find((c: any) => { return (c?.module?.url == 'reset_password_permit') }));
 
     if (props?.loginReducer?.campusId) {
-      props.getListAllTeacher(props?.loginReducer?.campusId, props?.loginReducer?.schoolId).then((listData: any) => {
+      props.getListAllTeacher(props?.loginReducer?.campusId, props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear).then((listData: any) => {
         setDataTable(
           listData.map((c: any) => {
             c.node.name = c.node.user ? c.node.user.name : '';
@@ -39,7 +39,7 @@ const TeacherList = (props: any) => {
         );
       });
     } else {
-      props.getListAllTeacherOnlySchool(props?.loginReducer?.schoolId).then((listData: any) => {
+      props.getListAllTeacherOnlySchool(props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear).then((listData: any) => {
         setDataTable(
           listData.map((c: any) => {
             c.node.name = c.node.user ? c.node.user.name : '';
@@ -56,7 +56,7 @@ const TeacherList = (props: any) => {
 
   const getDataTable = async () => {
     if (props?.loginReducer?.campusId) {
-      props.getListAllTeacher(props?.loginReducer?.campusId, props?.loginReducer?.schoolId).then((listData: any) => {
+      props.getListAllTeacher(props?.loginReducer?.campusId, props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear).then((listData: any) => {
         setDataTable(
           listData.map((c: any) => {
             c.node.name = c.node.user ? c.node.user.name : '';
@@ -69,7 +69,7 @@ const TeacherList = (props: any) => {
         );
       });
     } else {
-      props.getListAllTeacherOnlySchool(props?.loginReducer?.schoolId).then((listData: any) => {
+      props.getListAllTeacherOnlySchool(props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear).then((listData: any) => {
         setDataTable(
           listData.map((c: any) => {
             c.node.name = c.node.user ? c.node.user.name : '';
