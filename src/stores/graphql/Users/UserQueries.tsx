@@ -89,3 +89,43 @@ export const QUERY_GET_DROPDOWNS_USER = gql`
     }
   }
 `;
+
+
+export const QUERY_GET_USER_BY_DOCUMENT_NUMBER = gql`
+  query getUserByDocumentNumber($documentNumber: String!) {
+    data: getUserByDocumentNumber(documentNumber: $documentNumber) {
+      id
+      name
+      lastName                  
+      phone
+      email
+      birthdate
+      genderId
+      roleId
+      documentTypeId
+      documentNumber
+      profilePhoto
+      role {
+        id
+        name
+      }
+      gender {
+        id
+        name
+      }
+      documentType {
+        id
+        name
+      }
+      version
+      createdAt
+      updatedAt
+      createdByUser {
+        name
+      }
+      updatedByUser {
+        name
+      }
+    }
+  }
+`;

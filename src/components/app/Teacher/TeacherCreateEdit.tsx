@@ -3,11 +3,12 @@ import ReactDatePicker from 'react-datepicker';
 import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
 import Select from 'react-select';
-import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
+import { Button, Input, Label, ModalBody, ModalFooter } from 'reactstrap';
 
 import { loaderColor, loaderIcon } from '../../../constants/defaultValues';
 import IntlMessages from '../../../helpers/IntlMessages';
 import * as TeacherActions from '../../../stores/actions/TeacherActions';
+import * as userActions from '../../../stores/actions/UserActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import AddNewModal from '../../common/Data/AddNewModal';
 import CreateEditAuditInformation from '../../common/Data/CreateEditAuditInformation';
@@ -213,6 +214,17 @@ const TeacherCreateEdit = (props: any) => {
     });
   };
 
+  const searchDocumentUser = async () => {
+
+    console.log(methods.getValues().newUser.documentNumber)
+    await props.getUserByDocumentNumber(methods.getValues().newUser.documentNumber).then((data: any) => {
+      console.log(data);
+
+    })
+
+
+  }
+
   const auditInfo = {
     createdAt: props?.data?.id ? props?.data?.createdAt : null,
     updatedAt: props?.data?.id ? props?.data?.createdAt : null,
@@ -244,6 +256,43 @@ const TeacherCreateEdit = (props: any) => {
             handleSubmit={handleSubmit}
           >
             <ModalBody>
+              <FormGroupCustom>
+                <LabelCustom id="forms.documentType" required={true} />
+                <Select
+                  isClearable
+                  placeholder={<IntlMessages id="forms.select" />}
+                  className="react-select"
+                  classNamePrefix="react-select"
+                  options={documentTypesList}
+                  value={documentType}
+                  onChange={(selectedOption) => {
+                    newUser.documentTypeId = selectedOption?.key;
+                    setValue('newUser', { ...newUser });
+                    setDocumentType(selectedOption);
+                  }}
+                />
+                <RequiredMessagesCustom formState={formState} register={"name"} />
+              </FormGroupCustom>
+              <FormGroupCustom>
+                <LabelCustom id="forms.documentNumber" required={true} />
+                <div style={{ display: "grid", gridTemplateColumns: "80% 20%" }}>
+                  <Input
+                    name="documentNumber"
+                    defaultValue={newUser.documentNumber}
+                    onChange={(data) => {
+                      setValue('newUser', { ...newUser, ...{ documentNumber: data.target.value } });
+                      setNewUser({ ...newUser, ...{ documentNumber: data.target.value } });
+                    }}
+                  />
+                  <Button className="top-right-button mr-1 ml-1" onClick={() => {
+                    return searchDocumentUser();
+                  }}>
+                    <i className="simple-icon-magnifier" />
+                  </Button>
+                </div>
+                <RequiredMessagesCustom formState={formState} register={"name"} />
+
+              </FormGroupCustom>
               <FormGroupCustom>
                 <LabelCustom id="forms.name" required={true} />
                 <Input
@@ -336,35 +385,6 @@ const TeacherCreateEdit = (props: any) => {
                 />
                 <RequiredMessagesCustom formState={formState} register={"name"} />
               </FormGroupCustom>
-              <FormGroupCustom>
-                <LabelCustom id="forms.documentType" required={true} />
-                <Select
-                  isClearable
-                  placeholder={<IntlMessages id="forms.select" />}
-                  className="react-select"
-                  classNamePrefix="react-select"
-                  options={documentTypesList}
-                  value={documentType}
-                  onChange={(selectedOption) => {
-                    newUser.documentTypeId = selectedOption?.key;
-                    setValue('newUser', { ...newUser });
-                    setDocumentType(selectedOption);
-                  }}
-                />
-                <RequiredMessagesCustom formState={formState} register={"name"} />
-              </FormGroupCustom>
-              <FormGroupCustom>
-                <LabelCustom id="forms.documentNumber" required={true} />
-                <Input
-                  name="documentNumber"
-                  defaultValue={newUser.documentNumber}
-                  onChange={(data) => {
-                    setValue('newUser', { ...newUser, ...{ documentNumber: data.target.value } });
-                    setNewUser({ ...newUser, ...{ documentNumber: data.target.value } });
-                  }}
-                />
-                <RequiredMessagesCustom formState={formState} register={"name"} />
-              </FormGroupCustom>
               {!props?.loginReducer?.schoolId ? (
                 <FormGroupCustom>
                   <LabelCustom id="menu.school" required={true} />
@@ -423,7 +443,7 @@ const TeacherCreateEdit = (props: any) => {
 };
 
 const mapDispatchToProps = {
-  ...TeacherActions,
+  ...TeacherActions, ...userActions
 };
 
 const mapStateToProps = ({ loginReducer }: any) => {

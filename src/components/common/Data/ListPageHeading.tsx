@@ -62,21 +62,21 @@ const ListPageHeading = ({
             }}>
               <i className="simple-icon-refresh" />
             </Button>
-            {currentMenu.createAction && !createActionDisabled ? (
-              <Button
-                color="primary"
-                size="lg"
-                className="top-right-button"
-                onClick={() => {
-                  return toggleModal();
-                }}
-              >
-                <i className="iconsminds-add" />
-                <IntlMessages id="pages.add-new" />
-              </Button>
-            ) : (
+            {/* {currentMenu.createAction && !createActionDisabled ? (  */}
+            <Button
+              color="primary"
+              size="lg"
+              className="top-right-button"
+              onClick={() => {
+                return toggleModal();
+              }}
+            >
+              <i className="iconsminds-add" />
+              <IntlMessages id="pages.add-new" />
+            </Button>
+            {/* ) : (
               ''
-            )}
+            )} */}
             {'  '}
             {currentMenu.deleteAction ||
               currentMenu.activateAction ||

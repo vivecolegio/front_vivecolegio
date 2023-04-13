@@ -1,7 +1,7 @@
 import { createNotification } from "../../helpers/Notification";
 import { client, clientUpload } from '../graphql';
 import { MUTATION_CHANGE_ACTIVE_USER, MUTATION_CHANGE_PASSWORD_USER, MUTATION_CREATE_USER, MUTATION_DELETE_USER, MUTATION_RESET_PASSWORD_USER, MUTATION_UPDATE_PROFILE_PHOTO_USER, MUTATION_UPDATE_USER } from '../graphql/Users/UserMutations';
-import { QUERY_GET_ALL_USER, QUERY_GET_DROPDOWNS_USER, QUERY_GET_USER } from '../graphql/Users/UserQueries';
+import { QUERY_GET_ALL_USER, QUERY_GET_DROPDOWNS_USER, QUERY_GET_USER, QUERY_GET_USER_BY_DOCUMENT_NUMBER } from '../graphql/Users/UserQueries';
 
 export const getListAllUser = () => {
   return async (dispatch: any) => {
@@ -277,3 +277,30 @@ export const resetPasswordUser = (id: any) => {
     }
   };
 };
+
+export const getUserByDocumentNumber = (documentNumber: any) => {
+  return async (dispatch: any) => {
+    try {
+      await client
+        .mutate({
+          mutation: QUERY_GET_USER_BY_DOCUMENT_NUMBER,
+          variables: { documentNumber},
+        })
+        .then((dataReponse: any) => {
+          if (dataReponse.errors?.length > 0) {
+            dataReponse.errors.forEach((error: any) => {
+              createNotification('error', 'error', '');
+            });
+          } else {
+            createNotification('success', 'success', '');
+          }
+        });
+    } catch (error) {
+      createNotification('error', 'error', '');
+      return error;
+    }
+  };
+};
+
+
+
