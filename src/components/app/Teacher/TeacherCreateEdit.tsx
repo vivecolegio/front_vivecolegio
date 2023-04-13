@@ -21,6 +21,8 @@ const TeacherCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
   const [schoolsList, setSchoolsList] = useState(null);
   const [campusList, setCampusList] = useState(null);
+  const [schoolYearList, setSchoolYearList] = useState(null);
+  const [schoolYear, setSchoolYear] = useState(null);
   const [school, setSchool] = useState(null);
   const [campus, setCampus] = useState(null);
   const [rolesList, setRolesList] = useState(null);
@@ -36,12 +38,13 @@ const TeacherCreateEdit = (props: any) => {
     phone: null,
     email: null,
     documentNumber: null,
-    password: null,
     username: null,
     genderId: null,
     documentTypeId: null,
     roleId: null,
   });
+
+  const [validateUser, setValidateUser] = useState(false);
 
   const methods = useForm({
     mode: 'all',
@@ -54,6 +57,13 @@ const TeacherCreateEdit = (props: any) => {
     cleanForm();
     getDropdowns(props?.loginReducer?.schoolId);
     if (props?.data?.id) {
+      if (props?.data?.schoolYear !== undefined && props?.data?.schoolYear != null) {
+        setSchoolYear({
+          key: props?.data?.schoolYear?.id,
+          label: props?.data?.schoolYear?.schoolyear,
+          value: props?.data?.schoolYear?.id,
+        });
+      }
       if (props?.data?.school !== undefined && props?.data?.school != null) {
         setSchool({
           key: props?.data?.school?.id,
@@ -73,7 +83,6 @@ const TeacherCreateEdit = (props: any) => {
           phone: props?.data?.user?.phone,
           email: props?.data?.user?.email,
           documentNumber: props?.data?.user?.documentNumber,
-          password: props?.data?.user?.password,
           username: props?.data?.user?.username,
           genderId: props?.data?.user?.genderId,
           documentTypeId: props?.data?.user?.documentTypeId,
@@ -133,6 +142,10 @@ const TeacherCreateEdit = (props: any) => {
         required: true,
         value: newUser,
       });
+      register('schoolYearId', {
+        required: true,
+        value: props?.data?.id ? props?.data?.schoolYearId : '',
+      });
     }
     setLoading(false);
   }, [props?.data]);
@@ -140,6 +153,7 @@ const TeacherCreateEdit = (props: any) => {
   const cleanForm = async () => {
     reset();
     setSchool(null);
+    setSchoolYear(null);
     setCampus(null);
     setNewUser({
       name: null,
@@ -147,7 +161,6 @@ const TeacherCreateEdit = (props: any) => {
       phone: null,
       email: null,
       documentNumber: null,
-      password: null,
       username: null,
       genderId: null,
       documentTypeId: null,
@@ -164,6 +177,13 @@ const TeacherCreateEdit = (props: any) => {
         value: [props?.loginReducer?.schoolId],
       });
     }
+    if (props?.loginReducer?.schoolYear && !props?.data?.id) {
+      // set value when register is new and sesion contains value
+      register('schoolYearId', {
+        required: true,
+        value: props?.loginReducer?.schoolYear,
+      });
+    }
   };
 
   const getDropdowns = async (schoolId: any) => {
@@ -178,6 +198,10 @@ const TeacherCreateEdit = (props: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };
         }),
       );
+      setSchoolYearList(
+        [{ label: props?.loginReducer?.schoolYearName, value: props?.loginReducer?.schoolYear, key: props?.loginReducer?.schoolYear }]
+      )
+      setSchoolYear({ label: props?.loginReducer?.schoolYearName, value: props?.loginReducer?.schoolYear, key: props?.loginReducer?.schoolYear });
       setRolesList(
         data.dataRoles.edges.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };
@@ -197,32 +221,51 @@ const TeacherCreateEdit = (props: any) => {
       if (roles?.length == 1) {
         setRole({ label: roles[0].node.name, value: roles[0].node.id, key: roles[0].node.id });
         setValue('newUser', {
-          ...{
-            name: props?.data?.user?.name,
-            lastName: props?.data?.user?.lastName,
-            phone: props?.data?.user?.phone,
-            email: props?.data?.user?.email,
-            documentNumber: props?.data?.user?.documentNumber,
-            password: props?.data?.user?.password,
-            username: props?.data?.user?.username,
-            genderId: props?.data?.user?.genderId,
-            documentTypeId: props?.data?.user?.documentTypeId,
+          ...newUser, ...{
             roleId: roles[0]?.node?.id
           }
         });
+        setNewUser({
+          ...newUser, ...{
+            roleId: roles[0]?.node?.id
+          }
+        })
       }
     });
   };
 
   const searchDocumentUser = async () => {
-
-    console.log(methods.getValues().newUser.documentNumber)
     await props.getUserByDocumentNumber(methods.getValues().newUser.documentNumber).then((data: any) => {
-      console.log(data);
-
+      setValidateUser(true);
+      console.log("newUser", newUser)
+      console.log("methods", methods.getValues().newUser)
+      if (data) {
+        setValue('newUser', {
+          ...newUser, ...{
+            name: data?.name,
+            lastName: data?.lastName,
+            phone: data?.phone,
+            email: data?.email,
+            documentNumber: data?.documentNumber,
+            username: data?.username,
+            genderId: data?.genderId,
+            documentTypeId: data?.documentTypeId,
+          }
+        });
+        setNewUser({
+          ...newUser, ...{
+            name: data?.name,
+            lastName: data?.lastName,
+            phone: data?.phone,
+            email: data?.email,
+            documentNumber: data?.documentNumber,
+            username: data?.username,
+            genderId: data?.genderId,
+            documentTypeId: data?.documentTypeId,
+          }
+        });
+      }
     })
-
-
   }
 
   const auditInfo = {
@@ -254,6 +297,7 @@ const TeacherCreateEdit = (props: any) => {
             methods={methods}
             control={control}
             handleSubmit={handleSubmit}
+            validateForm={true}
           >
             <ModalBody>
               <FormGroupCustom>
@@ -284,14 +328,15 @@ const TeacherCreateEdit = (props: any) => {
                       setNewUser({ ...newUser, ...{ documentNumber: data.target.value } });
                     }}
                   />
-                  <Button className="top-right-button mr-1 ml-1" onClick={() => {
-                    return searchDocumentUser();
-                  }}>
+                  <Button className="top-right-button mr-1 ml-1"
+                    disabled={documentType == null || methods?.getValues()?.newUser?.documentNumber == undefined || methods?.getValues()?.newUser?.documentNumber == null || methods?.getValues()?.newUser?.documentNumber?.length == 0}
+                    onClick={() => {
+                      return searchDocumentUser();
+                    }}>
                     <i className="simple-icon-magnifier" />
                   </Button>
                 </div>
                 <RequiredMessagesCustom formState={formState} register={"name"} />
-
               </FormGroupCustom>
               <FormGroupCustom>
                 <LabelCustom id="forms.name" required={true} />
@@ -302,6 +347,7 @@ const TeacherCreateEdit = (props: any) => {
                     setValue('newUser', { ...newUser, ...{ name: data.target.value } });
                     setNewUser({ ...newUser, ...{ name: data.target.value } });
                   }}
+                  disabled={!validateUser}
                 />
                 <RequiredMessagesCustom formState={formState} register={"name"} />
               </FormGroupCustom>
@@ -314,6 +360,7 @@ const TeacherCreateEdit = (props: any) => {
                     setValue('newUser', { ...newUser, ...{ lastName: data.target.value } });
                     setNewUser({ ...newUser, ...{ lastName: data.target.value } });
                   }}
+                  disabled={!validateUser}
                 />
                 <RequiredMessagesCustom formState={formState} register={"name"} />
               </FormGroupCustom>
@@ -326,6 +373,7 @@ const TeacherCreateEdit = (props: any) => {
                     setValue('newUser', { ...newUser, ...{ phone: data.target.value } });
                     setNewUser({ ...newUser, ...{ phone: data.target.value } });
                   }}
+                  disabled={!validateUser}
                 />
               </FormGroupCustom>
               <FormGroupCustom>
@@ -337,6 +385,7 @@ const TeacherCreateEdit = (props: any) => {
                     setValue('newUser', { ...newUser, ...{ email: data.target.value } });
                     setNewUser({ ...newUser, ...{ email: data.target.value } });
                   }}
+                  disabled={!validateUser}
                 />
               </FormGroupCustom>
               <FormGroupCustom>
@@ -348,6 +397,7 @@ const TeacherCreateEdit = (props: any) => {
                     setNewUser({ ...newUser, ...{ birthdate: date as Date } });
                     setBirtdate(date as Date);
                   }}
+                  disabled={!validateUser}
                 />
               </FormGroupCustom>
               <FormGroupCustom>
@@ -382,6 +432,7 @@ const TeacherCreateEdit = (props: any) => {
                     setValue('newUser', { ...newUser });
                     setGender(selectedOption);
                   }}
+                  isDisabled={!validateUser}
                 />
                 <RequiredMessagesCustom formState={formState} register={"name"} />
               </FormGroupCustom>
@@ -424,6 +475,22 @@ const TeacherCreateEdit = (props: any) => {
                     setCampus(selectedOption);
                     trigger("campusId")
                   }}
+                  isDisabled={!validateUser}
+                />
+                <RequiredMessagesCustom formState={formState} register={"name"} />
+              </FormGroupCustom>
+
+              <FormGroupCustom>
+                <LabelCustom id="menu.schoolYear" required={true} />
+                <Select
+                  isClearable
+                  placeholder={<IntlMessages id="forms.select" />}
+                  {...register('schoolYearId', { required: true })}
+                  className="react-select"
+                  classNamePrefix="react-select"
+                  options={schoolYearList}
+                  value={schoolYear}
+                  isDisabled={true}
                 />
                 <RequiredMessagesCustom formState={formState} register={"name"} />
               </FormGroupCustom>

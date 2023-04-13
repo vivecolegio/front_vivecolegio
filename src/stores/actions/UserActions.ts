@@ -281,20 +281,16 @@ export const resetPasswordUser = (id: any) => {
 export const getUserByDocumentNumber = (documentNumber: any) => {
   return async (dispatch: any) => {
     try {
+      let data = {};
       await client
         .mutate({
           mutation: QUERY_GET_USER_BY_DOCUMENT_NUMBER,
           variables: { documentNumber},
         })
-        .then((dataReponse: any) => {
-          if (dataReponse.errors?.length > 0) {
-            dataReponse.errors.forEach((error: any) => {
-              createNotification('error', 'error', '');
-            });
-          } else {
-            createNotification('success', 'success', '');
-          }
+        .then((result: any) => {
+          data = result.data.data;
         });
+      return data;
     } catch (error) {
       createNotification('error', 'error', '');
       return error;

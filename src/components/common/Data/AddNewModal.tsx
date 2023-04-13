@@ -15,7 +15,8 @@ const AddNewModal = ({
   control,
   handleSubmit,
   hideFooter,
-  formState
+  formState,
+  validateForm
 }: any) => {
   // const { isValid, errors } = useFormState({ control });
   // console.log(methods?.formState?.errors)
@@ -52,7 +53,7 @@ const AddNewModal = ({
                 onClick={() => {
                   onSubmit(methods.getValues());
                 }}
-              //disabled={!methods?.formState?.isValid}
+                disabled={validateForm ? !methods?.formState?.isValid : false}
               >
                 <IntlMessages id="pages.submit" />
               </Button>
