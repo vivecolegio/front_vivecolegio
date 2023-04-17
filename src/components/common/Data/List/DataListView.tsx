@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ContextMenuTrigger } from 'react-contextmenu';
 import { Button, Card, Input, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 
@@ -26,6 +26,19 @@ const DataListView = ({
   const [modalBasicDelete, setModalBasicDelete] = useState({ status: false, id: null });
   const [modalBasicActivate, setModalBasicActivate] = useState({ status: false, id: null });
   const [modalBasicInactivate, setModalBasicInactivate] = useState({ status: false, id: null });
+  const [secs, setSeconds] = useState(45);
+
+
+  useEffect(() => {
+    let sampleInterval = setInterval(() => {
+      if (secs > 0) {
+        setSeconds(secs - 1);
+      }
+    }, 1000);
+    return () => {
+      clearInterval(sampleInterval);
+    };
+  });
 
   return (
     <Colxx xxs="12" className="mb-3">
@@ -141,6 +154,7 @@ const DataListView = ({
                     size="xs"
                     onClick={() => {
                       // return deleteData(item.id);
+                      setSeconds(45);
                       setModalBasicDelete({ status: !modalBasicDelete?.status, id: item.id })
                     }}
                   >
@@ -184,6 +198,8 @@ const DataListView = ({
         </ModalHeader>
         <ModalBody>
           Esta seguro que desea eliminar el registro ?
+          <p></p>
+          <b>Recuerde que si elimina el registro no podra recuperar la información por ningun medio, para continuar el proceso por favor espere {`${secs}`} segundos </b>
         </ModalBody>
         <ModalFooter>
           <Button
@@ -198,6 +214,7 @@ const DataListView = ({
               deleteData(modalBasicDelete?.id);
               setModalBasicDelete({ status: false, id: null })
             }}
+            disabled={secs != 0}
           >
             <IntlMessages id="pages.delete" />
           </Button>{' '}
