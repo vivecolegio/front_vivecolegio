@@ -348,6 +348,7 @@ const esMessages = {
   'menu.reportSpreadsheetAccumulatedAsignatureCourseCourseList': 'Planilla Consolidado Asignatura',
   'menu.reportSpreadsheetAccumulatedAverageCourseGradeList': 'Planilla Consolidado Promedios',
   'menu.reportSpreadsheetAccumulatedAverageCourseCourseList': 'Planilla Consolidado Promedios',
+  'forms.active': 'Activo',
 
 };
 

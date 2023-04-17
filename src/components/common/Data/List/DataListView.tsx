@@ -2,6 +2,7 @@ import classnames from 'classnames';
 import React, { useState } from 'react';
 import { ContextMenuTrigger } from 'react-contextmenu';
 import { Button, Card, Input, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+
 import IntlMessages from '../../../../helpers/IntlMessages';
 import { Colxx } from '../../CustomBootstrap';
 
@@ -51,7 +52,7 @@ const DataListView = ({
                 return (
                   <div key={column.column} style={{ 'width': column.width }} className="mb-1">
                     <p key={column.column} className={classNameProps}>
-                      {item[`${column.column}`] != null && column.translate ? <IntlMessages id={"display." + item[`${column.column}`] + ""} /> : item[`${column.column}`]}
+                      {item[`${column.column}`] != null && column.translate ? <IntlMessages id={"display." + item[`${column.column}`] + ""} /> : item[`${column.column}`]?.toString()}
                     </p>
                   </div>
                 );

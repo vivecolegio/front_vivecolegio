@@ -88,6 +88,11 @@ export const QUERY_GET_TEACHER = gql`
       school  {
         id
         name
+      }   
+      schoolYearId     
+      schoolYear  {
+        id
+        schoolYear
       }                  
       campusId     
       campus  {
@@ -121,6 +126,7 @@ export const QUERY_GET_TEACHER = gql`
           name
         }
       } 
+      active
       version
       createdAt
       updatedAt

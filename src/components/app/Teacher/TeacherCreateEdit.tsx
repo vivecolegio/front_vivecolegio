@@ -63,6 +63,10 @@ const TeacherCreateEdit = (props: any) => {
           label: props?.data?.schoolYear?.schoolyear,
           value: props?.data?.schoolYear?.id,
         });
+        setSchoolYearList(
+          [{ label: props?.data?.schoolYear?.schoolyear, value: props?.data?.schoolYear?.id, key: props?.data?.schoolYear?.id, }]
+        )
+        setSchoolYear({ label: props?.loginReducer?.schoolYearName, value: props?.loginReducer?.schoolYear, key: props?.loginReducer?.schoolYear });
       }
       if (props?.data?.school !== undefined && props?.data?.school != null) {
         setSchool({
@@ -88,6 +92,7 @@ const TeacherCreateEdit = (props: any) => {
           documentTypeId: props?.data?.user?.documentTypeId,
           roleId: props?.data?.user?.roleId,
         });
+        setValidateUser(true);
       }
       if (
         props?.data?.user &&
@@ -129,7 +134,6 @@ const TeacherCreateEdit = (props: any) => {
           value: props?.data?.user?.documentType?.id,
         });
       }
-
       register('schoolId', {
         required: true,
         value: props?.data?.id ? props?.data?.schoolId : '',
@@ -198,10 +202,12 @@ const TeacherCreateEdit = (props: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };
         }),
       );
-      setSchoolYearList(
-        [{ label: props?.loginReducer?.schoolYearName, value: props?.loginReducer?.schoolYear, key: props?.loginReducer?.schoolYear }]
-      )
-      setSchoolYear({ label: props?.loginReducer?.schoolYearName, value: props?.loginReducer?.schoolYear, key: props?.loginReducer?.schoolYear });
+      if (!props?.data?.id) {
+        setSchoolYearList(
+          [{ label: props?.loginReducer?.schoolYearName, value: props?.loginReducer?.schoolYear, key: props?.loginReducer?.schoolYear }]
+        )
+        setSchoolYear({ label: props?.loginReducer?.schoolYearName, value: props?.loginReducer?.schoolYear, key: props?.loginReducer?.schoolYear });
+      }
       setRolesList(
         data.dataRoles.edges.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };
@@ -220,16 +226,18 @@ const TeacherCreateEdit = (props: any) => {
       let roles = data.dataRoles.edges;
       if (roles?.length == 1) {
         setRole({ label: roles[0].node.name, value: roles[0].node.id, key: roles[0].node.id });
-        setValue('newUser', {
-          ...newUser, ...{
-            roleId: roles[0]?.node?.id
-          }
-        });
-        setNewUser({
-          ...newUser, ...{
-            roleId: roles[0]?.node?.id
-          }
-        })
+        if (!props?.data?.id) {
+          setValue('newUser', {
+            ...newUser, ...{
+              roleId: roles[0]?.node?.id
+            }
+          });
+          setNewUser({
+            ...newUser, ...{
+              roleId: roles[0]?.node?.id
+            }
+          })
+        }
       }
     });
   };
@@ -237,8 +245,6 @@ const TeacherCreateEdit = (props: any) => {
   const searchDocumentUser = async () => {
     await props.getUserByDocumentNumber(methods.getValues().newUser.documentNumber).then((data: any) => {
       setValidateUser(true);
-      console.log("newUser", newUser)
-      console.log("methods", methods.getValues().newUser)
       if (data) {
         setValue('newUser', {
           ...newUser, ...{
@@ -336,6 +342,19 @@ const TeacherCreateEdit = (props: any) => {
                     <i className="simple-icon-magnifier" />
                   </Button>
                 </div>
+                <RequiredMessagesCustom formState={formState} register={"name"} />
+              </FormGroupCustom>
+              <FormGroupCustom>
+                <LabelCustom id="forms.user" required={true} />
+                <Input
+                  name="username"
+                  defaultValue={newUser.username}
+                  onChange={(data) => {
+                    setValue('newUser', { ...newUser, ...{ username: data.target.value } });
+                    setNewUser({ ...newUser, ...{ username: data.target.value } });
+                  }}
+                  disabled={true}
+                />
                 <RequiredMessagesCustom formState={formState} register={"name"} />
               </FormGroupCustom>
               <FormGroupCustom>

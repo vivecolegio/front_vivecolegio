@@ -24,7 +24,6 @@ const TeacherList = (props: any) => {
       return submenus = submenus.concat(c.menuItemsLogin);
     });
     setCurrentMenu(submenus.find((c: any) => { return (c?.module?.url == 'reset_password_permit') }));
-
     if (props?.loginReducer?.campusId) {
       props.getListAllTeacher(props?.loginReducer?.campusId, props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear).then((listData: any) => {
         setDataTable(
@@ -208,6 +207,7 @@ const TeacherList = (props: any) => {
             modalOpen={modalOpen}
             toggleModal={() => {
               setData(null);
+              refreshDataTable();
               return setModalOpen(!modalOpen);
             }}
             onSubmit={onSubmit}

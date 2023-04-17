@@ -101,6 +101,7 @@ export const QUERY_GET_USER_BY_DOCUMENT_NUMBER = gql`
       email
       birthdate
       genderId
+      username
       roleId
       documentTypeId
       documentNumber
