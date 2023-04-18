@@ -101,6 +101,7 @@ const TeacherList = (props: any) => {
       delete dataForm.newUser.role;
       delete dataForm.newUser.gender;
       delete dataForm.newUser.documentType;
+      delete dataForm.newUser.password;
       await props.updateTeacher(dataForm, data.id).then((id: any) => {
         if (id !== undefined) {
           setModalOpen(false);

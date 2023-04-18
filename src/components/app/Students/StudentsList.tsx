@@ -18,6 +18,7 @@ const StudentList = (props: any) => {
   const [currentMenu, setCurrentMenu] = useState(null);
 
   const [data, setData] = useState(null);
+
   useEffect(() => {
     let { roleMenus } = props.loginReducer;
     let submenus: any = [];
@@ -25,8 +26,7 @@ const StudentList = (props: any) => {
       return submenus = submenus.concat(c.menuItemsLogin);
     });
     setCurrentMenu(submenus.find((c: any) => { return (c?.module?.url == 'reset_password_permit') }));
-
-    props.getListAllStudent(props?.loginReducer?.campusId, props?.loginReducer?.schoolId).then((listData: any) => {
+    props.getListAllStudent(props?.loginReducer?.campusId, props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear).then((listData: any) => {
       setDataTable(listData.map((c: any) => {
         c.node.name = c.node.user ? c.node.user.name : '';
         c.node.lastName = c.node.user ? c.node.user.lastName : '';
@@ -39,7 +39,7 @@ const StudentList = (props: any) => {
   }, []);
 
   const getDataTable = async () => {
-    props.getListAllStudent(props?.loginReducer?.campusId, props?.loginReducer?.schoolId).then((listData: any) => {
+    props.getListAllStudent(props?.loginReducer?.campusId, props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear).then((listData: any) => {
       setDataTable(listData.map((c: any) => {
         c.node.name = c.node.user ? c.node.user.name : '';
         c.node.lastName = c.node.user ? c.node.user.lastName : '';
@@ -167,6 +167,7 @@ const StudentList = (props: any) => {
             modalOpen={modalOpen}
             toggleModal={() => {
               setData(null);
+              refreshDataTable();
               return setModalOpen(!modalOpen);
             }}
             onSubmit={onSubmit}

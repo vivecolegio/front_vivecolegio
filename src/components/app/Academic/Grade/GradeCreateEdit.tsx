@@ -128,7 +128,7 @@ const GradeCreateEdit = (props: any) => {
   };
 
   const getDropdowns = async () => {
-    props.getDropdownsAcademicGrade(props?.loginReducer?.schoolId).then((data: any) => {
+    props.getDropdownsAcademicGrade(props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear).then((data: any) => {
       setCyclesList(
         data.dataCycles.edges.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };
@@ -192,6 +192,7 @@ const GradeCreateEdit = (props: any) => {
             methods={methods}
             control={control}
             handleSubmit={handleSubmit}
+            validateForm={true}
           >
             <ModalBody>
               <FormGroupCustom>

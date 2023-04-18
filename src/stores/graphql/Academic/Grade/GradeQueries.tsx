@@ -72,7 +72,7 @@ export const QUERY_GET_GRADE = gql`
 `;
 
 export const QUERY_GET_DROPDOWNS_GRADE = gql`
-  query getDropdownsAcademicArea($schoolId: String!) {
+  query getDropdownsAcademicArea($schoolId: String!, $schoolYearId: String!) {
     dataSchools: getAllSchool(allData: false, orderCreated: false) {
       edges {
         node {
@@ -97,7 +97,7 @@ export const QUERY_GET_DROPDOWNS_GRADE = gql`
         }
       }
     }
-    dataEducationLevels: getAllEducationLevel(allData: false, orderCreated: false, schoolId: $schoolId) {
+    dataEducationLevels: getAllEducationLevel(allData: false, orderCreated: false, schoolId: $schoolId, schoolYearId: $schoolYearId) {
       edges {
         node {
           id

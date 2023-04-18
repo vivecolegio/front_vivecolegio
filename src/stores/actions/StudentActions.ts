@@ -3,8 +3,7 @@ import { client } from '../graphql';
 import { MUTATION_ASSOCIATE_GUARDIAN, MUTATION_CHANGE_ACTIVE_STUDENT, MUTATION_CREATE_STUDENT, MUTATION_DELETE_STUDENT, MUTATION_UPDATE_STUDENT } from '../graphql/Student/StudentMutations';
 import { QUERY_GET_ALL_STUDENT, QUERY_GET_ALL_STUDENT_OF_GRADE, QUERY_GET_ALL_STUDENT_WITHOUT_COURSE, QUERY_GET_COURSES_OF_GRADES, QUERY_GET_DROPDOWNS_STUDENT, QUERY_GET_GUARDIANS_BY_CRITERIA, QUERY_GET_STUDENT } from '../graphql/Student/StudentQueries';
 
-
-export const getListAllStudent = (campusId:string ,schoolId:string) => {
+export const getListAllStudent = (campusId:string ,schoolId:string, schoolYearId:string) => {
   let c = campusId ? campusId : null;
   return async (dispatch: any) => {
     try {
@@ -15,6 +14,7 @@ export const getListAllStudent = (campusId:string ,schoolId:string) => {
           variables:{
             c,
             schoolId,
+            schoolYearId
           },
         })
         .then((result: any) => {
@@ -236,7 +236,7 @@ export const deleteStudent = (id: any, showToast: boolean) => {
   };
 };
 
-export const getDropdownsStudent = (type: string, schoolId:string) => {
+export const getDropdownsStudent = (type: string, schoolId:string, schoolYearId: string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
@@ -245,7 +245,8 @@ export const getDropdownsStudent = (type: string, schoolId:string) => {
           query: QUERY_GET_DROPDOWNS_STUDENT,
           variables:{
             type,
-            schoolId
+            schoolId,
+            schoolYearId
           }
         })
         .then((result: any) => {

@@ -184,7 +184,7 @@ export const deleteGrade = (id: any, showToast: boolean) => {
   };
 };
 
-export const getDropdownsAcademicGrade = (schoolId:string) => {
+export const getDropdownsAcademicGrade = (schoolId:string, schoolYearId: string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
@@ -193,6 +193,7 @@ export const getDropdownsAcademicGrade = (schoolId:string) => {
           query: QUERY_GET_DROPDOWNS_GRADE,
           variables:{
             schoolId,
+            schoolYearId
           },
         })
         .then((result: any) => {
