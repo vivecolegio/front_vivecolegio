@@ -137,7 +137,7 @@ const AreaCreateEdit = (props: any) => {
         return { label: intl.messages["display." + c.name], value: c.name, key: c.name };
       }))
     });
-    props.getDropdownsPerformanceLevel(props?.loginReducer?.schoolId).then((data: any) => {
+    props.getDropdownsPerformanceLevel(props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear).then((data: any) => {
       setSchoolList(
         data.dataSchools.edges.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };

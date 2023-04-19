@@ -128,7 +128,7 @@ export const QUERY_GET_PERFORMANCE_LEVEL = gql`
 `;
 
 export const QUERY_GET_DROPDOWNS_PERFORMANCE_LEVEL = gql`
-  query getDropdownsPerformanceLevel ($schoolId: String!) {
+  query getDropdownsPerformanceLevel ($schoolId: String!, $schoolYearId: String!) {
     dataSchools: getAllSchool(allData: false, orderCreated: false) {
       edges {
         node {
@@ -153,7 +153,7 @@ export const QUERY_GET_DROPDOWNS_PERFORMANCE_LEVEL = gql`
         }
       }
     }
-    dataAcademicGrade: getAllAcademicGrade(orderCreated: false, allData: false, schoolId: $schoolId) {
+    dataAcademicGrade: getAllAcademicGrade(orderCreated: false, allData: false, schoolId: $schoolId, schoolYearId: $schoolYearId) {
       edges {
         node {
           id

@@ -255,7 +255,7 @@ export const deletePerformanceLevel = (id: any, showToast: boolean) => {
   };
 };
 
-export const getDropdownsPerformanceLevel = (schoolId: string) => {
+export const getDropdownsPerformanceLevel = (schoolId: string, schoolYearId: string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
@@ -263,7 +263,8 @@ export const getDropdownsPerformanceLevel = (schoolId: string) => {
         .query({
           query: QUERY_GET_DROPDOWNS_PERFORMANCE_LEVEL,
           variables:{
-            schoolId
+            schoolId,
+            schoolYearId
           }
         })
         .then((result: any) => {

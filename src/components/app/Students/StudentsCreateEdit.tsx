@@ -181,7 +181,17 @@ const StudentCreateEdit = (props: any) => {
       });
       register('newUser', {
         required: true,
-        value: newUser,
+        value: {
+          name: props?.data?.user?.name,
+          lastName: props?.data?.user?.lastName,
+          phone: props?.data?.user?.phone,
+          email: props?.data?.user?.email,
+          documentNumber: props?.data?.user?.documentNumber,
+          username: props?.data?.user?.username,
+          genderId: props?.data?.user?.genderId,
+          documentTypeId: props?.data?.user?.documentTypeId,
+          roleId: props?.data?.user?.roleId,
+        },
       });
       register('schoolYearId', {
         required: true,
