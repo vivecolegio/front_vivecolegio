@@ -1,6 +1,7 @@
 export const COLUMN_LIST = [
-  { column: 'name', label: 'forms.name', width: '15%' },
-  { column: 'modality_format', label: 'menu.modality', width: '15%' },
-  { column: 'code', label: 'forms.code', width: '15%' },
-  { width:'40%' },
+  { column: 'name', label: 'forms.name', width: '20%', translate: false, badge: false, color: "", textCenter: false },
+  { column: 'modality_format', label: 'menu.modality', width: '20%', translate: false, badge: false, color: "", textCenter: false },
+  { column: 'code', label: 'forms.code', width: '20%', translate: false, badge: false, color: "", textCenter: false },
+  { column: 'active', label: 'forms.active', width: '10%', translate: true, badge: true, color: "info", textCenter: false },
+  { width: '30%' }
 ];

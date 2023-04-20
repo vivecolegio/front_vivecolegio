@@ -1,6 +1,7 @@
 export const COLUMN_LIST = [
-  { column: 'order', label: 'forms.sorting', width: '15%' },
-  { column: 'startTime', label: 'forms.startTime', width: '15%' },
-  { column: 'endTime', label: 'forms.endTime', width: '15%' },
-  { width: '40%' },
+  { column: 'order', label: 'forms.sorting', width: '20%', translate: false, badge: false, color: "", textCenter: false },
+  { column: 'startTime', label: 'forms.startTime', width: '20%', translate: false, badge: false, color: "", textCenter: false },
+  { column: 'endTime', label: 'forms.endTime', width: '20%', translate: false, badge: false, color: "", textCenter: false },
+  { column: 'active', label: 'forms.active', width: '10%', translate: true, badge: true, color: "info", textCenter: false },
+  { width: '30%' },
 ];

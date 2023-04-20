@@ -1,7 +1,8 @@
 export const COLUMN_LIST = [
-  { column: 'name', label: 'forms.name', width: '15%' },
-  { column: 'teacher_format', label: 'menu.teacherTitular', width: '25%' },
-  { column: 'academicDay_format', label: 'menu.academicDay', width: '20%' },
-  { column: 'campus_format', label: 'menu.campus', width: '25%' },
-  { width: '40%' },
+  { column: 'name', label: 'forms.name', width: '10%', translate: false, badge: false, color: "", textCenter: false },
+  { column: 'teacher_format', label: 'menu.teacherTitular', width: '20%', translate: false, badge: false, color: "", textCenter: false },
+  { column: 'academicDay_format', label: 'menu.academicDay', width: '10%', translate: false, badge: false, color: "", textCenter: false },
+  { column: 'campus_format', label: 'menu.campus', width: '20%', translate: false, badge: false, color: "", textCenter: false },
+  { column: 'active', label: 'forms.active', width: '10%', translate: true, badge: true, color: "info", textCenter: false },
+  { width: '30%' }
 ];

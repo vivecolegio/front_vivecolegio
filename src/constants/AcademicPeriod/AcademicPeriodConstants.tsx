@@ -1,8 +1,9 @@
 export const COLUMN_LIST = [
-  { column: 'school_year_format', label: 'menu.schoolYear', width: '15%' },
-  { column: 'name', label: 'forms.name', width: '15%' },
-  { column: 'weight', label: 'forms.weight', width: '15%' },
-  { column: 'startDate', label: 'forms.startDate', width: '15%' },
-  { column: 'endDate', label: 'forms.endDate', width: '15%' },
-  { width: '40%' },
+  { column: 'school_year_format', label: 'menu.schoolYear', width: '15%', translate: false, badge: false, color: "", textCenter: false },
+  { column: 'name', label: 'forms.name', width: '15%', translate: false, badge: false, color: "", textCenter: false },
+  { column: 'weight', label: 'forms.weight', width: '10%', translate: false, badge: false, color: "", textCenter: false },
+  { column: 'startDate', label: 'forms.startDate', width: '10%', translate: false, badge: false, color: "", textCenter: false },
+  { column: 'endDate', label: 'forms.endDate', width: '10%', translate: false, badge: false, color: "", textCenter: false },
+  { column: 'active', label: 'forms.active', width: '10%', translate: true, badge: true, color: "info", textCenter: false },
+  { width: '30%' },
 ];
