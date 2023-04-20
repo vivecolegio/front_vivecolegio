@@ -58,6 +58,7 @@ export const QUERY_GET_GRADE = gql`
         id
         name
       }
+      schoolYearId
       version
       createdAt
       updatedAt
