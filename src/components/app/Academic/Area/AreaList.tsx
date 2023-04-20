@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
 
@@ -9,6 +9,8 @@ import { Colxx } from '../../../common/CustomBootstrap';
 import DataList from '../../../common/Data/DataList';
 import { Loader } from '../../../common/Loader';
 import AreaCreateEdit from './AreaCreateEdit';
+import { useLocation } from 'react-router';
+import { permissionsMenu } from '../../../../helpers/DataTransformations';
 
 const AreaList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
@@ -18,23 +20,22 @@ const AreaList = (props: any) => {
   let navigate = useNavigate();
 
   const [data, setData] = useState(null);
-  useEffect(() => {
-    props.getListAllAcademicArea(props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear).then((listData: any) => {
-      setDataTable(listData.map((c: any) => {
-        c.node.generalArea_format = c.node.generalAcademicArea ? c.node.generalAcademicArea.name : '';
-        return c;
-      }));
-    });
-  }, []);
+  const location = useLocation();
 
-  const getDataTable = async () => {
-    props.getListAllAcademicArea(props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear).then((listData: any) => {
+  const getDataTable = useCallback(async () => {
+    let permissions = permissionsMenu(props?.loginReducer, location.pathname);
+    props.getListAllAcademicArea(props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear, permissions.fullAccess).then((listData: any) => {
       setDataTable(listData.map((c: any) => {
         c.node.generalArea_format = c.node.generalAcademicArea ? c.node.generalAcademicArea.name : '';
         return c;
       }));
     });
-  };
+  }, [])
+
+  useEffect(() => {
+    getDataTable()
+      .catch(console.error);;
+  }, [getDataTable]);
 
   const refreshDataTable = async () => {
     setDataTable(null);
@@ -153,6 +154,7 @@ const AreaList = (props: any) => {
             modalOpen={modalOpen}
             toggleModal={() => {
               setData(null);
+              refreshDataTable();
               return setModalOpen(!modalOpen);
             }}
             onSubmit={onSubmit}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 
@@ -10,6 +10,8 @@ import DataList from '../../../common/Data/DataList';
 import HeaderInfoAcademic from '../../../common/Data/HeaderInfoAcademic';
 import { Loader } from '../../../common/Loader';
 import AsignatureCreateEdit from './AsignatureCreateEdit';
+import { useLocation } from 'react-router';
+import { permissionsMenu } from '../../../../helpers/DataTransformations';
 
 const AsignatureList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
@@ -20,25 +22,23 @@ const AsignatureList = (props: any) => {
   const areaName = params.get('areaName');
 
   const [data, setData] = useState(null);
-  useEffect(() => {
-    const areaId = params.get('id');
-    props.getListAllAcademicAsignature(props?.loginReducer?.schoolId, areaId ? areaId : '').then((listData: any) => {
-      setDataTable(listData.map((c: any) => {
-        c.node.generalAsignature_format = c.node.generalAcademicAsignature ? c.node.generalAcademicAsignature.name : '';
-        return c;
-      }));
-    });
-  }, []);
+  const location = useLocation();
 
-  const getDataTable = async () => {
+  const getDataTable = useCallback(async () => {
     const areaId = params.get('id');
-    props.getListAllAcademicAsignature(props?.loginReducer?.schoolId, areaId ? areaId : '').then((listData: any) => {
+    let permissions = permissionsMenu(props?.loginReducer, location.pathname);
+    props.getListAllAcademicAsignature(props?.loginReducer?.schoolId, areaId ? areaId : '', permissions.fullAccess).then((listData: any) => {
       setDataTable(listData.map((c: any) => {
         c.node.generalAsignature_format = c.node.generalAcademicAsignature ? c.node.generalAcademicAsignature.name : '';
         return c;
       }));
     });
-  };
+  }, [])
+
+  useEffect(() => {
+    getDataTable()
+      .catch(console.error);;
+  }, [getDataTable]);
 
   const refreshDataTable = async () => {
     setDataTable(null);
@@ -134,6 +134,7 @@ const AsignatureList = (props: any) => {
             modalOpen={modalOpen}
             toggleModal={() => {
               setData(null);
+              refreshDataTable();
               return setModalOpen(!modalOpen);
             }}
             onSubmit={onSubmit}

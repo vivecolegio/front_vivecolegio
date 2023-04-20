@@ -1,5 +1,5 @@
 import moment from 'moment';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
 import { COLUMN_LIST } from '../../../constants/AcademicPeriod/AcademicPeriodConstants';
@@ -9,6 +9,8 @@ import { Colxx } from '../../common/CustomBootstrap';
 import DataList from '../../common/Data/DataList';
 import { Loader } from '../../common/Loader';
 import AcademicPeriodCreateEdit from './AcademicPeriodCreateEdit';
+import { permissionsMenu } from '../../../helpers/DataTransformations';
+import { useLocation } from 'react-router';
 
 const AcademicPeriodList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
@@ -16,21 +18,11 @@ const AcademicPeriodList = (props: any) => {
   const [modalOpen, setModalOpen] = useState(false);
 
   const [data, setData] = useState(null);
-  useEffect(() => {
-    props.getListAllAcademicPeriod(props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear).then((listData: any) => {
-      setDataTable(
-        listData.map((c: any) => {
-          c.node.startDate = c.node.startDate ? moment(c.node.startDate).format('YYYY-MM-DD') : '';
-          c.node.endDate = c.node.endDate ? moment(c.node.endDate).format('YYYY-MM-DD') : '';
-          c.node.school_year_format = c.node.schoolYear ? c.node.schoolYear.schoolYear : '';
-          return c;
-        }),
-      );
-    });
-  }, []);
+  const location = useLocation();
 
-  const getDataTable = async () => {
-    props.getListAllAcademicPeriod(props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear).then((listData: any) => {
+  const getDataTable = useCallback(async () => {
+    let permissions = permissionsMenu(props?.loginReducer, location.pathname);
+    props.getListAllAcademicPeriod(props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear, permissions.fullAccess).then((listData: any) => {
       setDataTable(
         listData.map((c: any) => {
           c.node.startDate = c.node.startDate ? moment(c.node.startDate).format('YYYY-MM-DD') : '';
@@ -40,7 +32,12 @@ const AcademicPeriodList = (props: any) => {
         }),
       );
     });
-  };
+  }, [])
+
+  useEffect(() => {
+    getDataTable()
+      .catch(console.error);;
+  }, [getDataTable]);
 
   const refreshDataTable = async () => {
     setDataTable(null);
@@ -48,7 +45,6 @@ const AcademicPeriodList = (props: any) => {
   };
 
   const onSubmit = async (dataForm: any) => {
-    //console.log(dataForm);
     if (data === null) {
       await props.saveNewAcademicPeriod(dataForm).then((id: any) => {
         if (id !== undefined) {
@@ -135,6 +131,7 @@ const AcademicPeriodList = (props: any) => {
             modalOpen={modalOpen}
             toggleModal={() => {
               setData(null);
+              refreshDataTable();
               return setModalOpen(!modalOpen);
             }}
             onSubmit={onSubmit}

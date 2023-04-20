@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
 import { COLUMN_LIST } from '../../../constants/EducationLevel/EducationLevelConstants';
@@ -8,6 +8,8 @@ import { Colxx } from '../../common/CustomBootstrap';
 import DataList from '../../common/Data/DataList';
 import { Loader } from '../../common/Loader';
 import EdicationLevelCreateEdit from './EducationLevelCreateEdit';
+import { useLocation } from 'react-router';
+import { permissionsMenu } from '../../../helpers/DataTransformations';
 
 const EducationLevelList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
@@ -15,17 +17,19 @@ const EducationLevelList = (props: any) => {
   const [modalOpen, setModalOpen] = useState(false);
 
   const [data, setData] = useState(null);
-  useEffect(() => {
-    props.getListAllEducationLevel(props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear).then((listData: any) => {
-      setDataTable(listData);
-    });
-  }, []);
+  const location = useLocation();
 
-  const getDataTable = async () => {
-    props.getListAllEducationLevel(props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear).then((listData: any) => {
+  const getDataTable = useCallback(async () => {
+    let permissions = permissionsMenu(props?.loginReducer, location.pathname);
+    props.getListAllEducationLevel(props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear, permissions.fullAccess).then((listData: any) => {
       setDataTable(listData);
     });
-  };
+  }, [])
+
+  useEffect(() => {
+    getDataTable()
+      .catch(console.error);;
+  }, [getDataTable]);
 
   const refreshDataTable = async () => {
     setDataTable(null);
@@ -119,6 +123,7 @@ const EducationLevelList = (props: any) => {
             modalOpen={modalOpen}
             toggleModal={() => {
               setData(null);
+              refreshDataTable();
               return setModalOpen(!modalOpen);
             }}
             onSubmit={onSubmit}

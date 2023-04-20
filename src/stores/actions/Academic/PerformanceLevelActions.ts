@@ -3,7 +3,7 @@ import { client } from '../../graphql';
 import { MUTATION_CHANGE_ACTIVE_PERFORMANCE_LEVEL, MUTATION_CREATE_PERFORMANCE_LEVEL, MUTATION_DELETE_PERFORMANCE_LEVEL, MUTATION_UPDATE_PERFORMANCE_LEVEL } from '../../graphql/Academic/PerformanceLevel/PerformanceLevelMutations';
 import { QUERY_GET_ALL_PERFORMANCE_LEVEL, QUERY_GET_ALL_PERFORMANCE_LEVEL_ASIGNATURE_COURSE, QUERY_GET_ALL_PERFORMANCE_LEVEL_COURSE, QUERY_GET_ALL_PERFORMANCE_LEVEL_COURSE_FINAL, QUERY_GET_DROPDOWNS_PERFORMANCE_LEVEL, QUERY_GET_PERFORMANCE_LEVEL, QUERY_GET_PERFORMANCE_LEVEL_TYPE } from '../../graphql/Academic/PerformanceLevel/PerformanceLevelQueries';
 
-export const getListAllPerformanceLevel = (schoolId:string, schoolYearId:string) => {
+export const getListAllPerformanceLevel = (schoolId:string, schoolYearId:string, fullAccess: boolean) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
@@ -12,7 +12,8 @@ export const getListAllPerformanceLevel = (schoolId:string, schoolYearId:string)
           query: QUERY_GET_ALL_PERFORMANCE_LEVEL,
           variables:{
             schoolId,
-            schoolYearId
+            schoolYearId,
+            allData: fullAccess
           }
         })
         .then((result: any) => {

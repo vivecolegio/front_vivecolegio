@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
 
@@ -9,6 +9,8 @@ import { Colxx } from '../../common/CustomBootstrap';
 import DataList from '../../common/Data/DataList';
 import { Loader } from '../../common/Loader';
 import AcademicDayCreateEdit from './AcademicDayCreateEdit';
+import { useLocation } from 'react-router';
+import { permissionsMenu } from '../../../helpers/DataTransformations';
 
 const AcademicDayList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
@@ -18,23 +20,22 @@ const AcademicDayList = (props: any) => {
   let navigate = useNavigate();
 
   const [data, setData] = useState(null);
-  useEffect(() => {
-    props.getListAllAcademicDay(props?.loginReducer?.campusId, props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear).then((listData: any) => {
-      setDataTable(listData.map((c: any) => {
-        c.node.campus_format = c.node.campus ? c.node.campus.name : '';
-        return c;
-      }));
-    });
-  }, []);
+  const location = useLocation();
 
-  const getDataTable = async () => {
-    props.getListAllAcademicDay(props?.loginReducer?.campusId, props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear).then((listData: any) => {
+  const getDataTable = useCallback(async () => {
+    let permissions = permissionsMenu(props?.loginReducer, location.pathname);
+    props.getListAllAcademicDay(props?.loginReducer?.campusId, props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear, permissions.fullAccess).then((listData: any) => {
       setDataTable(listData.map((c: any) => {
         c.node.campus_format = c.node.campus ? c.node.campus.name : '';
         return c;
       }));
     });
-  };
+  }, [])
+
+  useEffect(() => {
+    getDataTable()
+      .catch(console.error);;
+  }, [getDataTable]);
 
   const refreshDataTable = async () => {
     setDataTable(null);
@@ -151,6 +152,7 @@ const AcademicDayList = (props: any) => {
             modalOpen={modalOpen}
             toggleModal={() => {
               setData(null);
+              refreshDataTable();
               return setModalOpen(!modalOpen);
             }}
             onSubmit={onSubmit}

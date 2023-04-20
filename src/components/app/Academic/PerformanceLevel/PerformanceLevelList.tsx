@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
 import { COLUMN_LIST } from '../../../../constants/PerformanceLevel/performanceLevelConstants';
@@ -8,6 +8,8 @@ import { Colxx } from '../../../common/CustomBootstrap';
 import DataList from '../../../common/Data/DataList';
 import { Loader } from '../../../common/Loader';
 import PerformanceLevelCreateEdit from './PerformanceLevelCreateEdit';
+import { useLocation } from 'react-router';
+import { permissionsMenu } from '../../../../helpers/DataTransformations';
 
 const PerformanceLevelList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
@@ -15,17 +17,19 @@ const PerformanceLevelList = (props: any) => {
   const [modalOpen, setModalOpen] = useState(false);
 
   const [data, setData] = useState(null);
-  useEffect(() => {
-    props.getListAllPerformanceLevel(props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear).then((listData: any) => {
-      setDataTable(listData);
-    });
-  }, []);
+  const location = useLocation();
 
-  const getDataTable = async () => {
-    props.getListAllPerformanceLevel(props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear).then((listData: any) => {
+  const getDataTable = useCallback(async () => {
+    let permissions = permissionsMenu(props?.loginReducer, location.pathname);
+    props.getListAllPerformanceLevel(props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear, permissions.fullAccess).then((listData: any) => {
       setDataTable(listData);
     });
-  };
+  }, [])
+
+  useEffect(() => {
+    getDataTable()
+      .catch(console.error);;
+  }, [getDataTable]);
 
   const refreshDataTable = async () => {
     setDataTable(null);
@@ -119,6 +123,7 @@ const PerformanceLevelList = (props: any) => {
             modalOpen={modalOpen}
             toggleModal={() => {
               setData(null);
+              refreshDataTable();
               return setModalOpen(!modalOpen);
             }}
             onSubmit={onSubmit}

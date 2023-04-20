@@ -3,7 +3,7 @@ import { client } from '../graphql';
 import { MUTATION_CHANGE_ACTIVE_COMPONENT_EVALUATIVE, MUTATION_CREATE_COMPONENT_EVALUATIVE, MUTATION_DELETE_COMPONENT_EVALUATIVE, MUTATION_UPDATE_COMPONENT_EVALUATIVE } from '../graphql/ComponentEvaluative/ComponentEvaluativeMutations';
 import { QUERY_GET_ALL_COMPONENT_EVALUATIVE, QUERY_GET_ALL_COMPONENT_EVALUATIVE_ACADEMIC_ASIGNATURE_COURSE, QUERY_GET_COMPONENT_EVALUATIVE, QUERY_GET_DROPDOWNS_COMPONENT_EVALUATIVE, QUERY_GET_EVALUATIVE_COMPONENT_TYPE } from '../graphql/ComponentEvaluative/ComponentEvaluativeQueries';
 
-export const getListAllComponentEvaluative = (schoolId:string, schoolYearId:string) => {
+export const getListAllComponentEvaluative = (schoolId:string, schoolYearId:string, fullAccess: boolean) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
@@ -12,7 +12,8 @@ export const getListAllComponentEvaluative = (schoolId:string, schoolYearId:stri
           query: QUERY_GET_ALL_COMPONENT_EVALUATIVE,
           variables:{
             schoolId,
-            schoolYearId
+            schoolYearId,
+            allData: fullAccess
           },
         })
         .then((result: any) => {

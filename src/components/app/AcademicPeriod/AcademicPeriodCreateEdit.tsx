@@ -67,6 +67,12 @@ const AcademicPeriodCreateEdit = (props: any) => {
         required: true,
         value: props?.data?.id ? props?.data?.endDate : '',
       });
+    } else {
+      setSchool({
+        key: props?.loginReducer?.schoolData?.id,
+        label: props?.loginReducer?.schoolData?.name,
+        value: props?.loginReducer?.schoolData?.id,
+      });
     }
     setLoading(false);
   }, [props?.data]);
@@ -89,9 +95,11 @@ const AcademicPeriodCreateEdit = (props: any) => {
   const getDropdowns = async () => {
     props.getDropdownsAcademicPeriod(props?.loginReducer?.schoolId).then((data: any) => {
       setSchoolList(
-        data.dataSchools.edges.map((c: any) => {
-          return { label: c.node.name, value: c.node.id, key: c.node.id };
-        }),
+        [{
+          key: props?.loginReducer?.schoolData?.id,
+          label: props?.loginReducer?.schoolData?.name,
+          value: props?.loginReducer?.schoolData?.id,
+        }]
       );
       setSchoolYearsList(
         data.dataSchoolYears.edges.map((c: any) => {
@@ -210,29 +218,19 @@ const AcademicPeriodCreateEdit = (props: any) => {
                 <Input {...orderRest} innerRef={orderRef} className="form-control" type="number" step="1" min={1} />
                 <RequiredMessagesCustom formState={formState} register={"order"} />
               </FormGroupCustom>
-              {!props?.loginReducer?.schoolId ? (
-                <FormGroupCustom>
-                  <LabelCustom id="menu.school" required={true} />
-                  <Select
-                    isClearable
-                    placeholder={<IntlMessages id="forms.select" />}
-                    {...register('schoolId', { required: true })}
-                    className="react-select"
-                    classNamePrefix="react-select"
-                    options={schoolList}
-                    value={school}
-                    onChange={(selectedOption) => {
-                      setValue('schoolId', selectedOption?.key);
-                      setSchool(selectedOption);
-                      trigger("schoolId");
-                    }}
-                  />
-                  <RequiredMessagesCustom formState={formState} register={"schoolId"} />
-
-                </FormGroupCustom>
-              ) : (
-                ''
-              )}
+              <FormGroupCustom>
+                <LabelCustom id="menu.ie" required={true} />
+                <Select
+                  isClearable
+                  placeholder={<IntlMessages id="forms.select" />}
+                  {...register('schoolId', { required: true })}
+                  className="react-select"
+                  classNamePrefix="react-select"
+                  options={schoolList}
+                  value={school}
+                  isDisabled={true}
+                />
+              </FormGroupCustom>
             </ModalBody>
             {props?.data?.id ? (
               <ModalFooter className="p-3">

@@ -3,7 +3,7 @@ import { client } from '../graphql';
 import { MUTATION_CHANGE_ACTIVE_ACADEMIC_DAY, MUTATION_CREATE_ACADEMIC_DAY, MUTATION_DELETE_ACADEMIC_DAY, MUTATION_UPDATE_ACADEMIC_DAY } from '../graphql/AcademicDay/AcademicDayMutations';
 import { QUERY_GET_ACADEMIC_DAY, QUERY_GET_ALL_ACADEMIC_DAY, QUERY_GET_ALL_ACADEMIC_DAY_ACTIVES, QUERY_GET_DAYS, QUERY_GET_DROPDOWNS_ACADEMIC_DAY } from '../graphql/AcademicDay/AcademicDayQueries';
 
-export const getListAllAcademicDay = (campusId:string, schoolId: string, schoolYearId:string) => {
+export const getListAllAcademicDay = (campusId:string, schoolId: string, schoolYearId:string, fullAccess: boolean) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
@@ -13,7 +13,8 @@ export const getListAllAcademicDay = (campusId:string, schoolId: string, schoolY
           variables:{
             campusId,
             schoolId,
-            schoolYearId
+            schoolYearId,
+            allData: fullAccess
           },
         })
         .then((result: any) => {
