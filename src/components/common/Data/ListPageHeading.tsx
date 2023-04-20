@@ -258,6 +258,15 @@ const ListPageHeading = ({
                   >
                     <IntlMessages id="pages.actions" />
                   </p>
+                  <div className="custom-control custom-checkbox pl-1 align-self-center pr-2 pl-4">
+                    <Input
+                      className="item-check mb-0"
+                      type="checkbox"
+                      id={`check_`}
+                      onChange={() => { }}
+                      label=""
+                    />
+                  </div>
                 </div>
               </div>
             </Card>
