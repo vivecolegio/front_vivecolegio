@@ -75,3 +75,14 @@ export function compareOrderAcademicAreaAsc(a: any, b: any) {
   return 0;
 }
 
+
+export function permissionsMenu(loginReducer: any, currentUrl: string) {
+  let { roleMenus } = loginReducer;
+  let submenus: any = [];
+  roleMenus.map((c: any) => {
+    return submenus = submenus.concat(c.menuItemsLogin);
+  });
+  let cm = submenus.find((c: any) => { return (currentUrl === c?.module?.url) });
+  console.log("cm", cm)
+  return cm;
+}
