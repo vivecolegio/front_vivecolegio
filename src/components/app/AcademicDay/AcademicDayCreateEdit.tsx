@@ -17,8 +17,12 @@ import { Loader } from '../../common/Loader';
 
 const AcademicDayCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
+  const [schoolList, setSchoolList] = useState(null);
+  const [school, setSchool] = useState(null);
   const [campusList, setCampusList] = useState(null);
   const [campus, setCampus] = useState(null);
+  const [schoolYearList, setSchoolYearList] = useState(null);
+  const [schoolYear, setSchoolYear] = useState(null);
   const [day, setDay] = useState(null);
   const [days, setDays] = useState([]);
   const intl = useIntl();
@@ -34,6 +38,16 @@ const AcademicDayCreateEdit = (props: any) => {
     cleanForm();
     getDropdowns();
     if (props?.data?.id) {
+      if (props?.data?.schoolYear !== undefined && props?.data?.schoolYear != null) {
+        setSchoolYear({
+          key: props?.data?.schoolYear?.id,
+          label: props?.data?.schoolYear?.schoolyear,
+          value: props?.data?.schoolYear?.id,
+        });
+        setSchoolYearList(
+          [{ label: props?.data?.schoolYear?.schoolyear, value: props?.data?.schoolYear?.id, key: props?.data?.schoolYear?.id, }]
+        )
+      }
       if (props?.data?.campus !== undefined && props?.data?.campus != null) {
         setCampus({
           key: props?.data?.campus?.id,
@@ -54,6 +68,21 @@ const AcademicDayCreateEdit = (props: any) => {
         required: true,
         value: props?.data?.id ? props?.data?.day : '',
       });
+      register('schoolId', {
+        required: true,
+        value: props?.data?.id ? props?.data?.schoolId : '',
+      });
+      register('schoolYearId', {
+        required: true,
+        value: props?.data?.id ? props?.data?.schoolYearId : '',
+      });
+    } else {
+      setSchool({
+        key: props?.loginReducer?.schoolData?.id,
+        label: props?.loginReducer?.schoolData?.name,
+        value: props?.loginReducer?.schoolData?.id,
+      });
+      setSchoolYear({ label: props?.loginReducer?.schoolYearName, value: props?.loginReducer?.schoolYear, key: props?.loginReducer?.schoolYear });
     }
     setLoading(false);
   }, [props?.data]);
@@ -98,6 +127,16 @@ const AcademicDayCreateEdit = (props: any) => {
         }),
       );
     });
+    setSchoolList(
+      [{
+        key: props?.loginReducer?.schoolData?.id,
+        label: props?.loginReducer?.schoolData?.name,
+        value: props?.loginReducer?.schoolData?.id,
+      }]
+    );
+    setSchoolYearList(
+      [{ label: props?.loginReducer?.schoolYearName, value: props?.loginReducer?.schoolYear, key: props?.loginReducer?.schoolYear }]
+    )
   };
 
   const { ref: nameRef, ...nameRest } = register('name', {
@@ -166,28 +205,51 @@ const AcademicDayCreateEdit = (props: any) => {
                 />
                 <RequiredMessagesCustom formState={formState} register={"day"} />
               </FormGroupCustom>
-              {!props?.loginReducer?.campusId ? (
-                <FormGroupCustom>
-                  <LabelCustom id="menu.campus" required={true} />
-                  <Select
-                    isClearable
-                    placeholder={<IntlMessages id="forms.select" />}
-                    {...register('campusId', { required: true })}
-                    className="react-select"
-                    classNamePrefix="react-select"
-                    options={campusList}
-                    value={campus}
-                    onChange={(selectedOption) => {
-                      setValue('campusId', selectedOption?.key);
-                      setCampus(selectedOption);
-                      trigger("campusId")
-                    }}
-                  />
-                  <RequiredMessagesCustom formState={formState} register={"campusId"} />
-                </FormGroupCustom>
-              ) : (
-                ''
-              )}
+              <FormGroupCustom>
+                <LabelCustom id="menu.campus" required={true} />
+                <Select
+                  isClearable
+                  placeholder={<IntlMessages id="forms.select" />}
+                  {...register('campusId', { required: true })}
+                  className="react-select"
+                  classNamePrefix="react-select"
+                  options={campusList}
+                  value={campus}
+                  onChange={(selectedOption) => {
+                    setValue('campusId', selectedOption?.key);
+                    setCampus(selectedOption);
+                    trigger("campusId")
+                  }}
+                />
+                <RequiredMessagesCustom formState={formState} register={"campusId"} />
+              </FormGroupCustom>
+              <FormGroupCustom>
+                <LabelCustom id="menu.ie" required={true} />
+                <Select
+                  isClearable
+                  placeholder={<IntlMessages id="forms.select" />}
+                  {...register('schoolId', { required: true })}
+                  className="react-select"
+                  classNamePrefix="react-select"
+                  options={schoolList}
+                  value={school}
+                  isDisabled={true}
+                />
+              </FormGroupCustom>
+              <FormGroupCustom>
+                <LabelCustom id="menu.schoolYear" required={true} />
+                <Select
+                  isClearable
+                  placeholder={<IntlMessages id="forms.select" />}
+                  {...register('schoolYearId', { required: true })}
+                  className="react-select"
+                  classNamePrefix="react-select"
+                  options={schoolYearList}
+                  value={schoolYear}
+                  isDisabled={true}
+                />
+                <RequiredMessagesCustom formState={formState} register={"name"} />
+              </FormGroupCustom>
             </ModalBody>
             {props?.data?.id ? (
               <ModalFooter className="p-3">

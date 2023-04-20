@@ -21,9 +21,11 @@ import { Loader } from '../../../common/Loader';
 const AreaCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
   const [generalPerformancesLevelList, setGeneralPerformancesLevelList] = useState(null);
-  const [schoolList, setSchoolList] = useState(null);
   const [generalPerformanceLevel, setGeneralPerformanceLevel] = useState(null);
+  const [schoolList, setSchoolList] = useState(null);
   const [school, setSchool] = useState(null);
+  const [schoolYearList, setSchoolYearList] = useState(null);
+  const [schoolYear, setSchoolYear] = useState(null);
   const [types, setTypes] = useState([]);
   const [type, setType] = useState(null);
   const [campusList, setCampusList] = useState(null);
@@ -105,6 +107,12 @@ const AreaCreateEdit = (props: any) => {
         required: false,
         value: props?.data?.id ? props?.data?.academicGradesId : '',
       });
+    } else {
+      setSchool({
+        key: props?.loginReducer?.schoolData?.id,
+        label: props?.loginReducer?.schoolData?.name,
+        value: props?.loginReducer?.schoolData?.id,
+      });
     }
     setLoading(false);
   }, [props?.data]);
@@ -138,11 +146,11 @@ const AreaCreateEdit = (props: any) => {
       }))
     });
     props.getDropdownsPerformanceLevel(props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear).then((data: any) => {
-      setSchoolList(
-        data.dataSchools.edges.map((c: any) => {
-          return { label: c.node.name, value: c.node.id, key: c.node.id };
-        }),
-      );
+      // setSchoolList(
+      //   data.dataSchools.edges.map((c: any) => {
+      //     return { label: c.node.name, value: c.node.id, key: c.node.id };
+      //   }),
+      // );
       setCampusList(
         data.dataCampus.edges.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };
@@ -159,6 +167,13 @@ const AreaCreateEdit = (props: any) => {
         }),
       )
     });
+    setSchoolList(
+      [{
+        key: props?.loginReducer?.schoolData?.id,
+        label: props?.loginReducer?.schoolData?.name,
+        value: props?.loginReducer?.schoolData?.id,
+      }]
+    );
   };
 
   const { ref: nameRef, ...nameRest } = register('name', {
@@ -347,27 +362,33 @@ const AreaCreateEdit = (props: any) => {
                   }}
                 />
               </FormGroupCustom>
-              {!props?.loginReducer?.schoolId ? (
-                <FormGroupCustom>
-                  <LabelCustom id="menu.school" required={true} />
-                  <Select
-                    isClearable
-                    placeholder={<IntlMessages id="forms.select" />}
-                    {...register('schoolId', { required: true })}
-                    className="react-select"
-                    classNamePrefix="react-select"
-                    options={schoolList}
-                    value={school}
-                    onChange={(selectedOption) => {
-                      setValue('schoolId', selectedOption?.key);
-                      setSchool(selectedOption);
-                    }}
-                  />
-                  <RequiredMessagesCustom formState={formState} register={"schoolId"} />
-                </FormGroupCustom>
-              ) : (
-                ''
-              )}
+              <FormGroupCustom>
+                <LabelCustom id="menu.ie" required={true} />
+                <Select
+                  isClearable
+                  placeholder={<IntlMessages id="forms.select" />}
+                  {...register('schoolId', { required: true })}
+                  className="react-select"
+                  classNamePrefix="react-select"
+                  options={schoolList}
+                  value={school}
+                  isDisabled={true}
+                />
+              </FormGroupCustom>
+              <FormGroupCustom>
+                <LabelCustom id="menu.schoolYear" required={true} />
+                <Select
+                  isClearable
+                  placeholder={<IntlMessages id="forms.select" />}
+                  {...register('schoolYearId', { required: true })}
+                  className="react-select"
+                  classNamePrefix="react-select"
+                  options={schoolYearList}
+                  value={schoolYear}
+                  isDisabled={true}
+                />
+                <RequiredMessagesCustom formState={formState} register={"name"} />
+              </FormGroupCustom>
             </ModalBody>
             {props?.data?.id ? (
               <ModalFooter className="p-3">

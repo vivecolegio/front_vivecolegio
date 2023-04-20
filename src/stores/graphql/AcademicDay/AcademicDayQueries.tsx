@@ -52,7 +52,9 @@ export const QUERY_GET_ACADEMIC_DAY = gql`
       campus  {
         id
         name
-      }                       
+      }         
+      schoolId
+      schoolYearId              
       version
       createdAt
       updatedAt
