@@ -38,15 +38,19 @@ const AcademicDayCreateEdit = (props: any) => {
     cleanForm();
     getDropdowns();
     if (props?.data?.id) {
+      if (props?.data?.school !== undefined && props?.data?.school != null) {
+        setSchool({
+          key: props?.data?.school?.id,
+          label: props?.data?.school?.name,
+          value: props?.data?.school?.id,
+        });
+      }
       if (props?.data?.schoolYear !== undefined && props?.data?.schoolYear != null) {
         setSchoolYear({
           key: props?.data?.schoolYear?.id,
           label: props?.data?.schoolYear?.schoolyear,
           value: props?.data?.schoolYear?.id,
         });
-        setSchoolYearList(
-          [{ label: props?.data?.schoolYear?.schoolyear, value: props?.data?.schoolYear?.id, key: props?.data?.schoolYear?.id, }]
-        )
       }
       if (props?.data?.campus !== undefined && props?.data?.campus != null) {
         setCampus({
@@ -70,11 +74,11 @@ const AcademicDayCreateEdit = (props: any) => {
       });
       register('schoolId', {
         required: true,
-        value: props?.data?.id ? props?.data?.schoolId : '',
+        value: props?.data?.id && props?.data?.schoolId ? props?.data?.schoolId : props?.loginReducer?.schoolId,
       });
       register('schoolYearId', {
         required: true,
-        value: props?.data?.id ? props?.data?.schoolYearId : '',
+        value: props?.data?.id && props?.data?.schoolYearId ? props?.data?.schoolYearId : props?.loginReducer?.schoolYear,
       });
     } else {
       setSchool({

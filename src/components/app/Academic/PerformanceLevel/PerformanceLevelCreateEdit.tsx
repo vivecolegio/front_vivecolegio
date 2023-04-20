@@ -89,7 +89,11 @@ const AreaCreateEdit = (props: any) => {
       }
       register('schoolId', {
         required: true,
-        value: props?.data?.id ? props?.data?.schoolId : '',
+        value: props?.data?.id && props?.data?.schoolId ? props?.data?.schoolId : props?.loginReducer?.schoolId,
+      });
+      register('schoolYearId', {
+        required: true,
+        value: props?.data?.id && props?.data?.schoolYearId ? props?.data?.schoolYearId : props?.loginReducer?.schoolYear,
       });
       register('generalPerformanceLevelId', {
         required: true,
@@ -113,6 +117,7 @@ const AreaCreateEdit = (props: any) => {
         label: props?.loginReducer?.schoolData?.name,
         value: props?.loginReducer?.schoolData?.id,
       });
+      setSchoolYear({ label: props?.loginReducer?.schoolYearName, value: props?.loginReducer?.schoolYear, key: props?.loginReducer?.schoolYear });
     }
     setLoading(false);
   }, [props?.data]);
@@ -146,11 +151,6 @@ const AreaCreateEdit = (props: any) => {
       }))
     });
     props.getDropdownsPerformanceLevel(props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear).then((data: any) => {
-      // setSchoolList(
-      //   data.dataSchools.edges.map((c: any) => {
-      //     return { label: c.node.name, value: c.node.id, key: c.node.id };
-      //   }),
-      // );
       setCampusList(
         data.dataCampus.edges.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };
@@ -174,6 +174,9 @@ const AreaCreateEdit = (props: any) => {
         value: props?.loginReducer?.schoolData?.id,
       }]
     );
+    setSchoolYearList(
+      [{ label: props?.loginReducer?.schoolYearName, value: props?.loginReducer?.schoolYear, key: props?.loginReducer?.schoolYear }]
+    )
   };
 
   const { ref: nameRef, ...nameRest } = register('name', {

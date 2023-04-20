@@ -32,10 +32,14 @@ export const QUERY_GET_SPECIALITY = gql`
         id
         name
       }
-      schoolId
       school {
         id
         name
+      }
+      schoolYearId
+      schoolYear {
+        id
+        schoolYear
       }
       createdAt
       updatedAt

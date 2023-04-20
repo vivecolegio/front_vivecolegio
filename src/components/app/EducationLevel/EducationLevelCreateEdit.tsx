@@ -39,9 +39,23 @@ const EducationLevelCreateEdit = (props: any) => {
           value: props?.data?.school?.id,
         });
       }
+      if (props?.data?.schoolYear !== undefined && props?.data?.schoolYear != null) {
+        setSchoolYear({
+          key: props?.data?.schoolYear?.id,
+          label: props?.data?.schoolYear?.schoolyear,
+          value: props?.data?.schoolYear?.id,
+        });
+        setSchoolYearList(
+          [{ label: props?.data?.schoolYear?.schoolyear, value: props?.data?.schoolYear?.id, key: props?.data?.schoolYear?.id, }]
+        )
+      }
       register('schoolId', {
         required: true,
-        value: props?.data?.id ? props?.data?.schoolId : '',
+        value: props?.data?.id && props?.data?.schoolId ? props?.data?.schoolId : props?.loginReducer?.schoolId,
+      });
+      register('schoolYearId', {
+        required: true,
+        value: props?.data?.id && props?.data?.schoolYearId ? props?.data?.schoolYearId : props?.loginReducer?.schoolYear,
       });
     } else {
       setSchool({
@@ -49,6 +63,7 @@ const EducationLevelCreateEdit = (props: any) => {
         label: props?.loginReducer?.schoolData?.name,
         value: props?.loginReducer?.schoolData?.id,
       });
+      setSchoolYear({ label: props?.loginReducer?.schoolYearName, value: props?.loginReducer?.schoolYear, key: props?.loginReducer?.schoolYear });
     }
     setLoading(false);
   }, [props?.data]);
@@ -80,6 +95,9 @@ const EducationLevelCreateEdit = (props: any) => {
         value: props?.loginReducer?.schoolData?.id,
       }]
     );
+    setSchoolYearList(
+      [{ label: props?.loginReducer?.schoolYearName, value: props?.loginReducer?.schoolYear, key: props?.loginReducer?.schoolYear }]
+    )
   };
 
   const { ref: nameRef, ...nameRest } = register('name', {

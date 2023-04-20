@@ -24,11 +24,15 @@ export const QUERY_GET_MODALITY = gql`
       name  
       code   
       version
-      schoolId
       school {
         id
         name
-      }     
+      }
+      schoolYearId
+      schoolYear {
+        id
+        schoolYear
+      }   
       createdAt
       updatedAt
       createdByUser {

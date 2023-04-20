@@ -49,6 +49,16 @@ const AcademicHourCreateEdit = (props: any) => {
           value: props?.data?.campus?.id,
         });
       }
+      if (props?.data?.schoolYear !== undefined && props?.data?.schoolYear != null) {
+        setSchoolYear({
+          key: props?.data?.schoolYear?.id,
+          label: props?.data?.schoolYear?.schoolyear,
+          value: props?.data?.schoolYear?.id,
+        });
+        setSchoolYearList(
+          [{ label: props?.data?.schoolYear?.schoolyear, value: props?.data?.schoolYear?.id, key: props?.data?.schoolYear?.id, }]
+        )
+      }
       if (props?.data?.startTime !== undefined && props?.data?.startTime != null) {
         setStartTime(props?.data?.startTime);
       }
@@ -71,12 +81,21 @@ const AcademicHourCreateEdit = (props: any) => {
         required: false,
         value: props?.data?.id ? props?.data?.campusId : '',
       });
+      register('schoolId', {
+        required: true,
+        value: props?.data?.id && props?.data?.schoolId ? props?.data?.schoolId : props?.loginReducer?.schoolId,
+      });
+      register('schoolYearId', {
+        required: true,
+        value: props?.data?.id && props?.data?.schoolYearId ? props?.data?.schoolYearId : props?.loginReducer?.schoolYear,
+      });
     } else {
       setSchool({
         key: props?.loginReducer?.schoolData?.id,
         label: props?.loginReducer?.schoolData?.name,
         value: props?.loginReducer?.schoolData?.id,
       });
+      setSchoolYear({ label: props?.loginReducer?.schoolYearName, value: props?.loginReducer?.schoolYear, key: props?.loginReducer?.schoolYear });
     }
     setLoading(false);
   }, [props?.data]);
@@ -100,6 +119,20 @@ const AcademicHourCreateEdit = (props: any) => {
         value: academicDayId,
       });
     }
+    if (props?.loginReducer?.schoolId && !props?.data?.id) {
+      // set value when register is new and sesion contains value
+      register('schoolId', {
+        required: true,
+        value: props?.loginReducer?.schoolId,
+      });
+    }
+    if (props?.loginReducer?.schoolYear && !props?.data?.id) {
+      // set value when register is new and sesion contains value
+      register('schoolYearId', {
+        required: true,
+        value: props?.loginReducer?.schoolYear,
+      });
+    }
   };
 
   const getDropdowns = async () => {
@@ -117,8 +150,10 @@ const AcademicHourCreateEdit = (props: any) => {
         value: props?.loginReducer?.schoolData?.id,
       }]
     );
+    setSchoolYearList(
+      [{ label: props?.loginReducer?.schoolYearName, value: props?.loginReducer?.schoolYear, key: props?.loginReducer?.schoolYear }]
+    )
   };
-
 
   const { ref: orderRef, ...orderRest } = register('order', {
     required: true,

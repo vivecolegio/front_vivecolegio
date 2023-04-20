@@ -129,14 +129,6 @@ export const QUERY_GET_PERFORMANCE_LEVEL = gql`
 
 export const QUERY_GET_DROPDOWNS_PERFORMANCE_LEVEL = gql`
   query getDropdownsPerformanceLevel ($schoolId: String!, $schoolYearId: String!) {
-    dataSchools: getAllSchool(allData: false, orderCreated: false) {
-      edges {
-        node {
-          id
-          name
-        }
-      }
-    }
     dataCampus: getAllCampus(allData: false, orderCreated: false, schoolId: $schoolId) {
       edges {
         node {

@@ -59,6 +59,11 @@ export const QUERY_GET_COMPONENT_EVALUATIVE = gql`
         id
         name
       }
+      schoolYearId
+      schoolYear {
+        id
+        schoolYear
+      }
       createdAt
       updatedAt
       createdByUser {

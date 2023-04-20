@@ -18,9 +18,9 @@ import { Loader } from '../../common/Loader';
 const AcademicPeriodCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
   const [schoolList, setSchoolList] = useState(null);
-  const [schoolYearsList, setSchoolYearsList] = useState(null);
   const [school, setSchool] = useState(null);
   const [schoolYear, setSchoolYear] = useState(null);
+  const [schoolYearList, setSchoolYearList] = useState(null);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
 
@@ -73,6 +73,7 @@ const AcademicPeriodCreateEdit = (props: any) => {
         label: props?.loginReducer?.schoolData?.name,
         value: props?.loginReducer?.schoolData?.id,
       });
+      setSchoolYear({ label: props?.loginReducer?.schoolYearName, value: props?.loginReducer?.schoolYear, key: props?.loginReducer?.schoolYear });
     }
     setLoading(false);
   }, [props?.data]);
@@ -93,20 +94,16 @@ const AcademicPeriodCreateEdit = (props: any) => {
   };
 
   const getDropdowns = async () => {
-    props.getDropdownsAcademicPeriod(props?.loginReducer?.schoolId).then((data: any) => {
-      setSchoolList(
-        [{
-          key: props?.loginReducer?.schoolData?.id,
-          label: props?.loginReducer?.schoolData?.name,
-          value: props?.loginReducer?.schoolData?.id,
-        }]
-      );
-      setSchoolYearsList(
-        data.dataSchoolYears.edges.map((c: any) => {
-          return { label: c.node.schoolYear, value: c.node.id, key: c.node.id };
-        }),
-      );
-    });
+    setSchoolList(
+      [{
+        key: props?.loginReducer?.schoolData?.id,
+        label: props?.loginReducer?.schoolData?.name,
+        value: props?.loginReducer?.schoolData?.id,
+      }]
+    );
+    setSchoolYearList(
+      [{ label: props?.loginReducer?.schoolYearName, value: props?.loginReducer?.schoolYear, key: props?.loginReducer?.schoolYear }]
+    )
   };
 
   const { ref: weightRef, ...weightRest } = register('weight', {
@@ -158,24 +155,6 @@ const AcademicPeriodCreateEdit = (props: any) => {
                 <LabelCustom id="forms.name" required={true} />
                 <Input {...nameRest} innerRef={nameRef} className="form-control" />
                 <RequiredMessagesCustom formState={formState} register={"name"} />
-              </FormGroupCustom>
-              <FormGroupCustom>
-                <LabelCustom id="menu.schoolYear" required={true} />
-                <Select
-                  isClearable
-                  placeholder={<IntlMessages id="forms.select" />}
-                  {...register('schoolYearId', { required: true })}
-                  className="react-select"
-                  classNamePrefix="react-select"
-                  options={schoolYearsList}
-                  value={schoolYear}
-                  onChange={(selectedOption) => {
-                    setValue('schoolYearId', selectedOption?.key);
-                    setSchoolYear(selectedOption);
-                    trigger('schoolYearId');
-                  }}
-                />
-                <RequiredMessagesCustom formState={formState} register={"schoolYearId"} />
               </FormGroupCustom>
               <FormGroupCustom>
                 <LabelCustom id="forms.startDate" required={true} />
@@ -230,6 +209,21 @@ const AcademicPeriodCreateEdit = (props: any) => {
                   value={school}
                   isDisabled={true}
                 />
+              </FormGroupCustom>
+
+              <FormGroupCustom>
+                <LabelCustom id="menu.schoolYear" required={true} />
+                <Select
+                  isClearable
+                  placeholder={<IntlMessages id="forms.select" />}
+                  {...register('schoolYearId', { required: true })}
+                  className="react-select"
+                  classNamePrefix="react-select"
+                  options={schoolYearList}
+                  value={schoolYear}
+                  isDisabled={true}
+                />
+                <RequiredMessagesCustom formState={formState} register={"name"} />
               </FormGroupCustom>
             </ModalBody>
             {props?.data?.id ? (
