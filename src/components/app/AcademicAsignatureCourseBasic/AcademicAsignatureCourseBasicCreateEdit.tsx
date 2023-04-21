@@ -29,6 +29,11 @@ const AcademicAsignatureCourseBasicCreateEdit = (props: any) => {
   const [asignature, setAsignature] = useState(null);
   const [hourIntensity, setHourIntensity] = useState(null);
 
+  const [school, setSchool] = useState(null);
+  const [schoolList, setSchoolList] = useState(null);
+  const [schoolYearList, setSchoolYearList] = useState(null);
+  const [schoolYear, setSchoolYear] = useState(null);
+
   const methods = useForm({
     mode: 'all',
     reValidateMode: 'onChange',
@@ -81,6 +86,20 @@ const AcademicAsignatureCourseBasicCreateEdit = (props: any) => {
           value: props?.data?.teacher?.id,
         });
       }
+      if (props?.data?.school !== undefined && props?.data?.school != null) {
+        setSchool({
+          key: props?.data?.school?.id,
+          label: props?.data?.school?.name,
+          value: props?.data?.school?.id,
+        });
+      }
+      if (props?.data?.schoolYear !== undefined && props?.data?.schoolYear != null) {
+        setSchoolYear({
+          key: props?.data?.schoolYear?.id,
+          label: props?.data?.schoolYear?.schoolyear,
+          value: props?.data?.schoolYear?.id,
+        });
+      }
       register('academicAsignatureId', {
         required: true,
         value: props?.data?.id ? props?.data?.academicAsignatureId : '',
@@ -97,6 +116,21 @@ const AcademicAsignatureCourseBasicCreateEdit = (props: any) => {
         required: true,
         value: props?.data?.id ? props?.data?.teacherId : '',
       });
+      register('schoolId', {
+        required: true,
+        value: props?.data?.id && props?.data?.schoolId ? props?.data?.schoolId : props?.loginReducer?.schoolId,
+      });
+      register('schoolYearId', {
+        required: true,
+        value: props?.data?.id && props?.data?.schoolYearId ? props?.data?.schoolYearId : props?.loginReducer?.schoolYear,
+      });
+    } else {
+      setSchool({
+        key: props?.loginReducer?.schoolData?.id,
+        label: props?.loginReducer?.schoolData?.name,
+        value: props?.loginReducer?.schoolData?.id,
+      });
+      setSchoolYear({ label: props?.loginReducer?.schoolYearName, value: props?.loginReducer?.schoolYear, key: props?.loginReducer?.schoolYear });
     }
     setLoading(false);
   }, [props?.data]);
@@ -122,11 +156,25 @@ const AcademicAsignatureCourseBasicCreateEdit = (props: any) => {
         value: courseId,
       });
     }
+    if (props?.loginReducer?.schoolId && !props?.data?.id) {
+      // set value when register is new and sesion contains value
+      register('schoolId', {
+        required: true,
+        value: props?.loginReducer?.schoolId,
+      });
+    }
+    if (props?.loginReducer?.schoolYear && !props?.data?.id) {
+      // set value when register is new and sesion contains value
+      register('schoolYearId', {
+        required: true,
+        value: props?.loginReducer?.schoolYear,
+      });
+    }
   };
 
   const getDropdowns = async () => {
     //console.log(props?.loginReducer?.campusId)
-    props.getDropdownsAcademicAsignatureCourse(props?.loginReducer?.schoolId, campusId, courseId).then((data: any) => {
+    props.getDropdownsAcademicAsignatureCourse(props?.loginReducer?.schoolId, campusId, courseId, props?.loginReducer?.schoolYear).then((data: any) => {
       //console.log(data);
       setCampusList(
         data.dataCampus.edges.map((c: any) => {
@@ -149,6 +197,16 @@ const AcademicAsignatureCourseBasicCreateEdit = (props: any) => {
         }),
       );
     });
+    setSchoolList(
+      [{
+        key: props?.loginReducer?.schoolData?.id,
+        label: props?.loginReducer?.schoolData?.name,
+        value: props?.loginReducer?.schoolData?.id,
+      }]
+    );
+    setSchoolYearList(
+      [{ label: props?.loginReducer?.schoolYearName, value: props?.loginReducer?.schoolYear, key: props?.loginReducer?.schoolYear }]
+    )
   };
 
   const { ref: hourlyIntensityRef, ...hourlyIntensityRest } = register('hourlyIntensity', {
@@ -190,6 +248,7 @@ const AcademicAsignatureCourseBasicCreateEdit = (props: any) => {
             methods={methods}
             control={control}
             handleSubmit={handleSubmit}
+            validateForm={true}
           >
             <ModalBody>
               <FormGroupCustom>
@@ -255,28 +314,33 @@ const AcademicAsignatureCourseBasicCreateEdit = (props: any) => {
                 />
                 <RequiredMessagesCustom formState={formState} register={"teacherId"} />
               </FormGroupCustom>
-              {!props?.loginReducer?.schoolId ? (
-                <FormGroupCustom>
-                  <LabelCustom id="menu.campus" required={false} />
-                  <Select
-                    isClearable
-                    placeholder={<IntlMessages id="forms.select" />}
-                    {...register('campusId', { required: false })}
-                    className="react-select"
-                    classNamePrefix="react-select"
-                    options={campusList}
-                    value={campus}
-                    onChange={(selectedOption) => {
-                      setValue('campusId', selectedOption?.key);
-                      setCampus(selectedOption);
-                      trigger("campusId");
-                    }}
-                  />
-                  <RequiredMessagesCustom formState={formState} register={"campusId"} />
-                </FormGroupCustom>
-              ) : (
-                ''
-              )}
+              <FormGroupCustom>
+                <LabelCustom id="menu.ie" required={true} />
+                <Select
+                  isClearable
+                  placeholder={<IntlMessages id="forms.select" />}
+                  {...register('schoolId', { required: true })}
+                  className="react-select"
+                  classNamePrefix="react-select"
+                  options={schoolList}
+                  value={school}
+                  isDisabled={true}
+                />
+              </FormGroupCustom>
+              <FormGroupCustom>
+                <LabelCustom id="menu.schoolYear" required={true} />
+                <Select
+                  isClearable
+                  placeholder={<IntlMessages id="forms.select" />}
+                  {...register('schoolYearId', { required: true })}
+                  className="react-select"
+                  classNamePrefix="react-select"
+                  options={schoolYearList}
+                  value={schoolYear}
+                  isDisabled={true}
+                />
+                <RequiredMessagesCustom formState={formState} register={"name"} />
+              </FormGroupCustom>
             </ModalBody>
             {props?.data?.id ? (
               <ModalFooter className="p-3">

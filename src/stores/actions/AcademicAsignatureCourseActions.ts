@@ -1,7 +1,7 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
 import { MUTATION_CHANGE_ACTIVE_ACADEMIC_ASIGNATURE_COURSE, MUTATION_CREATE_ACADEMIC_ASIGNATURE_COURSE, MUTATION_DELETE_ACADEMIC_ASIGNATURE_COURSE, MUTATION_UPDATE_ACADEMIC_ASIGNATURE_COURSE, MUTATION_UPDATE_ACADEMIC_ASIGNATURE_COURSE_HOURLY_INTENSITY } from '../graphql/AcademicAsignatureCourse/AcademicAsignatureCourseMutations';
-import { QUERY_GET_ACADEMIC_ASIGNATURE_COURSE, QUERY_GET_ALL_ACADEMIC_ASIGNATURE_COURSE, QUERY_GET_ALL_ACADEMIC_ASIGNATURE_COURSE_TEACHER, QUERY_GET_COURSES_OF_GRADES, QUERY_GET_DROPDOWNS_ACADEMIC_ASIGNATURE_COURSE } from '../graphql/AcademicAsignatureCourse/AcademicAsignatureCourseQueries';
+import { QUERY_GET_ACADEMIC_ASIGNATURE_COURSE, QUERY_GET_ALL_ACADEMIC_ASIGNATURE_COURSE, QUERY_GET_ALL_ACADEMIC_ASIGNATURE_COURSE_TEACHER, QUERY_GET_COURSES_OF_GRADES, QUERY_GET_DROPDOWNS_ACADEMIC_ASIGNATURE_COURSE, QUERY_GET_DROPDOWNS_ACADEMIC_ASIGNATURE_COURSE_TEACHER_LIST } from '../graphql/AcademicAsignatureCourse/AcademicAsignatureCourseQueries';
 
 export const getListAllAcademicAsignatureCourse = (campusId:string) => {
   return async (dispatch: any) => {
@@ -48,7 +48,7 @@ export const getListAllAcademicAsignatureCourseTeacher = (teacherId:string,schoo
   };
 };
 
-export const getListAllAcademicAsignatureCourseByCourse = (campusId:string, courseId: string) => {
+export const getListAllAcademicAsignatureCourseByCourse = (campusId:string,courseId: string, fullAccess: boolean) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
@@ -56,8 +56,8 @@ export const getListAllAcademicAsignatureCourseByCourse = (campusId:string, cour
         .query({
           query: QUERY_GET_ALL_ACADEMIC_ASIGNATURE_COURSE,
           variables:{
-          //  campusId,
-            courseId
+            courseId,
+            allData: fullAccess
           },
         })
         .then((result: any) => {
@@ -269,7 +269,31 @@ export const deleteAcademicAsignatureCourse = (id: any, showToast: boolean) => {
   };
 };
 
-export const getDropdownsAcademicAsignatureCourse = (schoolId:string, campusId: string, courseId: string) => {
+export const getDropdownsAcademicAsignatureCourseTeacherList = (schoolId:string, campusId: string, schoolYearId:string ) => {
+  return async (dispatch: any) => {
+    try {
+      let listData = {};
+      await client
+        .query({
+          query: QUERY_GET_DROPDOWNS_ACADEMIC_ASIGNATURE_COURSE_TEACHER_LIST,
+          variables:{
+            schoolId,
+            campusId,
+            schoolYearId
+          },
+        })
+        .then((result: any) => {
+          listData = result.data;
+        });
+      return listData;
+    } catch (error) {
+      createNotification('error', 'error', '');
+      return error;
+    }
+  };
+};
+
+export const getDropdownsAcademicAsignatureCourse = (schoolId:string, campusId: string, courseId: string, schoolYearId:string ) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
@@ -279,7 +303,8 @@ export const getDropdownsAcademicAsignatureCourse = (schoolId:string, campusId: 
           variables:{
             schoolId,
             campusId,
-            courseId
+            courseId,
+            schoolYearId
           },
         })
         .then((result: any) => {

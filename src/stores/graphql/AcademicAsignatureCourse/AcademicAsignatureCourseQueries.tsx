@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const QUERY_GET_ALL_ACADEMIC_ASIGNATURE_COURSE = gql`
-  query getAllAcademicAsignatureCourse( $courseId: String) {
-    data: getAllAcademicAsignatureCourse(orderCreated: true, allData: true, courseId: $courseId) {
+  query getAllAcademicAsignatureCourse( $courseId: String, $allData: Boolean!) {
+    data: getAllAcademicAsignatureCourse(orderCreated: true, allData: $allData, courseId: $courseId) {
       edges {
         cursor
         node {
@@ -182,7 +182,7 @@ export const QUERY_GET_ACADEMIC_ASIGNATURE_COURSE = gql`
 `;
 
 export const QUERY_GET_DROPDOWNS_ACADEMIC_ASIGNATURE_COURSE = gql`
-  query getDropdownsAcademicArea($schoolId: String!, $campusId: String!, $courseId: String!) {
+  query getDropdownsAcademicArea($schoolId: String!, $campusId: String!, $courseId: String!, $schoolYearId: String) {
     dataCampus: getAllCampus(allData: false, orderCreated: false, schoolId: $schoolId) {
       edges {
         node {
@@ -225,6 +225,30 @@ export const QUERY_GET_DROPDOWNS_ACADEMIC_ASIGNATURE_COURSE = gql`
       orderCreated: false
       campusId: [$campusId]
       schoolId: [$schoolId]
+      schoolYearId: $schoolYearId
+    ) {
+      edges {
+        node {
+          id
+          user {
+            id
+            name
+            lastName
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const QUERY_GET_DROPDOWNS_ACADEMIC_ASIGNATURE_COURSE_TEACHER_LIST = gql`
+  query getDropdownsAcademicAreaTeacherList($schoolId: String!, $campusId: String!, $schoolYearId: String) {
+    dataTeachers: getAllTeacher(
+      allData: false
+      orderCreated: false
+      campusId: [$campusId]
+      schoolId: [$schoolId]
+      schoolYearId: $schoolYearId
     ) {
       edges {
         node {

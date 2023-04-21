@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
 import Select from 'react-select';
 import { Button } from 'reactstrap';
@@ -14,6 +14,7 @@ import DataList from '../../common/Data/DataList';
 import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
 import { Loader } from '../../common/Loader';
 import AcademicAsignatureCourseCreateEdit from './AcademicAsignatureCourseBasicCreateEdit';
+import { permissionsMenu } from '../../../helpers/DataTransformations';
 
 const AcademicAsignatureCourseBasicList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
@@ -28,91 +29,44 @@ const AcademicAsignatureCourseBasicList = (props: any) => {
   let [params] = useSearchParams();
   const courseId = params.get('courseId');
   const courseName = params.get('courseName');
-  const currentUrl = location.pathname;
   const [data, setData] = useState(null);
-  const [currentMenu, setCurrentMenu] = useState({
-    createAction: false,
-    deleteAction: false,
-    updateAction: false,
-    readAction: false,
-    fullAccess: false,
-    activateAction: false,
-    inactiveAction: false,
-  });
+  const location = useLocation();
+
+  const getDataTable = useCallback(async () => {
+    let permissions = permissionsMenu(props?.loginReducer, location.pathname);
+    props
+      .getListAllAcademicAsignatureCourseByCourse(props?.loginReducer?.campusId, courseId, permissions.fullAccess)
+      .then((listData: any) => {
+        setDataTable(
+          listData.map((c: any) => {
+            c.node.course_format = c.node.course ? c.node.course.name : '';
+            c.node.grade_format = c?.node?.course?.academicGrade?.name;
+            c.node.asignature_format = c.node.academicAsignature
+              ? c.node.academicAsignature.name
+              : '';
+            c.node.teacher_format = c.node.teacherId
+              ? c.node.teacher?.user?.lastName + " " + c.node.teacher?.user?.name
+              : '';
+            return c;
+          }),
+        );
+        props.dataCourse(courseId).then((data: any) => {
+          let campusId = data?.data?.campus?.id;
+          props.getDropdownsAcademicAsignatureCourseTeacherList(props?.loginReducer?.schoolId, campusId, props?.loginReducer?.schoolYear).then((data: any) => {
+            setTeachersList(
+              data.dataTeachers.edges.map((c: any) => {
+                return { label: `${c.node.user.name} ${c.node.user.lastName}`, value: c.node.id, key: c.node.id };
+              }),
+            );
+          });
+        });
+      });
+  }, [])
 
   useEffect(() => {
-    let { roleMenus } = props.loginReducer;
-    let submenus: any = [];
-    roleMenus.map((c: any) => {
-      return submenus = submenus.concat(c.menuItemsLogin);
-    });
-    setCurrentMenuPermissionSpreadsheet(submenus.find((c: any) => { return (c?.module?.url == 'see_valuations_asignature_course_permit') }));
-    setCurrentMenuPermissionExperienceLearning(submenus.find((c: any) => { return (c?.module?.url == 'see_experience_learnig_asignature_course_permit') }));
-
-    let cm = submenus.find((c: any) => { return (currentUrl === c?.module?.url) });
-    if (cm && cm.readAction) {
-      setCurrentMenu(cm);
-    }
-
-
-    props
-      .getListAllAcademicAsignatureCourseByCourse(props?.loginReducer?.campusId, courseId)
-      .then((listData: any) => {
-        setDataTable(
-          listData.map((c: any) => {
-            c.node.course_format = c.node.course ? c.node.course.name : '';
-            c.node.grade_format = c?.node?.course?.academicGrade?.name;
-            c.node.asignature_format = c.node.academicAsignature
-              ? c.node.academicAsignature.name
-              : '';
-            c.node.teacher_format = c.node.teacherId
-              ? c.node.teacher?.user?.lastName + " " + c.node.teacher?.user?.name
-              : '';
-            return c;
-          }),
-        );
-        props.dataCourse(courseId).then((data: any) => {
-          let campusId = data?.data?.campus?.id;
-          props.getDropdownsAcademicAsignatureCourse(props?.loginReducer?.schoolId, campusId, courseId).then((data: any) => {
-            setTeachersList(
-              data.dataTeachers.edges.map((c: any) => {
-                return { label: `${c.node.user.name} ${c.node.user.lastName}`, value: c.node.id, key: c.node.id };
-              }),
-            );
-          });
-        });
-      });
-  }, []);
-
-  const getDataTable = async () => {
-    props
-      .getListAllAcademicAsignatureCourseByCourse(props?.loginReducer?.campusId, courseId)
-      .then((listData: any) => {
-        setDataTable(
-          listData.map((c: any) => {
-            c.node.course_format = c.node.course ? c.node.course.name : '';
-            c.node.grade_format = c?.node?.course?.academicGrade?.name;
-            c.node.asignature_format = c.node.academicAsignature
-              ? c.node.academicAsignature.name
-              : '';
-            c.node.teacher_format = c.node.teacherId
-              ? c.node.teacher?.user?.lastName + " " + c.node.teacher?.user?.name
-              : '';
-            return c;
-          }),
-        );
-        props.dataCourse(courseId).then((data: any) => {
-          let campusId = data?.data?.campus?.id;
-          props.getDropdownsAcademicAsignatureCourse(props?.loginReducer?.schoolId, campusId, courseId).then((data: any) => {
-            setTeachersList(
-              data.dataTeachers.edges.map((c: any) => {
-                return { label: `${c.node.user.name} ${c.node.user.lastName}`, value: c.node.id, key: c.node.id };
-              }),
-            );
-          });
-        });
-      });
-  };
+    getDataTable()
+      .catch(console.error);;
+  }, [getDataTable]);
 
   const refreshDataTable = async () => {
     setDataTable(null);
@@ -261,7 +215,7 @@ const AcademicAsignatureCourseBasicList = (props: any) => {
             <div className="d-flex justify-content-start align-items-center w-100">
               <HeaderInfoAcademic generic={{ title: 'Curso', value: courseName }} goTitle="Regresar a cursos" />
             </div>
-            {currentMenu?.updateAction && teachersList?.length > 0 ?
+            {permissionsMenu(props?.loginReducer, location.pathname)?.updateAction && teachersList?.length > 0 ?
               <div className="d-flex justify-content-start align-items-center">
                 <Select
                   isClearable
@@ -304,7 +258,7 @@ const AcademicAsignatureCourseBasicList = (props: any) => {
                 color: 'info',
                 icon: 'iconsminds-library',
                 action: 'goToChildrenSpredsheet',
-                hide: currentMenuPermissionSpreadsheet?.readAction ? false : true
+                hide: currentMenuPermissionSpreadsheet?.readAction ? false : false
               },
               {
                 id: 1,
@@ -312,7 +266,7 @@ const AcademicAsignatureCourseBasicList = (props: any) => {
                 color: 'secondary',
                 icon: 'iconsminds-blackboard',
                 action: 'goToChildrenExperienceLearning',
-                hide: currentMenuPermissionExperienceLearning?.readAction ? false : true
+                hide: currentMenuPermissionExperienceLearning?.readAction ? false : false
               },
               {
                 id: 2,
@@ -327,7 +281,7 @@ const AcademicAsignatureCourseBasicList = (props: any) => {
                 color: 'info',
                 icon: 'iconsminds-library',
                 action: 'goToChildrenRecoverySpredsheet',
-                hide: currentMenuPermissionSpreadsheet?.readAction ? false : true
+                hide: currentMenuPermissionSpreadsheet?.readAction ? false : false
               },
               {
                 id: 4,
@@ -335,7 +289,7 @@ const AcademicAsignatureCourseBasicList = (props: any) => {
                 color: 'secondary',
                 icon: 'iconsminds-blackboard',
                 action: 'goToChildrenRecoveryExperienceLearning',
-                hide: currentMenuPermissionExperienceLearning?.readAction ? false : true
+                hide: currentMenuPermissionExperienceLearning?.readAction ? false : false
               },
             ]}
             withChildren={true}
@@ -346,6 +300,7 @@ const AcademicAsignatureCourseBasicList = (props: any) => {
             modalOpen={modalOpen}
             toggleModal={() => {
               setData(null);
+              refreshDataTable();
               return setModalOpen(!modalOpen);
             }}
             onSubmit={onSubmit}

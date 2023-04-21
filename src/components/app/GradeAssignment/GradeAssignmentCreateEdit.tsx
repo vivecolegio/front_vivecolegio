@@ -189,6 +189,7 @@ const GradeAssignmentCreateEdit = (props: any) => {
             methods={methods}
             control={control}
             handleSubmit={handleSubmit}
+            validateForm={true}
           >
             <ModalBody>
               <FormGroupCustom>
