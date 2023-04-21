@@ -70,11 +70,11 @@ const StudentCreateEdit = (props: any) => {
       if (props?.data?.schoolYear !== undefined && props?.data?.schoolYear != null) {
         setSchoolYear({
           key: props?.data?.schoolYear?.id,
-          label: props?.data?.schoolYear?.schoolyear,
+          label: props?.data?.schoolYear?.schoolYear,
           value: props?.data?.schoolYear?.id,
         });
         setSchoolYearList(
-          [{ label: props?.data?.schoolYear?.schoolyear, value: props?.data?.schoolYear?.id, key: props?.data?.schoolYear?.id, }]
+          [{ label: props?.data?.schoolYear?.schoolYear, value: props?.data?.schoolYear?.id, key: props?.data?.schoolYear?.id, }]
         )
         setSchoolYear({ label: props?.loginReducer?.schoolYearName, value: props?.loginReducer?.schoolYear, key: props?.loginReducer?.schoolYear });
       }

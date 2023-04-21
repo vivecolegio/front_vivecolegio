@@ -50,7 +50,7 @@ const GradeAssignmentCreateEdit = (props: any) => {
       if (props?.data?.schoolYear !== undefined && props?.data?.schoolYear != null) {
         setSchoolYear({
           key: props?.data?.schoolYear?.id,
-          label: props?.data?.schoolYear?.schoolyear,
+          label: props?.data?.schoolYear?.schoolYear,
           value: props?.data?.schoolYear?.id,
         });
       }
