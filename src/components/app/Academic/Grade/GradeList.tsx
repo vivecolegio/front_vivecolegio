@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
 
@@ -9,17 +9,20 @@ import { Colxx } from '../../../common/CustomBootstrap';
 import DataList from '../../../common/Data/DataList';
 import { Loader } from '../../../common/Loader';
 import GradeCreateEdit from './GradeCreateEdit';
+import { permissionsMenu } from '../../../../helpers/DataTransformations';
+import { useLocation } from 'react-router';
 
 const GradeList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
   const [columns, setColumns] = useState(COLUMN_LIST);
   const [modalOpen, setModalOpen] = useState(false);
   const [data, setData] = useState(null);
-
+  const location = useLocation();
   let navigate = useNavigate();
 
-  useEffect(() => {
-    props.getListAllGrade(props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear).then((listData: any) => {
+  const getDataTable = useCallback(async () => {
+    let permissions = permissionsMenu(props?.loginReducer, location.pathname);
+    props.getListAllGrade(props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear, permissions.fullAccess).then((listData: any) => {
       setDataTable(
         listData.map((c: any) => {
           c.node.cycle_format = c.node.generalAcademicCycle ? c.node.generalAcademicCycle.name : '';
@@ -29,20 +32,12 @@ const GradeList = (props: any) => {
         }),
       );
     });
-  }, []);
+  }, [])
 
-  const getDataTable = async () => {
-    props.getListAllGrade(props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear).then((listData: any) => {
-      setDataTable(
-        listData.map((c: any) => {
-          c.node.cycle_format = c.node.generalAcademicCycle ? c.node.generalAcademicCycle.name : '';
-          c.node.speciality_format = c.node.specialty ? c.node.specialty.name : '';
-          c.node.education_level_format = c.node.educationLevel ? c.node.educationLevel.name : '';
-          return c;
-        }),
-      );
-    });
-  };
+  useEffect(() => {
+    getDataTable()
+      .catch(console.error);;
+  }, [getDataTable]);
 
   const refreshDataTable = async () => {
     setDataTable(null);
@@ -182,6 +177,7 @@ const GradeList = (props: any) => {
             modalOpen={modalOpen}
             toggleModal={() => {
               setData(null);
+              refreshDataTable();
               return setModalOpen(!modalOpen);
             }}
             onSubmit={onSubmit}

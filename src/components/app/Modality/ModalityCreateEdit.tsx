@@ -40,10 +40,28 @@ const ModalityCreateEdit = (props: any) => {
           value: props?.data?.school?.id,
         });
       }
+      if (props?.data?.schoolYear !== undefined && props?.data?.schoolYear != null) {
+        setSchoolYear({
+          key: props?.data?.schoolYear?.id,
+          label: props?.data?.schoolYear?.schoolYear,
+          value: props?.data?.schoolYear?.id,
+        });
+      }
       register('schoolId', {
         required: true,
-        value: props?.data?.id ? props?.data?.schoolId : '',
+        value: props?.data?.id && props?.data?.schoolId ? props?.data?.schoolId : props?.loginReducer?.schoolId,
       });
+      register('schoolYearId', {
+        required: true,
+        value: props?.data?.id && props?.data?.schoolYearId ? props?.data?.schoolYearId : props?.loginReducer?.schoolYear,
+      });
+    } else {
+      setSchool({
+        key: props?.loginReducer?.schoolData?.id,
+        label: props?.loginReducer?.schoolData?.name,
+        value: props?.loginReducer?.schoolData?.id,
+      });
+      setSchoolYear({ label: props?.loginReducer?.schoolYearName, value: props?.loginReducer?.schoolYear, key: props?.loginReducer?.schoolYear });
     }
     setLoading(false);
   }, [props?.data]);
@@ -68,13 +86,16 @@ const ModalityCreateEdit = (props: any) => {
   };
 
   const getDropdowns = async () => {
-    props.getDropdownsModality().then((data: any) => {
-      setSchoolList(
-        data.dataSchools.edges.map((c: any) => {
-          return { label: c.node.name, value: c.node.id, key: c.node.id };
-        }),
-      );
-    });
+    setSchoolList(
+      [{
+        key: props?.loginReducer?.schoolData?.id,
+        label: props?.loginReducer?.schoolData?.name,
+        value: props?.loginReducer?.schoolData?.id,
+      }]
+    );
+    setSchoolYearList(
+      [{ label: props?.loginReducer?.schoolYearName, value: props?.loginReducer?.schoolYear, key: props?.loginReducer?.schoolYear }]
+    )
   };
 
   const { ref: nameRef, ...nameRest } = register('name', {

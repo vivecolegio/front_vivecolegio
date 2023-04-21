@@ -6,7 +6,7 @@ import Select from 'react-select';
 import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
 import IntlMessages from '../../../helpers/IntlMessages';
 import * as academicDayActions from '../../../stores/actions/AcademicDayActions';
-import * as academicIndicatorActions from '../../../stores/actions/CourseActions';
+import * as courseActions from '../../../stores/actions/CourseActions';
 import * as teacherActions from '../../../stores/actions/TeacherActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import AddNewModal from '../../common/Data/AddNewModal';
@@ -25,6 +25,10 @@ const CourseCreateEdit = (props: any) => {
   const [teachers, setTeachers] = useState(null);
   const [academicDay, setAcademicDay] = useState(null);
   const [academicDays, setAcademicDays] = useState(null);
+  const [schoolList, setSchoolList] = useState(null);
+  const [school, setSchool] = useState(null);
+  const [schoolYear, setSchoolYear] = useState(null);
+  const [schoolYearList, setSchoolYearList] = useState(null);
 
   let [params] = useSearchParams();
   const academicGradeId = params.get('academicGradeId');
@@ -69,6 +73,28 @@ const CourseCreateEdit = (props: any) => {
           value: props?.data?.academicDay?.id,
         });
       }
+      if (props?.data?.school !== undefined && props?.data?.school != null) {
+        setSchool({
+          key: props?.data?.school?.id,
+          label: props?.data?.school?.name,
+          value: props?.data?.school?.id,
+        });
+      }
+      if (props?.data?.schoolYear !== undefined && props?.data?.schoolYear != null) {
+        setSchoolYear({
+          key: props?.data?.schoolYear?.id,
+          label: props?.data?.schoolYear?.schoolYear,
+          value: props?.data?.schoolYear?.id,
+        });
+      }
+      register('schoolId', {
+        required: true,
+        value: props?.data?.id && props?.data?.schoolId ? props?.data?.schoolId : props?.loginReducer?.schoolId,
+      });
+      register('schoolYearId', {
+        required: true,
+        value: props?.data?.id && props?.data?.schoolYearId ? props?.data?.schoolYearId : props?.loginReducer?.schoolYear,
+      });
       register('academicGradeId', {
         required: true,
         value: props?.data?.id ? props?.data?.academicGradeId : '',
@@ -85,6 +111,13 @@ const CourseCreateEdit = (props: any) => {
         required: true,
         value: props?.data?.id ? props?.data?.academicDayId : '',
       });
+    } else {
+      setSchool({
+        key: props?.loginReducer?.schoolData?.id,
+        label: props?.loginReducer?.schoolData?.name,
+        value: props?.loginReducer?.schoolData?.id,
+      });
+      setSchoolYear({ label: props?.loginReducer?.schoolYearName, value: props?.loginReducer?.schoolYear, key: props?.loginReducer?.schoolYear });
     }
     setLoading(false);
   }, [props?.data]);
@@ -108,6 +141,30 @@ const CourseCreateEdit = (props: any) => {
         value: academicGradeId,
       });
     }
+    if (props?.loginReducer?.schoolId && !props?.data?.id) {
+      // set value when register is new and sesion contains value
+      register('schoolId', {
+        required: true,
+        value: props?.loginReducer?.schoolId,
+      });
+    }
+    if (props?.loginReducer?.schoolYear && !props?.data?.id) {
+      // set value when register is new and sesion contains value
+      register('schoolYearId', {
+        required: true,
+        value: props?.loginReducer?.schoolYear,
+      });
+    }
+    setSchoolList(
+      [{
+        key: props?.loginReducer?.schoolData?.id,
+        label: props?.loginReducer?.schoolData?.name,
+        value: props?.loginReducer?.schoolData?.id,
+      }]
+    );
+    setSchoolYearList(
+      [{ label: props?.loginReducer?.schoolYearName, value: props?.loginReducer?.schoolYear, key: props?.loginReducer?.schoolYear }]
+    )
   };
 
   const getDropdowns = async () => {
@@ -124,7 +181,7 @@ const CourseCreateEdit = (props: any) => {
     setAcademicDay(null);
     setTeacher(null);
     if (campusId) {
-      props.getListAllTeacherActives(campusId, props?.loginReducer?.schoolId).then((data: any) => {
+      props.getListAllTeacherActives(campusId, props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear).then((data: any) => {
         setTeachers(
           data.map((c: any) => {
             return {
@@ -135,7 +192,7 @@ const CourseCreateEdit = (props: any) => {
           }),
         );
       });
-      props.getListAllAcademicDayActives(campusId).then((data: any) => {
+      props.getListAllAcademicDayActives(campusId, null, props?.loginReducer?.schoolYear).then((data: any) => {
         setAcademicDays(
           data.map((c: any) => {
             return { label: c.node.name, value: c.node.id, key: c.node.id };
@@ -187,6 +244,7 @@ const CourseCreateEdit = (props: any) => {
             methods={methods}
             control={control}
             handleSubmit={handleSubmit}
+            validateForm={true}
           >
             <ModalBody>
               <FormGroupCustom>
@@ -260,6 +318,35 @@ const CourseCreateEdit = (props: any) => {
                 />
                 <RequiredMessagesCustom formState={formState} register={"academicDayId"} />
               </FormGroupCustom>
+
+              <FormGroupCustom>
+                <LabelCustom id="menu.ie" required={true} />
+                <Select
+                  isClearable
+                  placeholder={<IntlMessages id="forms.select" />}
+                  {...register('schoolId', { required: true })}
+                  className="react-select"
+                  classNamePrefix="react-select"
+                  options={schoolList}
+                  value={school}
+                  isDisabled={true}
+                />
+              </FormGroupCustom>
+
+              <FormGroupCustom>
+                <LabelCustom id="menu.schoolYear" required={true} />
+                <Select
+                  isClearable
+                  placeholder={<IntlMessages id="forms.select" />}
+                  {...register('schoolYearId', { required: true })}
+                  className="react-select"
+                  classNamePrefix="react-select"
+                  options={schoolYearList}
+                  value={schoolYear}
+                  isDisabled={true}
+                />
+                <RequiredMessagesCustom formState={formState} register={"name"} />
+              </FormGroupCustom>
             </ModalBody>
             {props?.data?.id ? (
               <ModalFooter className="p-3">
@@ -276,7 +363,7 @@ const CourseCreateEdit = (props: any) => {
 };
 
 const mapDispatchToProps = {
-  ...academicIndicatorActions,
+  ...courseActions,
   ...teacherActions,
   ...academicDayActions,
 };

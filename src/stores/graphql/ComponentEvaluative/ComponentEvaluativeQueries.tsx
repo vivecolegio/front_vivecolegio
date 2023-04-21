@@ -78,14 +78,6 @@ export const QUERY_GET_COMPONENT_EVALUATIVE = gql`
 
 export const QUERY_GET_DROPDOWNS_COMPONENT_EVALUATIVE = gql`
   query getDropdownsComponentEvaluative($schoolId: String!) {
-    dataSchools: getAllSchool(allData: false, orderCreated: false) {
-      edges {
-        node {
-          id
-          name
-        }
-      }
-    }
     dataAsignatures: getAllAcademicAsignature(
       allData: false
       orderCreated: false

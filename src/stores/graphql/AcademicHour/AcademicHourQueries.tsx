@@ -41,7 +41,15 @@ export const QUERY_GET_ACADEMIC_HOUR = gql`
         day 
       }         
       schoolId
-      schoolYearId              
+      school {
+        id
+        name
+      }
+      schoolYearId
+      schoolYear {
+        id
+        schoolYear
+      }                  
       version
       createdAt
       updatedAt

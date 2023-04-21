@@ -53,7 +53,7 @@ export const getListAllTeacherOnlySchool = (schoolId:string, schoolYearId:string
 };
 
 
-export const getListAllTeacherActives = (campusId:string ,schoolId:string) => {
+export const getListAllTeacherActives = (campusId:string ,schoolId:string, schoolYearId:string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
@@ -62,7 +62,8 @@ export const getListAllTeacherActives = (campusId:string ,schoolId:string) => {
           query: QUERY_GET_ALL_TEACHER_ACTIVE,
           variables:{
             campusId,
-            schoolId
+            schoolId,
+            schoolYearId
           }
         })
         .then((result: any) => {

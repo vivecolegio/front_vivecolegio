@@ -185,7 +185,7 @@ export const deleteSpeciality = (id: any, showToast: boolean) => {
   };
 };
 
-export const getDropdownsSpeciality = (schoolId:string) => {
+export const getDropdownsSpeciality = (schoolId:string, schoolYearId:string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
@@ -193,7 +193,8 @@ export const getDropdownsSpeciality = (schoolId:string) => {
         .query({
           query: QUERY_GET_DROPDOWNS_SPECIALITY,
           variables:{
-            schoolId
+            schoolId,
+            schoolYearId
           }
         })
         .then((result: any) => {

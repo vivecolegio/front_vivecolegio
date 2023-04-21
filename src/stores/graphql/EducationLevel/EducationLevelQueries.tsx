@@ -27,7 +27,12 @@ export const QUERY_GET_EDUCATION_LEVEL = gql`
       school {
         id
         name
-      }    
+      }
+      schoolYearId
+      schoolYear {
+        id
+        schoolYear
+      }       
       version
       createdAt
       updatedAt

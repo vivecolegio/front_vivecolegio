@@ -64,6 +64,13 @@ const AreaCreateEdit = (props: any) => {
           value: props?.data?.school?.id,
         });
       }
+      if (props?.data?.schoolYear !== undefined && props?.data?.schoolYear != null) {
+        setSchoolYear({
+          key: props?.data?.schoolYear?.id,
+          label: props?.data?.schoolYear?.schoolYear,
+          value: props?.data?.schoolYear?.id,
+        });
+      }
       if (
         props?.data?.type !== undefined &&
         props?.data?.type != null

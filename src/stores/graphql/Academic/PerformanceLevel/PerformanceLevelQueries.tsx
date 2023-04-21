@@ -106,9 +106,14 @@ export const QUERY_GET_PERFORMANCE_LEVEL = gql`
       }
       schoolId
       school {
-        id 
+        id
         name
       }
+      schoolYearId
+      schoolYear {
+        id
+        schoolYear
+      }       
       academicGradesId
       academicGrades {
         id

@@ -35,6 +35,11 @@ export const QUERY_GET_AREA = gql`
         id
         name
       }
+      schoolYearId
+      schoolYear {
+        id
+        schoolYear
+      }  
       generalAcademicAreaId 
       generalAcademicArea {
         id 
@@ -55,14 +60,6 @@ export const QUERY_GET_AREA = gql`
 
 export const QUERY_GET_DROPDOWNS_AREA = gql`
   query getDropdownsAcademicArea {
-    dataSchools: getAllSchool(allData: false, orderCreated: false) {
-      edges {
-        node {
-          id
-          name
-        }
-      }
-    }
     dataGeneralAreas: getAllGeneralAcademicArea(allData: false, orderCreated: false) {
       edges {
         node {

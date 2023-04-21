@@ -61,9 +61,6 @@ const AsignatureCreateEdit = (props: any) => {
           label: props?.data?.schoolYear?.schoolyear,
           value: props?.data?.schoolYear?.id,
         });
-        setSchoolYearList(
-          [{ label: props?.data?.schoolYear?.schoolyear, value: props?.data?.schoolYear?.id, key: props?.data?.schoolYear?.id, }]
-        )
       }
       if (
         props?.data?.generalAcademicAsignature !== undefined &&
@@ -128,11 +125,6 @@ const AsignatureCreateEdit = (props: any) => {
 
   const getDropdowns = async () => {
     props.getDropdownsAcademicAsignature(props?.loginReducer?.schoolId, areaGeneralId).then((data: any) => {
-      setSchoolList(
-        data.dataSchools.edges.map((c: any) => {
-          return { label: c.node.name, value: c.node.id, key: c.node.id };
-        }),
-      );
       setAreasList(
         data.dataAreas.edges.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };

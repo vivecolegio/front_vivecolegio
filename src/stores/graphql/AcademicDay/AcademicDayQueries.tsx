@@ -22,8 +22,8 @@ export const QUERY_GET_ALL_ACADEMIC_DAY = gql`
 `;
 
 export const QUERY_GET_ALL_ACADEMIC_DAY_ACTIVES = gql`
-  query getAllAcademicDay($campusId: String!, $schoolId: String) {
-    data: getAllAcademicDay(orderCreated: true, allData: false, campusId: $campusId, schoolId: $schoolId) {
+  query getAllAcademicDay($campusId: String!, $schoolId: String, $schoolYearId: String) {
+    data: getAllAcademicDay(orderCreated: true, allData: false, campusId: $campusId, schoolId: $schoolId, schoolYearId: $schoolYearId) {
       edges {
         cursor
         node {
@@ -54,7 +54,15 @@ export const QUERY_GET_ACADEMIC_DAY = gql`
         name
       }         
       schoolId
-      schoolYearId              
+      school {
+        id
+        name
+      }
+      schoolYearId
+      schoolYear {
+        id
+        schoolYear
+      }             
       version
       createdAt
       updatedAt

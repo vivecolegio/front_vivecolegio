@@ -55,8 +55,8 @@ export const QUERY_GET_ALL_TEACHER_ONLY_SCHOOL = gql`
 `;
 
 export const QUERY_GET_ALL_TEACHER_ACTIVE = gql`
-  query getAllTeacher($campusId: String!,$schoolId: String!) {
-    data: getAllTeacher(orderCreated: true, allData: false, campusId: [$campusId], schoolId: [$schoolId]) {
+  query getAllTeacher($campusId: String!,$schoolId: String!, $schoolYearId: String! ) {
+    data: getAllTeacher(orderCreated: true, allData: false, campusId: [$campusId], schoolId: [$schoolId],schoolYearId: $schoolYearId) {
       edges {
         cursor
         node {

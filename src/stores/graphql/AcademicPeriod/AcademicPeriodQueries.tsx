@@ -51,6 +51,7 @@ export const QUERY_GET_ACADEMIC_PERIOD = gql`
     data: getAcademicPeriod(id: $id) {
       id
       name
+      schoolYearId
       schoolYear {
         id
         schoolYear

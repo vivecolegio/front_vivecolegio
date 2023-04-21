@@ -55,9 +55,6 @@ const AcademicHourCreateEdit = (props: any) => {
           label: props?.data?.schoolYear?.schoolyear,
           value: props?.data?.schoolYear?.id,
         });
-        setSchoolYearList(
-          [{ label: props?.data?.schoolYear?.schoolyear, value: props?.data?.schoolYear?.id, key: props?.data?.schoolYear?.id, }]
-        )
       }
       if (props?.data?.startTime !== undefined && props?.data?.startTime != null) {
         setStartTime(props?.data?.startTime);

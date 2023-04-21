@@ -54,16 +54,8 @@ export const QUERY_GET_SPECIALITY = gql`
 `;
 
 export const QUERY_GET_DROPDOWNS_SPECIALITY = gql`
-  query getDropdownsSpeciality($schoolId: String!) {
-    dataSchools: getAllSchool(allData: false, orderCreated: false) {
-      edges {
-        node {
-          id
-          name
-        }
-      }
-    }
-    dataModalities: getAllModality(allData: false, orderCreated: false, schoolId: $schoolId) {
+  query getDropdownsSpeciality($schoolId: String!, $schoolYearId: String,) {
+    dataModalities: getAllModality(allData: false, orderCreated: false, schoolId: $schoolId, schoolYearId: $schoolYearId) {
       edges {
         node {
           id

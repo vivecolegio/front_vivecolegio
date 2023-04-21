@@ -45,9 +45,6 @@ const EducationLevelCreateEdit = (props: any) => {
           label: props?.data?.schoolYear?.schoolyear,
           value: props?.data?.schoolYear?.id,
         });
-        setSchoolYearList(
-          [{ label: props?.data?.schoolYear?.schoolyear, value: props?.data?.schoolYear?.id, key: props?.data?.schoolYear?.id, }]
-        )
       }
       register('schoolId', {
         required: true,

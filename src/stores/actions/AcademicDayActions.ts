@@ -28,7 +28,7 @@ export const getListAllAcademicDay = (campusId:string, schoolId: string, schoolY
   };
 };
 
-export const getListAllAcademicDayActives = (campusId:string, schoolId: string) => {
+export const getListAllAcademicDayActives = (campusId:string, schoolId: string,schoolYearId:string, ) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
@@ -37,7 +37,8 @@ export const getListAllAcademicDayActives = (campusId:string, schoolId: string) 
           query: QUERY_GET_ALL_ACADEMIC_DAY_ACTIVES,
           variables:{
             campusId,
-            schoolId
+            schoolId,
+            schoolYearId
           },
         })
         .then((result: any) => {

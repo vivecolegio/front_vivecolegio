@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
@@ -11,6 +11,8 @@ import DataList from '../../common/Data/DataList';
 import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
 import { Loader } from '../../common/Loader';
 import CourseCreateEdit from './CourseCreateEdit';
+import { permissionsMenu } from '../../../helpers/DataTransformations';
+import { useLocation } from 'react-router';
 
 const CourseList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
@@ -24,19 +26,11 @@ const CourseList = (props: any) => {
   const gradeName = params.get('gradeName');
 
   const [data, setData] = useState(null);
-  useEffect(() => {
-    props.getListAllCourse(props?.loginReducer?.campusId, academicGradeId ? academicGradeId : '', props?.loginReducer?.schoolId).then((listData: any) => {
-      setDataTable(listData.map((c: any) => {
-        c.node.teacher_format = c.node.teacher ? c?.node?.teacher?.user?.name + c?.node?.teacher?.user?.lastName : '';
-        c.node.academicDay_format = c.node.academicDay ? c.node.academicDay.name : '';
-        c.node.campus_format = c.node.campus ? c.node.campus.name : '';
-        return c;
-      }));
-    });
-  }, []);
+  const location = useLocation();
 
-  const getDataTable = async () => {
-    props.getListAllCourse(props?.loginReducer?.campusId, academicGradeId ? academicGradeId : '', props?.loginReducer?.schoolId).then((listData: any) => {
+  const getDataTable = useCallback(async () => {
+    let permissions = permissionsMenu(props?.loginReducer, location.pathname);
+    props.getListAllCourse(props?.loginReducer?.campusId, academicGradeId ? academicGradeId : '', props?.loginReducer?.schoolId, permissions.fullAccess).then((listData: any) => {
       setDataTable(listData.map((c: any) => {
         c.node.teacher_format = c.node.teacher ? c?.node?.teacher?.user?.name + c?.node?.teacher?.user?.lastName : '';
         c.node.academicDay_format = c.node.academicDay ? c.node.academicDay.name : '';
@@ -44,7 +38,12 @@ const CourseList = (props: any) => {
         return c;
       }));
     });
-  };
+  }, [])
+
+  useEffect(() => {
+    getDataTable()
+      .catch(console.error);;
+  }, [getDataTable]);
 
   const refreshDataTable = async () => {
     setDataTable(null);
@@ -187,6 +186,7 @@ const CourseList = (props: any) => {
             modalOpen={modalOpen}
             toggleModal={() => {
               setData(null);
+              refreshDataTable();
               return setModalOpen(!modalOpen);
             }}
             onSubmit={onSubmit}

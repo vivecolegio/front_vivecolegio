@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const QUERY_GET_ALL_GRADE = gql`
-  query getAllAcademicGrade($schoolId: String!, $schoolYearId: String) {
-    data: getAllAcademicGrade(orderCreated: true, allData: true, schoolId: $schoolId,  schoolYearId: $schoolYearId) {
+  query getAllAcademicGrade($schoolId: String!, $schoolYearId: String, $allData: Boolean!) {
+    data: getAllAcademicGrade(orderCreated: true, allData: $allData, schoolId: $schoolId,  schoolYearId: $schoolYearId) {
       edges {
         cursor
         node {
@@ -59,6 +59,10 @@ export const QUERY_GET_GRADE = gql`
         name
       }
       schoolYearId
+      schoolYear {
+        id
+        schoolYear
+      }
       version
       createdAt
       updatedAt
