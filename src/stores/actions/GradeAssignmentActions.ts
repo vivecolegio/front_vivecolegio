@@ -3,7 +3,7 @@ import { client } from '../graphql';
 import { MUTATION_CHANGE_ACTIVE_GRADE_ASSIGNMENT, MUTATION_CREATE_GRADE_ASSIGNMENT, MUTATION_DELETE_GRADE_ASSIGNMENT, MUTATION_UPDATE_GRADE_ASSIGNMENT } from '../graphql/GradeAssignment/GradeAssignmentMutations';
 import { QUERY_GET_ALL_GRADE_ASSIGNMENT, QUERY_GET_ALL_GRADE_ASSIGNMENT_BY_ASIGNATURE, QUERY_GET_DROPDOWNS_GRADE_ASSIGNMENT, QUERY_GET_GRADE_ASSIGNMENT } from '../graphql/GradeAssignment/GradeAssignmentQueries';
 
-export const getListAllGradeAssignment = (schoolId:string, academicGradeId: string) => {
+export const getListAllGradeAssignment = (schoolId:string, academicGradeId: string, fullAccess: boolean) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
@@ -13,6 +13,7 @@ export const getListAllGradeAssignment = (schoolId:string, academicGradeId: stri
           variables:{
             schoolId,
             academicGradeId,
+            allData: fullAccess
           }
         })
         .then((result: any) => {

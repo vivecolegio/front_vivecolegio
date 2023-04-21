@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 
@@ -10,6 +10,8 @@ import DataList from '../../common/Data/DataList';
 import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
 import { Loader } from '../../common/Loader';
 import GradeAssignmentCreateEdit from './GradeAssignmentCreateEdit';
+import { useLocation } from 'react-router';
+import { permissionsMenu } from '../../../helpers/DataTransformations';
 
 const GradeAssignmentList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
@@ -21,22 +23,11 @@ const GradeAssignmentList = (props: any) => {
   const gradeName = params.get('gradeName');
 
   const [data, setData] = useState(null);
-  useEffect(() => {
-    props.getListAllGradeAssignment(props?.loginReducer?.schoolId, academicGradeId).then((listData: any) => {
-      setDataTable(
-        listData.map((c: any) => {
-          c.node.grade_format = c.node.academicGrade ? c.node.academicGrade.name : '';
-          c.node.asignature_format = c.node.academicAsignature
-            ? c.node.academicAsignature.name
-            : '';
-          return c;
-        }),
-      );
-    });
-  }, []);
+  const location = useLocation();
 
-  const getDataTable = async () => {
-    props.getListAllGradeAssignment(props?.loginReducer?.schoolId, academicGradeId).then((listData: any) => {
+  const getDataTable = useCallback(async () => {
+    let permissions = permissionsMenu(props?.loginReducer, location.pathname);
+    props.getListAllGradeAssignment(props?.loginReducer?.schoolId, academicGradeId, permissions.fullAccess).then((listData: any) => {
       setDataTable(
         listData.map((c: any) => {
           c.node.grade_format = c.node.academicGrade ? c.node.academicGrade.name : '';
@@ -47,7 +38,12 @@ const GradeAssignmentList = (props: any) => {
         }),
       );
     });
-  };
+  }, [])
+
+  useEffect(() => {
+    getDataTable()
+      .catch(console.error);;
+  }, [getDataTable]);
 
   const refreshDataTable = async () => {
     setDataTable(null);
@@ -143,6 +139,7 @@ const GradeAssignmentList = (props: any) => {
             modalOpen={modalOpen}
             toggleModal={() => {
               setData(null);
+              refreshDataTable();
               return setModalOpen(!modalOpen);
             }}
             onSubmit={onSubmit}

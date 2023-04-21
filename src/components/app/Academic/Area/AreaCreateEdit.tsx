@@ -71,8 +71,7 @@ const AreaCreateEdit = (props: any) => {
         required: true,
         value: props?.data?.id && props?.data?.schoolYearId ? props?.data?.schoolYearId : props?.loginReducer?.schoolYear,
       });
-    }
-    else {
+    } else {
       setSchool({
         key: props?.loginReducer?.schoolData?.id,
         label: props?.loginReducer?.schoolData?.name,

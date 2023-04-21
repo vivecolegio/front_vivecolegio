@@ -83,6 +83,6 @@ export function permissionsMenu(loginReducer: any, currentUrl: string) {
     return submenus = submenus.concat(c.menuItemsLogin);
   });
   let cm = submenus.find((c: any) => { return (currentUrl === c?.module?.url) });
-  console.log("cm", cm)
+  //console.log("cm", cm)
   return cm;
 }

@@ -19,14 +19,9 @@ const AddNewModal = ({
   formState,
   validateForm
 }: any) => {
-  const { isValid, errors } = useFormState({ control });
-  console.log(methods?.formState?.errors)
-  console.log(isValid)
-  console.log(errors)
-  console.log(methods?.formState)
   return (
     <FormProvider {...methods}>
-      <DevTool control={control} />
+      {/* <DevTool control={control} /> */}
       <form onSubmit={handleSubmit(onSubmit)} className="av-tooltip tooltip-label-right">
         <Modal
           isOpen={modalOpen}
