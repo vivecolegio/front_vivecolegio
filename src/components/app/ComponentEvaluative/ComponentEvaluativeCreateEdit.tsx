@@ -139,7 +139,7 @@ const ComponentEvaluativeCreateEdit = (props: any) => {
         }),
       );
     });
-    props.getDropdownsComponentEvaluative(props?.loginReducer?.schoolId).then((data: any) => {
+    props.getDropdownsComponentEvaluative(props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear,).then((data: any) => {
       setAcademicAreasList(
         data.dataAreas.edges.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };

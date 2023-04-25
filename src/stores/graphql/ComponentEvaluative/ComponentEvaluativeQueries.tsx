@@ -11,6 +11,8 @@ export const QUERY_GET_ALL_COMPONENT_EVALUATIVE = gql`
           weight
           active
           type
+          academicAreasId
+          academicAsignaturesId
         }
       }
       totalCount
@@ -77,11 +79,12 @@ export const QUERY_GET_COMPONENT_EVALUATIVE = gql`
 `;
 
 export const QUERY_GET_DROPDOWNS_COMPONENT_EVALUATIVE = gql`
-  query getDropdownsComponentEvaluative($schoolId: String!) {
+  query getDropdownsComponentEvaluative($schoolId: String!,$schoolYearId: String ) {
     dataAsignatures: getAllAcademicAsignature(
-      allData: false
-      orderCreated: false
-      schoolId: $schoolId
+      allData: false,
+      orderCreated: false,
+      schoolId: $schoolId,
+      schoolYearId: $schoolYearId
     ) {
       edges {
         node {
@@ -90,7 +93,7 @@ export const QUERY_GET_DROPDOWNS_COMPONENT_EVALUATIVE = gql`
         }
       }
     }
-    dataAreas: getAllAcademicArea(allData: false, orderCreated: false, schoolId: $schoolId) {
+    dataAreas: getAllAcademicArea(allData: false, orderCreated: false, schoolId: $schoolId,  schoolYearId: $schoolYearId) {
       edges {
         node {
           id

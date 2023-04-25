@@ -209,7 +209,7 @@ export const deleteComponentEvaluative = (id: any, showToast: boolean) => {
   };
 };
 
-export const getDropdownsComponentEvaluative = (schoolId: string) => {
+export const getDropdownsComponentEvaluative = (schoolId: string, schoolYearId: string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
@@ -217,7 +217,8 @@ export const getDropdownsComponentEvaluative = (schoolId: string) => {
         .query({
           query: QUERY_GET_DROPDOWNS_COMPONENT_EVALUATIVE,
           variables: {
-            schoolId
+            schoolId,
+            schoolYearId
           }
         })
         .then((result: any) => {
