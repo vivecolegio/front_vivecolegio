@@ -1,10 +1,9 @@
 /* eslint-disable no-await-in-loop */
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { useSearchParams } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import { Button } from 'reactstrap';
 
-import { COLUMN_LIST } from '../../../constants/Student/studentConstants';
 import * as courseActions from '../../../stores/actions/CourseActions';
 import * as studentActions from '../../../stores/actions/StudentActions';
 import { Colxx } from '../../common/CustomBootstrap';
@@ -12,12 +11,15 @@ import DataList from '../../common/Data/DataList';
 import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
 import { Loader } from '../../common/Loader';
 import StudentAddCourse from './StudentAddCourse';
+import { permissionsMenu } from '../../../helpers/DataTransformations';
+import { COLUMN_LIST_STUDENT_COURSE, COLUMN_LIST_STUDENT_GRADE } from '../../../constants/StudentCourse/studentCourseConstants';
 
 const StudentCourseList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
-  const [columns, setColumns] = useState(COLUMN_LIST);
+  const [columns, setColumns] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [data, setData] = useState(null);
+  const location = useLocation();
   const [currentMenu, setCurrentMenu] = useState(null);
 
   let [params] = useSearchParams();
@@ -27,17 +29,16 @@ const StudentCourseList = (props: any) => {
   const gradeId = params.get('gradeId');
   const fromGrade = params.get('fromGrade');
 
-
-  useEffect(() => {
-
+  const getDataTable = useCallback(async () => {
     let { roleMenus } = props.loginReducer;
     let submenus: any = [];
     roleMenus.map((c: any) => {
       return submenus = submenus.concat(c.menuItemsLogin);
     });
     setCurrentMenu(submenus.find((c: any) => { return (c?.module?.url == 'student_link_course_permit') }));
-
+    let permissions = permissionsMenu(props?.loginReducer, location.pathname);
     if (courseId && !fromGrade) {
+      setColumns(COLUMN_LIST_STUDENT_COURSE);
       props.dataCourse(courseId).then((resp: any) => {
         setData(resp);
         setDataTable(resp?.data?.students?.map((c: any) => {
@@ -54,6 +55,7 @@ const StudentCourseList = (props: any) => {
       });
     }
     if (fromGrade) {
+      setColumns(COLUMN_LIST_STUDENT_GRADE);
       props.getListAllStudentAcademicGrade(props?.loginReducer?.campusId, gradeId, props?.loginReducer?.schoolId).then((response: any) => {
         setData(response);
         setDataTable(response?.map((c: any) => {
@@ -62,42 +64,18 @@ const StudentCourseList = (props: any) => {
           c.node.documentNumber = c?.node?.user ? c?.node?.user?.documentNumber : '';
           c.node.documentType_format = c?.node?.user ? c?.node?.user?.documentType?.name : '';
           c.node.gender_format = c?.node?.user ? c?.node?.user?.gender?.name : '';
+          c.node.course_format = c?.node?.course ? c?.node?.course?.name : '';
+          c.node.campus_format = c?.node?.course ? c?.node?.course?.campus?.name : '';
           return c;
         }));
       });
     }
-  }, []);
+  }, [])
 
-  const getDataTable = async () => {
-    if (courseId && !fromGrade) {
-      props.dataCourse(courseId).then((listData: any) => {
-        setData(listData);
-        setDataTable(listData?.data?.students?.map((c: any) => {
-          c.node = {};
-          c.node.code = c?.code;
-          c.node.id = c?.id;
-          c.node.name = c?.user ? c?.user?.name : '';
-          c.node.lastName = c?.user ? c?.user?.lastName : '';
-          c.node.documentType_format = c?.user ? c?.user?.documentType?.name : '';
-          c.node.gender_format = c?.user ? c?.user?.gender?.name : '';
-          return c;
-        }));
-      });
-    }
-    if (fromGrade) {
-      props.getListAllStudentAcademicGrade(props?.loginReducer?.campusId, gradeId, props?.loginReducer?.schoolId).then((listData: any) => {
-        setData(listData);
-        setDataTable(listData?.map((c: any) => {
-          c.node.name = c?.node?.user ? c?.node?.user?.name : '';
-          c.node.lastName = c?.node?.user ? c?.node?.user?.lastName : '';
-          c.node.documentNumber = c?.node?.user ? c?.node?.user?.documentNumber : '';
-          c.node.documentType_format = c?.node?.user ? c?.node?.user?.documentType?.name : '';
-          c.node.gender_format = c?.node?.user ? c?.node?.user?.gender?.name : '';
-          return c;
-        }));
-      });
-    }
-  };
+  useEffect(() => {
+    getDataTable()
+      .catch(console.error);;
+  }, [getDataTable]);
 
   const refreshDataTable = async () => {
     setDataTable(null);
@@ -170,6 +148,8 @@ const StudentCourseList = (props: any) => {
               data={data}
               modalOpen={modalOpen}
               toggleModal={() => {
+                setData(null);
+                refreshDataTable();
                 return setModalOpen(!modalOpen);
               }}
               refreshDataTable={refreshDataTable}

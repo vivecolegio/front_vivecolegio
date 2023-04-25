@@ -84,10 +84,13 @@ export const QUERY_GET_ALL_STUDENT_OF_GRADE = gql`
             id
             name
           }       
-          campus {
-            id
+          course{
             name
-          }        
+            campus {
+              id
+              name
+            }   
+          }     
           user {
             id
             name
