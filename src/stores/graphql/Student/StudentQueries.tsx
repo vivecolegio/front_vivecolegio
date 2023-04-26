@@ -120,6 +120,7 @@ export const QUERY_GET_STUDENT = gql`
       id
       code
       schoolId     
+      schoolYearId
       campusId
       userId
       academicGradeId

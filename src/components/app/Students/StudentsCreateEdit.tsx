@@ -168,16 +168,12 @@ const StudentCreateEdit = (props: any) => {
         value: props?.data?.id ? props?.data?.schoolId : '',
       });
       register('campusId', {
-        required: false,
+        required: true,
         value: props?.data?.id ? props?.data?.campusId : [],
       });
       register('academicGradeId', {
         required: true,
         value: props?.data?.id ? props?.data?.academicGradeId : '',
-      });
-      register('courseId', {
-        required: false,
-        value: props?.data?.id ? props?.data?.courseId : '',
       });
       register('newUser', {
         required: true,
@@ -229,7 +225,7 @@ const StudentCreateEdit = (props: any) => {
     if (props?.loginReducer?.campusId && !props?.data?.id) {
       // set value when register is new and sesion contains value
       register('campusId', {
-        required: false,
+        required: true,
         value: props?.loginReducer?.campusId,
       });
     }
@@ -630,31 +626,39 @@ const StudentCreateEdit = (props: any) => {
               ) : (
                 ''
               )}
-              {!props?.loginReducer?.campusId && props?.data?.id ? (
-                <FormGroupCustom>
-                  <LabelCustom id="menu.campus" required={false} />
-                  <Select
-                    isClearable
-                    placeholder={<IntlMessages id="forms.select" />}
-                    {...register('campusId', { required: false })}
-                    className="react-select"
-                    classNamePrefix="react-select"
-                    options={campusList}
-                    value={campus}
-                    onChange={(selectedOption) => {
-                      setValue('campusId', [selectedOption?.key]);
-                      setCampus(selectedOption);
-                      setCourse(null);
-                      setValue('courseId', null);
-                      trigger("campusId")
-                      //getDropdowns(selectedOption?.key);
-                    }}
-                  //isDisabled={true}
-                  />
-                </FormGroupCustom>
-              ) : (
-                ''
-              )}
+              <FormGroupCustom>
+                <LabelCustom id="menu.campus" required={true} />
+                <Select
+                  isClearable
+                  placeholder={<IntlMessages id="forms.select" />}
+                  {...register('campusId', { required: true })}
+                  className="react-select"
+                  classNamePrefix="react-select"
+                  options={campusList}
+                  value={campus}
+                  onChange={(selectedOption) => {
+                    setValue('campusId', [selectedOption?.key]);
+                    setCampus(selectedOption);
+                    trigger("campusId")
+                    //getDropdowns(selectedOption?.key);
+                  }}
+                //isDisabled={true}
+                />
+              </FormGroupCustom>
+              <FormGroupCustom>
+                <LabelCustom id="menu.schoolYear" required={true} />
+                <Select
+                  isClearable
+                  placeholder={<IntlMessages id="forms.select" />}
+                  {...register('schoolYearId', { required: true })}
+                  className="react-select"
+                  classNamePrefix="react-select"
+                  options={schoolYearList}
+                  value={schoolYear}
+                  isDisabled={true}
+                />
+                <RequiredMessagesCustom formState={formState} register={"name"} />
+              </FormGroupCustom>
               {/* {!props?.loginReducer?.campusId && props?.data?.id && props?.data?.courseId && course != null ? (
                 <FormGroupCustom>
                   <LabelCustom id="forms.course" required={false} />
