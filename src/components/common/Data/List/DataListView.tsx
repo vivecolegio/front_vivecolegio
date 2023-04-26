@@ -38,7 +38,7 @@ const DataListView = ({
     return () => {
       clearInterval(sampleInterval);
     };
-  });
+  }, []);
 
   return (
     <Colxx xxs="12" className="mb-3">
@@ -53,7 +53,7 @@ const DataListView = ({
         >
           <div className="pl-2 d-flex flex-grow-1 min-width-zero">
             <div className="p-3 card-body align-self-center d-flex flex-column flex-lg-row justify-content-between min-width-zero align-items-lg-center">
-              {columns.filter((c: any) => { return (c.label) }).map((column: any) => {
+              {columns.filter((c: any) => { return c.column?.length > 0; }).map((column: any) => {
                 let classNameProps = "";
                 if (column?.textCenter) {
                   classNameProps += "text-center";
@@ -70,111 +70,119 @@ const DataListView = ({
                   </div>
                 );
               })}
-              <p className={"mb-0 flex-gap text-muted text-small"} style={{ 'width': columns[columns.length - 1].width }}>
-                {withChildren === true ? (
-                  (filterChildren ? childrenButtons.filter((c: any) => { return (c.action === item[filterChildren]) }) : childrenButtons).map((button: any) => {
-                    switch (type) {
-                      case "valuationReferents":
-                        switch (button.id) {
-                          case 1:
-                            return <>
-                              {
-                                !button.hide && item?.academicAsignature?.generalAcademicAsignature?.hasDba ?
-                                  <Button
-                                    key={button.id}
-                                    color={button.color}
-                                    size="xs"
-                                    onClick={() => {
-                                      return additionalFunction(item, button);
-                                    }}>
-                                    <i className={button.icon + ' font-1rem mr-2'} />
-                                    {button.label}
-                                  </Button> : ''
+              {columns
+                ?.filter((c: any) => {
+                  return (c.column?.length == 0 || c.column == undefined) && (currentMenu?.activateAction || currentMenu?.deleteAction || currentMenu?.inactiveAction || currentMenu?.updateAction);
+                })
+                .map((column: any) => {
+                  return (
+                    <p className={"mb-0 flex-gap text-muted text-small"} style={{ width: column.width }}>
+                      {withChildren === true ? (
+                        (filterChildren ? childrenButtons.filter((c: any) => { return (c.action === item[filterChildren]) }) : childrenButtons).map((button: any) => {
+                          switch (type) {
+                            case "valuationReferents":
+                              switch (button.id) {
+                                case 1:
+                                  return <>
+                                    {
+                                      !button.hide && item?.academicAsignature?.generalAcademicAsignature?.hasDba ?
+                                        <Button
+                                          key={button.id}
+                                          color={button.color}
+                                          size="xs"
+                                          onClick={() => {
+                                            return additionalFunction(item, button);
+                                          }}>
+                                          <i className={button.icon + ' font-1rem mr-2'} />
+                                          {button.label}
+                                        </Button> : ''
+                                    }
+                                  </>
+                                  break;
+                                default:
+                                  return <>
+                                    {
+                                      !button.hide ?
+                                        <Button
+                                          key={button.id}
+                                          color={button.color}
+                                          size="xs"
+                                          onClick={() => {
+                                            return additionalFunction(item, button);
+                                          }}>
+                                          <i className={button.icon + ' font-1rem mr-2'} />
+                                          {button.label}
+                                        </Button> : ''
+                                    }
+                                  </>
+                                  break;
                               }
-                            </>
-                            break;
-                          default:
-                            return <>
-                              {
-                                !button.hide ?
-                                  <Button
-                                    key={button.id}
-                                    color={button.color}
-                                    size="xs"
-                                    onClick={() => {
-                                      return additionalFunction(item, button);
-                                    }}>
-                                    <i className={button.icon + ' font-1rem mr-2'} />
-                                    {button.label}
-                                  </Button> : ''
-                              }
-                            </>
-                            break;
-                        }
-                        break;
-                      default:
-                        return <>
-                          {
-                            !button.hide ?
-                              <Button
-                                key={button.id}
-                                color={button.color}
-                                size="xs"
-                                onClick={() => {
-                                  return additionalFunction(item, button);
-                                }}
-                                disabled={button?.disabled ? button?.disabled : false}>
-                                <i className={button.icon + ' font-1rem mr-2'} />
-                                {button.label}
-                              </Button> : ''
+                              break;
+                            default:
+                              return <>
+                                {
+                                  !button.hide ?
+                                    <Button
+                                      key={button.id}
+                                      color={button.color}
+                                      size="xs"
+                                      onClick={() => {
+                                        return additionalFunction(item, button);
+                                      }}
+                                      disabled={button?.disabled ? button?.disabled : false}>
+                                      <i className={button.icon + ' font-1rem mr-2'} />
+                                      {button.label}
+                                    </Button> : ''
+                                }
+                                {' '}
+                              </>
+                              break;
                           }
-                          {' '}
-                        </>
-                        break;
-                    }
-                  })
-                ) : (
-                  ''
-                )}
-                {currentMenu.updateAction ?
-                  <Button
-                    color="blue"
-                    size="xs"
-                    onClick={() => {
-                      return viewEditData(item.id);
-                    }}
-                  >
-                    <i className="simple-icon-eye font-1rem mr-2" />
-                    <IntlMessages id="pages.detail" />
-                  </Button> : ''}
-                {' '}
-                {currentMenu.deleteAction ?
-                  <Button
-                    color="orange"
-                    size="xs"
-                    onClick={() => {
-                      // return deleteData(item.id);
-                      setSeconds(45);
-                      setModalBasicDelete({ status: !modalBasicDelete?.status, id: item.id })
-                    }}
-                  >
-                    <i className="simple-icon-trash font-1rem mr-2" />
-                    <IntlMessages id="pages.delete" />
-                  </Button> : ''}{' '}
-                {currentMenu.inactiveAction ?
-                  <Button
-                    color={item.active ? 'danger' : 'green'}
-                    size="xs"
-                    onClick={() => {
-                      // return changeActiveData(!item.active, item.id);
-                      item.active ?
-                        setModalBasicInactivate({ status: !modalBasicInactivate?.status, id: item.id }) : setModalBasicActivate({ status: !modalBasicActivate?.status, id: item.id });
-                    }}
-                  >
-                    <i className={item.active ? 'simple-icon-close font-1rem mr-2' : 'simple-icon-check font-1rem mr-2'} />
-                    {item.active ? <IntlMessages id="pages.inactivate" /> : <IntlMessages id="pages.activate" />}
-                  </Button> : ''}{' '}
-              </p>
+                        })
+                      ) : (
+                        ''
+                      )}
+                      {currentMenu.updateAction ?
+                        <Button
+                          color="blue"
+                          size="xs"
+                          onClick={() => {
+                            return viewEditData(item.id);
+                          }}
+                        >
+                          <i className="simple-icon-eye font-1rem mr-2" />
+                          <IntlMessages id="pages.detail" />
+                        </Button> : ''}
+                      {' '}
+                      {currentMenu.deleteAction ?
+                        <Button
+                          color="orange"
+                          size="xs"
+                          onClick={() => {
+                            // return deleteData(item.id);
+                            setSeconds(45);
+                            setModalBasicDelete({ status: !modalBasicDelete?.status, id: item.id })
+                          }}
+                        >
+                          <i className="simple-icon-trash font-1rem mr-2" />
+                          <IntlMessages id="pages.delete" />
+                        </Button> : ''}{' '}
+                      {currentMenu.inactiveAction ?
+                        <Button
+                          color={item.active ? 'danger' : 'green'}
+                          size="xs"
+                          onClick={() => {
+                            // return changeActiveData(!item.active, item.id);
+                            item.active ?
+                              setModalBasicInactivate({ status: !modalBasicInactivate?.status, id: item.id }) : setModalBasicActivate({ status: !modalBasicActivate?.status, id: item.id });
+                          }}
+                        >
+                          <i className={item.active ? 'simple-icon-close font-1rem mr-2' : 'simple-icon-check font-1rem mr-2'} />
+                          {item.active ? <IntlMessages id="pages.inactivate" /> : <IntlMessages id="pages.activate" />}
+                        </Button> : ''}{' '}
+                    </p>
+                  );
+                })}
               <div className="custom-control custom-checkbox pl-1 align-self-center pr-2 pl-4">
                 <Input
                   className="item-check mb-0"

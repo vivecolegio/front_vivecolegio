@@ -1,16 +1,16 @@
 import moment from 'moment';
 import React, { useCallback, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+import { useLocation } from 'react-router';
 
 import { COLUMN_LIST } from '../../../constants/AcademicPeriod/AcademicPeriodConstants';
+import { permissionsMenu } from '../../../helpers/DataTransformations';
 import { createNotification } from '../../../helpers/Notification';
 import * as academicIndicatorActions from '../../../stores/actions/AcademicPeriodActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import DataList from '../../common/Data/DataList';
 import { Loader } from '../../common/Loader';
 import AcademicPeriodCreateEdit from './AcademicPeriodCreateEdit';
-import { permissionsMenu } from '../../../helpers/DataTransformations';
-import { useLocation } from 'react-router';
 
 const AcademicPeriodList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);

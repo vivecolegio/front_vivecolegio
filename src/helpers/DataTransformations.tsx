@@ -82,7 +82,10 @@ export function permissionsMenu(loginReducer: any, currentUrl: string) {
   roleMenus.map((c: any) => {
     return submenus = submenus.concat(c.menuItemsLogin);
   });
-  let cm = submenus.find((c: any) => { return (currentUrl === c?.module?.url) });
-  //console.log("cm", cm)
-  return cm;
+  let currentMenu = submenus.find((c: any) => { return (currentUrl === c?.module?.url) });
+  return currentMenu;
+}
+
+export function validateActions(currentMenu: any) {
+  return currentMenu?.activateAction && currentMenu?.deleteAction && currentMenu?.inactiveAction && currentMenu?.readAction;
 }

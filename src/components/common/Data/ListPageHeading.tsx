@@ -232,7 +232,7 @@ const ListPageHeading = ({
                 <div className="p-3 card-body align-self-center d-flex flex-colum flex-lg-row justify-content-between min-width-zero align-items-lg-center">
                   {columns
                     ?.filter((c: any) => {
-                      return c.label;
+                      return c.column?.length > 0;
                     })
                     .map((item: any) => {
                       return (
@@ -252,12 +252,21 @@ const ListPageHeading = ({
                         </p>
                       );
                     })}
-                  <p
-                    style={{ width: columns[columns.length - 1].width }}
-                    className={'mb-1 text-muted text-small text-center'}
-                  >
-                    <IntlMessages id="pages.actions" />
-                  </p>
+                  {columns
+                    ?.filter((c: any) => {
+                      return (c.column?.length == 0 || c.column == undefined) && (currentMenu?.activateAction || currentMenu?.deleteAction || currentMenu?.inactiveAction || currentMenu?.updateAction);
+                    })
+                    .map((item: any) => {
+                      return (
+                        <p
+                          key={item.label}
+                          className={'mb-1 text-muted text-small text-center'}
+                          style={{ width: item.width }}
+                        >
+                          <IntlMessages id={item.label ? item.label : "pages.actions"} />
+                        </p>
+                      );
+                    })}
                   <div className="custom-control custom-checkbox pl-1 align-self-center pr-2 pl-4">
                     <Input
                       className="item-check mb-0"
