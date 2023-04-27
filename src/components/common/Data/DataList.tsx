@@ -240,6 +240,7 @@ const DataList = (props: any) => {
         sortColumn={sortColumn}
         sortOrderColumn={sortOrderColumn}
         refreshDataTable={props?.refreshDataTable}
+        childrenButtons={props?.childrenButtons}
       />
       <ListPageListing
         type={props?.type}

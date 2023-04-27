@@ -1,11 +1,9 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
 import { MUTATION_CHANGE_ACTIVE_ACADEMIC_HOUR, MUTATION_CREATE_ACADEMIC_HOUR, MUTATION_DELETE_ACADEMIC_HOUR, MUTATION_UPDATE_ACADEMIC_HOUR } from '../graphql/AcademicHour/AcademicHourMutations';
-import { QUERY_GET_ALL_ACADEMIC_HOUR, QUERY_GET_ACADEMIC_HOUR, QUERY_GET_DROPDOWNS_ACADEMIC_HOUR } from '../graphql/AcademicHour/AcademicHourQueries';
+import { QUERY_GET_ACADEMIC_HOUR, QUERY_GET_ALL_ACADEMIC_HOUR, QUERY_GET_DROPDOWNS_ACADEMIC_HOUR } from '../graphql/AcademicHour/AcademicHourQueries';
 
-
-export const getListAllAcademicHour = (campusId:string, academicDayId: string, fullAccess: boolean) => {
-  let campus = campusId ? campusId : null;
+export const getListAllAcademicHour = (academicDayId: string, fullAccess: boolean) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
@@ -13,7 +11,6 @@ export const getListAllAcademicHour = (campusId:string, academicDayId: string, f
         .query({
           query: QUERY_GET_ALL_ACADEMIC_HOUR,
           variables:{
-            campusId: campus,
             academicDayId,
             allData: fullAccess
           },

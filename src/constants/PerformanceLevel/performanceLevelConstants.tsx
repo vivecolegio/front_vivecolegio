@@ -6,5 +6,5 @@ export const COLUMN_LIST = [
   { column: 'minimumScore', label: 'forms.minimumScore', width: '12%', translate: false, badge: false, color: "", textCenter: true },
   { column: 'topScore', label: 'forms.topScore', width: '12%', translate: false, badge: false, color: "", textCenter: true },
   { column: 'active', label: 'forms.active', width: '10%', translate: true, badge: true, color: "info", textCenter: false },
-  { width: '30%' },
+  { column: '', label: 'pages.actions', width: '30%', translate: true, badge: false, color: "", textCenter: false },
 ];

@@ -3,7 +3,7 @@ import { client } from '../../graphql';
 import { MUTATION_CHANGE_ACTIVE_ASIGNATURE, MUTATION_CREATE_ASIGNATURE, MUTATION_DELETE_ASIGNATURE, MUTATION_UPDATE_ASIGNATURE } from '../../graphql/Academic/Asignature/AsignatureMutations';
 import { QUERY_GET_ALL_ASIGNATURE, QUERY_GET_ASIGNATURE, QUERY_GET_DROPDOWNS_ASIGNATURE } from '../../graphql/Academic/Asignature/AsignatureQueries';
 
-export const getListAllAcademicAsignature = (schoolId:string, academicAreaId: string, fullAccess: boolean) => {
+export const getListAllAcademicAsignature = (schoolId:string, academicAreaId: string, schoolYearId:string, fullAccess: boolean) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
@@ -13,8 +13,10 @@ export const getListAllAcademicAsignature = (schoolId:string, academicAreaId: st
           variables:{
             schoolId,
             academicAreaId,
+            schoolYearId,
             allData: fullAccess
           },
+          
         })
         .then((result: any) => {
           listData = result.data.data.edges;

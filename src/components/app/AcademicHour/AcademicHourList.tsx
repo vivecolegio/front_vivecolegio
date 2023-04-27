@@ -1,17 +1,18 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
+import { useLocation } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
 
 import { COLUMN_LIST } from '../../../constants/AcademicHour/academicHourConstants';
+import { permissionsMenu } from '../../../helpers/DataTransformations';
 import { createNotification } from '../../../helpers/Notification';
 import * as academicHourActions from '../../../stores/actions/AcademicHourActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import DataList from '../../common/Data/DataList';
+import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
 import { Loader } from '../../common/Loader';
 import AcademicHourCreateEdit from './AcademicHourCreateEdit';
-import { useLocation } from 'react-router';
-import { permissionsMenu } from '../../../helpers/DataTransformations';
 
 const AcademicHourList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
@@ -29,7 +30,7 @@ const AcademicHourList = (props: any) => {
 
   const getDataTable = useCallback(async () => {
     let permissions = permissionsMenu(props?.loginReducer, location.pathname);
-    props.getListAllAcademicHour(props?.loginReducer?.campusId, academicDayId, permissions.fullAccess).then((listData: any) => {
+    props.getListAllAcademicHour(academicDayId, permissions.fullAccess).then((listData: any) => {
       setDataTable(listData);
     });
   }, [])
@@ -117,19 +118,7 @@ const AcademicHourList = (props: any) => {
       {' '}
       {dataTable !== null ? (
         <>
-          <>
-            <div className="mt-0">
-              <div className="d-flex flex-row">
-                <span className="mb-0 text-muted border-b-warning">
-                  Jornada: <h2 className="text-warning font-bold">{academicDayName}</h2>
-                </span>
-              </div>
-              <p className="text-muted mt-2 d-flex align-items-center cursor-pointer" onClick={() => { return goTo('/academicDay') }}>
-                <i className="simple-icon-arrow-left-circle mr-2"></i>
-                Regresar a Jornadas
-              </p>
-            </div>
-          </>
+          <HeaderInfoAcademic generic={{ title: 'Jornada', value: academicDayName }} goTitle="Regresar a Jornadas" />
           <DataList
             data={dataTable}
             columns={columns}

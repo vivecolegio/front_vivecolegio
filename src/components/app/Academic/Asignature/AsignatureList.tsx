@@ -27,7 +27,7 @@ const AsignatureList = (props: any) => {
   const getDataTable = useCallback(async () => {
     const areaId = params.get('id');
     let permissions = permissionsMenu(props?.loginReducer, location.pathname);
-    props.getListAllAcademicAsignature(props?.loginReducer?.schoolId, areaId ? areaId : '', permissions.fullAccess).then((listData: any) => {
+    props.getListAllAcademicAsignature(props?.loginReducer?.schoolId, areaId ? areaId : '', props?.loginReducer?.schoolYear, permissions.fullAccess).then((listData: any) => {
       setDataTable(listData.map((c: any) => {
         c.node.generalAsignature_format = c.node.generalAcademicAsignature ? c.node.generalAcademicAsignature.name : '';
         return c;

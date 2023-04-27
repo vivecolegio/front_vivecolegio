@@ -72,7 +72,7 @@ const DataListView = ({
               })}
               {columns
                 ?.filter((c: any) => {
-                  return (c.column?.length == 0 || c.column == undefined) && (currentMenu?.activateAction || currentMenu?.deleteAction || currentMenu?.inactiveAction || currentMenu?.updateAction);
+                  return (c.column?.length == 0 || c.column == undefined) && (currentMenu?.activateAction || currentMenu?.deleteAction || currentMenu?.inactiveAction || currentMenu?.updateAction || childrenButtons?.length > 0);
                 })
                 .map((column: any) => {
                   return (

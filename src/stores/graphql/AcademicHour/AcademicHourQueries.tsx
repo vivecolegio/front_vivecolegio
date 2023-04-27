@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const QUERY_GET_ALL_ACADEMIC_HOUR = gql`
-  query getAllAcademicHour($campusId: String, $academicDayId: String!, $allData: Boolean!) {
-    data: getAllAcademicHour(orderCreated: true, allData: $allData, campusId: $campusId, academicDayId: $academicDayId) {
+  query getAllAcademicHour($academicDayId: String!, $allData: Boolean!) {
+    data: getAllAcademicHour(orderCreated: true, allData: $allData, academicDayId: $academicDayId) {
       edges {
         cursor
         node {

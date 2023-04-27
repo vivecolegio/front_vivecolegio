@@ -42,7 +42,8 @@ const ListPageHeading = ({
   onSort,
   sortColumn,
   sortOrderColumn,
-  refreshDataTable
+  refreshDataTable,
+  childrenButtons
 }: any) => {
   const [dropdownSplitOpen, setDropdownSplitOpen] = useState(false);
   const [displayOptionsIsOpen, setDisplayOptionsIsOpen] = useState(false);
@@ -254,7 +255,7 @@ const ListPageHeading = ({
                     })}
                   {columns
                     ?.filter((c: any) => {
-                      return (c.column?.length == 0 || c.column == undefined) && (currentMenu?.activateAction || currentMenu?.deleteAction || currentMenu?.inactiveAction || currentMenu?.updateAction);
+                      return (c.column?.length == 0 || c.column == undefined) && (currentMenu?.activateAction || currentMenu?.deleteAction || currentMenu?.inactiveAction || currentMenu?.updateAction || childrenButtons?.length > 0);
                     })
                     .map((item: any) => {
                       return (
