@@ -1,41 +1,32 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
-import { COLUMN_LIST } from '../../../constants/GradeAssignment/gradeAssignmentConstants';
+import { COLUMN_LIST } from '../../../constants/AcademicGrade/AcademicGradeConstants';
 import { createNotification } from '../../../helpers/Notification';
-import * as academicIndicatorActions from '../../../stores/actions/GradeAssignmentActions';
+import * as gradeActions from '../../../stores/actions/Academic/GradeActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import DataList from '../../common/Data/DataList';
-import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
 import { Loader } from '../../common/Loader';
-import GradeAssignmentCreateEdit from './GradeAssignmentCreateEdit';
-import { useLocation } from 'react-router';
 import { permissionsMenu } from '../../../helpers/DataTransformations';
+import { useLocation } from 'react-router';
 
-const GradeAssignmentList = (props: any) => {
+const GradeCourseAssigmentGradeList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
   const [columns, setColumns] = useState(COLUMN_LIST);
   const [modalOpen, setModalOpen] = useState(false);
-
-  let [params] = useSearchParams();
-  const academicGradeId = params.get('academicGradeId');
-  const gradeName = params.get('gradeName');
-
   const [data, setData] = useState(null);
   const location = useLocation();
+  let navigate = useNavigate();
 
   const getDataTable = useCallback(async () => {
     let permissions = permissionsMenu(props?.loginReducer, location.pathname);
-    props.getListAllGradeAssignment(props?.loginReducer?.schoolId, academicGradeId, permissions.fullAccess).then((listData: any) => {
+    props.getListAllGrade(props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear, permissions.fullAccess).then((listData: any) => {
       setDataTable(
         listData.map((c: any) => {
-          c.node.asignature_format = c.node.academicAsignature
-            ? c.node.academicAsignature.name
-            : '';
-          c.node.area_format = c.node.academicAsignature?.academicArea
-            ? c.node.academicAsignature?.academicArea?.name
-            : '';
+          c.node.cycle_format = c.node.generalAcademicCycle ? c.node.generalAcademicCycle.name : '';
+          c.node.speciality_format = c.node.specialty ? c.node.specialty.name : '';
+          c.node.education_level_format = c.node.educationLevel ? c.node.educationLevel.name : '';
           return c;
         }),
       );
@@ -55,14 +46,14 @@ const GradeAssignmentList = (props: any) => {
   const onSubmit = async (dataForm: any) => {
     //console.log(dataForm);
     if (data === null) {
-      await props.saveNewGradeAssignment(dataForm).then((id: any) => {
+      await props.saveNewGrade(dataForm).then((id: any) => {
         if (id !== undefined) {
           setModalOpen(false);
           refreshDataTable();
         }
       });
     } else {
-      await props.updateGradeAssignment(dataForm, data.id).then((id: any) => {
+      await props.updateGrade(dataForm, data.id).then((id: any) => {
         if (id !== undefined) {
           setModalOpen(false);
           setData(null);
@@ -73,27 +64,47 @@ const GradeAssignmentList = (props: any) => {
   };
 
   const viewEditData = async (id: any) => {
-    await props.dataGradeAssignment(id).then((formData: any) => {
+    await props.dataGrade(id).then((formData: any) => {
       setData(formData.data);
       setModalOpen(true);
     });
   };
 
   const changeActiveData = async (active: any, id: any) => {
-    await props.changeActiveGradeAssignment(active, id, true).then((formData: any) => {
+    await props.changeActiveGrade(active, id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
 
   const deleteData = async (id: any) => {
-    await props.deleteGradeAssignment(id, true).then((formData: any) => {
+    await props.deleteGrade(id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
 
+  const additionalFunction = async (item: any, btn: any) => {
+    switch (btn?.action) {
+      case 'goToChildrenCourse':
+        goToChildren(`/gradeCourseAssigmentCourseList?academicGradeId=${item?.id}&gradeName=${item?.name}`);
+        break;
+      case 'goToChildrenGradeAssignment':
+        goToChildren(`/gradeAssignment?academicGradeId=${item.id}&gradeName=${item?.name}`);
+        break;
+      case 'goToChildrenStudents':
+        goToChildren(`/studentGrade?gradeName=${item?.name}&gradeId=${item?.id}&fromGrade=true`);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const goToChildren = async (url: any) => {
+    navigate(url);
+  };
+
   const deleteAll = async (items: any) => {
     items.map(async (item: any) => {
-      await props.deleteUser(item.id, false).then(
+      await props.deleteGrade(item.id, false).then(
         () => { },
         () => {
           createNotification('error', 'error', '');
@@ -106,7 +117,7 @@ const GradeAssignmentList = (props: any) => {
 
   const changeActiveDataAll = async (items: any) => {
     items.map(async (item: any) => {
-      await props.changeActiveUser(!item.active, item.id, false).then(
+      await props.changeActiveGrade(!item.active, item.id, false).then(
         () => { },
         () => {
           createNotification('error', 'error', '');
@@ -122,7 +133,6 @@ const GradeAssignmentList = (props: any) => {
       {' '}
       {dataTable !== null ? (
         <>
-          <HeaderInfoAcademic generic={{ title: 'Grado', value: gradeName }} goTitle="Regresar a grados" />
           <DataList
             data={dataTable}
             columns={columns}
@@ -134,17 +144,32 @@ const GradeAssignmentList = (props: any) => {
             changeActiveData={changeActiveData}
             deleteAll={deleteAll}
             changeActiveDataAll={changeActiveDataAll}
+            additionalFunction={additionalFunction}
+            childrenButtons={[
+              {
+                id: 0,
+                label: 'Cursos',
+                color: 'secondary',
+                icon: 'simple-icon-link',
+                action: 'goToChildrenCourse',
+              },
+              {
+                id: 1,
+                label: 'Asignatura de grado',
+                color: 'info',
+                icon: 'simple-icon-link',
+                action: 'goToChildrenGradeAssignment',
+              },
+              {
+                id: 2,
+                label: 'Estudiantes',
+                color: 'warning',
+                icon: 'iconsminds-student-male-female',
+                action: 'goToChildrenStudents',
+              },
+            ]}
+            withChildren={true}
             refreshDataTable={refreshDataTable}
-          />
-          <GradeAssignmentCreateEdit
-            data={data}
-            modalOpen={modalOpen}
-            toggleModal={() => {
-              setData(null);
-              refreshDataTable();
-              return setModalOpen(!modalOpen);
-            }}
-            onSubmit={onSubmit}
           />
         </>
       ) : (
@@ -157,10 +182,10 @@ const GradeAssignmentList = (props: any) => {
     </>
   );
 };
-const mapDispatchToProps = { ...academicIndicatorActions };
+const mapDispatchToProps = { ...gradeActions };
 
 const mapStateToProps = ({ loginReducer }: any) => {
   return { loginReducer };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(GradeAssignmentList);
+export default connect(mapStateToProps, mapDispatchToProps)(GradeCourseAssigmentGradeList);

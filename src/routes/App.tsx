@@ -659,6 +659,18 @@ const RecoveryPlanAcademicAsignatureCourseList = React.lazy(() => {
   );
 });
 
+const GradeCourseAssigmentGradeList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "GradeCourseAssigmentGradeList" */ '../components/app/GradeCourseAssignment/GradeCourseAssigmentGradeList'
+  );
+});
+
+const GradeCourseAssigmentCourseList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "GradeCourseAssigmentCourseList" */ '../components/app/GradeCourseAssignment/GradeCourseAssigmentCourseList'
+  );
+});
+
 const App = (props: any) => {
   const { locale } = props.translateReducer;
 
@@ -937,6 +949,10 @@ const App = (props: any) => {
                       path="/recoveryPlanAcademicAsignatureCourse"
                       element={<RecoveryPlanAcademicAsignatureCourseList />}
                     />
+
+
+                    <Route path="/gradeCourseAssigmentGradeList" element={<GradeCourseAssigmentGradeList />} />
+                    <Route path="/gradeCourseAssigmentCourseList" element={<GradeCourseAssigmentCourseList />} />
                   </>
                 ) : (
                   <Route path="*" element={<Login />} />
