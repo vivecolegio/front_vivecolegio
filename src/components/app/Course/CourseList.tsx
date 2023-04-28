@@ -1,9 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
+import { useLocation } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
 
 import { COLUMN_LIST } from '../../../constants/Course/CourseConstants';
+import { permissionsMenu } from '../../../helpers/DataTransformations';
 import { createNotification } from '../../../helpers/Notification';
 import * as courseActions from '../../../stores/actions/CourseActions';
 import { Colxx } from '../../common/CustomBootstrap';
@@ -11,8 +13,6 @@ import DataList from '../../common/Data/DataList';
 import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
 import { Loader } from '../../common/Loader';
 import CourseCreateEdit from './CourseCreateEdit';
-import { permissionsMenu } from '../../../helpers/DataTransformations';
-import { useLocation } from 'react-router';
 
 const CourseList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
@@ -117,11 +117,6 @@ const CourseList = (props: any) => {
 
   const additionalFunction = async (item: any, btn: any) => {
     switch (btn?.action) {
-      case 'goToChildrenSpredsheetCourse':
-        goToChildren(
-          `/spreadsheetCourse?courseId=${item.id}`,
-        );
-        break;
       default:
         break;
     }
@@ -150,13 +145,6 @@ const CourseList = (props: any) => {
             changeActiveDataAll={changeActiveDataAll}
             additionalFunction={additionalFunction}
             childrenButtons={[
-              {
-                id: 2,
-                label: 'Planilla General',
-                color: 'warning',
-                icon: 'iconsminds-library',
-                action: 'goToChildrenSpredsheetCourse',
-              },
             ]}
             withChildren={true}
             refreshDataTable={refreshDataTable}
