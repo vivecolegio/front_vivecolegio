@@ -117,12 +117,6 @@ const CourseList = (props: any) => {
 
   const additionalFunction = async (item: any, btn: any) => {
     switch (btn?.action) {
-      case 'goToChildrenCourseAssignment':
-        goToChildren(`/academicAsignatureCourseBasic?courseId=${item.id}&courseName=${item.name}`);
-        break;
-      case 'goToChildrenStudents':
-        goToChildren(`/studentCourse?courseId=${item.id}&courseName=${item.name}&gradeName=${gradeName}&gradeId=${academicGradeId}`);
-        break;
       case 'goToChildrenSpredsheetCourse':
         goToChildren(
           `/spreadsheetCourse?courseId=${item.id}`,
@@ -156,20 +150,6 @@ const CourseList = (props: any) => {
             changeActiveDataAll={changeActiveDataAll}
             additionalFunction={additionalFunction}
             childrenButtons={[
-              {
-                id: 0,
-                label: 'Asignación de curso',
-                color: 'secondary',
-                icon: 'simple-icon-link',
-                action: 'goToChildrenCourseAssignment',
-              },
-              {
-                id: 1,
-                label: 'Estudiantes',
-                color: 'info',
-                icon: 'iconsminds-student-male-female',
-                action: 'goToChildrenStudents',
-              },
               {
                 id: 2,
                 label: 'Planilla General',

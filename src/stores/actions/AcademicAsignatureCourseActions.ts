@@ -57,7 +57,7 @@ export const getListAllAcademicAsignatureCourseByCourse = (campusId:string,cours
           query: QUERY_GET_ALL_ACADEMIC_ASIGNATURE_COURSE,
           variables:{
             courseId,
-            allData: fullAccess
+            allData: fullAccess ? fullAccess : false,
           },
         })
         .then((result: any) => {

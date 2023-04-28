@@ -11,7 +11,7 @@ import { Loader } from '../../common/Loader';
 import { permissionsMenu } from '../../../helpers/DataTransformations';
 import { useLocation } from 'react-router';
 
-const GradeCourseAssigmentGradeList = (props: any) => {
+const GradeCourseStudentsGradeList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
   const [columns, setColumns] = useState(COLUMN_LIST);
   const [modalOpen, setModalOpen] = useState(false);
@@ -85,10 +85,10 @@ const GradeCourseAssigmentGradeList = (props: any) => {
   const additionalFunction = async (item: any, btn: any) => {
     switch (btn?.action) {
       case 'goToChildrenCourse':
-        goToChildren(`/gradeCourseAssigmentCourseList?academicGradeId=${item?.id}&gradeName=${item?.name}`);
+        goToChildren(`/gradeCourseStudentsCourseList?academicGradeId=${item?.id}&gradeName=${item?.name}`);
         break;
-      case 'goToChildrenGradeAssignment':
-        goToChildren(`/gradeAssignment?academicGradeId=${item.id}&gradeName=${item?.name}`);
+      case 'goToChildrenStudents':
+        goToChildren(`/studentGrade?gradeName=${item?.name}&gradeId=${item?.id}&fromGrade=true`);
         break;
       default:
         break;
@@ -151,11 +151,11 @@ const GradeCourseAssigmentGradeList = (props: any) => {
                 action: 'goToChildrenCourse',
               },
               {
-                id: 1,
-                label: 'Asignatura de grado',
-                color: 'info',
-                icon: 'simple-icon-link',
-                action: 'goToChildrenGradeAssignment',
+                id: 2,
+                label: 'Estudiantes',
+                color: 'warning',
+                icon: 'iconsminds-student-male-female',
+                action: 'goToChildrenStudents',
               },
             ]}
             withChildren={true}
@@ -178,4 +178,4 @@ const mapStateToProps = ({ loginReducer }: any) => {
   return { loginReducer };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(GradeCourseAssigmentGradeList);
+export default connect(mapStateToProps, mapDispatchToProps)(GradeCourseStudentsGradeList);

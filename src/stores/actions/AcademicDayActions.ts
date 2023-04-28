@@ -14,7 +14,7 @@ export const getListAllAcademicDay = (campusId:string, schoolId: string, schoolY
             campusId,
             schoolId,
             schoolYearId,
-            allData: fullAccess
+            allData: fullAccess ? fullAccess : false,
           },
         })
         .then((result: any) => {

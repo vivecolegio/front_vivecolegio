@@ -13,7 +13,7 @@ export const getListAllComponentEvaluative = (schoolId:string, schoolYearId:stri
           variables:{
             schoolId,
             schoolYearId,
-            allData: fullAccess
+            allData: fullAccess ? fullAccess : false,
           },
         })
         .then((result: any) => {

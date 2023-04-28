@@ -88,12 +88,6 @@ const GradeList = (props: any) => {
       case 'goToChildrenCourse':
         goToChildren(`/course?academicGradeId=${item?.id}&gradeName=${item?.name}`);
         break;
-      case 'goToChildrenGradeAssignment':
-        goToChildren(`/gradeAssignment?academicGradeId=${item.id}&gradeName=${item?.name}`);
-        break;
-      case 'goToChildrenStudents':
-        goToChildren(`/studentGrade?gradeName=${item?.name}&gradeId=${item?.id}&fromGrade=true`);
-        break;
       default:
         break;
     }
@@ -153,20 +147,6 @@ const GradeList = (props: any) => {
                 color: 'secondary',
                 icon: 'simple-icon-link',
                 action: 'goToChildrenCourse',
-              },
-              {
-                id: 1,
-                label: 'Asignatura de grado',
-                color: 'info',
-                icon: 'simple-icon-link',
-                action: 'goToChildrenGradeAssignment',
-              },
-              {
-                id: 2,
-                label: 'Estudiantes',
-                color: 'warning',
-                icon: 'iconsminds-student-male-female',
-                action: 'goToChildrenStudents',
               },
             ]}
             withChildren={true}

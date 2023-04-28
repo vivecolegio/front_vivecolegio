@@ -13,7 +13,7 @@ export const getListAllPerformanceLevel = (schoolId:string, schoolYearId:string,
           variables:{
             schoolId,
             schoolYearId,
-            allData: fullAccess
+            allData: fullAccess ? fullAccess : false,
           }
         })
         .then((result: any) => {

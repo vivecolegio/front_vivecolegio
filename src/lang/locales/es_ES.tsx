@@ -351,6 +351,11 @@ const esMessages = {
   'menu.reportSpreadsheetAccumulatedAverageCourseCourseList': 'Planilla Consolidado Promedios',
   'forms.active': 'Activo',
   'forms.campus': 'Sede',
+  'menu.gradeCourseAssigmentGradeList': 'Asignacion Grados',
+  'menu.gradeCourseAssigmentCourseList': 'Asignacion Cursos',
+
+  'menu.gradeCourseStudentsGradeList': 'Estudiantes Grados',
+  'menu.gradeCourseStudentsCourseList': 'Estudiantes Cursos',
 };
 
 export default esMessages;

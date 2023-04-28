@@ -15,7 +15,7 @@ export const getListAllCourse = (campusId:string, academicGradeId: string, schoo
             campusId,
             academicGradeId,
             schoolId,
-            allData: fullAccess
+            allData: fullAccess ? fullAccess : false,
           },
         })
         .then((result: any) => {

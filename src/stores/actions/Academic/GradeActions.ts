@@ -13,7 +13,7 @@ export const getListAllGrade = (schoolId:string,  schoolYearId:string, fullAcces
           variables:{
             schoolId,
             schoolYearId,
-            allData: fullAccess
+            allData: fullAccess ? fullAccess : false,
           },
         })
         .then((result: any) => {

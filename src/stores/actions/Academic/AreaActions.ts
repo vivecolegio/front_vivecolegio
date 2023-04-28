@@ -13,7 +13,7 @@ export const getListAllAcademicArea = (schoolId:string, schoolYearId:string, ful
           variables:{
             schoolId,
             schoolYearId,
-            allData: fullAccess
+            allData: fullAccess ? fullAccess : false,
           }
         })
         .then((result: any) => {

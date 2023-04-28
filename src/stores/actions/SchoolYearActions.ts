@@ -13,7 +13,7 @@ export const getListAllSchoolYear = (schoolId:string, fullAccess: boolean) => {
           query: QUERY_GET_ALL_SCHOOL_YEAR,
           variables:{
             schoolId,
-            allData: fullAccess
+            allData: fullAccess ? fullAccess : false,
           }
         })
         .then((result: any) => {

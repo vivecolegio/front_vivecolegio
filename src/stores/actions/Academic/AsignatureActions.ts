@@ -14,7 +14,7 @@ export const getListAllAcademicAsignature = (schoolId:string, academicAreaId: st
             schoolId,
             academicAreaId,
             schoolYearId,
-            allData: fullAccess
+            allData: fullAccess ? fullAccess : false,
           },
           
         })

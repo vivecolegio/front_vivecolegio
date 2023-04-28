@@ -13,7 +13,7 @@ export const getListAllModality = (schoolId:string, schoolYearId:string, fullAcc
           variables:{
             schoolId,
             schoolYearId,
-            allData: fullAccess
+            allData: fullAccess ? fullAccess : false,
           }
         })
         .then((result: any) => {

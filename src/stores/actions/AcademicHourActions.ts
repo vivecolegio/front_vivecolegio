@@ -12,7 +12,7 @@ export const getListAllAcademicHour = (academicDayId: string, fullAccess: boolea
           query: QUERY_GET_ALL_ACADEMIC_HOUR,
           variables:{
             academicDayId,
-            allData: fullAccess
+            allData: fullAccess ? fullAccess : false,
           },
         })
         .then((result: any) => {

@@ -13,7 +13,7 @@ export const getListAllAcademicPeriod = (schoolId:string, schoolYearId:string, f
           variables:{
             schoolId,
             schoolYearId,
-            allData: fullAccess
+            allData: fullAccess ? fullAccess : false,
           },
         })
         .then((result: any) => {
