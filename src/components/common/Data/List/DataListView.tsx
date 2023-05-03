@@ -38,7 +38,7 @@ const DataListView = ({
     return () => {
       clearInterval(sampleInterval);
     };
-  }, []);
+  }, [secs]);
 
   return (
     <Colxx xxs="12" className="mb-3">
