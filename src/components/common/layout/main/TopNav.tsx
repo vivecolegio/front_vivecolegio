@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { NavLink } from 'react-router-dom';
+import Select from 'react-select';
 import { DropdownItem, DropdownMenu, DropdownToggle, Input, UncontrolledDropdown } from 'reactstrap';
 
 import ProfileImg from '../../../../assets/img/profiles/empty.png';
@@ -17,8 +18,6 @@ import MenuIcon from './topNav/MenuIcon';
 import MobileMenuIcon from './topNav/MobileMenuIcon';
 import TopnavDarkSwitch from './topNav/TopnavDarkSwitch';
 import TopnavNotifications from './topNav/TopnavNotifications';
-import Select from 'react-select';
-import SchoolList from '../../../app/School/SchoolList';
 
 const TopNav = (props: any) => {
   const [schoolList, setSchoolList] = useState(null);
@@ -187,22 +186,20 @@ const TopNav = (props: any) => {
   };
 
   const changeSchool = (data: any) => {
-    props?.changeSchool(data, props?.loginReducer)
+    props?.changeSchool(data, props?.loginReducer).then(() => {
+      navigate('/home');
+    });
   };
 
   const changeSchoolYear = (data: any) => {
-    props?.changeSchoolYear(data, props?.loginReducer);
+    props?.changeSchoolYear(data, props?.loginReducer).then(() => {
+      navigate('/home');
+    });
   };
-
-  const refresh = () => window.location.reload();
 
   useEffect(() => {
     setSchoolList(props?.loginReducer?.schoolMulti);
   }, []);
-
-  // useEffect(() => {
-  //   refresh();
-  // }, [props])
 
   const filterSchoolList = (filter: any) => {
     let schoolListFilter = props?.loginReducer?.schoolMulti.filter((data: any) => {
@@ -310,14 +307,18 @@ const TopNav = (props: any) => {
             <UncontrolledDropdown className="dropdown-menu-right">
               <DropdownToggle className="p-0" color="empty">
                 <p className="text-muted text-small mb-1"> Año Lectivo:</p>
-                <p className="text-muted text-small mb-1 font-weight-bold"> {props?.loginReducer?.schoolYearName} {props?.loginReducer?.schoolYear}</p>
+                <p className="text-muted text-small mb-1 font-weight-bold"> {props?.loginReducer?.schoolYearName}</p>
               </DropdownToggle>
               {props?.loginReducer?.schoolData ?
                 <DropdownMenu className="mt-3" end>
                   {props?.loginReducer?.schoolData?.schoolYear?.map((schoolYear: any) => {
                     return (
                       <>
-                        <DropdownItem onClick={() => { changeSchoolYear(schoolYear) }}>{schoolYear?.schoolYear} {schoolYear?.id}</DropdownItem>
+                        {schoolYear.id !== props?.loginReducer?.schoolYear ? (
+                          <DropdownItem onClick={() => { changeSchoolYear(schoolYear) }}>{schoolYear?.schoolYear}</DropdownItem>
+                        ) : (
+                          ''
+                        )}
                       </>
                     );
                   })}
@@ -341,7 +342,13 @@ const TopNav = (props: any) => {
                     <DropdownItem divider />
                     {schoolList?.map((school: any) => {
                       return (
-                        <DropdownItem onClick={() => { changeSchool(school) }}>{school?.name} ({school?.daneCode})</DropdownItem>
+                        <>
+                          {school.id !== props?.loginReducer?.schoolId ? (
+                            <DropdownItem onClick={() => { changeSchool(school) }}>{school?.name} ({school?.daneCode})</DropdownItem>
+                          ) : (
+                            ''
+                          )}
+                        </>
                       );
                     })}
                   </DropdownMenu>
@@ -412,8 +419,8 @@ const TopNav = (props: any) => {
                   <DropdownItem>
                     <IntlMessages id="layouts.faq" />
                   </DropdownItem>
-                </NavLink> */}
-                {/* <NavLink to="/tutorials">
+                </NavLink>
+                <NavLink to="/tutorials">
                   <DropdownItem>
                     <IntlMessages id="layouts.tutorials" />
                   </DropdownItem>

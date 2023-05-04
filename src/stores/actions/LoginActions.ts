@@ -123,7 +123,7 @@ export const changeSchool = (data: any, dataReducer:any) => {
   return async (dispatch: any) => {
     try {
       if(data !=null){
-        dispatch({
+        await dispatch({
           type: LOGIN,
           payload: {
             ...dataReducer,
@@ -147,7 +147,7 @@ export const changeSchoolYear = (data: any, dataReducer:any) => {
   return async (dispatch: any) => {
     try {
       if(data !=null){
-        dispatch({
+        await dispatch({
           type: LOGIN,
           payload: {
             ...dataReducer,
