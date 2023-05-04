@@ -310,7 +310,10 @@ const TopNav = (props: any) => {
                 <p className="text-muted text-small mb-1 font-weight-bold"> {props?.loginReducer?.schoolYearName}</p>
               </DropdownToggle>
               {props?.loginReducer?.schoolData ?
-                <DropdownMenu className="mt-3" end>
+                <DropdownMenu className="mt-3" end style={{
+                  overflowY: "scroll",
+                  maxHeight: "60vh"
+                }}>
                   {props?.loginReducer?.schoolData?.schoolYear?.map((schoolYear: any) => {
                     return (
                       <>
