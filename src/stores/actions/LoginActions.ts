@@ -131,6 +131,7 @@ export const changeSchool = (data: any, dataReducer:any) => {
             schoolId: data.id ? data.id : "",
             schoolYear: data.schoolYear ? data.schoolYear[0]?.id : "",
             schoolYearName: data?.schoolYear ?  data.schoolYear[0]?.schoolYear : "",
+            schoolData: data ?  data: "",
           },
         });
       };
