@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { NavLink } from 'react-router-dom';
-import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
+import { DropdownItem, DropdownMenu, DropdownToggle, Input, UncontrolledDropdown } from 'reactstrap';
 
 import ProfileImg from '../../../../assets/img/profiles/empty.png';
 import { isDarkSwitchActive, menuHiddenBreakpoint } from '../../../../constants/defaultValues';
@@ -17,8 +17,12 @@ import MenuIcon from './topNav/MenuIcon';
 import MobileMenuIcon from './topNav/MobileMenuIcon';
 import TopnavDarkSwitch from './topNav/TopnavDarkSwitch';
 import TopnavNotifications from './topNav/TopnavNotifications';
+import Select from 'react-select';
+import SchoolList from '../../../app/School/SchoolList';
 
 const TopNav = (props: any) => {
+  const [schoolList, setSchoolList] = useState(null);
+
   const [topNavState, setTopNavState] = useState({
     isInFullScreen: false,
     searchKeyword: '',
@@ -183,17 +187,29 @@ const TopNav = (props: any) => {
   };
 
   const changeSchool = (data: any) => {
-    props?.changeSchool(data, props?.loginReducer);
+    props?.changeSchool(data, props?.loginReducer)
   };
 
   const changeSchoolYear = (data: any) => {
     props?.changeSchoolYear(data, props?.loginReducer);
-    // console.log(data);
-    // console.log(props?.loginReducer);
-    refresh();
   };
 
   const refresh = () => window.location.reload();
+
+  useEffect(() => {
+    setSchoolList(props?.loginReducer?.schoolMulti);
+  }, []);
+
+  // useEffect(() => {
+  //   refresh();
+  // }, [props])
+
+  const filterSchoolList = (filter: any) => {
+    let schoolListFilter = props?.loginReducer?.schoolMulti.filter((data: any) => {
+      return data?.name?.includes(filter?.target?.value) || data?.daneCode?.includes(filter?.target?.value);
+    });
+    setSchoolList(schoolListFilter)
+  }
 
   return (
     <>
@@ -294,22 +310,18 @@ const TopNav = (props: any) => {
             <UncontrolledDropdown className="dropdown-menu-right">
               <DropdownToggle className="p-0" color="empty">
                 <p className="text-muted text-small mb-1"> Año Lectivo:</p>
-                <p className="text-muted text-small mb-1 font-weight-bold"> {props?.loginReducer?.schoolYearName}</p>
+                <p className="text-muted text-small mb-1 font-weight-bold"> {props?.loginReducer?.schoolYearName} {props?.loginReducer?.schoolYear}</p>
               </DropdownToggle>
-              {props?.loginReducer?.schoolData &&
+              {props?.loginReducer?.schoolData ?
                 <DropdownMenu className="mt-3" end>
                   {props?.loginReducer?.schoolData?.schoolYear?.map((schoolYear: any) => {
                     return (
                       <>
-                        {schoolYear.id !== props?.loginReducer?.schoolYear ? (
-                          <DropdownItem onClick={() => { changeSchoolYear(schoolYear) }}>{schoolYear?.schoolYear}</DropdownItem>
-                        ) : (
-                          ''
-                        )}
+                        <DropdownItem onClick={() => { changeSchoolYear(schoolYear) }}>{schoolYear?.schoolYear} {schoolYear?.id}</DropdownItem>
                       </>
                     );
                   })}
-                </DropdownMenu>
+                </DropdownMenu> : <></>
               }
             </UncontrolledDropdown>
           </div>
@@ -321,16 +333,15 @@ const TopNav = (props: any) => {
                   <p className="text-muted text-small mb-1 font-weight-bold"> {props?.loginReducer?.school}</p>
                 </DropdownToggle>
                 {props?.loginReducer?.schoolMulti?.length > 1 &&
-                  <DropdownMenu className="mt-3" end>
-                    {props?.loginReducer?.schoolMulti?.map((school: any) => {
+                  <DropdownMenu className="mt-3" end style={{
+                    overflowY: "scroll",
+                    maxHeight: "60vh"
+                  }}>
+                    <DropdownItem header><Input className="form-control" onChange={filterSchoolList} /></DropdownItem>
+                    <DropdownItem divider />
+                    {schoolList?.map((school: any) => {
                       return (
-                        <>
-                          {school.id !== props?.loginReducer?.schoolId ? (
-                            <DropdownItem onClick={() => { changeSchool(school) }}>{school?.name}</DropdownItem>
-                          ) : (
-                            ''
-                          )}
-                        </>
+                        <DropdownItem onClick={() => { changeSchool(school) }}>{school?.name} ({school?.daneCode})</DropdownItem>
                       );
                     })}
                   </DropdownMenu>

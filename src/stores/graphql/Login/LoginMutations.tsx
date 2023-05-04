@@ -17,6 +17,7 @@ export const MUTATION_LOGIN = gql`
       schools {
         id
         name 
+        daneCode
         schoolYear {
           id
           schoolYear
