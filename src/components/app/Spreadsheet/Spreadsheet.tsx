@@ -5,7 +5,7 @@ import { useDownloadExcel } from 'react-export-table-to-excel';
 import { connect } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
-import ReactTooltip from "react-tooltip";
+import { Tooltip as ReactTooltip } from 'react-tooltip';
 import { Badge, Input, Label, Progress, Tooltip } from 'reactstrap';
 
 import { calculateDaysTwoDate, compare } from '../../../helpers/DataTransformations';
@@ -428,7 +428,7 @@ const SpreadsheetList = (props: any) => {
                                             className="iconsminds-idea-2 text-warning font-20"
                                           ></i>
                                         </a>
-                                        <ReactTooltip id={e?.id} type='info' effect='solid'>
+                                        <ReactTooltip id={e?.id} variant='info'>
                                           <span>{e?.title}</span>
                                         </ReactTooltip>
                                       </th>

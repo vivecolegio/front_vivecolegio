@@ -199,8 +199,8 @@ const AcademicHourCreateEdit = (props: any) => {
                   disableClock={true}
                   format="HH:mm"
                   onChange={(date) => {
-                    setValue('startTime', date as Date);
-                    setStartTime(date as Date);
+                    setValue('startTime', date as unknown as Date);
+                    setStartTime(date as unknown as Date);
                     trigger('startTime')
                   }}
                 />
@@ -215,8 +215,8 @@ const AcademicHourCreateEdit = (props: any) => {
                   disableClock={true}
                   format="HH:mm"
                   onChange={(date) => {
-                    setValue('endTime', date as Date);
-                    setEndTime(date as Date);
+                    setValue('endTime', date as unknown as Date);
+                    setEndTime(date as unknown as Date);
                     trigger('endTime')
                   }}
                 />

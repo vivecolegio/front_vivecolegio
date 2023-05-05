@@ -4,7 +4,7 @@ import { downloadExcel, DownloadTableExcel, useDownloadExcel } from 'react-expor
 import { connect } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
-import ReactTooltip from 'react-tooltip';
+import { Tooltip as ReactTooltip } from 'react-tooltip';
 import { Badge, Progress } from 'reactstrap';
 
 import { calculateDaysTwoDate, compare, compareOrderAcademicArea } from '../../../helpers/DataTransformations';
@@ -422,7 +422,7 @@ const SpreadsheetCourse = (props: any) => {
                                           className="iconsminds-idea-2 text-warning font-20"
                                         ></i>
                                       </a>
-                                      <ReactTooltip id={e?.node?.id} type='info' effect='solid'>
+                                      <ReactTooltip id={e?.node?.id} variant='info'>
                                         <span>{e?.node?.academicAsignature?.name}</span>
                                         {/* {item?.abbreviation ? item?.abbreviation : item?.name} */}
                                       </ReactTooltip>
