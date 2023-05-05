@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Card, Row } from 'reactstrap';
-
+import { injectIntl } from 'react-intl';
 import * as LoginActions from '../../../../stores/actions/LoginActions';
 import { Colxx } from '../../CustomBootstrap';
 
@@ -10,15 +10,15 @@ const Basic = (props: any) => {
 
   return (
     <>
-      {props.children}     
+      {props.children}
     </>
   );
 };
 
-const mapDispatchToProps = {
-  ...LoginActions,
-};
+// const mapDispatchToProps = {
+//   ...LoginActions,
+// };
 
-const mapStateToProps = ({ loginReducer }: any) => {return loginReducer};
+// const mapStateToProps = ({ loginReducer }: any) => { return loginReducer };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Basic);
+export default injectIntl(Basic);

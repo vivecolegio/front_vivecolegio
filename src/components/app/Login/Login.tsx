@@ -104,7 +104,7 @@ const Login = (props: any) => {
                       </Label>
                       <Input {...usernameRest} innerRef={usernameRef} className="form-control" />
                       {errors?.email && (
-                        <div className="invalid-feedback d-block">{errors?.username}</div>
+                        <div className="invalid-feedback d-block">{errors?.username?.toString()}</div>
                       )}
                     </FormGroup>
                     <FormGroup className="form-group has-float-label">
@@ -118,7 +118,7 @@ const Login = (props: any) => {
                         className="form-control"
                       />
                       {errors?.password && (
-                        <div className="invalid-feedback d-block">{errors?.password}</div>
+                        <div className="invalid-feedback d-block">{errors?.password?.toString()}</div>
                       )}
                     </FormGroup>
                     <div className="d-flex justify-content-center flex-column align-items-center">
