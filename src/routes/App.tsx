@@ -551,6 +551,12 @@ const ValuationReferents = React.lazy(() => {
   );
 });
 
+const ValuationReferentsTeacher = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "ValuationReferentsTeacher" */ '../components/app/ValuationReferents/ValuationReferentsTeacher'
+  );
+});
+
 const BasicLearningDutiesList = React.lazy(() => {
   return import(
     /* webpackChunkName: "BasicLearningDutiesList" */ '../components/app/BasicLearningDuties/BasicLearningDutiesList'
@@ -783,7 +789,7 @@ const App = (props: any) => {
                     <Route path="/myCourse" element={<CoursesTeacherList />} />
                     <Route
                       path="/valuationReferentsTeacher"
-                      element={<AcademicAsignatureCourseList />}
+                      element={<ValuationReferentsTeacher />}
                     />
                     <Route
                       path="/academicAsignatureCourseBasic"

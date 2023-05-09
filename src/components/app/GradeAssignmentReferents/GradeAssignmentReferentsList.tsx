@@ -26,6 +26,7 @@ const GradeAssignmentReferentsList = (props: any) => {
       setDataTable(
         listData.map((c: any) => {
           c.node.grade_format = c.node.academicGrade ? c.node.academicGrade.name : '';
+          c.node.area_format = c.node.academicAsignature?.academicArea ? c.node.academicAsignature?.academicArea?.name : '';
           c.node.asignature_format = c.node.academicAsignature
             ? c.node.academicAsignature.name
             : '';

@@ -210,7 +210,7 @@ export const getAcademicPeriodsLearning = (schoolId: string, schoolYearId: strin
   };
 };
 
-export const getDropdownsLearning = (schoolId: string, academicAsignatureId: string, academicGradeId: string) => {
+export const getDropdownsLearning = (schoolId: string, academicAsignatureId: string, academicGradeId: string, schoolYearId: string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
@@ -221,6 +221,7 @@ export const getDropdownsLearning = (schoolId: string, academicAsignatureId: str
             schoolId,
             academicAsignatureId,
             academicGradeId,
+            schoolYearId
           },
         })
         .then((result: any) => {

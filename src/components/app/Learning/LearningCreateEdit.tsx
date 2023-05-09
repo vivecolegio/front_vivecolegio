@@ -127,7 +127,7 @@ const LearningCreateEdit = (props: any) => {
   };
 
   const getDropdowns = async () => {
-    props.getDropdownsLearning(props?.loginReducer?.schoolId, asignatureId, gradeId).then((data: any) => {
+    props.getDropdownsLearning(props?.loginReducer?.schoolId, asignatureId, gradeId, props?.loginReducer?.schoolYear,).then((data: any) => {
       setStandardsList(
         data.dataStandards.edges.map((c: any) => {
           return { label: c.node.standard, value: c.node.id, key: c.node.id };

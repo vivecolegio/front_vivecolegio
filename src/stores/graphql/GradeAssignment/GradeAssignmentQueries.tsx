@@ -47,6 +47,10 @@ export const QUERY_GET_ALL_GRADE_ASSIGNMENT_BY_ASIGNATURE = gql`
             id
             name
             generalAcademicAsignatureId
+            academicArea {
+              id
+              name
+            }
           }           
           academicGradeId 
           academicGrade {             
