@@ -152,7 +152,6 @@ const SpreadsheetRecoveryPlanList = (props: any) => {
                     .then((resp: any) => {
                       avrgs = avrgs.concat(resp.data.edges);
                       setAverages(avrgs);
-                      console.log(avrgs)
                     });
                   await props
                     .getAllExperienceLearningAcademicAsignatureCourse(

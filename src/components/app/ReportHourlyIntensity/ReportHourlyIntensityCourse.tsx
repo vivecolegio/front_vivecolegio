@@ -144,7 +144,6 @@ const ReportHourlyIntensityCourse = (props: any) => {
 
   const saveBlur = async (item: any, value: any) => {
     if (value.length > 0) {
-      console.log(item, value);
       let data: any = {}
       data.hourlyIntensity = value;
       await props.updateAcademicAsignatureCourseHourltIntensity(data, item?.id?.toString(),).then(() => {

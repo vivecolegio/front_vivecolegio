@@ -139,7 +139,6 @@ const ReportHourlyIntensityCourseList = (props: any) => {
             <div>
               <button
                 onClick={() => {
-                  console.log("a")
                   return goToChildren(`/reportHourlyIntensityGrade?academicGradeId=${academicGradeId}&gradeName=${gradeName}`);
                 }}
                 key={academicGradeId}

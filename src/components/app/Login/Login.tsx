@@ -28,10 +28,8 @@ const Login = (props: any) => {
   let navigate = useNavigate();
 
   useEffect(() => {
-    // console.log(props);
     setLoading(false);
     if (props.loginReducer.userId?.length > 0) {
-      console.log("schoolYearIDLogin", props?.loginReducer?.schoolYear);
       props.me(props?.loginReducer?.schoolYear).then(() => {
         navigate('/home');
       })

@@ -38,7 +38,6 @@ const ExperienceLearningRubricCriteriaCreateEdit = (props: any) => {
     if (props?.data?.id) {
       if (props?.data?.experienceLearningRubricCriteriaPerformanceLevel !== undefined && props?.data?.experienceLearningRubricCriteriaPerformanceLevel != null) {
         let data = [...props?.data?.experienceLearningRubricCriteriaPerformanceLevel.sort(comparePerformanceLevelsTopScoreCriteriaRubric)]
-        console.log(data);
         setCriteriaPerformances(data.map((c: any) => {
           return {
             performanceLevelId: c.performanceLevelId,

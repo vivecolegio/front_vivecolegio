@@ -142,7 +142,7 @@ const Profile = (props: any) => {
   };
 
   const me = async () => {
-    await props.me().then((dataResp: any) => {});
+    await props.me().then((dataResp: any) => { });
   };
 
   const { ref: passwordRef, ...passwordRest } = register('password', {
@@ -408,7 +408,7 @@ const Profile = (props: any) => {
                           ...{ documentNumber: data.target.value },
                         });
                         setNewUser({ ...newUser, ...{ documentNumber: data.target.value } });
-                        console.log(newUser);
+
                       }}
                     />
                     <RequiredMessagesCustom formState={formState} register={'documentNumber'} />

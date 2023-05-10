@@ -45,7 +45,7 @@ const CoursesTeacherList = (props: any) => {
   };
 
   const additionalFunction = async (item: any, btn: any) => {
-    console.log(item)
+
     switch (btn?.action) {
       case 'goToChildrenStudents':
         goToChildren(`/studentCourse?courseId=${item.id}&courseName=${item.name}&gradeName=${item?.academicGrade?.name}&gradeId=${item?.academicGrade?.id}`);

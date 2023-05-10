@@ -567,7 +567,6 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
                                                       } else {
                                                         valuation = valuationAsignatureCalculate?.node;
                                                       }
-                                                      console.log(valuation)
                                                       if (valuation == null) {
                                                         valuation = {};
                                                         valuation.studentId = itemStudent?.id;

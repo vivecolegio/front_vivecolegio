@@ -110,7 +110,6 @@ const ReportHourlyIntensityGrade = (props: any) => {
     });
     await props.getListAllCourse(props?.loginReducer?.campusId, academicGradeId ? academicGradeId : '', props?.loginReducer?.schoolId).then(async (courses: any) => {
       setCourses(courses);
-      console.log(courses)
       if (courses?.length > 0) {
         let asignaturesCourses: any = {};
         for (let course of courses) {

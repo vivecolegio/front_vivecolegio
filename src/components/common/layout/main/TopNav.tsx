@@ -202,7 +202,6 @@ const TopNav = (props: any) => {
   }, []);
 
   const filterSchoolList = (filter: any) => {
-    console.log(filter)
     let schoolListFilter = props?.loginReducer?.schoolMulti.filter((data: any) => {
       return data?.name?.includes(filter?.target?.value?.toUpperCase()) || data?.daneCode?.includes(filter?.target?.value);
     });

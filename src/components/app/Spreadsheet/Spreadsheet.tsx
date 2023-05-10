@@ -137,7 +137,6 @@ const SpreadsheetList = (props: any) => {
               .then(async (notesFinal: any) => {
                 avrgsFinal = avrgsFinal.concat(notesFinal.data.edges);
                 setAveragesFinal(avrgsFinal);
-                console.log(avrgsFinal);
               });
             await props
               .getListAllComponentEvaluativeAcademicAsignatureCourse(academicAsignatureCourseId)

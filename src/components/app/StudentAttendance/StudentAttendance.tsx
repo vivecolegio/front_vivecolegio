@@ -124,7 +124,6 @@ const StudentAttendance = (props: any) => {
             await props
               .getAllStudentAttendance(periodId, academicAsignatureCourseId)
               .then(async (notesFinal: any) => {
-                console.log(notesFinal.data.edges)
                 avrgsFinal = avrgsFinal.concat(notesFinal.data.edges);
                 setValuations(avrgsFinal);
                 setLoading(false);

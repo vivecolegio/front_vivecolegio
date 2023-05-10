@@ -141,7 +141,6 @@ const StudentBehaviour = (props: any) => {
                           return { label: c.node.name, value: c.node.id, key: c.node.id };
                         }),
                       );
-                      console.log(notesFinal.data.edges)
                       avrgsFinal = avrgsFinal.concat(notesFinal.data.edges);
                       setValuations(avrgsFinal);
                       setLoading(false);
@@ -166,7 +165,6 @@ const StudentBehaviour = (props: any) => {
                       setProgress(progress);
                       setAverage(average / progress);
                       setValuations([...avrgsFinal.sort(compare)]);
-                      console.log(JSON.parse(JSON.stringify(avrgsFinal)));
                       setValuationsBase(JSON.parse(JSON.stringify(avrgsFinal)));
                     });
                 });
