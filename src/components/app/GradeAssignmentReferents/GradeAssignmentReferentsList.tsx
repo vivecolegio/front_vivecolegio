@@ -60,7 +60,6 @@ const GradeAssignmentReferentsList = (props: any) => {
   }
 
   const additionalFunction = async (item: any, btn: any) => {
-    // console.log(item)
     switch (btn?.action) {
       case 'goToChildrenStandard':
         goToChildren(

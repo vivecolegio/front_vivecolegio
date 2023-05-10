@@ -45,24 +45,22 @@ const ForumApp = (props: any) => {
 
 
   useEffect(() => {
-    const  id  = params.get('id');
+    const id = params.get('id');
     props.dataForum(id).then((res: any) => {
-      //console.log(res)
       setData(res.data);
       getComments();
     });
   }, []);
-  
+
   const getComments = async () => {
-    const  id  = params.get('id');
+    const id = params.get('id');
     props.dataForumInteraction(id).then((res: any) => {
-      //console.log(res?.data?.edges, 'comentarios')
       setComments(res?.data?.edges);
     });
   };
 
   const saveComment = async (dataSend: any) => {
-    const  id  = params.get('id');
+    const id = params.get('id');
     dataSend.forumId = id;
     props.saveIntetactionForum(dataSend).then((listData: any) => {
       getComments();
@@ -105,7 +103,7 @@ const ForumApp = (props: any) => {
                       active: activeTab === 'details',
                       'nav-link': true,
                     })}
-                    onClick={() => {return setActiveTab('details')}}
+                    onClick={() => { return setActiveTab('details') }}
                   >
                     <IntlMessages id="layouts.details" />
                   </a>
@@ -116,10 +114,10 @@ const ForumApp = (props: any) => {
                       active: activeTab === 'comments',
                       'nav-link': true,
                     })}
-                    onClick={() => {return setActiveTab('comments')}}
+                    onClick={() => { return setActiveTab('comments') }}
                   >
                     <IntlMessages id="layouts.comments" />
-                    ({comments?.length || 0 })
+                    ({comments?.length || 0})
                   </a>
                 </NavItem>
               </Nav>
@@ -140,24 +138,24 @@ const ForumApp = (props: any) => {
                   <Colxx sm="12">
                     <CardBody>
                       {comments?.length > 0 ?
-                      <>
-                        {comments.map((item: any) => {
-                          return (
-                            <CommentWithLikes
-                              className={''}
-                              data={item?.node}
-                              key={`comments_${item.node.id}`}
-                            />
-                          );
-                        })}
-                      </>
-                      : ''}
+                        <>
+                          {comments.map((item: any) => {
+                            return (
+                              <CommentWithLikes
+                                className={''}
+                                data={item?.node}
+                                key={`comments_${item.node.id}`}
+                              />
+                            );
+                          })}
+                        </>
+                        : ''}
                       <InputGroup className="comment-container">
                         <InputGroup className="input-group-prepend">
                           <Input {...commentsRest} innerRef={commentsRef} placeholder="Añadir comentarios" />
                           <Button color="primary" className="btn-rounded-preppend" onClick={() => {
-                              return saveComment(methods.getValues());
-                            }}>
+                            return saveComment(methods.getValues());
+                          }}>
                             <span className="d-inline-block">
                               {<IntlMessages id="pages.send" />}
                             </span>{' '}

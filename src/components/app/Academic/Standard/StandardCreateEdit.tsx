@@ -158,7 +158,6 @@ const StandardCreateEdit = (props: any) => {
   const getStandards = async (generalAcademicCycleId: any, generalAcademicAsignatureId: any) => {
     if (generalAcademicCycleId && generalAcademicAsignatureId) {
       props.getListAllGeneralStandard(generalAcademicCycleId, generalAcademicAsignatureId).then((data: any) => {
-        //console.log(data);
         setStandardsList(
           data.map((c: any) => {
             return { label: c.node.standard, value: c.node.id, key: c.node.id };

@@ -45,7 +45,6 @@ const GradeList = (props: any) => {
   };
 
   const onSubmit = async (dataForm: any) => {
-    //console.log(dataForm);
     if (data === null) {
       await props.saveNewGrade(dataForm).then((id: any) => {
         if (id !== undefined) {

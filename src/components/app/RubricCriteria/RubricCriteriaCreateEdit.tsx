@@ -83,7 +83,6 @@ const ExperienceLearningRubricCriteriaCreateEdit = (props: any) => {
         );
         setPerformanceLevels(
           data?.dataPerformanceLevels?.edges.map((c: any) => {
-            //console.log(c.node);
             return {
               label: `${c?.node?.name}: ${c?.node?.minimumScore} - ${c?.node?.topScore}`,
               name: c?.node?.name,

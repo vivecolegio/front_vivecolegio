@@ -108,9 +108,7 @@ const AcademicAsignatureCourseCreateEdit = (props: any) => {
   };
 
   const getDropdowns = async () => {
-    //console.log(props?.loginReducer?.campusId)
     props.getDropdownsAcademicAsignatureCourse(props?.loginReducer?.schoolId, props?.loginReducer?.campusId).then((data: any) => {
-      //console.log(data);
       setCampusList(
         data.dataCampus.edges.map((c: any) => {
           return { label: c.node.name, value: c.node.id, key: c.node.id };

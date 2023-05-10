@@ -74,7 +74,6 @@ const ForumListApp = (props: any) => {
 
 
   const onSubmit = async (dataForm: any, data: any) => {
-    //console.log(dataForm);
     dataForm.schoolId = props?.loginReducer?.schoolId;
     if (data === null) {
       await props.saveNewForum(dataForm).then((id: any) => {
@@ -169,7 +168,6 @@ const ForumListApp = (props: any) => {
                           color="blue"
                           size="xs"
                           onClick={() => {
-                            //console.log(methods.getValues())
                             return onSubmit(methods.getValues(), null);
                           }}
                         >

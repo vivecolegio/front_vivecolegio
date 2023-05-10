@@ -149,7 +149,6 @@ const SpreadsheetCourse = (props: any) => {
                       })
                   );
                 }
-                //console.log(areasAux);
                 const ids = areasAux.map(o => o?.id)
                 const count: any = {};
                 ids.forEach(element => {
@@ -173,11 +172,9 @@ const SpreadsheetCourse = (props: any) => {
               });
             await Promise.all(promisesListAreas).then(() => {
               setValuationsArea(ntsArea);
-              //console.log(ntsArea)
             });
             await Promise.all(promisesListAsignatures).then(() => {
               setValuations(nts);
-              // console.log(nts)
               setLoading(false);
             });
 
@@ -241,7 +238,6 @@ const SpreadsheetCourse = (props: any) => {
   };
 
   const download = async () => {
-    // console.log(tableRef)
     if (countDownload != 0) {
       onDownload();
     }
@@ -589,7 +585,6 @@ const SpreadsheetCourse = (props: any) => {
                           })}
 
                           {valuations?.map((item2: any, index2: any) => {
-                            // console.log("acas")
                             return (
                               <>
                                 {item2.experiences.length > 0 ?

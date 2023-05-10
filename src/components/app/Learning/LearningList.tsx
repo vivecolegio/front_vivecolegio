@@ -68,7 +68,6 @@ const Learning = (props: any) => {
   };
 
   const onSubmit = async (dataForm: any) => {
-    //console.log(dataForm);
     if (data === null) {
       await props.saveNewLearning(dataForm).then((id: any) => {
         if (id !== undefined) {
@@ -146,7 +145,6 @@ const Learning = (props: any) => {
     } else {
       academicPeriod = [item?.node?.id];
     }
-    //console.log(academicPeriod)
     setAcademicPeriod(academicPeriod);
     setDataTable(null);
     await getDataTable(academicPeriod);

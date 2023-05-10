@@ -181,7 +181,6 @@ const SpreadsheetAccumulatedCourse = (props: any) => {
   };
 
   const download = async () => {
-    // console.log(tableRef)
     if (countDownload != 0) {
       onDownload();
     }
@@ -467,7 +466,6 @@ const SpreadsheetAccumulatedCourse = (props: any) => {
                           })}
 
                           {valuations?.map((item2: any, index2: any) => {
-                            // console.log("acas")
                             return (
                               <>
                                 {item2.experiences.length > 0 ?

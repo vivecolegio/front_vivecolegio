@@ -51,7 +51,6 @@ const ReportSpreadsheetAccumulatedAreaCourseCourseList = (props: any) => {
   };
 
   const onSubmit = async (dataForm: any) => {
-    //console.log(dataForm);
     if (data === null) {
       await props.saveNewCourse(dataForm).then((id: any) => {
         if (id !== undefined) {

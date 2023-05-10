@@ -63,7 +63,6 @@ const ExperienceLearningSelfAssessmentValuationList = (props: any) => {
           learningId,
         )
         .then(async (listData: any) => {
-          //console.log(listData);
           let valuationsArr: any = [];
           // get performance levels
           await props

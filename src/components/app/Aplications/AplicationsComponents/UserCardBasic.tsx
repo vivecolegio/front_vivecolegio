@@ -5,16 +5,13 @@ import { getInitialsName } from '../../../../helpers/Utils';
 import ThumbnailImage from '../AplicationsComponents/ThumbnailImage';
 
 const UserCardBasic = (props: any) => {
-  
+
   useEffect(() => {
-    //console.log(props.itemSelected)
   }, [props.itemSelected]);
 
   return (
     <Card className="d-flex flex-row mb-4 w-340" onClick={() => {
-      //console.log(props)       
-        props.setItem(props.data.key);     
-        //console.log(props.data.key)       
+      props.setItem(props.data.key);
     }}>
       <span className="d-flex">
         {/* <ThumbnailImage rounded small src={data.thumb} alt="profile" className="m-4" /> */}
@@ -23,7 +20,7 @@ const UserCardBasic = (props: any) => {
       <div className=" d-flex flex-grow-1 min-width-zero">
         <CardBody className=" pl-0 align-self-center d-flex flex-column flex-lg-row justify-content-between min-width-zero">
           <div className="min-width-zero">
-              <CardSubtitle className="truncate mb-1">{props.data.name}</CardSubtitle>
+            <CardSubtitle className="truncate mb-1">{props.data.name}</CardSubtitle>
             <CardText className="text-muted text-small mb-2">{props.data.status}</CardText>
           </div>
         </CardBody>

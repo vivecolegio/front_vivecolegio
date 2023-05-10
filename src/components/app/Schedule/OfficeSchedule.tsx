@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {Loader} from '../../common/Loader';
+import { Loader } from '../../common/Loader';
 import { connect } from 'react-redux';
 import { Card } from 'reactstrap';
 import IntlMessages from '../../../helpers/IntlMessages';
@@ -17,7 +17,6 @@ const OfficeSchedule = (props: any) => {
   // const getUser = async () => {
   //   props.dataUser(props?.loginReducer?.userId).then((resp: any) => {
   //     setUser(resp.data);
-  //     //console.log(resp);
   //   });
   // };
 
@@ -26,16 +25,16 @@ const OfficeSchedule = (props: any) => {
       {loading ? (
         <>
           <Colxx sm={12} className="d-flex justify-content-center">
-            <Loader/>
+            <Loader />
           </Colxx>
         </>
       ) : (
         <>
           <Colxx xxs="12" className="mb-5">
             <h1 className="mb-4 font-bold">
-                <i className="iconsminds-calendar-4 text-primary mr-2"></i>
-                <IntlMessages id="layouts.mySchedule" />
-            </h1> 
+              <i className="iconsminds-calendar-4 text-primary mr-2"></i>
+              <IntlMessages id="layouts.mySchedule" />
+            </h1>
             <Card className="card-body rounded-card">
               <table className="table table-bordered">
                 <thead>
@@ -48,22 +47,22 @@ const OfficeSchedule = (props: any) => {
                 <tbody>
                   <tr>
                     <td className="text-center">Lunes</td>
-                    <td className="text-center">                   
-                        8:00 am
+                    <td className="text-center">
+                      8:00 am
                     </td>
                     <td className="text-center">
-                        10:00 am
-                    </td>                   
+                      10:00 am
+                    </td>
                   </tr>
                   <tr>
                     <td className="text-center">Martes</td>
                     <td className="text-center">
-                        8:00 am
+                      8:00 am
                     </td>
                     <td className="text-center">
-                        10:00 am
-                    </td>    
-                  </tr>               
+                      10:00 am
+                    </td>
+                  </tr>
                 </tbody>
               </table>
             </Card>

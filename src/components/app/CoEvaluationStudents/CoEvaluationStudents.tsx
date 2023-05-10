@@ -69,7 +69,6 @@ const ExperienceLearningCoEvaluationStudentsList = (props: any) => {
           props
             .getListAllExperienceLearningCoEvaluationValuation(learningId)
             .then(async (listDataValuation: any) => {
-              //console.log(listDataValuation);
               let valuationsArr: any = [];
               await props
                 .getListAllPerformanceLevelAsignatureCourse(academicAsignatureCourseId)
@@ -88,11 +87,9 @@ const ExperienceLearningCoEvaluationStudentsList = (props: any) => {
                     return l;
                   });
                 });
-              //console.log(valuationsArr);
               setValuationsAssessment(valuationsArr);
             });
           props.getListAllExperienceLearningCoEvaluation(learningId).then(async (listData: any) => {
-            //console.log(listData);
             let valuationsArr: any = [];
             // get performance levels
             await props
@@ -120,7 +117,6 @@ const ExperienceLearningCoEvaluationStudentsList = (props: any) => {
   }, []);
 
   const getPerformanceLevel = async (e: any, valuation: any) => {
-    console.log(valuation)
     const perf = performanceLevels?.find((c: any) => {
       return e.target.value <= c.node.topScore && e.target.value >= c.node.minimumScore;
     });

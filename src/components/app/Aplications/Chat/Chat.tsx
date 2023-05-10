@@ -21,7 +21,6 @@ const ChatApp = (
   useEffect(() => {
     document.body.classList.add('no-footer');
     const currentUserId = 0;
-    //console.log(props.getContacts());
     props.getContacts();
     props.getConversations(currentUserId);
 
@@ -39,7 +38,6 @@ const ChatApp = (
   };
 
   useEffect(() => {
-    //console.log(props);
     if (
       props.chatReducer.loadingConversations &&
       props.chatReducer.loadingContacts &&
@@ -92,13 +90,13 @@ const ChatApp = (
 
   const selectedConversation =
     props.chatReducer.loadingConversations &&
-    props.chatReducer.loadingContacts &&
-    props.chatReducer.selectedUser
+      props.chatReducer.loadingContacts &&
+      props.chatReducer.selectedUser
       ? props.chatReducer.conversations.find(
-          (x: any) =>
-            x.users.includes(props.chatReducer.currentUser.id) &&
-            x.users.includes(props.chatReducer.selectedUser.id),
-        )
+        (x: any) =>
+          x.users.includes(props.chatReducer.currentUser.id) &&
+          x.users.includes(props.chatReducer.selectedUser.id),
+      )
       : null;
 
   return props.chatReducer.loadingConversations && props.chatReducer.loadingContacts ? (

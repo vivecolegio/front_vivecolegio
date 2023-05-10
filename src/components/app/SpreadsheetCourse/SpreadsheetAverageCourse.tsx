@@ -152,7 +152,6 @@ const SpreadsheetAverageCourse = (props: any) => {
   };
 
   const download = async () => {
-    // console.log(tableRef)
     if (countDownload != 0) {
       onDownload();
     }

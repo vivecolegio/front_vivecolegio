@@ -166,7 +166,6 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
                   })
               );
             }
-            //console.log(areasAux);
             const ids = areasAux.map(o => o?.id)
             const count: any = {};
             ids.forEach(element => {
@@ -190,11 +189,9 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
           });
         await Promise.all(promisesListAreas).then(() => {
           setValuationsArea(ntsArea);
-          //console.log(ntsArea)
         });
         await Promise.all(promisesListAsignatures).then(() => {
           setValuations(nts);
-          // console.log(nts)
           setLoading(false);
         });
 

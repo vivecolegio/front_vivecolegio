@@ -56,7 +56,6 @@ const StandardList = (props: any) => {
   };
 
   const onSubmit = async (dataForm: any) => {
-    //console.log(dataForm);
     if (data === null) {
       await props.saveNewStandard(dataForm).then((id: any) => {
         if (id !== undefined) {

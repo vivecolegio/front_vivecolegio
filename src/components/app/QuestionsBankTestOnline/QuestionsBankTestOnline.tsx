@@ -57,7 +57,6 @@ const QuestionsBankTestOnline = (props: any) => {
   };
 
   const onSubmit = async (dataForm: any) => {
-    //console.log(dataForm);
     if (data === null) {
       await props.saveNewAcademicAsignatureCourse(dataForm).then((id: any) => {
         if (id !== undefined) {

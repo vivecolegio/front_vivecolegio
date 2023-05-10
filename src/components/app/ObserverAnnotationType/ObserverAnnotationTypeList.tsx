@@ -33,7 +33,6 @@ const ObserverAnnotationTypeList = (props: any) => {
   };
 
   const onSubmit = async (dataForm: any) => {
-    //console.log(dataForm);
     if (data === null) {
       await props.saveNewObserverAnnotationType(dataForm).then((id: any) => {
         if (id !== undefined) {

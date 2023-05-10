@@ -177,9 +177,7 @@ const ExperienceLearningCreateEdit = (props: any) => {
   };
 
   const setCriteriaPerformance = async (e: any, id: any) => {
-    //console.log(id);
     let ind = criteriaPerformances.findIndex((c: any) => c.performanceLevelId === id);
-    //console.log(ind);
     if (ind !== -1) {
       criteriaPerformances.splice(ind, 1);
     }
