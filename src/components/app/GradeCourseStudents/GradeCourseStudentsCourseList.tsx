@@ -118,6 +118,9 @@ const GradeCourseStudentsCourseList = (props: any) => {
       case 'goToChildrenStudents':
         goToChildren(`/studentCourse?courseId=${item.id}&courseName=${item.name}&gradeName=${gradeName}&gradeId=${academicGradeId}`);
         break;
+      case 'goToChildrenCodes':
+        generateCodesStudents(item?.id);
+        break;
       default:
         break;
     }
@@ -125,6 +128,11 @@ const GradeCourseStudentsCourseList = (props: any) => {
 
   const goToChildren = async (url: any) => {
     navigate(url);
+  };
+
+  const generateCodesStudents = async (id: any) => {
+    props.generateCodesStudentsCourse(id).then((listData: any) => {
+    });
   };
 
   return (
@@ -152,6 +160,13 @@ const GradeCourseStudentsCourseList = (props: any) => {
                 color: 'info',
                 icon: 'iconsminds-student-male-female',
                 action: 'goToChildrenStudents',
+              },
+              {
+                id: 2,
+                label: 'Generar códigos',
+                color: 'primary',
+                icon: 'iconsminds-tag',
+                action: 'goToChildrenCodes',
               },
             ]}
             withChildren={true}
