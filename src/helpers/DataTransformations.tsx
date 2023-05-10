@@ -10,18 +10,18 @@ export function removeEmptyStringElements(obj: any) {
 }
 
 export function compare(a: any, b: any) {
-  if (a.node) {
-    if (a.node.student.code < b.node.student.code) {
+  if (a?.node) {
+    if (a?.node?.student?.code < b?.node?.student?.code) {
       return -1;
     }
-    if (a.node.student.code > b.node.student.code) {
+    if (a?.node?.student?.code > b?.node?.student?.code) {
       return 1;
     }
   } else {
-    if (a.code < b.code) {
+    if (a?.code < b?.code) {
       return -1;
     }
-    if (a.code > b.code) {
+    if (a?.code > b?.code) {
       return 1;
     }
   }
