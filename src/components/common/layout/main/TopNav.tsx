@@ -202,10 +202,15 @@ const TopNav = (props: any) => {
   }, []);
 
   const filterSchoolList = (filter: any) => {
+    console.log(filter)
     let schoolListFilter = props?.loginReducer?.schoolMulti.filter((data: any) => {
       return data?.name?.includes(filter?.target?.value?.toUpperCase()) || data?.daneCode?.includes(filter?.target?.value);
     });
     setSchoolList(schoolListFilter)
+  }
+
+  const resetSchoolList = () => {
+    setSchoolList(props?.loginReducer?.schoolMulti)
   }
 
   return (
@@ -332,7 +337,7 @@ const TopNav = (props: any) => {
           <div className="mr-2 border-separator-right align-middle pr-2 d-inline-block">
             {props?.loginReducer?.school &&
               <UncontrolledDropdown className="dropdown-menu-right">
-                <DropdownToggle className="p-0" color="empty">
+                <DropdownToggle className="p-0" color="empty" onClick={resetSchoolList}>
                   <p className="text-muted text-small mb-1"> Institución Educativa:</p>
                   <p className="text-muted text-small mb-1 font-weight-bold"> {props?.loginReducer?.school}</p>
                 </DropdownToggle>
