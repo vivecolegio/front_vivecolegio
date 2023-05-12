@@ -1,5 +1,5 @@
 # build environment
-FROM node:18.16.0 as build
+FROM node:16.20.0 as build
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 COPY . .
