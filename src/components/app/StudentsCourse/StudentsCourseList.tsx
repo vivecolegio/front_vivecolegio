@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import { Button } from 'reactstrap';
 
+import { COLUMN_LIST_STUDENT_COURSE, COLUMN_LIST_STUDENT_GRADE } from '../../../constants/StudentCourse/studentCourseConstants';
+import { permissionsMenu } from '../../../helpers/DataTransformations';
 import * as courseActions from '../../../stores/actions/CourseActions';
 import * as studentActions from '../../../stores/actions/StudentActions';
 import { Colxx } from '../../common/CustomBootstrap';
@@ -11,8 +13,6 @@ import DataList from '../../common/Data/DataList';
 import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
 import { Loader } from '../../common/Loader';
 import StudentAddCourse from './StudentAddCourse';
-import { permissionsMenu } from '../../../helpers/DataTransformations';
-import { COLUMN_LIST_STUDENT_COURSE, COLUMN_LIST_STUDENT_GRADE } from '../../../constants/StudentCourse/studentCourseConstants';
 
 const StudentCourseList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
@@ -36,6 +36,7 @@ const StudentCourseList = (props: any) => {
       return submenus = submenus.concat(c.menuItemsLogin);
     });
     setCurrentMenu(submenus.find((c: any) => { return (c?.module?.url == 'student_link_course_permit') }));
+    console.log(submenus.find((c: any) => { return (c?.module?.url == 'student_link_course_permit') }))
     let permissions = permissionsMenu(props?.loginReducer, location.pathname);
     if (courseId && !fromGrade) {
       setColumns(COLUMN_LIST_STUDENT_COURSE);
