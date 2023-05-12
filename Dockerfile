@@ -1,12 +1,12 @@
 # build environment
-FROM node:16.20.0 as build
+FROM node:18.16.0 as build
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 COPY . .
 RUN yarn install
 RUN yarn run prebuild
 RUN yarn run build:prod
-RUN npm prune --production
+#RUN npm prune --production
 
 # production environment
 FROM nginx:stable
