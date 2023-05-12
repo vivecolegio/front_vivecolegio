@@ -36,8 +36,8 @@ export const QUERY_GET_ALL_COURSE = gql`
 
 `;
 export const QUERY_GET_ALL_COURSE_TEACHER = gql`
-  query getAllCourseTeacher($teacherId: String!) {
-    data: getAllCourseTeacher(teacherId: $teacherId,) {
+  query getAllCourseTeacher($teacherId: String!, $schoolYearId: String) {
+    data: getAllCourseTeacher(teacherId: $teacherId,schoolYearId: $schoolYearId) {
       edges {
         cursor
         node {

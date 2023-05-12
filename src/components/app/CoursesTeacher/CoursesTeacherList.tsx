@@ -18,7 +18,7 @@ const CoursesTeacherList = (props: any) => {
 
   const [data, setData] = useState(null);
   useEffect(() => {
-    props.getListAllCourseTeacher(props?.loginReducer?.teacherId,).then((listData: any) => {
+    props.getListAllCourseTeacher(props?.loginReducer?.teacherId, props?.loginReducer?.schoolYear).then((listData: any) => {
       setDataTable(listData.map((c: any) => {
         c.node.grade_format = c.node.academicGrade ? c?.node?.academicGrade?.name : '';
         c.node.academicDay_format = c.node.academicDay ? c.node.academicDay.name : '';
@@ -34,7 +34,7 @@ const CoursesTeacherList = (props: any) => {
   };
 
   const getDataTable = async () => {
-    props.getListAllCourseTeacher(props?.loginReducer?.teacherId,).then((listData: any) => {
+    props.getListAllCourseTeacher(props?.loginReducer?.teacherId, props?.loginReducer?.schoolYear).then((listData: any) => {
       setDataTable(listData.map((c: any) => {
         c.node.grade_format = c.node.academicGrade ? c?.node?.academicGrade?.name : '';
         c.node.academicDay_format = c.node.academicDay ? c.node.academicDay.name : '';

@@ -3,7 +3,6 @@ import { client } from '../graphql';
 import { MUTATION_CHANGE_ACTIVE_COURSE, MUTATION_CREATE_COURSE, MUTATION_DELETE_COURSE, MUTATION_GENERATE_CODES, MUTATION_UPDATE_COURSE } from '../graphql/Course/CourseMutations';
 import { QUERY_GET_ALL_COURSE, QUERY_GET_ALL_COURSE_TEACHER, QUERY_GET_COURSE, QUERY_GET_DROPDOWNS_COURSE } from '../graphql/Course/CourseQueries';
 
-
 export const getListAllCourse = (campusId:string, academicGradeId: string, schoolId: string, fullAccess: boolean ) => {
   return async (dispatch: any) => {
     try {
@@ -29,7 +28,7 @@ export const getListAllCourse = (campusId:string, academicGradeId: string, schoo
   };
 };
 
-export const getListAllCourseTeacher = (teacherId: string) => {
+export const getListAllCourseTeacher = (teacherId: string, schoolYearId:string,) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
@@ -37,7 +36,8 @@ export const getListAllCourseTeacher = (teacherId: string) => {
         .query({
           query: QUERY_GET_ALL_COURSE_TEACHER,
           variables:{
-            teacherId
+            teacherId,
+            schoolYearId,
           },
         })
         .then((result: any) => {
