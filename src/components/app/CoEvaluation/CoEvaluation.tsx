@@ -160,7 +160,7 @@ const ExperienceLearningCoEvaluationList = (props: any) => {
       </div>
       <div className="d-flex justify-content-between align-items-center" >
         <div className="d-flex justify-content-center align-items-center mb-3 w-40">
-          <div className="text-center mr-1">
+          {/* <div className="text-center mr-1">
             Valoración Promedio:
           </div>
           <CountUp
@@ -169,18 +169,18 @@ const ExperienceLearningCoEvaluationList = (props: any) => {
             end={valuations?.length > 0 ? average : 0}
             decimals={1}
             decimal={","}
-          />
+          /> */}
 
         </div>
         <div className="d-flex justify-content-start align-items-center mb-3 w-30">
-          <div className="text-center mr-1">
+          {/* <div className="text-center mr-1">
             Progreso de Valoración:
           </div>
           <Progress
             bar
             color="primary"
             value={valuations?.length > 0 ? ((progress / valuations?.length) * 100) : 0}
-          > ({progress}/{valuations?.length}) {valuations?.length > 0 ? ((progress / valuations?.length) * 100).toFixed(2) : 0}%</Progress>
+          > ({progress}/{valuations?.length}) {valuations?.length > 0 ? ((progress / valuations?.length) * 100).toFixed(2) : 0}%</Progress>*/}
         </div>
       </div>
 
