@@ -78,7 +78,7 @@ const Login = (props: any) => {
               className="mx-auto mt-10 text-center d-none d-sm-none d-sm-block d-md-none d-lg-block"
             >
               {/* <img src={LogoImg} className="width-logo" /> */}
-              <a href='http://vivecolegios.nortedesantander.gov.co:8082/abrazate'><img src={Abrazate} className="width-logo" /></a>
+              <a href='https://vivecolegios.nortedesantander.gov.co:8443/abrazate'><img src={Abrazate} className="width-logo" /></a>
             </Colxx>
             <Colxx xxs="12" sm="12" md="3" lg="3" className="mx-auto mt-5 center-flex">
               <Card className="auth-card w-330">
