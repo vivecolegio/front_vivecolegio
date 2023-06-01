@@ -689,6 +689,12 @@ const GradeCourseStudentsCourseList = React.lazy(() => {
   );
 });
 
+const SchoolConfigurationList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "SchoolConfigurationList" */ '../components/app/SchoolConfiguration/SchoolConfigurationList'
+  );
+});
+
 const App = (props: any) => {
   const { locale } = props.translateReducer;
 
@@ -973,6 +979,8 @@ const App = (props: any) => {
 
                     <Route path="/gradeCourseStudentsGradeList" element={<GradeCourseStudentsGradeList />} />
                     <Route path="/gradeCourseStudentsCourseList" element={<GradeCourseStudentsCourseList />} />
+
+                    <Route path="/schoolConfiguration" element={<SchoolConfigurationList />} />
                   </>
                 ) : (
                   <Route path="*" element={<Login />} />
