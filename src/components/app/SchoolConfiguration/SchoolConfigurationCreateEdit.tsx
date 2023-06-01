@@ -14,15 +14,16 @@ import FormGroupCustom from '../../common/Data/FormGroupCustom';
 import LabelCustom from '../../common/Data/LabelCustom';
 import RequiredMessagesCustom from '../../common/Data/RequiredMessagesCustom';
 import { Loader } from '../../common/Loader';
+import { useFormatMessage } from 'react-intl-hooks';
+import { injectIntl } from 'react-intl';
 
 const SchoolConfigurationCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
-  const [generalAreasList, setGeneralAreasList] = useState(null);
   const [schoolList, setSchoolList] = useState(null);
-  const [generalAcademicArea, setGeneralArea] = useState(null);
   const [school, setSchool] = useState(null);
   const [schoolYearList, setSchoolYearList] = useState(null);
   const [schoolYear, setSchoolYear] = useState(null);
+  const [valueString, setValueString] = useState(null);
 
   const methods = useForm({
     mode: 'all',
@@ -31,20 +32,12 @@ const SchoolConfigurationCreateEdit = (props: any) => {
 
   const { handleSubmit, control, register, reset, setValue, formState, trigger } = methods;
 
+  const { messages } = props.intl;
+
   useEffect(() => {
     cleanForm();
     getDropdowns();
     if (props?.data?.id) {
-      if (
-        props?.data?.generalAcademicArea !== undefined &&
-        props?.data?.generalAcademicArea != null
-      ) {
-        setGeneralArea({
-          key: props?.data?.generalAcademicArea?.id,
-          label: props?.data?.generalAcademicArea?.name,
-          value: props?.data?.generalAcademicArea?.id,
-        });
-      }
       if (props?.data?.school !== undefined && props?.data?.school != null) {
         setSchool({
           key: props?.data?.school?.id,
@@ -59,10 +52,9 @@ const SchoolConfigurationCreateEdit = (props: any) => {
           value: props?.data?.schoolYear?.id,
         });
       }
-      register('generalAcademicAreaId', {
-        required: false,
-        value: props?.data?.id ? props?.data?.generalAcademicAreaId : '',
-      });
+      setValueString({
+        key: props?.data?.valueString, label: messages["display." + props?.data?.code + "_" + props?.data?.valueString], value: props?.data?.valueString,
+      })
       register('schoolId', {
         required: true,
         value: props?.data?.id && props?.data?.schoolId ? props?.data?.schoolId : props?.loginReducer?.schoolId,
@@ -84,7 +76,6 @@ const SchoolConfigurationCreateEdit = (props: any) => {
 
   const cleanForm = async () => {
     reset();
-    setGeneralArea(null);
     setSchool(null);
     if (props?.loginReducer?.schoolId && !props?.data?.id) {
       // set value when register is new and sesion contains value
@@ -103,13 +94,6 @@ const SchoolConfigurationCreateEdit = (props: any) => {
   };
 
   const getDropdowns = async () => {
-    props.getDropdownsAcademicArea().then((data: any) => {
-      setGeneralAreasList(
-        data.dataGeneralAreas.edges.map((c: any) => {
-          return { label: c.node.name, value: c.node.id, key: c.node.id };
-        }),
-      );
-    });
     setSchoolList(
       [{
         key: props?.loginReducer?.schoolData?.id,
@@ -122,17 +106,19 @@ const SchoolConfigurationCreateEdit = (props: any) => {
     )
   };
 
-  const { ref: nameRef, ...nameRest } = register('name', {
+  const { ref: codeRef, ...codeRest } = register('code', {
     required: true,
-    value: props?.data?.id ? props?.data?.name : '',
+    value: props?.data?.id ? props?.data?.code : '',
   });
-  const { ref: orderRef, ...orderRest } = register('order', {
+
+  const { ref: valueStringRef, ...valueStringRest } = register('valueString', {
     required: true,
-    value: props?.data?.id ? props?.data?.order : '',
+    value: props?.data?.id ? props?.data?.valueString : '',
   });
-  const { ref: abbreviationRef, ...abbreviationRest } = register('abbreviation', {
+
+  const { ref: valueNumberRef, ...valueNumberRest } = register('valueNumber', {
     required: true,
-    value: props?.data?.id ? props?.data?.abbreviation : '',
+    value: props?.data?.id ? props?.data?.valueNumber : 0,
   });
 
   const auditInfo = {
@@ -169,37 +155,387 @@ const SchoolConfigurationCreateEdit = (props: any) => {
           >
             <ModalBody>
               <FormGroupCustom>
-                <LabelCustom id="forms.name" required={true} />
-                <Input {...nameRest} innerRef={nameRef} className="form-control" />
-                <RequiredMessagesCustom formState={formState} register={"name"} />
+                <LabelCustom id="forms.code" required={true} />
+                <Input disabled={true} {...codeRest} innerRef={codeRef} className="form-control" />
+                <RequiredMessagesCustom formState={formState} register={"code"} />
               </FormGroupCustom>
               <FormGroupCustom>
-                <LabelCustom id="forms.sorting" required={true} />
-                <Input {...orderRest} innerRef={orderRef} className="form-control" type="number" step="1" min={1} />
-                <RequiredMessagesCustom formState={formState} register={"order"} />
+                <LabelCustom id="forms.configuration" required={true} />
+                <Input disabled={true} value={messages["display." + props?.data?.code]} className="form-control" />
+                <RequiredMessagesCustom formState={formState} register={"code"} />
               </FormGroupCustom>
-              <FormGroupCustom>
-                <LabelCustom id="forms.abbreviation" required={true} />
-                <Input {...abbreviationRest} innerRef={abbreviationRef} className="form-control" />
-                <RequiredMessagesCustom formState={formState} register={"abbreviation"} />
-              </FormGroupCustom>
-              <FormGroupCustom>
-                <LabelCustom id="forms.nationalArea" required={false} />
-                <Select
-                  isClearable
-                  placeholder={<IntlMessages id="forms.select" />}
-                  {...register('generalAcademicAreaId', { required: false })}
-                  className="react-select"
-                  classNamePrefix="react-select"
-                  options={generalAreasList}
-                  value={generalAcademicArea}
-                  onChange={(selectedOption) => {
-                    setValue('generalAcademicAreaId', selectedOption?.key);
-                    setGeneralArea(selectedOption);
-                    trigger("generalAcademicAreaId");
-                  }}
-                />
-              </FormGroupCustom>
+
+              {props?.data?.code == "REPORT_CERTIFICATE_FINAL_TEXT_CERTIFICATE" ? <>
+                <FormGroupCustom>
+                  <LabelCustom id="forms.value" required={true} />
+                  <Input disabled={true} {...valueStringRest} innerRef={valueStringRef} className="form-control" />
+                  <RequiredMessagesCustom formState={formState} register={"valueString"} />
+                </FormGroupCustom>
+                <FormGroupCustom>
+                  <LabelCustom id="forms.value" required={true} />
+                  <Select
+                    isClearable
+                    placeholder={<IntlMessages id="forms.select" />}
+                    className="react-select"
+                    classNamePrefix="react-select"
+                    options={[{ key: "MODEL_A", label: messages["display." + props?.data?.code + "_MODEL_A"], value: "MODEL_A", }, { key: "MODEL_B", label: messages["display." + props?.data?.code + "_MODEL_B"], value: "MODEL_B" }]}
+                    value={valueString}
+                    onChange={(selectedOption) => {
+                      setValueString(selectedOption);
+                      setValue('valueString', selectedOption?.key);
+                    }}
+                  />
+                </FormGroupCustom>
+              </> : <></>}
+
+              {props?.data?.code == "AVERAGE_AREA" ? <>
+                <FormGroupCustom>
+                  <LabelCustom id="forms.value" required={true} />
+                  <Input disabled={true} {...valueStringRest} innerRef={valueStringRef} className="form-control" />
+                  <RequiredMessagesCustom formState={formState} register={"valueString"} />
+                </FormGroupCustom>
+                <FormGroupCustom>
+                  <LabelCustom id="forms.value" required={true} />
+                  <Select
+                    isClearable
+                    placeholder={<IntlMessages id="forms.select" />}
+                    className="react-select"
+                    classNamePrefix="react-select"
+                    options={[{ key: "IHS", label: messages["display." + props?.data?.code + "_IHS"], value: "IHS", }, { key: "PROM", label: messages["display." + props?.data?.code + "_PROM"], value: "PROM" }]}
+                    value={valueString}
+                    onChange={(selectedOption) => {
+                      setValueString(selectedOption);
+                      setValue('valueString', selectedOption?.key);
+                    }}
+                  />
+                </FormGroupCustom>
+              </> : <></>}
+
+              {props?.data?.code == "REPORT_CERTIFICATE_FINAL_SIGNATURE_SECREATARY" ? <>
+                <FormGroupCustom>
+                  <LabelCustom id="forms.value" required={true} />
+                  <Input disabled={false} {...valueStringRest} innerRef={valueStringRef} className="form-control" />
+                  <RequiredMessagesCustom formState={formState} register={"valueString"} />
+                </FormGroupCustom>
+              </> : <></>}
+
+              {props?.data?.code == "REPORT_CERTIFICATE_FINAL_SIGNATURE_TYPE" ? <>
+                <FormGroupCustom>
+                  <LabelCustom id="forms.value" required={true} />
+                  <Input disabled={true} {...valueStringRest} innerRef={valueStringRef} className="form-control" />
+                  <RequiredMessagesCustom formState={formState} register={"valueString"} />
+                </FormGroupCustom>
+                <FormGroupCustom>
+                  <LabelCustom id="forms.value" required={true} />
+                  <Select
+                    isClearable
+                    placeholder={<IntlMessages id="forms.select" />}
+                    className="react-select"
+                    classNamePrefix="react-select"
+                    options={[{ key: "PRINCIPAL", label: messages["display." + props?.data?.code + "_PRINCIPAL"], value: "PRINCIPAL", },
+                    { key: "TEACHER_COURSE", label: messages["display." + props?.data?.code + "_TEACHER_COURSE"], value: "TEACHER_COURSE" },
+                    { key: "TEACHER_COURSE_AND_PRINCIPAL", label: messages["display." + props?.data?.code + "_TEACHER_COURSE_AND_PRINCIPAL"], value: "TEACHER_COURSE_AND_PRINCIPAL" },
+                    { key: "PRINCIPAL_SECRETARY", label: messages["display." + props?.data?.code + "_PRINCIPAL_SECRETARY"], value: "PRINCIPAL_SECRETARY" }]}
+                    value={valueString}
+                    onChange={(selectedOption) => {
+                      setValueString(selectedOption);
+                      setValue('valueString', selectedOption?.key);
+                    }}
+                  />
+                </FormGroupCustom>
+              </> : <></>}
+
+              {props?.data?.code == "REPORT_CERTIFICATE_FINAL_TITLE" ? <>
+                <FormGroupCustom>
+                  <LabelCustom id="forms.value" required={true} />
+                  <Input disabled={false} {...valueStringRest} innerRef={valueStringRef} className="form-control" />
+                  <RequiredMessagesCustom formState={formState} register={"valueString"} />
+                </FormGroupCustom>
+              </> : <></>}
+
+              {props?.data?.code == "COUNT_PROMOTED_INDICATE" ? <>
+                <FormGroupCustom>
+                  <LabelCustom id="forms.value" required={true} />
+                  <Input disabled={false} {...valueNumberRest} innerRef={valueNumberRef} className="form-control" type="number" />
+                  <RequiredMessagesCustom formState={formState} register={"valueNumber"} />
+                </FormGroupCustom>
+              </> : <></>}
+
+              {props?.data?.code == "PROMOTED_INDICATE" ? <>
+                <FormGroupCustom>
+                  <LabelCustom id="forms.value" required={true} />
+                  <Input disabled={true} {...valueStringRest} innerRef={valueStringRef} className="form-control" />
+                  <RequiredMessagesCustom formState={formState} register={"valueString"} />
+                </FormGroupCustom>
+                <FormGroupCustom>
+                  <LabelCustom id="forms.value" required={true} />
+                  <Select
+                    isClearable
+                    placeholder={<IntlMessages id="forms.select" />}
+                    className="react-select"
+                    classNamePrefix="react-select"
+                    options={[{ key: "AREA", label: messages["display." + props?.data?.code + "_AREA"], value: "AREA", },
+                    { key: "ASIGNATURE", label: messages["display." + props?.data?.code + "_ASIGNATURE"], value: "ASIGNATURE" }]}
+                    value={valueString}
+                    onChange={(selectedOption) => {
+                      setValueString(selectedOption);
+                      setValue('valueString', selectedOption?.key);
+                    }}
+                  />
+                </FormGroupCustom>
+              </> : <></>}
+
+              {props?.data?.code == "REPORT_PERFORMANCE_FINAL_NOT_PROMOTED" ? <>
+                <FormGroupCustom>
+                  <LabelCustom id="forms.value" required={true} />
+                  <Input disabled={false} {...valueStringRest} innerRef={valueStringRef} className="form-control" />
+                  <RequiredMessagesCustom formState={formState} register={"valueString"} />
+                </FormGroupCustom>
+              </> : <></>}
+
+              {props?.data?.code == "REPORT_PERFORMANCE_FINAL_PROMOTED" ? <>
+                <FormGroupCustom>
+                  <LabelCustom id="forms.value" required={true} />
+                  <Input disabled={false} {...valueStringRest} innerRef={valueStringRef} className="form-control" />
+                  <RequiredMessagesCustom formState={formState} register={"valueString"} />
+                </FormGroupCustom>
+              </> : <></>}
+
+              {props?.data?.code == "REPORT_PERFORMANCE_TITLE_SIGNATURE_PRINCIPAL" ? <>
+                <FormGroupCustom>
+                  <LabelCustom id="forms.value" required={true} />
+                  <Input disabled={false} {...valueStringRest} innerRef={valueStringRef} className="form-control" />
+                  <RequiredMessagesCustom formState={formState} register={"valueString"} />
+                </FormGroupCustom>
+              </> : <></>}
+
+              {props?.data?.code == "REPORT_PERFORMANCE_TITLE_SIGNATURE_TEACHER_COURSE" ? <>
+                <FormGroupCustom>
+                  <LabelCustom id="forms.value" required={true} />
+                  <Input disabled={false} {...valueStringRest} innerRef={valueStringRef} className="form-control" />
+                  <RequiredMessagesCustom formState={formState} register={"valueString"} />
+                </FormGroupCustom>
+              </> : <></>}
+
+              {props?.data?.code == "REPORT_PERFORMANCE_BEHAVIOUR_STUDENT" ? <>
+                <FormGroupCustom>
+                  <LabelCustom id="forms.value" required={true} />
+                  <Input disabled={true} {...valueStringRest} innerRef={valueStringRef} className="form-control" />
+                  <RequiredMessagesCustom formState={formState} register={"valueString"} />
+                </FormGroupCustom>
+                <FormGroupCustom>
+                  <LabelCustom id="forms.value" required={true} />
+                  <Select
+                    isClearable
+                    placeholder={<IntlMessages id="forms.select" />}
+                    className="react-select"
+                    classNamePrefix="react-select"
+                    options={[{ key: "DISPLAY", label: messages["display." + props?.data?.code + "_DISPLAY"], value: "DISPLAY", },
+                    { key: "HIDDEN", label: messages["display." + props?.data?.code + "_HIDDEN"], value: "HIDDEN" }]}
+                    value={valueString}
+                    onChange={(selectedOption) => {
+                      setValueString(selectedOption);
+                      setValue('valueString', selectedOption?.key);
+                    }}
+                  />
+                </FormGroupCustom>
+              </> : <></>}
+
+              {props?.data?.code == "REPORT_PERFORMANCE_SIGNATURE_TYPE" ? <>
+                <FormGroupCustom>
+                  <LabelCustom id="forms.value" required={true} />
+                  <Input disabled={true} {...valueStringRest} innerRef={valueStringRef} className="form-control" />
+                  <RequiredMessagesCustom formState={formState} register={"valueString"} />
+                </FormGroupCustom>
+                <FormGroupCustom>
+                  <LabelCustom id="forms.value" required={true} />
+                  <Select
+                    isClearable
+                    placeholder={<IntlMessages id="forms.select" />}
+                    className="react-select"
+                    classNamePrefix="react-select"
+                    options={[{ key: "PRINCIPAL", label: messages["display." + props?.data?.code + "_PRINCIPAL"], value: "PRINCIPAL", },
+                    { key: "TEACHER_COURSE", label: messages["display." + props?.data?.code + "_TEACHER_COURSE"], value: "TEACHER_COURSE" },
+                    { key: "TEACHER_COURSE_AND_PRINCIPAL", label: messages["display." + props?.data?.code + "_TEACHER_COURSE_AND_PRINCIPAL"], value: "TEACHER_COURSE_AND_PRINCIPAL" },
+                    { key: "PRINCIPAL_SECRETARY", label: messages["display." + props?.data?.code + "_PRINCIPAL_SECRETARY"], value: "PRINCIPAL_SECRETARY" }]}
+                    value={valueString}
+                    onChange={(selectedOption) => {
+                      setValueString(selectedOption);
+                      setValue('valueString', selectedOption?.key);
+                    }}
+                  />
+                </FormGroupCustom>
+              </> : <></>}
+
+              {props?.data?.code == "REPORT_PERFORMANCE_AREA_ASIGNATURE_TYPE" ? <>
+                <FormGroupCustom>
+                  <LabelCustom id="forms.value" required={true} />
+                  <Input disabled={true} {...valueStringRest} innerRef={valueStringRef} className="form-control" />
+                  <RequiredMessagesCustom formState={formState} register={"valueString"} />
+                </FormGroupCustom>
+                <FormGroupCustom>
+                  <LabelCustom id="forms.value" required={true} />
+                  <Select
+                    isClearable
+                    placeholder={<IntlMessages id="forms.select" />}
+                    className="react-select"
+                    classNamePrefix="react-select"
+                    options={[{ key: "AREA_ASIGNATURE", label: messages["display." + props?.data?.code + "_AREA_ASIGNATURE"], value: "AREA_ASIGNATURE", },
+                    { key: "AREA", label: messages["display." + props?.data?.code + "_AREA"], value: "AREA" },
+                    { key: "ASIGNATURE", label: messages["display." + props?.data?.code + "_ASIGNATURE"], value: "ASIGNATURE" }]}
+                    value={valueString}
+                    onChange={(selectedOption) => {
+                      setValueString(selectedOption);
+                      setValue('valueString', selectedOption?.key);
+                    }}
+                  />
+                </FormGroupCustom>
+              </> : <></>}
+
+              {props?.data?.code == "REPORT_PERFORMANCE_BEHAVIOUR_STUDENT_TYPE" ? <>
+                <FormGroupCustom>
+                  <LabelCustom id="forms.value" required={true} />
+                  <Input disabled={true} {...valueStringRest} innerRef={valueStringRef} className="form-control" />
+                  <RequiredMessagesCustom formState={formState} register={"valueString"} />
+                </FormGroupCustom>
+                <FormGroupCustom>
+                  <LabelCustom id="forms.value" required={true} />
+                  <Select
+                    isClearable
+                    placeholder={<IntlMessages id="forms.select" />}
+                    className="react-select"
+                    classNamePrefix="react-select"
+                    options={[{ key: "QUANTITATIVE", label: messages["display." + props?.data?.code + "_QUANTITATIVE"], value: "QUANTITATIVE", },
+                    { key: "QUALITATIVE", label: messages["display." + props?.data?.code + "_QUALITATIVE"], value: "QUALITATIVE" }]}
+                    value={valueString}
+                    onChange={(selectedOption) => {
+                      setValueString(selectedOption);
+                      setValue('valueString', selectedOption?.key);
+                    }}
+                  />
+                </FormGroupCustom>
+              </> : <></>}
+
+              {props?.data?.code == "REPORT_PERFORMANCE_TYPE" ? <>
+                <FormGroupCustom>
+                  <LabelCustom id="forms.value" required={true} />
+                  <Input disabled={true} {...valueStringRest} innerRef={valueStringRef} className="form-control" />
+                  <RequiredMessagesCustom formState={formState} register={"valueString"} />
+                </FormGroupCustom>
+                <FormGroupCustom>
+                  <LabelCustom id="forms.value" required={true} />
+                  <Select
+                    isClearable
+                    placeholder={<IntlMessages id="forms.select" />}
+                    className="react-select"
+                    classNamePrefix="react-select"
+                    options={[{ key: "SINGLE", label: messages["display." + props?.data?.code + "_SINGLE"], value: "SINGLE", },
+                    { key: "DETAILS", label: messages["display." + props?.data?.code + "_DETAILS"], value: "DETAILS" }]}
+                    value={valueString}
+                    onChange={(selectedOption) => {
+                      setValueString(selectedOption);
+                      setValue('valueString', selectedOption?.key);
+                    }}
+                  />
+                </FormGroupCustom>
+              </> : <></>}
+
+              {props?.data?.code == "COUNT_DIGITS_AVERAGE_COURSE" ? <>
+                <FormGroupCustom>
+                  <LabelCustom id="forms.value" required={true} />
+                  <Input disabled={false} {...valueNumberRest} innerRef={valueNumberRef} className="form-control" type="number" />
+                  <RequiredMessagesCustom formState={formState} register={"valueNumber"} />
+                </FormGroupCustom>
+              </> : <></>}
+
+              {props?.data?.code == "REPORT_PERFORMANCE_TYPE_LEARNINGS_DISPLAY" ? <>
+                <FormGroupCustom>
+                  <LabelCustom id="forms.value" required={true} />
+                  <Input disabled={true} {...valueStringRest} innerRef={valueStringRef} className="form-control" />
+                  <RequiredMessagesCustom formState={formState} register={"valueString"} />
+                </FormGroupCustom>
+                <FormGroupCustom>
+                  <LabelCustom id="forms.value" required={true} />
+                  <Select
+                    isClearable
+                    placeholder={<IntlMessages id="forms.select" />}
+                    className="react-select"
+                    classNamePrefix="react-select"
+                    options={[{ key: "ALL", label: messages["display." + props?.data?.code + "_ALL"], value: "ALL", },
+                    { key: "SPECIFIC", label: messages["display." + props?.data?.code + "_SPECIFIC"], value: "SPECIFIC" }]}
+                    value={valueString}
+                    onChange={(selectedOption) => {
+                      setValueString(selectedOption);
+                      setValue('valueString', selectedOption?.key);
+                    }}
+                  />
+                </FormGroupCustom>
+              </> : <></>}
+
+              {props?.data?.code == "REPORT_PERFORMANCE_TYPE_EVIDENCE_LEARNINGS_DISPLAY" ? <>
+                <FormGroupCustom>
+                  <LabelCustom id="forms.value" required={true} />
+                  <Input disabled={true} {...valueStringRest} innerRef={valueStringRef} className="form-control" />
+                  <RequiredMessagesCustom formState={formState} register={"valueString"} />
+                </FormGroupCustom>
+                <FormGroupCustom>
+                  <LabelCustom id="forms.value" required={true} />
+                  <Select
+                    isClearable
+                    placeholder={<IntlMessages id="forms.select" />}
+                    className="react-select"
+                    classNamePrefix="react-select"
+                    options={[{ key: "ALL", label: messages["display." + props?.data?.code + "_ALL"], value: "ALL", },
+                    { key: "SPECIFIC", label: messages["display." + props?.data?.code + "_SPECIFIC"], value: "SPECIFIC" }]}
+                    value={valueString}
+                    onChange={(selectedOption) => {
+                      setValueString(selectedOption);
+                      setValue('valueString', selectedOption?.key);
+                    }}
+                  />
+                </FormGroupCustom>
+              </> : <></>}
+
+              {props?.data?.code == "REPORT_PERFORMANCE_TYPE_DISPLAY_DETAILS" ? <>
+                <FormGroupCustom>
+                  <LabelCustom id="forms.value" required={true} />
+                  <Input disabled={true} {...valueStringRest} innerRef={valueStringRef} className="form-control" />
+                  <RequiredMessagesCustom formState={formState} register={"valueString"} />
+                </FormGroupCustom>
+                <FormGroupCustom>
+                  <LabelCustom id="forms.value" required={true} />
+                  <Select
+                    isClearable
+                    placeholder={<IntlMessages id="forms.select" />}
+                    className="react-select"
+                    classNamePrefix="react-select"
+                    options={[{ key: "EVIDENCE_LEARNING", label: messages["display." + props?.data?.code + "_EVIDENCE_LEARNING"], value: "EVIDENCE_LEARNING", },
+                    { key: "LEARNING", label: messages["display." + props?.data?.code + "_LEARNING"], value: "LEARNING" }]}
+                    value={valueString}
+                    onChange={(selectedOption) => {
+                      setValueString(selectedOption);
+                      setValue('valueString', selectedOption?.key);
+                    }}
+                  />
+                </FormGroupCustom>
+              </> : <></>}
+
+              {props?.data?.code == "COUNT_DIGITS_AVERAGE_STUDENT" ? <>
+                <FormGroupCustom>
+                  <LabelCustom id="forms.value" required={true} />
+                  <Input disabled={false} {...valueNumberRest} innerRef={valueNumberRef} className="form-control" type="number" />
+                  <RequiredMessagesCustom formState={formState} register={"valueNumber"} />
+                </FormGroupCustom>
+              </> : <></>}
+
+              {props?.data?.code == "COUNT_DIGITS_PERFORMANCE_LEVEL" ? <>
+                <FormGroupCustom>
+                  <LabelCustom id="forms.value" required={true} />
+                  <Input disabled={false} {...valueNumberRest} innerRef={valueNumberRef} className="form-control" type="number" />
+                  <RequiredMessagesCustom formState={formState} register={"valueNumber"} />
+                </FormGroupCustom>
+              </> : <></>}
+
               <FormGroupCustom>
                 <LabelCustom id="menu.ie" required={true} />
                 <Select
@@ -248,4 +584,4 @@ const mapStateToProps = ({ loginReducer }: any) => {
   return { loginReducer };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SchoolConfigurationCreateEdit);
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(SchoolConfigurationCreateEdit));

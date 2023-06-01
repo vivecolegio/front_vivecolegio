@@ -1,16 +1,16 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
+import { useLocation } from 'react-router';
 
 import { COLUMN_LIST } from '../../../constants/SchoolConfiguration/schoolConfigurationConstants';
+import { permissionsMenu } from '../../../helpers/DataTransformations';
 import { createNotification } from '../../../helpers/Notification';
 import * as schoolConfigurationActions from '../../../stores/actions/SchoolConfigurationActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import DataList from '../../common/Data/DataList';
 import { Loader } from '../../common/Loader';
 import SchoolConfigurationCreateEdit from './SchoolConfigurationCreateEdit';
-import { useLocation } from 'react-router';
-import { permissionsMenu } from '../../../helpers/DataTransformations';
 
 const SchoolConfigurationList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
@@ -26,7 +26,7 @@ const SchoolConfigurationList = (props: any) => {
     let permissions = permissionsMenu(props?.loginReducer, location.pathname);
     props.getListAllSchoolConfiguration(props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear, permissions.fullAccess).then((listData: any) => {
       setDataTable(listData.map((c: any) => {
-        c.node.generalArea_format = c.node.generalAcademicArea ? c.node.generalAcademicArea.name : '';
+        c.node.value = c.node.valueNumber > 0 ? c.node.valueNumber : c.node.valueString;
         return c;
       }));
     });
@@ -44,14 +44,14 @@ const SchoolConfigurationList = (props: any) => {
 
   const onSubmit = async (dataForm: any) => {
     if (data === null) {
-      await props.saveNewArea(dataForm).then((id: any) => {
+      await props.saveNewSchoolConfiguration(dataForm).then((id: any) => {
         if (id !== undefined) {
           setModalOpen(false);
           refreshDataTable();
         }
       });
     } else {
-      await props.updateArea(dataForm, data.id).then((id: any) => {
+      await props.updateSchoolConfiguration(dataForm, data.id).then((id: any) => {
         if (id !== undefined) {
           setModalOpen(false);
           setData(null);
@@ -62,27 +62,27 @@ const SchoolConfigurationList = (props: any) => {
   };
 
   const viewEditData = async (id: any) => {
-    await props.dataArea(id).then((formData: any) => {
+    await props.dataSchoolConfiguration(id).then((formData: any) => {
       setData(formData.data);
       setModalOpen(true);
     });
   };
 
   const changeActiveData = async (active: any, id: any) => {
-    await props.changeActiveArea(active, id, true).then((formData: any) => {
+    await props.changeActiveSchoolConfiguration(active, id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
 
   const deleteData = async (id: any) => {
-    await props.deleteArea(id, true).then((formData: any) => {
+    await props.deleteSchoolConfiguration(id, true).then((formData: any) => {
       refreshDataTable();
     });
   };
 
   const deleteAll = async (items: any) => {
     items.map(async (item: any) => {
-      await props.deleteArea(item.id, false).then(
+      await props.deleteSchoolConfiguration(item.id, false).then(
         () => { },
         () => {
           createNotification('error', 'error', '');
@@ -96,20 +96,15 @@ const SchoolConfigurationList = (props: any) => {
   const additionalFunction = async (item: any, btn: any) => {
     switch (btn?.action) {
       case 'goToChildren':
-        goToChildren(item);
         break;
       default:
         break;
     }
   };
 
-  const goToChildren = async (item: any) => {
-    navigate(`/asignatures?id=${item?.id}&areaName=${item?.name}&areaGeneralId=${item.generalAcademicAreaId}`);
-  };
-
   const changeActiveDataAll = async (items: any) => {
     items.map(async (item: any) => {
-      await props.changeActiveArea(!item.active, item.id, false).then(
+      await props.changeActiveSchoolConfiguration(!item.active, item.id, false).then(
         () => { },
         () => {
           createNotification('error', 'error', '');
@@ -138,13 +133,6 @@ const SchoolConfigurationList = (props: any) => {
             changeActiveDataAll={changeActiveDataAll}
             additionalFunction={additionalFunction}
             childrenButtons={[
-              {
-                id: 0,
-                label: 'Asignaturas',
-                color: 'secondary',
-                icon: 'simple-icon-link',
-                action: 'goToChildren',
-              },
             ]}
             withChildren={true}
             refreshDataTable={refreshDataTable}

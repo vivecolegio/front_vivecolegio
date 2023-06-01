@@ -26,6 +26,12 @@ export const QUERY_GET_SCHOOL = gql`
       pedagogicalModel
       educationalModel
       curricularComponent
+      textResolution
+      textAddress
+      textDaneNit
+      textPrincipalSignature
+      logo
+      imgPrincipalSignature
       version
       createdAt
       updatedAt

@@ -27,3 +27,15 @@ export const MUTATION_DELETE_SCHOOL = gql`
     delete: deleteSchool(id: $id)
   }
 `;
+
+export const MUTATION_UPDATE_SCHOOL_LOGO_UPLOAD_IMAGE = gql`
+  mutation schoolLogoUploadImage($id: String!, $file: Upload) {
+    update: schoolLogoUploadImage(id: $id, file: $file)
+  }
+`;
+
+export const MUTATION_UPDATE_SCHOOL_IMG_PRINCIPAL_SIGNATURE_UPLOAD_IMAGE = gql`
+  mutation schoolImgPrincipalSignatureUploadImage($id: String!, $file: Upload) {
+    update: schoolImgPrincipalSignatureUploadImage(id: $id, file: $file)
+  }
+`;

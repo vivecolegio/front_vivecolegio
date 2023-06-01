@@ -3,17 +3,8 @@ import ReactDatePicker from 'react-datepicker';
 import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
 import Select from 'react-select';
-import {
-  Badge,
-  Button,
-  Card,
-  CardBody,
-  FormGroup,
-  Input,
-  InputGroup,
-  Label,
-  Row,
-} from 'reactstrap';
+import { Badge, Button, Card, CardBody, FormGroup, Input, InputGroup, Label, Row } from 'reactstrap';
+
 import BannerImg from '../../../assets/img/logos/banner.png';
 import ProfileImg from '../../../assets/img/profiles/empty.png';
 import IntlMessages from '../../../helpers/IntlMessages';
