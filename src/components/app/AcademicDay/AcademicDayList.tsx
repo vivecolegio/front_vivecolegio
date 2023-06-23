@@ -24,12 +24,21 @@ const AcademicDayList = (props: any) => {
 
   const getDataTable = useCallback(async () => {
     let permissions = permissionsMenu(props?.loginReducer, location.pathname);
-    props.getListAllAcademicDay(props?.loginReducer?.campusId, props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear, permissions.fullAccess).then((listData: any) => {
-      setDataTable(listData.map((c: any) => {
-        c.node.campus_format = c.node.campus ? c.node.campus.name : '';
-        return c;
-      }));
-    });
+    if (props?.loginReducer?.studentId?.length > 0) {
+      props.getListAllAcademicDayCampus(props?.loginReducer?.campusId, props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear, permissions.fullAccess).then((listData: any) => {
+        setDataTable(listData.map((c: any) => {
+          c.node.campus_format = c.node.campus ? c.node.campus.name : '';
+          return c;
+        }));
+      });
+    } else {
+      props.getListAllAcademicDay(props?.loginReducer?.campusId, props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear, permissions.fullAccess).then((listData: any) => {
+        setDataTable(listData.map((c: any) => {
+          c.node.campus_format = c.node.campus ? c.node.campus.name : '';
+          return c;
+        }));
+      });
+    }
   }, [])
 
   useEffect(() => {

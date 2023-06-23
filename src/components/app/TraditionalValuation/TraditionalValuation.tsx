@@ -46,7 +46,12 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
   useEffect(() => {
     props.dataAcademicAsignatureCourse(academicAsignatureCourseId).then((formData: any) => {
       props.dataCourse(formData?.data?.course?.id).then((course: any) => {
-        setStudents(course?.data?.students.sort(compare));
+        if (props?.loginReducer?.studentId?.length > 0) {
+          let studentsList = course?.data?.students?.filter((itemV: any) => itemV?.id == props?.loginReducer?.studentId);
+          setStudents(studentsList);
+        } else {
+          setStudents(course?.data?.students.sort(compare));
+        }
       });
     });
 
@@ -431,6 +436,7 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
                                           item.node.performanceLevel = { id: selectedOption?.key, name: selectedOption?.label }
                                           saveBlur(item);
                                         }}
+                                        isDisabled={props?.loginReducer?.studentId?.length > 0}
                                       /> : performanceLevelType === "QUANTITATIVE" ?
                                         <Input
                                           type="number"
@@ -446,6 +452,7 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
                                           {...item?.node?.assessment}
                                           defaultValue={item?.node?.assessment}
                                           className={item?.node?.assessment ? 'border-green form-control' : 'form-control'}
+                                          disabled={props?.loginReducer?.studentId?.length > 0}
                                         /> : ""
                                   }
                                 </td>

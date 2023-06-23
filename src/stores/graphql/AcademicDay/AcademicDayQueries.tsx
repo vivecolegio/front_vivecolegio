@@ -21,6 +21,27 @@ export const QUERY_GET_ALL_ACADEMIC_DAY = gql`
   }
 `;
 
+export const QUERY_GET_ALL_ACADEMIC_DAY_CAMPUS = gql`
+  query getAllAcademicDayCampus($campusId: String!, $schoolId: String, $schoolYearId: String, $allData: Boolean!) {
+    data: getAllAcademicDayCampus(orderCreated: true, allData: $allData, campusId: $campusId, schoolId: $schoolId, schoolYearId: $schoolYearId) {
+      edges {
+        cursor
+        node {
+          id
+          active         
+          day
+          name  
+          campus {
+            id
+            name
+          }     
+        }
+      }
+      totalCount
+    }
+  }
+`;
+
 export const QUERY_GET_ALL_ACADEMIC_DAY_ACTIVES = gql`
   query getAllAcademicDay($campusId: String!, $schoolId: String, $schoolYearId: String) {
     data: getAllAcademicDay(orderCreated: true, allData: false, campusId: $campusId, schoolId: $schoolId, schoolYearId: $schoolYearId) {

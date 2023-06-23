@@ -110,7 +110,12 @@ const StudentAttendance = (props: any) => {
   const getSpreadsheet = async (periodId: any) => {
     setLoading(true);
     await props.dataCourse(courseId).then(async (course: any) => {
-      setStudents(course?.data?.students.sort(compare));
+      if (props?.loginReducer?.studentId?.length > 0) {
+        let studentsList = course?.data?.students?.filter((itemV: any) => itemV?.id == props?.loginReducer?.studentId);
+        setStudents(studentsList);
+      } else {
+        setStudents(course?.data?.students.sort(compare));
+      }
       let obj: any = [];
       let nts: any = [];
       let avrgs: any = [];
@@ -315,6 +320,7 @@ const StudentAttendance = (props: any) => {
                                       }
                                     }}
                                     label=""
+                                    disabled={props?.loginReducer?.studentId?.length > 0}
                                   />
                                 </td>
                               </>
