@@ -70,9 +70,21 @@ const MunicipalityList = React.lazy(() => {
   );
 });
 
-const MyClasessList = React.lazy(() => {
+const MyAsignaturesStudentList = React.lazy(() => {
   return import(
-    /* webpackChunkName: "MyClasessList" */ '../components/app/MyClasses/MyClasessList'
+    /* webpackChunkName: "MyAsignaturesStudentList" */ '../components/app/MyAsignaturesStudent/MyAsignaturesStudentList'
+  );
+});
+
+const MyClassesStudentList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "MyClassesStudentList" */ '../components/app/MyClassesStudent/MyClassesStudentList'
+  );
+});
+
+const MyClassesList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "MyClassesList" */ '../components/app/MyClasses/MyClasessList'
   );
 });
 
@@ -813,7 +825,9 @@ const App = (props: any) => {
                       path="/experienceLearningRecoveryPlan"
                       element={<ExperienceLearningRecoveryPlanList />}
                     />
-                    <Route path="/myClasses" element={<MyClasessList />} />
+                    <Route path="/myAsignaturesStudent" element={<MyAsignaturesStudentList />} />
+                    <Route path="/myClassesStudent" element={<MyClassesStudentList />} />
+                    <Route path="/myClasses" element={<MyClassesList />} />
                     <Route path="/studentAttendance" element={<StudentAttendance />} />
                     <Route path="/studentBehaviour" element={<StudentBehaviour />} />
                     <Route path="/academicAssignment" element={<AcademicAssignment />} />

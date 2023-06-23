@@ -24,6 +24,8 @@ export const login = (user: any) => {
               payload: {
                 userId: data.data.userId,
                 entityId: data?.data?.student?.id,
+                studentId: data?.data?.student?.id,
+                courseId: data?.data?.student && data?.data?.student?.courseId ?data?.data?.student?.courseId :null,
                 teacherId: data?.data?.teacher?.id,
                 role: data.data.role,
                 roleMenus: data.data.roleMenus,
@@ -101,6 +103,8 @@ export const me = (schoolYearId:any) => {
               type: ME,
               payload: {
                 teacherId: data?.me?.teacher?.id,
+                studentId: data?.data?.student?.id,
+                courseId: data?.data?.student && data?.data?.student?.courseId ?data?.data?.student?.courseId :null,
                 role: data.me.role,
                 roleMenus: data.me.roleMenus,
                 name: data.me.name,

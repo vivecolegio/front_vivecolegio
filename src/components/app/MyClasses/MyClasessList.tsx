@@ -8,6 +8,7 @@ import * as academicIndicatorActions from '../../../stores/actions/AcademicAsign
 import { Colxx } from '../../common/CustomBootstrap';
 import DataList from '../../common/Data/DataList';
 import { Loader } from '../../common/Loader';
+import { permissionsMenu } from '../../../helpers/DataTransformations';
 
 const MyClassesList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
@@ -18,6 +19,8 @@ const MyClassesList = (props: any) => {
 
   const [data, setData] = useState(null);
   useEffect(() => {
+    let permissions = permissionsMenu(props?.loginReducer, location.pathname);
+    console.log(props?.loginReducer);
     if (props?.loginReducer?.teacherId) {
       props
         .getListAllAcademicAsignatureCourseTeacher(props?.loginReducer?.teacherId, props?.loginReducer?.schoolYear)
@@ -38,7 +41,7 @@ const MyClassesList = (props: any) => {
         });
     } else {
       props
-        .getListAllAcademicAsignatureCourse(props?.loginReducer?.campusId)
+        .getListAllAcademicAsignatureCourse(props?.loginReducer?.courseId, permissions.fullAccess)
         .then((listData: any) => {
           setDataTable(
             listData.map((c: any) => {
