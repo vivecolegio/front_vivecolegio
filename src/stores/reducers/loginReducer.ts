@@ -21,6 +21,8 @@ const INITIAL_STATE = {
   campusMulti: {},
   schoolMulti: {},
   schoolData: {},
+  studentData: {},
+  studentMulti: {},
 };
 
 export default (state = INITIAL_STATE, action: any) => {
@@ -47,6 +49,8 @@ export default (state = INITIAL_STATE, action: any) => {
         schoolId: action.payload.schoolId,
         schoolYearName: action.payload.schoolYearName,
         schoolData: action.payload.schoolData,
+        studentData: action.payload.studentData,
+        studentMulti: action.payload.studentMulti,
       };
     case ME:
       return {
@@ -80,6 +84,8 @@ export default (state = INITIAL_STATE, action: any) => {
         schoolId: '',       
         schoolYearName: '',
         schoolData:  {}, 
+        studentData:  {}, 
+        studentMulti:  {}, 
       };
     default:
       return state;

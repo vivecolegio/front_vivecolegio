@@ -21,6 +21,7 @@ import TopnavNotifications from './topNav/TopnavNotifications';
 
 const TopNav = (props: any) => {
   const [schoolList, setSchoolList] = useState(null);
+  const [studentList, setStudentList] = useState(null);
 
   const [topNavState, setTopNavState] = useState({
     isInFullScreen: false,
@@ -191,6 +192,12 @@ const TopNav = (props: any) => {
     });
   };
 
+  const changeStudent = (data: any) => {
+    props?.changeStudent(data, props?.loginReducer).then(() => {
+      navigate('/home');
+    });
+  };
+
   const changeSchoolYear = (data: any) => {
     props?.changeSchoolYear(data, props?.loginReducer).then(() => {
       navigate('/home');
@@ -199,6 +206,7 @@ const TopNav = (props: any) => {
 
   useEffect(() => {
     setSchoolList(props?.loginReducer?.schoolMulti);
+    setStudentList(props?.loginReducer?.studentMulti);
   }, []);
 
   const filterSchoolList = (filter: any) => {
@@ -306,6 +314,50 @@ const TopNav = (props: any) => {
             </button>
           </div>
           <div className="mr-2 border-separator-right align-middle pr-2 d-inline-block" style={{ height: "40px" }}>
+          </div>
+          <div className="mr-2 border-separator-right align-middle pr-2 d-inline-block">
+            {props?.loginReducer?.studentMulti &&
+              <UncontrolledDropdown className="dropdown-menu-right">
+                <DropdownToggle className="p-0" color="empty" onClick={resetSchoolList}>
+                  <p className="text-muted text-small mb-1"> Estudiante:</p>
+                  <p className="text-muted text-small mb-1 font-weight-bold">
+                    {studentList?.map((student: any) => {
+                      return (
+                        <>
+                          {
+                            student.id == props?.loginReducer?.studentId ? (
+                              <>
+                                <p className="text-muted text-small mb-1 font-weight-bold">{student?.user?.name} </p>
+                                <p className="text-muted text-small mb-1 font-weight-bold">{student?.user?.lastName} </p>
+                              </>
+                            ) : (
+                              ''
+                            )}
+                        </>
+                      );
+                    })}
+                  </p>
+                </DropdownToggle>
+                {props?.loginReducer?.studentMulti?.length > 1 &&
+                  <DropdownMenu className="mt-3" end style={{
+                    overflowY: "scroll",
+                    maxHeight: "60vh"
+                  }}>
+                    {studentList?.map((student: any) => {
+                      return (
+                        <>
+                          {student.id !== props?.loginReducer?.studentId ? (
+                            <DropdownItem onClick={() => { changeStudent(student) }}>{student?.user?.lastName + " " + student?.user?.name + ""} </DropdownItem>
+                          ) : (
+                            ''
+                          )}
+                        </>
+                      );
+                    })}
+                  </DropdownMenu>
+                }
+              </UncontrolledDropdown>
+            }
           </div>
           <div className="mr-2 border-separator-right align-middle pr-2 d-inline-block">
             <UncontrolledDropdown className="dropdown-menu-right">

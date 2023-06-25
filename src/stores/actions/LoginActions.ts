@@ -41,6 +41,8 @@ export const login = (user: any) => {
                 schoolYear: data.data.schools &&  data.data.schools[0]?.schoolYear[0] ? data.data.schools[0].schoolYear[0]?.id : "",
                 schoolYearName: data?.data.schools &&  data.data.schools[0]?.schoolYear[0] ? data.data.schools[0].schoolYear[0]?.schoolYear : "",
                 schoolData: data.data.schools && data.data.schools[0] ? data.data.schools[0] : "",
+                studentData: data.data.students && data.data.students[0] ? data.data.students[0] : "",
+                studentMulti: data?.data?.students,
               },
             });
           }else{
@@ -157,6 +159,27 @@ export const changeSchoolYear = (data: any, dataReducer:any) => {
             ...dataReducer,
             schoolYear: data.id ? data.id : "",
             schoolYearName: data?.schoolYear ?  data.schoolYear : "",
+          },
+        });
+      };
+      return data != null;
+    } catch (error) {
+      createNotification('error', 'errorSesion', '');
+      return error;
+    }
+  };
+};
+
+export const changeStudent = (data: any, dataReducer:any) => {
+  return async (dispatch: any) => {
+    try {
+      if(data !=null){
+        await dispatch({
+          type: LOGIN,
+          payload: {
+            ...dataReducer,
+            studentData: data ? data : "",
+            studentId: data.id ? data.id : "",
           },
         });
       };
