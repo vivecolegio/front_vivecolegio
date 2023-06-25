@@ -3,7 +3,8 @@ import { setContext } from '@apollo/client/link/context';
 import { createUploadLink } from 'apollo-upload-client';
 
 //const uri = 'http://10.3.141.1:4000/graphql';
-const uri = 'http://vivecolegios.nortedesantander.gov.co:4000/graphql';
+const uri = 'http://200.116.210.27:4000/graphql';
+export const urlImages = 'http://200.116.210.27:4000/';
 
 const httpLink = createHttpLink({
   uri,
