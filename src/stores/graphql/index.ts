@@ -2,9 +2,8 @@ import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { createUploadLink } from 'apollo-upload-client';
 
-//const uri = 'http://localhost:4000/graphql';
-const uri = 'https://vivecolegios.nortedesantander.gov.co:4100/graphql';
-export const urlImages = 'https://vivecolegios.nortedesantander.gov.co:4100/';
+//const uri = 'http://10.3.141.1:4000/graphql';
+const uri = 'http://vivecolegios.nortedesantander.gov.co:4000/graphql';
 
 const httpLink = createHttpLink({
   uri,
