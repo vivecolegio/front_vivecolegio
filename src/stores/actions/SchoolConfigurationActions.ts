@@ -95,7 +95,7 @@ export const updateSchoolConfiguration = (data: any, id: any) => {
       };
       console.log(data)
       if(data?.valueString2?.length > 0){
-        model.valueString = data?.valueString2;
+        //model.valueString = data?.valueString2;
         delete model.valueString2;
       }
       let dataUpdate = null;

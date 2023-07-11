@@ -51,6 +51,7 @@ const SchoolConfigurationList = (props: any) => {
         }
       });
     } else {
+      console.log(dataForm);
       await props.updateSchoolConfiguration(dataForm, data.id).then((id: any) => {
         if (id !== undefined) {
           setModalOpen(false);

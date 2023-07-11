@@ -55,6 +55,12 @@ const SchoolConfigurationCreateEdit = (props: any) => {
       setValueString({
         key: props?.data?.valueString, label: messages["display." + props?.data?.code + "_" + props?.data?.valueString], value: props?.data?.valueString,
       })
+
+      register('valueString', {
+        required: true,
+        value: props?.data?.id ? props?.data?.valueString : '',
+      });
+
       register('schoolId', {
         required: true,
         value: props?.data?.id && props?.data?.schoolId ? props?.data?.schoolId : props?.loginReducer?.schoolId,
@@ -111,7 +117,7 @@ const SchoolConfigurationCreateEdit = (props: any) => {
     value: props?.data?.id ? props?.data?.code : '',
   });
 
-  const { ref: valueStringRef, ...valueStringRest } = register('valueString', {
+  const { ref: valueStringRef, ...valueStringRest } = register('valueString2', {
     required: true,
     value: props?.data?.id ? props?.data?.valueString : '',
   });
@@ -168,7 +174,7 @@ const SchoolConfigurationCreateEdit = (props: any) => {
               {props?.data?.code == "REPORT_CERTIFICATE_FINAL_TEXT_CERTIFICATE" ? <>
                 <FormGroupCustom>
                   <LabelCustom id="forms.value" required={true} />
-                  <Input disabled={true} {...valueStringRest} innerRef={valueStringRef} className="form-control" />
+                  <Input disabled={true} value={valueString?.key} className="form-control" />
                   <RequiredMessagesCustom formState={formState} register={"valueString"} />
                 </FormGroupCustom>
                 <FormGroupCustom>
@@ -180,7 +186,7 @@ const SchoolConfigurationCreateEdit = (props: any) => {
                     classNamePrefix="react-select"
                     options={[{ key: "MODEL_A", label: messages["display." + props?.data?.code + "_MODEL_A"], value: "MODEL_A", }, { key: "MODEL_B", label: messages["display." + props?.data?.code + "_MODEL_B"], value: "MODEL_B" }]}
                     value={valueString}
-                    onChange={(selectedOption) => {
+                    onChange={(selectedOption: any) => {
                       setValueString(selectedOption);
                       setValue('valueString', selectedOption?.key);
                     }}
@@ -191,7 +197,7 @@ const SchoolConfigurationCreateEdit = (props: any) => {
               {props?.data?.code == "AVERAGE_AREA" ? <>
                 <FormGroupCustom>
                   <LabelCustom id="forms.value" required={true} />
-                  <Input disabled={true} {...valueStringRest} innerRef={valueStringRef} className="form-control" />
+                  <Input disabled={true} value={valueString?.key} className="form-control" />
                   <RequiredMessagesCustom formState={formState} register={"valueString"} />
                 </FormGroupCustom>
                 <FormGroupCustom>
@@ -203,7 +209,7 @@ const SchoolConfigurationCreateEdit = (props: any) => {
                     classNamePrefix="react-select"
                     options={[{ key: "IHS", label: messages["display." + props?.data?.code + "_IHS"], value: "IHS", }, { key: "PROM", label: messages["display." + props?.data?.code + "_PROM"], value: "PROM" }]}
                     value={valueString}
-                    onChange={(selectedOption) => {
+                    onChange={(selectedOption: any) => {
                       setValueString(selectedOption);
                       setValue('valueString', selectedOption?.key);
                     }}
@@ -214,8 +220,8 @@ const SchoolConfigurationCreateEdit = (props: any) => {
               {props?.data?.code == "REPORT_CERTIFICATE_FINAL_SIGNATURE_SECREATARY" ? <>
                 <FormGroupCustom>
                   <LabelCustom id="forms.value" required={true} />
-                  <Input disabled={false} {...valueStringRest} innerRef={valueStringRef} className="form-control" />
-                  <RequiredMessagesCustom formState={formState} register={"valueString"} />
+                  <Input disabled={false}  {...register('valueString2', { required: false })} className="form-control" />
+                  <RequiredMessagesCustom formState={formState} register={"valueString2"} />
                 </FormGroupCustom>
               </> : <></>}
 
@@ -237,7 +243,7 @@ const SchoolConfigurationCreateEdit = (props: any) => {
                     { key: "TEACHER_COURSE_AND_PRINCIPAL", label: messages["display." + props?.data?.code + "_TEACHER_COURSE_AND_PRINCIPAL"], value: "TEACHER_COURSE_AND_PRINCIPAL" },
                     { key: "PRINCIPAL_SECRETARY", label: messages["display." + props?.data?.code + "_PRINCIPAL_SECRETARY"], value: "PRINCIPAL_SECRETARY" }]}
                     value={valueString}
-                    onChange={(selectedOption) => {
+                    onChange={(selectedOption: any) => {
                       setValueString(selectedOption);
                       setValue('valueString', selectedOption?.key);
                     }}
@@ -277,7 +283,7 @@ const SchoolConfigurationCreateEdit = (props: any) => {
                     options={[{ key: "AREA", label: messages["display." + props?.data?.code + "_AREA"], value: "AREA", },
                     { key: "ASIGNATURE", label: messages["display." + props?.data?.code + "_ASIGNATURE"], value: "ASIGNATURE" }]}
                     value={valueString}
-                    onChange={(selectedOption) => {
+                    onChange={(selectedOption: any) => {
                       setValueString(selectedOption);
                       setValue('valueString', selectedOption?.key);
                     }}
@@ -333,7 +339,7 @@ const SchoolConfigurationCreateEdit = (props: any) => {
                     options={[{ key: "DISPLAY", label: messages["display." + props?.data?.code + "_DISPLAY"], value: "DISPLAY", },
                     { key: "HIDDEN", label: messages["display." + props?.data?.code + "_HIDDEN"], value: "HIDDEN" }]}
                     value={valueString}
-                    onChange={(selectedOption) => {
+                    onChange={(selectedOption: any) => {
                       setValueString(selectedOption);
                       setValue('valueString', selectedOption?.key);
                     }}
@@ -359,7 +365,7 @@ const SchoolConfigurationCreateEdit = (props: any) => {
                     { key: "TEACHER_COURSE_AND_PRINCIPAL", label: messages["display." + props?.data?.code + "_TEACHER_COURSE_AND_PRINCIPAL"], value: "TEACHER_COURSE_AND_PRINCIPAL" },
                     { key: "PRINCIPAL_SECRETARY", label: messages["display." + props?.data?.code + "_PRINCIPAL_SECRETARY"], value: "PRINCIPAL_SECRETARY" }]}
                     value={valueString}
-                    onChange={(selectedOption) => {
+                    onChange={(selectedOption: any) => {
                       setValueString(selectedOption);
                       setValue('valueString', selectedOption?.key);
                     }}
@@ -384,7 +390,7 @@ const SchoolConfigurationCreateEdit = (props: any) => {
                     { key: "AREA", label: messages["display." + props?.data?.code + "_AREA"], value: "AREA" },
                     { key: "ASIGNATURE", label: messages["display." + props?.data?.code + "_ASIGNATURE"], value: "ASIGNATURE" }]}
                     value={valueString}
-                    onChange={(selectedOption) => {
+                    onChange={(selectedOption: any) => {
                       setValueString(selectedOption);
                       setValue('valueString', selectedOption?.key);
                     }}
@@ -408,7 +414,7 @@ const SchoolConfigurationCreateEdit = (props: any) => {
                     options={[{ key: "QUANTITATIVE", label: messages["display." + props?.data?.code + "_QUANTITATIVE"], value: "QUANTITATIVE", },
                     { key: "QUALITATIVE", label: messages["display." + props?.data?.code + "_QUALITATIVE"], value: "QUALITATIVE" }]}
                     value={valueString}
-                    onChange={(selectedOption) => {
+                    onChange={(selectedOption: any) => {
                       setValueString(selectedOption);
                       setValue('valueString', selectedOption?.key);
                     }}
@@ -432,7 +438,7 @@ const SchoolConfigurationCreateEdit = (props: any) => {
                     options={[{ key: "SINGLE", label: messages["display." + props?.data?.code + "_SINGLE"], value: "SINGLE", },
                     { key: "DETAILS", label: messages["display." + props?.data?.code + "_DETAILS"], value: "DETAILS" }]}
                     value={valueString}
-                    onChange={(selectedOption) => {
+                    onChange={(selectedOption: any) => {
                       setValueString(selectedOption);
                       setValue('valueString', selectedOption?.key);
                     }}
@@ -464,7 +470,7 @@ const SchoolConfigurationCreateEdit = (props: any) => {
                     options={[{ key: "ALL", label: messages["display." + props?.data?.code + "_ALL"], value: "ALL", },
                     { key: "SPECIFIC", label: messages["display." + props?.data?.code + "_SPECIFIC"], value: "SPECIFIC" }]}
                     value={valueString}
-                    onChange={(selectedOption) => {
+                    onChange={(selectedOption: any) => {
                       setValueString(selectedOption);
                       setValue('valueString', selectedOption?.key);
                     }}
@@ -488,7 +494,7 @@ const SchoolConfigurationCreateEdit = (props: any) => {
                     options={[{ key: "ALL", label: messages["display." + props?.data?.code + "_ALL"], value: "ALL", },
                     { key: "SPECIFIC", label: messages["display." + props?.data?.code + "_SPECIFIC"], value: "SPECIFIC" }]}
                     value={valueString}
-                    onChange={(selectedOption) => {
+                    onChange={(selectedOption: any) => {
                       setValueString(selectedOption);
                       setValue('valueString', selectedOption?.key);
                     }}
@@ -512,7 +518,7 @@ const SchoolConfigurationCreateEdit = (props: any) => {
                     options={[{ key: "EVIDENCE_LEARNING", label: messages["display." + props?.data?.code + "_EVIDENCE_LEARNING"], value: "EVIDENCE_LEARNING", },
                     { key: "LEARNING", label: messages["display." + props?.data?.code + "_LEARNING"], value: "LEARNING" }]}
                     value={valueString}
-                    onChange={(selectedOption) => {
+                    onChange={(selectedOption: any) => {
                       setValueString(selectedOption);
                       setValue('valueString', selectedOption?.key);
                     }}
