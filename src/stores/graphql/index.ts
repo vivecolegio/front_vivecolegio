@@ -4,7 +4,7 @@ import { createUploadLink } from 'apollo-upload-client';
 
 //const uri = 'http://localhost:4000/graphql';
 const uri = 'https://vivecolegios.nortedesantander.gov.co:4100/graphql';
-export const urlImages = 'https://vivecolegios.nortedesantander.gov.co:4100';
+export const urlImages = 'https://vivecolegios.nortedesantander.gov.co:4100/';
 
 const httpLink = createHttpLink({
   uri,
