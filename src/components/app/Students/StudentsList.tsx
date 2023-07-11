@@ -5,18 +5,21 @@ import { COLUMN_LIST } from '../../../constants/Student/studentConstants';
 import { createNotification } from '../../../helpers/Notification';
 import * as studentActions from '../../../stores/actions/StudentActions';
 import * as userActions from '../../../stores/actions/UserActions';
+import * as importDataSchoolActions from '../../../stores/actions/ImportDataSchoolActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import DataList from '../../common/Data/DataList';
 /* eslint-disable no-await-in-loop */
 import { Loader } from '../../common/Loader';
 import StudentCreateEdit from './StudentsCreateEdit';
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import IntlMessages from '../../../helpers/IntlMessages';
 
 const StudentList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
   const [columns, setColumns] = useState(COLUMN_LIST);
   const [modalOpen, setModalOpen] = useState(false);
   const [currentMenu, setCurrentMenu] = useState(null);
-
+  const [modalBasic, setModalBasic] = useState({ status: false });
   const [data, setData] = useState(null);
 
   useEffect(() => {
@@ -131,12 +134,30 @@ const StudentList = (props: any) => {
     }
   };
 
+  const updateDataSimat = async () => {
+    setDataTable(null);
+    await props.updateDataSimat(props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear).then((formData: any) => {
+      refreshDataTable();
+    });
+  };
 
   return (
     <>
       {' '}
       {dataTable !== null ? (
         <>
+          <div className='d-flex justify-content-between align-items-center mb-1'>
+            <div></div>
+            {props?.loginReducer?.schoolMulti?.length > 1 ?
+              <Button
+                onClick={() => {
+                  return setModalBasic({ status: true });
+                }}
+                color="green">
+                <i className='iconsminds-refresh font-1rem mr-2' />
+                Sincronizar SIMAT
+              </Button> : ''}
+          </div>
           <DataList
             data={dataTable}
             columns={columns}
@@ -172,6 +193,34 @@ const StudentList = (props: any) => {
             }}
             onSubmit={onSubmit}
           />
+          <Modal
+            isOpen={modalBasic?.status}
+            toggle={() => setModalBasic({ status: false })}
+          >
+            <ModalHeader>
+              <IntlMessages id="pages.syncUp" />
+            </ModalHeader>
+            <ModalBody>
+              Esta seguro que desea sincronizar la informacion del SIMAT ?
+            </ModalBody>
+            <ModalFooter>
+              <Button
+                color="secondary" outline
+                onClick={() => setModalBasic({ status: false })}
+              >
+                <IntlMessages id="pages.cancel" />
+              </Button>
+              <Button
+                color="warning"
+                onClick={() => {
+                  updateDataSimat();
+                  setModalBasic({ status: false })
+                }}
+              >
+                <IntlMessages id="pages.syncUp" />
+              </Button>{' '}
+            </ModalFooter>
+          </Modal>
         </>
       ) : (
         <>
@@ -183,7 +232,7 @@ const StudentList = (props: any) => {
     </>
   );
 };
-const mapDispatchToProps = { ...studentActions, ...userActions };
+const mapDispatchToProps = { ...studentActions, ...userActions, ...importDataSchoolActions };
 
 const mapStateToProps = ({ loginReducer }: any) => {
   return { loginReducer };

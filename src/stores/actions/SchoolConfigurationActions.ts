@@ -93,8 +93,12 @@ export const updateSchoolConfiguration = (data: any, id: any) => {
         ...model,
         ...data,
       };
+      console.log(data)
+      if(data?.valueString2?.length > 0){
+        model.valueString = data?.valueString2;
+        delete model.valueString2;
+      }
       let dataUpdate = null;
-      model.order = model.order && !isNaN(model.order) ? parseFloat(model.order) : 0;
       await client
         .mutate({
           mutation: MUTATION_UPDATE_SCHOOL_CONFIGURATION,

@@ -90,6 +90,7 @@ const esMessages = {
   'pages.activate': 'Activar',
   'pages.activateInactivate': 'Activar / Inactivar',
   'pages.inactivate': 'Inactivar',
+  'pages.syncUp': 'Sincronizar',
   'pages.another-action': 'Otra accion',
   'pages.actions': 'Acciones',
   'pages.header': 'Encabezado',
