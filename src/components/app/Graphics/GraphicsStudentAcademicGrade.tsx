@@ -14,7 +14,7 @@ const GraphicsStudentAcademicGrade = (props: any) => {
   let Students: number;
 
   useEffect(() => {
-    props.dataGraphicsStudentAcademicGrade(props?.loginReducer?.schoolId).then((listData: any) => {
+    props.dataGraphicsStudentAcademicGrade(props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear,).then((listData: any) => {
       Students = listData.reduce((prev: any, next: any) => prev + next.node.countStudent, 0);
       setDataTable(
         listData.map((c: any) => {
@@ -30,7 +30,7 @@ const GraphicsStudentAcademicGrade = (props: any) => {
   }, []);
 
   const getDataTable = async () => {
-    props.dataGraphicsStudentAcademicGrade(props?.loginReducer?.schoolId).then((listData: any) => {
+    props.dataGraphicsStudentAcademicGrade(props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear,).then((listData: any) => {
       Students = listData.reduce((prev: any, next: any) => prev + next.node.countStudent, 0);
       setDataTable(
         listData.map((c: any) => {

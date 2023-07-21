@@ -25,7 +25,7 @@ export const dataGraphicsStudentAcademicCourse = (id: any, academicGradeId: any)
     };
   };
   
-  export const getDropdownsGraphicsStudentAcademicCourse= (schoolId:string) => {
+  export const getDropdownsGraphicsStudentAcademicCourse= (schoolId:string,  schoolYearId:string,) => {
     return async (dispatch: any) => {
       try {
         let listData = {};
@@ -33,7 +33,8 @@ export const dataGraphicsStudentAcademicCourse = (id: any, academicGradeId: any)
           .query({
             query: QUERY_GET_DROPDOWNS_GRAPHICS_STUDENT_ACADEMIC_COURSE,
             variables:{
-              schoolId
+              schoolId,
+              schoolYearId
             }
           })
           .then((result: any) => {

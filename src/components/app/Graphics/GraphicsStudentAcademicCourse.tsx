@@ -21,7 +21,7 @@ const GraphicsStudentAcademicCourse = (props: any) => {
 
   useEffect(() => {
     props
-      .getDropdownsGraphicsStudentAcademicCourse(props?.loginReducer?.schoolId)
+      .getDropdownsGraphicsStudentAcademicCourse(props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear)
       .then((data: any) => {
         setGradesList(
           data.dataGrades.edges.map((c: any) => {

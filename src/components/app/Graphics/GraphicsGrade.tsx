@@ -15,7 +15,7 @@ const GraphicsGrade = (props: any) => {
   const [activeSecondTab, setActiveSecondTab] = useState('1');
 
   useEffect(() => {
-    getDataChart(props?.loginReducer?.schoolId);
+    getDataChart(props?.loginReducer?.schoolId, props?.loginReducer?.schoolYear);
   }, []);
 
   useEffect(() => {
@@ -122,8 +122,8 @@ const GraphicsGrade = (props: any) => {
     }
   }, [dataChart]);
 
-  const getDataChart = async (schoolId: any) => {
-    props.dataGraphicsStudentAcademicGrade(schoolId).then((listData: any) => {
+  const getDataChart = async (schoolId: any, schoolYearId: any) => {
+    props.dataGraphicsStudentAcademicGrade(schoolId, schoolYearId).then((listData: any) => {
       setDataChart(
         listData.map((c: any) => {
           return { category: c.node.name, value: c.node.countStudent };
