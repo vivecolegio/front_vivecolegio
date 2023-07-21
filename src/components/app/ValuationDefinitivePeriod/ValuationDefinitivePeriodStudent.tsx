@@ -246,6 +246,9 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
             data.assessment = assessment;
             if (performanceLevelType == "QUALITATIVE") {
               data.performanceLevelId = performanceLevelId;
+            } else {
+              data.performanceLevelId = await getPerformanceLevel(assessment);
+              data.performanceLevelId = data.performanceLevelId?.id;
             }
             data.studentId = item?.studentId;
             await props.updateAcademicAreaCoursePeriodValuation(data, item?.id?.toString()).then(() => {
@@ -291,6 +294,9 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
             data.assessment = assessment;
             if (performanceLevelType == "QUALITATIVE") {
               data.performanceLevelId = performanceLevelId;
+            } else {
+              data.performanceLevelId = await getPerformanceLevel(assessment);
+              data.performanceLevelId = data.performanceLevelId?.id;
             }
             data.studentId = item?.studentId;
             await props.updateAcademicAsignatureCoursePeriodValuation(data, item?.id?.toString()).then(() => {
@@ -310,7 +316,7 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
       });
       if (perf === undefined) {
         perf = performanceLevels?.find((c: any) => {
-          return assesment <= c.node.topScore && assesment.target.value > c.node.minimumScore;
+          return assesment <= c.node.topScore && assesment > c.node.minimumScore;
         });
       }
     }
