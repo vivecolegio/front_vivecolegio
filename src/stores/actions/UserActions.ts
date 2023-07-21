@@ -1,6 +1,6 @@
 import { createNotification } from "../../helpers/Notification";
 import { client, clientUpload } from '../graphql';
-import { MUTATION_CHANGE_ACTIVE_USER, MUTATION_CHANGE_PASSWORD_USER, MUTATION_CREATE_USER, MUTATION_DELETE_USER, MUTATION_RESET_PASSWORD_USER, MUTATION_UPDATE_PROFILE_PHOTO_USER, MUTATION_UPDATE_USER } from '../graphql/Users/UserMutations';
+import { MUTATION_CHANGE_ACTIVE_USER, MUTATION_CHANGE_PASSWORD_USER, MUTATION_CREATE_USER, MUTATION_DELETE_USER, MUTATION_RESET_PASSWORD_USER, MUTATION_UPDATE_PROFILE_PHOTO_USER, MUTATION_UPDATE_USER, MUTATION_UPDATE_USER_IMG_SIGNATURE_UPLOAD_IMAGE } from '../graphql/Users/UserMutations';
 import { QUERY_GET_ALL_USER, QUERY_GET_DROPDOWNS_USER, QUERY_GET_USER, QUERY_GET_USER_BY_DOCUMENT_NUMBER } from '../graphql/Users/UserQueries';
 
 export const getListAllUser = () => {
@@ -298,5 +298,29 @@ export const getUserByDocumentNumber = (documentNumber: any) => {
   };
 };
 
-
-
+export const uploadImgSignature = (file: any, id: any) => {
+  return async (dispatch: any) => {
+    try {
+      let dataUpdate = null;
+      await clientUpload
+        .mutate({
+          mutation: MUTATION_UPDATE_USER_IMG_SIGNATURE_UPLOAD_IMAGE,
+          variables: { id, file},
+        })
+        .then((dataReponse: any) => {
+          if (dataReponse.errors?.length > 0) {
+            dataReponse.errors.forEach((error: any) => {
+              createNotification('error', 'error', '');
+            });
+          } else {
+            dataUpdate = dataReponse.data.update;
+            createNotification('success', 'success', '');
+          }
+        });
+      return dataUpdate as any;
+    } catch (error) {
+      createNotification('error', 'error', '');
+      return error;
+    }
+  };
+};

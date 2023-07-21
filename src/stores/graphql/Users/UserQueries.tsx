@@ -36,6 +36,7 @@ export const QUERY_GET_USER = gql`
       documentTypeId
       documentNumber
       profilePhoto
+      signaturePhoto
       role {
         id
         name

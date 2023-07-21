@@ -160,6 +160,13 @@ const Profile = (props: any) => {
     });
   };
 
+  const uploadImgSignature = async (file: any) => {
+    props.uploadImgSignature(file, props?.loginReducer?.userId).then((resp: any) => {
+      getUser();
+      //me();
+    });
+  };
+
   return (
     <>
       {loading ? (
@@ -211,38 +218,6 @@ const Profile = (props: any) => {
                     *La foto de perfil se cargará automaticamente una vez sea seleccionada*
                   </small>
                   <hr />
-                  {/* <div className="row mt-4">
-                    <div className="col-md-6 text-right">
-                      <p className="text-muted text-small mb-2 d-flex align-items-center justify-content-end">
-                        <i className="iconsminds-id-card mr-2 font-1rem text-info" />{' '}
-                        {user ? user.documentType.name : ''}
-                      </p>
-                      <p className="mb-3 font-1rem">{user ? user.documentNumber : ''}</p>
-                    </div>
-                    <div className="col-md-6 text-left">
-                      <p className="text-muted text-small mb-2 d-flex align-items-center">
-                        <i className="iconsminds-male-female mr-2 font-1rem text-info" />
-                        <IntlMessages id="forms.gender" />
-                      </p>
-                      <p className="mb-3 font-1rem">{user ? user.gender.name : ''}</p>
-                    </div>
-                    <div className="col-md-6 text-right">
-                      <p className="text-muted text-small mb-2 d-flex align-items-center justify-content-end">
-                        <i className="iconsminds-smartphone-3 mr-2 font-1rem text-info" />
-                        <IntlMessages id="forms.phone" />
-                      </p>
-                      <p className="mb-3 font-1rem">{user ? user.phone : ''}</p>
-                    </div>
-                    <div className="col-md-6 text-left">
-                      <p className="text-muted text-small mb-2 d-flex align-items-center">
-                        <i className="iconsminds-cake mr-2 font-1rem text-info" />
-                        <IntlMessages id="forms.birthdate" />
-                      </p>
-                      <p className="mb-3 font-1rem">
-                        {user ? moment(user.birthdate).format('YYYY-MM-DD') : ''}
-                      </p>
-                    </div>
-                  </div> */}
                 </CardBody>
                 <CardBody className="text-center pt-0">
                   <div className="text-center pt-4 mb-4 mt-3">
@@ -417,6 +392,38 @@ const Profile = (props: any) => {
                 </CardBody>
               </Card>
             </Colxx>
+            {user?.role?.name && user.role.name === "DOCENTE" ?
+              <Colxx xxs="12" lg="5" xl="4" className="col-left" style={{ marginTop: "-8vh" }}>
+                <SingleLightbox
+                  id="2"
+                  thumb={user?.signaturePhoto ? urlImages + user?.signaturePhoto : ProfileImg}
+                  large={user?.signaturePhoto ? urlImages + user?.signaturePhoto : ProfileImg}
+                  className="img-thumbnail card-img social-profile-img"
+                />
+                <Card>
+                  <CardBody className="pb-0">
+                    <div className="text-center pt-4 mb-4 mt-4">
+                      <Badge color="primary font-0-8rem" pill>
+                        {'Firma Docente'}
+                      </Badge>
+                    </div>
+                    <InputGroup className="mb-3">
+                      <Input
+                        type="file"
+                        id="exampleCustomFileBrowser2"
+                        name="customFile"
+                        onChange={(e) => uploadImgSignature(e.target.files[0])}
+                      />
+                    </InputGroup>
+                    <small>
+                      *La firma se cargará automaticamente una vez sea seleccionada*
+                    </small>
+                    <hr />
+                  </CardBody>
+                </Card>
+              </Colxx> :
+              <></>
+            }
           </Row>
         </>
       )}

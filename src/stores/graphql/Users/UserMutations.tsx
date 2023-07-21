@@ -45,3 +45,9 @@ export const MUTATION_RESET_PASSWORD_USER = gql`
     update: resetPasswordUser(id: $id)
   }
 `;
+
+export const MUTATION_UPDATE_USER_IMG_SIGNATURE_UPLOAD_IMAGE = gql`
+  mutation userSignatureUploadImage($id: String!, $file: Upload) {
+    update: userSignatureUploadImage(id: $id, file: $file)
+  }
+`;
