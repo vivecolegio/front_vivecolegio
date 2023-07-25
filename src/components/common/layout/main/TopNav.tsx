@@ -478,12 +478,12 @@ const TopNav = (props: any) => {
                   <DropdownItem>
                     <IntlMessages id="layouts.faq" />
                   </DropdownItem>
-                </NavLink>
-                <NavLink to="/tutorials">
-                  <DropdownItem>
-                    <IntlMessages id="layouts.tutorials" />
-                  </DropdownItem>
                 </NavLink> */}
+                <NavLink to="/videoTutorials">
+                  <DropdownItem>
+                    <IntlMessages id="layouts.videoTutorials" />
+                  </DropdownItem>
+                </NavLink>
                 {/* <NavLink to="/chat">
                   <DropdownItem>
                     <IntlMessages id="layouts.chat" />

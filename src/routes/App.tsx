@@ -32,8 +32,8 @@ const Faq = React.lazy(() => {
   return import(/* webpackChunkName: "Faq" */ '../components/app/Faq/Faq');
 });
 
-const Tutorials = React.lazy(() => {
-  return import(/* webpackChunkName: "Tutorials" */ '../components/app/Tutorials/Tutorials');
+const VideoTutorials = React.lazy(() => {
+  return import(/* webpackChunkName: "VideoTutorials" */ '../components/app/VideoTutorials/VideoTutorials');
 });
 
 const GraphicsStudentAcademicGrade = React.lazy(() => {
@@ -744,7 +744,7 @@ const App = (props: any) => {
                   <>
                     <Route path="/profile" element={<Profile />} />
                     <Route path="/faq" element={<Faq />} />
-                    <Route path="/tutorials" element={<Tutorials />} />
+                    <Route path="/videoTutorials" element={<VideoTutorials />} />
                     <Route
                       path="/graphicsStudentAcademicGrade"
                       element={<GraphicsStudentAcademicGrade />}

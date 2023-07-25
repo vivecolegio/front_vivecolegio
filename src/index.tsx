@@ -13,7 +13,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import 'react-time-picker/dist/TimePicker.css';
 import 'react-image-lightbox/style.css';
 import 'react-perfect-scrollbar/dist/css/styles.css';
-
+import 'video-react/dist/video-react.css';
 //import 'video.js/dist/video-js.css';
 
 const color = isMultiColorActive || isDarkSwitchActive ? getCurrentColor() : defaultColor;

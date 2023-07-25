@@ -56,7 +56,7 @@ const esMessages = {
   'layouts.mySchedule': 'Mi Horario',
   'layouts.chat': 'Chat',
   'layouts.faq': 'FAQ',
-  'layouts.tutorials': 'Tutoriales',
+  'layouts.videoTutorials': 'Video Tutoriales',
   'layouts.forums': 'Foros',
   'layouts.details': 'Detalles',
   'layouts.comments': 'Comentarios',
@@ -418,8 +418,9 @@ const esMessages = {
   'forms.textDaneNit': 'Texto Linea 3 Certificados',
   'forms.textPrincipalSignature': 'Nombre Firma Principal',
   'display._': '',
-
-
+  'forms.low_quality': 'Baja',
+  'forms.medium_quality': 'Media',
+  'forms.high_quality': 'Alta',
 };
 
 export default esMessages;
