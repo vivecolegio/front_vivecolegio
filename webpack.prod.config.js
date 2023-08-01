@@ -131,6 +131,7 @@ module.exports = {
         { from: path.resolve(__dirname, 'public/meta.json'), to: path.resolve(__dirname, 'dist')},
         { from: path.resolve(__dirname, 'public/manifest.json'), to: path.resolve(__dirname, 'dist') },
         { from: path.resolve(__dirname, 'public/12AE5AFDD31FAF4E046C893C8A1E55AE.txt'), to: path.resolve(__dirname, 'dist/.well-known/pki-validation/') }
+        { from: path.resolve(__dirname, 'public/C37DD54BE84B26F0027B9EB840D14002.txt'), to: path.resolve(__dirname, 'dist/.well-known/pki-validation/') }
       ]
     }),
     // new AddAssetHtmlPlugin({
