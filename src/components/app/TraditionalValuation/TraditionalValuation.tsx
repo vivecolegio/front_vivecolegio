@@ -34,6 +34,7 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
   const [performanceLevelType, setPerformanceLevelType] = useState(null);
   const [average, setAverage] = useState(null);
   const [progress, setProgress] = useState(0);
+  const [editPermissionTeacher, setEditPermissionTeacher] = useState(false);
 
   let navigate = useNavigate();
 
@@ -45,16 +46,20 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
   const [data, setData] = useState(null);
   useEffect(() => {
     props.dataAcademicAsignatureCourse(academicAsignatureCourseId).then((formData: any) => {
+      if (props?.loginReducer?.teacherId == formData?.data?.teacherId) {
+        setEditPermissionTeacher(true);
+      }
       props.dataCourse(formData?.data?.course?.id).then((course: any) => {
         if (props?.loginReducer?.studentId?.length > 0) {
-          let studentsList = course?.data?.students?.filter((itemV: any) => itemV?.id == props?.loginReducer?.studentId);
+          let studentsList = course?.data?.students?.filter(
+            (itemV: any) => itemV?.id == props?.loginReducer?.studentId,
+          );
           setStudents(studentsList);
         } else {
           setStudents(course?.data?.students.sort(compare));
         }
       });
     });
-
 
     props.generateExperienceLearningTraditionalValuation(learningId).then((response: any) => {
       props
@@ -63,7 +68,6 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
           await props
             .getListAllPerformanceLevelAsignatureCourse(academicAsignatureCourseId)
             .then((levels: any) => {
-
               setPerformanceLevels(levels);
               let levelsOrderDesc = levels.sort(comparePerformanceLevelsTopScore);
               setMax(levelsOrderDesc[levelsOrderDesc.length - 1]?.node?.topScore);
@@ -76,11 +80,14 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
               );
               let progress = 0;
               let average = 0;
-              if (levelsOrderDesc[0]?.node?.type == "QUALITATIVE") {
+              if (levelsOrderDesc[0]?.node?.type == 'QUALITATIVE') {
                 listData.forEach((element: any) => {
                   if (element?.node?.performanceLevel) {
                     progress++;
-                    let performanceLevelIndex = levels.findIndex((i: any) => i.node.id === element?.node?.performanceLevel?.id) + 1;
+                    let performanceLevelIndex =
+                      levels.findIndex(
+                        (i: any) => i.node.id === element?.node?.performanceLevel?.id,
+                      ) + 1;
                     average += performanceLevelIndex;
                   }
                 });
@@ -103,20 +110,25 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
   }, []);
 
   const refreshDataTable = async () => {
-    await props.dataAcademicAsignatureCourse(academicAsignatureCourseId).then(async (formData: any) => {
-      await props.dataCourse(formData?.data?.course?.id).then((course: any) => {
-        setStudents(course?.data?.students.sort(compare));
+    await props
+      .dataAcademicAsignatureCourse(academicAsignatureCourseId)
+      .then(async (formData: any) => {
+        await props.dataCourse(formData?.data?.course?.id).then((course: any) => {
+          setStudents(course?.data?.students.sort(compare));
+        });
       });
-    });
     await props
       .getListAllExperienceLearningTraditionalValuation(learningId)
       .then((listData: any) => {
         let progress = 0;
         let average = 0;
-        if (performanceLevelType == "QUALITATIVE") {
+        if (performanceLevelType == 'QUALITATIVE') {
           listData.forEach((element: any) => {
             if (element?.node?.performanceLevel) {
-              let performanceLevelIndex = performanceLevelsList.findIndex((i: any) => i.key === element?.node?.performanceLevel?.id) + 1;
+              let performanceLevelIndex =
+                performanceLevelsList.findIndex(
+                  (i: any) => i.key === element?.node?.performanceLevel?.id,
+                ) + 1;
               average += performanceLevelIndex;
               progress++;
             }
@@ -132,7 +144,7 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
         setProgress(progress);
         setAverage(average / progress);
         setValuations([...listData.sort(compare)]);
-        setValuationsBase(JSON.parse(JSON.stringify(listData)))
+        setValuationsBase(JSON.parse(JSON.stringify(listData)));
       });
   };
 
@@ -149,9 +161,9 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
           });
         }
       }
-      return perf
+      return perf;
     }
-  }
+  };
 
   const getPerformanceLevel = async (e: any, valuation: any) => {
     let perf = null;
@@ -182,20 +194,27 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
     const elementIndex = valuationsBase.findIndex((obj) => {
       return obj.node.id === item.node.id;
     });
-    if ((valuationsBase[elementIndex].node.performanceLevel?.id !== item?.node?.performanceLevel?.id) || (valuationsBase[elementIndex].node.assessment !== item?.node?.assessment)) {
+    if (
+      valuationsBase[elementIndex].node.performanceLevel?.id !== item?.node?.performanceLevel?.id ||
+      valuationsBase[elementIndex].node.assessment !== item?.node?.assessment
+    ) {
       let obj = {
         assessment: item?.node?.assessment,
-        performanceLevelId: item?.node?.performanceLevel ? item?.node?.performanceLevel?.id : null
+        performanceLevelId: item?.node?.performanceLevel ? item?.node?.performanceLevel?.id : null,
       };
-      await props.updateExperienceLearningTraditionalValuation(obj, item.node.id).then(
-        () => {
-          createNotification('success', 'success', '');
-          refreshDataTable();
-        },
-        () => {
-          createNotification('error', 'error', '');
-        },
-      );
+      if (obj?.assessment != null && obj?.assessment != undefined) {
+        await props.updateExperienceLearningTraditionalValuation(obj, item.node.id).then(
+          () => {
+            createNotification('success', 'success', '');
+            refreshDataTable();
+          },
+          () => {
+            createNotification('error', 'error', '');
+          },
+        );
+      } else {
+        createNotification('error', 'error', '');
+      }
     }
   };
 
@@ -209,21 +228,25 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
       });
     }
     let obj = {
-      assessment: assesstmentSelected || 0,
-      performanceLevelId: performanceSelected ? performanceSelected?.value : perf?.node?.id
+      assessment: assesstmentSelected,
+      performanceLevelId: performanceSelected ? performanceSelected?.value : perf?.node?.id,
     };
-    for (const item of valuations) {
-      promisesList.push(props.updateExperienceLearningTraditionalValuation(obj, item.node.id))
+    if (obj?.assessment != null && obj?.assessment != undefined) {
+      for (const item of valuations) {
+        promisesList.push(props.updateExperienceLearningTraditionalValuation(obj, item.node.id));
+      }
+      await Promise.all(promisesList).then(() => {
+        createNotification('success', 'success', '');
+        setValuations([]);
+        refreshDataTable();
+        setAssesstmentSelected(null);
+        setPerformanceSelected(null);
+        setLoading(false);
+      });
+    } else {
+      createNotification('error', 'error', '');
     }
-    await Promise.all(promisesList).then(() => {
-      createNotification('success', 'success', '');
-      setValuations([])
-      refreshDataTable();
-      setAssesstmentSelected(null);
-      setPerformanceSelected(null);
-      setLoading(false);
-    });
-  }
+  };
 
   return (
     <>
@@ -243,7 +266,7 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
           academicAsignatureCourseId={academicAsignatureCourseId}
         />
         <>
-          {performanceLevelType === "QUALITATIVE" ?
+          {performanceLevelType === 'QUALITATIVE' ? (
             <div className="w-15">
               <table className="table table-striped mb-0">
                 <tbody>
@@ -261,42 +284,46 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
                   })}
                 </tbody>
               </table>
-            </div> : performanceLevelType === "QUANTITATIVE" ?
-              <div className="w-30">
-                <table className="table table-striped mb-0">
-                  <tbody>
-                    <tr>
-                      <td>
-                        <strong>Nivel de desempeño</strong>
-                      </td>
-                      <td>
-                        <strong>Minimo</strong>
-                      </td>
-                      <td>
-                        <strong>Maximo</strong>
-                      </td>
-                    </tr>
-                    {performanceLevels?.map((e: any) => {
-                      return (
-                        <tr>
-                          <td> {`${e?.node?.name}`}</td>
-                          <td> {`${e?.node?.minimumScore}`} </td>
-                          <td> {`${e?.node?.topScore}`} </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div> : <></>}
+            </div>
+          ) : performanceLevelType === 'QUANTITATIVE' ? (
+            <div className="w-30">
+              <table className="table table-striped mb-0">
+                <tbody>
+                  <tr>
+                    <td>
+                      <strong>Nivel de desempeño</strong>
+                    </td>
+                    <td>
+                      <strong>Minimo</strong>
+                    </td>
+                    <td>
+                      <strong>Maximo</strong>
+                    </td>
+                  </tr>
+                  {performanceLevels?.map((e: any) => {
+                    return (
+                      <tr>
+                        <td> {`${e?.node?.name}`}</td>
+                        <td> {`${e?.node?.minimumScore}`} </td>
+                        <td> {`${e?.node?.topScore}`} </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <></>
+          )}
         </>
       </div>
-      <div className="d-flex justify-content-start align-items-center" >
-        <div className="d-flex justify-content-start align-items-center mb-3 w-30">
-          {
-            performanceLevelType == 'QUANTITATIVE' ?
+      <div className="d-flex justify-content-start align-items-center">
+        {!props?.loginReducer?.studentId && (
+          <div className="d-flex justify-content-start align-items-center mb-3 w-30">
+            {performanceLevelType == 'QUANTITATIVE' ? (
               <Input
                 type="number"
-                placeholder='Nota...'
+                placeholder="Nota..."
                 className="form-control w-30"
                 onInput={(e: any) => {
                   if (e.target.value < min || e.target.value > max) {
@@ -304,30 +331,36 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
                   }
                   setAssesstmentSelected(e.target.value);
                 }}
-                step="0.1"
+                step="1"
+                min={min}
+                max={max}
+                disabled={!editPermissionTeacher}
               />
-              :
+            ) : (
               <Select
                 isClearable
-                placeholder='Nota...'
+                placeholder="Nota..."
                 className="react-select"
                 classNamePrefix="react-select"
                 options={performanceLevelsList}
                 onChange={(selectedOption: any) => {
                   setPerformanceSelected(selectedOption);
                 }}
-              />}
-          <Button
-            className="ml-2 btn-outline-info"
-            size="xs"
-            onClick={() => {
-              setAll();
-            }}
-          >
-            Aplicar a todos
-          </Button>
-
-        </div>
+                isDisabled={!editPermissionTeacher}
+              />
+            )}
+            <Button
+              className="ml-2 btn-outline-info"
+              size="xs"
+              onClick={() => {
+                setAll();
+              }}
+              disabled={!editPermissionTeacher}
+            >
+              Aplicar a todos
+            </Button>
+          </div>
+        )}
         <div className="d-flex justify-content-center align-items-center mb-3 w-40">
           {/* <div className="text-center mr-1">
             Valoración Promedio:
@@ -385,7 +418,9 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
                 </thead>
                 <tbody>
                   {students.map((itemStudent: any, indexE: any) => {
-                    let valuation = valuations?.filter((itemV: any) => itemV?.node?.studentId == itemStudent?.id);
+                    let valuation = valuations?.filter(
+                      (itemV: any) => itemV?.node?.studentId == itemStudent?.id,
+                    );
                     return (
                       <>
                         <tr key={indexE}>
@@ -405,9 +440,7 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
                                 <span className="img-thumbnail md-avatar-initials border-0 span-initials rounded-circle mr-3 list-thumbnail align-self-center xsmall">
                                   {getInitialsName(
                                     itemStudent?.user
-                                      ? itemStudent?.user?.lastName +
-                                      ' ' +
-                                      itemStudent?.user?.name
+                                      ? itemStudent?.user?.lastName + ' ' + itemStudent?.user?.name
                                       : 'N N',
                                   )}
                                 </span>
@@ -417,61 +450,82 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
                               </span>
                             </div>
                           </td>
-
                           {valuation?.map((item: any, index: any) => {
                             return (
                               <>
                                 <td className="text-center vertical-middle">
-                                  {
-                                    performanceLevelType === "QUALITATIVE" ?
-                                      <Select
-                                        //isClearable
-                                        placeholder={<IntlMessages id="forms.select" />}
-                                        className="react-select"
-                                        classNamePrefix="react-select"
-                                        options={performanceLevelsList}
-                                        value={{ label: item?.node?.performanceLevel?.name, key: item?.node?.performanceLevel?.id, value: item?.node?.performanceLevel?.id }}
-                                        onChange={(selectedOption: any) => {
-                                          item.node.assessment = undefined;
-                                          item.node.performanceLevel = { id: selectedOption?.key, name: selectedOption?.label }
-                                          saveBlur(item);
-                                        }}
-                                        isDisabled={props?.loginReducer?.studentId?.length > 0}
-                                      /> : performanceLevelType === "QUANTITATIVE" ?
-                                        <Input
-                                          type="number"
-                                          onBlur={(event: any) => {
-                                            return saveBlur(item);
-                                          }}
-                                          onInput={(e: any) => {
-                                            if (e.target.value < min || e.target.value > max) {
-                                              e.target.value = null;
-                                            }
-                                            return getPerformanceLevel(e, item);
-                                          }}
-                                          {...item?.node?.assessment}
-                                          defaultValue={item?.node?.assessment}
-                                          className={item?.node?.assessment ? 'border-green form-control' : 'form-control'}
-                                          disabled={props?.loginReducer?.studentId?.length > 0}
-                                        /> : ""
-                                  }
+                                  {performanceLevelType === 'QUALITATIVE' ? (
+                                    <Select
+                                      //isClearable
+                                      placeholder={<IntlMessages id="forms.select" />}
+                                      className="react-select"
+                                      classNamePrefix="react-select"
+                                      options={performanceLevelsList}
+                                      value={{
+                                        label: item?.node?.performanceLevel?.name,
+                                        key: item?.node?.performanceLevel?.id,
+                                        value: item?.node?.performanceLevel?.id,
+                                      }}
+                                      onChange={(selectedOption: any) => {
+                                        item.node.assessment = undefined;
+                                        item.node.performanceLevel = {
+                                          id: selectedOption?.key,
+                                          name: selectedOption?.label,
+                                        };
+                                        saveBlur(item);
+                                      }}
+                                      isDisabled={!editPermissionTeacher}
+                                    />
+                                  ) : performanceLevelType === 'QUANTITATIVE' ? (
+                                    <Input
+                                      type="number"
+                                      onBlur={(event: any) => {
+                                        return saveBlur(item);
+                                      }}
+                                      onInput={(e: any) => {
+                                        if (e.target.value < min || e.target.value > max) {
+                                          e.target.value = null;
+                                        }
+                                        return getPerformanceLevel(e, item);
+                                      }}
+                                      {...item?.node?.assessment}
+                                      defaultValue={item?.node?.assessment}
+                                      className={
+                                        item?.node?.assessment
+                                          ? 'border-green form-control'
+                                          : 'form-control'
+                                      }
+                                      disabled={!editPermissionTeacher}
+                                      min={min}
+                                      max={max}
+                                    />
+                                  ) : (
+                                    ''
+                                  )}
                                 </td>
-                                {
-                                  valuations[0]?.performanceLevel?.type == 'QUALITATIVE' ?
-                                    '' :
-                                    <td className="text-center vertical-middle">
-                                      <StyledBadge color="primary" className="font-0-8rem" background={item?.node?.performanceLevel?.colorHex ? `${item?.node?.performanceLevel?.colorHex}` : "#00cafe"} >
-                                        {item?.node?.performanceLevel?.name}
-                                      </StyledBadge>
-                                    </td>
-                                }
+                                {valuations[0]?.performanceLevel?.type == 'QUALITATIVE' ? (
+                                  ''
+                                ) : (
+                                  <td className="text-center vertical-middle">
+                                    <StyledBadge
+                                      color="primary"
+                                      className="font-0-8rem"
+                                      background={
+                                        item?.node?.performanceLevel?.colorHex
+                                          ? `${item?.node?.performanceLevel?.colorHex}`
+                                          : '#00cafe'
+                                      }
+                                    >
+                                      {item?.node?.performanceLevel?.name}
+                                    </StyledBadge>
+                                  </td>
+                                )}
                               </>
                             );
                           })}
                         </tr>
                       </>
-
-                    )
+                    );
                   })}
                 </tbody>
               </table>
@@ -488,7 +542,7 @@ const mapDispatchToProps = {
   ...courseActions,
   ...performanceLevelActions,
   ...experienceLearningTraditionalValuationlActions,
-  ...academicIndicatorActions
+  ...academicIndicatorActions,
 };
 
 const mapStateToProps = ({ loginReducer }: any) => {
