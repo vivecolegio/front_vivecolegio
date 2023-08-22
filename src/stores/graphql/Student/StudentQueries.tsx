@@ -1,29 +1,35 @@
 import { gql } from '@apollo/client';
 
 export const QUERY_GET_ALL_STUDENT = gql`
-  query getAllStudent($campusId: String,$schoolId: String!, $schoolYearId: String!) {
-    data: getAllStudent(orderCreated: true, allData: true, campusId: $campusId, schoolId: $schoolId,  schoolYearId: $schoolYearId) {
+  query getAllStudent($campusId: String, $schoolId: String!, $schoolYearId: String!) {
+    data: getAllStudent(
+      orderCreated: true
+      allData: true
+      campusId: $campusId
+      schoolId: $schoolId
+      schoolYearId: $schoolYearId
+    ) {
       edges {
         cursor
         node {
           id
           code
-          active         
-          school  {
+          active
+          school {
             id
             name
-          }       
+          }
           campus {
             id
             name
-          }        
+          }
           user {
             id
             name
             lastName
             phone
             email
-            documentNumber       
+            documentNumber
             gender {
               id
               name
@@ -31,7 +37,7 @@ export const QUERY_GET_ALL_STUDENT = gql`
             documentType {
               id
               name
-            }  
+            }
           }
         }
       }
@@ -41,22 +47,30 @@ export const QUERY_GET_ALL_STUDENT = gql`
 `;
 
 export const QUERY_GET_ALL_STUDENT_WITHOUT_COURSE = gql`
-  query getAllStudentAcademicGradeIdWithoutCourse($campusId: String!, $academicGradeId: String!,$schoolId: String!) {
-    data: getAllStudentAcademicGradeIdWithoutCourse(campusId: $campusId, academicGradeId: $academicGradeId, schoolId: $schoolId) {
+  query getAllStudentAcademicGradeIdWithoutCourse(
+    $campusId: String!
+    $academicGradeId: String!
+    $schoolId: String!
+  ) {
+    data: getAllStudentAcademicGradeIdWithoutCourse(
+      campusId: $campusId
+      academicGradeId: $academicGradeId
+      schoolId: $schoolId
+    ) {
       edges {
         cursor
         node {
           id
           code
-          active         
-          school  {
+          active
+          school {
             id
             name
-          }       
+          }
           campus {
             id
             name
-          }        
+          }
           user {
             id
             name
@@ -72,32 +86,42 @@ export const QUERY_GET_ALL_STUDENT_WITHOUT_COURSE = gql`
 `;
 
 export const QUERY_GET_ALL_STUDENT_OF_GRADE = gql`
-  query getAllStudentAcademicGrade($campusId: String!, $academicGradeId: String!,$schoolId: String!) {
-    data: getAllStudentAcademicGrade(campusId: $campusId, academicGradeId: $academicGradeId, schoolId: $schoolId) {
+  query getAllStudentAcademicGrade(
+    $campusId: String!
+    $academicGradeId: String!
+    $schoolId: String!
+    $schoolYearId: String
+  ) {
+    data: getAllStudentAcademicGrade(
+      campusId: $campusId
+      academicGradeId: $academicGradeId
+      schoolId: $schoolId
+      schoolYearId: $schoolYearId
+    ) {
       edges {
         cursor
         node {
           id
           code
-          active         
-          school  {
+          active
+          school {
             id
             name
-          }       
-          course{
+          }
+          course {
             name
             campus {
               id
               name
-            }   
-          }     
+            }
+          }
           user {
             id
             name
             lastName
             phone
             email
-            documentNumber       
+            documentNumber
             gender {
               id
               name
@@ -105,7 +129,7 @@ export const QUERY_GET_ALL_STUDENT_OF_GRADE = gql`
             documentType {
               id
               name
-            }  
+            }
           }
         }
       }
@@ -119,7 +143,7 @@ export const QUERY_GET_STUDENT = gql`
     data: getStudent(id: $id) {
       id
       code
-      schoolId     
+      schoolId
       schoolYearId
       campusId
       userId
@@ -133,18 +157,18 @@ export const QUERY_GET_STUDENT = gql`
         id
         name
       }
-      school  {
+      school {
         id
         name
-      }       
+      }
       campus {
         id
         name
-      }        
+      }
       user {
         id
         name
-        lastName                  
+        lastName
         phone
         email
         birthdate
@@ -165,8 +189,8 @@ export const QUERY_GET_STUDENT = gql`
         documentType {
           id
           name
-        }  
-      } 
+        }
+      }
       version
       createdAt
       updatedAt
@@ -181,7 +205,7 @@ export const QUERY_GET_STUDENT = gql`
 `;
 
 export const QUERY_GET_DROPDOWNS_STUDENT = gql`
-  query getDropdownsStudent ($type : String!, $schoolId: String!, $schoolYearId: String! ) {
+  query getDropdownsStudent($type: String!, $schoolId: String!, $schoolYearId: String!) {
     dataSchools: getAllSchool(allData: false, orderCreated: false) {
       edges {
         node {
@@ -222,7 +246,12 @@ export const QUERY_GET_DROPDOWNS_STUDENT = gql`
         }
       }
     }
-    dataGrades: getAllAcademicGrade(allData: false, orderCreated: false, schoolId: $schoolId, schoolYearId: $schoolYearId) {
+    dataGrades: getAllAcademicGrade(
+      allData: false
+      orderCreated: false
+      schoolId: $schoolId
+      schoolYearId: $schoolYearId
+    ) {
       edges {
         node {
           id
@@ -234,8 +263,14 @@ export const QUERY_GET_DROPDOWNS_STUDENT = gql`
 `;
 
 export const QUERY_GET_COURSES_OF_GRADES = gql`
-  query getCoursesOfGrade ($academicGradeId: String!, $campusId: String!, $schoolId: String!) {    
-    dataCourses: getAllCourse(allData: false, orderCreated: false, academicGradeId: $academicGradeId, campusId: $campusId, schoolId: $schoolId) {
+  query getCoursesOfGrade($academicGradeId: String!, $campusId: String!, $schoolId: String!) {
+    dataCourses: getAllCourse(
+      allData: false
+      orderCreated: false
+      academicGradeId: $academicGradeId
+      campusId: $campusId
+      schoolId: $schoolId
+    ) {
       edges {
         node {
           id
@@ -247,11 +282,11 @@ export const QUERY_GET_COURSES_OF_GRADES = gql`
 `;
 
 export const QUERY_GET_GUARDIANS_BY_CRITERIA = gql`
-  query getAllSearchGuardian ($documentNumber: String!, $documentTypeId: String!) {    
+  query getAllSearchGuardian($documentNumber: String!, $documentTypeId: String!) {
     data: getAllSearchGuardian(documentTypeId: $documentTypeId, documentNumber: $documentNumber) {
       edges {
         node {
-          user{
+          user {
             id
             name
             lastName
@@ -261,5 +296,3 @@ export const QUERY_GET_GUARDIANS_BY_CRITERIA = gql`
     }
   }
 `;
-
-
