@@ -52,7 +52,7 @@ export const getListAllStudentWithoutCourse = (campusId: string, academicGradeId
   };
 };
 
-export const getListAllStudentAcademicGrade = (campusId: string, academicGradeId:string ,schoolId:string) => {
+export const getListAllStudentAcademicGrade = (campusId: string, academicGradeId:string ,schoolId:string,schoolYearId:string) => {
   return async (dispatch: any) => {
     try {
       let listData = {};
@@ -60,9 +60,10 @@ export const getListAllStudentAcademicGrade = (campusId: string, academicGradeId
         .query({
           query: QUERY_GET_ALL_STUDENT_OF_GRADE,
           variables:{
+            campusId,
             academicGradeId,
             schoolId,
-            campusId
+            schoolYearId
           },
         })
         .then((result: any) => {
