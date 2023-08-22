@@ -51,7 +51,7 @@ export function comparePerformanceLevelsTopScoreCriteriaRubric(a: any, b: any) {
 
 export function calculateDaysTwoDate(date1: Date, date2: Date) {
   const dif = date2.getTime() - date1.getTime();
-  const days = Math.floor(dif / (1000 * 60 * 60 * 24));
+  const days = Math.ceil(dif / (1000 * 60 * 60 * 24));
   return days;
 }
 
