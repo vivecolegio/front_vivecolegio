@@ -88,8 +88,8 @@ const StudentAttendance = (props: any) => {
         const startDate = new Date(period.startDate);
         const endDate = new Date(period?.endDate);
         const totalDays = calculateDaysTwoDate(startDate, endDate);
-        let countDays = totalDays;
-        if (today < endDate && today > startDate) {
+        let countDays = totalDays + 1;
+        if (today <= endDate && today >= startDate) {
           countDays = calculateDaysTwoDate(startDate, new Date());
         }
         setDateProgress({ startDate, endDate, totalDays, countDays })
@@ -172,13 +172,13 @@ const StudentAttendance = (props: any) => {
                   <>
                     <button
                       onClick={() => {
-                        setCurrentAcademicPeriod(item?.node?.id);
+                        setCurrentAcademicPeriod(item?.node);
                         const today = new Date();
                         const startDate = new Date(item?.node?.startDate);
                         const endDate = new Date(item?.node?.endDate);
                         const totalDays = calculateDaysTwoDate(startDate, endDate);
-                        let countDays = totalDays;
-                        if (today < endDate && today > startDate) {
+                        let countDays = totalDays + 1;
+                        if (today <= endDate && today >= startDate) {
                           countDays = calculateDaysTwoDate(startDate, new Date());
                         }
                         setDateProgress({ startDate, endDate, totalDays, countDays })
