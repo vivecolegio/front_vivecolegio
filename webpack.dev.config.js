@@ -53,7 +53,7 @@ module.exports = {
       },
       {
         dependency: { not: ['url'] },
-        test: /\.jpg|png|gif|woff|eot|ttf|svg|mp4|webm$/,
+        test: /\.jpg|png|gif|woff|eot|ttf|svg|mp4|webm|jpeg$/,
         use: {
           loader: 'file-loader',
           options: {
