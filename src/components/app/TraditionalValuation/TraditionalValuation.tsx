@@ -190,7 +190,7 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
     setValuations(arr);
   };
 
-  const saveBlur = async (item: any) => {
+  const saveBlurQuantitative = async (item: any) => {
     const elementIndex = valuationsBase.findIndex((obj) => {
       return obj.node.id === item.node.id;
     });
@@ -203,6 +203,34 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
         performanceLevelId: item?.node?.performanceLevel ? item?.node?.performanceLevel?.id : null,
       };
       if (obj?.assessment != null && obj?.assessment != undefined) {
+        await props.updateExperienceLearningTraditionalValuation(obj, item.node.id).then(
+          () => {
+            createNotification('success', 'success', '');
+            refreshDataTable();
+          },
+          () => {
+            createNotification('error', 'error', '');
+          },
+        );
+      } else {
+        createNotification('error', 'error', '');
+      }
+    }
+  };
+
+  const saveBlurQualitative = async (item: any) => {
+    const elementIndex = valuationsBase.findIndex((obj) => {
+      return obj.node.id === item.node.id;
+    });
+    if (
+      valuationsBase[elementIndex].node.performanceLevel?.id !== item?.node?.performanceLevel?.id ||
+      valuationsBase[elementIndex].node.assessment !== item?.node?.assessment
+    ) {
+      let obj = {
+        assessment: item?.node?.assessment,
+        performanceLevelId: item?.node?.performanceLevel ? item?.node?.performanceLevel?.id : null,
+      };
+      if (obj?.performanceLevelId != null && obj?.performanceLevelId != undefined) {
         await props.updateExperienceLearningTraditionalValuation(obj, item.node.id).then(
           () => {
             createNotification('success', 'success', '');
@@ -472,7 +500,7 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
                                           id: selectedOption?.key,
                                           name: selectedOption?.label,
                                         };
-                                        saveBlur(item);
+                                        saveBlurQualitative(item);
                                       }}
                                       isDisabled={!editPermissionTeacher}
                                     />
@@ -480,7 +508,7 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
                                     <Input
                                       type="number"
                                       onBlur={(event: any) => {
-                                        return saveBlur(item);
+                                        return saveBlurQuantitative(item);
                                       }}
                                       onInput={(e: any) => {
                                         if (e.target.value < min || e.target.value > max) {
