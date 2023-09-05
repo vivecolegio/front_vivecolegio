@@ -150,8 +150,10 @@
     "run:dev": "webpack-cli serve --mode development --config ./webpack.dev.config.js",
     "run:prod": "webpack-cli serve --mode production --config ./webpack.prod.config.js",
     "build:prod": "webpack --config ./webpack.prod.config.js --mode production",
-    "build:docker": "docker build -t lidertecnologicovivecolegios/frontendvivecolegios-offline .",
-    "push:docker": "docker push lidertecnologicovivecolegios/frontendvivecolegios-offline"
+    "build:docker": "docker build -t lidertecnologicovivecolegios/frontendvivecolegios .",
+    "push:docker": "docker push lidertecnologicovivecolegios/frontendvivecolegios",
+    "build:dockerOffline": "docker build -f Dockerfile2 -t lidertecnologicovivecolegios/frontendvivecolegios-offline .",
+    "push:dockerOffline": "docker push lidertecnologicovivecolegios/frontendvivecolegios-offline"
   },
   "eslintConfig": {
     "extends": [

@@ -255,7 +255,7 @@ const StudentAttendance = (props: any) => {
                     <th rowSpan={1} className="text-center vertical-middle">
                       Estudiante
                     </th>
-                    {/* {days?.map((item: any, index: any) => {
+                    {days?.map((item: any, index: any) => {
                       return (
                         <>
                           <th
@@ -265,8 +265,8 @@ const StudentAttendance = (props: any) => {
                           </th>
                         </>
                       );
-                    })} */}
-                    {listDays?.map((item: any, index: any) => {
+                    })}
+                    {/*{listDays?.map((item: any, index: any) => {
                       return (
                         <>
                           <th
@@ -276,7 +276,7 @@ const StudentAttendance = (props: any) => {
                           </th>
                         </>
                       );
-                    })}
+                    })}*/}
                   </tr>
                 </thead>
                 <tbody>
