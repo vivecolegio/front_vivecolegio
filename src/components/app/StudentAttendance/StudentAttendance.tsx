@@ -52,6 +52,10 @@ const StudentAttendance = (props: any) => {
   const [dateProgress, setDateProgress] = useState({ startDate: null, endDate: null, totalDays: 0, countDays: 0 })
   const [days, setDays] = useState([]);
 
+  const [listDays, setListDays] = useState([{ code: "MONDAY", label: "Lunes" },
+  { code: "TUESDAY", label: "Martes" }, { code: "WEDNESDAY", label: "Miercoles" },
+  { code: "THURSDAY", label: "Jueves" }, { code: "FRIDAY", label: "Viernes" }]);
+
 
   let navigate = useNavigate();
   const location = useLocation();
@@ -145,14 +149,14 @@ const StudentAttendance = (props: any) => {
   };
 
   const saveNewStudentAttendance = (day: any, studentId: any) => {
-    props.saveNewStudentAttendance({ day, studentId, academicAsignatureCourseId, academicPeriodId: currentAcademicPeriod }).then((resp: any) => {
-      getSpreadsheet(currentAcademicPeriod)
+    props.saveNewStudentAttendance({ day, studentId, academicAsignatureCourseId, academicPeriodId: currentAcademicPeriod?.id?.toString() }).then((resp: any) => {
+      getSpreadsheet(currentAcademicPeriod?.id?.toString())
     });
   }
 
   const deleteStudentAttendance = (itemId: any) => {
     props.deleteStudentAttendance(itemId).then((resp: any) => {
-      getSpreadsheet(currentAcademicPeriod)
+      getSpreadsheet(currentAcademicPeriod?.id?.toString())
     });
   }
 
@@ -251,13 +255,24 @@ const StudentAttendance = (props: any) => {
                     <th rowSpan={1} className="text-center vertical-middle">
                       Estudiante
                     </th>
-                    {days?.map((item: any, index: any) => {
+                    {/* {days?.map((item: any, index: any) => {
                       return (
                         <>
                           <th
                             className="text-center vertical-middle"
                           >
                             {item?.toLocaleDateString()}
+                          </th>
+                        </>
+                      );
+                    })} */}
+                    {listDays?.map((item: any, index: any) => {
+                      return (
+                        <>
+                          <th
+                            className="text-center vertical-middle"
+                          >
+                            {item?.label}
                           </th>
                         </>
                       );
