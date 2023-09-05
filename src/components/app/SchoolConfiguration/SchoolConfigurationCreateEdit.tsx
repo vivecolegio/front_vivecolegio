@@ -57,8 +57,13 @@ const SchoolConfigurationCreateEdit = (props: any) => {
       })
 
       register('valueString', {
-        required: true,
+        required: false,
         value: props?.data?.id ? props?.data?.valueString : '',
+      });
+
+      register('valueNumber', {
+        required: true,
+        value: props?.data?.id ? props?.data?.valueNumber : 0,
       });
 
       register('schoolId', {
@@ -117,8 +122,8 @@ const SchoolConfigurationCreateEdit = (props: any) => {
     value: props?.data?.id ? props?.data?.code : '',
   });
 
-  const { ref: valueStringRef, ...valueStringRest } = register('valueString2', {
-    required: true,
+  const { ref: valueStringRef, ...valueStringRest } = register('valueString', {
+    required: false,
     value: props?.data?.id ? props?.data?.valueString : '',
   });
 
@@ -137,7 +142,7 @@ const SchoolConfigurationCreateEdit = (props: any) => {
 
   return (
     <>
-      {/* <DevTool control={methods.control} placement="top-left" /> */}
+      <DevTool control={methods.control} placement="top-left" />
       {loading ? (
         <>
           <Colxx sm={12} className="d-flex justify-content-center">
@@ -170,6 +175,54 @@ const SchoolConfigurationCreateEdit = (props: any) => {
                 <Input disabled={true} value={messages["display." + props?.data?.code]} className="form-control" />
                 <RequiredMessagesCustom formState={formState} register={"code"} />
               </FormGroupCustom>
+
+              {props?.data?.code == "REPORT_PERFORMANCE_SHOW_FINAL_VALUATION" ? <>
+                <FormGroupCustom>
+                  <LabelCustom id="forms.value" required={true} />
+                  <Input disabled={true} {...valueStringRest} innerRef={valueStringRef} className="form-control" />
+                  <RequiredMessagesCustom formState={formState} register={"valueString"} />
+                </FormGroupCustom>
+                <FormGroupCustom>
+                  <LabelCustom id="forms.value" required={true} />
+                  <Select
+                    isClearable
+                    placeholder={<IntlMessages id="forms.select" />}
+                    className="react-select"
+                    classNamePrefix="react-select"
+                    options={[{ key: "NO", label: messages["display." + props?.data?.code + "_NO"], value: "NO", },
+                    { key: "YES", label: messages["display." + props?.data?.code + "_YES"], value: "YES" }]}
+                    value={valueString}
+                    onChange={(selectedOption: any) => {
+                      setValueString(selectedOption);
+                      setValue('valueString', selectedOption?.key);
+                    }}
+                  />
+                </FormGroupCustom>
+              </> : <></>}
+
+              {props?.data?.code == "REPORT_PERFORMANCE_SHOW_RECOVERY_VALUATION" ? <>
+                <FormGroupCustom>
+                  <LabelCustom id="forms.value" required={true} />
+                  <Input disabled={true} {...valueStringRest} innerRef={valueStringRef} className="form-control" />
+                  <RequiredMessagesCustom formState={formState} register={"valueString"} />
+                </FormGroupCustom>
+                <FormGroupCustom>
+                  <LabelCustom id="forms.value" required={true} />
+                  <Select
+                    isClearable
+                    placeholder={<IntlMessages id="forms.select" />}
+                    className="react-select"
+                    classNamePrefix="react-select"
+                    options={[{ key: "NO", label: messages["display." + props?.data?.code + "_NO"], value: "NO", },
+                    { key: "YES", label: messages["display." + props?.data?.code + "_YES"], value: "YES" }]}
+                    value={valueString}
+                    onChange={(selectedOption: any) => {
+                      setValueString(selectedOption);
+                      setValue('valueString', selectedOption?.key);
+                    }}
+                  />
+                </FormGroupCustom>
+              </> : <></>}
 
               {props?.data?.code == "REPORT_CERTIFICATE_FINAL_TEXT_CERTIFICATE" ? <>
                 <FormGroupCustom>
@@ -220,8 +273,8 @@ const SchoolConfigurationCreateEdit = (props: any) => {
               {props?.data?.code == "REPORT_CERTIFICATE_FINAL_SIGNATURE_SECREATARY" ? <>
                 <FormGroupCustom>
                   <LabelCustom id="forms.value" required={true} />
-                  <Input disabled={false}  {...register('valueString2', { required: false })} className="form-control" />
-                  <RequiredMessagesCustom formState={formState} register={"valueString2"} />
+                  <Input disabled={false}  {...valueStringRest} innerRef={valueStringRef} className="form-control" />
+                  <RequiredMessagesCustom formState={formState} register={"valueString"} />
                 </FormGroupCustom>
               </> : <></>}
 

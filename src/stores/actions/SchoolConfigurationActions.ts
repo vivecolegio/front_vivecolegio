@@ -93,11 +93,12 @@ export const updateSchoolConfiguration = (data: any, id: any) => {
         ...model,
         ...data,
       };
-      console.log(data)
-      if(data?.valueString2?.length > 0){
+      //console.log(data)
+      //if(model?.valueString2){
         //model.valueString = data?.valueString2;
         delete model.valueString2;
-      }
+      //}
+      model.valueNumber = model.valueNumber && !isNaN(model.valueNumber) ? parseFloat(model.valueNumber) : 0;
       let dataUpdate = null;
       await client
         .mutate({
