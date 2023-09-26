@@ -246,7 +246,37 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
     }
   };
 
-  const setAll = async () => {
+  const setAllQualitative = async () => {
+    setLoading(true);
+    let promisesList: any[] = [];
+    let perf;
+    if (assesstmentSelected) {
+      perf = performanceLevels?.find((c: any) => {
+        return assesstmentSelected <= c.node.topScore && assesstmentSelected >= c.node.minimumScore;
+      });
+    }
+    let obj = {
+      assessment: assesstmentSelected,
+      performanceLevelId: performanceSelected ? performanceSelected?.value : perf?.node?.id,
+    };
+    if (obj?.performanceLevelId != null && obj?.performanceLevelId != undefined) {
+      for (const item of valuations) {
+        promisesList.push(props.updateExperienceLearningTraditionalValuation(obj, item.node.id));
+      }
+      await Promise.all(promisesList).then(() => {
+        createNotification('success', 'success', '');
+        setValuations([]);
+        refreshDataTable();
+        setAssesstmentSelected(null);
+        setPerformanceSelected(null);
+        setLoading(false);
+      });
+    } else {
+      createNotification('error', 'error', '');
+    }
+  };
+
+  const setAllQuantitative = async () => {
     setLoading(true);
     let promisesList: any[] = [];
     let perf;
@@ -381,7 +411,7 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
               className="ml-2 btn-outline-info"
               size="xs"
               onClick={() => {
-                setAll();
+                performanceLevelType === 'QUALITATIVE' ? setAllQualitative() : setAllQuantitative();
               }}
               disabled={!editPermissionTeacher}
             >
