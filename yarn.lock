@@ -3216,10 +3216,10 @@
   resolved "https://registry.yarnpkg.com/@types/minimist/-/minimist-1.2.2.tgz#ee771e2ba4b3dc5b372935d549fd9617bf345b8c"
   integrity sha512-jhuKLIRrhvCPLqwPcx6INqmKeiA5EWrsCOPhrlFSrbrmU4ZMPjj5Ul/oLCMDO98XRUIwVm78xICz4EPCektzeQ==
 
-"@types/mousetrap@1.6.11":
-  version "1.6.11"
-  resolved "https://registry.yarnpkg.com/@types/mousetrap/-/mousetrap-1.6.11.tgz#ef9620160fdcefcb85bccda8aaa3e84d7429376d"
-  integrity sha512-F0oAily9Q9QQpv9JKxKn0zMKfOo36KHCW7myYsmUyf2t0g+sBTbG3UleTPoguHdE1z3GLFr3p7/wiOio52QFjQ==
+"@types/mousetrap@1.6.12":
+  version "1.6.12"
+  resolved "https://registry.yarnpkg.com/@types/mousetrap/-/mousetrap-1.6.12.tgz#d923b92fe138d73809a02716693f079850986553"
+  integrity sha512-tzXGzMbvXt815z0Z7FE45wmRVRitMTaPgfVcdGhOS6LtEOWBZBokFJxEdatVA8cj+cQxvdFLmlMC4c12TNqv9A==
 
 "@types/node@*":
   version "20.5.9"
@@ -3278,35 +3278,35 @@
   resolved "https://registry.yarnpkg.com/@types/range-parser/-/range-parser-1.2.4.tgz#cd667bcfdd025213aafb7ca5915a932590acdcdc"
   integrity sha512-EEhsLsD6UsDM1yFhAvy0Cjr6VwmpMWqFBCb9w07wVugF7w9nfajxLuVmngTIpgS6svCnm6Vaw+MZhoDCKnOfsw==
 
-"@types/react-color@3.0.6":
-  version "3.0.6"
-  resolved "https://registry.yarnpkg.com/@types/react-color/-/react-color-3.0.6.tgz#602fed023802b2424e7cd6ff3594ccd3d5055f9a"
-  integrity sha512-OzPIO5AyRmLA7PlOyISlgabpYUa3En74LP8mTMa0veCA719SvYQov4WLMsHvCgXP+L+KI9yGhYnqZafVGG0P4w==
+"@types/react-color@3.0.7":
+  version "3.0.7"
+  resolved "https://registry.yarnpkg.com/@types/react-color/-/react-color-3.0.7.tgz#2dae4e3f898397adcd54fb62e278fb64298249b5"
+  integrity sha512-IGZA7e8Oia0+Sb3/1KP0qTThGelZ9DRspfeLrFWQWv5vXHiYlJJQMC2kgQr75CtP4uL8/kvT8qBgrOVlxVoNTw==
   dependencies:
     "@types/react" "*"
     "@types/reactcss" "*"
 
-"@types/react-datepicker@4.15.0":
-  version "4.15.0"
-  resolved "https://registry.yarnpkg.com/@types/react-datepicker/-/react-datepicker-4.15.0.tgz#24a9c03e79ab4b232b346edd006cfb6060b0fb43"
-  integrity sha512-kr10s8ex4+MmCJmzdhA9kfmoMQBmsW5uDYDlH+8f/PgStrp7rRaz23Y/cvTiMgvESVq8ujDh4SOo6jlSwEw13g==
+"@types/react-datepicker@4.15.1":
+  version "4.15.1"
+  resolved "https://registry.yarnpkg.com/@types/react-datepicker/-/react-datepicker-4.15.1.tgz#a66fee520f2a31f83b45f4ed7f28af7296e11d0c"
+  integrity sha512-6/LthK0pTDBKjjVJqA2ygY3jJsHH7uZXIk8WPQcGHUiFOQLOKIv3krOxFZ2mt3BB3guMB6jVTc6ansQAd0r7xQ==
   dependencies:
     "@popperjs/core" "^2.9.2"
     "@types/react" "*"
     date-fns "^2.0.1"
     react-popper "^2.2.5"
 
-"@types/react-dom@18.2.7", "@types/react-dom@^18.0.0":
-  version "18.2.7"
-  resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-18.2.7.tgz#67222a08c0a6ae0a0da33c3532348277c70abb63"
-  integrity sha512-GRaAEriuT4zp9N4p1i8BDBYmEyfo+xQ3yHjJU4eiK5NDa1RmUZG+unZABUTK4/Ox/M+GaHwb6Ow8rUITrtjszA==
+"@types/react-dom@18.2.8", "@types/react-dom@^18.0.0":
+  version "18.2.8"
+  resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-18.2.8.tgz#338f1b0a646c9f10e0a97208c1d26b9f473dffd6"
+  integrity sha512-bAIvO5lN/U8sPGvs1Xm61rlRHHaq5rp5N3kp9C+NJ/Q41P8iqjkXSu0+/qu8POsjH9pNWb0OYabFez7taP7omw==
   dependencies:
     "@types/react" "*"
 
-"@types/react-lines-ellipsis@0.15.1":
-  version "0.15.1"
-  resolved "https://registry.yarnpkg.com/@types/react-lines-ellipsis/-/react-lines-ellipsis-0.15.1.tgz#7bc47dbe12e7fe16de2ecb33134b270fbb88802a"
-  integrity sha512-j0lZ5UyO1ShIs2Fk2OfvmUBc1s5gUP3/5n6pHnRCVKLvSfensCBJVqXNa1Tzlcgf6BE31wfEfmn22QrSlnSBnw==
+"@types/react-lines-ellipsis@0.15.2":
+  version "0.15.2"
+  resolved "https://registry.yarnpkg.com/@types/react-lines-ellipsis/-/react-lines-ellipsis-0.15.2.tgz#72cc5cda4bd42b9305c51fb4f4889c7cf5034d4c"
+  integrity sha512-atj0kDi3J6M9660x69/5mRlrKzy4eXnkqVeutVfavapV8y6MeQlMRi54f759qJhjx5jSYY4Lk/IzXDzul0H4TQ==
   dependencies:
     "@types/lodash" "*"
     "@types/react" "*"
@@ -3342,7 +3342,14 @@
   dependencies:
     react-select "*"
 
-"@types/react-transition-group@4.4.6", "@types/react-transition-group@^4.4.0":
+"@types/react-transition-group@4.4.7":
+  version "4.4.7"
+  resolved "https://registry.yarnpkg.com/@types/react-transition-group/-/react-transition-group-4.4.7.tgz#bf69f269d74aa78b99097673ca6dd6824a68ef1c"
+  integrity sha512-ICCyBl5mvyqYp8Qeq9B5G/fyBSRC0zx3XM3sCC6KkcMsNeAHqXBKkmat4GqdJET5jtYUpZXrxI5flve5qhi2Eg==
+  dependencies:
+    "@types/react" "*"
+
+"@types/react-transition-group@^4.4.0":
   version "4.4.6"
   resolved "https://registry.yarnpkg.com/@types/react-transition-group/-/react-transition-group-4.4.6.tgz#18187bcda5281f8e10dfc48f0943e2fdf4f75e2e"
   integrity sha512-VnCdSxfcm08KjsJVQcfBmhEQAPnLB8G08hAxn39azX1qYBQ/5RVQuoHuKIcfKOdncuaUvEpFKFzEvbtIMsfVew==
@@ -11852,10 +11859,10 @@ react-sortablejs@6.1.4:
     classnames "2.3.1"
     tiny-invariant "1.2.0"
 
-react-time-picker@6.5.0:
-  version "6.5.0"
-  resolved "https://registry.yarnpkg.com/react-time-picker/-/react-time-picker-6.5.0.tgz#fecdc3390376ed159a25554350d764385ee2487a"
-  integrity sha512-sf3E97geNhIUlXsFlBPouOqnS3h8kw/M8WSE0R2qgoLfJLY2VnF3cSCSr/0woL3WgF/yscZTN44t9ZfsHrp2Nw==
+react-time-picker@6.5.1:
+  version "6.5.1"
+  resolved "https://registry.yarnpkg.com/react-time-picker/-/react-time-picker-6.5.1.tgz#f231fba6b10a7562a0c066bd5cd3353ed191b306"
+  integrity sha512-8CLWWMNrx19GpHD3JQ5u5Cyqu3TmdFe+w5NQgInK9B3Vz6BkmqZC3fUQ8bQ4KbsjR21aqK1N6lEcJM2ARTQKkw==
   dependencies:
     "@wojtekmaj/date-utils" "^1.1.3"
     clsx "^2.0.0"
@@ -11866,10 +11873,10 @@ react-time-picker@6.5.0:
     react-fit "^1.7.0"
     update-input-width "^1.4.0"
 
-react-tooltip@5.21.4:
-  version "5.21.4"
-  resolved "https://registry.yarnpkg.com/react-tooltip/-/react-tooltip-5.21.4.tgz#29160c8e50857065f1b2489b144edacf5fed8e90"
-  integrity sha512-LZsllEbiu63zNwuCalq3gIFcBu2Xf0I0fMg7uuF7/5ROo5//uHe8Sum7v9L1Rtp6IozcoU9YAjkNUZdrxutsNg==
+react-tooltip@5.21.5:
+  version "5.21.5"
+  resolved "https://registry.yarnpkg.com/react-tooltip/-/react-tooltip-5.21.5.tgz#3e1bc02a0e674369dea81bb201d6106724dd60cf"
+  integrity sha512-ey70qf6pBGi4U6xpyNlZAHobAhlo2dfxmImR2Bzd/DbLTsAYWz3TEaK+RMFuUZMq6hSPRbUHQSkP2rHBq4uFVg==
   dependencies:
     "@floating-ui/dom" "^1.0.0"
     classnames "^2.3.0"
@@ -13907,10 +13914,10 @@ wbuf@^1.1.0, wbuf@^1.7.3:
   dependencies:
     minimalistic-assert "^1.0.0"
 
-web-vitals@3.4.0:
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/web-vitals/-/web-vitals-3.4.0.tgz#45ed33a3a2e029dc38d36547eb5d71d1c7e2552d"
-  integrity sha512-n9fZ5/bG1oeDkyxLWyep0eahrNcPDF6bFqoyispt7xkW0xhDzpUBTgyDKqWDi1twT0MgH4HvvqzpUyh0ZxZV4A==
+web-vitals@3.5.0:
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/web-vitals/-/web-vitals-3.5.0.tgz#3a5571f00743ecd059394b61e0adceec7fac2634"
+  integrity sha512-f5YnCHVG9Y6uLCePD4tY8bO/Ge15NPEQWtvm3tPzDKygloiqtb4SVqRHBcrIAqo2ztqX5XueqDn97zHF0LdT6w==
 
 webidl-conversions@^4.0.2:
   version "4.0.2"
