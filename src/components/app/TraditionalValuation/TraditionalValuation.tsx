@@ -282,8 +282,13 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
     let perf;
     if (assesstmentSelected) {
       perf = performanceLevels?.find((c: any) => {
-        return assesstmentSelected <= c.node.topScore && assesstmentSelected >= c.node.minimumScore;
+        return assesstmentSelected < c.node.topScore && assesstmentSelected >= c.node.minimumScore;
       });
+      if (perf === undefined) {
+        perf = performanceLevels?.find((c: any) => {
+          return assesstmentSelected <= c.node.topScore && assesstmentSelected > c.node.minimumScore;
+        });
+      }
     }
     let obj = {
       assessment: assesstmentSelected,
