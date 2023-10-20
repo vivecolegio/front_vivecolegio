@@ -210,7 +210,7 @@ const StudentBehaviour = (props: any) => {
       await props.updateStudentBehaviour(obj, item.node.id).then(
         () => {
           createNotification('success', 'success', '');
-          getSpreadsheet(currentAcademicPeriod);
+          getSpreadsheet(currentAcademicPeriod?.id?.toString());
         },
         () => {
           createNotification('error', 'error', '');
@@ -233,7 +233,7 @@ const StudentBehaviour = (props: any) => {
       await props.updateStudentBehaviourObservation(obj, item.node.id).then(
         () => {
           createNotification('success', 'success', '');
-          getSpreadsheet(currentAcademicPeriod);
+          getSpreadsheet(currentAcademicPeriod?.id?.toString());
         },
         () => {
           createNotification('error', 'error', '');
@@ -287,7 +287,7 @@ const StudentBehaviour = (props: any) => {
     await Promise.all(promisesList).then(() => {
       createNotification('success', 'success', '');
       setValuations([])
-      getSpreadsheet(currentAcademicPeriod);
+      getSpreadsheet(currentAcademicPeriod?.id?.toString());
       setAssesstmentSelected(null);
       setPerformanceSelected(null);
       setLoading(false);
@@ -310,7 +310,7 @@ const StudentBehaviour = (props: any) => {
                   <>
                     <button
                       onClick={() => {
-                        setCurrentAcademicPeriod(item?.node?.id);
+                        setCurrentAcademicPeriod(item?.node);
                         const today = new Date();
                         const startDate = new Date(item?.node?.startDate);
                         const endDate = new Date(item?.node?.endDate);
