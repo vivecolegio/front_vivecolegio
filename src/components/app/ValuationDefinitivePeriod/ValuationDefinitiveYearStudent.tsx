@@ -222,9 +222,14 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
               data.performanceLevelId = await getPerformanceLevel(assessment);
               data.performanceLevelId = data.performanceLevelId?.id;
             }
-            await props.saveNewAcademicAreaCourseYearValuation(data).then(() => {
-              getSpreadsheet(schoolYearId);
-            });
+            if (
+              (performanceLevelType != 'QUALITATIVE' && data?.assessment !== null) ||
+              performanceLevelType == 'QUALITATIVE'
+            ) {
+              await props.saveNewAcademicAreaCourseYearValuation(data).then(() => {
+                getSpreadsheet(schoolYearId);
+              });
+            }
             break;
           case "CALCULATE":
             data.academicAreaId = item?.academicAreaId;
@@ -232,12 +237,20 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
             data.assessment = assessment;
             if (performanceLevelType == "QUALITATIVE") {
               data.performanceLevelId = performanceLevelId;
+            } else {
+              data.performanceLevelId = await getPerformanceLevel(assessment);
+              data.performanceLevelId = data.performanceLevelId?.id;
             }
             data.studentId = item?.studentId;
-            data.valuationType = "DEFINITIVE";
-            await props.saveNewAcademicAreaCourseYearValuation(data).then(() => {
-              getSpreadsheet(schoolYearId);
-            });
+            data.valuationType = 'DEFINITIVE';
+            if (
+              (performanceLevelType != 'QUALITATIVE' && data?.assessment !== null) ||
+              performanceLevelType == 'QUALITATIVE'
+            ) {
+              await props.saveNewAcademicAreaCourseYearValuation(data).then(() => {
+                getSpreadsheet(schoolYearId);
+              });
+            }
             break;
           case "DEFINITIVE":
             data.academicAreaId = item?.academicAreaId;
@@ -245,12 +258,19 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
             data.assessment = assessment;
             if (performanceLevelType == "QUALITATIVE") {
               data.performanceLevelId = performanceLevelId;
+            } else {
+              data.performanceLevelId = await getPerformanceLevel(assessment);
+              data.performanceLevelId = data.performanceLevelId?.id;
             }
             data.studentId = item?.studentId;
-            data.valuationType = item?.valuationType;
-            await props.updateAcademicAreaCourseYearValuation(data, item?.id?.toString()).then(() => {
-              getSpreadsheet(schoolYearId);
-            });
+            if (
+              (performanceLevelType != 'QUALITATIVE' && data?.assessment !== null) ||
+              performanceLevelType == 'QUALITATIVE'
+            ) {
+              await props.updateAcademicAreaCourseYearValuation(data, item?.id?.toString()).then(() => {
+                getSpreadsheet(schoolYearId);
+              });
+            }
             break;
         }
         break;
@@ -268,9 +288,14 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
               data.performanceLevelId = await getPerformanceLevel(assessment);
               data.performanceLevelId = data.performanceLevelId?.id;
             }
-            await props.saveNewAcademicAsignatureCourseYearValuation(data).then(() => {
-              getSpreadsheet(schoolYearId);
-            });
+            if (
+              (performanceLevelType != 'QUALITATIVE' && data?.assessment !== null) ||
+              performanceLevelType == 'QUALITATIVE'
+            ) {
+              await props.saveNewAcademicAsignatureCourseYearValuation(data).then(() => {
+                getSpreadsheet(schoolYearId);
+              });
+            }
             break;
           case "CALCULATE":
             data.academicAsignatureCourseId = item?.academicAsignatureCourseId;
@@ -278,12 +303,20 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
             data.assessment = assessment;
             if (performanceLevelType == "QUALITATIVE") {
               data.performanceLevelId = performanceLevelId;
+            } else {
+              data.performanceLevelId = await getPerformanceLevel(assessment);
+              data.performanceLevelId = data.performanceLevelId?.id;
             }
             data.studentId = item?.studentId;
-            data.valuationType = "DEFINITIVE";
-            await props.saveNewAcademicAsignatureCourseYearValuation(data).then(() => {
-              getSpreadsheet(schoolYearId);
-            });
+            data.valuationType = 'DEFINITIVE';
+            if (
+              (performanceLevelType != 'QUALITATIVE' && data?.assessment !== null) ||
+              performanceLevelType == 'QUALITATIVE'
+            ) {
+              await props.saveNewAcademicAsignatureCourseYearValuation(data).then(() => {
+                getSpreadsheet(schoolYearId);
+              });
+            }
             break;
           case "DEFINITIVE":
             data.academicAsignatureCourseId = item?.academicAsignatureCourseId;
@@ -291,12 +324,20 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
             data.assessment = assessment;
             if (performanceLevelType == "QUALITATIVE") {
               data.performanceLevelId = performanceLevelId;
+            } else {
+              data.performanceLevelId = await getPerformanceLevel(assessment);
+              console.log(data.performanceLevelId)
+              data.performanceLevelId = data.performanceLevelId?.id;
             }
             data.studentId = item?.studentId;
-            data.valuationType = item?.valuationType;
-            await props.updateAcademicAsignatureCourseYearValuation(data, item?.id?.toString()).then(() => {
-              getSpreadsheet(schoolYearId);
-            });
+            if (
+              (performanceLevelType != 'QUALITATIVE' && data?.assessment !== null) ||
+              performanceLevelType == 'QUALITATIVE'
+            ) {
+              await props.updateAcademicAsignatureCourseYearValuation(data, item?.id?.toString()).then(() => {
+                getSpreadsheet(schoolYearId);
+              });
+            }
             break;
         }
         break;
@@ -311,11 +352,13 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
       });
       if (perf === undefined) {
         perf = performanceLevels?.find((c: any) => {
-          return assesment <= c.node.topScore && assesment.target.value > c.node.minimumScore;
+          return assesment <= c.node.topScore && assesment > c.node.minimumScore;
         });
       }
     }
+    debugger
     if (perf) {
+      console.log(perf)
       return perf.node;
     } else {
       return null;
@@ -355,9 +398,19 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
                     <th rowSpan={1} className="text-center vertical-middle">
                       Valoración Calculada
                     </th>
+                    {performanceLevelType === 'QUANTITATIVE' ?
+                      <th rowSpan={1} className="text-center vertical-middle">
+                        Nivel de desempeño
+                      </th> : <></>
+                    }
                     <th rowSpan={1} className="text-center vertical-middle">
                       Valoración Final
                     </th>
+                    {performanceLevelType === 'QUANTITATIVE' ?
+                      <th rowSpan={1} className="text-center vertical-middle">
+                        Nivel de desempeño
+                      </th> : <></>
+                    }
                     <th rowSpan={1} className="text-center vertical-middle">
                       Cambiar Valoracion Final a:
                     </th>
@@ -394,33 +447,75 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
                                 {itemStudent?.id?.toString() == studentId ?
                                   <>
                                     {valuationAreaCalculate ?
-                                      <td className="text-center vertical-middle">
-                                        {performanceLevelType === "QUALITATIVE" ?
-                                          <>
+                                      <>
+                                        <td className="text-center vertical-middle">
+                                          {performanceLevelType === "QUALITATIVE" ?
+                                            <>
+                                              <StyledBadge color="primary" className="font-0-8rem" background={valuationAreaCalculate?.node?.performanceLevel?.colorHex ? `${valuationAreaCalculate?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
+                                                {valuationAreaCalculate?.node?.performanceLevel?.name}
+                                              </StyledBadge>
+                                            </> :
+                                            <>
+                                              {valuationAreaCalculate?.node?.assessment?.toFixed(countDigits)}
+                                            </>
+                                          }
+                                        </td>
+                                        {performanceLevelType === 'QUANTITATIVE' ? (
+                                          <td className="text-center vertical-middle">
                                             <StyledBadge color="primary" className="font-0-8rem" background={valuationAreaCalculate?.node?.performanceLevel?.colorHex ? `${valuationAreaCalculate?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
                                               {valuationAreaCalculate?.node?.performanceLevel?.name}
                                             </StyledBadge>
-                                          </> :
+                                          </td>
+                                        ) : (
                                           <>
-                                            {valuationAreaCalculate?.node?.assessment?.toFixed(countDigits)}
                                           </>
-                                        }
-                                      </td>
-                                      : <td></td>}
+                                        )}
+                                      </>
+                                      : <>
+                                        <td></td>
+                                        <>
+                                          {performanceLevelType === 'QUANTITATIVE' ? (
+                                            <td></td>) : (
+                                            <>
+                                            </>
+                                          )}
+                                        </>
+                                      </>}
                                     {valuationAreaDefinitive ?
-                                      <td className="text-center vertical-middle">
-                                        {performanceLevelType === "QUALITATIVE" ?
-                                          <>
+                                      <>
+                                        <td className="text-center vertical-middle">
+                                          {performanceLevelType === "QUALITATIVE" ?
+                                            <>
+                                              <StyledBadge color="primary" className="font-0-8rem" background={valuationAreaDefinitive?.node?.performanceLevel?.colorHex ? `${valuationAreaDefinitive?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
+                                                {valuationAreaDefinitive?.node?.performanceLevel?.name}
+                                              </StyledBadge>
+                                            </> :
+                                            <>
+                                              {valuationAreaDefinitive?.node?.assessment?.toFixed(countDigits)}
+                                            </>
+                                          }
+                                        </td>
+                                        {performanceLevelType === 'QUANTITATIVE' ? (
+                                          <td className="text-center vertical-middle">
                                             <StyledBadge color="primary" className="font-0-8rem" background={valuationAreaDefinitive?.node?.performanceLevel?.colorHex ? `${valuationAreaDefinitive?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
                                               {valuationAreaDefinitive?.node?.performanceLevel?.name}
                                             </StyledBadge>
-                                          </> :
+                                          </td>
+                                        ) : (
                                           <>
-                                            {valuationAreaDefinitive?.node?.assessment?.toFixed(countDigits)}
                                           </>
-                                        }
-                                      </td>
-                                      : <td></td>}
+                                        )}
+                                      </>
+                                      : <>
+                                        <td></td>
+                                        <>
+                                          {performanceLevelType === 'QUANTITATIVE' ? (
+                                            <td></td>) : (
+                                            <>
+                                            </>
+                                          )}
+                                        </>
+                                      </>}
                                     <td>
                                       {
                                         performanceLevelType === "QUALITATIVE" ?
@@ -457,7 +552,9 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
                                                   valuation.valuationType = "DEFINITIVE";
                                                   valuation.performanceLevelId = "";
                                                 }
-                                                saveBlur(valuation, "AREA", valuationType, Number(event?.target?.value), null);
+                                                saveBlur(valuation, "AREA", valuationType, event?.target?.value?.length > 0
+                                                  ? Number(event?.target?.value)
+                                                  : null, null);
                                               }}
                                               onInput={(e: any) => {
                                                 if (e.target.value < min || e.target.value > max) {
@@ -513,33 +610,76 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
                                               </td>
                                               : <></>}
                                             {valuationAsignatureCalculate ?
-                                              <td className="text-center vertical-middle">
-                                                {performanceLevelType === "QUALITATIVE" ?
-                                                  <>
+                                              <>
+                                                <td className="text-center vertical-middle">
+                                                  {performanceLevelType === "QUALITATIVE" ?
+                                                    <>
+                                                      <StyledBadge color="primary" className="font-0-8rem" background={valuationAsignatureCalculate?.node?.performanceLevel?.colorHex ? `${valuationAsignatureCalculate?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
+                                                        {valuationAsignatureCalculate?.node?.performanceLevel?.name}
+                                                      </StyledBadge>
+                                                    </> :
+                                                    <>
+                                                      {valuationAsignatureCalculate?.node?.assessment?.toFixed(countDigits)}
+                                                    </>
+                                                  }
+                                                </td>
+                                                {performanceLevelType === 'QUANTITATIVE' ? (
+                                                  <td className="text-center vertical-middle">
                                                     <StyledBadge color="primary" className="font-0-8rem" background={valuationAsignatureCalculate?.node?.performanceLevel?.colorHex ? `${valuationAsignatureCalculate?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
                                                       {valuationAsignatureCalculate?.node?.performanceLevel?.name}
                                                     </StyledBadge>
-                                                  </> :
+                                                  </td>
+                                                ) : (
                                                   <>
-                                                    {valuationAsignatureCalculate?.node?.assessment?.toFixed(countDigits)}
                                                   </>
-                                                }
-                                              </td>
-                                              : <td></td>}
+                                                )}
+                                              </>
+                                              : <>
+                                                <td></td>
+                                                <>
+                                                  {performanceLevelType === 'QUANTITATIVE' ? (
+                                                    <td></td>) : (
+                                                    <>
+                                                    </>
+                                                  )}
+                                                </>
+                                              </>}
                                             {valuationAsignatureDefinitive ?
-                                              <td className="text-center vertical-middle">
-                                                {performanceLevelType === "QUALITATIVE" ?
-                                                  <>
+                                              <>
+                                                <td className="text-center vertical-middle">
+                                                  {performanceLevelType === "QUALITATIVE" ?
+                                                    <>
+                                                      <StyledBadge color="primary" className="font-0-8rem" background={valuationAsignatureDefinitive?.node?.performanceLevel?.colorHex ? `${valuationAsignatureDefinitive?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
+                                                        {valuationAsignatureDefinitive?.node?.performanceLevel?.name}
+                                                      </StyledBadge>
+                                                    </> :
+                                                    <>
+                                                      {valuationAsignatureDefinitive?.node?.assessment?.toFixed(countDigits)}
+                                                    </>
+                                                  }
+                                                </td>
+
+                                                {performanceLevelType === 'QUANTITATIVE' ? (
+                                                  <td className="text-center vertical-middle">
                                                     <StyledBadge color="primary" className="font-0-8rem" background={valuationAsignatureDefinitive?.node?.performanceLevel?.colorHex ? `${valuationAsignatureDefinitive?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
                                                       {valuationAsignatureDefinitive?.node?.performanceLevel?.name}
                                                     </StyledBadge>
-                                                  </> :
+                                                  </td>
+                                                ) : (
                                                   <>
-                                                    {valuationAsignatureDefinitive?.node?.assessment?.toFixed(countDigits)}
                                                   </>
-                                                }
-                                              </td>
-                                              : <td></td>}
+                                                )}
+                                              </>
+                                              : <>
+                                                <td></td>
+                                                <>
+                                                  {performanceLevelType === 'QUANTITATIVE' ? (
+                                                    <td></td>) : (
+                                                    <>
+                                                    </>
+                                                  )}
+                                                </>
+                                              </>}
                                             <td>
                                               {
                                                 performanceLevelType === "QUALITATIVE" ?
@@ -578,7 +718,9 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
                                                           valuation.valuationType = "DEFINITIVE";
                                                           valuation.performanceLevelId = "";
                                                         }
-                                                        saveBlur(valuation, "ASIGNATURE", valuationType, Number(event?.target?.value), null);
+                                                        saveBlur(valuation, "ASIGNATURE", valuationType, event?.target?.value?.length > 0
+                                                          ? Number(event?.target?.value)
+                                                          : null, null);
                                                       }}
                                                       onInput={(e: any) => {
                                                         if (e.target.value < min || e.target.value > max) {

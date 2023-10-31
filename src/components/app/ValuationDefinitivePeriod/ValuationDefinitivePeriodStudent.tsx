@@ -251,6 +251,9 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
             data.assessment = assessment;
             if (performanceLevelType == 'QUALITATIVE') {
               data.performanceLevelId = performanceLevelId;
+            } else {
+              data.performanceLevelId = await getPerformanceLevel(assessment);
+              data.performanceLevelId = data.performanceLevelId?.id;
             }
             data.studentId = item?.studentId;
             data.valuationType = 'DEFINITIVE';
@@ -316,6 +319,9 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
             data.assessment = assessment;
             if (performanceLevelType == 'QUALITATIVE') {
               data.performanceLevelId = performanceLevelId;
+            } else {
+              data.performanceLevelId = await getPerformanceLevel(assessment);
+              data.performanceLevelId = data.performanceLevelId?.id;
             }
             data.studentId = item?.studentId;
             data.valuationType = 'DEFINITIVE';
