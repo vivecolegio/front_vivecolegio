@@ -8,12 +8,7 @@ import Select from 'react-select';
 import ReactTooltip from 'react-tooltip';
 import { Badge, Button, Input, Progress } from 'reactstrap';
 
-import {
-  calculateDaysTwoDate,
-  compare,
-  compareOrderAcademicArea,
-  comparePerformanceLevelsTopScore,
-} from '../../../helpers/DataTransformations';
+import { calculateDaysTwoDate, compare, compareOrderAcademicArea, comparePerformanceLevelsTopScore } from '../../../helpers/DataTransformations';
 import IntlMessages from '../../../helpers/IntlMessages';
 import { createNotification } from '../../../helpers/Notification';
 import { getInitialsName } from '../../../helpers/Utils';
@@ -382,7 +377,7 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
   return (
     <>
       <div className="mt-4 d-flex justify-content-center align-items-center">
-        <h1 className="font-bold">Valoraciones Estudiante</h1>
+        <h1 className="font-bold">Valoración Estudiante</h1>
       </div>
       <hr />
       <div className="d-flex justify-content-between align-items-center">
@@ -421,9 +416,19 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
                     <th rowSpan={1} className="text-center vertical-middle">
                       Valoración Calculada
                     </th>
+                    {performanceLevelType === 'QUANTITATIVE' ?
+                      <th rowSpan={1} className="text-center vertical-middle">
+                        Nivel de desempeño
+                      </th> : <></>
+                    }
                     <th rowSpan={1} className="text-center vertical-middle">
                       Valoración Final
                     </th>
+                    {performanceLevelType === 'QUANTITATIVE' ?
+                      <th rowSpan={1} className="text-center vertical-middle">
+                        Nivel de desempeño
+                      </th> : <></>
+                    }
                     <th rowSpan={1} className="text-center vertical-middle">
                       Cambiar Valoracion Final a:
                     </th>
@@ -455,16 +460,40 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
                             let valuationType = valuationAreaDefinitive
                               ? 'DEFINITIVE'
                               : valuationAreaCalculate
-                              ? 'CALCULATE'
-                              : '';
+                                ? 'CALCULATE'
+                                : '';
                             return (
                               <>
                                 {itemStudent?.id?.toString() == studentId ? (
                                   <>
                                     {valuationAreaCalculate ? (
-                                      <td className="text-center vertical-middle">
-                                        {performanceLevelType === 'QUALITATIVE' ? (
-                                          <>
+                                      <>
+                                        <td className="text-center vertical-middle">
+                                          {performanceLevelType === 'QUALITATIVE' ? (
+                                            <>
+                                              <StyledBadge
+                                                color="primary"
+                                                className="font-0-8rem"
+                                                background={
+                                                  valuationAreaCalculate?.node?.performanceLevel
+                                                    ?.colorHex
+                                                    ? `${valuationAreaCalculate?.node?.performanceLevel?.colorHex}`
+                                                    : '#00cafe'
+                                                }
+                                              >
+                                                {valuationAreaCalculate?.node?.performanceLevel?.name}
+                                              </StyledBadge>
+                                            </>
+                                          ) : (
+                                            <>
+                                              {valuationAreaCalculate?.node?.assessment?.toFixed(
+                                                countDigits,
+                                              )}
+                                            </>
+                                          )}
+                                        </td>
+                                        {performanceLevelType === 'QUANTITATIVE' ? (
+                                          <td className="text-center vertical-middle">
                                             <StyledBadge
                                               color="primary"
                                               className="font-0-8rem"
@@ -477,22 +506,55 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
                                             >
                                               {valuationAreaCalculate?.node?.performanceLevel?.name}
                                             </StyledBadge>
-                                          </>
+                                          </td>
                                         ) : (
                                           <>
-                                            {valuationAreaCalculate?.node?.assessment?.toFixed(
-                                              countDigits,
-                                            )}
                                           </>
                                         )}
-                                      </td>
+                                      </>
                                     ) : (
-                                      <td></td>
+                                      <>
+                                        <td></td>
+                                        <>
+                                          {performanceLevelType === 'QUANTITATIVE' ? (
+                                            <td></td>) : (
+                                            <>
+                                            </>
+                                          )}
+                                        </>
+                                      </>
                                     )}
                                     {valuationAreaDefinitive ? (
-                                      <td className="text-center vertical-middle">
-                                        {performanceLevelType === 'QUALITATIVE' ? (
-                                          <>
+                                      <>
+                                        <td className="text-center vertical-middle">
+                                          {performanceLevelType === 'QUALITATIVE' ? (
+                                            <>
+                                              <StyledBadge
+                                                color="primary"
+                                                className="font-0-8rem"
+                                                background={
+                                                  valuationAreaDefinitive?.node?.performanceLevel
+                                                    ?.colorHex
+                                                    ? `${valuationAreaDefinitive?.node?.performanceLevel?.colorHex}`
+                                                    : '#00cafe'
+                                                }
+                                              >
+                                                {
+                                                  valuationAreaDefinitive?.node?.performanceLevel
+                                                    ?.name
+                                                }
+                                              </StyledBadge>
+                                            </>
+                                          ) : (
+                                            <>
+                                              {valuationAreaDefinitive?.node?.assessment?.toFixed(
+                                                countDigits,
+                                              )}
+                                            </>
+                                          )}
+                                        </td>
+                                        {performanceLevelType === 'QUANTITATIVE' ? (
+                                          <td className="text-center vertical-middle">
                                             <StyledBadge
                                               color="primary"
                                               className="font-0-8rem"
@@ -508,17 +570,23 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
                                                   ?.name
                                               }
                                             </StyledBadge>
-                                          </>
+                                          </td>
                                         ) : (
                                           <>
-                                            {valuationAreaDefinitive?.node?.assessment?.toFixed(
-                                              countDigits,
-                                            )}
                                           </>
                                         )}
-                                      </td>
+                                      </>
                                     ) : (
-                                      <td></td>
+                                      <>
+                                        <td></td>
+                                        <>
+                                          {performanceLevelType === 'QUANTITATIVE' ? (
+                                            <td></td>) : (
+                                            <>
+                                            </>
+                                          )}
+                                        </>
+                                      </>
                                     )}
                                     <td>
                                       {performanceLevelType === 'QUALITATIVE' ? (
@@ -638,8 +706,8 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
                                     let valuationType = valuationAsignatureDefinitive
                                       ? 'DEFINITIVE'
                                       : valuationAsignatureCalculate
-                                      ? 'CALCULATE'
-                                      : '';
+                                        ? 'CALCULATE'
+                                        : '';
                                     return (
                                       <>
                                         <tr>
@@ -655,9 +723,36 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
                                             <></>
                                           )}
                                           {valuationAsignatureCalculate ? (
-                                            <td className="text-center vertical-middle">
-                                              {performanceLevelType === 'QUALITATIVE' ? (
-                                                <>
+                                            <>
+                                              <td className="text-center vertical-middle">
+                                                {performanceLevelType === 'QUALITATIVE' ? (
+                                                  <>
+                                                    <StyledBadge
+                                                      color="primary"
+                                                      className="font-0-8rem"
+                                                      background={
+                                                        valuationAsignatureCalculate?.node
+                                                          ?.performanceLevel?.colorHex
+                                                          ? `${valuationAsignatureCalculate?.node?.performanceLevel?.colorHex}`
+                                                          : '#00cafe'
+                                                      }
+                                                    >
+                                                      {
+                                                        valuationAsignatureCalculate?.node
+                                                          ?.performanceLevel?.name
+                                                      }
+                                                    </StyledBadge>
+                                                  </>
+                                                ) : (
+                                                  <>
+                                                    {valuationAsignatureCalculate?.node?.assessment?.toFixed(
+                                                      countDigits,
+                                                    )}
+                                                  </>
+                                                )}
+                                              </td>
+                                              {performanceLevelType === 'QUANTITATIVE' ? (
+                                                <td className="text-center vertical-middle">
                                                   <StyledBadge
                                                     color="primary"
                                                     className="font-0-8rem"
@@ -673,22 +768,55 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
                                                         ?.performanceLevel?.name
                                                     }
                                                   </StyledBadge>
-                                                </>
+                                                </td>
                                               ) : (
                                                 <>
-                                                  {valuationAsignatureCalculate?.node?.assessment?.toFixed(
-                                                    countDigits,
-                                                  )}
                                                 </>
                                               )}
-                                            </td>
+                                            </>
                                           ) : (
-                                            <td></td>
+                                            <>
+                                              <td></td>
+                                              <>
+                                                {performanceLevelType === 'QUANTITATIVE' ? (
+                                                  <td></td>) : (
+                                                  <>
+                                                  </>
+                                                )}
+                                              </>
+                                            </>
                                           )}
                                           {valuationAsignatureDefinitive ? (
-                                            <td className="text-center vertical-middle">
-                                              {performanceLevelType === 'QUALITATIVE' ? (
-                                                <>
+                                            <>
+                                              <td className="text-center vertical-middle">
+                                                {performanceLevelType === 'QUALITATIVE' ? (
+                                                  <>
+                                                    <StyledBadge
+                                                      color="primary"
+                                                      className="font-0-8rem"
+                                                      background={
+                                                        valuationAsignatureDefinitive?.node
+                                                          ?.performanceLevel?.colorHex
+                                                          ? `${valuationAsignatureDefinitive?.node?.performanceLevel?.colorHex}`
+                                                          : '#00cafe'
+                                                      }
+                                                    >
+                                                      {
+                                                        valuationAsignatureDefinitive?.node
+                                                          ?.performanceLevel?.name
+                                                      }
+                                                    </StyledBadge>
+                                                  </>
+                                                ) : (
+                                                  <>
+                                                    {valuationAsignatureDefinitive?.node?.assessment?.toFixed(
+                                                      countDigits,
+                                                    )}
+                                                  </>
+                                                )}
+                                              </td>
+                                              {performanceLevelType === 'QUANTITATIVE' ? (
+                                                <td className="text-center vertical-middle">
                                                   <StyledBadge
                                                     color="primary"
                                                     className="font-0-8rem"
@@ -704,17 +832,23 @@ const ValuationDefinitivePeriodStudent = (props: any) => {
                                                         ?.performanceLevel?.name
                                                     }
                                                   </StyledBadge>
-                                                </>
+                                                </td>
                                               ) : (
                                                 <>
-                                                  {valuationAsignatureDefinitive?.node?.assessment?.toFixed(
-                                                    countDigits,
-                                                  )}
                                                 </>
                                               )}
-                                            </td>
+                                            </>
                                           ) : (
-                                            <td></td>
+                                            <>
+                                              <td></td>
+                                              <>
+                                                {performanceLevelType === 'QUANTITATIVE' ? (
+                                                  <td></td>) : (
+                                                  <>
+                                                  </>
+                                                )}
+                                              </>
+                                            </>
                                           )}
                                           <td>
                                             {performanceLevelType === 'QUALITATIVE' ? (
