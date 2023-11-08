@@ -63,8 +63,30 @@ const SchoolProfile = (props: any) => {
     });
   };
 
+  const uploadImgSecretarySignature = async (file: any) => {
+    props.uploadImgSecretarySignature(file, props?.loginReducer?.schoolId).then((resp: any) => {
+      //getUser();
+      //me();
+      getSchool();
+    });
+  };
+
   const updateSchool = async () => {
     console.log(methods.getValues());
+    props.updateSchool(methods.getValues(), props?.loginReducer?.schoolId).then((resp: any) => {
+      getSchool();
+    });
+  };
+
+  const updateSchoolDeleteImgPrincipalSignature = async () => {
+    setValue('imgPrincipalSignature', null);
+    props.updateSchool(methods.getValues(), props?.loginReducer?.schoolId).then((resp: any) => {
+      getSchool();
+    });
+  };
+
+  const updateSchoolDeleteImgSecretarySignature = async () => {
+    setValue('imgSecretarySignature', null);
     props.updateSchool(methods.getValues(), props?.loginReducer?.schoolId).then((resp: any) => {
       getSchool();
     });
@@ -168,6 +190,13 @@ const SchoolProfile = (props: any) => {
                     }} />
                     <RequiredMessagesCustom formState={formState} register={"textPrincipalSignature"} />
                   </FormGroupCustom>
+                  <FormGroupCustom>
+                    <LabelCustom id="forms.textSecretarySignature" required={true} />
+                    <Input className="form-control" defaultValue={school?.textSecretarySignature} onChange={(data) => {
+                      setValue('textSecretarySignature', data.target.value);
+                    }} />
+                    <RequiredMessagesCustom formState={formState} register={"textSecretarySignature"} />
+                  </FormGroupCustom>
                   <Button
                     color="primary"
                     className={`mb-5 mt-5 btn-primary btn-shadow`}
@@ -180,7 +209,7 @@ const SchoolProfile = (props: any) => {
                 </CardBody>
               </Card>
             </Colxx>
-            <Colxx xxs="12" lg="5" xl="4" className="col-left" style={{ marginTop: "-20vh" }}>
+            <Colxx xxs="12" lg="5" xl="4" className="col-left" style={{ marginTop: "-50vh" }}>
               <SingleLightbox
                 id="2"
                 thumb={school?.imgPrincipalSignature ? urlImages + school?.imgPrincipalSignature : SchoolProfileImg}
@@ -189,10 +218,19 @@ const SchoolProfile = (props: any) => {
               />
               <Card>
                 <CardBody className="pb-0">
-                  <div className="text-center pt-4 mb-4 mt-4">
+                  <div className="text-center pt-4 mb-4 mt-2">
                     <Badge color="primary font-0-8rem" pill>
                       {'Firma Directivo Principal'}
                     </Badge>
+                    <Button
+                      color="danger"
+                      className={`ml-2 btn-shadow`}
+                      size="xs"
+                      type="submit"
+                      onClick={updateSchoolDeleteImgPrincipalSignature}
+                    >
+                      Eliminar Firma
+                    </Button>
                   </div>
                   <InputGroup className="mb-3">
                     <Input
@@ -200,6 +238,46 @@ const SchoolProfile = (props: any) => {
                       id="exampleCustomFileBrowser2"
                       name="customFile"
                       onChange={(e) => uploadImgPrincipalSignature(e.target.files[0])}
+                    />
+                  </InputGroup>
+                  <small>
+                    *La firma se cargará automaticamente una vez sea seleccionada*
+                  </small>
+                  <hr />
+                </CardBody>
+              </Card>
+            </Colxx>
+          </Row>
+          <Row>
+            <Colxx xxs="12" lg="5" xl="4" className="col-left" style={{ marginTop: "-10vh" }}>
+              <SingleLightbox
+                id="3"
+                thumb={school?.imgSecretarySignature ? urlImages + school?.imgSecretarySignature : SchoolProfileImg}
+                large={school?.imgSecretarySignature ? urlImages + school?.imgSecretarySignature : SchoolProfileImg}
+                className="img-thumbnail card-img social-profile-img"
+              />
+              <Card>
+                <CardBody className="pb-0">
+                  <div className="text-center pt-4 mb-4 mt-2">
+                    <Badge color="primary font-0-8rem" pill>
+                      {'Firma Auxiliar Administrativo/Secretario(a)'}
+                    </Badge>
+                    <Button
+                      color="danger"
+                      className={`mt-2 btn-shadow`}
+                      size="xs"
+                      type="submit"
+                      onClick={updateSchoolDeleteImgSecretarySignature}
+                    >
+                      Eliminar Firma
+                    </Button>
+                  </div>
+                  <InputGroup className="mb-3">
+                    <Input
+                      type="file"
+                      id="exampleCustomFileBrowser3"
+                      name="customFile"
+                      onChange={(e) => uploadImgSecretarySignature(e.target.files[0])}
                     />
                   </InputGroup>
                   <small>

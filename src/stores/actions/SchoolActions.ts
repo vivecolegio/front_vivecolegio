@@ -1,6 +1,6 @@
 import { createNotification } from "../../helpers/Notification";
 import { client, clientUpload } from '../graphql';
-import { MUTATION_CHANGE_ACTIVE_SCHOOL, MUTATION_CREATE_SCHOOL, MUTATION_DELETE_SCHOOL, MUTATION_UPDATE_SCHOOL, MUTATION_UPDATE_SCHOOL_IMG_PRINCIPAL_SIGNATURE_UPLOAD_IMAGE, MUTATION_UPDATE_SCHOOL_LOGO_UPLOAD_IMAGE } from '../graphql/School/SchoolMutations';
+import { MUTATION_CHANGE_ACTIVE_SCHOOL, MUTATION_CREATE_SCHOOL, MUTATION_DELETE_SCHOOL, MUTATION_UPDATE_SCHOOL, MUTATION_UPDATE_SCHOOL_IMG_PRINCIPAL_SIGNATURE_UPLOAD_IMAGE, MUTATION_UPDATE_SCHOOL_IMG_SECRETARY_SIGNATURE_UPLOAD_IMAGE, MUTATION_UPDATE_SCHOOL_LOGO_UPLOAD_IMAGE } from '../graphql/School/SchoolMutations';
 import { QUERY_GET_ALL_SCHOOL, QUERY_GET_SCHOOL } from '../graphql/School/SchoolQueries';
 
 
@@ -215,6 +215,33 @@ export const uploadImgPrincipalSignature = (file: any, id: any) => {
       await clientUpload
         .mutate({
           mutation: MUTATION_UPDATE_SCHOOL_IMG_PRINCIPAL_SIGNATURE_UPLOAD_IMAGE,
+          variables: { id, file},
+        })
+        .then((dataReponse: any) => {
+          if (dataReponse.errors?.length > 0) {
+            dataReponse.errors.forEach((error: any) => {
+              createNotification('error', 'error', '');
+            });
+          } else {
+            dataUpdate = dataReponse.data.update;
+            createNotification('success', 'success', '');
+          }
+        });
+      return dataUpdate as any;
+    } catch (error) {
+      createNotification('error', 'error', '');
+      return error;
+    }
+  };
+};
+
+export const uploadImgSecretarySignature = (file: any, id: any) => {
+  return async (dispatch: any) => {
+    try {
+      let dataUpdate = null;
+      await clientUpload
+        .mutate({
+          mutation: MUTATION_UPDATE_SCHOOL_IMG_SECRETARY_SIGNATURE_UPLOAD_IMAGE,
           variables: { id, file},
         })
         .then((dataReponse: any) => {

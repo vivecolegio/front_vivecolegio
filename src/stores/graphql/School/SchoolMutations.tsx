@@ -39,3 +39,9 @@ export const MUTATION_UPDATE_SCHOOL_IMG_PRINCIPAL_SIGNATURE_UPLOAD_IMAGE = gql`
     update: schoolImgPrincipalSignatureUploadImage(id: $id, file: $file)
   }
 `;
+
+export const MUTATION_UPDATE_SCHOOL_IMG_SECRETARY_SIGNATURE_UPLOAD_IMAGE = gql`
+  mutation schoolImgSecretarySignatureUploadImage($id: String!, $file: Upload) {
+    update: schoolImgSecretarySignatureUploadImage(id: $id, file: $file)
+  }
+`;

@@ -32,6 +32,8 @@ export const QUERY_GET_SCHOOL = gql`
       textPrincipalSignature
       logo
       imgPrincipalSignature
+      textSecretarySignature
+      imgSecretarySignature
       version
       createdAt
       updatedAt
