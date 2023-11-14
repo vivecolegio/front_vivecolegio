@@ -187,6 +187,10 @@ export const QUERY_GET_EXPERIENCE_LEARNING = gql`
       academicPeriod {
         id
         name
+        startDate
+        endDate
+        startDateRecovery
+        endDateRecovery
       }
       learningsId
       learnigs {

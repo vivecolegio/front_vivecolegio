@@ -58,6 +58,8 @@ export const QUERY_GET_ACADEMIC_PERIOD = gql`
       }
       startDate
       endDate
+      startDateRecovery
+      endDateRecovery
       weight
       order
       version

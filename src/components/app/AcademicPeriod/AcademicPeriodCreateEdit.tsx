@@ -24,6 +24,9 @@ const AcademicPeriodCreateEdit = (props: any) => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
 
+  const [startDateRecovery, setStartDateRecovery] = useState(null);
+  const [endDateRecovery, setEndDateRecovery] = useState(null);
+
   const methods = useForm({
     mode: 'all',
     reValidateMode: 'onChange',
@@ -71,6 +74,14 @@ const AcademicPeriodCreateEdit = (props: any) => {
         required: true,
         value: props?.data?.id ? props?.data?.endDate : '',
       });
+      register('startDateRecovery', {
+        required: true,
+        value: props?.data?.id ? props?.data?.startDateRecovery : '',
+      });
+      register('endDateRecovery', {
+        required: true,
+        value: props?.data?.id ? props?.data?.endDateRecovery : '',
+      });
     } else {
       setSchool({
         key: props?.loginReducer?.schoolData?.id,
@@ -86,6 +97,8 @@ const AcademicPeriodCreateEdit = (props: any) => {
     reset();
     setStartDate(null);
     setEndDate(null);
+    setStartDateRecovery(null);
+    setEndDateRecovery(null);
     setSchoolYear(null);
     setSchool(null);
     if (props?.loginReducer?.schoolId && !props?.data?.id) {
@@ -195,6 +208,36 @@ const AcademicPeriodCreateEdit = (props: any) => {
                 />
                 <RequiredMessagesCustom formState={formState} register={"endDate"} />
               </FormGroupCustom>
+
+              <FormGroupCustom>
+                <LabelCustom id="forms.startDateRecovery" required={true} />
+                <DatePicker
+                  {...register('startDateRecovery', { required: true })}
+                  selected={startDateRecovery}
+                  onChange={(date: any) => {
+                    setValue('startDateRecovery', date as Date);
+                    setStartDateRecovery(date as Date);
+                    trigger('startDateRecovery');
+                  }}
+                />
+                <RequiredMessagesCustom formState={formState} register={"startDateRecovery"} />
+              </FormGroupCustom>
+              <FormGroupCustom>
+                <LabelCustom id="forms.endDateRecovery" required={true} />
+                <DatePicker
+                  {...register('endDateRecovery', { required: true })}
+                  selected={endDateRecovery}
+                  onChange={(date: any) => {
+                    setValue('endDateRecovery', date as Date);
+                    setEndDateRecovery(date as Date);
+                    trigger('endDateRecovery');
+                  }}
+                  minDate={startDateRecovery}
+                  disabled={startDateRecovery == null}
+                />
+                <RequiredMessagesCustom formState={formState} register={"endDateRecovery"} />
+              </FormGroupCustom>
+
               <FormGroupCustom>
                 <LabelCustom id="forms.weight" required={true} />
                 <InputGroup>

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
 import Select from 'react-select';
-import { Badge, Button, Input, Progress } from 'reactstrap';
+import { Alert, Badge, Button, Input, Progress } from 'reactstrap';
 
 import { compare, comparePerformanceLevelsTopScore } from '../../../helpers/DataTransformations';
 import IntlMessages from '../../../helpers/IntlMessages';
@@ -13,6 +13,7 @@ import { getInitialsName } from '../../../helpers/Utils';
 import * as performanceLevelActions from '../../../stores/actions/Academic/PerformanceLevelActions';
 import * as academicIndicatorActions from '../../../stores/actions/AcademicAsignatureCourseActions';
 import * as courseActions from '../../../stores/actions/CourseActions';
+import * as experienceLearningActions from '../../../stores/actions/ExperienceLearningActions';
 import * as experienceLearningTraditionalValuationlActions from '../../../stores/actions/ExperienceLearningTraditionalValuationActions';
 import { urlImages } from '../../../stores/graphql';
 import { Colxx } from '../../common/CustomBootstrap';
@@ -35,6 +36,7 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
   const [average, setAverage] = useState(null);
   const [progress, setProgress] = useState(0);
   const [editPermissionTeacher, setEditPermissionTeacher] = useState(false);
+  const [experienceLearning, setExperienceLearning] = useState(null);
 
   let navigate = useNavigate();
 
@@ -45,6 +47,9 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
 
   const [data, setData] = useState(null);
   useEffect(() => {
+    props.dataExperienceLearning(learningId).then((resp: any) => {
+      setExperienceLearning(resp?.data)
+    });
     props.dataAcademicAsignatureCourse(academicAsignatureCourseId).then((formData: any) => {
       if (props?.loginReducer?.teacherId == formData?.data?.teacherId) {
         setEditPermissionTeacher(true);
@@ -383,47 +388,52 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
       <div className="d-flex justify-content-start align-items-center">
         {!props?.loginReducer?.studentId && (
           <div className="d-flex justify-content-start align-items-center mb-3 w-30">
-            {performanceLevelType == 'QUANTITATIVE' ? (
-              <Input
-                type="number"
-                placeholder="Nota..."
-                className="form-control w-30"
-                onInput={(e: any) => {
-                  if (e.target.value < min || e.target.value > max) {
-                    e.target.value = null;
-                  }
-                  setAssesstmentSelected(e.target.value);
-                }}
-                step="1"
-                min={min}
-                max={max}
-                disabled={!editPermissionTeacher}
-              />
-            ) : (
-              <Select
-                isClearable
-                placeholder="Nota..."
-                className="react-select"
-                classNamePrefix="react-select"
-                options={performanceLevelsList}
-                onChange={(selectedOption: any) => {
-                  setPerformanceSelected(selectedOption);
-                }}
-                isDisabled={!editPermissionTeacher}
-              />
-            )}
-            <Button
-              className="ml-2 btn-outline-info"
-              size="xs"
-              onClick={() => {
-                performanceLevelType === 'QUALITATIVE' ? setAllQualitative() : setAllQuantitative();
-              }}
-              disabled={!editPermissionTeacher}
-            >
-              Aplicar a todos
-            </Button>
-          </div>
-        )}
+            {experienceLearning?.academicPeriod && (new Date(experienceLearning?.academicPeriod?.startDate) <= new Date() && new Date(experienceLearning?.academicPeriod?.endDate) >= new Date()) ?
+              <>
+                {performanceLevelType == 'QUANTITATIVE' ? (
+                  <Input
+                    type="number"
+                    placeholder="Nota..."
+                    className="form-control w-30"
+                    onInput={(e: any) => {
+                      if (e.target.value < min || e.target.value > max) {
+                        e.target.value = null;
+                      }
+                      setAssesstmentSelected(e.target.value);
+                    }}
+                    step="1"
+                    min={min}
+                    max={max}
+                    disabled={!editPermissionTeacher}
+                  />
+                ) : (
+                  <Select
+                    isClearable
+                    placeholder="Nota..."
+                    className="react-select"
+                    classNamePrefix="react-select"
+                    options={performanceLevelsList}
+                    onChange={(selectedOption: any) => {
+                      setPerformanceSelected(selectedOption);
+                    }}
+                    isDisabled={!editPermissionTeacher}
+                  />
+                )}
+                <Button
+                  className="ml-2 btn-outline-info"
+                  size="xs"
+                  onClick={() => {
+                    performanceLevelType === 'QUALITATIVE' ? setAllQualitative() : setAllQuantitative();
+                  }}
+                  disabled={!editPermissionTeacher}
+                >
+                  Aplicar a todos
+                </Button>
+              </> :
+              <Alert color="danger">
+                Periodo Académico Finalizado
+              </Alert>}
+          </div>)}
         <div className="d-flex justify-content-center align-items-center mb-3 w-40">
           {/* <div className="text-center mr-1">
             Valoración Promedio:
@@ -537,7 +547,7 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
                                         };
                                         saveBlurQualitative(item);
                                       }}
-                                      isDisabled={!editPermissionTeacher}
+                                      isDisabled={!editPermissionTeacher || !(new Date(experienceLearning?.academicPeriod?.startDate) <= new Date() && new Date(experienceLearning?.academicPeriod?.endDate) >= new Date())}
                                     />
                                   ) : performanceLevelType === 'QUANTITATIVE' ? (
                                     <Input
@@ -558,7 +568,7 @@ const ExperienceLearningTraditionalValuationList = (props: any) => {
                                           ? 'border-green form-control'
                                           : 'form-control'
                                       }
-                                      disabled={!editPermissionTeacher}
+                                      disabled={!editPermissionTeacher || !(new Date(experienceLearning?.academicPeriod?.startDate) <= new Date() && new Date(experienceLearning?.academicPeriod?.endDate) >= new Date())}
                                       min={min}
                                       max={max}
                                     />
@@ -606,6 +616,7 @@ const mapDispatchToProps = {
   ...performanceLevelActions,
   ...experienceLearningTraditionalValuationlActions,
   ...academicIndicatorActions,
+  ...experienceLearningActions
 };
 
 const mapStateToProps = ({ loginReducer }: any) => {
