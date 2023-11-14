@@ -58,6 +58,12 @@ const AcademicPeriodCreateEdit = (props: any) => {
       if (props?.data?.endDate !== undefined && props?.data?.endDate != null) {
         setEndDate(new Date(props?.data?.endDate));
       }
+      if (props?.data?.startDateRecovery !== undefined && props?.data?.startDateRecovery != null) {
+        setStartDateRecovery(new Date(props?.data?.startDateRecovery));
+      }
+      if (props?.data?.endDateRecovery !== undefined && props?.data?.endDateRecovery != null) {
+        setEndDateRecovery(new Date(props?.data?.endDateRecovery));
+      }
       register('schoolId', {
         required: true,
         value: props?.data?.id && props?.data?.schoolId ? props?.data?.schoolId : props?.loginReducer?.schoolId,
