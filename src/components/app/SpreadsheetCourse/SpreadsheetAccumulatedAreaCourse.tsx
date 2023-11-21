@@ -377,7 +377,7 @@ const SpreadsheetAccumulatedAreaCourse = (props: any) => {
                                   {performanceLevelType === "QUALITATIVE" ?
                                     <>
                                       <StyledBadge color="primary" className="font-0-8rem pt-2" background={valuationAreaYear?.node?.performanceLevel?.colorHex ? `${valuationAreaYear?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
-                                        {valuationAreaYear?.node?.performanceLevel?.abbreviation ? valuationAreaYear?.node?.performanceLevel?.abbreviation : valuationAreaYear?.node?.performanceLevel?.name} ""
+                                        {valuationAreaYear?.node?.performanceLevel?.abbreviation ? valuationAreaYear?.node?.performanceLevel?.abbreviation : valuationAreaYear?.node?.performanceLevel?.name}
                                       </StyledBadge>
                                     </> :
                                     <>
