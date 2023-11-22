@@ -470,6 +470,17 @@ const ReportSpreadsheetAccumulatedAverageCourseCourseList = React.lazy(() => {
   );
 });
 
+const ReportSpreadsheetAccumulatedBehaviourGradeList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "ReportSpreadsheetAccumulatedBehaviourGradeList" */ '../components/app/ReportSpreadsheetAccumulatedBehaviour/ReportSpreadsheetAccumulatedBehaviourGradeList'
+  );
+});
+const ReportSpreadsheetAccumulatedBehaviourCourseList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "ReportSpreadsheetAccumulatedBehaviourCourseList" */ '../components/app/ReportSpreadsheetAccumulatedBehaviour/ReportSpreadsheetAccumulatedBehaviourCourseList'
+  );
+});
+
 const ReportSpreadsheetAccumulatedCourseGradeList = React.lazy(() => {
   return import(
     /* webpackChunkName: "ReportSpreadsheetAccumulatedCourseGradeList" */ '../components/app/ReportSpreadsheetAccumulatedCourse/ReportSpreadsheetAccumulatedCourseGradeList'
@@ -514,6 +525,12 @@ const SpreadsheetAccumulatedAsignatureCourse = React.lazy(() => {
 const SpreadsheetAccumulatedAreaCourse = React.lazy(() => {
   return import(
     /* webpackChunkName: "SpreadsheetCourse" */ '../components/app/SpreadsheetCourse/SpreadsheetAccumulatedAreaCourse'
+  );
+});
+
+const SpreadsheetAccumulatedBehaviour = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "SpreadsheetAccumulatedBehaviour" */ '../components/app/SpreadsheetCourse/SpreadsheetAccumulatedBehaviour'
   );
 });
 
@@ -858,7 +875,14 @@ const App = (props: any) => {
                       path="/reportSpreadsheetAccumulatedAverageCourseCourseList"
                       element={<ReportSpreadsheetAccumulatedAverageCourseCourseList />}
                     />
-
+                    <Route
+                      path="/reportSpreadsheetAccumulatedBehaviourGradeList"
+                      element={<ReportSpreadsheetAccumulatedBehaviourGradeList />}
+                    />
+                    <Route
+                      path="/reportSpreadsheetAccumulatedBehaviourCourseList"
+                      element={<ReportSpreadsheetAccumulatedBehaviourCourseList />}
+                    />
                     <Route
                       path="/reportSpreadsheetAccumulatedCourseGradeList"
                       element={<ReportSpreadsheetAccumulatedCourseGradeList />}
@@ -889,6 +913,8 @@ const App = (props: any) => {
                     <Route path="/spreadsheetAccumulatedAsignatureCourse" element={<SpreadsheetAccumulatedAsignatureCourse />} />
                     <Route path="/spreadsheetAccumulatedAreaCourse" element={<SpreadsheetAccumulatedAreaCourse />} />
                     <Route path="/spreadsheetAccumulatedAverageCourse" element={<SpreadsheetAccumulatedAverageCourse />} />
+
+                    <Route path="/spreadsheetAccumulatedBehaviour" element={<SpreadsheetAccumulatedBehaviour />} />
                     <Route
                       path="/questionCategoryTestOnline"
                       element={<QuestionCategoryTestOnlineList />}

@@ -355,6 +355,8 @@ const esMessages = {
   'menu.reportSpreadsheetAccumulatedAsignatureCourseCourseList': 'Planilla Consolidado Asignatura',
   'menu.reportSpreadsheetAccumulatedAverageCourseGradeList': 'Planilla Consolidado Promedios',
   'menu.reportSpreadsheetAccumulatedAverageCourseCourseList': 'Planilla Consolidado Promedios',
+  'menu.reportSpreadsheetAccumulatedBehaviourGradeList': 'Planilla Consolidado Comportamiento Escolar',
+  'menu.reportSpreadsheetAccumulatedBehaviourCourseList': 'Planilla Consolidado Comportamiento Escolar',
   'forms.active': 'Activo',
   'forms.campus': 'Sede',
   'menu.gradeCourseAssigmentGradeList': 'Asignacion Grados',

@@ -1,5 +1,6 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
+import { QUERY_GET_All_STUDENT_BEHAVIOUR, QUERY_GET_All_STUDENT_YEAR_BEHAVIOUR } from "../graphql/StudentBehaviour/StudentBehaviourQueries";
 import { MUTATION_CREATE_ACADEMIC_ASIGNATURE_COURSE_PERIOD_VALUATION_STUDENTS, MUTATION_CREATE_EXPERIENCE_LEARNING_AVERAGE_VALUATION_STUDENTS, MUTATION_UPDATE_ALL_AVERAGE_STUDENT_COURSE_PERIOD, MUTATION_UPDATE_ALL_STUDENT_ACADEMIC_ASIGNATURE_COURSE_PERIOD_VALUATION, MUTATION_UPDATE_ALL_STUDENT_COURSE_PERIOD_VALUATION, MUTATION_UPDATE_ALL_STUDENT_COURSE_YEAR_VALUATION } from "../graphql/Valuations/ValuationsMutations";
 import { QUERY_GET_All_ACADEMIC_AREA_COURSE_PERIOD_VALUATION, QUERY_GET_All_ACADEMIC_AREA_COURSE_PERIOD_VALUATION_STUDENT, QUERY_GET_All_ACADEMIC_AREA_COURSE_YEAR_VALUATION, QUERY_GET_All_ACADEMIC_AREA_COURSE_YEAR_VALUATION_STUDENT, QUERY_GET_All_ACADEMIC_ASIGNATURE_COURSE_PERIOD_VALUATION, QUERY_GET_All_ACADEMIC_ASIGNATURE_COURSE_PERIOD_VALUATION_STUDENT, QUERY_GET_All_ACADEMIC_ASIGNATURE_COURSE_YEAR_VALUATION, QUERY_GET_All_ACADEMIC_ASIGNATURE_COURSE_YEAR_VALUATION_STUDENT, QUERY_GET_All_EXPERIENCE_LEARNING_AVERAGE_VALUATION, QUERY_GET_VALUATIONS_STUDENT } from "../graphql/Valuations/ValuationsQueries";
 
@@ -398,6 +399,50 @@ export const getAllAcademicAreaCourseYearValuationStudent = (schoolYearId: strin
           query: QUERY_GET_All_ACADEMIC_AREA_COURSE_YEAR_VALUATION_STUDENT,
           variables: {
             schoolYearId, academicAreaId, studentId
+          },
+        })
+        .then((result: any) => {
+          data = result.data;
+        });
+      return data;
+    } catch (error) {
+      createNotification('error', 'error', '');
+      return error;
+    }
+  };
+};
+
+export const getAllAcademicBehaviourPeriodValuation = (academicPeriodId: string, courseId: string) => {
+  return async (dispatch: any) => {
+    try {
+      let data = {};
+      await client
+        .query({
+          query: QUERY_GET_All_STUDENT_BEHAVIOUR,
+          variables: {
+            academicPeriodId, courseId
+          },
+        })
+        .then((result: any) => {
+          data = result.data;
+        });
+      return data;
+    } catch (error) {
+      createNotification('error', 'error', '');
+      return error;
+    }
+  };
+};
+
+export const getAllAcademicBehaviourYearValuation = (schoolYearId: string, courseId: string) => {
+  return async (dispatch: any) => {
+    try {
+      let data = {};
+      await client
+        .query({
+          query: QUERY_GET_All_STUDENT_YEAR_BEHAVIOUR,
+          variables: {
+            schoolYearId, courseId
           },
         })
         .then((result: any) => {

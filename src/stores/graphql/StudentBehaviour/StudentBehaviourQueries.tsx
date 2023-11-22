@@ -27,3 +27,30 @@ export const QUERY_GET_All_STUDENT_BEHAVIOUR = gql`
     }
   }
 `;
+
+export const QUERY_GET_All_STUDENT_YEAR_BEHAVIOUR = gql`
+  query getAllStudentYearBehaviour( $schoolYearId: String!, $courseId: String!) {
+    data: getAllStudentYearBehaviour(orderCreated: true, allData: false, schoolYearId: $schoolYearId, courseId: $courseId) {
+      edges {
+        cursor
+        node {
+          id
+          studentId
+          student {
+            id
+            code
+          }
+          assessment  
+          performanceLevel {
+            name
+            id
+            type
+            colorHex
+            abbreviation
+          }    
+          observation
+        }
+      }    
+    }
+  }
+`;

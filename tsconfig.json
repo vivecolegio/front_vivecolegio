@@ -12,7 +12,11 @@
     "strict": false,
     "esModuleInterop": true,
     "downlevelIteration": true,
-    "lib": ["dom", "es2018", "es2015"],
+    "lib": [
+      "dom",
+      "es2018",
+      "es2015"
+    ],
     "moduleResolution": "node",
     "resolveJsonModule": true
   },
@@ -23,5 +27,11 @@
   },
   "compileOnSave": true,
   "buildOnSave": true,
-  "exclude": ["node_modules", "built", "built-components", "built-production", "dist"]
+  "exclude": [
+    "node_modules",
+    "built",
+    "built-components",
+    "built-production",
+    "dist"
+  ]
 }
