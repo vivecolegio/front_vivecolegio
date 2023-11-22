@@ -278,69 +278,73 @@ const SpreadsheetAccumulatedBehaviour = (props: any) => {
                               </span>
                             </div>
                           </td>
-
-                          {academicPeriods.map((itemPeriod: any) => {
-                            let valuationAreaYear = valuations[0]?.filter((itemA: any) => itemA?.node?.studentId == itemStudent?.id)[0];
-
-                            let valuationArea = valuationsArea[itemPeriod?.node?.id.toString()]?.filter((itemA: any) => itemA?.node?.studentId == itemStudent?.id && itemA?.node?.academicPeriodId == itemPeriod?.node?.id.toString());
-                            let valuationAreaCalculate: any;
-                            let valuationAreaDefinitive: any;
-                            for (let valuationAreaAux of valuationArea) {
-                              switch (valuationAreaAux?.node?.valuationType) {
-                                case "CALCULATE":
-                                  valuationAreaCalculate = valuationAreaAux;
-                                  break;
-                                case "DEFINITIVE":
-                                  valuationAreaDefinitive = valuationAreaAux;
-                                  break;
-                              }
-                            }
-                            let valuationType = valuationAreaDefinitive ? "DEFINITIVE" : valuationAreaCalculate ? "CALCULATE" : "";
+                          {academicPeriods?.map((itemPeriod: any, index: any) => {
                             return (
                               <>
-                                <td className="text-center vertical-middle">
-                                  {valuationAreaDefinitive ?
+                                {academicPeriods.map((itemPeriod: any) => {
+                                  let valuationAreaYear = valuations[0]?.filter((itemA: any) => itemA?.node?.studentId == itemStudent?.id)[0];
+
+                                  let valuationArea = valuationsArea[itemPeriod?.node?.id.toString()]?.filter((itemA: any) => itemA?.node?.studentId == itemStudent?.id && itemA?.node?.academicPeriodId == itemPeriod?.node?.id.toString());
+                                  let valuationAreaCalculate: any;
+                                  let valuationAreaDefinitive: any;
+                                  for (let valuationAreaAux of valuationArea) {
+                                    switch (valuationAreaAux?.node?.valuationType) {
+                                      case "CALCULATE":
+                                        valuationAreaCalculate = valuationAreaAux;
+                                        break;
+                                      case "DEFINITIVE":
+                                        valuationAreaDefinitive = valuationAreaAux;
+                                        break;
+                                    }
+                                  }
+                                  let valuationType = valuationAreaDefinitive ? "DEFINITIVE" : valuationAreaCalculate ? "CALCULATE" : "";
+                                  return (
                                     <>
-                                      {performanceLevelType === "QUALITATIVE" ?
-                                        <>
-                                          <StyledBadge color="primary" className="font-0-8rem" background={valuationAreaDefinitive?.node?.performanceLevel?.colorHex ? `${valuationAreaDefinitive?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
-                                            {valuationAreaDefinitive?.node?.performanceLevel?.abbreviation ? valuationAreaDefinitive?.node?.performanceLevel?.abbreviation : valuationAreaDefinitive?.node?.performanceLevel?.name}
-                                          </StyledBadge>
-                                        </> :
-                                        <>
-                                          {valuationAreaDefinitive?.node?.assessment?.toFixed(countDigits)}
-                                        </>
-                                      }
+                                      <td className="text-center vertical-middle">
+                                        {valuationAreaDefinitive ?
+                                          <>
+                                            {performanceLevelType === "QUALITATIVE" ?
+                                              <>
+                                                <StyledBadge color="primary" className="font-0-8rem" background={valuationAreaDefinitive?.node?.performanceLevel?.colorHex ? `${valuationAreaDefinitive?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
+                                                  {valuationAreaDefinitive?.node?.performanceLevel?.abbreviation ? valuationAreaDefinitive?.node?.performanceLevel?.abbreviation : valuationAreaDefinitive?.node?.performanceLevel?.name}
+                                                </StyledBadge>
+                                              </> :
+                                              <>
+                                                {valuationAreaDefinitive?.node?.assessment?.toFixed(countDigits)}
+                                              </>
+                                            }
+                                          </>
+                                          : <>
+                                            {performanceLevelType === "QUALITATIVE" ?
+                                              <>
+                                                <StyledBadge color="primary" className="font-0-8rem" background={valuationAreaCalculate?.node?.performanceLevel?.colorHex ? `${valuationAreaCalculate?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
+                                                  {valuationAreaCalculate?.node?.performanceLevel?.abbreviation ? valuationAreaCalculate?.node?.performanceLevel?.abbreviation : valuationAreaCalculate?.node?.performanceLevel?.name}
+                                                </StyledBadge>
+                                              </> :
+                                              <>
+                                                {valuationAreaCalculate?.node?.assessment?.toFixed(countDigits)}
+                                              </>
+                                            }
+                                          </>}
+                                      </td>
                                     </>
-                                    : <>
-                                      {performanceLevelType === "QUALITATIVE" ?
-                                        <>
-                                          <StyledBadge color="primary" className="font-0-8rem" background={valuationAreaCalculate?.node?.performanceLevel?.colorHex ? `${valuationAreaCalculate?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
-                                            {valuationAreaCalculate?.node?.performanceLevel?.abbreviation ? valuationAreaCalculate?.node?.performanceLevel?.abbreviation : valuationAreaCalculate?.node?.performanceLevel?.name}
-                                          </StyledBadge>
-                                        </> :
-                                        <>
-                                          {valuationAreaCalculate?.node?.assessment?.toFixed(countDigits)}
-                                        </>
-                                      }
-                                    </>}
+                                  )
+                                })}
+                                <td className="text-center vertical-middle font-weight-bold">
+                                  {performanceLevelType === "QUALITATIVE" ?
+                                    <>
+                                      <StyledBadge color="primary" className="font-0-8rem pt-2" background={valuationAreaYear?.node?.performanceLevel?.colorHex ? `${valuationAreaYear?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
+                                        {valuationAreaYear?.node?.performanceLevel?.abbreviation ? valuationAreaYear?.node?.performanceLevel?.abbreviation : valuationAreaYear?.node?.performanceLevel?.name}
+                                      </StyledBadge>
+                                    </> :
+                                    <>
+                                      {valuationAreaYear?.node?.assessment?.toFixed(countDigits)}
+                                    </>
+                                  }
                                 </td>
                               </>
-                            )
+                            );
                           })}
-                          <td className="text-center vertical-middle font-weight-bold">
-                            {performanceLevelType === "QUALITATIVE" ?
-                              <>
-                                <StyledBadge color="primary" className="font-0-8rem pt-2" background={valuationAreaYear?.node?.performanceLevel?.colorHex ? `${valuationAreaYear?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
-                                  {valuationAreaYear?.node?.performanceLevel?.abbreviation ? valuationAreaYear?.node?.performanceLevel?.abbreviation : valuationAreaYear?.node?.performanceLevel?.name}
-                                </StyledBadge>
-                              </> :
-                              <>
-                                {valuationAreaYear?.node?.assessment?.toFixed(countDigits)}
-                              </>
-                            }
-                          </td>
-
                         </tr>
                       </>
                     );
