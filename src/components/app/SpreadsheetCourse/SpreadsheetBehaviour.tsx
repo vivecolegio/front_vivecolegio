@@ -21,6 +21,7 @@ import * as experienceLearningSelfActions from '../../../stores/actions/Experien
 import * as experienceLearningTraditionalActions from '../../../stores/actions/ExperienceLearningTraditionalValuationActions';
 import * as schoolConfiguarionActions from '../../../stores/actions/SchoolConfigurationActions';
 import * as valuationsActions from '../../../stores/actions/ValuationsActions';
+import * as averageAcademicPeriodStudentActions from '../../../stores/actions/AverageAcademicPeriodStudentActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import HeaderInfoAcademic from '../../common/Data/HeaderInfoAcademic';
 import { Loader } from '../../common/Loader';
@@ -28,13 +29,15 @@ import { StyledBadge } from '../../styled/BadgeCustom';
 import AreaList from '../Academic/Area/AreaList';
 import ThumbnailImage from '../Aplications/AplicationsComponents/ThumbnailImage';
 
-const SpreadsheetAccumulatedBehaviour = (props: any) => {
+const SpreadsheetBehaviour = (props: any) => {
 
   const [students, setStudents] = useState(null);
   const [performanceLevels, setPerformanceLevels] = useState(null);
   const [performanceLevelType, setPerformanceLevelType] = useState(null);
   const [academicPeriods, setAcademicPeriods] = useState(null);
   const [currentAcademicPeriod, setCurrentAcademicPeriod] = useState(null);
+  const [asignatures, setAsignatures] = useState(null);
+  const [areas, setAreas] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isFormEnabled, setIsFormEnabled] = useState(true);
   const [currentMenu, setCurrentMenu] = useState({
@@ -80,22 +83,34 @@ const SpreadsheetAccumulatedBehaviour = (props: any) => {
     if (cm && cm.readAction) {
       setCurrentMenu(cm);
     } else {
-      //history(`/home`);
+      history(`/home`);
       createNotification('warning', 'notPermissions', '');
     }
-    //props.dataCurrentAcademicPeriod(props?.loginReducer?.schoolId).then(async (period: any) => {
-    props.getListAllSchoolConfiguration(props?.loginReducer?.schoolId).then(async (schoolConfigurations: any) => {
-      for (let schoolConfiguration of schoolConfigurations) {
-        if (schoolConfiguration?.node?.code == "COUNT_DIGITS_PERFORMANCE_LEVEL") {
-          setCountDigits(schoolConfiguration?.node?.valueNumber);
+    props.dataCurrentAcademicPeriod(props?.loginReducer?.schoolId).then(async (period: any) => {
+      await props.getListAllSchoolConfiguration(props?.loginReducer?.schoolId).then(async (schoolConfigurations: any) => {
+        for (let schoolConfiguration of schoolConfigurations) {
+          if (schoolConfiguration?.node?.code == "COUNT_DIGITS_AVERAGE_STUDENT") {
+            setCountDigits(schoolConfiguration?.node?.valueNumber);
+          }
         }
+      });
+      await setCurrentAcademicPeriod(period);
+      if (period) {
+        const today = new Date();
+        const startDate = new Date(period.startDate);
+        const endDate = new Date(period?.endDate);
+        const totalDays = calculateDaysTwoDate(startDate, endDate);
+        let countDays = totalDays;
+        if (today < endDate && today > startDate) {
+          countDays = calculateDaysTwoDate(startDate, new Date());
+        }
+        setDateProgress({ startDate, endDate, totalDays, countDays })
       }
+      getSpreadsheet(period?.id);
     });
-    getSpreadsheet();
-    //});
   }, []);
 
-  const getSpreadsheet = async () => {
+  const getSpreadsheet = async (periodId: any) => {
     setLoading(true);
     await props.dataCourse(courseId).then(async (course: any) => {
       setStudents(course?.data?.students.sort(compare));
@@ -116,42 +131,18 @@ const SpreadsheetAccumulatedBehaviour = (props: any) => {
         props?.loginReducer?.schoolYear).then(async (listData: any) => {
           setAcademicPeriods(listData);
           let promisesListAsignatures: any[] = [];
-          let promisesListAreas: any[] = []
-          await listData.forEach(async (period: any) => {
-            if (period.node.id?.toString()) {
-
-              promisesListAreas.push(
-                props
-                  .getAllAcademicBehaviourPeriodValuation(period.node.id?.toString(), courseId)
-                  .then(async (notesFinal: any) => {
-                    if (ntsArea[period.node.id?.toString()] != null) {
-                      ntsArea[period.node.id?.toString()] = [...ntsArea[period.node.id?.toString()], ...notesFinal.data.edges];
-                    } else {
-                      ntsArea[period.node.id?.toString()] = [...notesFinal.data.edges];
-                    }
-                  })
-              );
-              promisesListAsignatures.push(
-                props
-                  .getAllAcademicBehaviourYearValuation(props?.loginReducer?.schoolYear, courseId)
-                  .then(async (notesFinal: any) => {
-                    nts[0] = [...notesFinal.data.edges];
-                  })
-              )
-
-            } else {
-              setLoading(false);
-            }
-          });
-          await Promise.all(promisesListAreas).then(() => {
+          let promisesListAreas: any[] = [];
+          if (periodId) {
+            await props
+              .getAllAcademicBehaviourPeriodValuation(periodId, courseId)
+              .then(async (notesFinal: any) => {
+                ntsArea = notesFinal.data.edges;
+              })
             setValuationsArea(ntsArea);
-          });
-          await Promise.all(promisesListAsignatures).then(() => {
-            setValuations(nts);
             setLoading(false);
-          });
-
-
+          } else {
+            setLoading(false);
+          }
         });
     });
   };
@@ -173,23 +164,87 @@ const SpreadsheetAccumulatedBehaviour = (props: any) => {
     sheet: 'Planilla General'
   })
 
-  const recalculateYear = async () => {
-    setLoading(true);
-    await props.updateAllStudentAcademicBehaviourYearValuation(courseId,
-      props?.loginReducer?.schoolYear).then(async (data: any) => {
-        getSpreadsheet();
-      })
-  }
-
   return (
     <>
       <div className="mt-4 d-flex justify-content-center align-items-center">
-        <h1 className="font-bold">Planilla Consolidado Comportamiento</h1>
+        <h1 className="font-bold">Planilla Comportamiento</h1>
       </div>
       <hr />
       <div className="d-flex justify-content-between align-items-center">
         <HeaderInfoAcademic grade course modality goTitle="Regresar a cursos" courseId={courseId} />
+        <div>
+          <div className="d-flex justify-content-start align-items-center" >
+            {academicPeriods
+              ? academicPeriods.map((item: any) => {
+                return (
+                  <>
+                    <button
+                      onClick={() => {
+                        setCurrentAcademicPeriod(item?.node);
+                        const today = new Date();
+                        const startDate = new Date(item?.node?.startDate);
+                        const endDate = new Date(item?.node?.endDate);
+                        const totalDays = calculateDaysTwoDate(startDate, endDate);
+                        let countDays = totalDays;
+                        if (today < endDate && today > startDate) {
+                          countDays = calculateDaysTwoDate(startDate, new Date());
+                        }
+                        setDateProgress({ startDate, endDate, totalDays, countDays })
+                        return getSpreadsheet(item?.node?.id);
+                      }}
+                      key={item?.node?.id}
+                      className={`ml-1 btn ${currentAcademicPeriod?.id === item?.node?.id
+                        ? 'btn-info'
+                        : 'btn-outline-info'
+                        }`}
+                      type="button"
+                    >
+                      <i className="iconsminds-pen-2"></i> {item?.node?.name}
+                    </button>{'  '}
+                  </>
+                );
+              })
+              : ''}
+          </div>
+          {dateProgress.startDate != null ?
+            <>
+              <div className="d-flex justify-content-start align-items-center mt-2 w-100">
+                <div className="text-center">
+                  Progreso: {' '}
+                </div>
+                <Progress
+                  className="ml-2"
+                  bar
+                  color="primary"
+                  value={dateProgress.countDays > 0 ? ((dateProgress.countDays / dateProgress.totalDays) * 100) : 0}
+                > ({dateProgress.countDays}/{dateProgress.totalDays}) {dateProgress.countDays > 0 ? ((dateProgress.countDays / dateProgress.totalDays) * 100).toFixed(0) : 0}%</Progress>
+              </div>
+              <div className="d-flex justify-content-start align-items-center mt-2 w-100">
+                <div className="text-center w-50">
+                  Fecha Inicio: {' ' + moment(dateProgress.startDate).format("YYYY-MM-DD")}
+                </div>
+                <div className="text-center w-50">
+                  Fecha Fin: {' ' + moment(dateProgress.endDate).format("YYYY-MM-DD")}
+                </div>
+              </div>
+            </>
+            : ""}
 
+          {/* <div className='d-flex mt-3 justify-content-end'>
+                <button
+                  className="btn btn-green mr-2"
+                  type="button"
+                  onClick={() => {
+                    return setIsFormEnabled(!isFormEnabled);
+                  }}
+                >
+                  <i className="iconsminds-file-edit"></i> Habilitar edición
+                </button>
+                <button className="btn btn-orange" type="button">
+                  <i className="iconsminds-delete-file"></i> Cerrar periodo
+                </button>
+              </div> */}
+        </div>
         <div className="d-flex justify-content-start align-items-center flex-column" >
           <button
             onClick={download}
@@ -199,15 +254,8 @@ const SpreadsheetAccumulatedBehaviour = (props: any) => {
           >
             <i className="iconsminds-download"></i> {"Descargar XLS"}
           </button>
-          <button
-            onClick={recalculateYear}
-            key={"download"}
-            className={`ml-1 btn btn-danger`}
-            type="button"
-          >
-            <i className="iconsminds-download"></i> {"Recalcular Año"}
-          </button>
         </div>
+        {/* <button onClick={download}> Export excel </button> */}
       </div>
       <div className='mb-2' style={{ textAlign: "right" }}>
 
@@ -225,30 +273,26 @@ const SpreadsheetAccumulatedBehaviour = (props: any) => {
               <table className="table table-bordered" ref={tableRef}>
                 <thead>
                   <tr>
-                    <th rowSpan={2} className="text-center vertical-middle">
+                    <th rowSpan={1} className="text-center vertical-middle">
                       Código
                     </th>
-                    <th rowSpan={2} className="text-center vertical-middle">
+                    <th rowSpan={1} className="text-center vertical-middle">
                       Estudiante
                     </th>
-                    {academicPeriods
-                      ? academicPeriods.map((item: any) => {
-                        return (
-                          <>
-                            <th className="text-center vertical-middle"> {item?.node?.name}</th>
-                          </>
-                        );
-                      })
-                      : ''}
-                    {academicPeriods ?
-                      <th className="text-center vertical-middle">Valoracion Final.</th>
-                      : ''}
+                    <th rowSpan={1} className="text-center vertical-middle">
+                      Valoración
+                    </th>
+                    <th rowSpan={1} className="text-center vertical-middle">
+                      Nivel de desempeño
+                    </th>
+                    <th rowSpan={1} className="text-center vertical-middle">
+                      Observación
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
                   {students.map((itemStudent: any, index: any) => {
-                    let valuationAreaYear = valuations[0]?.filter((itemA: any) => itemA?.node?.studentId == itemStudent?.id)[0];
-
+                    let valuationArea = valuationsArea?.filter((itemA: any) => itemA?.node?.studentId == itemStudent?.id);
                     return (
                       <>
                         <tr key={index}>
@@ -280,48 +324,17 @@ const SpreadsheetAccumulatedBehaviour = (props: any) => {
                               </span>
                             </div>
                           </td>
-                          {academicPeriods.map((itemPeriod: any) => {
-                            let valuationAux = valuationsArea[itemPeriod?.node?.id.toString()]?.filter((itemA: any) => itemA?.node?.studentId == itemStudent?.id && itemA?.node?.academicPeriodId == itemPeriod?.node?.id.toString());
-                            let valuation;
-                            if (valuationAux?.length > 0) {
-                              valuation = valuationAux[0];
-                            }
-                            return (
-                              <>
-                                <td className="text-center vertical-middle">
-                                  {valuation ?
-                                    <>
-                                      {performanceLevelType === "QUALITATIVE" ?
-                                        <>
-                                          <StyledBadge color="primary" className="font-0-8rem" background={valuation?.node?.performanceLevel?.colorHex ? `${valuation?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
-                                            {valuation?.node?.performanceLevel?.abbreviation ? valuation?.node?.performanceLevel?.abbreviation : valuation?.node?.performanceLevel?.name}
-                                          </StyledBadge>
-                                        </> :
-                                        <>
-                                          {valuation?.node?.assessment?.toFixed(countDigits)}
-                                        </>
-                                      }
-                                    </>
-                                    : <>
-
-                                    </>}
-                                </td>
-                              </>
-                            )
-                          })}
-                          <td className="text-center vertical-middle font-weight-bold">
-                            {performanceLevelType === "QUALITATIVE" ?
-                              <>
-                                <StyledBadge color="primary" className="font-0-8rem pt-2" background={valuationAreaYear?.node?.performanceLevel?.colorHex ? `${valuationAreaYear?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
-                                  {valuationAreaYear?.node?.performanceLevel?.abbreviation ? valuationAreaYear?.node?.performanceLevel?.abbreviation : valuationAreaYear?.node?.performanceLevel?.name}
-                                </StyledBadge>
-                              </> :
-                              <>
-                                {valuationAreaYear?.node?.assessment?.toFixed(countDigits)}
-                              </>
-                            }
+                          <td className="text-center vertical-middle">
+                            <span className="font-bold">{valuationArea[0]?.node?.assessment?.toFixed(countDigits)}</span>
                           </td>
-
+                          <td className="text-center vertical-middle">
+                            <StyledBadge color="primary" className="font-0-8rem ${}" background={valuationArea[0]?.node?.performanceLevel?.colorHex ? `${valuationArea[0]?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
+                              {valuationArea[0]?.node?.performanceLevel?.abbreviation ? valuationArea[0]?.node?.performanceLevel?.abbreviation : valuationArea[0]?.node?.performanceLevel?.name}
+                            </StyledBadge>
+                          </td>
+                          <td className="text-center vertical-middle">
+                            <span className="font-bold">{valuationArea[0]?.node?.observation}</span>
+                          </td>
                         </tr>
                       </>
                     );
@@ -350,11 +363,12 @@ const mapDispatchToProps = {
   ...experienceLearningTraditionalActions,
   ...performanceLevelActions,
   ...academicAsignatureCouseActions,
-  ...schoolConfiguarionActions
+  ...schoolConfiguarionActions,
+  ...averageAcademicPeriodStudentActions
 };
 
 const mapStateToProps = ({ loginReducer }: any) => {
   return { loginReducer };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SpreadsheetAccumulatedBehaviour);
+export default connect(mapStateToProps, mapDispatchToProps)(SpreadsheetBehaviour);

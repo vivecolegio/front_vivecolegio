@@ -459,6 +459,12 @@ const SpreadsheetAverageCourse = React.lazy(() => {
   );
 });
 
+const SpreadsheetBehaviour = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "SpreadsheetBehaviour" */ '../components/app/SpreadsheetCourse/SpreadsheetBehaviour'
+  );
+});
+
 const ReportSpreadsheetAccumulatedAverageCourseGradeList = React.lazy(() => {
   return import(
     /* webpackChunkName: "ReportSpreadsheetAccumulatedAverageCourseGradeList" */ '../components/app/ReportSpreadsheetAccumulatedAverageCourse/ReportSpreadsheetAccumulatedAverageCourseGradeList'
@@ -867,6 +873,7 @@ const App = (props: any) => {
                     <Route path="/spreadsheetRecoveryPlan" element={<SpreadsheetRecoveryPlan />} />
                     <Route path="/spreadsheetCourse" element={<SpreadsheetCourse />} />
                     <Route path="/spreadsheetAverageCourse" element={<SpreadsheetAverageCourse />} />
+                    <Route path="/spreadsheetBehaviour" element={<SpreadsheetBehaviour />} />
                     <Route
                       path="/reportSpreadsheetAccumulatedAverageCourseGradeList"
                       element={<ReportSpreadsheetAccumulatedAverageCourseGradeList />}

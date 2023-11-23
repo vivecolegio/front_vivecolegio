@@ -1,7 +1,7 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
 import { QUERY_GET_All_STUDENT_BEHAVIOUR, QUERY_GET_All_STUDENT_YEAR_BEHAVIOUR } from "../graphql/StudentBehaviour/StudentBehaviourQueries";
-import { MUTATION_CREATE_ACADEMIC_ASIGNATURE_COURSE_PERIOD_VALUATION_STUDENTS, MUTATION_CREATE_EXPERIENCE_LEARNING_AVERAGE_VALUATION_STUDENTS, MUTATION_UPDATE_ALL_AVERAGE_STUDENT_COURSE_PERIOD, MUTATION_UPDATE_ALL_STUDENT_ACADEMIC_ASIGNATURE_COURSE_PERIOD_VALUATION, MUTATION_UPDATE_ALL_STUDENT_COURSE_PERIOD_VALUATION, MUTATION_UPDATE_ALL_STUDENT_COURSE_YEAR_VALUATION } from "../graphql/Valuations/ValuationsMutations";
+import { MUTATION_CREATE_ACADEMIC_ASIGNATURE_COURSE_PERIOD_VALUATION_STUDENTS, MUTATION_CREATE_AVERAGE_BEHAVIOUR_YEAR_VALUATION_COURSE, MUTATION_CREATE_EXPERIENCE_LEARNING_AVERAGE_VALUATION_STUDENTS, MUTATION_UPDATE_ALL_AVERAGE_STUDENT_COURSE_PERIOD, MUTATION_UPDATE_ALL_STUDENT_ACADEMIC_ASIGNATURE_COURSE_PERIOD_VALUATION, MUTATION_UPDATE_ALL_STUDENT_COURSE_PERIOD_VALUATION, MUTATION_UPDATE_ALL_STUDENT_COURSE_YEAR_VALUATION } from "../graphql/Valuations/ValuationsMutations";
 import { QUERY_GET_All_ACADEMIC_AREA_COURSE_PERIOD_VALUATION, QUERY_GET_All_ACADEMIC_AREA_COURSE_PERIOD_VALUATION_STUDENT, QUERY_GET_All_ACADEMIC_AREA_COURSE_YEAR_VALUATION, QUERY_GET_All_ACADEMIC_AREA_COURSE_YEAR_VALUATION_STUDENT, QUERY_GET_All_ACADEMIC_ASIGNATURE_COURSE_PERIOD_VALUATION, QUERY_GET_All_ACADEMIC_ASIGNATURE_COURSE_PERIOD_VALUATION_STUDENT, QUERY_GET_All_ACADEMIC_ASIGNATURE_COURSE_YEAR_VALUATION, QUERY_GET_All_ACADEMIC_ASIGNATURE_COURSE_YEAR_VALUATION_STUDENT, QUERY_GET_All_EXPERIENCE_LEARNING_AVERAGE_VALUATION, QUERY_GET_VALUATIONS_STUDENT } from "../graphql/Valuations/ValuationsQueries";
 
 export const generateAcademicAsignatureCoursePeriodValuationStudents = (schoolId : string, academicPeriodId: string, academicAsignatureCourseId: string) => {
@@ -451,6 +451,34 @@ export const getAllAcademicBehaviourYearValuation = (schoolYearId: string, cours
       return data;
     } catch (error) {
       createNotification('error', 'error', '');
+      return error;
+    }
+  };
+};
+
+export const updateAllStudentAcademicBehaviourYearValuation = (courseId: string, schoolYearId: string) => {
+  return async (dispatch: any) => {
+    try {    
+      let dataCreate = null; 
+      await client
+        .mutate({
+          mutation: MUTATION_CREATE_AVERAGE_BEHAVIOUR_YEAR_VALUATION_COURSE,
+          variables: {courseId, schoolYearId },
+        })
+        .then((dataResponse: any) => {
+          if (dataResponse.errors?.length > 0) {
+            dataResponse.errors.forEach((error: any) => {            
+                //createNotification('error', 'error', '');
+            });
+            createNotification('success', 'success', '');
+          } else {
+            dataCreate = dataResponse.data.create.id;
+            //createNotification('success', 'success', '');
+          }
+        });
+      return dataCreate as any;
+    } catch (error) {
+        createNotification('error', 'error', '');
       return error;
     }
   };
