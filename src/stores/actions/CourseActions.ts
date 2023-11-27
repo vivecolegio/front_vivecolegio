@@ -1,6 +1,6 @@
 import { createNotification } from "../../helpers/Notification";
 import { client } from '../graphql';
-import { MUTATION_CHANGE_ACTIVE_COURSE, MUTATION_CREATE_COURSE, MUTATION_DELETE_COURSE, MUTATION_GENERATE_CODES, MUTATION_UPDATE_COURSE } from '../graphql/Course/CourseMutations';
+import { MUTATION_CHANGE_ACTIVE_COURSE, MUTATION_CREATE_COURSE, MUTATION_DELETE_COURSE, MUTATION_GENERATE_CODES, MUTATION_GENERATE_CODES_ACADEMIC_GRADE, MUTATION_UPDATE_COURSE } from '../graphql/Course/CourseMutations';
 import { QUERY_GET_ALL_COURSE, QUERY_GET_ALL_COURSE_TEACHER, QUERY_GET_COURSE, QUERY_GET_DROPDOWNS_COURSE } from '../graphql/Course/CourseQueries';
 
 export const getListAllCourse = (campusId:string, academicGradeId: string, schoolId: string, fullAccess: boolean ) => {
@@ -216,6 +216,33 @@ export const generateCodesStudentsCourse = (id: any) => {
       await client
         .mutate({
           mutation: MUTATION_GENERATE_CODES,
+          variables: { id },
+        })
+        .then((dataReponse: any) => {
+          if (dataReponse.errors?.length > 0) {
+            dataReponse.errors.forEach((error: any) => {
+                createNotification('error', 'error', '');              
+            });
+          } else {
+            dataDelete = dataReponse.data;
+              createNotification('success', 'success', '');            
+          }
+        });
+      return dataDelete as any;
+    } catch (error) {
+        createNotification('error', 'error', '');      
+      return error;
+    }
+  };
+};
+
+export const generateCodesStudentsAcademicGrade = (id: any) => {
+  return async (dispatch: any) => {
+    try {
+      let dataDelete = null;
+      await client
+        .mutate({
+          mutation: MUTATION_GENERATE_CODES_ACADEMIC_GRADE,
           variables: { id },
         })
         .then((dataReponse: any) => {

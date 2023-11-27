@@ -34,3 +34,9 @@ export const MUTATION_GENERATE_CODES = gql`
     update: updateCodeStudentsCourse(id: $id)
   }
 `;
+
+export const MUTATION_GENERATE_CODES_ACADEMIC_GRADE = gql`
+  mutation updateCodeStudentsCoursesAcademicGrade($id: String!) {
+    update: updateCodeStudentsCoursesAcademicGrade(id: $id)
+  }
+`;

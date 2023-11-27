@@ -1,16 +1,16 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
+import { useLocation } from 'react-router';
 
 import { COLUMN_LIST } from '../../../constants/AcademicGrade/AcademicGradeConstants';
+import { permissionsMenu } from '../../../helpers/DataTransformations';
 import { createNotification } from '../../../helpers/Notification';
 import * as gradeActions from '../../../stores/actions/Academic/GradeActions';
 import * as courseActions from '../../../stores/actions/CourseActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import DataList from '../../common/Data/DataList';
 import { Loader } from '../../common/Loader';
-import { permissionsMenu } from '../../../helpers/DataTransformations';
-import { useLocation } from 'react-router';
 
 const GradeCourseStudentsGradeList = (props: any) => {
   const [dataTable, setDataTable] = useState(null);
@@ -90,6 +90,9 @@ const GradeCourseStudentsGradeList = (props: any) => {
       case 'goToChildrenStudents':
         goToChildren(`/studentGrade?gradeName=${item?.name}&gradeId=${item?.id}&fromGrade=true`);
         break;
+      case 'goToChildrenCodes':
+        generateCodesStudents(item?.id);
+        break;
       default:
         break;
     }
@@ -125,6 +128,11 @@ const GradeCourseStudentsGradeList = (props: any) => {
     createNotification('success', 'success', '');
   };
 
+  const generateCodesStudents = async (id: any) => {
+    props.generateCodesStudentsAcademicGrade(id).then((listData: any) => {
+    });
+  };
+
   return (
     <>
       {' '}
@@ -156,7 +164,14 @@ const GradeCourseStudentsGradeList = (props: any) => {
                 color: 'warning',
                 icon: 'iconsminds-student-male-female',
                 action: 'goToChildrenStudents',
-              }
+              },
+              {
+                id: 3,
+                label: 'Generar códigos',
+                color: 'primary',
+                icon: 'iconsminds-tag',
+                action: 'goToChildrenCodes',
+              },
             ]}
             withChildren={true}
             refreshDataTable={refreshDataTable}
