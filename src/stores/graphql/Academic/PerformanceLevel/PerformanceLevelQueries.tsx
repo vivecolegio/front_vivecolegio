@@ -94,6 +94,8 @@ export const QUERY_GET_PERFORMANCE_LEVEL = gql`
       topScore
       type
       campusId
+      isFinal
+      isRecovery
       campus {
         id
         name

@@ -33,6 +33,8 @@ const AreaCreateEdit = (props: any) => {
   const [academicGradesList, setAcademicGradesList] = useState(null);
   const [academicGrades, setAcademicGrades] = useState(null);
   const [color, setColor] = useState({ background: '' });
+  const [isFinal, setIsFinal] = useState(null);
+  const [isRecovery, setIsRecovery] = useState(null);
 
   const intl = useIntl();
 
@@ -91,6 +93,18 @@ const AreaCreateEdit = (props: any) => {
           return { label: c.name, value: c.id, key: c.id };
         }));
       }
+      if (
+        props?.data?.isRecovery !== undefined &&
+        props?.data?.isRecovery != null
+      ) {
+        setIsRecovery(props?.data?.isRecovery ? { key: "YES", label: "Si", value: true } : { key: "NO", label: "No", value: false, });
+      }
+      if (
+        props?.data?.isFinal !== undefined &&
+        props?.data?.isFinal != null
+      ) {
+        setIsFinal(props?.data?.isFinal ? { key: "YES", label: "Si", value: true } : { key: "NO", label: "No", value: false, });
+      }
       if (props?.data?.colorHex) {
         setColor({ background: props?.data?.colorHex })
       }
@@ -117,6 +131,14 @@ const AreaCreateEdit = (props: any) => {
       register('academicGradesId', {
         required: false,
         value: props?.data?.id ? props?.data?.academicGradesId : '',
+      });
+      register('isRecovery', {
+        required: false,
+        value: props?.data?.id ? props?.data?.isRecovery : false,
+      });
+      register('isFinal', {
+        required: false,
+        value: props?.data?.id ? props?.data?.isFinal : true,
       });
     } else {
       setSchool({
@@ -308,6 +330,38 @@ const AreaCreateEdit = (props: any) => {
                   </FormGroupCustom>
                 </>
                 : ''}
+              <FormGroupCustom>
+                <LabelCustom id="forms.isFinal" required={true} />
+                <Select
+                  placeholder={<IntlMessages id="forms.select" />}
+                  className="react-select"
+                  classNamePrefix="react-select"
+                  options={[{ key: "YES", label: "Si", value: true }, { key: "NO", label: "No", value: false, }
+                  ]}
+                  value={isFinal}
+                  onChange={(selectedOption: any) => {
+                    setValue('isFinal', selectedOption?.value);
+                    setIsFinal(selectedOption);
+                    trigger('isFinal');
+                  }}
+                />
+              </FormGroupCustom>
+              <FormGroupCustom>
+                <LabelCustom id="forms.isRecovery" required={true} />
+                <Select
+                  placeholder={<IntlMessages id="forms.select" />}
+                  className="react-select"
+                  classNamePrefix="react-select"
+                  options={[{ key: "NO", label: "No", value: false, },
+                  { key: "SI", label: "Si", value: true }]}
+                  value={isRecovery}
+                  onChange={(selectedOption: any) => {
+                    setValue('isRecovery', selectedOption?.value);
+                    setIsRecovery(selectedOption);
+                    trigger('isRecovery');
+                  }}
+                />
+              </FormGroupCustom>
               <FormGroupCustom>
                 <LabelCustom id="forms.color" required={false} />
                 <InputGroup addonType="append">

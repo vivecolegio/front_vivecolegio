@@ -432,6 +432,8 @@ const esMessages = {
   'forms.low_quality': 'Baja',
   'forms.medium_quality': 'Media',
   'forms.high_quality': 'Alta',
+  'forms.isFinal': 'Nivel Desempeño Final',
+  'forms.isRecovery': 'Nivel Desempeño Nivelable',
 };
 
 export default esMessages;
