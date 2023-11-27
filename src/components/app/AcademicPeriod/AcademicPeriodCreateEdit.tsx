@@ -1,3 +1,4 @@
+import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import { useForm } from 'react-hook-form';
@@ -205,7 +206,9 @@ const AcademicPeriodCreateEdit = (props: any) => {
                   {...register('endDate', { required: true })}
                   selected={endDate}
                   onChange={(date: any) => {
-                    setValue('endDate', date as Date);
+                    let dateAux = new Date(date as Date);
+                    dateAux = moment(dateAux).hour(23).minute(59).second(59).toDate();
+                    setValue('endDate', dateAux as Date);
                     setEndDate(date as Date);
                     trigger('endDate');
                   }}
@@ -234,7 +237,9 @@ const AcademicPeriodCreateEdit = (props: any) => {
                   {...register('endDateRecovery', { required: true })}
                   selected={endDateRecovery}
                   onChange={(date: any) => {
-                    setValue('endDateRecovery', date as Date);
+                    let dateAux = new Date(date as Date);
+                    dateAux = moment(dateAux).hour(23).minute(59).second(59).toDate();
+                    setValue('endDateRecovery', dateAux as Date);
                     setEndDateRecovery(date as Date);
                     trigger('endDateRecovery');
                   }}
