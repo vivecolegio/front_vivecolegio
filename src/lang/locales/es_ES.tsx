@@ -390,6 +390,7 @@ const esMessages = {
   'display.COUNT_DIGITS_PERFORMANCE_LEVEL': 'Cantidad de Digitos Nivel Desempeño',
   'display.REPORT_CERTIFICATE_FINAL_TEXT_CERTIFICATE_MODEL_A': 'Que el estudiante {}, identificado(a) con número de documento {}, cursó el grado {}, en el año {} y obtuvo las siguientes calificaciones:',
   'display.REPORT_CERTIFICATE_FINAL_TEXT_CERTIFICATE_MODEL_B': 'Que {}, identificado(a) con número de documento {}, Cursó y aprobó {} grado de {} en la sede escolar {} de este centro, durante el año lectivo {}, de acuerdo con los programas ordenados por el Ministerio de Educación Nacional mediante la ley 115 de 1994, y proyecto Educativo Institucional. Obtuvo los siguientes juicios valorativos en las áreas de estudio.',
+  'display.REPORT_CERTIFICATE_FINAL_TEXT_CERTIFICATE_MODEL_C': 'Que {}, identificado(a) con número de documento {}, Cursó y aprobó {} grado de {} en la sede escolar {} de esta Institución Educativa, durante el año lectivo {}, de acuerdo con los programas ordenados por el Ministerio de Educación Nacional mediante la ley 115 de 1994, y proyecto Educativo Institucional. Obtuvo los siguientes juicios valorativos en las áreas de estudio.',
   'display.AVERAGE_AREA_IHS': 'Intensidad Horaria',
   'display.AVERAGE_AREA_PROM': 'Promedio',
   'display.REPORT_CERTIFICATE_FINAL_SIGNATURE_TYPE_PRINCIPAL': 'Directivo',

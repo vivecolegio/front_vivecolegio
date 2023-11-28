@@ -1,6 +1,8 @@
 import { DevTool } from '@hookform/devtools';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { injectIntl } from 'react-intl';
+import { useFormatMessage } from 'react-intl-hooks';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import { Input, Label, ModalBody, ModalFooter } from 'reactstrap';
@@ -14,8 +16,6 @@ import FormGroupCustom from '../../common/Data/FormGroupCustom';
 import LabelCustom from '../../common/Data/LabelCustom';
 import RequiredMessagesCustom from '../../common/Data/RequiredMessagesCustom';
 import { Loader } from '../../common/Loader';
-import { useFormatMessage } from 'react-intl-hooks';
-import { injectIntl } from 'react-intl';
 
 const SchoolConfigurationCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
@@ -237,7 +237,7 @@ const SchoolConfigurationCreateEdit = (props: any) => {
                     placeholder={<IntlMessages id="forms.select" />}
                     className="react-select"
                     classNamePrefix="react-select"
-                    options={[{ key: "MODEL_A", label: messages["display." + props?.data?.code + "_MODEL_A"], value: "MODEL_A", }, { key: "MODEL_B", label: messages["display." + props?.data?.code + "_MODEL_B"], value: "MODEL_B" }]}
+                    options={[{ key: "MODEL_A", label: messages["display." + props?.data?.code + "_MODEL_A"], value: "MODEL_A", }, { key: "MODEL_B", label: messages["display." + props?.data?.code + "_MODEL_B"], value: "MODEL_B" }, { key: "MODEL_C", label: messages["display." + props?.data?.code + "_MODEL_C"], value: "MODEL_C", }, ]}
                     value={valueString}
                     onChange={(selectedOption: any) => {
                       setValueString(selectedOption);
