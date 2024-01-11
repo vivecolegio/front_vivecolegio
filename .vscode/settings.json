@@ -21,5 +21,10 @@
     "editor.formatOnSave": false
   },
   "editor.guides.bracketPairs": true,
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "[javascript][json][typescript]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    }
+  }
 }
