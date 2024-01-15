@@ -14,6 +14,7 @@ import FormGroupCustom from '../../common/Data/FormGroupCustom';
 import LabelCustom from '../../common/Data/LabelCustom';
 import RequiredMessagesCustom from '../../common/Data/RequiredMessagesCustom';
 import { Loader } from '../../common/Loader';
+import { permissionsMenu } from '../../../helpers/DataTransformations';
 
 const SchoolYearCreateEdit = (props: any) => {
   const [loading, setLoading] = useState(true);
@@ -21,6 +22,7 @@ const SchoolYearCreateEdit = (props: any) => {
   const [school, setSchool] = useState(null);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+  const [schoolYearList, setSchoolYearList] = useState(null);
 
   const methods = useForm({
     mode: 'all',
@@ -83,6 +85,14 @@ const SchoolYearCreateEdit = (props: any) => {
   };
 
   const getDropdowns = async () => {
+    props.getListAllSchoolYear(props?.loginReducer?.schoolId, false).then((data: any) => {
+      setSchoolYearList(
+        data.map((c: any) => {
+          return { label: c.node.name, value: c.node.id, key: c.node.id };
+        }),
+      );
+    });
+
     setSchoolList(
       [{
         key: props?.loginReducer?.schoolData?.id,
@@ -171,6 +181,21 @@ const SchoolYearCreateEdit = (props: any) => {
                 />
                 <RequiredMessagesCustom formState={formState} register={"endDate"} />
               </FormGroupCustom>
+
+              <FormGroupCustom>
+                <LabelCustom id="menu.schoolYearImport" required={false} />
+                <Select
+                  isClearable
+                  placeholder={<IntlMessages id="forms.select" />}
+                  {...register('schoolYearId', { required: false })}
+                  className="react-select"
+                  classNamePrefix="react-select"
+                  options={schoolList}
+                  value={school}
+                  isDisabled={true}
+                />
+              </FormGroupCustom>
+
               <FormGroupCustom>
                 <LabelCustom id="menu.ie" required={true} />
                 <Select
