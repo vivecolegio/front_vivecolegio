@@ -145,7 +145,7 @@ const Login = (props: any) => {
                       </Button>
                       <h2>
                         <span className="font-1rem ml-1">Disculpe las molestias la plataforma se encuentra en mantenimiento. Finaliza el: </span>
-                        <span className="font-1rem ml-1">16/01/2024 02:00 P.M.</span>
+                        <span className="font-1rem ml-1">16/01/2024 05:00 P.M.</span>
                       </h2>
                       {/* <p>                     
                         <IntlMessages id="user.still-user" /> 
