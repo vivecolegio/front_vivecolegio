@@ -1,9 +1,9 @@
+import { DevTool } from '@hookform/devtools';
 import React from 'react';
 import { FormProvider, useFormState } from 'react-hook-form';
 import { Button, Modal, ModalFooter, ModalHeader } from 'reactstrap';
 
 import IntlMessages from '../../../helpers/IntlMessages';
-import { DevTool } from '@hookform/devtools';
 
 const AddNewModal = ({
   modalOpen,
@@ -21,7 +21,7 @@ const AddNewModal = ({
 }: any) => {
   return (
     <FormProvider {...methods}>
-      {/* <DevTool control={control} /> */}
+      <DevTool control={control} />
       <form onSubmit={handleSubmit(onSubmit)} className="av-tooltip tooltip-label-right">
         <Modal
           isOpen={modalOpen}

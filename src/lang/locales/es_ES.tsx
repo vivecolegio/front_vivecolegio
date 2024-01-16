@@ -435,6 +435,7 @@ const esMessages = {
   'forms.high_quality': 'Alta',
   'forms.isFinal': 'Nivel Desempeño Final',
   'forms.isRecovery': 'Nivel Desempeño Nivelable',
+  'forms.schoolYearImport': 'Importar Datos desde Año Escolar',
 };
 
 export default esMessages;

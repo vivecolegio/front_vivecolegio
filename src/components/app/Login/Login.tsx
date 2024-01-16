@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { NavLink } from 'react-router-dom';
 import { Alert, Button, Card, Form, FormGroup, Input, Label, Row } from 'reactstrap';
+
+import Abrazate from '../../../assets/img/logos/AbrazateLogo.png';
 import NavImg2 from '../../../assets/img/logos/gobernacion.png';
 import LoginImg1 from '../../../assets/img/logos/login1.jpg';
 import LogoImg from '../../../assets/img/logos/LOGO.png';
@@ -14,7 +16,6 @@ import IntlMessages from '../../../helpers/IntlMessages';
 import * as loginActions from '../../../stores/actions/LoginActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import { Loader } from '../../common/Loader';
-import Abrazate from '../../../assets/img/logos/AbrazateLogo.png';
 
 const Login = (props: any) => {
   const [loading, setLoading] = useState(true);
@@ -142,6 +143,10 @@ const Login = (props: any) => {
                           <IntlMessages id="user.login-button" />
                         </span>
                       </Button>
+                      <h2>
+                        <span className="font-1rem ml-1">Disculpe las molestias la plataforma se encuentra en mantenimiento. Finaliza el: </span>
+                        <span className="font-1rem ml-1">16/01/2024 02:00 P.M.</span>
+                      </h2>
                       {/* <p>                     
                         <IntlMessages id="user.still-user" /> 
                         <NavLink to="/user/forgot-password">
