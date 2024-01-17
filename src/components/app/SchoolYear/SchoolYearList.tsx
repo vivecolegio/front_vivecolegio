@@ -45,7 +45,9 @@ const SchoolYearList = (props: any) => {
 
   const onSubmit = async (dataForm: any) => {
     if (data === null) {
+      console.log(dataForm);
       await props.saveNewSchoolYear(dataForm).then((id: any) => {
+
         if (id !== undefined) {
           setModalOpen(false);
           refreshDataTable();

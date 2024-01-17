@@ -436,6 +436,9 @@ const esMessages = {
   'forms.isFinal': 'Nivel Desempeño Final',
   'forms.isRecovery': 'Nivel Desempeño Nivelable',
   'forms.schoolYearImport': 'Importar Datos desde Año Escolar',
+  'forms.academicDay': 'Jornada académica',
+  'forms.studentPromoted': 'Estudiantes Promovidos',
+  'forms.studentNoPromoted': 'Estudiantes No promovidos',
 };
 
 export default esMessages;

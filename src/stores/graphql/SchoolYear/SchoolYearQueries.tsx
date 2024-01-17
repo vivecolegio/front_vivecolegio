@@ -29,6 +29,30 @@ export const QUERY_GET_SCHOOL_YEAR = gql`
       endDate
       version
       schoolId
+      schoolYearImportId
+      schoolYearImport {
+        id
+        schoolYear
+      }
+      schoolYearImportOptions {
+        academicAsignatureCourse
+        academicDay
+        academicHour
+        academicPeriod
+        area
+        asignature
+        course
+        educationLevel
+        evaluativeComponent
+        grade
+        gradeAssignment
+        modality
+        performanceLevel
+        speciality
+        studentNoPromoted
+        studentPromoted
+        teacher
+      }
       school {
         id
         name
