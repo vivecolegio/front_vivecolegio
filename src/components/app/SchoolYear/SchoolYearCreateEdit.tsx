@@ -93,8 +93,8 @@ const SchoolYearCreateEdit = (props: any) => {
       setArea(props?.data?.schoolYearImportOptions?.area);
       setAsignature(props?.data?.schoolYearImportOptions?.asignature);
       setGrade(props?.data?.schoolYearImportOptions?.grade);
-      console.log("setGradeAssignment")
-      console.log(props?.data?.schoolYearImportOptions?.gradeAssignment)
+      console.log('setGradeAssignment');
+      console.log(props?.data?.schoolYearImportOptions?.gradeAssignment);
       setGradeAssignment(props?.data?.schoolYearImportOptions?.gradeAssignment);
       setCourse(props?.data?.schoolYearImportOptions?.course);
       setAcademicAsignatureCourse(props?.data?.schoolYearImportOptions?.academicAsignatureCourse);
@@ -162,7 +162,9 @@ const SchoolYearCreateEdit = (props: any) => {
     });
     register('schoolYearImportOptions.academicAsignatureCourse', {
       required: false,
-      value: props?.data?.id ? props?.data?.schoolYearImportOptions?.academicAsignatureCourse : true,
+      value: props?.data?.id
+        ? props?.data?.schoolYearImportOptions?.academicAsignatureCourse
+        : true,
     });
     register('schoolYearImportOptions.teacher', {
       required: false,
@@ -202,23 +204,31 @@ const SchoolYearCreateEdit = (props: any) => {
         }),
       );
       if (!props?.data?.id) {
-        setSchoolYearImport({ label: data[0].node.schoolYear, value: data[0].node.id, key: data[0].node.id });
+        setSchoolYearImport({
+          label: data[0].node.schoolYear,
+          value: data[0].node.id,
+          key: data[0].node.id,
+        });
       }
       if (!props?.data?.id) {
-        setSchoolYearImport({ label: data[0].node.schoolYear, value: data[0].node.id, key: data[0].node.id });
+        setSchoolYearImport({
+          label: data[0].node.schoolYear,
+          value: data[0].node.id,
+          key: data[0].node.id,
+        });
       }
       register('schoolYearImportId', {
         required: false,
         value: props?.data?.id ? props?.data?.schoolYearImportId : data[0].node.id,
       });
     });
-    setSchoolList(
-      [{
+    setSchoolList([
+      {
         key: props?.loginReducer?.schoolData?.id,
         label: props?.loginReducer?.schoolData?.name,
         value: props?.loginReducer?.schoolData?.id,
-      }]
-    );
+      },
+    ]);
   };
 
   const { ref: folioNumberRef, ...folioNumberRest } = register('folioNumber', {
@@ -262,11 +272,11 @@ const SchoolYearCreateEdit = (props: any) => {
             handleSubmit={handleSubmit}
             validateForm={true}
           >
-            <ModalBody >
+            <ModalBody>
               <FormGroupCustom>
                 <LabelCustom id="menu.schoolYear" required={true} />
                 <Input {...schoolYearRest} innerRef={schoolYearRef} className="form-control" />
-                <RequiredMessagesCustom formState={formState} register={"schoolYear"} />
+                <RequiredMessagesCustom formState={formState} register={'schoolYear'} />
               </FormGroupCustom>
               <FormGroupCustom>
                 <LabelCustom id="forms.folioNumber" required={false} />
@@ -283,7 +293,7 @@ const SchoolYearCreateEdit = (props: any) => {
                     trigger('startDate');
                   }}
                 />
-                <RequiredMessagesCustom formState={formState} register={"startDate"} />
+                <RequiredMessagesCustom formState={formState} register={'startDate'} />
               </FormGroupCustom>
               <FormGroupCustom>
                 <LabelCustom id="forms.endDate" required={true} />
@@ -298,7 +308,7 @@ const SchoolYearCreateEdit = (props: any) => {
                   minDate={startDate}
                   disabled={startDate == null}
                 />
-                <RequiredMessagesCustom formState={formState} register={"endDate"} />
+                <RequiredMessagesCustom formState={formState} register={'endDate'} />
               </FormGroupCustom>
               <FormGroupCustom>
                 <LabelCustom id="forms.schoolYearImport" required={false} />
@@ -318,7 +328,7 @@ const SchoolYearCreateEdit = (props: any) => {
                   }}
                 />
               </FormGroupCustom>
-              {schoolYearImport ?
+              {schoolYearImport ? (
                 <>
                   <div className="form-group d-flex align-items-center">
                     <Input
@@ -332,7 +342,7 @@ const SchoolYearCreateEdit = (props: any) => {
                         setAcademicPeriod(!academicPeriod);
                       }}
                       label=""
-                      disabled={props?.data?.id}
+                      disabled={true}
                     />
                     {<IntlMessages id="forms.academicPeriod" />}
                   </div>
@@ -351,7 +361,7 @@ const SchoolYearCreateEdit = (props: any) => {
                         }
                       }}
                       label=""
-                      disabled={props?.data?.id}
+                      disabled={true}
                     />
                     {<IntlMessages id="forms.academicDay" />}
                   </div>
@@ -370,7 +380,7 @@ const SchoolYearCreateEdit = (props: any) => {
                         }
                       }}
                       label=""
-                      disabled={props?.data?.id}
+                      disabled={true}
                     />
                     {<IntlMessages id="menu.academicHour" />}
                   </div>
@@ -386,7 +396,7 @@ const SchoolYearCreateEdit = (props: any) => {
                         setEducationLevel(!educationLevel);
                       }}
                       label=""
-                      disabled={props?.data?.id}
+                      disabled={true}
                     />
                     {<IntlMessages id="menu.educationLevel" />}
                   </div>
@@ -402,7 +412,7 @@ const SchoolYearCreateEdit = (props: any) => {
                         setPerformanceLevel(!performanceLevel);
                       }}
                       label=""
-                      disabled={props?.data?.id}
+                      disabled={true}
                     />
                     {<IntlMessages id="menu.performanceLevel" />}
                   </div>
@@ -414,11 +424,14 @@ const SchoolYearCreateEdit = (props: any) => {
                       defaultChecked={evaluativeComponent}
                       checked={evaluativeComponent}
                       onChange={() => {
-                        setValue('schoolYearImportOptions.evaluativeComponent', !evaluativeComponent);
+                        setValue(
+                          'schoolYearImportOptions.evaluativeComponent',
+                          !evaluativeComponent,
+                        );
                         setEvaluativeComponent(!evaluativeComponent);
                       }}
                       label=""
-                      disabled={props?.data?.id}
+                      disabled={true}
                     />
                     {<IntlMessages id="menu.evaluativeComponent" />}
                   </div>
@@ -437,7 +450,7 @@ const SchoolYearCreateEdit = (props: any) => {
                         }
                       }}
                       label=""
-                      disabled={props?.data?.id}
+                      disabled={true}
                     />
                     {<IntlMessages id="menu.modality" />}
                   </div>
@@ -456,7 +469,7 @@ const SchoolYearCreateEdit = (props: any) => {
                         }
                       }}
                       label=""
-                      disabled={props?.data?.id}
+                      disabled={true}
                     />
                     {<IntlMessages id="menu.speciality" />}
                   </div>
@@ -475,7 +488,7 @@ const SchoolYearCreateEdit = (props: any) => {
                         }
                       }}
                       label=""
-                      disabled={props?.data?.id}
+                      disabled={true}
                     />
                     {<IntlMessages id="menu.areas" />}
                   </div>
@@ -494,7 +507,7 @@ const SchoolYearCreateEdit = (props: any) => {
                         }
                       }}
                       label=""
-                      disabled={props?.data?.id}
+                      disabled={true}
                     />
                     {<IntlMessages id="menu.asignatures" />}
                   </div>
@@ -515,7 +528,7 @@ const SchoolYearCreateEdit = (props: any) => {
                         }
                       }}
                       label=""
-                      disabled={props?.data?.id}
+                      disabled={true}
                     />
                     {<IntlMessages id="menu.grades" />}
                   </div>
@@ -534,7 +547,7 @@ const SchoolYearCreateEdit = (props: any) => {
                         }
                       }}
                       label=""
-                      disabled={props?.data?.id}
+                      disabled={true}
                     />
                     {<IntlMessages id="menu.gradeAssignment" />}
                   </div>
@@ -553,7 +566,7 @@ const SchoolYearCreateEdit = (props: any) => {
                         }
                       }}
                       label=""
-                      disabled={props?.data?.id}
+                      disabled={true}
                     />
                     {<IntlMessages id="menu.courses" />}
                   </div>
@@ -565,7 +578,10 @@ const SchoolYearCreateEdit = (props: any) => {
                       defaultChecked={academicAsignatureCourse}
                       checked={academicAsignatureCourse}
                       onChange={() => {
-                        setValue('schoolYearImportOptions.academicAsignatureCourse', !academicAsignatureCourse);
+                        setValue(
+                          'schoolYearImportOptions.academicAsignatureCourse',
+                          !academicAsignatureCourse,
+                        );
                         setAcademicAsignatureCourse(!academicAsignatureCourse);
                         if (!academicAsignatureCourse === true) {
                           setCourse(true);
@@ -574,7 +590,7 @@ const SchoolYearCreateEdit = (props: any) => {
                         }
                       }}
                       label=""
-                      disabled={props?.data?.id}
+                      disabled={true}
                     />
                     {<IntlMessages id="menu.academicAsignatureCourseBasic" />}
                   </div>
@@ -590,7 +606,7 @@ const SchoolYearCreateEdit = (props: any) => {
                         setTeacher(!teacher);
                       }}
                       label=""
-                      disabled={props?.data?.id}
+                      disabled={true}
                     />
                     {<IntlMessages id="menu.teachers" />}
                   </div>
@@ -609,7 +625,7 @@ const SchoolYearCreateEdit = (props: any) => {
                         }
                       }}
                       label=""
-                      disabled={props?.data?.id}
+                      disabled={true}
                     />
                     {<IntlMessages id="forms.studentPromoted" />}
                   </div>
@@ -628,12 +644,14 @@ const SchoolYearCreateEdit = (props: any) => {
                         }
                       }}
                       label=""
-                      disabled={props?.data?.id}
+                      disabled={true}
                     />
                     {<IntlMessages id="forms.studentNoPromoted" />}
                   </div>
                 </>
-                : ''}
+              ) : (
+                ''
+              )}
               <FormGroupCustom>
                 <LabelCustom id="menu.ie" required={true} />
                 <Select
