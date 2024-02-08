@@ -734,6 +734,31 @@ const SchoolProfile = React.lazy(() => {
   return import(/* webpackChunkName: "SchoolProfile" */ '../components/app/School/SchoolProfile');
 });
 
+const ForumGradeList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "ForumGradeList" */ '../components/app/Forum/ForumGradeList'
+  );
+});
+
+const ForumCourseList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "ForumCourseList" */ '../components/app/Forum/ForumCourseList'
+  );
+});
+
+const ForumAcademicAsignatureCourseList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "ForumAcademicAsignatureCourseList" */ '../components/app/Forum/ForumAcademicAsignatureCourseList'
+  );
+});
+
+const ForumList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "ForumList" */ '../components/app/Forum/ForumList'
+  );
+});
+
+
 const App = (props: any) => {
   const { locale } = props.translateReducer;
 
@@ -1030,6 +1055,11 @@ const App = (props: any) => {
 
                     <Route path="/gradeCourseStudentsGradeList" element={<GradeCourseStudentsGradeList />} />
                     <Route path="/gradeCourseStudentsCourseList" element={<GradeCourseStudentsCourseList />} />
+
+                    <Route path="/forumGradeList" element={<ForumGradeList />} />
+                    <Route path="/forumCourseList" element={<ForumCourseList />} />
+                    <Route path="/forumAcademicAsignatureCourseList" element={<ForumAcademicAsignatureCourseList />} />
+                    <Route path="/forumList" element={<ForumList />} />
 
                     <Route path="/schoolConfiguration" element={<SchoolConfigurationList />} />
 

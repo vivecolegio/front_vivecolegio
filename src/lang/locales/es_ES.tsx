@@ -439,6 +439,10 @@ const esMessages = {
   'forms.academicDay': 'Jornada académica',
   'forms.studentPromoted': 'Estudiantes Promovidos',
   'forms.studentNoPromoted': 'Estudiantes No promovidos',
+  'menu.forumGradeList': 'Foro Académico',
+  'menu.forumCourseList': 'Foro Académico',
+  'menu.forumAcademicAsignatureCourseList': 'Foro Académico',
+  'menu.forumList': 'Foro Académico',
 };
 
 export default esMessages;
