@@ -3,7 +3,13 @@ import { connect } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { NavLink } from 'react-router-dom';
 import Select from 'react-select';
-import { DropdownItem, DropdownMenu, DropdownToggle, Input, UncontrolledDropdown } from 'reactstrap';
+import {
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  Input,
+  UncontrolledDropdown,
+} from 'reactstrap';
 
 import ProfileImg from '../../../../assets/img/profiles/empty.png';
 import { isDarkSwitchActive, menuHiddenBreakpoint } from '../../../../constants/defaultValues';
@@ -200,7 +206,9 @@ const TopNav = (props: any) => {
 
   const changeSchoolYear = (data: any) => {
     props?.changeSchoolYear(data, props?.loginReducer).then(() => {
-      navigate('/home');
+      props.me(data?.id).then(() => {
+        navigate('/home');
+      });
     });
   };
 
@@ -211,14 +219,17 @@ const TopNav = (props: any) => {
 
   const filterSchoolList = (filter: any) => {
     let schoolListFilter = props?.loginReducer?.schoolMulti.filter((data: any) => {
-      return data?.name?.includes(filter?.target?.value?.toUpperCase()) || data?.daneCode?.includes(filter?.target?.value);
+      return (
+        data?.name?.includes(filter?.target?.value?.toUpperCase()) ||
+        data?.daneCode?.includes(filter?.target?.value)
+      );
     });
-    setSchoolList(schoolListFilter)
-  }
+    setSchoolList(schoolListFilter);
+  };
 
   const resetSchoolList = () => {
-    setSchoolList(props?.loginReducer?.schoolMulti)
-  }
+    setSchoolList(props?.loginReducer?.schoolMulti);
+  };
 
   return (
     <>
@@ -313,10 +324,12 @@ const TopNav = (props: any) => {
               )}
             </button>
           </div>
-          <div className="mr-2 border-separator-right align-middle pr-2 d-inline-block" style={{ height: "40px" }}>
-          </div>
+          <div
+            className="mr-2 border-separator-right align-middle pr-2 d-inline-block"
+            style={{ height: '40px' }}
+          ></div>
           <div className="mr-2 border-separator-right align-middle pr-2 d-inline-block">
-            {props?.loginReducer?.studentMulti &&
+            {props?.loginReducer?.studentMulti && (
               <UncontrolledDropdown className="dropdown-menu-right">
                 <DropdownToggle className="p-0" color="empty" onClick={resetSchoolList}>
                   <p className="text-muted text-small mb-1"> Estudiante:</p>
@@ -324,30 +337,43 @@ const TopNav = (props: any) => {
                     {studentList?.map((student: any) => {
                       return (
                         <>
-                          {
-                            student.id == props?.loginReducer?.studentId ? (
-                              <>
-                                <p className="text-muted text-small mb-1 font-weight-bold">{student?.user?.name} </p>
-                                <p className="text-muted text-small mb-1 font-weight-bold">{student?.user?.lastName} </p>
-                              </>
-                            ) : (
-                              ''
-                            )}
+                          {student.id == props?.loginReducer?.studentId ? (
+                            <>
+                              <p className="text-muted text-small mb-1 font-weight-bold">
+                                {student?.user?.name}{' '}
+                              </p>
+                              <p className="text-muted text-small mb-1 font-weight-bold">
+                                {student?.user?.lastName}{' '}
+                              </p>
+                            </>
+                          ) : (
+                            ''
+                          )}
                         </>
                       );
                     })}
                   </p>
                 </DropdownToggle>
-                {props?.loginReducer?.studentMulti?.length > 1 &&
-                  <DropdownMenu className="mt-3" end style={{
-                    overflowY: "scroll",
-                    maxHeight: "60vh"
-                  }}>
+                {props?.loginReducer?.studentMulti?.length > 1 && (
+                  <DropdownMenu
+                    className="mt-3"
+                    end
+                    style={{
+                      overflowY: 'scroll',
+                      maxHeight: '60vh',
+                    }}
+                  >
                     {studentList?.map((student: any) => {
                       return (
                         <>
                           {student.id !== props?.loginReducer?.studentId ? (
-                            <DropdownItem onClick={() => { changeStudent(student) }}>{student?.user?.lastName + " " + student?.user?.name + ""} </DropdownItem>
+                            <DropdownItem
+                              onClick={() => {
+                                changeStudent(student);
+                              }}
+                            >
+                              {student?.user?.lastName + ' ' + student?.user?.name + ''}{' '}
+                            </DropdownItem>
                           ) : (
                             ''
                           )}
@@ -355,55 +381,85 @@ const TopNav = (props: any) => {
                       );
                     })}
                   </DropdownMenu>
-                }
+                )}
               </UncontrolledDropdown>
-            }
+            )}
           </div>
           <div className="mr-2 border-separator-right align-middle pr-2 d-inline-block">
             <UncontrolledDropdown className="dropdown-menu-right">
               <DropdownToggle className="p-0" color="empty">
                 <p className="text-muted text-small mb-1"> Año Lectivo:</p>
-                <p className="text-muted text-small mb-1 font-weight-bold"> {props?.loginReducer?.schoolYearName}</p>
+                <p className="text-muted text-small mb-1 font-weight-bold">
+                  {' '}
+                  {props?.loginReducer?.schoolYearName}
+                </p>
               </DropdownToggle>
-              {props?.loginReducer?.schoolData ?
-                <DropdownMenu className="mt-3" end style={{
-                  overflowY: "scroll",
-                  maxHeight: "60vh"
-                }}>
+              {props?.loginReducer?.schoolData ? (
+                <DropdownMenu
+                  className="mt-3"
+                  end
+                  style={{
+                    overflowY: 'scroll',
+                    maxHeight: '60vh',
+                  }}
+                >
                   {props?.loginReducer?.schoolData?.schoolYear?.map((schoolYear: any) => {
                     return (
                       <>
                         {schoolYear.id !== props?.loginReducer?.schoolYear ? (
-                          <DropdownItem onClick={() => { changeSchoolYear(schoolYear) }}>{schoolYear?.schoolYear}</DropdownItem>
+                          <DropdownItem
+                            onClick={() => {
+                              changeSchoolYear(schoolYear);
+                            }}
+                          >
+                            {schoolYear?.schoolYear}
+                          </DropdownItem>
                         ) : (
                           ''
                         )}
                       </>
                     );
                   })}
-                </DropdownMenu> : <></>
-              }
+                </DropdownMenu>
+              ) : (
+                <></>
+              )}
             </UncontrolledDropdown>
           </div>
           <div className="mr-2 border-separator-right align-middle pr-2 d-inline-block">
-            {props?.loginReducer?.school &&
+            {props?.loginReducer?.school && (
               <UncontrolledDropdown className="dropdown-menu-right">
                 <DropdownToggle className="p-0" color="empty" onClick={resetSchoolList}>
                   <p className="text-muted text-small mb-1"> Institución Educativa:</p>
-                  <p className="text-muted text-small mb-1 font-weight-bold"> {props?.loginReducer?.school}</p>
+                  <p className="text-muted text-small mb-1 font-weight-bold">
+                    {' '}
+                    {props?.loginReducer?.school}
+                  </p>
                 </DropdownToggle>
-                {props?.loginReducer?.schoolMulti?.length > 1 &&
-                  <DropdownMenu className="mt-3" end style={{
-                    overflowY: "scroll",
-                    maxHeight: "60vh"
-                  }}>
-                    <DropdownItem header><Input className="form-control" onChange={filterSchoolList} /></DropdownItem>
+                {props?.loginReducer?.schoolMulti?.length > 1 && (
+                  <DropdownMenu
+                    className="mt-3"
+                    end
+                    style={{
+                      overflowY: 'scroll',
+                      maxHeight: '60vh',
+                    }}
+                  >
+                    <DropdownItem header>
+                      <Input className="form-control" onChange={filterSchoolList} />
+                    </DropdownItem>
                     <DropdownItem divider />
                     {schoolList?.map((school: any) => {
                       return (
                         <>
                           {school.id !== props?.loginReducer?.schoolId ? (
-                            <DropdownItem onClick={() => { changeSchool(school) }}>{school?.name} ({school?.daneCode})</DropdownItem>
+                            <DropdownItem
+                              onClick={() => {
+                                changeSchool(school);
+                              }}
+                            >
+                              {school?.name} ({school?.daneCode})
+                            </DropdownItem>
                           ) : (
                             ''
                           )}
@@ -411,17 +467,17 @@ const TopNav = (props: any) => {
                       );
                     })}
                   </DropdownMenu>
-                }
+                )}
               </UncontrolledDropdown>
-            }
-            {props?.loginReducer?.campus &&
+            )}
+            {props?.loginReducer?.campus && (
               <UncontrolledDropdown className="dropdown-menu-right">
                 <DropdownToggle className="p-0" color="empty">
                   {props?.loginReducer?.campus ? (
                     <p className="text-muted text-small mb-0">{props?.loginReducer?.campus}</p>
                   ) : null}
                 </DropdownToggle>
-                {props?.loginReducer?.campusMulti?.length > 1 &&
+                {props?.loginReducer?.campusMulti?.length > 1 && (
                   <DropdownMenu className="mt-3" end>
                     {props?.loginReducer?.campusMulti?.map((c: any) => {
                       return (
@@ -441,9 +497,9 @@ const TopNav = (props: any) => {
                       );
                     })}
                   </DropdownMenu>
-                }
+                )}
               </UncontrolledDropdown>
-            }
+            )}
           </div>
           <div className="user d-inline-block">
             <UncontrolledDropdown className="dropdown-menu-right">
