@@ -154,7 +154,7 @@ const Login = (props: any) => {
                           Disculpe las molestias la plataforma se encuentra en mantenimiento.
                           Finaliza el:{' '}
                         </span>
-                        <span className="font-1rem ml-1">19/02/2024 10:30 A.M.</span>
+                        <span className="font-1rem ml-1">19/02/2024 2:30 P.M.</span>
                       </h2>
                       {/* <p>
                         <IntlMessages id="user.still-user" />
