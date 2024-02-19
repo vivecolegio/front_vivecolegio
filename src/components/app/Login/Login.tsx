@@ -33,7 +33,7 @@ const Login = (props: any) => {
     if (props.loginReducer.userId?.length > 0) {
       props.me(props?.loginReducer?.schoolYear).then(() => {
         navigate('/home');
-      })
+      });
       // props.history.push('/home');
     } else {
       props.resetApp();
@@ -52,8 +52,7 @@ const Login = (props: any) => {
       })
       .then(() => {
         setLoading(false);
-      }
-      );
+      });
     //   }
     // });
   };
@@ -79,7 +78,9 @@ const Login = (props: any) => {
               className="mx-auto mt-10 text-center d-none d-sm-none d-sm-block d-md-none d-lg-block"
             >
               {/* <img src={LogoImg} className="width-logo" /> */}
-              <a href='https://vivecolegios.nortedesantander.gov.co:8443/abrazate'><img src={Abrazate} className="width-logo" /></a>
+              <a href="https://vivecolegios.nortedesantander.gov.co:8443/abrazate">
+                <img src={Abrazate} className="width-logo" />
+              </a>
             </Colxx>
             <Colxx xxs="12" sm="12" md="3" lg="3" className="mx-auto mt-5 center-flex">
               <Card className="auth-card w-330">
@@ -103,7 +104,9 @@ const Login = (props: any) => {
                       </Label>
                       <Input {...usernameRest} innerRef={usernameRef} className="form-control" />
                       {errors?.email && (
-                        <div className="invalid-feedback d-block">{errors?.username?.toString()}</div>
+                        <div className="invalid-feedback d-block">
+                          {errors?.username?.toString()}
+                        </div>
                       )}
                     </FormGroup>
                     <FormGroup className="form-group has-float-label">
@@ -117,7 +120,9 @@ const Login = (props: any) => {
                         className="form-control"
                       />
                       {errors?.password && (
-                        <div className="invalid-feedback d-block">{errors?.password?.toString()}</div>
+                        <div className="invalid-feedback d-block">
+                          {errors?.password?.toString()}
+                        </div>
                       )}
                     </FormGroup>
                     <div className="d-flex justify-content-center flex-column align-items-center">
@@ -128,8 +133,9 @@ const Login = (props: any) => {
                       {loading ? <Loader size={50} /> : ''}
                       <Button
                         color="primary"
-                        className={`mb-5 mt-5 btn-login btn-shadow btn-multiple-state ${props.loading ? 'show-spinner' : ''
-                          }`}
+                        className={`mb-5 mt-5 btn-login btn-shadow btn-multiple-state ${
+                          props.loading ? 'show-spinner' : ''
+                        }`}
                         size="lg"
                         type="submit"
                         onClick={onSubmit}
@@ -143,12 +149,15 @@ const Login = (props: any) => {
                           <IntlMessages id="user.login-button" />
                         </span>
                       </Button>
-                      {/* <h2>
-                        <span className="font-1rem ml-1">Disculpe las molestias la plataforma se encuentra en mantenimiento. Finaliza el: </span>
-                        <span className="font-1rem ml-1">16/01/2024 05:00 P.M.</span>
-                      </h2> */}
-                      {/* <p>                     
-                        <IntlMessages id="user.still-user" /> 
+                      <h2>
+                        <span className="font-1rem ml-1">
+                          Disculpe las molestias la plataforma se encuentra en mantenimiento.
+                          Finaliza el:{' '}
+                        </span>
+                        <span className="font-1rem ml-1">19/02/2024 10:30 A.M.</span>
+                      </h2>
+                      {/* <p>
+                        <IntlMessages id="user.still-user" />
                         <NavLink to="/user/forgot-password">
                           <span className="text-info ml-1 font-bold"><IntlMessages id="user.request-user" /></span>
                         </NavLink>
