@@ -149,13 +149,13 @@ const Login = (props: any) => {
                           <IntlMessages id="user.login-button" />
                         </span>
                       </Button>
-                      <h2>
+                      {/* <h2>
                         <span className="font-1rem ml-1">
                           Disculpe las molestias la plataforma se encuentra en mantenimiento.
                           Finaliza el:{' '}
                         </span>
                         <span className="font-1rem ml-1">19/02/2024 2:30 P.M.</span>
-                      </h2>
+                      </h2> */}
                       {/* <p>
                         <IntlMessages id="user.still-user" />
                         <NavLink to="/user/forgot-password">
