@@ -23,15 +23,15 @@ export const MUTATION_LOGIN = gql`
       teacher {
         id
       }
-      userId      
+      userId
       schools {
         id
-        name 
+        name
         daneCode
         schoolYear {
           id
           schoolYear
-         }
+        }
       }
       campus {
         id
@@ -69,7 +69,7 @@ export const MUTATION_LOGIN = gql`
 
 export const QUERY_ME = gql`
   query ($schoolYearId: String!) {
-    me (schoolYearId: $schoolYearId) {
+    me(schoolYearId: $schoolYearId) {
       name
       lastName
       profilePhoto
@@ -79,7 +79,7 @@ export const QUERY_ME = gql`
       teacher {
         id
       }
-      userId      
+      userId
       schools {
         id
         name
@@ -114,5 +114,19 @@ export const QUERY_ME = gql`
         }
       }
     }
+  }
+`;
+
+export const QUERY_GET_LOGIN_COUNT_USER = gql`
+  query getAllUser {
+    data: getAllUser(orderCreated: true, allData: true) {
+      totalCount
+    }
+  }
+`;
+
+export const MUTATION_LOGIN_SYNC_OFFLINE = gql`
+  mutation loginSyncOffline($username: String!, $password: String!) {
+    data: loginSyncOffline(username: $username, password: $password)
   }
 `;

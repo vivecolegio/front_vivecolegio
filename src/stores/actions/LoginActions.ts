@@ -1,6 +1,6 @@
 import { createNotification } from '../../helpers/Notification';
 import { client } from '../graphql';
-import { MUTATION_LOGIN, QUERY_ME } from '../graphql/Login/LoginMutations';
+import { MUTATION_LOGIN, MUTATION_LOGIN_SYNC_OFFLINE, QUERY_GET_LOGIN_COUNT_USER, QUERY_ME } from '../graphql/Login/LoginMutations';
 import { LOGIN, ME, RESET_APP } from '../reducers/types/loginTypes';
 
 export const login = (user: any) => {
@@ -185,6 +185,54 @@ export const changeStudent = (data: any, dataReducer:any) => {
       };
       return data != null;
     } catch (error) {
+      createNotification('error', 'errorSesion', '');
+      return error;
+    }
+  };
+};
+
+export const getLoginUserCount = () => {
+  return async (dispatch: any) => {
+    try {
+      let listData = {};
+      await client
+        .query({
+          query: QUERY_GET_LOGIN_COUNT_USER,
+        })
+        .then((result: any) => {
+          listData = result.data.data.totalCount;
+        });
+      return listData;
+    } catch (error) {
+      createNotification('error', 'error', '');
+      return error;
+    }
+  };
+};
+
+export const loginSyncOffline = (user: any) => {
+  return async (dispatch: any) => {
+    try {
+      let data: any = null;
+      await client
+        .query({
+          query: MUTATION_LOGIN_SYNC_OFFLINE,
+          variables: {
+            username: user.username,
+            password: user.password,
+          },
+        })
+        .then((result: any) => {
+          data = result.data;
+          if(data !=null){
+            
+          }else{
+            createNotification('error', 'errorSesion', '');
+          }
+        });
+      return data != null;
+    } catch (error) {
+      console.log(error)
       createNotification('error', 'errorSesion', '');
       return error;
     }

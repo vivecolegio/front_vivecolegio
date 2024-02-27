@@ -16,9 +16,14 @@ import IntlMessages from '../../../helpers/IntlMessages';
 import * as loginActions from '../../../stores/actions/LoginActions';
 import { Colxx } from '../../common/CustomBootstrap';
 import { Loader } from '../../common/Loader';
+import useIsAppOffline from '../../../hooks/useIsAppOffline';
 
 const Login = (props: any) => {
   const [loading, setLoading] = useState(true);
+  const [syncOnline, setSyncOnline] = useState(false);
+  const [isMiniServer, setIsMiniServer] = useState(false);
+  const isOffline = useIsAppOffline();
+
   const {
     register,
     handleSubmit,
@@ -29,7 +34,21 @@ const Login = (props: any) => {
   let navigate = useNavigate();
 
   useEffect(() => {
+    let currentDomain = window.location.origin;
+    if (!currentDomain.includes('https://vivecolegios.nortedesantander.gov.co')) {
+      setIsMiniServer(true);
+      props.getLoginUserCount().then((data: any) => {
+        console.log(data);
+        if (data == 0) {
+          setSyncOnline(true);
+        }
+      });
+    }
+  }, []);
+
+  useEffect(() => {
     setLoading(false);
+    console.log(props.loginReducer);
     if (props.loginReducer.userId?.length > 0) {
       props.me(props?.loginReducer?.schoolYear).then(() => {
         navigate('/home');
@@ -47,6 +66,23 @@ const Login = (props: any) => {
     //   if (errors?.email === undefined && errors?.password === undefined) {
     props
       .login({
+        username: getValues('username'),
+        password: getValues('password'),
+      })
+      .then(() => {
+        setLoading(false);
+      });
+    //   }
+    // });
+  };
+
+  const onSubmitSyncOffline = (e: any) => {
+    setLoading(true);
+    e.preventDefault();
+    // trigger().then(() => {
+    //   if (errors?.email === undefined && errors?.password === undefined) {
+    props
+      .loginSyncOffline({
         username: getValues('username'),
         password: getValues('password'),
       })
@@ -131,24 +167,80 @@ const Login = (props: any) => {
                         <IntlMessages id="user.forgot-password-question" />
                       </NavLink> */}
                       {loading ? <Loader size={50} /> : ''}
-                      <Button
-                        color="primary"
-                        className={`mb-5 mt-5 btn-login btn-shadow btn-multiple-state ${
-                          props.loading ? 'show-spinner' : ''
-                        }`}
-                        size="lg"
-                        type="submit"
-                        onClick={onSubmit}
-                      >
-                        <span className="spinner d-inline-block">
-                          <span className="bounce1" />
-                          <span className="bounce2" />
-                          <span className="bounce3" />
-                        </span>
-                        <span className="label">
-                          <IntlMessages id="user.login-button" />
-                        </span>
-                      </Button>
+                      {!isMiniServer ? (
+                        <Button
+                          color="primary"
+                          className={`mb-5 mt-5 btn-login btn-shadow btn-multiple-state ${
+                            props.loading ? 'show-spinner' : ''
+                          }`}
+                          size="lg"
+                          type="submit"
+                          onClick={onSubmit}
+                        >
+                          <span className="spinner d-inline-block">
+                            <span className="bounce1" />
+                            <span className="bounce2" />
+                            <span className="bounce3" />
+                          </span>
+                          <span className="label">
+                            <IntlMessages id="user.login-button" />
+                          </span>
+                        </Button>
+                      ) : isOffline && syncOnline ? (
+                        <>
+                          <span className="font-1rem ml-1">
+                            Por favor, conectese a una red para poder iniciar el proceso de
+                            sincronización.
+                          </span>
+                        </>
+                      ) : syncOnline ? (
+                        <>
+                          <span className="font-1rem ml-1">
+                            Por favor, inicie sesion con un usuario administrador para realizar el
+                            proceso de sincronización.
+                          </span>
+                          <Button
+                            color="primary"
+                            className={`mb-5 mt-5 btn-login btn-shadow btn-multiple-state ${
+                              props.loading ? 'show-spinner' : ''
+                            }`}
+                            size="lg"
+                            type="submit"
+                            onClick={onSubmitSyncOffline}
+                          >
+                            <span className="spinner d-inline-block">
+                              <span className="bounce1" />
+                              <span className="bounce2" />
+                              <span className="bounce3" />
+                            </span>
+                            <span className="label">
+                              <IntlMessages id="user.login-button" />
+                            </span>
+                          </Button>
+                        </>
+                      ) : (
+                        <>
+                          {' '}
+                          <Button
+                            color="primary"
+                            className={`mb-5 mt-5 btn-login btn-shadow btn-multiple-state ${
+                              props.loading ? 'show-spinner' : ''
+                            }`}
+                            size="lg"
+                            type="submit"
+                            onClick={onSubmit}
+                          >
+                            <span className="spinner d-inline-block">
+                              <span className="bounce1" />
+                              <span className="bounce2" />
+                              <span className="bounce3" />
+                            </span>
+                            <span className="label">
+                              <IntlMessages id="user.login-button" />
+                            </span>
+                          </Button>{' '}
+                        </>
+                      )}
                       {/* <h2>
                         <span className="font-1rem ml-1">
                           Disculpe las molestias la plataforma se encuentra en mantenimiento.
