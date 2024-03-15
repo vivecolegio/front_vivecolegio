@@ -1,7 +1,18 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState } from 'react';
-import { injectIntl } from 'react-intl';
-import { Button, ButtonDropdown, Card, Collapse, DropdownItem, DropdownMenu, DropdownToggle, Input, Row, UncontrolledDropdown } from 'reactstrap';
+import { injectIntl, useIntl } from 'react-intl';
+import {
+  Button,
+  ButtonDropdown,
+  Card,
+  Collapse,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  Input,
+  Row,
+  UncontrolledDropdown,
+} from 'reactstrap';
 
 import IntlMessages from '../../../helpers/IntlMessages';
 import { Colxx, Separator } from '../CustomBootstrap';
@@ -9,6 +20,8 @@ import BreadcrumbContainer from '../navs/Breadcrumb';
 import DataListIcon from './Icon/DataListIcon';
 import ImageListIcon from './Icon/ImageListIcon';
 import ThumbListIcon from './Icon/ThumbListIcon';
+
+const ExcelJS = require('exceljs');
 
 const ListPageHeading = ({
   items,
@@ -43,11 +56,136 @@ const ListPageHeading = ({
   sortColumn,
   sortOrderColumn,
   refreshDataTable,
-  childrenButtons
+  childrenButtons,
 }: any) => {
   const [dropdownSplitOpen, setDropdownSplitOpen] = useState(false);
   const [displayOptionsIsOpen, setDisplayOptionsIsOpen] = useState(false);
   const { messages } = intl;
+  const [data, setData] = useState({ products: [] });
+
+  const dataSet1 = [
+    {
+      name: 'Johson',
+      amount: 30000,
+      sex: 'M',
+      is_married: true,
+    },
+    {
+      name: 'Monika',
+      amount: 355000,
+      sex: 'F',
+      is_married: false,
+    },
+    {
+      name: 'John',
+      amount: 250000,
+      sex: 'M',
+      is_married: false,
+    },
+    {
+      name: 'Josef',
+      amount: 450500,
+      sex: 'M',
+      is_married: true,
+    },
+  ];
+
+  var dataSet2 = [
+    {
+      name: 'Johnson',
+      total: 25,
+      remainig: 16,
+    },
+    {
+      name: 'Josef',
+      total: 25,
+      remainig: 7,
+    },
+  ];
+
+  const exportExcelFile = () => {
+    const workbook = new ExcelJS.Workbook();
+    var sheet = workbook.addWorksheet('sheet', {
+      headerFooter: { firstHeader: 'Hello Exceljs', firstFooter: 'Hello World' },
+    });
+    //sheet.properties.defaultRowHeight = 80;
+
+    sheet.mergeCells(1, 1, 1, columns?.length);
+    sheet.getCell('A1').value = 'Hello, World!';
+
+    sheet.columns = [];
+    let sheetColumns: any[] = [];
+    // columns
+    //   ?.filter((c: any) => {
+    //     return c.column?.length > 0;
+    //   })
+    //   .map((column: any) => {
+    //     sheetColumns.push({
+    //       header: messages[column?.label],
+    //       key: column?.label,
+    //     });
+    //   });
+
+    // sheet.columns = [...sheetColumns];
+
+    const promise = Promise.all(
+      data?.products?.map(
+        async (
+          product: {
+            id: any;
+            title: any;
+            brand: any;
+            category: any;
+            price: any;
+            rating: any;
+            thumbnail: string;
+          },
+          index: number,
+        ) => {
+          const rowNumber = index + 1;
+          sheet.addRow({
+            id: product?.id,
+            title: product?.title,
+            brand: product?.brand,
+            category: product?.category,
+            price: product?.price,
+            rating: product?.rating,
+          });
+          console.log(product?.thumbnail);
+        },
+      ),
+    );
+
+    workbook.xlsx.writeBuffer().then(function (data: any) {
+      const blob = new Blob([data], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      });
+      const url = window.URL.createObjectURL(blob);
+      const anchor = document.createElement('a');
+      anchor.href = url;
+      anchor.download = 'download.xlsx';
+      anchor.click();
+      window.URL.revokeObjectURL(url);
+    });
+  };
+
+  const toDataURL = (url: any) => {
+    const promise = new Promise((resolve, reject) => {
+      var xhr = new XMLHttpRequest();
+      xhr.onload = function () {
+        var reader = new FileReader();
+        reader.readAsDataURL(xhr.response);
+        reader.onloadend = function () {
+          resolve({ base64Url: reader.result });
+        };
+      };
+      xhr.open('GET', url);
+      xhr.responseType = 'blob';
+      xhr.send();
+    });
+
+    return promise;
+  };
 
   return (
     <Row>
@@ -58,9 +196,22 @@ const ListPageHeading = ({
           </h1> */}
 
           <div className="text-zero top-right-button-container">
-            <Button className="top-right-button mr-1" onClick={() => {
-              return refreshDataTable();
-            }}>
+            <Button
+              //onClick={download}
+              key={'download'}
+            >
+              <i className="iconsminds-download"></i> {'XLS'}
+            </Button>
+            <button className="btn btn-primary float-end mt-2 mb-2" onClick={exportExcelFile}>
+              Export
+            </button>
+
+            <Button
+              className="top-right-button mr-1"
+              onClick={() => {
+                return refreshDataTable();
+              }}
+            >
               <i className="simple-icon-refresh" />
             </Button>
             {currentMenu.createAction && !createActionDisabled ? (
@@ -80,8 +231,8 @@ const ListPageHeading = ({
             )}
             {'  '}
             {currentMenu.deleteAction ||
-              currentMenu.activateAction ||
-              currentMenu.inactiveAction ? (
+            currentMenu.activateAction ||
+            currentMenu.inactiveAction ? (
               <>
                 <ButtonDropdown
                   isOpen={dropdownSplitOpen}
@@ -100,10 +251,11 @@ const ListPageHeading = ({
                       }}
                       label={
                         <span
-                          className={`custom-control-label ${selectedItemsLength > 0 && selectedItemsLength < itemsLength
-                            ? 'indeterminate'
-                            : ''
-                            }`}
+                          className={`custom-control-label ${
+                            selectedItemsLength > 0 && selectedItemsLength < itemsLength
+                              ? 'indeterminate'
+                              : ''
+                          }`}
                         />
                       }
                     />
@@ -139,7 +291,11 @@ const ListPageHeading = ({
               ''
             )}
           </div>
-          <BreadcrumbContainer currentMenu={currentMenu} match={match} heading={match.replace('/', '')} />
+          <BreadcrumbContainer
+            currentMenu={currentMenu}
+            match={match}
+            heading={match.replace('/', '')}
+          />
         </div>
 
         <div className="mb-2">
@@ -243,7 +399,7 @@ const ListPageHeading = ({
                           style={{ width: item.width }}
                         >
                           <i
-                            className={`glyph-icon text-one cursor-pointer ${sortColumn === item?.column ? sortOrderColumn ? 'iconsminds-up-1' : 'iconsminds-down-1' : 'iconsminds-down-1'}`}
+                            className={`glyph-icon text-one cursor-pointer ${sortColumn === item?.column ? (sortOrderColumn ? 'iconsminds-up-1' : 'iconsminds-down-1') : 'iconsminds-down-1'}`}
                             onClick={(e: any) => {
                               //console.log(sortColumn)
                               return onSort(item);
@@ -255,7 +411,14 @@ const ListPageHeading = ({
                     })}
                   {columns
                     ?.filter((c: any) => {
-                      return (c.column?.length == 0 || c.column == undefined) && (currentMenu?.activateAction || currentMenu?.deleteAction || currentMenu?.inactiveAction || currentMenu?.updateAction || childrenButtons?.length > 0);
+                      return (
+                        (c.column?.length == 0 || c.column == undefined) &&
+                        (currentMenu?.activateAction ||
+                          currentMenu?.deleteAction ||
+                          currentMenu?.inactiveAction ||
+                          currentMenu?.updateAction ||
+                          childrenButtons?.length > 0)
+                      );
                     })
                     .map((item: any) => {
                       return (
@@ -264,7 +427,7 @@ const ListPageHeading = ({
                           className={'mb-1 text-muted text-small text-center'}
                           style={{ width: item.width }}
                         >
-                          <IntlMessages id={item.label ? item.label : "pages.actions"} />
+                          <IntlMessages id={item.label ? item.label : 'pages.actions'} />
                         </p>
                       );
                     })}
@@ -273,7 +436,7 @@ const ListPageHeading = ({
                       className="item-check mb-0"
                       type="checkbox"
                       id={`check_`}
-                      onChange={() => { }}
+                      onChange={() => {}}
                       label=""
                     />
                   </div>
