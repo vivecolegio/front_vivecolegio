@@ -109,9 +109,14 @@ const ListPageHeading = ({
       headerFooter: { firstHeader: 'Hello Exceljs', firstFooter: 'Hello World' },
     });
     //sheet.properties.defaultRowHeight = 80;
+    // merge by start row, start column, end row, end column
+    sheet.mergeCells(1, 1, 1, columns?.length);
+    sheet.getCell('A1').value = 'Vive Colegios 3.0';
+    sheet.getCell('A2').value = 'IE: ';
+    sheet.mergeCells(2, 2, 2, columns?.length);
+    sheet.getCell('B2').value = '--------------------------------------------';
 
     sheet.mergeCells(1, 1, 1, columns?.length);
-    sheet.getCell('A1').value = 'Hello, World!';
 
     sheet.columns = [];
     let sheetColumns: any[] = [];
