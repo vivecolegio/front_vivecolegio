@@ -35,7 +35,10 @@ const Login = (props: any) => {
 
   useEffect(() => {
     let currentDomain = window.location.origin;
-    if (!currentDomain.includes('https://vivecolegios.nortedesantander.gov.co')) {
+    if (
+      !currentDomain.includes('https://vivecolegios.nortedesantander.gov.co') ||
+      !currentDomain.includes('http://localhost')
+    ) {
       setIsMiniServer(true);
       props.getLoginUserCount().then((data: any) => {
         console.log(data);
@@ -86,8 +89,17 @@ const Login = (props: any) => {
         username: getValues('username'),
         password: getValues('password'),
       })
-      .then(() => {
-        setLoading(false);
+      .then((data: any) => {
+        if (data) {
+          props
+            .login({
+              username: getValues('username'),
+              password: getValues('password'),
+            })
+            .then(() => {
+              setLoading(false);
+            });
+        }
       });
     //   }
     // });
@@ -214,7 +226,7 @@ const Login = (props: any) => {
                               <span className="bounce3" />
                             </span>
                             <span className="label">
-                              <IntlMessages id="user.login-button" />
+                              <IntlMessages id="user.sync-button" />
                             </span>
                           </Button>
                         </>
@@ -228,7 +240,7 @@ const Login = (props: any) => {
                             }`}
                             size="lg"
                             type="submit"
-                            onClick={onSubmit}
+                            onClick={isMiniServer && isOffline ? onSubmitSyncOffline : onSubmit}
                           >
                             <span className="spinner d-inline-block">
                               <span className="bounce1" />

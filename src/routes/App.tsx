@@ -33,7 +33,9 @@ const Faq = React.lazy(() => {
 });
 
 const VideoTutorials = React.lazy(() => {
-  return import(/* webpackChunkName: "VideoTutorials" */ '../components/app/VideoTutorials/VideoTutorials');
+  return import(
+    /* webpackChunkName: "VideoTutorials" */ '../components/app/VideoTutorials/VideoTutorials'
+  );
 });
 
 const GraphicsStudentAcademicGrade = React.lazy(() => {
@@ -57,7 +59,9 @@ const ModalityList = React.lazy(() => {
 });
 
 const ObserverAnnotationTypeList = React.lazy(() => {
-  return import(/* webpackChunkName: "ObserverAnnotationTypeList" */ '../components/app/ObserverAnnotationType/ObserverAnnotationTypeList');
+  return import(
+    /* webpackChunkName: "ObserverAnnotationTypeList" */ '../components/app/ObserverAnnotationType/ObserverAnnotationTypeList'
+  );
 });
 
 const ModuleList = React.lazy(() => {
@@ -498,7 +502,6 @@ const ReportSpreadsheetAccumulatedCourseCourseList = React.lazy(() => {
   );
 });
 
-
 const ReportSpreadsheetAccumulatedAreaCourseGradeList = React.lazy(() => {
   return import(
     /* webpackChunkName: "ReportSpreadsheetAccumulatedAreaCourseGradeList" */ '../components/app/ReportSpreadsheetAccumulatedAreaCourse/ReportSpreadsheetAccumulatedAreaCourseGradeList'
@@ -509,7 +512,6 @@ const ReportSpreadsheetAccumulatedAreaCourseCourseList = React.lazy(() => {
     /* webpackChunkName: "ReportSpreadsheetAccumulatedCourseCourseList" */ '../components/app/ReportSpreadsheetAccumulatedAreaCourse/ReportSpreadsheetAccumulatedAreaCourseCourseList'
   );
 });
-
 
 const ReportSpreadsheetAccumulatedAsignatureCourseGradeList = React.lazy(() => {
   return import(
@@ -545,7 +547,6 @@ const SpreadsheetAccumulatedAverageCourse = React.lazy(() => {
     /* webpackChunkName: "SpreadsheetAccumulatedAverageCourse" */ '../components/app/SpreadsheetCourse/SpreadsheetAccumulatedAverageCourse'
   );
 });
-
 
 const StudentsList = React.lazy(() => {
   return import(/* webpackChunkName: "StudentsList" */ '../components/app/Students/StudentsList');
@@ -735,9 +736,7 @@ const SchoolProfile = React.lazy(() => {
 });
 
 const ForumGradeList = React.lazy(() => {
-  return import(
-    /* webpackChunkName: "ForumGradeList" */ '../components/app/Forum/ForumGradeList'
-  );
+  return import(/* webpackChunkName: "ForumGradeList" */ '../components/app/Forum/ForumGradeList');
 });
 
 const ForumCourseList = React.lazy(() => {
@@ -753,11 +752,14 @@ const ForumAcademicAsignatureCourseList = React.lazy(() => {
 });
 
 const ForumList = React.lazy(() => {
-  return import(
-    /* webpackChunkName: "ForumList" */ '../components/app/Forum/ForumList'
-  );
+  return import(/* webpackChunkName: "ForumList" */ '../components/app/Forum/ForumList');
 });
 
+const SyncOfflineList = React.lazy(() => {
+  return import(
+    /* webpackChunkName: "SyncOfflineList" */ '../components/app/SyncOffline/SyncOfflineList'
+  );
+});
 
 const App = (props: any) => {
   const { locale } = props.translateReducer;
@@ -847,7 +849,10 @@ const App = (props: any) => {
                     <Route path="/educationLevel" element={<EducationLevelList />} />
                     <Route path="/evaluativeComponent" element={<ComponentEvaluativeList />} />
                     <Route path="/modality" element={<ModalityList />} />
-                    <Route path="/observerAnnotationType" element={<ObserverAnnotationTypeList />} />
+                    <Route
+                      path="/observerAnnotationType"
+                      element={<ObserverAnnotationTypeList />}
+                    />
                     <Route path="/schoolYear" element={<SchoolYearList />} />
                     <Route path="/speciality" element={<SpecialityList />} />
                     <Route path="/periodAcademic" element={<AcademicPeriodList />} />
@@ -897,7 +902,10 @@ const App = (props: any) => {
                     <Route path="/spreadsheet" element={<Spreadsheet />} />
                     <Route path="/spreadsheetRecoveryPlan" element={<SpreadsheetRecoveryPlan />} />
                     <Route path="/spreadsheetCourse" element={<SpreadsheetCourse />} />
-                    <Route path="/spreadsheetAverageCourse" element={<SpreadsheetAverageCourse />} />
+                    <Route
+                      path="/spreadsheetAverageCourse"
+                      element={<SpreadsheetAverageCourse />}
+                    />
                     <Route path="/spreadsheetBehaviour" element={<SpreadsheetBehaviour />} />
                     <Route
                       path="/reportSpreadsheetAccumulatedAverageCourseGradeList"
@@ -942,11 +950,23 @@ const App = (props: any) => {
                       element={<ReportSpreadsheetAccumulatedAsignatureCourseCourseList />}
                     />
 
-                    <Route path="/spreadsheetAccumulatedAsignatureCourse" element={<SpreadsheetAccumulatedAsignatureCourse />} />
-                    <Route path="/spreadsheetAccumulatedAreaCourse" element={<SpreadsheetAccumulatedAreaCourse />} />
-                    <Route path="/spreadsheetAccumulatedAverageCourse" element={<SpreadsheetAccumulatedAverageCourse />} />
+                    <Route
+                      path="/spreadsheetAccumulatedAsignatureCourse"
+                      element={<SpreadsheetAccumulatedAsignatureCourse />}
+                    />
+                    <Route
+                      path="/spreadsheetAccumulatedAreaCourse"
+                      element={<SpreadsheetAccumulatedAreaCourse />}
+                    />
+                    <Route
+                      path="/spreadsheetAccumulatedAverageCourse"
+                      element={<SpreadsheetAccumulatedAverageCourse />}
+                    />
 
-                    <Route path="/spreadsheetAccumulatedBehaviour" element={<SpreadsheetAccumulatedBehaviour />} />
+                    <Route
+                      path="/spreadsheetAccumulatedBehaviour"
+                      element={<SpreadsheetAccumulatedBehaviour />}
+                    />
                     <Route
                       path="/questionCategoryTestOnline"
                       element={<QuestionCategoryTestOnlineList />}
@@ -1050,20 +1070,36 @@ const App = (props: any) => {
                       element={<RecoveryPlanAcademicAsignatureCourseList />}
                     />
 
-                    <Route path="/gradeCourseAssigmentGradeList" element={<GradeCourseAssigmentGradeList />} />
-                    <Route path="/gradeCourseAssigmentCourseList" element={<GradeCourseAssigmentCourseList />} />
+                    <Route
+                      path="/gradeCourseAssigmentGradeList"
+                      element={<GradeCourseAssigmentGradeList />}
+                    />
+                    <Route
+                      path="/gradeCourseAssigmentCourseList"
+                      element={<GradeCourseAssigmentCourseList />}
+                    />
 
-                    <Route path="/gradeCourseStudentsGradeList" element={<GradeCourseStudentsGradeList />} />
-                    <Route path="/gradeCourseStudentsCourseList" element={<GradeCourseStudentsCourseList />} />
+                    <Route
+                      path="/gradeCourseStudentsGradeList"
+                      element={<GradeCourseStudentsGradeList />}
+                    />
+                    <Route
+                      path="/gradeCourseStudentsCourseList"
+                      element={<GradeCourseStudentsCourseList />}
+                    />
 
                     <Route path="/forumGradeList" element={<ForumGradeList />} />
                     <Route path="/forumCourseList" element={<ForumCourseList />} />
-                    <Route path="/forumAcademicAsignatureCourseList" element={<ForumAcademicAsignatureCourseList />} />
+                    <Route
+                      path="/forumAcademicAsignatureCourseList"
+                      element={<ForumAcademicAsignatureCourseList />}
+                    />
                     <Route path="/forumList" element={<ForumList />} />
 
                     <Route path="/schoolConfiguration" element={<SchoolConfigurationList />} />
 
                     <Route path="/schoolProfile" element={<SchoolProfile />} />
+                    <Route path="/syncOffline" element={<SyncOfflineList />} />
                   </>
                 ) : (
                   <Route path="*" element={<Login />} />

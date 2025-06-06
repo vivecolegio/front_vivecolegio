@@ -39,6 +39,7 @@
     "react-countup": "6.5.0",
     "react-datepicker": "5.0.0",
     "react-dom": "18.2.0",
+    "react-export-excel": "^0.5.3",
     "react-export-table-to-excel": "1.0.6",
     "react-hook-form": "7.51.0",
     "react-idle-timer": "5.7.2",
@@ -155,7 +156,7 @@
     "build:prod": "webpack --config ./webpack.prod.config.js --mode production",
     "build:docker": "docker build -t lidertecnologicovivecolegios/frontendvivecolegios .",
     "push:docker": "docker push lidertecnologicovivecolegios/frontendvivecolegios",
-    "build:dockerOffline": "docker build -f Dockerfile2 -t lidertecnologicovivecolegios/frontendvivecolegios-offline .",
+    "build:dockerOffline": "docker buildx build -f Dockerfile2 -t lidertecnologicovivecolegios/frontendvivecolegios-offline . --platform=linux/arm64 --no-cache",
     "push:dockerOffline": "docker push lidertecnologicovivecolegios/frontendvivecolegios-offline"
   },
   "eslintConfig": {
