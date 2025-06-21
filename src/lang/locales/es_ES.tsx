@@ -23,6 +23,7 @@ const esMessages = {
   'user.forgot-password-question': '¿Contraseña olvidada?',
   'user.fullname': 'Nombre completo',
   'user.login-button': 'INICIAR SESIÓN',
+  'user.sync-button': 'INICIAR SINCRONIZACIÓN',
   'user.register-button': 'REGISTRO',
   'user.reset-password-button': 'REINICIAR',
   'user.buy': 'COMPRAR',
@@ -355,8 +356,10 @@ const esMessages = {
   'menu.reportSpreadsheetAccumulatedAsignatureCourseCourseList': 'Planilla Consolidado Asignatura',
   'menu.reportSpreadsheetAccumulatedAverageCourseGradeList': 'Planilla Consolidado Promedios',
   'menu.reportSpreadsheetAccumulatedAverageCourseCourseList': 'Planilla Consolidado Promedios',
-  'menu.reportSpreadsheetAccumulatedBehaviourGradeList': 'Planilla Consolidado Comportamiento Escolar',
-  'menu.reportSpreadsheetAccumulatedBehaviourCourseList': 'Planilla Consolidado Comportamiento Escolar',
+  'menu.reportSpreadsheetAccumulatedBehaviourGradeList':
+    'Planilla Consolidado Comportamiento Escolar',
+  'menu.reportSpreadsheetAccumulatedBehaviourCourseList':
+    'Planilla Consolidado Comportamiento Escolar',
   'forms.active': 'Activo',
   'forms.campus': 'Sede',
   'menu.gradeCourseAssigmentGradeList': 'Asignacion Grados',
@@ -368,34 +371,47 @@ const esMessages = {
   'forms.value': 'Valor',
   'display.REPORT_CERTIFICATE_FINAL_TEXT_CERTIFICATE': 'Texto Reporte Certificado Final',
   'display.AVERAGE_AREA': 'Promedio de Area',
-  'display.REPORT_CERTIFICATE_FINAL_SIGNATURE_SECREATARY': 'Titulo Firma Reporte Certificado Final Secretaria',
+  'display.REPORT_CERTIFICATE_FINAL_SIGNATURE_SECREATARY':
+    'Titulo Firma Reporte Certificado Final Secretaria',
   'display.REPORT_CERTIFICATE_FINAL_SIGNATURE_TYPE': 'Tipo de Firma Reporte Certificado Final',
   'display.REPORT_CERTIFICATE_FINAL_TITLE': 'Titulo Reporte Certificado Final',
   'display.COUNT_PROMOTED_INDICATE': 'Indicador de Cantidad Promovido',
   'display.PROMOTED_INDICATE': 'Indicador de Promovido',
-  'display.REPORT_PERFORMANCE_FINAL_NOT_PROMOTED': 'Texto Reporte Certificado Desempeño Final No Promovido',
-  'display.REPORT_PERFORMANCE_FINAL_PROMOTED': 'Texto Reporte Certificado Desempeño Final Promovido',
-  'display.REPORT_PERFORMANCE_TITLE_SIGNATURE_PRINCIPAL': 'Titulo Firma Reporte Certificado Desempeño Directivo',
-  'display.REPORT_PERFORMANCE_TITLE_SIGNATURE_TEACHER_COURSE': 'Titulo Firma Reporte Certificado Desempeño Titular',
-  'display.REPORT_PERFORMANCE_BEHAVIOUR_STUDENT': 'Visualización Comportamiento Estudiante Reporte Certificado Desempeño',
+  'display.REPORT_PERFORMANCE_FINAL_NOT_PROMOTED':
+    'Texto Reporte Certificado Desempeño Final No Promovido',
+  'display.REPORT_PERFORMANCE_FINAL_PROMOTED':
+    'Texto Reporte Certificado Desempeño Final Promovido',
+  'display.REPORT_PERFORMANCE_TITLE_SIGNATURE_PRINCIPAL':
+    'Titulo Firma Reporte Certificado Desempeño Directivo',
+  'display.REPORT_PERFORMANCE_TITLE_SIGNATURE_TEACHER_COURSE':
+    'Titulo Firma Reporte Certificado Desempeño Titular',
+  'display.REPORT_PERFORMANCE_BEHAVIOUR_STUDENT':
+    'Visualización Comportamiento Estudiante Reporte Certificado Desempeño',
   'display.REPORT_PERFORMANCE_SIGNATURE_TYPE': 'Tipo de Firma Reporte Certificado Desempeño',
-  'display.REPORT_PERFORMANCE_AREA_ASIGNATURE_TYPE': 'Tipo de Area/Asignatura Reporte Certificado Desempeño',
-  'display.REPORT_PERFORMANCE_BEHAVIOUR_STUDENT_TYPE': 'Tipo de Nivel Desempeño Comportamiento Estudiante Reporte Certificado Desempeño',
+  'display.REPORT_PERFORMANCE_AREA_ASIGNATURE_TYPE':
+    'Tipo de Area/Asignatura Reporte Certificado Desempeño',
+  'display.REPORT_PERFORMANCE_BEHAVIOUR_STUDENT_TYPE':
+    'Tipo de Nivel Desempeño Comportamiento Estudiante Reporte Certificado Desempeño',
   'display.REPORT_PERFORMANCE_TYPE': 'Tipo de Nivel Desempeño Reportes',
   'display.COUNT_DIGITS_AVERAGE_COURSE': 'Cantidad Digitos Promedio Curso',
   'display.REPORT_PERFORMANCE_TYPE_LEARNINGS_DISPLAY': 'Tipo de Visualización Aprendizajes',
-  'display.REPORT_PERFORMANCE_TYPE_EVIDENCE_LEARNINGS_DISPLAY': 'Tipo de Visualización Evidencias Aprendizajes',
+  'display.REPORT_PERFORMANCE_TYPE_EVIDENCE_LEARNINGS_DISPLAY':
+    'Tipo de Visualización Evidencias Aprendizajes',
   'display.REPORT_PERFORMANCE_TYPE_DISPLAY_DETAILS': 'Tipo de Visualización Detalles de Valoración',
   'display.COUNT_DIGITS_AVERAGE_STUDENT': 'Cantidad de Digitos Promedio Estudiante',
   'display.COUNT_DIGITS_PERFORMANCE_LEVEL': 'Cantidad de Digitos Nivel Desempeño',
-  'display.REPORT_CERTIFICATE_FINAL_TEXT_CERTIFICATE_MODEL_A': 'Que el estudiante {}, identificado(a) con número de documento {}, cursó el grado {}, en el año {} y obtuvo las siguientes calificaciones:',
-  'display.REPORT_CERTIFICATE_FINAL_TEXT_CERTIFICATE_MODEL_B': 'Que {}, identificado(a) con número de documento {}, Cursó y aprobó {} grado de {} en la sede escolar {} de este centro, durante el año lectivo {}, de acuerdo con los programas ordenados por el Ministerio de Educación Nacional mediante la ley 115 de 1994, y proyecto Educativo Institucional. Obtuvo los siguientes juicios valorativos en las áreas de estudio.',
-  'display.REPORT_CERTIFICATE_FINAL_TEXT_CERTIFICATE_MODEL_C': 'Que {}, identificado(a) con número de documento {}, Cursó y aprobó {} grado de {} en la sede escolar {} de esta Institución Educativa, durante el año lectivo {}, de acuerdo con los programas ordenados por el Ministerio de Educación Nacional mediante la ley 115 de 1994, y proyecto Educativo Institucional. Obtuvo los siguientes juicios valorativos en las áreas de estudio.',
+  'display.REPORT_CERTIFICATE_FINAL_TEXT_CERTIFICATE_MODEL_A':
+    'Que el estudiante {}, identificado(a) con número de documento {}, cursó el grado {}, en el año {} y obtuvo las siguientes calificaciones:',
+  'display.REPORT_CERTIFICATE_FINAL_TEXT_CERTIFICATE_MODEL_B':
+    'Que {}, identificado(a) con número de documento {}, Cursó y aprobó {} grado de {} en la sede escolar {} de este centro, durante el año lectivo {}, de acuerdo con los programas ordenados por el Ministerio de Educación Nacional mediante la ley 115 de 1994, y proyecto Educativo Institucional. Obtuvo los siguientes juicios valorativos en las áreas de estudio.',
+  'display.REPORT_CERTIFICATE_FINAL_TEXT_CERTIFICATE_MODEL_C':
+    'Que {}, identificado(a) con número de documento {}, Cursó y aprobó {} grado de {} en la sede escolar {} de esta Institución Educativa, durante el año lectivo {}, de acuerdo con los programas ordenados por el Ministerio de Educación Nacional mediante la ley 115 de 1994, y proyecto Educativo Institucional. Obtuvo los siguientes juicios valorativos en las áreas de estudio.',
   'display.AVERAGE_AREA_IHS': 'Intensidad Horaria',
   'display.AVERAGE_AREA_PROM': 'Promedio',
   'display.REPORT_CERTIFICATE_FINAL_SIGNATURE_TYPE_PRINCIPAL': 'Directivo',
   'display.REPORT_CERTIFICATE_FINAL_SIGNATURE_TYPE_TEACHER_COURSE': 'Titular',
-  'display.REPORT_CERTIFICATE_FINAL_SIGNATURE_TYPE_TEACHER_COURSE_AND_PRINCIPAL': 'Directivo y Titular',
+  'display.REPORT_CERTIFICATE_FINAL_SIGNATURE_TYPE_TEACHER_COURSE_AND_PRINCIPAL':
+    'Directivo y Titular',
   'display.REPORT_CERTIFICATE_FINAL_SIGNATURE_TYPE_PRINCIPAL_SECRETARY': 'Directivo y Secretaria',
   'display.PROMOTED_INDICATE_AREA': 'Area',
   'display.PROMOTED_INDICATE_ASIGNATURE': 'Asignatura',
@@ -421,7 +437,8 @@ const esMessages = {
   'display.REPORT_PERFORMANCE_SHOW_RECOVERY_VALUATION': 'Certificado Desempeño Mostrar Nivelacion',
   'display.REPORT_PERFORMANCE_SHOW_RECOVERY_VALUATION_NO': 'No',
   'display.REPORT_PERFORMANCE_SHOW_RECOVERY_VALUATION_YES': 'Si',
-  'display.REPORT_PERFORMANCE_SHOW_FINAL_VALUATION': 'Certificado Desempeño Mostrar Valoracion Final',
+  'display.REPORT_PERFORMANCE_SHOW_FINAL_VALUATION':
+    'Certificado Desempeño Mostrar Valoracion Final',
   'display.REPORT_PERFORMANCE_SHOW_FINAL_VALUATION_NO': 'No',
   'display.REPORT_PERFORMANCE_SHOW_FINAL_VALUATION_YES': 'Si',
   'forms.textResolution': 'Texto Linea 1 Certificados',
@@ -443,6 +460,12 @@ const esMessages = {
   'menu.forumCourseList': 'Foro Académico',
   'menu.forumAcademicAsignatureCourseList': 'Foro Académico',
   'menu.forumList': 'Foro Académico',
+  'menu.syncOffline': 'Sincronización Offline',
+  'syncOffline.intro':
+    'El proceso de sincronización se realiza automaticamente se guarde en este formulario los items a sincronizar esta listado a continuación, en el sección de detalle podra ver el avance correspondiente',
+  'syncOffline.onlineIndicator': 'Conectado para Sincronizar',
+  'menu.dataSyncOffline': 'Información Sincronizada desde Online',
+  'menu.dataSyncOfflineOnline': 'Información Sincronizada desde Offline/Online',
 };
 
 export default esMessages;

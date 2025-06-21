@@ -26,7 +26,7 @@ const Sidebar = (props: any) => {
     handleWindowResize(event);
     setSelectedLiActive(setHasSubItemStatus);
     handleProps();
-    let { roleMenus } = props.loginReducer
+    let { roleMenus } = props.loginReducer;
     roleMenus = roleMenus.map((c: any) => {
       return {
         id: c.name,
@@ -34,14 +34,18 @@ const Sidebar = (props: any) => {
         label: c.name,
         to: `${adminRoot}/${c.name}`,
         newWindow: false,
-        subs: c.menuItemsLogin.filter((x: any) => { return (x.isHidden !== true) }).map((x: any) => {
-          return {
-            icon: x.icon,
-            label: x.name,
-            to: x.module ? x.module.url : null,
-          }
-        }),
-      }
+        subs: c.menuItemsLogin
+          .filter((x: any) => {
+            return x.isHidden !== true;
+          })
+          .map((x: any) => {
+            return {
+              icon: x.icon,
+              label: x.name,
+              to: x.module ? x.module.url : null,
+            };
+          }),
+      };
     });
     setMenuItems(roleMenus);
     setSidebarState({
@@ -94,9 +98,7 @@ const Sidebar = (props: any) => {
       e.target.parentElement.parentElement &&
       e.target.parentElement.parentElement.classList &&
       (e.target.parentElement.parentElement.classList.contains('menu-button') ||
-        e.target.parentElement.parentElement.classList.contains(
-          'menu-button-mobile',
-        ))
+        e.target.parentElement.parentElement.classList.contains('menu-button-mobile'))
     ) {
       isMenuClick = true;
     }
@@ -104,25 +106,27 @@ const Sidebar = (props: any) => {
 
   const getMenuClassesForResize = (classes: any) => {
     const { menuHiddenBreakpoint, subHiddenBreakpoint } = props.menuReducer;
-    let nextClasses = classes.split(' ').filter((x: any) => { return x !== '' });
+    let nextClasses = classes.split(' ').filter((x: any) => {
+      return x !== '';
+    });
     const windowWidth = window.innerWidth;
     if (windowWidth < menuHiddenBreakpoint) {
       nextClasses.push('menu-mobile');
     } else if (windowWidth < subHiddenBreakpoint) {
-      nextClasses = nextClasses.filter((x: any) => { return x !== 'menu-mobile' });
-      if (
-        nextClasses.includes('menu-default') &&
-        !nextClasses.includes('menu-sub-hidden')
-      ) {
+      nextClasses = nextClasses.filter((x: any) => {
+        return x !== 'menu-mobile';
+      });
+      if (nextClasses.includes('menu-default') && !nextClasses.includes('menu-sub-hidden')) {
         nextClasses.push('menu-sub-hidden');
       }
     } else {
-      nextClasses = nextClasses.filter((x: any) => { return x !== 'menu-mobile' });
-      if (
-        nextClasses.includes('menu-default') &&
-        nextClasses.includes('menu-sub-hidden')
-      ) {
-        nextClasses = nextClasses.filter((x: any) => { return x !== 'menu-sub-hidden' });
+      nextClasses = nextClasses.filter((x: any) => {
+        return x !== 'menu-mobile';
+      });
+      if (nextClasses.includes('menu-default') && nextClasses.includes('menu-sub-hidden')) {
+        nextClasses = nextClasses.filter((x: any) => {
+          return x !== 'menu-sub-hidden';
+        });
       }
     }
     return nextClasses;
@@ -137,7 +141,9 @@ const Sidebar = (props: any) => {
     props.changeSelectedMenuHasSubItems(hasSubItems);
     const { containerClassnames, menuClickCount } = props.menuReducer;
     const currentClasses = containerClassnames
-      ? containerClassnames.split(' ').filter((x: any) => { return x !== '' })
+      ? containerClassnames.split(' ').filter((x: any) => {
+          return x !== '';
+        })
       : '';
     let clickIndex = -1;
     if (!hasSubItems) {
@@ -151,26 +157,16 @@ const Sidebar = (props: any) => {
         (menuClickCount === 2 || menuClickCount === 3)
       ) {
         clickIndex = 0;
-      } else if (
-        currentClasses.includes('menu-hidden') ||
-        currentClasses.includes('menu-mobile')
-      ) {
+      } else if (currentClasses.includes('menu-hidden') || currentClasses.includes('menu-mobile')) {
         clickIndex = 0;
       }
     } else if (currentClasses.includes('menu-sub-hidden') && menuClickCount === 3) {
       clickIndex = 2;
-    } else if (
-      currentClasses.includes('menu-hidden') ||
-      currentClasses.includes('menu-mobile')
-    ) {
+    } else if (currentClasses.includes('menu-hidden') || currentClasses.includes('menu-mobile')) {
       clickIndex = 0;
     }
     if (clickIndex >= 0) {
-      props.setContainerClassnames(
-        clickIndex,
-        containerClassnames,
-        hasSubItems,
-      );
+      props.setContainerClassnames(clickIndex, containerClassnames, hasSubItems);
     }
   };
 
@@ -179,13 +175,15 @@ const Sidebar = (props: any) => {
   };
 
   const addEvents = () => {
-    ['click', 'touchstart', 'touchend'].forEach((event) => { return document.addEventListener(event, handleDocumentClick, true) },
-    );
+    ['click', 'touchstart', 'touchend'].forEach((event) => {
+      return document.addEventListener(event, handleDocumentClick, true);
+    });
   };
 
   const removeEvents = () => {
-    ['click', 'touchstart', 'touchend'].forEach((event) => { return document.removeEventListener(event, handleDocumentClick, true) },
-    );
+    ['click', 'touchstart', 'touchend'].forEach((event) => {
+      return document.removeEventListener(event, handleDocumentClick, true);
+    });
   };
 
   const setSelectedLiActive = (callback: any) => {
@@ -198,9 +196,7 @@ const Sidebar = (props: any) => {
       oldliSub.classList.remove('active');
     }
     /* set selected parent menu */
-    const selectedSublink = document.querySelector(
-      '.third-level-menu  a.active',
-    );
+    const selectedSublink = document.querySelector('.third-level-menu  a.active');
     if (selectedSublink != null) {
       selectedSublink.parentElement.classList.add('active');
     }
@@ -209,15 +205,11 @@ const Sidebar = (props: any) => {
       selectedlink.parentElement.classList.add('active');
       setSidebarState({
         ...sidebarState,
-        selectedParentMenu: selectedlink.parentElement.parentElement.getAttribute(
-          'data-parent',
-        ),
+        selectedParentMenu: selectedlink.parentElement.parentElement.getAttribute('data-parent'),
       });
       callback;
     } else {
-      const selectedParentNoSubItem = document.querySelector(
-        '.main-menu  li a.active',
-      );
+      const selectedParentNoSubItem = document.querySelector('.main-menu  li a.active');
       if (selectedParentNoSubItem != null) {
         setSidebarState({
           ...sidebarState,
@@ -242,9 +234,10 @@ const Sidebar = (props: any) => {
 
   const getIsHasSubItem = () => {
     const { selectedParentMenu } = sidebarState;
-    const menuItem = menuItems.find((x) => { return x.id === selectedParentMenu });
-    if (menuItem)
-      return !!(menuItem && menuItem.subs && menuItem.subs.length > 0);
+    const menuItem = menuItems.find((x) => {
+      return x.id === selectedParentMenu;
+    });
+    if (menuItem) return !!(menuItem && menuItem.subs && menuItem.subs.length > 0);
     return false;
   };
 
@@ -263,7 +256,9 @@ const Sidebar = (props: any) => {
       e.preventDefault();
       const { containerClassnames, menuClickCount } = props.menuReducer;
       const currentClasses = containerClassnames
-        ? containerClassnames.split(' ').filter((x: any) => { return x !== '' })
+        ? containerClassnames.split(' ').filter((x: any) => {
+            return x !== '';
+          })
         : '';
 
       if (!currentClasses.includes('menu-mobile')) {
@@ -299,7 +294,9 @@ const Sidebar = (props: any) => {
     if (collapsedMenus.indexOf(menuKey) > -1) {
       setSidebarState({
         ...sidebarState,
-        collapsedMenus: collapsedMenus.filter((x) => { return x !== menuKey }),
+        collapsedMenus: collapsedMenus.filter((x) => {
+          return x !== menuKey;
+        }),
       });
     } else {
       collapsedMenus.push(menuKey);
@@ -316,9 +313,7 @@ const Sidebar = (props: any) => {
       <div className="sidebar">
         <div className="main-menu">
           <div className="scroll">
-            <PerfectScrollbar
-              options={{ suppressScrollX: true, wheelPropagation: false }}
-            >
+            <PerfectScrollbar options={{ suppressScrollX: true, wheelPropagation: false }}>
               <Nav vertical className="list-unstyled">
                 {menuItems &&
                   menuItems.map((item) => {
@@ -333,23 +328,19 @@ const Sidebar = (props: any) => {
                         })}
                       >
                         {item.newWindow ? (
-                          <a
-                            href={item.to}
-                            rel="noopener noreferrer"
-                            target="_blank"
-                          >
-                            <i className={item.icon} />{' '}
-                            {/* <IntlMessages id={item.label} /> */}
+                          <a href={item.to} rel="noopener noreferrer" target="_blank">
+                            <i className={item.icon} /> {/* <IntlMessages id={item.label} /> */}
                             {item.label}
                           </a>
                         ) : (
                           <NavLink
                             to={item.to}
-                            onClick={(e) => { return openSubMenu(e, item) }}
+                            onClick={(e) => {
+                              return openSubMenu(e, item);
+                            }}
                             data-flag={item.id}
                           >
-                            <i className={item.icon} />{' '}
-                            {item.label}
+                            <i className={item.icon} /> {item.label}
                             {/* <IntlMessages id={item.label} /> */}
                           </NavLink>
                         )}
@@ -363,9 +354,7 @@ const Sidebar = (props: any) => {
 
         <div className="sub-menu">
           <div className="scroll">
-            <PerfectScrollbar
-              options={{ suppressScrollX: true, wheelPropagation: false }}
-            >
+            <PerfectScrollbar options={{ suppressScrollX: true, wheelPropagation: false }}>
               {menuItems &&
                 menuItems.map((item) => {
                   return (
@@ -384,39 +373,27 @@ const Sidebar = (props: any) => {
                           return (
                             <NavItem
                               key={`${item.id}_${index}`}
-                              className={`${sub.subs && sub.subs.length > 0
-                                  ? 'has-sub-item'
-                                  : ''
-                                }`}
+                              className={`${sub.subs && sub.subs.length > 0 ? 'has-sub-item' : ''}`}
                             >
                               {sub.newWindow ? (
-                                <a
-                                  href={sub.to}
-                                  rel="noopener noreferrer"
-                                  target="_blank"
-                                >
-                                  <i className={sub.icon} />{' '}
-                                  {/* <IntlMessages id={sub.label} /> */}
+                                <a href={sub.to} rel="noopener noreferrer" target="_blank">
+                                  <i className={sub.icon} /> {/* <IntlMessages id={sub.label} /> */}
                                   {sub.label}
                                 </a>
                               ) : sub.subs && sub.subs.length > 0 ? (
                                 <>
                                   <NavLink
-                                    className={`rotate-arrow-icon opacity-50 ${sidebarState.collapsedMenus.indexOf(
-                                      `${item.id}_${index}`,
-                                    ) === -1
+                                    className={`rotate-arrow-icon opacity-50 ${
+                                      sidebarState.collapsedMenus.indexOf(`${item.id}_${index}`) ===
+                                      -1
                                         ? ''
                                         : 'collapsed'
-                                      }`}
+                                    }`}
                                     to={sub.to}
                                     id={`${item.id}_${index}`}
                                     onClick={(e) => {
-                                      return toggleMenuCollapse(
-                                        e,
-                                        `${item.id}_${index}`,
-                                      )
-                                    }
-                                    }
+                                      return toggleMenuCollapse(e, `${item.id}_${index}`);
+                                    }}
                                   >
                                     <i className="simple-icon-arrow-down" />{' '}
                                     {/* <IntlMessages id={sub.label} /> */}
@@ -425,55 +402,43 @@ const Sidebar = (props: any) => {
 
                                   <Collapse
                                     isOpen={
-                                      sidebarState.collapsedMenus.indexOf(
-                                        `${item.id}_${index}`,
-                                      ) === -1
+                                      sidebarState.collapsedMenus.indexOf(`${item.id}_${index}`) ===
+                                      -1
                                     }
                                   >
                                     <Nav className="third-level-menu">
-                                      {sub.subs.map(
-                                        (thirdSub: any, thirdIndex: any) => {
-                                          return (
-                                            <NavItem
-                                              key={`${item.id}_${index}_${thirdIndex}`}
-                                            >
-                                              {thirdSub.newWindow ? (
-                                                <a
-                                                  href={thirdSub.to}
-                                                  rel="noopener noreferrer"
-                                                  target="_blank"
-                                                >
-                                                  <i
-                                                    className={thirdSub.icon}
-                                                  />{' '}
-                                                  <IntlMessages
-                                                    id={thirdSub.label}
-                                                  />
-                                                </a>
-                                              ) : (
-                                                <NavLink to={thirdSub.to}>
-                                                  <i
-                                                    className={thirdSub.icon}
-                                                  />{' '}
-                                                  <IntlMessages
-                                                    id={thirdSub.label}
-                                                  />
-                                                </NavLink>
-                                              )}
-                                            </NavItem>
-                                          );
-                                        },
-                                      )}
+                                      {sub.subs.map((thirdSub: any, thirdIndex: any) => {
+                                        return (
+                                          <NavItem key={`${item.id}_${index}_${thirdIndex}`}>
+                                            {thirdSub.newWindow ? (
+                                              <a
+                                                href={thirdSub.to}
+                                                rel="noopener noreferrer"
+                                                target="_blank"
+                                              >
+                                                <i className={thirdSub.icon} />{' '}
+                                                <IntlMessages id={thirdSub.label} />
+                                              </a>
+                                            ) : (
+                                              <NavLink to={thirdSub.to}>
+                                                <i className={thirdSub.icon} />{' '}
+                                                <IntlMessages id={thirdSub.label} />
+                                              </NavLink>
+                                            )}
+                                          </NavItem>
+                                        );
+                                      })}
                                     </Nav>
                                   </Collapse>
                                 </>
                               ) : (
                                 <NavLink
                                   to={sub.to}
-                                  onClick={() => { return setOnclickMenu(!onClickMenu) }}
+                                  onClick={() => {
+                                    return setOnclickMenu(!onClickMenu);
+                                  }}
                                 >
-                                  <i className={sub.icon} />{' '}
-                                  {/* <IntlMessages id={sub.label} /> */}
+                                  <i className={sub.icon} /> {/* <IntlMessages id={sub.label} /> */}
                                   {sub.label}
                                 </NavLink>
                               )}

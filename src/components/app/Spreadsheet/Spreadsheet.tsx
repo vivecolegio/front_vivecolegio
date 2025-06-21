@@ -50,12 +50,7 @@ const SpreadsheetList = (props: any) => {
   let [notes, setNotes] = useState([]);
   let [averages, setAverages] = useState([]);
   let [averagesFinal, setAveragesFinal] = useState([]);
-  const [dateProgress, setDateProgress] = useState({
-    startDate: null,
-    endDate: null,
-    totalDays: 0,
-    countDays: 0,
-  });
+  const [dateProgress, setDateProgress] = useState({ startDate: null, endDate: null, totalDays: 0, countDays: 0 })
   let [countDigits, setCountDigits] = useState(2);
   let [countDownload, setcountDownload] = useState(0);
 
@@ -92,15 +87,13 @@ const SpreadsheetList = (props: any) => {
       createNotification('warning', 'notPermissions', '');
     }
     props.dataCurrentAcademicPeriod(props?.loginReducer?.schoolId).then(async (period: any) => {
-      await props
-        .getListAllSchoolConfiguration(props?.loginReducer?.schoolId)
-        .then(async (schoolConfigurations: any) => {
-          for (let schoolConfiguration of schoolConfigurations) {
-            if (schoolConfiguration?.node?.code == 'COUNT_DIGITS_PERFORMANCE_LEVEL') {
-              setCountDigits(schoolConfiguration?.node?.valueNumber);
-            }
+      await props.getListAllSchoolConfiguration(props?.loginReducer?.schoolId).then(async (schoolConfigurations: any) => {
+        for (let schoolConfiguration of schoolConfigurations) {
+          if (schoolConfiguration?.node?.code == "COUNT_DIGITS_PERFORMANCE_LEVEL") {
+            setCountDigits(schoolConfiguration?.node?.valueNumber);
           }
-        });
+        }
+      });
       await setCurrentAcademicPeriod(period);
       if (period) {
         const today = new Date();
@@ -111,7 +104,7 @@ const SpreadsheetList = (props: any) => {
         if (today < endDate && today > startDate) {
           countDays = calculateDaysTwoDate(startDate, new Date());
         }
-        setDateProgress({ startDate, endDate, totalDays, countDays });
+        setDateProgress({ startDate, endDate, totalDays, countDays })
       }
       getSpreadsheet(period?.id);
     });
@@ -121,9 +114,7 @@ const SpreadsheetList = (props: any) => {
     setLoading(true);
     await props.dataCourse(courseId).then(async (course: any) => {
       if (props?.loginReducer?.studentId?.length > 0) {
-        let studentsList = course?.data?.students?.filter(
-          (itemV: any) => itemV?.id == props?.loginReducer?.studentId,
-        );
+        let studentsList = course?.data?.students?.filter((itemV: any) => itemV?.id == props?.loginReducer?.studentId);
         setStudents(studentsList);
       } else {
         setStudents(course?.data?.students.sort(compare));
@@ -140,12 +131,8 @@ const SpreadsheetList = (props: any) => {
           levels = dataLevels;
           setPerformanceLevelType(dataLevels[0]?.node?.type);
         });
-      await props
-        .getAcademicPeriodsExperienceLearning(
-          props?.loginReducer?.schoolId,
-          props?.loginReducer?.schoolYear,
-        )
-        .then(async (listData: any) => {
+      await props.getAcademicPeriodsExperienceLearning(props?.loginReducer?.schoolId,
+        props?.loginReducer?.schoolYear).then(async (listData: any) => {
           setAcademicPeriods(listData);
           let promisesList: any[] = [];
           if (periodId) {
@@ -165,7 +152,7 @@ const SpreadsheetList = (props: any) => {
                       c?.node?.id,
                       periodId,
                       academicAsignatureCourseId,
-                      'NORMAL',
+                      "NORMAL"
                     )
                     .then((resp: any) => {
                       avrgs = avrgs.concat(resp.data.edges);
@@ -176,15 +163,14 @@ const SpreadsheetList = (props: any) => {
                       academicAsignatureCourseId,
                       periodId,
                       c?.node?.id,
-                      'NORMAL',
+                      "NORMAL"
                     )
                     .then(async (response: any) => {
                       await response.data.map(async (exp: any) => {
                         promisesList.push(
                           props.getValuationStudents(exp?.id).then((resp: any) => {
                             nts = nts.concat(resp.data);
-                          }),
-                        );
+                          }));
                       });
                       obj.push({
                         experiences: response.data,
@@ -192,13 +178,15 @@ const SpreadsheetList = (props: any) => {
                         evaluativeComponentId: c?.node?.id,
                       });
                     });
-                }
+                };
                 await Promise.all(promisesList).then(() => {
                   setValuations(obj);
                   setNotes(nts);
                   setLoading(false);
                 });
+
               });
+
           } else {
             setLoading(false);
           }
@@ -213,7 +201,10 @@ const SpreadsheetList = (props: any) => {
   const updateAverages = async (period: any) => {
     if (period) {
       await props
-        .updateAllStudentAcademicAsignatureCoursePeriodValuation(period, academicAsignatureCourseId)
+        .updateAllStudentAcademicAsignatureCoursePeriodValuation(
+          period,
+          academicAsignatureCourseId,
+        )
         .then((resp: any) => {
           // getSpreadsheet(currentAcademicPeriod);
         });
@@ -262,14 +253,14 @@ const SpreadsheetList = (props: any) => {
     if (countDownload != 0) {
       onDownload();
     }
-    setcountDownload(countDownload + 1);
+    setcountDownload(countDownload + 1)
   };
 
   const { onDownload } = useDownloadExcel({
     currentTableRef: tableRef.current,
     filename: 'Planilla General',
-    sheet: 'Planilla General',
-  });
+    sheet: 'Planilla General'
+  })
 
   return (
     <>
@@ -278,94 +269,65 @@ const SpreadsheetList = (props: any) => {
       </div>
       <hr />
       <div className="d-flex justify-content-between align-items-center">
-        <HeaderInfoAcademic
-          asignature
-          grade
-          course
-          modality
-          goTitle="Regresar a asignación académica"
-          academicAsignatureCourseId={academicAsignatureCourseId}
-        />
+        <HeaderInfoAcademic asignature grade course modality goTitle="Regresar a asignación académica" academicAsignatureCourseId={academicAsignatureCourseId} />
         <div>
-          <div className="d-flex justify-content-start align-items-center">
+          <div className="d-flex justify-content-start align-items-center" >
             {academicPeriods
               ? academicPeriods.map((item: any) => {
-                  return (
-                    <>
-                      <button
-                        onClick={() => {
-                          setCurrentAcademicPeriod(item?.node);
-                          const today = new Date();
-                          const startDate = new Date(item?.node?.startDate);
-                          const endDate = new Date(item?.node?.endDate);
-                          const totalDays = calculateDaysTwoDate(startDate, endDate);
-                          let countDays = totalDays;
-                          if (today < endDate && today > startDate) {
-                            countDays = calculateDaysTwoDate(startDate, new Date());
-                          }
-                          setDateProgress({ startDate, endDate, totalDays, countDays });
-                          return getSpreadsheet(item?.node?.id);
-                        }}
-                        key={item?.node?.id}
-                        className={`ml-1 btn ${
-                          currentAcademicPeriod?.id === item?.node?.id
-                            ? 'btn-info'
-                            : 'btn-outline-info'
+                return (
+                  <>
+                    <button
+                      onClick={() => {
+                        setCurrentAcademicPeriod(item?.node);
+                        const today = new Date();
+                        const startDate = new Date(item?.node?.startDate);
+                        const endDate = new Date(item?.node?.endDate);
+                        const totalDays = calculateDaysTwoDate(startDate, endDate);
+                        let countDays = totalDays;
+                        if (today < endDate && today > startDate) {
+                          countDays = calculateDaysTwoDate(startDate, new Date());
+                        }
+                        setDateProgress({ startDate, endDate, totalDays, countDays })
+                        return getSpreadsheet(item?.node?.id);
+                      }}
+                      key={item?.node?.id}
+                      className={`ml-1 btn ${currentAcademicPeriod?.id === item?.node?.id
+                        ? 'btn-info'
+                        : 'btn-outline-info'
                         }`}
-                        type="button"
-                      >
-                        <i className="iconsminds-pen-2"></i> {item?.node?.name}
-                      </button>
-                      {'  '}
-                    </>
-                  );
-                })
+                      type="button"
+                    >
+                      <i className="iconsminds-pen-2"></i> {item?.node?.name}
+                    </button>{'  '}
+                  </>
+                );
+              })
               : ''}
           </div>
-          {dateProgress.startDate != null ? (
+          {dateProgress.startDate != null ?
             <>
               <div className="d-flex justify-content-start align-items-center mt-2 w-100">
-                <div className="text-center">Progreso: </div>
+                <div className="text-center">
+                  Progreso: {' '}
+                </div>
                 <Progress
                   className="ml-2"
                   bar
                   color="primary"
-                  value={
-                    dateProgress.countDays > 0
-                      ? (dateProgress.countDays / dateProgress.totalDays) * 100
-                      : 0
-                  }
-                >
-                  {' '}
-                  ({dateProgress.countDays}/{dateProgress.totalDays}){' '}
-                  {dateProgress.countDays > 0
-                    ? ((dateProgress.countDays / dateProgress.totalDays) * 100).toFixed(0)
-                    : 0}
-                  %
-                </Progress>
+                  value={dateProgress.countDays > 0 ? ((dateProgress.countDays / dateProgress.totalDays) * 100) : 0}
+                > ({dateProgress.countDays}/{dateProgress.totalDays}) {dateProgress.countDays > 0 ? ((dateProgress.countDays / dateProgress.totalDays) * 100).toFixed(0) : 0}%</Progress>
               </div>
               <div className="d-flex justify-content-start align-items-center mt-2 w-100">
                 <div className="text-center w-50">
-                  Fecha Inicio: {' ' + moment(dateProgress.startDate).format('YYYY-MM-DD')}
+                  Fecha Inicio: {' ' + moment(dateProgress.startDate).format("YYYY-MM-DD")}
                 </div>
                 <div className="text-center w-50">
-                  Fecha Fin: {' ' + moment(dateProgress.endDate).format('YYYY-MM-DD')}
+                  Fecha Fin: {' ' + moment(dateProgress.endDate).format("YYYY-MM-DD")}
                 </div>
               </div>
             </>
-          ) : (
-            ''
-          )}
+            : ""}
 
-          <button
-            className="btn btn-green mr-2"
-            type="button"
-            onClick={() => {
-              return updateAverages(currentAcademicPeriod?.id);
-            }}
-          >
-            <i className="iconsminds-file-edit"></i> Recalcular Valoracion
-          </button>
           {/* {currentAcademicPeriod != null ?
             <div className='d-flex mt-3 justify-content-end mb-2'>
                <button
@@ -380,14 +342,27 @@ const SpreadsheetList = (props: any) => {
               <button className="btn btn-orange" type="button">
                 <i className="iconsminds-delete-file"></i> Cerrar periodo
               </button> 
-             
+              <button
+                className="btn btn-green mr-2"
+                type="button"
+                onClick={() => {
+                  return updateAverages();
+                }}
+              >
+                <i className="iconsminds-file-edit"></i> Recalcular Valoracion
+              </button>
             </div>
             :
             <></>
           } */}
         </div>
-        <button onClick={download} key={'download'} className={`ml-1 btn btn-info`} type="button">
-          <i className="iconsminds-download"></i> {'Descargar XLS'}
+        <button
+          onClick={download}
+          key={"download"}
+          className={`ml-1 btn btn-info`}
+          type="button"
+        >
+          <i className="iconsminds-download"></i> {"Descargar XLS"}
         </button>
       </div>
 
@@ -400,7 +375,7 @@ const SpreadsheetList = (props: any) => {
       ) : valuations.length > 0 ? (
         <>
           {students !== null ? (
-            <div style={{ overflow: 'scroll', height: '70vh' }}>
+            <div style={{ overflow: "scroll", height: "70vh" }}>
               <table className="table table-bordered" ref={tableRef}>
                 <thead>
                   <tr>
@@ -414,7 +389,9 @@ const SpreadsheetList = (props: any) => {
                       return (
                         <>
                           <th
-                            colSpan={item?.experiences?.length + 1}
+                            colSpan={
+                              item?.experiences?.length + 1
+                            }
                             className="text-center vertical-middle"
                           >
                             {item?.name}
@@ -422,23 +399,18 @@ const SpreadsheetList = (props: any) => {
                         </>
                       );
                     })}
-                    {performanceLevelType === 'QUANTITATIVE' ? (
+                    {performanceLevelType === "QUANTITATIVE" ?
                       <th rowSpan={2} className="text-center vertical-middle">
                         Valoración Periodo
-                      </th>
-                    ) : (
-                      <></>
-                    )}
+                      </th> : <></>
+                    }
                     <th rowSpan={2} className="text-center vertical-middle">
                       Nivel de desempeño Periodo
                     </th>
-                    {performanceLevelType === 'QUANTITATIVE' ? (
-                      <th rowSpan={2} className="text-center vertical-middle">
-                        Valoración Nivelación
-                      </th>
-                    ) : (
-                      <></>
-                    )}
+                    {performanceLevelType === "QUANTITATIVE" ? <th rowSpan={2} className="text-center vertical-middle">
+                      Valoración Nivelación
+                    </th> : <></>
+                    }
                     <th rowSpan={2} className="text-center vertical-middle">
                       Nivel de desempeño Nivelación
                     </th>
@@ -447,26 +419,27 @@ const SpreadsheetList = (props: any) => {
                     {valuations.map((item: any, index: any) => {
                       return (
                         <>
-                          {item.experiences.length > 0 ? (
+                          {item.experiences.length > 0 ?
                             <>
-                              {item.experiences.map((e: any, indexe: any) => {
-                                return (
-                                  <>
-                                    <th className="text-center vertical-middle">
-                                      <a data-tip data-for={e?.id}>
-                                        <i className="iconsminds-idea-2 text-warning font-20"></i>
-                                      </a>
-                                      <ReactTooltip id={e?.id} variant="info">
-                                        <span>{e?.title}</span>
-                                      </ReactTooltip>
-                                    </th>
-                                  </>
-                                );
-                              })}
-                            </>
-                          ) : (
-                            ''
-                          )}
+                              {
+                                item.experiences.map((e: any, indexe: any) => {
+                                  return (
+                                    <>
+                                      <th className="text-center vertical-middle">
+                                        <a data-tip data-for={e?.id}>
+                                          <i
+                                            className="iconsminds-idea-2 text-warning font-20"
+                                          ></i>
+                                        </a>
+                                        <ReactTooltip id={e?.id} variant='info'>
+                                          <span>{e?.title}</span>
+                                        </ReactTooltip>
+                                      </th>
+                                    </>
+                                  );
+                                })
+                              }</>
+                            : ""}
                           {/* {item?.experiences?.length >= 0 ? ( */}
                           <th className="text-center vertical-middle">Prom.</th>
                           {/* ) : ( */}
@@ -498,7 +471,9 @@ const SpreadsheetList = (props: any) => {
                                 <span className="img-thumbnail md-avatar-initials border-0 span-initials rounded-circle mr-3 list-thumbnail align-self-center xsmall">
                                   {getInitialsName(
                                     item?.user
-                                      ? item?.user?.lastName + ' ' + item?.user?.name
+                                      ? item?.user?.lastName +
+                                      ' ' +
+                                      item?.user?.name
                                       : 'N N',
                                   )}
                                 </span>
@@ -511,7 +486,7 @@ const SpreadsheetList = (props: any) => {
                           {valuations.map((item2: any, index2: any) => {
                             return (
                               <>
-                                {item2.experiences.length > 0 ? (
+                                {item2.experiences.length > 0 ?
                                   <>
                                     {item2.experiences.map((e: any) => {
                                       let note = notes.find(
@@ -522,23 +497,12 @@ const SpreadsheetList = (props: any) => {
                                       return (
                                         <>
                                           <td className="text-center vertical-middle">
-                                            {performanceLevelType === 'QUALITATIVE' ? (
+                                            {performanceLevelType === "QUALITATIVE" ?
                                               <>
-                                                <StyledBadge
-                                                  color="primary"
-                                                  className="font-0-8rem"
-                                                  background={
-                                                    note?.performanceLevel?.colorHex
-                                                      ? `${note?.performanceLevel?.colorHex}`
-                                                      : '#00cafe'
-                                                  }
-                                                >
-                                                  {note?.performanceLevel?.abbreviation
-                                                    ? note?.performanceLevel?.abbreviation
-                                                    : note?.performanceLevel?.name}
+                                                <StyledBadge color="primary" className="font-0-8rem" background={note?.performanceLevel?.colorHex ? `${note?.performanceLevel?.colorHex}` : "#00cafe"}>
+                                                  {note?.performanceLevel?.abbreviation ? note?.performanceLevel?.abbreviation : note?.performanceLevel?.name}
                                                 </StyledBadge>
-                                              </>
-                                            ) : (
+                                              </> :
                                               <>
                                                 {note?.assessment}
                                                 {/* <Input
@@ -551,70 +515,52 @@ const SpreadsheetList = (props: any) => {
                                                   style={{ width: "60px" }}
                                                 /> */}
                                               </>
-                                            )}
+                                            }
                                           </td>
                                         </>
                                       );
-                                    })}{' '}
-                                  </>
-                                ) : (
-                                  ''
-                                )}
+                                    })} </> : ""}
                                 {item2?.experiences?.length > 0 ? (
                                   <th className="text-center vertical-middle">
-                                    {performanceLevelType === 'QUALITATIVE' ? (
+                                    {performanceLevelType === "QUALITATIVE" ?
                                       <>
-                                        <StyledBadge
-                                          color="primary"
-                                          className="font-0-8rem"
-                                          background={
-                                            averages.find(
-                                              (n: any) =>
-                                                item2?.evaluativeComponentId ===
-                                                  n?.node?.evaluativeComponentId &&
-                                                item?.id === n?.node?.studentId,
-                                            )?.node?.performanceLevel?.colorHex
-                                              ? `${
-                                                  averages.find(
-                                                    (n: any) =>
-                                                      item2?.evaluativeComponentId ===
-                                                        n?.node?.evaluativeComponentId &&
-                                                      item?.id === n?.node?.studentId,
-                                                  )?.node?.performanceLevel?.colorHex
-                                                }`
-                                              : '#00cafe'
-                                          }
-                                        >
+                                        <StyledBadge color="primary" className="font-0-8rem" background={averages.find(
+                                          (n: any) =>
+                                            item2?.evaluativeComponentId ===
+                                            n?.node?.evaluativeComponentId &&
+                                            item?.id === n?.node?.studentId,
+                                        )?.node?.performanceLevel?.colorHex ? `${averages.find(
+                                          (n: any) =>
+                                            item2?.evaluativeComponentId ===
+                                            n?.node?.evaluativeComponentId &&
+                                            item?.id === n?.node?.studentId,
+                                        )?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
                                           {averages.find(
                                             (n: any) =>
                                               item2?.evaluativeComponentId ===
-                                                n?.node?.evaluativeComponentId &&
+                                              n?.node?.evaluativeComponentId &&
                                               item?.id === n?.node?.studentId,
-                                          )?.node?.performanceLevel?.abbreviation
-                                            ? averages.find(
-                                                (n: any) =>
-                                                  item2?.evaluativeComponentId ===
-                                                    n?.node?.evaluativeComponentId &&
-                                                  item?.id === n?.node?.studentId,
-                                              )?.node?.performanceLevel?.abbreviation
-                                            : averages.find(
-                                                (n: any) =>
-                                                  item2?.evaluativeComponentId ===
-                                                    n?.node?.evaluativeComponentId &&
-                                                  item?.id === n?.node?.studentId,
-                                              )?.node?.performanceLevel?.name}
-                                        </StyledBadge>
-                                      </>
-                                    ) : (
-                                      <>
-                                        {averages
-                                          .find(
+                                          )?.node?.performanceLevel?.abbreviation ? averages.find(
                                             (n: any) =>
                                               item2?.evaluativeComponentId ===
-                                                n?.node?.evaluativeComponentId &&
+                                              n?.node?.evaluativeComponentId &&
                                               item?.id === n?.node?.studentId,
-                                          )
-                                          ?.node?.average?.toFixed(countDigits)}
+                                          )?.node?.performanceLevel?.abbreviation : averages.find(
+                                            (n: any) =>
+                                              item2?.evaluativeComponentId ===
+                                              n?.node?.evaluativeComponentId &&
+                                              item?.id === n?.node?.studentId,
+                                          )?.node?.performanceLevel?.name}
+                                        </StyledBadge>
+                                      </>
+                                      :
+                                      <>
+                                        {averages.find(
+                                          (n: any) =>
+                                            item2?.evaluativeComponentId ===
+                                            n?.node?.evaluativeComponentId &&
+                                            item?.id === n?.node?.studentId,
+                                        )?.node?.average?.toFixed(countDigits)}
                                         {/* <Input
                                           disabled={true}
                                           defaultValue={
@@ -628,8 +574,7 @@ const SpreadsheetList = (props: any) => {
                                           className="form-control"
                                           style={{ width: "4.5vh" }}
                                         /> */}
-                                      </>
-                                    )}
+                                      </>}
                                   </th>
                                 ) : (
                                   <th></th>
@@ -637,91 +582,41 @@ const SpreadsheetList = (props: any) => {
                               </>
                             );
                           })}
-                          {performanceLevelType === 'QUANTITATIVE' ? (
+                          {performanceLevelType === "QUANTITATIVE" ?
                             <>
                               <th className="text-center vertical-middle">
-                                {averagesFinal
-                                  .find(
-                                    (n: any) =>
-                                      item?.id === n?.node?.studentId &&
-                                      (n?.node?.valuationType == 'CALCULATE' ||
-                                        n?.node?.valuationType == 'DEFINITIVE'),
-                                  )
-                                  ?.node?.assessment?.toFixed(countDigits) || ''}
+                                {averagesFinal.find((n: any) => item?.id === n?.node?.studentId && (n?.node?.valuationType == "CALCULATE" || n?.node?.valuationType == "DEFINITIVE"))?.node
+                                  ?.assessment?.toFixed(countDigits) || ''}
                               </th>
-                            </>
-                          ) : (
-                            <></>
-                          )}
+                            </> : <></>
+                          }
                           <th className="text-center vertical-middle">
-                            <StyledBadge
-                              color="primary"
-                              className="font-0-8rem"
-                              background={
-                                averagesFinal.find(
-                                  (c: any) =>
-                                    c?.node?.studentId === item?.id &&
-                                    (c?.node?.valuationType == 'CALCULATE' ||
-                                      c?.node?.valuationType == 'DEFINITIVE'),
-                                )?.node?.performanceLevel?.colorHex
-                                  ? `${
-                                      averagesFinal.find(
-                                        (c: any) =>
-                                          c?.node?.studentId === item?.id &&
-                                          (c?.node?.valuationType == 'CALCULATE' ||
-                                            c?.node?.valuationType == 'DEFINITIVE'),
-                                      )?.node?.performanceLevel?.colorHex
-                                    }`
-                                  : '#00cafe'
-                              }
-                            >
+                            <StyledBadge color="primary" className="font-0-8rem" background={averagesFinal.find(
+                              (c: any) => c?.node?.studentId === item?.id && (c?.node?.valuationType == "CALCULATE" || c?.node?.valuationType == "DEFINITIVE")
+                            )?.node?.performanceLevel?.colorHex ? `${averagesFinal.find(
+                              (c: any) => c?.node?.studentId === item?.id && (c?.node?.valuationType == "CALCULATE" || c?.node?.valuationType == "DEFINITIVE")
+                            )?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
                               {averagesFinal.find(
-                                (c: any) =>
-                                  c?.node?.studentId === item?.id &&
-                                  (c?.node?.valuationType == 'CALCULATE' ||
-                                    c?.node?.valuationType == 'DEFINITIVE'),
+                                (c: any) => c?.node?.studentId === item?.id && (c?.node?.valuationType == "CALCULATE" || c?.node?.valuationType == "DEFINITIVE")
                               )?.node?.performanceLevel?.name || '--'}
                             </StyledBadge>
                           </th>
-                          {performanceLevelType === 'QUANTITATIVE' ? (
+                          {performanceLevelType === "QUANTITATIVE" ?
                             <>
                               <th className="text-center vertical-middle">
-                                {averagesFinal
-                                  .find(
-                                    (n: any) =>
-                                      item?.id === n?.node?.studentId &&
-                                      n?.node?.valuationType == 'RECOVERY',
-                                  )
-                                  ?.node?.assessment?.toFixed(countDigits) || ''}
+                                {averagesFinal.find((n: any) => item?.id === n?.node?.studentId && n?.node?.valuationType == "RECOVERY")?.node
+                                  ?.assessment?.toFixed(countDigits) || ''}
                               </th>
-                            </>
-                          ) : (
-                            <></>
-                          )}
+                            </> : <></>
+                          }
                           <th className="text-center vertical-middle">
-                            <StyledBadge
-                              color="primary"
-                              className="font-0-8rem"
-                              background={
-                                averagesFinal.find(
-                                  (c: any) =>
-                                    c?.node?.studentId === item?.id &&
-                                    c?.node?.valuationType == 'RECOVERY',
-                                )?.node?.performanceLevel?.colorHex
-                                  ? `${
-                                      averagesFinal.find(
-                                        (c: any) =>
-                                          c?.node?.studentId === item?.id &&
-                                          c?.node?.valuationType == 'RECOVERY',
-                                      )?.node?.performanceLevel?.colorHex
-                                    }`
-                                  : '#00cafe'
-                              }
-                            >
+                            <StyledBadge color="primary" className="font-0-8rem" background={averagesFinal.find(
+                              (c: any) => c?.node?.studentId === item?.id && c?.node?.valuationType == "RECOVERY"
+                            )?.node?.performanceLevel?.colorHex ? `${averagesFinal.find(
+                              (c: any) => c?.node?.studentId === item?.id && c?.node?.valuationType == "RECOVERY"
+                            )?.node?.performanceLevel?.colorHex}` : "#00cafe"}>
                               {averagesFinal.find(
-                                (c: any) =>
-                                  c?.node?.studentId === item?.id &&
-                                  c?.node?.valuationType == 'RECOVERY',
+                                (c: any) => c?.node?.studentId === item?.id && c?.node?.valuationType == "RECOVERY"
                               )?.node?.performanceLevel?.name || ''}
                             </StyledBadge>
                           </th>
@@ -752,7 +647,7 @@ const mapDispatchToProps = {
   ...experienceLearningCoEvaluationActions,
   ...experienceLearningTraditionalActions,
   ...performanceLevelActions,
-  ...schoolConfiguarionActions,
+  ...schoolConfiguarionActions
 };
 
 const mapStateToProps = ({ loginReducer }: any) => {

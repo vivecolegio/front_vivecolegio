@@ -63,6 +63,11 @@ export const MUTATION_LOGIN = gql`
           }
         }
       }
+      lastLogin {
+        ip
+        geo
+        createdAt
+      }
     }
   }
 `;

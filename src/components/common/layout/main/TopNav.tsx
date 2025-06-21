@@ -324,6 +324,7 @@ const TopNav = (props: any) => {
               )}
             </button>
           </div>
+
           <div
             className="mr-2 border-separator-right align-middle pr-2 d-inline-block"
             style={{ height: '40px' }}
@@ -504,10 +505,13 @@ const TopNav = (props: any) => {
           <div className="user d-inline-block">
             <UncontrolledDropdown className="dropdown-menu-right">
               <DropdownToggle className="p-0" color="empty">
-                <span className="name mr-1 text-primary">
-                  {props?.loginReducer?.name} {props?.loginReducer?.lastName}
-                </span>
-                <span>
+                <div className="d-flex">
+                  <div>
+                    <span className="name mr-1 text-primary ">
+                      {props?.loginReducer?.name} {props?.loginReducer?.lastName}{' '}
+                    </span>
+                    <br /> Ultima Conexion: 02/02/2024 03:00
+                  </div>
                   <img
                     className="border-yellow"
                     alt="Profile"
@@ -517,7 +521,7 @@ const TopNav = (props: any) => {
                         : ProfileImg
                     }
                   />
-                </span>
+                </div>
               </DropdownToggle>
               <DropdownMenu className="mt-3" end>
                 <NavLink to="/profile">
@@ -544,7 +548,7 @@ const TopNav = (props: any) => {
                   <DropdownItem>
                     <IntlMessages id="layouts.chat" />
                   </DropdownItem>
-                </NavLink>                                            
+                </NavLink>
                 */}
                 <DropdownItem divider />
                 <DropdownItem
